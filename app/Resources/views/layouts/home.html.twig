@@ -1,0 +1,108 @@
+{% extends 'layouts/base.html.twig' %}
+{% block stylesheets %}
+    {% stylesheets 'bundles/app/css/foundation.css'
+                   'bundles/app/css/app.css'
+                   'bundles/app/foundation-icons/foundation-icons.css'
+                   filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,700">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster">
+{% endblock %}
+
+{% block bodyId %}home{% endblock %}
+{% block body %}
+<div id="nav-container">
+    <div id="nav-main">
+        <div class="row" id="row-top">
+            <div class="large-3 medium-4 small-6 columns" id="column-logo">
+                <h1><a href="index.html" title="Chalet home">{% image 'bundles/app/img/logos/logo-chalet.png' %}<img id="logo" src="{{ asset_url }}" height="137" width="183" alt="Chalet home" />{% endimage %}</a></h1>
+            </div>
+            <div class="large-5 medium-4 small-6 columns" id="column-contact">
+                <div>
+                    <p>
+                        <span class="small-up">
+                            <a href="#"><i class="fi-comments"></i>Chat</a>
+                            <span class="medium-up">of</span>
+                            <span class="show-for-small"></span>
+                            <a href="tel:+31-348-434649"><i class="fi-telephone"></i>0348 - 43 46 49</a>
+                        </span>
+                        <span class="medium-up"><br /><i class="fi-clock"></i>Nu open</span><span class="medium-up"> <a href="#">Openingstijden en alle contactinfo</a></span>
+                    </p>
+                    <p class="show-for-small" id="link-saved"><a href="smartphone-mylist.html"><i class="fi-heart"></i>Gezien en bewaard</a></p><!-- smartphones -->
+                </div>
+            </div>
+            <div class="large-4 medium-4 hide-for-small columns" id="column-dropdown">
+                <div class="right" id="logo-sgr">
+                    <span>Lid van het SGR-Garantiefonds</span>
+                    {% image 'bundles/app/img/logos/logo-sgr.jpg' %}<img src="{{ asset_url }}" height="28" width="30" alt="SGR-Garantiefonds" />{% endimage %}
+                </div>
+                <div id="dropdown-container">
+                    <!-- this button gets class="active" after: 1. first visit / 2. click on heart-icon -->
+                    <button id="dropdown-saved" class="button dropdown radius right" href="#" data-dropdown="dropdown-saved-list" aria-controls="dropdown-saved-list" aria-expanded="false">
+                        <i class="fi-heart"></i>Gezien en bewaard<i class="fi-play"></i>
+                    </button>
+                    <br />
+                    <ul id="dropdown-saved-list" data-dropdown-content class="f-dropdown" aria-hidden="true" tabindex="-1">
+                        <li><a href="zoekboek.html">Bekeken vakanties (<span>12</span>)</a></li>
+                        <li><a href="zoekboek.html">Zoekopdrachten (<span>23</span>)</a></li>
+                        <li><a href="zoekboek.html">Bewaarde vakanties (<span>2</span>)</a></li>
+                        <li><a href="zoekboek.html">Mijn boekingen</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- header -->
+<header>
+    <div id="header-container">
+        <div id="header-usp">
+            <div class="large-12 columns">
+                <h2 class="title-usp">Groots genieten<span>Wintersport van 2 tot 50 personen</span></h2>
+            </div>
+        </div>		
+        <div id="header-form">
+            <div class="row" id="header-form-title">
+                <div class="large-12 columns">
+                    <h1 class="title-form">Kies uit <a href="" title="1.209 chalets en appartementen">1.209 chalets en appartementen</a> in 45 skigebieden in <a href="" title="Chalets en appartementen in Oostenrijk">Oostenrijk</a>, <a href="" title="Chalets en appartementen in Zwitserland">Zwitserland</a>, <a href="" title="Chalets en appartementen in Frankrijk">Frankrijk</a> en <a href="" title="Chalets en appartementen in Itali&euml;">Itali&euml;</a></h1>
+                </div>
+            </div>
+            <div class="row" id="header-form-fields">
+                <form>
+                    <div class="large-3 medium-3 columns">
+                        <input type="text" id="choose-destination" class="radius" placeholder="Waar wil je naar toe?">
+                    </div>
+                    <div class="large-3 medium-3 columns">
+                        <select class="radius">
+                            <option value="husker">Wanneer wil je gaan?</option>
+                            <option value="1423868400">weekend 14 februari 2015</option>
+                            <option value="1424473200">weekend 21 februari 2015</option>
+                            <option value="1425078000">weekend 28 februari 2015</option>
+                            <option value="1425682800">weekend 7 maart 2015</option>
+                            <option value="1426287600">weekend 14 maart 2015</option>
+                            <option value="1426892400">weekend 21 maart 2015</option>
+                            <option value="1427497200">weekend 28 maart 2015</option>
+                            <option value="1428098400">weekend 4 april 2015</option>
+                            <option value="1428703200">weekend 11 april 2015</option>
+                            <option value="1429308000">weekend 18 april 2015</option>
+                            <option value="1429912800">weekend 25 april 2015</option>
+                            <option value="1430517600">weekend 2 mei 2015</option>
+                        </select>
+                    </div>
+                    <div class="large-3 medium-3 columns">
+                        <select class="radius">
+                            <option value="hoeveel">Met hoeveel personen ga je?</option>
+                            <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option><option value="32">32</option><option value="33">33</option><option value="34">34</option><option value="35">35</option><option value="36">36</option><option value="37">37</option><option value="38">38</option><option value="39">39</option><option value="40">40 of meer</option>
+                        </select>
+                    </div>
+                    <div class="large-3 medium-3 columns">
+                        <a href="zoekboek.html" class="button radius right" title="Toon resultaten op Chalet.nl"><i class="fi-magnifying-glass"></i>Toon <span>1.209</span> resultaten</a><br />
+                        <a href="zoekboek.html" class="link right" title="Uitgebreid zoeken op Chalet.nl">Uitgebreid zoeken</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}

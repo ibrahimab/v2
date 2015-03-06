@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+        <meta name="apple-mobile-web-app-title" content="Chalet.nl" />
+        <title>{% block title %}Chalet.nl{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    {% set _body_id = block('bodyId') %}
+    <body{% if _body_id is not empty %} id="{{ _body_id }}"{% endif %}>
+        {% block body %}{% endblock %}
+        {% include 'partials/footer.html.twig' %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
