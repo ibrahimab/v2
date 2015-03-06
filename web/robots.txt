@@ -1,4 +1,95 @@
-# www.robotstxt.org/
-# www.google.com/support/webmasters/bin/answer.py?hl=en&answer=156449
+User-agent: AdsBot-Google
+Allow: /
 
 User-agent: *
+Crawl-delay: 10
+
+User-agent: 008
+Disallow: /
+
+User-agent: panscient.com
+Disallow: /
+
+User-agent: vscooter
+Disallow: /
+
+User-agent: psbot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: twiceler
+Disallow: /
+
+User-agent: Yandex
+Disallow: /
+
+User-agent: taptubot
+Disallow: /
+
+User-agent: TwengaBot
+Disallow: /
+
+User-agent: sitebot
+Disallow: /
+
+User-agent: Baiduspider
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: Ezooms
+Disallow: /
+
+User-agent: sistrix
+Disallow: /
+
+User-agent: aiHitBot
+Disallow: /
+
+User-agent: InfoPath
+Disallow: /
+
+User-agent: InfoPath.2
+Disallow: /
+
+User-agent: swebot
+Disallow: /
+
+User-agent: EC2LinkFinder
+Disallow: /
+
+User-agent: TurnitinBot
+Disallow: /
+
+User-agent: SearchmetericsBot
+Disallow: /
+
+User-agent: WBSearchBot
+Disallow: /
+
+User-agent: Exabot
+Disallow: /
+
+User-agent: Sosospider
+Disallow: /
+
+User-agent: ip-web-crawler.com
+Disallow: /
+
+User-agent: netEstate NE Crawler
+Disallow: /
+
+User-agent: Aboundexbot
+Disallow: /
+
+User-agent: meanpathbot
+Disallow: /
+
+User-agent: Mail.Ru
+Disallow: /
+
+User-agent: spbot
+Disallow: /
