@@ -4,9 +4,35 @@
 
 //main menu
 var $cont = $('#nav-container');
+var $body = $('body');
+var $logo = $('#logo');
+var logos = null;
+
+$(function() {
+    
+    // preloading images
+    new Image($logo.data('big'));
+    new Image($logo.data('small'));
+
+    // getting the logos
+    logos = {big: $logo.data('big'), small: $logo.data('small')}; 
+});
+
 $(document).scroll(function() {
     var $scrl = $(this).scrollTop();
-    if ($scrl>0){$cont.addClass('small');} else {$cont.removeClass('small');}
+    if ($scrl>0){
+        $cont.addClass('small');
+        $body.addClass('smallfix');
+        if (null !== logos) {
+            $logo.attr('src', logos['small']);
+        }
+    } else {
+        $cont.removeClass('small');
+        $body.removeClass('smallfix');
+        if (null !== logos) {
+            $logo.attr('src', logos['big']);
+        }
+    }
 });
 //'boek nu' change position on small devices
 $(document).ready(function() {
@@ -143,4 +169,9 @@ jQuery(document).ready(function() {
         jQuery('html, body').animate({scrollTop: 0}, duration);
         return false;
     })
+});
+
+jQuery(document).foundation();
+jQuery(function() {
+    $('input').placeholder({customClass:'my-placeholder'});
 });
