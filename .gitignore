@@ -15,3 +15,6 @@
 
 # Old website
 /web/chalet
+
+# Tests
+tests/_output/*
