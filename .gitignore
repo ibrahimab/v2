@@ -10,6 +10,8 @@
 /vendor/
 /web/bundles/
 
+# Node modules, for less compile
+/node_modules/
 
 # Old website
 /web/chalet

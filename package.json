@@ -1,0 +1,9 @@
+{
+  "name": "Chalet.nl",
+  "version": "1.0.0",
+  "description": "Chalet.nl NPM dependencies",
+  "author": "Ibrahim Abdullah <ibrahim@chalet.nl>",
+  "dependencies": {
+    "less": "^2.4.0"
+  }
+}
