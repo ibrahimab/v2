@@ -1,9 +1,14 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
 parameters:
-#    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    accommodation.repository:
+        class:           AppBundle\Entity\Accommodation\AccommodationRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method:  getRepository
+        arguments:       [AppBundle\Entity\Accommodation\Accommodation]
+        
+    api.accommodation.service:
+            class:     AppBundle\Service\Api\Accommodation\AccommodationService
+            arguments: ["@accommodation.repository"]

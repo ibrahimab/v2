@@ -1,0 +1,26 @@
+<?php
+namespace AppBundle\DataFixtures\ORM;
+use       AppBundle\Entity\Accommodation\Accommodation;
+use       Doctrine\Common\DataFixtures\FixtureInterface;
+use       Doctrine\Common\Persistence\ObjectManager;
+
+class LoadAccommodationData implements FixtureInterface
+{
+    public function load(ObjectManager $manager)
+    {
+        $entities = [];
+        $batch    = 100;
+        for ($i = 1; $i <= 1000; $i++) {
+            
+            $accommodation = new Accommodation();
+            $accommodation->setName('Accommodation #' . $i);
+            
+            $manager->persist($accommodation);
+            if (($i % $batch) === 0) {
+                
+                $manager->flush();
+                $manager->clear();
+            }
+        }
+    }
+}
