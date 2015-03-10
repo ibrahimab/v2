@@ -1,7 +1,7 @@
 <?php
 namespace Api;
 
-class AccomodationsTest extends \Codeception\TestCase\Test
+class AccommodationsTest extends \Codeception\TestCase\Test
 {
     // BDD mixin
     use \Codeception\Specify;
@@ -59,6 +59,22 @@ class AccomodationsTest extends \Codeception\TestCase\Test
             $this->assertInstanceOf('AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface', $accommodation);
             $this->assertEquals(1, $accommodation->getId());
             $this->assertEquals('Accommodation #1', $accommodation->getName());
+        });
+    }
+    
+    public function testNotFoundAccommodations()
+    {
+        $this->specify('Getting null when looking for a single non-existant accommodation', function() {
+            
+            $accommodation = $this->accommodationService->find(['id' => 'non-existant']);
+            $this->assertNull($accommodation);
+        });
+        
+        $this->specify('Getting empty array when looking for accommodations using a non-existant critera', function() {
+            
+            $accommodations = $this->accommodationService->all(['where' => ['name' => 'non-existant']]);
+            $this->assertInternalType('array', $accommodations);
+            $this->assertEmpty($accommodations);
         });
     }
 }

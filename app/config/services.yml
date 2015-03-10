@@ -3,12 +3,26 @@
 parameters:
 
 services:
-    accommodation.repository:
-        class:           AppBundle\Entity\Accommodation\AccommodationRepository
+    
+    repository:
+        abstract:        true
         factory_service: doctrine.orm.entity_manager
         factory_method:  getRepository
-        arguments:       [AppBundle\Entity\Accommodation\Accommodation]
+        
+    accommodation.repository:
+        class:     AppBundle\Entity\Accommodation\AccommodationRepository
+        arguments: [AppBundle\Entity\Accommodation\Accommodation]
+        parent:    repository
+        
+    highlight.repository:
+        class:     AppBundle\Entity\Highlight\HighlightRepository
+        arguments: [AppBundle\Entity\Highlight\Highlight]
+        parent:    repository
         
     api.accommodation.service:
-            class:     AppBundle\Service\Api\Accommodation\AccommodationService
-            arguments: ["@accommodation.repository"]
+        class:     AppBundle\Service\Api\Accommodation\AccommodationService
+        arguments: ["@accommodation.repository"]
+            
+    api.highlight.service:
+        class:     AppBundle\Service\Api\Highlight\HighlightService
+        arguments: ["@highlight.repository"]
