@@ -26,55 +26,53 @@ class AccommodationsTest extends \Codeception\TestCase\Test
         $this->serviceContainer     = $this->getModule('Symfony2')->container;
         $this->accommodationService = $this->serviceContainer->get('api.accommodation.service');
     }
+    
+    protected function _after()
+    {
+        $this->accommodationService->clean();
+        $this->accommodationService = null;
+    }
 
     public function testGetAccommodations()
     {
-        $this->specify('Get accommodations', function() {
-            
-            $limit          = 5;
-            $accommodations = $this->accommodationService->all(['limit' => $limit]);
-            $total          = count($accommodations);
-            
-            $this->assertInternalType('array', $accommodations);
-            $this->assertCount($limit, $accommodations);
-            $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface', $accommodations);
-        });
+           $limit          = 5;
+           $accommodations = $this->accommodationService->all(['limit' => $limit]);
+           $total          = count($accommodations);
+           
+           $this->assertInternalType('array', $accommodations);
+           $this->assertCount($limit, $accommodations);
+           $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface', $accommodations);
     }
     
     public function testGetAccommodationBy() {
         
-        $this->specify('Getting accommodation by ID', function() {
-        
+            // Getting accommodation by ID
             $accommodation = $this->accommodationService->find(['id' => 1]);
             
             $this->assertInstanceOf('AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface', $accommodation);
             $this->assertEquals(1, $accommodation->getId());
             $this->assertEquals('Accommodation #1', $accommodation->getName());
-        });
+
         
-        $this->specify('Getting accommodation by Name', function() {
-        
+            // Getting accommodation by Name
             $accommodation = $this->accommodationService->find(['name' => 'Accommodation #1']);
             
             $this->assertInstanceOf('AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface', $accommodation);
             $this->assertEquals(1, $accommodation->getId());
             $this->assertEquals('Accommodation #1', $accommodation->getName());
-        });
     }
     
     public function testNotFoundAccommodations()
     {
-        $this->specify('Getting null when looking for a single non-existant accommodation', function() {
-            
+            // Getting null when looking for a single non-existant accommodation
             $accommodation = $this->accommodationService->find(['id' => 'non-existant']);
+
             $this->assertNull($accommodation);
-        });
-        
-        $this->specify('Getting empty array when looking for accommodations using a non-existant critera', function() {
-            
+
+            // Getting empty array when looking for accommodations using a non-existant critera            
             $accommodations = $this->accommodationService->all(['where' => ['name' => 'non-existant']]);
+
             $this->assertInternalType('array', $accommodations);
             $this->assertEmpty($accommodations);
-        });
     }
 }

@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Entity\Accommodation;
+use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
 use       Doctrine\ORM\Mapping as ORM;
 
@@ -19,6 +20,13 @@ class Accommodation implements AccommodationServiceEntityInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+    
+    /**
+     * @var TypeServiceEntityInterface[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Type\Type", mappedBy="accommodation")
+     */
+    private $types;
 
     /**
      * @var string
@@ -28,6 +36,11 @@ class Accommodation implements AccommodationServiceEntityInterface
     private $name;
 
 
+    public function __construct()
+    {
+        $this->types = new ArrayCollection();
+    }
+
     /**
      * Get id
      *
@@ -36,6 +49,25 @@ class Accommodation implements AccommodationServiceEntityInterface
     public function getId()
     {
         return $this->id;
+    }
+    
+    /**
+     * @param  TypeServiceEntityInterface[] $types
+     * @return Accommodation
+     */
+    public function setTypes($types)
+    {
+        $this->types = $types;
+        
+        return $this;
+    }
+    
+    /**
+     * @return TypeServiceEntityInterface[]
+     */
+    public function getTypes()
+    {
+        return $this->types;
     }
 
     /**

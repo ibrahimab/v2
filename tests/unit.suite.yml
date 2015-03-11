@@ -4,3 +4,4 @@
 class_name: UnitTester
 modules:
     enabled: [Symfony2, Asserts, UnitHelper]
+error_level: "E_ALL & ~E_STRICT & ~E_DEPRECATED"

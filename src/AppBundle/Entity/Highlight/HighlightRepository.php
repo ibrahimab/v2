@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Entity\Highlight;
+use       AppBundle\Entity\Type\Type;
 use       AppBundle\Entity\BaseRepository;
 use       AppBundle\Service\Api\Highlight\HighlightServiceRepositoryInterface;
 use       Doctrine\Common\Collections\Criteria;
@@ -18,24 +19,30 @@ class HighlightRepository extends BaseRepository implements HighlightServiceRepo
      */
     public function all($options = [])
     {
-        $criteria = self::getOption($options['where'],  []);
-        $order    = self::getOption($options['order'],  null);
-        $limit    = self::getOption($options['limit'],  null);
-        $offset   = self::getOption($options['offset'], null);
+        $criteria = self::getOption($options, 'where',  []);
+        $order    = self::getOption($options, 'order',  null);
+        $limit    = self::getOption($options, 'limit',  null);
+        $offset   = self::getOption($options, 'offset', null);
         
         return $this->findBy($criteria, $order, $limit, $offset);
     }
     
-    public function find($by)
+    /**
+     * {@InheritDoc}
+     */
+    public function find($by = [])
     {
         return $this->findOneBy($by);
     }
     
+    /**
+     * {@InheritDoc}
+     */
     public function displayable($options = [], $datetime = null)
     {
-        $order  = self::getOption($options['order'],  []);
-        $limit  = self::getOption($options['limit'],  null);
-        $offset = self::getOption($options['offset'], null);
+        $order  = self::getOption($options, 'order',  []);
+        $limit  = self::getOption($options, 'limit',  null);
+        $offset = self::getOption($options, 'offset', null);
         
         $datetime          = $datetime ?: new \DateTime('now');
         $expression        = Criteria::expr();
@@ -52,9 +59,6 @@ class HighlightRepository extends BaseRepository implements HighlightServiceRepo
                  ->setFirstResult($offset)
                  ->orderBy($order);
         
-        $res = $this->matching($criteria)->toArray();
-        dump($res);
-        dump($limit);
-        return $res;
+        return $this->matching($criteria)->toArray();
     }
 }

@@ -1,6 +1,5 @@
 <?php
 namespace AppBundle\Service\Api\Accommodation;
-use       AppBundle\Entity\Accommodation\Accommodation;
 
 interface AccommodationServiceRepositoryInterface {
     
@@ -8,7 +7,7 @@ interface AccommodationServiceRepositoryInterface {
      * This method selects all the accommodations
      *
      * @param  array $options
-     * @return Accommodation[]|[]
+     * @return AcommodationServiceEntityInterface[]
      */
     public function all($options  = []);
     
@@ -16,7 +15,7 @@ interface AccommodationServiceRepositoryInterface {
      * Select a single accommodation with a flag (be it any field the accommodation has)
      *
      * @param  array $by
-     * @return Accommodation|null
+     * @return AcommodationServiceEntityInterface|null
      */
-    public function find($by);
+    public function find($by = []);
 }

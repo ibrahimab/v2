@@ -1,16 +1,16 @@
 <?php
-namespace AppBundle\Entity\Accommodation;
+namespace AppBundle\Entity\Type;
+use       AppBundle\Service\Api\Type\TypeServiceRepositoryInterface;
 use       AppBundle\Entity\BaseRepository;
-use       AppBundle\Service\Api\Accommodation\AccommodationServiceRepositoryInterface;
 
 /**
- * AccommodationRepository
+ * TypeRepository
  *
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
  * @since   0.0.1
  * @package Chalet
  */
-class AccommodationRepository extends BaseRepository implements AccommodationServiceRepositoryInterface
+class TypeRepository extends BaseRepository implements TypeServiceRepositoryInterface
 {
     /**
      * {@InheritDoc}
@@ -31,11 +31,5 @@ class AccommodationRepository extends BaseRepository implements AccommodationSer
     public function find($by = [])
     {
         return $this->findOneBy($by);
-    }
-    
-    public function clean()
-    {
-        $this->getEntityManager()->getConnection()->close();
-        gc_collect_cycles();
     }
 }

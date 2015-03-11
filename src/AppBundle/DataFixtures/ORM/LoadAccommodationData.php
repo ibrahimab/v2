@@ -8,7 +8,6 @@ class LoadAccommodationData implements FixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        $entities = [];
         $batch    = 100;
         for ($i = 1; $i <= 1000; $i++) {
             

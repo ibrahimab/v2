@@ -11,8 +11,8 @@ use       Doctrine\ORM\EntityRepository;
  */
 class BaseRepository extends EntityRepository
 {   
-    public static function getOption(&$option, $default = null)
+    public static function getOption($options, $key, $default = null)
     {
-        return isset($option) ? $option : $default;
+        return isset($options[$key]) ? $options[$key] : $default;
     }
 }

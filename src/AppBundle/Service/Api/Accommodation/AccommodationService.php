@@ -25,15 +25,26 @@ class AccommodationService
      * the query
      *
      * @param  array $options
-     * @return Accommodation
+     * @return AcommodationServiceEntityInterface
      */
     public function all($options = [])
     {
         return $this->accommodationRepository->all($options);
     }
     
-    public function find($by)
+    /**
+     * Get a single accommodation with certain criteria defined on the $by parameter
+     *
+     * @param  array $by
+     * @return AcommodationServiceEntityInterface
+     */
+    public function find($by = [])
     {
         return $this->accommodationRepository->find($by);
+    }
+    
+    public function clean()
+    {
+        $this->accommodationRepository->clean();
     }
 }

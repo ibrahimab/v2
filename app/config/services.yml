@@ -19,6 +19,11 @@ services:
         arguments: [AppBundle\Entity\Highlight\Highlight]
         parent:    repository
         
+    type.repository:
+        class:     AppBundle\Entity\Type\TypeRepository
+        arguments: [AppBundle\Entity\Type\Type]
+        parent:    repository
+        
     api.accommodation.service:
         class:     AppBundle\Service\Api\Accommodation\AccommodationService
         arguments: ["@accommodation.repository"]
@@ -26,3 +31,7 @@ services:
     api.highlight.service:
         class:     AppBundle\Service\Api\Highlight\HighlightService
         arguments: ["@highlight.repository"]
+            
+    api.type.service:
+        class:     AppBundle\Service\Api\Type\TypeService
+        arguments: ["@type.repository"]

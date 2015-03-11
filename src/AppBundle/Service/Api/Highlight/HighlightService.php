@@ -40,7 +40,7 @@ class HighlightService
      * @param array $by
      * @param HighlightServiceEntityInterface|null
      */
-    public function find($by)
+    public function find($by = [])
     {
         return $this->highlightServiceRepository->find($by);
     }

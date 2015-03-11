@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Entity\Highlight;
+
 use       AppBundle\Service\Api\Highlight\HighlightServiceEntityInterface;
 use       Doctrine\ORM\Mapping as ORM;
 
@@ -19,14 +20,20 @@ class Highlight implements HighlightServiceEntityInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+    
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Type\Type", mappedBy="highlight")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="type_id")
+     */
+    private $type;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="type_id", type="integer")
      */
-    private $typeId;
-
+    private $type_id;
+    
     /**
      * @var boolean
      *
@@ -85,9 +92,7 @@ class Highlight implements HighlightServiceEntityInterface
 
 
     /**
-     * Get id
-     *
-     * @return integer 
+     * {@InheritDoc}
      */
     public function getId()
     {
@@ -95,33 +100,43 @@ class Highlight implements HighlightServiceEntityInterface
     }
 
     /**
-     * Set typeId
-     *
-     * @param integer $typeId
-     * @return Highlight
+     * {@InheritDoc}
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+        
+        return $this->type;
+    }
+
+    /**
+     * {@InheritDoc}
      */
     public function setTypeId($typeId)
     {
-        $this->typeId = $typeId;
+        $this->type_id = $typeId;
 
         return $this;
     }
 
     /**
-     * Get typeId
-     *
-     * @return integer 
+     * {@InheritDoc}
      */
     public function getTypeId()
     {
-        return $this->typeId;
+        return $this->type_id;
     }
 
     /**
-     * Set display
-     *
-     * @param boolean $display
-     * @return Highlight
+     * {@InheritDoc}
      */
     public function setDisplay($display)
     {
@@ -131,9 +146,7 @@ class Highlight implements HighlightServiceEntityInterface
     }
 
     /**
-     * Get display
-     *
-     * @return boolean 
+     * {@InheritDoc}
      */
     public function getDisplay()
     {
@@ -141,10 +154,7 @@ class Highlight implements HighlightServiceEntityInterface
     }
 
     /**
-     * Set season
-     *
-     * @param integer $season
-     * @return Highlight
+     * {@InheritDoc}
      */
     public function setSeason($season)
     {
@@ -154,9 +164,7 @@ class Highlight implements HighlightServiceEntityInterface
     }
 
     /**
-     * Get season
-     *
-     * @return integer 
+     * {@InheritDoc}
      */
     public function getSeason()
     {
@@ -164,10 +172,7 @@ class Highlight implements HighlightServiceEntityInterface
     }
 
     /**
-     * Set websites
-     *
-     * @param array $websites
-     * @return Highlight
+     * {@InheritDoc}
      */
     public function setWebsites($websites)
     {
@@ -177,9 +182,7 @@ class Highlight implements HighlightServiceEntityInterface
     }
 
     /**
-     * Get websites
-     *
-     * @return array 
+     * {@InheritDoc}
      */
     public function getWebsites()
     {
@@ -187,10 +190,7 @@ class Highlight implements HighlightServiceEntityInterface
     }
 
     /**
-     * Set rank
-     *
-     * @param integer $rank
-     * @return Highlight
+     * {@InheritDoc}
      */
     public function setRank($rank)
     {
@@ -200,9 +200,7 @@ class Highlight implements HighlightServiceEntityInterface
     }
 
     /**
-     * Get rank
-     *
-     * @return integer 
+     * {@InheritDoc}
      */
     public function getRank()
     {
@@ -210,10 +208,7 @@ class Highlight implements HighlightServiceEntityInterface
     }
 
     /**
-     * Set publishedAt
-     *
-     * @param \DateTime $publishedAt
-     * @return Highlight
+     * {@InheritDoc}
      */
     public function setPublishedAt($publishedAt)
     {
@@ -223,9 +218,7 @@ class Highlight implements HighlightServiceEntityInterface
     }
 
     /**
-     * Get publishedAt
-     *
-     * @return \DateTime 
+     * {@InheritDoc}
      */
     public function getPublishedAt()
     {
@@ -233,10 +226,7 @@ class Highlight implements HighlightServiceEntityInterface
     }
 
     /**
-     * Set expiredAt
-     *
-     * @param \DateTime $expiredAt
-     * @return Highlight
+     * {@InheritDoc}
      */
     public function setExpiredAt($expiredAt)
     {
@@ -246,9 +236,7 @@ class Highlight implements HighlightServiceEntityInterface
     }
 
     /**
-     * Get expiredAt
-     *
-     * @return \DateTime 
+     * {@InheritDoc}
      */
     public function getExpiredAt()
     {
@@ -256,10 +244,7 @@ class Highlight implements HighlightServiceEntityInterface
     }
 
     /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     * @return Highlight
+     * {@InheritDoc}
      */
     public function setCreatedAt($createdAt)
     {
@@ -269,9 +254,7 @@ class Highlight implements HighlightServiceEntityInterface
     }
 
     /**
-     * Get createdAt
-     *
-     * @return \DateTime 
+     * {@InheritDoc}
      */
     public function getCreatedAt()
     {
@@ -279,10 +262,7 @@ class Highlight implements HighlightServiceEntityInterface
     }
 
     /**
-     * Set updatedAt
-     *
-     * @param \DateTime $updatedAt
-     * @return Highlight
+     * {@InheritDoc}
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -292,9 +272,7 @@ class Highlight implements HighlightServiceEntityInterface
     }
 
     /**
-     * Get updatedAt
-     *
-     * @return \DateTime 
+     * {@InheritDoc}
      */
     public function getUpdatedAt()
     {

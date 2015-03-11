@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\DataFixtures\ORM;
 
+use       AppBundle\Entity\Type\Type;
 use       AppBundle\Entity\Highlight\Highlight;
 use       Doctrine\Common\DataFixtures\FixtureInterface;
 use       Doctrine\Common\Persistence\ObjectManager;
@@ -50,7 +51,7 @@ class LoadHighlightData implements FixtureInterface
             }
             
             $highlight = new Highlight();
-            $highlight->setTypeId(1)
+            $highlight->setTypeId($i)
                       ->setDisplay($display)
                       ->setSeason((($i % rand(1,2)) === 0 ? 1 : 2))
                       ->setWebsites($randomWebsites)

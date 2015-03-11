@@ -6,4 +6,19 @@ namespace AppBundle\Service\Api\Highlight;
  */
 interface HighlightServiceRepositoryInterface
 {
+    /**
+     * Get all highlights
+     *
+     * @param array $options
+     * @return HighlightServiceEntityInterface[]
+     */
+    public function all($options = []);
+    
+    /**
+     * Get one highlight based on certain criteria
+     *
+     * @param  array $by
+     * @return HighlightServiceEntityInterface|null
+     */
+    public function find($by = []);
 }
