@@ -24,6 +24,11 @@ services:
         arguments: [AppBundle\Entity\Type\Type]
         parent:    repository
         
+    place.repository:
+        class:     AppBundle\Entity\Highlight\PlaceRepository
+        arguments: [AppBundle\Entity\Place\Place]
+        parent:    repository
+        
     api.accommodation.service:
         class:     AppBundle\Service\Api\Accommodation\AccommodationService
         arguments: ["@accommodation.repository"]
@@ -35,3 +40,7 @@ services:
     api.type.service:
         class:     AppBundle\Service\Api\Type\TypeService
         arguments: ["@type.repository"]
+            
+    api.place.service:
+        class:     AppBundle\Service\Api\Place\PlaceService
+        arguments: ["@place.repository"]

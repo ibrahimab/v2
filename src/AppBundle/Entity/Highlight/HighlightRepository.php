@@ -13,28 +13,7 @@ use       Doctrine\Common\Collections\Criteria;
  * @package Chalet
  */
 class HighlightRepository extends BaseRepository implements HighlightServiceRepositoryInterface
-{
-    /**
-     * {@InheritDoc}
-     */
-    public function all($options = [])
-    {
-        $criteria = self::getOption($options, 'where',  []);
-        $order    = self::getOption($options, 'order',  null);
-        $limit    = self::getOption($options, 'limit',  null);
-        $offset   = self::getOption($options, 'offset', null);
-        
-        return $this->findBy($criteria, $order, $limit, $offset);
-    }
-    
-    /**
-     * {@InheritDoc}
-     */
-    public function find($by = [])
-    {
-        return $this->findOneBy($by);
-    }
-    
+{   
     /**
      * {@InheritDoc}
      */

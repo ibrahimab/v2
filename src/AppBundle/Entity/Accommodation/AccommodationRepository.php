@@ -12,30 +12,4 @@ use       AppBundle\Service\Api\Accommodation\AccommodationServiceRepositoryInte
  */
 class AccommodationRepository extends BaseRepository implements AccommodationServiceRepositoryInterface
 {
-    /**
-     * {@InheritDoc}
-     */
-    public function all($options = [])
-    {
-        $criteria = self::getOption($options, 'where',  []);
-        $order    = self::getOption($options, 'order',  null);
-        $limit    = self::getOption($options, 'limit',  null);
-        $offset   = self::getOption($options, 'offset', null);
-        
-        return $this->findBy($criteria, $order, $limit, $offset);
-    }
-    
-    /**
-     * {@InheritDoc}
-     */
-    public function find($by = [])
-    {
-        return $this->findOneBy($by);
-    }
-    
-    public function clean()
-    {
-        $this->getEntityManager()->getConnection()->close();
-        gc_collect_cycles();
-    }
 }

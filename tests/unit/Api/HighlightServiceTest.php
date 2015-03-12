@@ -3,9 +3,6 @@ namespace Api;
 
 class HighlightServiceTest extends \Codeception\TestCase\Test
 {
-    // BDD mixin
-    use \Codeception\Specify;
-    
     /**
      * @var \UnitTester
      */
@@ -37,7 +34,6 @@ class HighlightServiceTest extends \Codeception\TestCase\Test
             // Getting highlights
             $limit      = 5;
             $highlights = $this->highlightService->all(['limit' => $limit]);
-            $total      = count($highlights);
             
             $this->assertInternalType('array', $highlights);
             $this->assertCount($limit, $highlights);

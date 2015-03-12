@@ -4,9 +4,6 @@ namespace Api;
 
 class TypeServiceTest extends \Codeception\TestCase\Test
 {
-    // BDD mixin
-    use \Codeception\Specify;
-    
     /**
      * @var \UnitTester
      */
@@ -35,13 +32,25 @@ class TypeServiceTest extends \Codeception\TestCase\Test
 
     public function testGetTypes()
     {
-            // Get types
-            $limit = 5;
-            $types = $this->typeService->all(['limit' => $limit]);
-            
-            $this->assertInternalType('array', $types);
-            $this->assertCount($limit, $types);
-            $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Type\TypeServiceEntityInterface', $types);
+        // Get types
+        $limit = 5;
+        $types = $this->typeService->all(['limit' => $limit]);
+        
+        $this->assertInternalType('array', $types);
+        $this->assertCount($limit, $types);
+        $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Type\TypeServiceEntityInterface', $types);
+    }
+    
+    public function testGetSingleType()
+    {
+        $type = $this->typeService->find();
+        $this->assertInstanceOf('AppBundle\Service\Api\Type\TypeServiceEntityInterface', $type);
+    }
+    
+    public function testNotFoundType()
+    {
+        $type = $this->typeService->find(['id' => 'non-existant']);
+        $this->assertNull($type);
     }
 
     public function testGetTypeWithAccommodation()

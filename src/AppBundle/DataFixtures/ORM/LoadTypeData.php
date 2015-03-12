@@ -1,10 +1,11 @@
 <?php
 namespace AppBundle\DataFixtures\ORM;
 use       AppBundle\Entity\Type\Type;
-use       Doctrine\Common\DataFixtures\FixtureInterface;
+use       Doctrine\Common\DataFixtures\AbstractFixture;
+use       Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use       Doctrine\Common\Persistence\ObjectManager;
 
-class LoadTypeData implements FixtureInterface
+class LoadTypeData extends AbstractFixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -16,8 +17,7 @@ class LoadTypeData implements FixtureInterface
         for ($i = 1; $i <= 1000; $i++) {
             
             $type = new Type();
-            $type->setAccommodationId($i)
-                 ->setName('Type #' . $i)
+            $type->setName('Type #' . $i)
                  ->setShortDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam amet.')
                  ->setInventory(rand(0, 10))
                  ->setWebsites((array)array_rand(array_flip($websites), rand(1, $total_websites)))
@@ -27,14 +27,22 @@ class LoadTypeData implements FixtureInterface
                  ->setLatitude(52.076091)
                  ->setLongitude(4.892198)
                  ->setCreatedAt($now)
-                 ->setUpdatedAt($now);
+                 ->setUpdatedAt($now)
+                 ->setAccommodation($this->getReference('accommodation-' . $i));
             
             $manager->persist($type);
+            $this->addReference('type-' . $i, $type);
+            
             if (($i % $batch) === 0) {
                 
                 $manager->flush();
                 $manager->clear();
             }
         }
+    }
+    
+    public function getDependencies()
+    {
+        return ['AppBundle\DataFixtures\ORM\LoadAccommodationData'];
     }
 }

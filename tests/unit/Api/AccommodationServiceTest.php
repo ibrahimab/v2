@@ -3,9 +3,6 @@ namespace Api;
 
 class AccommodationsTest extends \Codeception\TestCase\Test
 {
-    // BDD mixin
-    use \Codeception\Specify;
-    
     /**
      * @var \UnitTester
      */
@@ -29,7 +26,6 @@ class AccommodationsTest extends \Codeception\TestCase\Test
     
     protected function _after()
     {
-        $this->accommodationService->clean();
         $this->accommodationService = null;
     }
 
@@ -74,5 +70,17 @@ class AccommodationsTest extends \Codeception\TestCase\Test
 
             $this->assertInternalType('array', $accommodations);
             $this->assertEmpty($accommodations);
+    }
+    
+    public function testGetTypes()
+    {
+        // first getting single accommodation
+        $accommodation = $this->accommodationService->find();
+        
+        // then get types
+        $types = $accommodation->getTypes();
+        
+        // asserting they all implement the interface
+        $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Type\TypeServiceEntityInterface', $types);
     }
 }

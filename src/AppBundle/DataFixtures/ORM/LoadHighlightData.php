@@ -3,7 +3,8 @@ namespace AppBundle\DataFixtures\ORM;
 
 use       AppBundle\Entity\Type\Type;
 use       AppBundle\Entity\Highlight\Highlight;
-use       Doctrine\Common\DataFixtures\FixtureInterface;
+use       Doctrine\Common\DataFixtures\AbstractFixture;
+use       Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use       Doctrine\Common\Persistence\ObjectManager;
 
 /**
@@ -15,7 +16,7 @@ use       Doctrine\Common\Persistence\ObjectManager;
  * @since   0.0.1
  * @package Chalet
  */
-class LoadHighlightData implements FixtureInterface
+class LoadHighlightData extends AbstractFixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -51,15 +52,15 @@ class LoadHighlightData implements FixtureInterface
             }
             
             $highlight = new Highlight();
-            $highlight->setTypeId($i)
-                      ->setDisplay($display)
+            $highlight->setDisplay($display)
                       ->setSeason((($i % rand(1,2)) === 0 ? 1 : 2))
                       ->setWebsites($randomWebsites)
                       ->setRank($display === true ? $rank : null)
                       ->setPublishedAt(($display === true ? ($rank === 1 ? $two_days_ago : $now) : null))
                       ->setExpiredAt(($display === true ? ($rank === 1 ? $yesterday : $next_year) : null))
                       ->setCreatedAt($now)
-                      ->setUpdatedAt($now);
+                      ->setUpdatedAt($now)
+                      ->setType($this->getReference('type-' . $i));
             
             $manager->persist($highlight);
             
@@ -69,5 +70,10 @@ class LoadHighlightData implements FixtureInterface
                 $manager->clear();
             }
         }
+    }
+    
+    public function getDependencies()
+    {
+        return ['AppBundle\DataFixtures\ORM\LoadTypeData'];
     }
 }

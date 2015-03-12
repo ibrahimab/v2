@@ -3,6 +3,7 @@ namespace AppBundle\Entity\Accommodation;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
 use       Doctrine\ORM\Mapping as ORM;
+use       Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Accommodation Entity
