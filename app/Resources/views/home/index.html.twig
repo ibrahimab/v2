@@ -4,6 +4,6 @@
     
     {{ parent() }}
     
-    {% include 'home/highlights.html.twig' %}
+    {% include 'home/highlights.html.twig' with {'highlights': highlights } only %}
     
 {% endblock %}

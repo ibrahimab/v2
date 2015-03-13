@@ -1,0 +1,6 @@
+parameters:
+    app:
+        service:
+            api:
+                highlight:
+                    limit: 6

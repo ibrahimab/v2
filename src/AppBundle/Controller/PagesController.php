@@ -12,6 +12,12 @@ class PagesController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('home/index.html.twig');
+        $highlightService = $this->get('service.api.highlight');
+        $config           = $this->container->getParameter('app');
+        $highlights       = $highlightService->displayable(['limit' => $config['service']['api']['highlight']['limit']]);
+        
+        return $this->render('home/index.html.twig', [
+            'highlights' => $highlights
+        ]);
     }
 }
