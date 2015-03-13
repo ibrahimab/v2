@@ -1,6 +1,10 @@
 <?php
 namespace AppBundle\Service\Api\Place;
 
+use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
+use       AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
+use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
+
 interface PlaceServiceEntityInterface
 {
     /**
@@ -54,6 +58,51 @@ interface PlaceServiceEntityInterface
      * @return integer 
      */
     public function getRegionId();
+
+    /**
+     * Set region
+     *
+     * @param integer $region
+     * @return PlaceServiceEntityInterface
+     */
+    public function setRegion($region);
+
+    /**
+     * Get region
+     *
+     * @return RegionServiceEntityInterface 
+     */
+    public function getRegion();
+    
+    /**
+     * Set Accommodations
+     *
+     * @param AccommodationServiceEntityInterface[] $accommodations
+     * @return RegionServiceEntityInterface
+     */
+    public function setAccommodations($accommodations);
+    
+    /**
+     * Get Accommodations
+     *
+     * @return AccommodationServiceEntityInterface[]
+     */
+    public function getAccommodations();
+    
+    /**
+     * Set Country
+     * 
+     * @param CountryServiceEntityInterface $country
+     * @return PlaceServiceEntityInterface
+     */
+    public function setCountry($country);
+    
+    /**
+     * Get Country
+     *
+     * @return CountryServiceEntityInterface
+     */
+    public function getCountry();
 
     /**
      * Set season

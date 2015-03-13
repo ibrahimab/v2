@@ -21,7 +21,7 @@ class AccommodationsTest extends \Codeception\TestCase\Test
     protected function _before()
     {
         $this->serviceContainer     = $this->getModule('Symfony2')->container;
-        $this->accommodationService = $this->serviceContainer->get('api.accommodation.service');
+        $this->accommodationService = $this->serviceContainer->get('service.api.accommodation');
     }
     
     protected function _after()
@@ -82,5 +82,16 @@ class AccommodationsTest extends \Codeception\TestCase\Test
         
         // asserting they all implement the interface
         $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Type\TypeServiceEntityInterface', $types);
+    }
+    
+    public function testGetPlace()
+    {
+        // getting accommodations
+        $accommodation = $this->accommodationService->find();
+        
+        // get place
+        $place = $accommodation->getPlace();
+        
+        $this->assertInstanceOf('AppBundle\Service\Api\Place\PlaceServiceEntityInterface', $place);
     }
 }

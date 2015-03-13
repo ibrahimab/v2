@@ -2,6 +2,7 @@
 namespace AppBundle\Entity\Place;
 
 use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
+use       Doctrine\Common\Collections\ArrayCollection;
 use       Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -42,6 +43,29 @@ class Place implements PlaceServiceEntityInterface
      * @ORM\Column(name="skigebied_id", type="integer")
      */
     private $regionId;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Region\Region")
+     * @ORM\JoinColumn(name="skigebied_id", referencedColumnName="skigebied_id")
+     */
+    private $region;
+    
+    /**
+     * @var AccommodationServiceEntityInterface[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Accommodation\Accommodation", mappedBy="place")
+     */
+    private $accommodations;
+    
+    /**
+     * @var CountryServiceEntityInterface
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Country\Country", inversedBy="places")
+     * @ORM\JoinColumn(name="land_id", referencedColumnName="land_id")
+     */
+    private $country;
 
     /**
      * @var integer
@@ -121,6 +145,11 @@ class Place implements PlaceServiceEntityInterface
     private $updatedAt;
 
 
+    public function __construct()
+    {
+        $this->accommodations = new ArrayCollection();
+    }
+    
     /**
      * {@InheritDoc}
      */
@@ -181,6 +210,60 @@ class Place implements PlaceServiceEntityInterface
     public function getRegionId()
     {
         return $this->regionId;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setRegion($region)
+    {
+        $this->region = $region;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getRegion()
+    {
+        return $this->region;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setAccommodations($accommodations)
+    {
+        $this->accommodations = $accommodations;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getAccommodations()
+    {
+        return $this->accommodations;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getCountry()
+    {
+        return $this->country;
     }
 
     /**

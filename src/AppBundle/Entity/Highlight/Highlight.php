@@ -22,7 +22,7 @@ class Highlight implements HighlightServiceEntityInterface
     private $id;
     
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Type\Type", mappedBy="highlight")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Type\Type")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="type_id")
      */
     private $type;

@@ -9,38 +9,56 @@ services:
         factory_service: doctrine.orm.entity_manager
         factory_method:  getRepository
         
-    accommodation.repository:
+    repository.accommodation:
         class:     AppBundle\Entity\Accommodation\AccommodationRepository
         arguments: [AppBundle\Entity\Accommodation\Accommodation]
         parent:    repository
         
-    highlight.repository:
+    repository.highlight:
         class:     AppBundle\Entity\Highlight\HighlightRepository
         arguments: [AppBundle\Entity\Highlight\Highlight]
         parent:    repository
         
-    type.repository:
+    repository.type:
         class:     AppBundle\Entity\Type\TypeRepository
         arguments: [AppBundle\Entity\Type\Type]
         parent:    repository
         
-    place.repository:
-        class:     AppBundle\Entity\Highlight\PlaceRepository
+    repository.place:
+        class:     AppBundle\Entity\Place\PlaceRepository
         arguments: [AppBundle\Entity\Place\Place]
         parent:    repository
         
-    api.accommodation.service:
+    repository.region:
+        class:     AppBundle\Entity\Region\RegionRepository
+        arguments: [AppBundle\Entity\Region\Region]
+        parent:    repository
+        
+    repository.country:
+        class:     AppBundle\Entity\Country\CountryRepository
+        arguments: [AppBundle\Entity\Country\Country]
+        parent:    repository
+        
+    service.api.accommodation:
         class:     AppBundle\Service\Api\Accommodation\AccommodationService
-        arguments: ["@accommodation.repository"]
+        arguments: ["@repository.accommodation"]
             
-    api.highlight.service:
+    service.api.highlight:
         class:     AppBundle\Service\Api\Highlight\HighlightService
-        arguments: ["@highlight.repository"]
+        arguments: ["@repository.highlight"]
             
-    api.type.service:
+    service.api.type:
         class:     AppBundle\Service\Api\Type\TypeService
-        arguments: ["@type.repository"]
+        arguments: ["@repository.type"]
             
-    api.place.service:
+    service.api.place:
         class:     AppBundle\Service\Api\Place\PlaceService
-        arguments: ["@place.repository"]
+        arguments: ["@repository.place"]
+            
+    service.api.region:
+        class:     AppBundle\Service\Api\Region\RegionService
+        arguments: ["@repository.region"]
+            
+    service.api.country:
+        class:     AppBundle\Service\Api\Country\CountryService
+        arguments: ["@repository.country"]

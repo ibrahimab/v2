@@ -1,6 +1,8 @@
 <?php
 namespace AppBundle\Entity\Accommodation;
+
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
+use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
 use       Doctrine\ORM\Mapping as ORM;
 use       Doctrine\Common\Collections\ArrayCollection;
@@ -35,6 +37,14 @@ class Accommodation implements AccommodationServiceEntityInterface
      * @ORM\Column(name="naam", type="string", length=255)
      */
     private $name;
+    
+    /**
+     * @var PlaceServiceEntityInterface
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Place\Place", inversedBy="accommodations")
+     * @ORM\JoinColumn(name="plaats_id", referencedColumnName="plaats_id")
+     */
+    private $place;
 
 
     public function __construct()
@@ -43,9 +53,7 @@ class Accommodation implements AccommodationServiceEntityInterface
     }
 
     /**
-     * Get id
-     *
-     * @return integer 
+     * {@InheritDoc}
      */
     public function getId()
     {
@@ -53,8 +61,7 @@ class Accommodation implements AccommodationServiceEntityInterface
     }
     
     /**
-     * @param  TypeServiceEntityInterface[] $types
-     * @return Accommodation
+     * {@InheritDoc}
      */
     public function setTypes($types)
     {
@@ -64,7 +71,7 @@ class Accommodation implements AccommodationServiceEntityInterface
     }
     
     /**
-     * @return TypeServiceEntityInterface[]
+     * {@InheritDoc}
      */
     public function getTypes()
     {
@@ -72,10 +79,7 @@ class Accommodation implements AccommodationServiceEntityInterface
     }
 
     /**
-     * Set naam
-     *
-     * @param string $naam
-     * @return Accommodation
+     * {@InheritDoc}
      */
     public function setName($name)
     {
@@ -85,12 +89,28 @@ class Accommodation implements AccommodationServiceEntityInterface
     }
 
     /**
-     * Get naam
-     *
-     * @return string 
+     * {@InheritDoc}
      */
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setPlace($place)
+    {
+        $this->place = $place;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getPlace()
+    {
+        return $this->place;
     }
 }

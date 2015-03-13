@@ -17,7 +17,7 @@ class HighlightRepository extends BaseRepository implements HighlightServiceRepo
     /**
      * {@InheritDoc}
      */
-    public function displayable($options = [], $datetime = null)
+    public function displayable_deoptimized($options = [], $datetime = null)
     {
         $order  = self::getOption($options, 'order',  []);
         $limit  = self::getOption($options, 'limit',  null);
@@ -39,5 +39,43 @@ class HighlightRepository extends BaseRepository implements HighlightServiceRepo
                  ->orderBy($order);
         
         return $this->matching($criteria)->toArray();
+    }
+    
+    public function displayable($options = [], $datetime = null)
+    {
+        $order    = self::getOption($options, 'order',  null);
+        $limit    = self::getOption($options, 'limit',  null);
+        $offset   = self::getOption($options, 'offset', null);
+        $datetime = $datetime ?: new \DateTime('now');
+        
+        $qb       = $this->createQueryBuilder('h', '*');
+        $expr     = $qb->expr();        
+        $qb->innerJoin('h.type', 't')
+           ->innerJoin('t.accommodation', 'a')
+           ->innerJoin('a.place', 'p')
+           ->innerJoin('p.region', 'r')
+           ->where($expr->eq('h.display', ':display'))
+           ->andWhere($expr->andX(
+        
+               $expr->lte('h.publishedAt', ':now'),
+               $expr->orX(
+               
+                   $expr->isNull('h.expiredAt'),
+                   $expr->gt('h.expiredAt', ':now')
+               )
+           ))
+           ->setParameters([
+               
+               'display' => true,
+               'now'     => $datetime,
+           ])
+           ->setMaxResults($limit)
+           ->setFirstResult($offset);
+                       
+        if (null !== $order) {
+            $qb->orderBy($order);
+        }
+        
+        return $qb->getQuery()->getResult();
     }
 }

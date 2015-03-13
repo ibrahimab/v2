@@ -5,7 +5,7 @@ use       Doctrine\Common\DataFixtures\AbstractFixture;
 use       Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use       Doctrine\Common\Persistence\ObjectManager;
 
-class LoadPlaceData extends AbstractFixture
+class LoadPlaceData extends AbstractFixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -13,12 +13,14 @@ class LoadPlaceData extends AbstractFixture
         $websites        = ['C', 'W', 'E', 'T', 'B', 'V', 'Q', 'Z', 'N', 'I', 'K', 'X', 'Y'];
         $total_websites  = count($websites);
         $now             = new \DateTime('now');
+        $places          = [];
+        $prev            = null;
         
-        for ($i = 1; $i <= 1000; $i++) {
+        for ($i = 1, $j = 1; $i <= 1000; $i++) {
             
             $place = new Place();
-            $place->setSiblingId($i)
-                  ->setRegionId($i)
+            $place->setRegion($this->getReference('region-' . $i))
+                  ->setCountry($this->getReference('country-' . $j))
                   ->setSeason((($i % 2) === 0 ? 1 : 2))
                   ->setName('Place #' . $i)
                   ->setAlternativeName('Alt Place #' . $i)
@@ -31,11 +33,31 @@ class LoadPlaceData extends AbstractFixture
                   ->setUpdatedAt($now);
             
             $manager->persist($place);
+            $places[] = $place;
+            
+            $this->addReference('place-' . $i, $place);
+            
             if (($i % $batch) === 0) {
                 
                 $manager->flush();
-                $manager->clear();
+                foreach ($places as $saved_place) {
+                    
+                    $saved_place->setSibling($prev);
+                    $manager->persist($saved_place);
+                    $prev = $saved_place;
+                }
+                
+                $manager->flush();
+                
+                $places = [];
             }
+            
+            $j = ($j === 10 ? 1 : ($j + 1));
         }
+    }
+    
+    public function getDependencies()
+    {
+        return ['AppBundle\DataFixtures\ORM\LoadRegionData', 'AppBundle\DataFixtures\ORM\LoadCountryData'];
     }
 }
