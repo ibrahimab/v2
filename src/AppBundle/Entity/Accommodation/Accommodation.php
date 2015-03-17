@@ -45,6 +45,33 @@ class Accommodation implements AccommodationServiceEntityInterface
      * @ORM\JoinColumn(name="plaats_id", referencedColumnName="plaats_id")
      */
     private $place;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="soortaccommodatie", type="integer")
+     */
+    private $kind;
+    
+    /**
+     * Kind identifiers for translations
+     *
+     * @var array
+     */
+    private static $kindIdentifiers = [
+
+        self::KIND_CHALET           => 'chalet',
+        self::KIND_APARTMENT        => 'apartment',
+        self::KIND_HOTEL            => 'hotel',
+        self::KIND_CHALET_APARTMENT => 'chalet-apartment',
+        self::KIND_HOLIDAY_HOUSE    => 'holiday-house',
+        self::KIND_VILLA            => 'villa',
+        self::KIND_CASTLE           => 'castle',
+        self::KIND_HOLIDAY_PARK     => 'holiday-park',
+        self::KIND_AGRITURISMO      => 'agriturismo',
+        self::KIND_DOMAIN           => 'domain',
+        self::KIND_PENSION          => 'pension',
+    ];
 
 
     public function __construct()
@@ -112,5 +139,31 @@ class Accommodation implements AccommodationServiceEntityInterface
     public function getPlace()
     {
         return $this->place;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setKind($kind)
+    {
+        $this->kind = $kind;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getKind()
+    {
+        return $this->kind;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getKindIdentifier()
+    {
+        return (isset(self::$kindIdentifiers[$this->getKind()]) ? self::$kindIdentifiers[$this->getKind()] : null);
     }
 }

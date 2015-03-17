@@ -175,6 +175,32 @@ interface TypeServiceEntityInterface {
      * @return string
      */
     public function getLongitude();
+    
+    /**
+     * Setting optimal residents
+     *
+     * @param integer $$optimalResidents
+     * @return TypeServiceEntityInterface
+     */
+    public function setOptimalResidents($optimalResidents);
+    
+    /**
+     * @return integer
+     */
+    public function getOptimalResidents();
+    
+    /**
+     * Setting max residents
+     *
+     * @param integer $maxResidents
+     * @return TypeServiceEntityInterface
+     */
+    public function setMaxResidents($maxResidents);
+    
+    /**
+     * @return integer
+     */
+    public function getMaxResidents();
 
     /**
      * Set createdAt

@@ -1,6 +1,8 @@
 <?php
 namespace Api;
 
+use       AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
+
 class AccommodationsTest extends \Codeception\TestCase\Test
 {
     /**
@@ -93,5 +95,31 @@ class AccommodationsTest extends \Codeception\TestCase\Test
         $place = $accommodation->getPlace();
         
         $this->assertInstanceOf('AppBundle\Service\Api\Place\PlaceServiceEntityInterface', $place);
+    }
+    
+    public function testKindofAccommodation()
+    {
+        // get accommodation of different kinds
+        $accommodations = [
+            
+            AccommodationServiceEntityInterface::KIND_CHALET           => $this->accommodationService->find(['kind' => AccommodationServiceEntityInterface::KIND_CHALET]),
+            AccommodationServiceEntityInterface::KIND_APARTMENT        => $this->accommodationService->find(['kind' => AccommodationServiceEntityInterface::KIND_APARTMENT]),
+            AccommodationServiceEntityInterface::KIND_HOTEL            => $this->accommodationService->find(['kind' => AccommodationServiceEntityInterface::KIND_HOTEL]),
+            AccommodationServiceEntityInterface::KIND_CHALET_APARTMENT => $this->accommodationService->find(['kind' => AccommodationServiceEntityInterface::KIND_CHALET_APARTMENT]),
+            AccommodationServiceEntityInterface::KIND_HOLIDAY_HOUSE    => $this->accommodationService->find(['kind' => AccommodationServiceEntityInterface::KIND_HOLIDAY_HOUSE]),
+            AccommodationServiceEntityInterface::KIND_VILLA            => $this->accommodationService->find(['kind' => AccommodationServiceEntityInterface::KIND_VILLA]),
+            AccommodationServiceEntityInterface::KIND_CASTLE           => $this->accommodationService->find(['kind' => AccommodationServiceEntityInterface::KIND_CASTLE]),
+            AccommodationServiceEntityInterface::KIND_HOLIDAY_PARK     => $this->accommodationService->find(['kind' => AccommodationServiceEntityInterface::KIND_HOLIDAY_PARK]),
+            AccommodationServiceEntityInterface::KIND_AGRITURISMO      => $this->accommodationService->find(['kind' => AccommodationServiceEntityInterface::KIND_AGRITURISMO]),
+            AccommodationServiceEntityInterface::KIND_DOMAIN           => $this->accommodationService->find(['kind' => AccommodationServiceEntityInterface::KIND_DOMAIN]),
+            AccommodationServiceEntityInterface::KIND_PENSION          => $this->accommodationService->find(['kind' => AccommodationServiceEntityInterface::KIND_PENSION]),
+        ];
+        
+        foreach ($accommodations as $kind => $accommodation) {
+            
+            $this->assertInstanceOf('AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface', $accommodation);
+            $this->assertEquals($kind, $accommodation->getKind());
+            $this->assertNotNull($accommodation->getKindIdentifier());
+        }
     }
 }

@@ -88,7 +88,7 @@ class HighlightServiceTest extends \Codeception\TestCase\Test
             foreach ($highlights as $highlight) {
             
                 // check if the published date is not null
-                $this->assertNotNull($highlight->getPublishedAt(), 'Published date is null');
+                $this->assertNotNull($highlight->getPublishedAt(), 'Published date is null ' . $highlight->getId());
             
                 // published date has to be in the past or right now
                 $this->assertTrue($highlight->getPublishedAt() <= $now, 'published date (' . $highlight->getPublishedAt()->format('Y-m-d') . ') is not in the past or right now (' . $now->format('Y-m-d') . '). Recheck the test database and if needed reload the fixtures.');

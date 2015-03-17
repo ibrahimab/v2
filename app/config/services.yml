@@ -4,6 +4,18 @@ parameters:
 
 services:
     
+    app.twig_extension:
+        class: AppBundle\Twig\AppExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+        arguments: [@service_container]
+        
+    twig.text_extension:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }
+    
     repository:
         abstract:        true
         factory_service: doctrine.orm.entity_manager

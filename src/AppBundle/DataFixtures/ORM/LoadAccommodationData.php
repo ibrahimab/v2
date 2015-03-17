@@ -10,11 +10,15 @@ class LoadAccommodationData extends AbstractFixture implements DependentFixtureI
     public function load(ObjectManager $manager)
     {
         $batch  = 100;
+        $kinds  = range(1, 12);
+        unset($kinds[array_search(5, $kinds)]);
+        
         for ($i = 1; $i <= 1000; $i++) {
             
             $accommodation = new Accommodation();
             $accommodation->setName('Accommodation #' . $i)
-                          ->setPlace($this->getReference('place-' . $i));
+                          ->setPlace($this->getReference('place-' . $i))
+                          ->setKind($kinds[array_rand($kinds)]);
             
             $manager->persist($accommodation);
             $this->addReference('accommodation-' . $i, $accommodation);

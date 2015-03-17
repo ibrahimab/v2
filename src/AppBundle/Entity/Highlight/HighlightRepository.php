@@ -1,9 +1,11 @@
 <?php
 namespace AppBundle\Entity\Highlight;
+
 use       AppBundle\Entity\Type\Type;
 use       AppBundle\Entity\BaseRepository;
 use       AppBundle\Service\Api\Highlight\HighlightServiceRepositoryInterface;
 use       Doctrine\Common\Collections\Criteria;
+use       Doctrine\ORM\Mapping\ClassMetadata;
 
 /**
  * HighlightRepository
@@ -17,47 +19,30 @@ class HighlightRepository extends BaseRepository implements HighlightServiceRepo
     /**
      * {@InheritDoc}
      */
-    public function displayable_deoptimized($options = [], $datetime = null)
-    {
-        $order  = self::getOption($options, 'order',  []);
-        $limit  = self::getOption($options, 'limit',  null);
-        $offset = self::getOption($options, 'offset', null);
-        
-        $datetime          = $datetime ?: new \DateTime('now');
-        $expression        = Criteria::expr();
-        $criteria          = Criteria::create();
-        $criteria->where($expression->eq('display', true))
-                 ->where($expression->andX(
-                    $expression->lte('publishedAt', $datetime),
-                    $expression->orX(
-                        $expression->isNull('expiredAt'),
-                        $expression->gt('expiredAt', $datetime)
-                    )
-                 ))
-                 ->setMaxResults($limit)
-                 ->setFirstResult($offset)
-                 ->orderBy($order);
-        
-        return $this->matching($criteria)->toArray();
-    }
-    
     public function displayable($options = [], $datetime = null)
     {
-        $order    = self::getOption($options, 'order',  null);
+        $order    = self::getOption($options, 'order',  'rank');
         $limit    = self::getOption($options, 'limit',  null);
         $offset   = self::getOption($options, 'offset', null);
         $datetime = $datetime ?: new \DateTime('now');
         
-        $qb       = $this->createQueryBuilder('h', '*');
-        $expr     = $qb->expr();        
-        $qb->innerJoin('h.type', 't')
-           ->innerJoin('t.accommodation', 'a')
-           ->innerJoin('a.place', 'p')
-           ->innerJoin('p.region', 'r')
+        $qb       = $this->createQueryBuilder('h');
+        $expr     = $qb->expr();
+        
+        $qb->select('partial h.{id, publishedAt, expiredAt}, partial t.{id, optimalResidents, maxResidents}, partial a.{id, name, kind}, partial p.{id, name}, partial r.{id, name}, partial c.{id, name}')
+           ->leftJoin('h.type', 't')
+           ->leftJoin('t.accommodation', 'a')
+           ->leftJoin('a.place', 'p')
+           ->leftJoin('p.region', 'r')
+           ->leftJoin('p.country', 'c')
            ->where($expr->eq('h.display', ':display'))
            ->andWhere($expr->andX(
         
-               $expr->lte('h.publishedAt', ':now'),
+               $expr->andX(
+                   
+                   $expr->isNotNull('h.publishedAt'),
+                   $expr->lte('h.publishedAt', ':now')
+               ),
                $expr->orX(
                
                    $expr->isNull('h.expiredAt'),
@@ -70,12 +55,9 @@ class HighlightRepository extends BaseRepository implements HighlightServiceRepo
                'now'     => $datetime,
            ])
            ->setMaxResults($limit)
-           ->setFirstResult($offset);
-                       
-        if (null !== $order) {
-            $qb->orderBy($order);
-        }
-        
-        return $qb->getQuery()->getResult();
+           ->setFirstResult($offset)
+           ->orderBy('h.' . $order);
+           
+        return $qb->getQuery()->execute();
     }
 }

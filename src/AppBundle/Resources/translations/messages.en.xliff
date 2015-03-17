@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
+  <file date="2015-03-17T14:42:15Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
+    <body>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="homepage.highlight.type.kind.chalet">
+        <source>homepage.highlight.type.kind.chalet</source>
+        <target>Chalet</target>
+        <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="2cdbffdcaef5be538a4f7aadef779924ede1c7d7" resname="homepage.highlight.type.kind.apartment">
+        <source>homepage.highlight.type.kind.apartment</source>
+        <target>Apartment</target>
+        <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="14e833557d06a77a35a73e93cc9fe9606e84c4cf" resname="homepage.highlight.type.kind.hotel">
+        <source>homepage.highlight.type.kind.hotel</source>
+        <target>Hotel</target>
+        <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="2eb89e200ba9d97218f59bc8ace047c60dbaceeb" resname="homepage.highlight.type.kind.chalet-apartment">
+        <source>homepage.highlight.type.kind.chalet-apartment</source>
+        <target>Chalet-apartment</target>
+        <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3e19cb738d3fb485ea8bc4550ae4533ce49a26ca" resname="homepage.highlight.type.kind.holiday-house">
+        <source>homepage.highlight.type.kind.holiday-house</source>
+        <target>Holiday House</target>
+        <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="208d788ad4ab65ae7811c07f9dedf5be920c566e" resname="homepage.highlight.type.kind.villa">
+        <source>homepage.highlight.type.kind.villa</source>
+        <target>Villa</target>
+        <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="36e473c8b75b36f9c84c540d332250cf4e210829" resname="homepage.highlight.type.kind.castle">
+        <source>homepage.highlight.type.kind.castle</source>
+        <target>Castle</target>
+        <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="eddfa629370a87eb0fdff5edc96da1f6d99fb7ce" resname="homepage.highlight.type.kind.holiday-park">
+        <source>homepage.highlight.type.kind.holiday-park</source>
+        <target>Holiday Park</target>
+        <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="76f7732f1c8e140210c5894626a56da78783fb9e" resname="homepage.highlight.type.kind.agriturismo">
+        <source>homepage.highlight.type.kind.agriturismo</source>
+        <target>Agriturismo</target>
+        <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="9120580e94f134cb7c9f27cd1e43dbc82980e152" resname="homepage.highlight.type.kind.domain">
+        <source>homepage.highlight.type.kind.domain</source>
+        <target>Domain</target>
+        <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5257ab4bb925a14262dfee7c42cea13dc0c36b08" resname="homepage.highlight.type.kind.pension">
+        <source>homepage.highlight.type.kind.pension</source>
+        <target>Pension</target>
+        <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

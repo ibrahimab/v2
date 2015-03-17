@@ -95,6 +95,20 @@ class Type implements TypeServiceEntityInterface
      * @ORM\Column(name="gps_long", type="string", length=12)
      */
     private $longitude;
+    
+    /**
+     * @var integer
+     * 
+     * @ORM\Column(name="optimaalaantalpersonen", type="smallint")
+     */
+    private $optimalResidents;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="maxaantalpersonen", type="smallint")
+     */
+    private $maxResidents;
 
     /**
      * @var \DateTime
@@ -315,6 +329,52 @@ class Type implements TypeServiceEntityInterface
     public function getLongitude()
     {
         return $this->longitude;
+    }
+    
+    /**
+     * Setting optimal residents
+     *
+     * @param integer $optimalResidents
+     * @return TypeServiceEntityInterface
+     */
+    public function setOptimalResidents($optimalResidents)
+    {
+        $this->optimalResidents = $optimalResidents;
+        
+        return $this;
+    }
+    
+    /**
+     * Get optimal residents
+     *
+     * @return TypeServiceEntityInterface
+     */
+    public function getOptimalResidents()
+    {
+        return $this->optimalResidents;
+    }
+    
+    /**
+     * Set max residents
+     *
+     * @param integer $maxResidents
+     * @return TypeServiceEntityInterface
+     */
+    public function setMaxResidents($maxResidents)
+    {
+        $this->maxResidents = $maxResidents;
+        
+        return $this;
+    }
+    
+    /**
+     * Get max residents
+     *
+     * @return integer
+     */
+    public function getMaxResidents()
+    {
+        return $this->maxResidents;
     }
 
     /**
