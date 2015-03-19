@@ -14,9 +14,9 @@ class LoadPlaceData extends AbstractFixture implements DependentFixtureInterface
         $total_websites  = count($websites);
         $now             = new \DateTime('now');
         $places          = [];
-        $prev            = null;
+        $all             = [];
         
-        for ($i = 1, $j = 1; $i <= 1000; $i++) {
+        for ($i = 1, $j = 1; $i <= 500; $i++) {
             
             $place = new Place();
             $place->setRegion($this->getReference('region-' . $i))
@@ -34,26 +34,34 @@ class LoadPlaceData extends AbstractFixture implements DependentFixtureInterface
             
             $manager->persist($place);
             $places[] = $place;
+            $all[$i]  = $place;
             
             $this->addReference('place-' . $i, $place);
             
             if (($i % $batch) === 0) {
                 
                 $manager->flush();
-                foreach ($places as $saved_place) {
-                    
-                    $saved_place->setSibling($prev);
-                    $manager->persist($saved_place);
-                    $prev = $saved_place;
-                }
-                
-                $manager->flush();
-                
                 $places = [];
             }
             
             $j = ($j === 10 ? 1 : ($j + 1));
         }
+        
+        $prev = null;
+        foreach ($all as $key => $place2) {
+        
+            if ($key === 1) {
+                $prev = $place2;
+                continue;
+            }
+            
+            $place2->setSibling($prev);
+            $manager->persist($place2);
+            
+            $prev = $place2;
+        }
+        
+        $manager->flush();
     }
     
     public function getDependencies()

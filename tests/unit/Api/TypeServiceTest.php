@@ -55,10 +55,21 @@ class TypeServiceTest extends \Codeception\TestCase\Test
 
     public function testGetTypeWithAccommodation()
     {
-            // $this->specify('Get type with his accommodation
+            // Get type with his accommodation
             $type = $this->typeService->find(['id' => 1]);
             
             $this->assertInstanceOf('AppBundle\Service\Api\Type\TypeServiceEntityInterface', $type);
             $this->assertInstanceOf('AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface', $type->getAccommodation());
+    }
+    
+    public function testSurveys()
+    {
+        // get type
+        $type = $this->typeService->find();
+        $this->assertInstanceOf('AppBundle\Service\Api\Type\TypeServiceEntityInterface', $type);
+        
+        // get surveys
+        $surveys = $type->getSurveys();
+        $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Booking\Survey\SurveyServiceEntityInterface', $surveys);
     }
 }

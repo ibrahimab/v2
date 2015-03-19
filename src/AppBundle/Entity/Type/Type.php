@@ -1,7 +1,9 @@
 <?php
 namespace AppBundle\Entity\Type;
+
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       Doctrine\ORM\Mapping as ORM;
+use       Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Type
@@ -109,6 +111,30 @@ class Type implements TypeServiceEntityInterface
      * @ORM\Column(name="maxaantalpersonen", type="smallint")
      */
     private $maxResidents;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="kwaliteit", type="smallint")
+     */
+    private $quality;
+    
+    /**
+     * @var SurveyServiceEntityInterface
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Booking\Survey\Survey", mappedBy="type", fetch="EXTRA_LAZY")
+     */
+    private $surveys;
+    
+    /**
+     * @var integer
+     */
+    private $surveyCount = 0;
+    
+    /**
+     * @var integer
+     */
+    private $surveyAverageOverallRating = 0.0;
 
     /**
      * @var \DateTime
@@ -124,6 +150,11 @@ class Type implements TypeServiceEntityInterface
      */
     private $updatedAt;
 
+
+    public function __construct()
+    {
+        $this->surveys = new ArrayCollection();
+    }
 
     /**
      * {@InheritDoc}
@@ -332,10 +363,7 @@ class Type implements TypeServiceEntityInterface
     }
     
     /**
-     * Setting optimal residents
-     *
-     * @param integer $optimalResidents
-     * @return TypeServiceEntityInterface
+     * {@InheritDoc}
      */
     public function setOptimalResidents($optimalResidents)
     {
@@ -345,9 +373,7 @@ class Type implements TypeServiceEntityInterface
     }
     
     /**
-     * Get optimal residents
-     *
-     * @return TypeServiceEntityInterface
+     * {@InheritDoc}
      */
     public function getOptimalResidents()
     {
@@ -355,10 +381,7 @@ class Type implements TypeServiceEntityInterface
     }
     
     /**
-     * Set max residents
-     *
-     * @param integer $maxResidents
-     * @return TypeServiceEntityInterface
+     * {@InheritDoc}
      */
     public function setMaxResidents($maxResidents)
     {
@@ -368,13 +391,80 @@ class Type implements TypeServiceEntityInterface
     }
     
     /**
-     * Get max residents
-     *
-     * @return integer
+     * {@InheritDoc}
      */
     public function getMaxResidents()
     {
         return $this->maxResidents;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setQuality($quality)
+    {
+        $this->quality = $quality;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getQuality()
+    {
+        return $this->quality;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setSurveys($surveys)
+    {
+        $this->surveys = $surveys;
+        
+        return $this;
+    }
+    
+    public function getSurveys()
+    {
+        return $this->surveys;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setSurveyCount($surveyCount)
+    {
+        $this->surveyCount = $surveyCount;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getSurveyCount()
+    {
+        return $this->surveyCount;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setSurveyAverageOverallRating($surveyAverageOverallRating)
+    {
+        $this->surveyAverageOverallRating = $surveyAverageOverallRating;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getSurveyAverageOverallRating()
+    {
+        return round(floatval($this->surveyAverageOverallRating), 1);
     }
 
     /**

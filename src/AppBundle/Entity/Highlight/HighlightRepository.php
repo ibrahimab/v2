@@ -29,7 +29,7 @@ class HighlightRepository extends BaseRepository implements HighlightServiceRepo
         $qb       = $this->createQueryBuilder('h');
         $expr     = $qb->expr();
         
-        $qb->select('partial h.{id, publishedAt, expiredAt}, partial t.{id, optimalResidents, maxResidents}, partial a.{id, name, kind}, partial p.{id, name}, partial r.{id, name}, partial c.{id, name}')
+        $qb->select('partial h.{id, publishedAt, expiredAt}, partial t.{id, optimalResidents, maxResidents, quality}, partial a.{id, name, kind}, partial p.{id, name}, partial r.{id, name}, partial c.{id, name}')
            ->leftJoin('h.type', 't')
            ->leftJoin('t.accommodation', 'a')
            ->leftJoin('a.place', 'p')

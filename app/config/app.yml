@@ -1,5 +1,11 @@
 parameters:
     app:
+        default_locale: nl
+        domain_locales:
+            local.v2-dev.chalet.nl:  nl
+            local.v2-dev.chalet.eu:  en
+            local.v2-dev.chalet.com: en
+            
         service:
             api:
                 highlight:

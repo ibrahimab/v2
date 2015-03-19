@@ -13,7 +13,7 @@ class LoadAccommodationData extends AbstractFixture implements DependentFixtureI
         $kinds  = range(1, 12);
         unset($kinds[array_search(5, $kinds)]);
         
-        for ($i = 1; $i <= 1000; $i++) {
+        for ($i = 1; $i <= 500; $i++) {
             
             $accommodation = new Accommodation();
             $accommodation->setName('Accommodation #' . $i)

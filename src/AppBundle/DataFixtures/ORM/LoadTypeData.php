@@ -14,7 +14,7 @@ class LoadTypeData extends AbstractFixture implements DependentFixtureInterface
         $total_websites  = count($websites);
         $now             = new \DateTime('now');
         
-        for ($i = 1; $i <= 1000; $i++) {
+        for ($i = 1; $i <= 500; $i++) {
             
             $type = new Type();
             $type->setName('Type #' . $i)

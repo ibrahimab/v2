@@ -1,34 +1,4 @@
 {% extends 'layouts/base.html.twig' %}
-{% block stylesheets %}
-    {% stylesheets 'bundles/app/css/foundation.css'
-                   'bundles/app/css/app.css'
-                   'bundles/app/foundation-icons/foundation-icons.css'
-                   '@AppBundle/Resources/assets/css/custom.less'
-        filter='cssrewrite'
-    %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
-    {% endstylesheets %}
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,700">
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster">
-    {% javascripts '@AppBundle/Resources/assets/js/vendor/modernizr.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock %}
-
-{% block javascripts %}
-    {% javascripts '@AppBundle/Resources/assets/js/vendor/jquery.js'
-                   '@AppBundle/Resources/assets/js/vendor/jquery.color.js'
-                   '@AppBundle/Resources/assets/js/foundation.min.js'
-                   '@AppBundle/Resources/assets/js/vendor/jquery.placeholder.js'
-                   '@AppBundle/Resources/assets/js/app.js' %}
-                   
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-                   
-    {% endjavascripts %}
-    
-    <script async type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"></script>
-    
-{% endblock %}
 
 {% block bodyId %}home{% endblock %}
 {% block body %}

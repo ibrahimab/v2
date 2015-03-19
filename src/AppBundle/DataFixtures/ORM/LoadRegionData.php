@@ -13,7 +13,7 @@ class LoadRegionData extends AbstractFixture
         $total_websites  = count($websites);
         $now             = new \DateTime('now');
         
-        for ($i = 1; $i <= 1000; $i++) {
+        for ($i = 1; $i <= 500; $i++) {
             
             $region = new Region();
             $region->setName('Region #' . $i)

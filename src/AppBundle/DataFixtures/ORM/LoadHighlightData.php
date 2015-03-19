@@ -38,7 +38,7 @@ class LoadHighlightData extends AbstractFixture implements DependentFixtureInter
         $yesterday      = clone $now;
         $yesterday->sub(new \DateInterval('P1D'));
 
-        for ($i = 1; $i <= 1000; $i++)
+        for ($i = 1; $i <= 500; $i++)
         {
             $rand           = rand(1, $total_websites);
             $randomWebsites = (array)array_rand(array_flip($websites), $rand);

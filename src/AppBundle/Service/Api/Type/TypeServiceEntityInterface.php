@@ -201,6 +201,62 @@ interface TypeServiceEntityInterface {
      * @return integer
      */
     public function getMaxResidents();
+    
+    /**
+     * Setting quality
+     *
+     * @param integer $quality
+     * @return TypeServiceEntityInterface
+     */
+    public function setQuality($quality);
+    
+    /**
+     * Getting quality
+     *
+     * @return integer
+     */
+    public function getQuality();
+    
+    /**
+     * @param SurveyServiceEntityInterface[]
+     * @return TypeServiceEntityInterface
+     */
+    public function setSurveys($surveys);
+    
+    /**
+     * @return SurveyServiceEntityInterface[]
+     */
+    public function getSurveys();
+    
+    /**
+     * Set Survey count
+     *
+     * @param integer $surveyCount
+     * @return TypeServiceEntityInterface
+     */
+    public function setSurveyCount($surveyCount);
+    
+    /**
+     * Get Survey count
+     *
+     * @return integer
+     */
+    public function getSurveyCount();
+    
+    /**
+     * Set Survey average overall rating
+     *
+     * @param integer $$surveyAverageOverallRating
+     * @return TypeServiceEntityInterface
+     */
+    public function setSurveyAverageOverallRating($surveyAverageOverallRating);
+    
+    /**
+     * Get Survey average overall rating
+     *
+     * @return integer
+     */
+    public function getSurveyAverageOverallRating();
 
     /**
      * Set createdAt

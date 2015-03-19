@@ -18,6 +18,10 @@ JMSTranslationBundle_ui:
     resource: "@JMSTranslationBundle/Controller/"
     type:     annotation
     prefix:   /_trans
+    
+_assetic:
+    resource: .
+    type:     assetic
 
 _main:
     resource: routing.yml
