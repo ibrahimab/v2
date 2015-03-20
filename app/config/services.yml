@@ -1,9 +1,88 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
-parameters:
-#    parameter_name: value
-
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    
+    app.twig_app_extension:
+        class: AppBundle\Twig\AppExtension
+        tags:
+            - { name: twig.extension }
+        arguments: [@service_container, @router]
+        
+    app.locale_listener:
+        class: AppBundle\Listener\LocaleListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_subscriber }
+        
+    twig.text_extension:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }
+    
+    repository:
+        abstract:        true
+        factory_service: doctrine.orm.entity_manager
+        factory_method:  getRepository
+        
+    repository.accommodation:
+        class:     AppBundle\Entity\Accommodation\AccommodationRepository
+        arguments: [AppBundle\Entity\Accommodation\Accommodation]
+        parent:    repository
+        
+    repository.highlight:
+        class:     AppBundle\Entity\Highlight\HighlightRepository
+        arguments: [AppBundle\Entity\Highlight\Highlight]
+        parent:    repository
+        
+    repository.type:
+        class:     AppBundle\Entity\Type\TypeRepository
+        arguments: [AppBundle\Entity\Type\Type]
+        parent:    repository
+        
+    repository.place:
+        class:     AppBundle\Entity\Place\PlaceRepository
+        arguments: [AppBundle\Entity\Place\Place]
+        parent:    repository
+        
+    repository.region:
+        class:     AppBundle\Entity\Region\RegionRepository
+        arguments: [AppBundle\Entity\Region\Region]
+        parent:    repository
+        
+    repository.country:
+        class:     AppBundle\Entity\Country\CountryRepository
+        arguments: [AppBundle\Entity\Country\Country]
+        parent:    repository
+        
+    repository.survey:
+        class:     AppBundle\Entity\Boooking\Survey\SurveyRepository
+        arguments: [AppBundle\Entity\Booking\Survey\Survey]
+        parent:    repository
+        
+    service.api.accommodation:
+        class:     AppBundle\Service\Api\Accommodation\AccommodationService
+        arguments: ["@repository.accommodation"]
+            
+    service.api.highlight:
+        class:     AppBundle\Service\Api\Highlight\HighlightService
+        arguments: ["@repository.highlight"]
+            
+    service.api.type:
+        class:     AppBundle\Service\Api\Type\TypeService
+        arguments: ["@repository.type"]
+            
+    service.api.place:
+        class:     AppBundle\Service\Api\Place\PlaceService
+        arguments: ["@repository.place"]
+            
+    service.api.region:
+        class:     AppBundle\Service\Api\Region\RegionService
+        arguments: ["@repository.region"]
+            
+    service.api.country:
+        class:     AppBundle\Service\Api\Country\CountryService
+        arguments: ["@repository.country"]
+            
+    service.api.survey:
+        class:     AppBundle\Service\Api\Booking\Survey\SurveyService
+        arguments: ["@repository.survey"]

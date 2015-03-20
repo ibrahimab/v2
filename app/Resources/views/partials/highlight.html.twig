@@ -1,15 +1,30 @@
 <div class="small-{{ small_size|default(12) }} medium-{{ medium_size|default(4) }} large-{{ large_size|default(4) }} columns">
     <article class="overview sale" data-equalizer-watch>
         <div class="accom-img">
-            <a href="detail.html">{% image 'bundles/app/img/accom/accom-1.jpg' %}<img src="{{ asset_url }}" alt="Chalet-appartement Montagnettes Hameau de la Sapiniere" />{% endimage %}</a>
+            <a href="detail.html"><img src="{{ image_url(highlight.type)  | imagine_filter('overview_image') }}" alt="{{ highlight.type.name }}" /></a>
             <div class="circle"><span>Aan-</span><span>bieding</span></div>
             <div class="heart"><a href="" title="Dit resultaat opslaan in mijn favorieten"><i class="fi-heart"></i></a></div>
-            <div class="rating"><span class="figure">9,5</span><span class="reviews-number">32 <a href="">beoordelingen</a></span></div>
+            {% set surveyCount = highlight.type.surveyCount %}
+            {% if surveyCount > 0 %}
+                <div class="rating"><span class="figure">{{ highlight.type.surveyAverageOverallRating }}</span><span class="reviews-number">{{ surveyCount }} <a href="">beoordelingen</a></span></div>
+            {% endif %}
         </div>
         <div class="accom-desc">
-            <div class="title"><a href="detail.html">Chalet-appartement Montagnettes Hameau de la Sapiniere</a><span><i class="sprite sprite-star"></i><i class="sprite sprite-star"></i><i class="sprite sprite-star"></i><i class="sprite sprite-star-empty"></i><i class="sprite sprite-star-empty"></i></span></div>
-            <div class="location"><span class="area"><a href="" title="Agnieres-en-Devoluy">Agnieres-en-Devoluy</a></span>, <span class="city"><a href="" title="Moutendorg">Moutendorg</a></span>, <span class="country"><a href="" title="Zwitserland">Zwitserland</a></span></div>
-            <div class="persons"><i class="fi-torso"></i>Geschikt voor 7 tot 45 personen</div>
+            <div class="title">
+                <a href="detail.html">{{ ('homepage.highlight.type.kind.' ~ highlight.type.accommodation.kindIdentifier)|trans }} {{ highlight.type.accommodation.name }}</a>
+                <span>
+                    {% set quality = highlight.type.quality %}
+                    {% for i in 1..5 %}
+                        {% if i <= quality %}
+                            <i class="sprite sprite-star"></i>
+                        {% else %}
+                            <i class="sprite sprite-star-empty"></i>
+                        {% endif %}
+                    {% endfor %}
+                </span>
+            </div>
+            <div class="location"><span class="city"><a href="" title="{{ highlight.type.accommodation.place.name }}">{{ highlight.type.accommodation.place.name }}</a></span>, <span class="area"><a href="" title="{{ highlight.type.accommodation.place.region.name }}">{{ highlight.type.accommodation.place.region.name }}</a></span>, <span class="country"><a href="" title="{{ highlight.type.accommodation.place.country.name }}">{{ highlight.type.accommodation.place.country.name }}</a></span></div>
+            <div class="persons"><i class="fi-torso"></i>{{ 'homepage.highlight.suitable-for'|trans({'%optimal%': highlight.type.optimalResidents, '%maximum%': highlight.type.maxResidents}) }}</div>
         </div>
     </article>
 </div>

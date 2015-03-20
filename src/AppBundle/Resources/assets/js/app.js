@@ -10,10 +10,6 @@ var logos = null;
 
 $(function() {
     
-    // preloading images
-    new Image($logo.data('big'));
-    new Image($logo.data('small'));
-
     // getting the logos
     logos = {big: $logo.data('big'), small: $logo.data('small')}; 
 });

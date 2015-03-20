@@ -2,12 +2,12 @@
 <section id="results-selected">
     <div class="row">
         <div class="large-12 columns">
-            <h2>Hoogtepunten uit ons aanbod</h2>
+            <h2>{{ "homepage.highlights"|trans }}</h2>
         </div>
     </div>
     <div class="row" data-equalizer><!-- each row contains 3 accom -->
-        {% for i in 1..6 %}
-            {% include 'partials/highlight.html.twig' only %}
+        {% for highlight in highlights %}
+            {% include 'partials/highlight.html.twig' with {'highlight': highlight} only %}
         {% endfor %}
     </div>
     <div class="row">
