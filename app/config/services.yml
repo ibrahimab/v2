@@ -9,15 +9,26 @@ services:
         arguments: [@service_container, @router]
         
     app.locale_listener:
-        class: AppBundle\Listener\LocaleListener
+        class: AppBundle\EventListener\LocaleListener
         arguments: [@service_container]
         tags:
             - { name: kernel.event_subscriber }
+
+    app.breadcrumb_listener:
+        class: AppBundle\EventListener\BreadcrumbListener
+        arguments: [@app.annotations.breadcrumbs]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
         
     twig.text_extension:
         class: Twig_Extensions_Extension_Text
         tags:
             - { name: twig.extension }
+            
+    app.annotations.breadcrumbs:
+        class: AppBundle\Annotation\Parser\Breadcrumb
+        arguments: [@annotation_reader]
     
     repository:
         abstract:        true

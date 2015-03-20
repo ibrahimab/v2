@@ -4,32 +4,39 @@
     
     {{ parent() }}
 
+    {% set locale = app.request.locale %}
+
     <!-- content -->
     <section class="landing">
         <div class="row" id="area-specs"><!-- id="area-specs" -->
-            <h1>{{ country.name }} <i class="sprite sprite-flag-ch"></i></h1>
+            <h1>{{ country.getLocaleTitle(locale) }} <i class="sprite sprite-flag-{{ country.startCode }}"></i></h1>
         </div>
         <div class="row">
             <div class="large-8 medium-8 columns">
-                {% if country.shortDescription %}
-                    <p>{{ country.shortDescription }}</p>
+                {% if country.getLocaleShortDescription(locale) %}
+                    <p>{{ country.getShortDescription(locale) }}</p>
                 {% endif %}
-                <p>{{ country.description }}</p>
+                <p>{{ country.getLocaleDescription(locale) }}</p>
                 
             </div>
             <div class="large-4 medium-4 columns">
-                <h3>Kenmerken {{ country.name }}</h3>
+                <h3>{{ 'features'|trans }} {{ country.getLocaleName(locale) }}</h3>
                 <ul class="landing-details">
-                    <li>Chalets en appartementen<span>245</span></li>
-                    <li>Gemiddelde beoordeling<span>7,9</span></li>
-                    <li>Beoordelingen<span>198</span></li>
+                    <li>{{ 'chalets-apartments'|trans }}<span>245</span></li>
+                    <li>{{ 'average-rating'|trans }}<span>7,9</span></li>
+                    <li>{{ 'ratings' }}<span>198</span></li>
                 </ul>
-                <h3>Ga direct naar</h3>
+                <h3>{{ 'go-directly-to'|trans }}</h3>
                 <ul class="landing-details">
-                    <li><a href="{{ locale_path('country', {slug: 'Frankrijk'}) }}">Frankrijk</a></li>
-                    <li><a href="{{ locale_path('country', {slug: 'Oostenrijk'})}}">Oostenrijk</a></li>
-                    <li><a href="{{ locale_path('country', {slug: 'Zwitserland'}) }}">Zwitserland</a></li>
-                    <li><a href="{{ locale_path('country', {slug: 'Italie'}) }}">Itali&euml;</a></li>
+                    {% set france      = 'france'|trans %}
+                    {% set austria     = 'austria'|trans %}
+                    {% set switzerland = 'switzerland'|trans %}
+                    {% set italy       = 'italy'|trans %}
+                        
+                    <li><a href="{{ locale_path('country', {countrySlug: france}) }}">{{ france }}</a></li>
+                    <li><a href="{{ locale_path('country', {countrySlug: austria})}}">{{ austria }}</a></li>
+                    <li><a href="{{ locale_path('country', {countrySlug: switzerland}) }}">{{ switzerland }}</a></li>
+                    <li><a href="{{ locale_path('country', {countrySlug: italy}) }}">{{ italy }}</a></li>
                 </ul>
             </div>
         </div>

@@ -24,6 +24,36 @@ interface CountryServiceEntityInterface
      * @return string 
      */
     public function getName();
+    
+    /**
+     * Set english name
+     *
+     * @param string $englishName
+     * @return CountryServiceEntityInterface
+     */
+    public function setEnglishName($englishName);
+    
+    /**
+     * Get english name
+     *
+     * @return string
+     */
+    public function getEnglishName();
+    
+    /**
+     * Set German name
+     *
+     * @param string $germanName
+     * @return CountryServiceEntityInterface
+     */
+    public function setGermanName($germanName);
+    
+    /**
+     * Get German name
+     *
+     * @return string
+     */
+    public function getGermanName();
 
     /**
      * Set alternativeName
@@ -39,6 +69,22 @@ interface CountryServiceEntityInterface
      * @return string 
      */
     public function getAlternativeName();
+    
+    /**
+     * Set locale names
+     * 
+     * @param array $localeNames
+     * @return CountryServiceEntityInterface
+     */
+    public function setLocaleNames($localeNames);
+    
+    /**
+     * Get locale name
+     *
+     * @param string $locale
+     * @return string
+     */
+    public function getLocaleName($locale);
 
     /**
      * Set display
@@ -69,6 +115,22 @@ interface CountryServiceEntityInterface
      * @return string 
      */
     public function getTitle();
+    
+    /**
+     * Set locale titles
+     *
+     * @param array $localeTitles
+     * @return CountryServiceEntityInterface
+     */
+    public function setLocaleTitles($localeTitles);
+    
+    /**
+     * Get locale title
+     *
+     * @param string $locale
+     * @return string
+     */
+    public function getLocaleTitle($locale);
 
     /**
      * Set shortDescription
@@ -84,7 +146,23 @@ interface CountryServiceEntityInterface
      * @return string 
      */
     public function getShortDescription();
+    
+    /**
+     * Set Locale short descriptions
+     * 
+     * @param array $localeShortDescriptions
+     * @return CountryServiceEntityInterface
+     */
+    public function setLocaleShortDescriptions($localeShortDescriptions);
 
+    /**
+     * Get Locale short description
+     *
+     * @param string $locale
+     * @return string
+     */
+    public function getLocaleShortDescription($locale);
+    
     /**
      * Set description
      *
@@ -99,6 +177,21 @@ interface CountryServiceEntityInterface
      * @return string 
      */
     public function getDescription();
+    
+    /**
+     * Set locale descriptions
+     *
+     * @param array $localeDescriptions
+     * @return CountryServiceEntityInterface
+     */
+    public function setLocaleDescriptions($localeDescriptions);
+    
+    /**
+     * Get locale description
+     *
+     * @return string
+     */
+    public function getLocaleDescription($locale);
 
     /**
      * Set colourCode
@@ -114,6 +207,21 @@ interface CountryServiceEntityInterface
      * @return integer 
      */
     public function getColourCode();
+    
+    /**
+     * Set Startcode
+     *
+     * @param string $startCode
+     * @return CountryServiceEntityInterface
+     */
+    public function setStartCode($startCode);
+    
+    /**
+     * Get Start Code
+     *
+     * @return string
+     */
+    public function getStartCode();
 
     /**
      * Set accommodationCodes

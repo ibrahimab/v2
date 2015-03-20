@@ -44,11 +44,29 @@ class CountryServiceTest extends \Codeception\TestCase\Test
         $this->assertNull($country);
     }
     
-    public function getPlaces()
+    public function testGetPlaces()
     {
         $country = $this->countryService->find();
         $places = $country->getPlaces();
         
         $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Place\PlaceServiceEntityInterface', $places);
+    }
+    
+    public function testGetCountryByLocaleName()
+    {
+        $country = $this->countryService->find();
+        $this->assertInstanceOf('AppBundle\Service\Api\Country\CountryServiceEntityInterface', $country);
+        
+        $localeCountryNL = $this->countryService->findByLocaleName($country->getName(), 'nl');
+        $localeCountryEN = $this->countryService->findByLocaleName($country->getEnglishName(), 'en');
+        $localeCountryDE = $this->countryService->findByLocaleName($country->getGermanName(), 'de');
+        
+        $this->assertInstanceOf('AppBundle\Service\Api\Country\CountryServiceEntityInterface', $localeCountryNL, 'Dutch variant not found');
+        $this->assertInstanceOf('AppBundle\Service\Api\Country\CountryServiceEntityInterface', $localeCountryEN, 'English variant not found');
+        $this->assertInstanceOf('AppBundle\Service\Api\Country\CountryServiceEntityInterface', $localeCountryDE, 'German variant not found');
+        
+        $this->assertEquals($country->getId(), $localeCountryNL->getId());
+        $this->assertEquals($country->getId(), $localeCountryEN->getId());
+        $this->assertEquals($country->getId(), $localeCountryDE->getId());
     }
 }

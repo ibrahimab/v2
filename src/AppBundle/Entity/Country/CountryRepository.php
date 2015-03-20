@@ -13,4 +13,25 @@ use       Doctrine\ORM\EntityRepository;
  */
 class CountryRepository extends BaseRepository implements CountryServiceRepositoryInterface
 {
+    public function findByLocaleName($name, $locale)
+    {
+        $locale = strtolower($locale);
+        switch ($locale) {
+            
+            case 'en':
+                $field = 'englishName';
+                break;
+                
+            case 'de':
+                $field = 'germanName';
+                break;
+                
+            case 'nl':
+            default:
+                $field = 'name';
+                break;
+        }
+        
+        return $this->find([$field => $name]);
+    }
 }

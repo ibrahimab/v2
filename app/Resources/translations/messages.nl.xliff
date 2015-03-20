@@ -1,46 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2015-03-17T15:18:01Z" source-language="en" target-language="nl" datatype="plaintext" original="not.available">
+  <file date="2015-03-20T12:03:48Z" source-language="en" target-language="nl" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
+      <trans-unit id="cffa50a32cb13a240d705317bcec65dd1f31b6ad" resname="and">
+        <source>and</source>
+        <target>en</target>
+        <jms:reference-file line="18">views/layouts/home.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="1fe80e506149e4b49ca3560003edd2b8d57e6d9e" resname="austria">
+        <source>austria</source>
+        <target>Oostenrijk</target>
+        <jms:reference-file line="32">views/countries/show.html.twig</jms:reference-file>
+        <jms:reference-file line="21">views/layouts/home.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3de6bd54d1a2d5e58c511fe96a0e3b9d1615ecbe" resname="average-rating">
+        <source>average-rating</source>
+        <target>Gemiddelde beoordeling</target>
+        <jms:reference-file line="26">views/countries/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="742b1b106252bfe3aa8adb921e6d345220789712" resname="chalets-apartments">
+        <source>chalets-apartments</source>
+        <target>chalets en appartementen</target>
+        <jms:reference-file line="25">views/countries/show.html.twig</jms:reference-file>
+        <jms:reference-file line="16">views/layouts/home.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4f944542e06cd6f28fa72685120ec1c9e2b84a27" resname="features">
+        <source>features</source>
+        <target>Kenmerken</target>
+        <jms:reference-file line="23">views/countries/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="23e591e8c36dda987970603ad0fdd031b7dff9f9" resname="france">
+        <source>france</source>
+        <target>Frankrijk</target>
+        <jms:reference-file line="31">views/countries/show.html.twig</jms:reference-file>
+        <jms:reference-file line="20">views/layouts/home.html.twig</jms:reference-file>
+      </trans-unit>
       <trans-unit id="2d9f00ce031fa21d9e978534c1c88150e4c6fe01" resname="general.or">
         <source>general.or</source>
         <target>of</target>
-        <jms:reference-file line="46">views/layouts/home.html.twig</jms:reference-file>
+        <jms:reference-file line="12">views/partials/header.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4a341b37fe512794154de3be033b860c710329aa" resname="go-directly-to">
+        <source>go-directly-to</source>
+        <target>Ga direct naar</target>
+        <jms:reference-file line="29">views/countries/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="25e9374b9fdcd9d069c42be375a450e0a1fb2b6f" resname="header.bar.open-now">
         <source>header.bar.open-now</source>
         <target>Nu open</target>
-        <jms:reference-file line="50">views/layouts/home.html.twig</jms:reference-file>
+        <jms:reference-file line="16">views/partials/header.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="4a2ec0a7debeb41281873ff2ab348e39e09e0867" resname="header.bar.opening-hours-contact">
         <source>header.bar.opening-hours-contact</source>
         <target>Openingstijden en alle contactinfo</target>
-        <jms:reference-file line="50">views/layouts/home.html.twig</jms:reference-file>
+        <jms:reference-file line="16">views/partials/header.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="63ee80cee8ae3d3bd088850310a408046cbc1245" resname="header.bar.seen-and-saved">
         <source>header.bar.seen-and-saved</source>
         <target>Gezien en bewaard</target>
-        <jms:reference-file line="52">views/layouts/home.html.twig</jms:reference-file>
-        <jms:reference-file line="63">views/layouts/home.html.twig</jms:reference-file>
+        <jms:reference-file line="18">views/partials/header.html.twig</jms:reference-file>
+        <jms:reference-file line="29">views/partials/header.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="010fb4e2b0dc652ea8365ce2b95bd615f4e3ddf0" resname="header.bar.sgr-member">
         <source>header.bar.sgr-member</source>
         <target>Lid van het SGR-Garantiefonds</target>
-        <jms:reference-file line="57">views/layouts/home.html.twig</jms:reference-file>
+        <jms:reference-file line="23">views/partials/header.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="c114e8d27b1859eaa3b41601d5c7bc981d448923" resname="homepage.big-title">
         <source>homepage.big-title</source>
         <target>Groots genieten</target>
-        <jms:reference-file line="82">views/layouts/home.html.twig</jms:reference-file>
+        <jms:reference-file line="10">views/layouts/home.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="3609bce29c5bf74a194c4d9f6133894b7061f6bb" resname="homepage.highlight.suitable-for">
         <source>homepage.highlight.suitable-for</source>
         <target>Geschikt voor %optimal% tot %maximum% personen</target>
-        <jms:reference-file line="12">views/partials/highlight.html.twig</jms:reference-file>
+        <jms:reference-file line="27">views/partials/highlight.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="e8ac4088e022529361aa1b2e3d8f57bf905f5d6f" resname="homepage.highlights">
         <source>homepage.highlights</source>
@@ -50,7 +88,29 @@
       <trans-unit id="b6a65efc9f358ac6b4605c00fae606dc596a00f3" resname="homepage.sub-title">
         <source>homepage.sub-title</source>
         <target>Wintersport van 2 tot 50 personen</target>
-        <jms:reference-file line="82">views/layouts/home.html.twig</jms:reference-file>
+        <jms:reference-file line="10">views/layouts/home.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="af10ef20dd9060bbeead0afbc55381a66af442ef" resname="in">
+        <source>in</source>
+        <target>in</target>
+        <jms:reference-file line="17">views/layouts/home.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c073d97dd896ff8dfbf1d4c8aface94beadf7a8e" resname="italy">
+        <source>italy</source>
+        <target>Italië</target>
+        <jms:reference-file line="34">views/countries/show.html.twig</jms:reference-file>
+        <jms:reference-file line="23">views/layouts/home.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="81c79e28c645f32c15a986124496624568227611" resname="ski-areas">
+        <source>ski-areas</source>
+        <target>Skigebieden</target>
+        <jms:reference-file line="19">views/layouts/home.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="bbe956747bd1d5990a3bd561eb86cbbcf6642915" resname="switzerland">
+        <source>switzerland</source>
+        <target>Zwitserland</target>
+        <jms:reference-file line="33">views/countries/show.html.twig</jms:reference-file>
+        <jms:reference-file line="22">views/layouts/home.html.twig</jms:reference-file>
       </trans-unit>
     </body>
   </file>

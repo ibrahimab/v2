@@ -31,7 +31,6 @@ class AppExtension extends \Twig_Extension
     {
         $this->container = $container;
         $this->generator = $generator;
-        $this->locale    = $container->get('request')->getLocale();
     }
     
     /**
@@ -55,10 +54,11 @@ class AppExtension extends \Twig_Extension
      * @return string
      */
     public function imageUrl(TypeServiceEntityInterface $type)
-    {    
-        $path  = dirname($this->container->get('kernel')->getRootDir()) . '/web/chalet/pic/cms/';
-        $file  = 'accommodaties/0';
-        $cache = 'pic/cms/';
+    {
+        $rootDir = $this->container->get('kernel')->getRootDir();
+        $path    = dirname($rootDir) . '/web/chalet/pic/cms/';
+        $file    = 'accommodaties/0';
+        $cache   = 'pic/cms/';
 
         if (file_exists($path . 'hoofdfoto_type/' . $type->getId() . '.jpg')) {
             $file = 'hoofdfoto_type/' . $type->getId();
@@ -74,12 +74,14 @@ class AppExtension extends \Twig_Extension
      */
     public function getPath($name, $parameters = array(), $relative = false)
     {
-        return $this->generator->generate(($name . '_' . $this->locale), $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
+        $locale = $this->container->get('request')->getLocale();
+        return $this->generator->generate(($name . '_' . $locale), $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
     }
     
     public function getUrl($name, $parameters = array(), $schemeRelative = false)
     {
-        return $this->generator->generate(($name . '_' . $this->locale), $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
+        $locale = $this->container->get('request')->getLocale();
+        return $this->generator->generate(($name . '_' . $locale), $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
     }
     
     /**

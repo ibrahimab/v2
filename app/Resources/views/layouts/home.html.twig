@@ -13,7 +13,15 @@
         <div id="header-form">
             <div class="row" id="header-form-title">
                 <div class="large-12 columns">
-                    <h1 class="title-form">Kies uit <a href="" title="1.209 chalets en appartementen">1.209 chalets en appartementen</a> in 45 skigebieden in <a href="" title="Chalets en appartementen in Oostenrijk">Oostenrijk</a>, <a href="" title="Chalets en appartementen in Zwitserland">Zwitserland</a>, <a href="" title="Chalets en appartementen in Frankrijk">Frankrijk</a> en <a href="" title="Chalets en appartementen in Itali&euml;">Itali&euml;</a></h1>
+                    {% set trans_chalets_apartments = 'chalets-apartments'|trans %}
+                    {% set trans_in                 = 'in'|trans                 %}
+                    {% set trans_and                = 'and'|trans                %}
+                    {% set trans_ski_areas          = 'ski-areas'|trans          %}
+                    {% set trans_france             = 'france'|trans             %}
+                    {% set trans_austria            = 'austria'|trans            %}
+                    {% set trans_switzerland        = 'switzerland'|trans        %}
+                    {% set trans_italy              = 'italy'|trans              %}
+                    <h1 class="title-form">Kies uit <a href="" title="1.209 {{ trans_chalets_apartments }}">1.209 {{ trans_chalets_apartments }}</a> {{ trans_in }} 45 {{ trans_ski_areas }} {{ trans_in }} <a href="{{ locale_path('country', { countrySlug: trans_austria }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_austria }}">{{ trans_austria }}</a>, <a href="{{ locale_path('country', { countrySlug: trans_switzerland }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_switzerland }}">{{ trans_switzerland }}</a>, <a href="{{ locale_path('country', { countrySlug: trans_france }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_france }}">{{ trans_france }}</a> {{ trans_and }} <a href="{{ locale_path('country', { countrySlug: trans_italy }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_italy }}">{{ trans_italy }}</a></h1>
                 </div>
             </div>
             <div class="row" id="header-form-fields">
