@@ -31,6 +31,7 @@ class AppExtension extends \Twig_Extension
     {
         $this->container = $container;
         $this->generator = $generator;
+        $this->locale    = $container->get('request')->getLocale();
     }
     
     /**
@@ -73,12 +74,12 @@ class AppExtension extends \Twig_Extension
      */
     public function getPath($name, $parameters = array(), $relative = false)
     {
-        return $this->generator->generate(($name . '_' . $this->container->get('request')->getLocale()), $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
+        return $this->generator->generate(($name . '_' . $this->locale), $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
     }
     
     public function getUrl($name, $parameters = array(), $schemeRelative = false)
     {
-        return $this->generator->generate(($name . '_' . $this->container->get('request')->getLocale()), $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->generator->generate(($name . '_' . $this->locale), $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
     }
     
     /**

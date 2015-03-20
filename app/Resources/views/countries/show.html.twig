@@ -1,0 +1,38 @@
+{% extends 'layouts/default.html.twig' %}
+
+{% block body %}
+    
+    {{ parent() }}
+
+    <!-- content -->
+    <section class="landing">
+        <div class="row" id="area-specs"><!-- id="area-specs" -->
+            <h1>{{ country.name }} <i class="sprite sprite-flag-ch"></i></h1>
+        </div>
+        <div class="row">
+            <div class="large-8 medium-8 columns">
+                {% if country.shortDescription %}
+                    <p>{{ country.shortDescription }}</p>
+                {% endif %}
+                <p>{{ country.description }}</p>
+                
+            </div>
+            <div class="large-4 medium-4 columns">
+                <h3>Kenmerken {{ country.name }}</h3>
+                <ul class="landing-details">
+                    <li>Chalets en appartementen<span>245</span></li>
+                    <li>Gemiddelde beoordeling<span>7,9</span></li>
+                    <li>Beoordelingen<span>198</span></li>
+                </ul>
+                <h3>Ga direct naar</h3>
+                <ul class="landing-details">
+                    <li><a href="{{ locale_path('country', {slug: 'Frankrijk'}) }}">Frankrijk</a></li>
+                    <li><a href="{{ locale_path('country', {slug: 'Oostenrijk'})}}">Oostenrijk</a></li>
+                    <li><a href="{{ locale_path('country', {slug: 'Zwitserland'}) }}">Zwitserland</a></li>
+                    <li><a href="{{ locale_path('country', {slug: 'Italie'}) }}">Itali&euml;</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+{% endblock %}

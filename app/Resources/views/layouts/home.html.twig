@@ -2,48 +2,6 @@
 
 {% block bodyId %}home{% endblock %}
 {% block body %}
-<div id="nav-container">
-    <div id="nav-main">
-        <div class="row" id="row-top">
-            <div class="large-3 medium-3 small-6 columns" id="column-logo">
-                <h1><a href="{{ path('home') }}" title="Chalet home">{% image 'bundles/app/img/logos/logo-chalet-big.png' %}<img id="logo" src="{{ asset_url }}" data-small="{{ asset('bundles/app/img/logos/logo-chalet-small.png') }}" data-big="{{ asset_url }}" height="137" width="183" alt="Chalet home" />{% endimage %}</a></h1>
-            </div>
-            <div class="large-5 medium-5 small-6 columns" id="column-contact">
-                <div>
-                    <p>
-                        <span class="small-up">
-                            <a href="#"><i class="fi-comments"></i>Chat</a>
-                            <span class="medium-up">{{ "general.or"|trans }}</span>
-                            <span class="show-for-small"></span>
-                            <a href="tel:+31-348-434649"><i class="fi-telephone"></i>0348 - 43 46 49</a>
-                        </span>
-                        <span class="medium-up"><br /><i class="fi-clock"></i>{{ "header.bar.open-now"|trans }}</span><span class="medium-up"> <a href="#">{{ "header.bar.opening-hours-contact"|trans }}</a></span>
-                    </p>
-                    <p class="show-for-small" id="link-saved"><a href="smartphone-mylist.html"><i class="fi-heart"></i>{{ "header.bar.seen-and-saved"|trans }}</a></p><!-- smartphones -->
-                </div>
-            </div>
-            <div class="large-4 medium-4 hide-for-small columns" id="column-dropdown">
-                <div class="right" id="logo-sgr">
-                    <span>{{ "header.bar.sgr-member"|trans }}</span>
-                    {% image 'bundles/app/img/logos/logo-sgr.jpg' %}<img src="{{ asset_url }}" height="28" width="30" alt="SGR-Garantiefonds" />{% endimage %}
-                </div>
-                <div id="dropdown-container">
-                    <!-- this button gets class="active" after: 1. first visit / 2. click on heart-icon -->
-                    <button id="dropdown-saved" class="button dropdown radius right" href="#" data-dropdown="dropdown-saved-list" aria-controls="dropdown-saved-list" aria-expanded="false">
-                        <i class="fi-heart"></i>{{ "header.bar.seen-and-saved"|trans }}<i class="fi-play"></i>
-                    </button>
-                    <br />
-                    <ul id="dropdown-saved-list" data-dropdown-content class="f-dropdown" aria-hidden="true" tabindex="-1">
-                        <li><a href="zoekboek.html">Bekeken vakanties (<span>12</span>)</a></li>
-                        <li><a href="zoekboek.html">Zoekopdrachten (<span>23</span>)</a></li>
-                        <li><a href="zoekboek.html">Bewaarde vakanties (<span>2</span>)</a></li>
-                        <li><a href="zoekboek.html">Mijn boekingen</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <!-- header -->
 <header>
     <div id="header-container">

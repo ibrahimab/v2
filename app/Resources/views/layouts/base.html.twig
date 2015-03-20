@@ -8,6 +8,7 @@
         
         {% stylesheets 'bundles/app/css/foundation.css'
                        'bundles/app/css/app.css'
+                       'bundles/app/css/slick.css'
                        'bundles/app/foundation-icons/foundation-icons.css'
                        '@AppBundle/Resources/assets/css/custom.less' filter='cssrewrite' %}
             <link rel="stylesheet" href="{{ asset_url }}" />
@@ -24,9 +25,11 @@
             
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
-    {% set _body_id = block('bodyId') %}
-    <body{% if _body_id is not empty %} id="{{ _body_id }}"{% endif %}>
+    {% set _body_id    = block('bodyId') %}
+    {% set _body_class = block('bodyClass') %}
+    <body{% if _body_id is not empty %} id="{{ _body_id }}"{% endif %}{% if _body_class is not empty %} class="{{ _body_class }}"{%endif %}>
         
+        {% include 'partials/header.html.twig' %}
         {% block body %}{% endblock %}
         {% include 'partials/footer.html.twig' %}
         
