@@ -19,7 +19,7 @@
                 {% if country.getLocaleAdditionalDescription(get_locale()) %}
                     <p>{{ country.getLocaleAdditionalDescription(get_locale())|nl2br }}</p>
                 {% endif %}
-                <p><a href="#">Bekijk al onze chalets en appartementen in {{ country.getLocaleName(get_locale()) }}</a></p>
+                <p><a href="{{ locale_path('show_country', {countrySlug: country.getLocaleName(get_locale())}) }}" class="button small radius" title="Bekijk het gehele aanbod">Bekijk al onze chalets en appartementen in {{ country.getLocaleName(get_locale()) }}</a></p>
                 
             </div>
             <div class="large-4 medium-4 columns">
@@ -85,7 +85,7 @@
     {% set italy       = 'italy'|trans %}
 
     <section class="area-countries">
-        <h2>Direct naar</h2>
+        <h2>Ga direct naar</h2>
         <div class="row">
             <div class="small-12 medium-3 large-3 columns">
                 <article class="overview" data-equalizer-watch>
@@ -100,16 +100,6 @@
             <div class="small-12 medium-3 large-3 columns">
                 <article class="overview" data-equalizer-watch>
                     <div class="accom-img">
-                        <img src="/chalet/pic/cms/skigebieden/202-1.jpg" alt="Italy" />
-                    </div>
-                    <div class="accom-desc">
-                        <div class="title"><a href="{{ locale_path('show_country', {countrySlug: italy}) }}"><i class="sprite sprite-flag-I"></i>{{ italy }}</a></div>
-                    </div>
-                </article>
-            </div>
-            <div class="small-12 medium-3 large-3 columns">
-                <article class="overview" data-equalizer-watch>
-                    <div class="accom-img">
                         <img src="/chalet/pic/cms/skigebieden/200-1.jpg" alt="Austria" />
                     </div>
                     <div class="accom-desc">
@@ -117,13 +107,23 @@
                     </div>
                 </article>
             </div>
-            <div class="small-12 medium-3 large-3 columns end">
+            <div class="small-12 medium-3 large-3 columns">
                 <article class="overview" data-equalizer-watch>
                     <div class="accom-img">
                         <img src="/chalet/pic/cms/skigebieden/65-1.jpg" alt="Switzerland" height="200" />
                     </div>
                     <div class="accom-desc">
                         <div class="title"><a href="{{ locale_path('show_country', {countrySlug: switzerland}) }}"><i class="sprite sprite-flag-Z"></i>{{ switzerland }}</a></div>
+                    </div>
+                </article>
+            </div>
+            <div class="small-12 medium-3 large-3 columns end">
+                <article class="overview" data-equalizer-watch>
+                    <div class="accom-img">
+                        <img src="/chalet/pic/cms/skigebieden/202-1.jpg" alt="Italy" />
+                    </div>
+                    <div class="accom-desc">
+                        <div class="title"><a href="{{ locale_path('show_country', {countrySlug: italy}) }}"><i class="sprite sprite-flag-I"></i>{{ italy }}</a></div>
                     </div>
                 </article>
             </div>
