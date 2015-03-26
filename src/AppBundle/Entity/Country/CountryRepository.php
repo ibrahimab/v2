@@ -13,25 +13,46 @@ use       Doctrine\ORM\EntityRepository;
  */
 class CountryRepository extends BaseRepository implements CountryServiceRepositoryInterface
 {
-    public function findByLocaleName($name, $locale)
+    /**
+     * {@InheritDoc}
+     */
+    public function findByLocaleName($name, $locale, $sort = 'alpha')
     {
-        $locale = strtolower($locale);
-        switch ($locale) {
-            
-            case 'en':
-                $field = 'englishName';
+        switch ($sort) {
+                
+            case 'slopes':
+                $sortField = 'r.totalSlopesDistance';
+                $sortOrder = 'DESC';
                 break;
                 
-            case 'de':
-                $field = 'germanName';
+            case 'altitude':
+                $sortField = 'r.maximumAltitude';
+                $sortOrder = 'DESC';
                 break;
                 
-            case 'nl':
+            case 'alpha':
             default:
-                $field = 'name';
+                $sortField = 'r.name';
+                $sortOrder = 'ASC';
                 break;
         }
         
-        return $this->find([$field => $name]);
+        $field     = $this->getLocaleField('name', $locale);
+        $qb        = $this->createQueryBuilder('c');
+        $expr      = $qb->expr();
+        
+        $qb->select('partial r.{id, name, englishName, germanName, minimumAltitude, maximumAltitude, totalSlopesDistance}, partial c.{id, name, englishName, germanName, title, englishTitle, 
+                     germanTitle, startCode, shortDescription, englishShortDescription, germanShortDescription, description, englishDescription, germanDescription, additionalDescription, englishAdditionalDescription, germanAdditionalDescription}, 
+                     partial p.{id}')
+           ->leftJoin('c.places', 'p')
+           ->leftJoin('p.region', 'r')
+           ->where($expr->eq('c.' . $field, ':name'))
+           ->groupBy('r.id')
+           ->orderBy($sortField, $sortOrder)
+           ->setParameters([
+               'name' => $name,
+           ]);
+           
+        return $qb->getQuery()->getSingleResult();
     }
 }

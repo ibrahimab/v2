@@ -239,6 +239,35 @@ interface CountryServiceEntityInterface
     public function getAccommodationCodes();
     
     /**
+     * Set types count
+     *
+     * @param integer $typesCount
+     * @return CountryServiceEntityInterface
+     */
+    public function setTypesCount($typesCount);
+    
+    /**
+     * Get types count
+     *
+     * @return integer
+     */
+    public function getTypesCount();
+    
+    /**
+     * Set average ratings for this country
+     *
+     * @return CountryServiceEntityInterface
+     */
+    public function setAverageRatings($averageRatings);
+    
+    /**
+     * Get average ratings for this country
+     * 
+     * @return integer
+     */
+    public function getAverageRatings();
+    
+    /**
      * Set createdAt
      *
      * @param \DateTime $createdAt

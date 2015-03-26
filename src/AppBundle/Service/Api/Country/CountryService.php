@@ -54,10 +54,11 @@ class CountryService
      *
      * @param string $name
      * @param string $locale
+     * @param string $sort
      * @return CountryServiceEntityInterface
      */
-    public function findByLocaleName($name, $locale)
+    public function findByLocaleName($name, $locale, $sort = 'alpha')
     {
-        return $this->countryServiceRepository->findByLocaleName($name, $locale);
+        return $this->countryServiceRepository->findByLocaleName($name, $locale, $sort);
     }
 }

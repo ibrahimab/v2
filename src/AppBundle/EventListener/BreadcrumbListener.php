@@ -13,13 +13,22 @@ class BreadcrumbListener
     private $parser;
     
     /**
+     * @var \Twig_Environment
+     */
+    private $twig;
+    
+    /**
      * @param BreadcrumbParser $container
      */
-    public function __construct(BreadcrumbParser $parser)
+    public function __construct(BreadcrumbParser $parser, \Twig_Environment $twig)
     {
         $this->parser = $parser;
+        $this->twig   = $twig;
     }
     
+    /**
+     * @param FilterControllerEvent $event
+     */
     public function onKernelController(FilterControllerEvent $event)
     {
         if (!is_array($controller = $event->getController())) {
@@ -32,14 +41,7 @@ class BreadcrumbListener
         
         // parse controller
         $annotations = $this->parser->parse($controller, $method);
-        dump($annotations);exit;
-    }
-    
-    /**
-     * @param FilterResponseEvent $event
-     */
-    public function onKernelResponse(FilterResponseEvent $event)
-    {
-        //$breadcrumbPlaceHolders = $event->getRequest()->attributes;
+        
+        $event->getRequest()->attributes->set('breadcrumbs', $annotations);
     }
 }

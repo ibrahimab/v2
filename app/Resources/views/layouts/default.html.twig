@@ -11,7 +11,7 @@
                 </div>
                 <div class="small-12 medium-12 large-8 columns hide-for-small">
                     <dl class="sub-nav">
-                        <dd class="sub-home"><a href="index.html"><i class="fi-home"></i></a></dd>
+                        <dd class="sub-home"><a href="{{ path('home') }}"><i class="fi-home"></i></a></dd>
                         <dd class="sub-search"><a href="zoekboek.html">Zoek en boek</a></dd>
                         <dd class="sub-skiareas active"><a href="landen.html">Skigebieden</a></dd>
                         <dd class="sub-discount"><a href="">Aanbiedingen</a></dd>
@@ -24,11 +24,7 @@
     <!--breadcrumbs -->
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
-            <nav class="breadcrumbs" role="menubar" aria-label="breadcrumbs">
-                <li role="menuitem"><a href="index.html">Home</a></li>
-                <li role="menuitem"><a href="landen.html">Landen</a></li>
-                <li role="menuitem" class="current"><a href="#">Zwitserland</a></li>
-            </nav>
+            {% block breadcrumbs %}{% endblock breadcrumbs %}
         </div>
     </div>
     

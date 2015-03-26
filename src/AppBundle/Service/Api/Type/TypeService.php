@@ -43,4 +43,15 @@ class TypeService
     {
         return $this->typeRepository->find($by);
     }
+    
+    /**
+     * Counting all the types of all the accommodations for all the regions provided
+     *
+     * @param RegionServiceEntityInterface[] $regions
+     * @return array
+     */
+    public function countByRegions($regions)
+    {
+        return $this->typeRepository->countByRegions($regions);
+    }
 }

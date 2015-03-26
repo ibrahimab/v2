@@ -13,6 +13,9 @@ class CountryServiceTest extends \Codeception\TestCase\Test
     {
         $this->serviceContainer = $this->getModule('Symfony2')->container;
         $this->countryService   = $this->serviceContainer->get('service.api.country');
+        
+        // clearing doctrine
+        $this->serviceContainer->get('doctrine')->getManager()->clear();
     }
     
     protected function _after()

@@ -13,6 +13,9 @@ class PlaceServiceTest extends \Codeception\TestCase\Test
     {
         $this->serviceContainer = $this->getModule('Symfony2')->container;
         $this->placeService     = $this->serviceContainer->get('service.api.place');
+        
+        // clearing doctrine
+        $this->serviceContainer->get('doctrine')->getManager()->clear();
     }
     
     protected function _after()

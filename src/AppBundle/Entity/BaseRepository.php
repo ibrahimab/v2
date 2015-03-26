@@ -20,6 +20,29 @@ class BaseRepository extends EntityRepository
         return isset($options[$key]) ? $options[$key] : $default;
     }
     
+    public function getLocaleField($field, $locale)
+    {
+        $locale = strtolower($locale);
+        $field  = ucfirst(strtolower($field));
+        switch ($locale) {
+            
+            case 'en':
+                $localeField = 'english' . $field;
+                break;
+                
+            case 'de':
+                $localeField = 'german' . $field;
+                break;
+                
+            case 'nl':
+            default:
+                $localeField = strtolower($field);
+                break;
+        }
+        
+        return $localeField;
+    }
+    
     /**
      * {@InheritDoc}
      */

@@ -1,0 +1,19 @@
+<nav class="breadcrumbs" role="menubar" aria-label="breadcrumbs">
+    
+    {% for breadcrumb in breadcrumbs %}
+        {% if breadcrumb.active %}
+            <li role="menuitem" class="current">{{ breadcrumb.title }}</li>
+        {% else %}
+            <li role="menuitem">
+                <a href="{{ locale_path(breadcrumb.path, breadcrumb.params) }}">
+                    {% if breadcrumb.translate %}
+                        {{ breadcrumb.title|trans }}
+                    {% else %}
+                        {{ breadcrumb.title }}
+                    {% endif %}
+                </a>
+            </li>
+        {% endif %}
+    </li>
+    {% endfor %}
+</nav>

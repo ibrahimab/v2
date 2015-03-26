@@ -15,21 +15,29 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
     /**
      * {@InheritDoc}
      */
-    public function all($options = [])
+    public function countByRegions($regions)
     {
-        $criteria = self::getOption($options, 'where',  []);
-        $order    = self::getOption($options, 'order',  null);
-        $limit    = self::getOption($options, 'limit',  null);
-        $offset   = self::getOption($options, 'offset', null);
+        $qb   = $this->createQueryBuilder('t');
+        $expr = $qb->expr();
         
-        return $this->findBy($criteria, $order, $limit, $offset);
-    }
-    
-    /**
-     * {@InheritDoc}
-     */
-    public function find($by = [])
-    {
-        return $this->findOneBy($by);
+        $qb->select('r.id as regionId, COUNT(t.id) AS typesCount')
+           ->leftJoin('t.accommodation', 'a')
+           ->leftJoin('a.place', 'p')
+           ->leftJoin('p.region', 'r')
+           ->groupBy('r.id')
+           ->where($expr->in('r', ':regions'))
+           ->andWhere($expr->eq('a.display', ':display'))
+           ->andWhere($expr->eq('t.display', ':display'))
+           ->andWhere($expr->eq('a.weekendSki', ':weekendski'))
+           ->setParameters([
+               
+               'regions'    => $regions,
+               'display'    => true,
+               'weekendski' => false,
+           ]);
+        
+        $results = $qb->getQuery()->getResult();
+
+        return array_map('intval', array_column($results, 'typesCount', 'regionId'));
     }
 }

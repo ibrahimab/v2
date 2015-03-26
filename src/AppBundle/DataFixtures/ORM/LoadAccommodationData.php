@@ -18,7 +18,9 @@ class LoadAccommodationData extends AbstractFixture implements DependentFixtureI
             $accommodation = new Accommodation();
             $accommodation->setName('Accommodation #' . $i)
                           ->setPlace($this->getReference('place-' . $i))
-                          ->setKind($kinds[array_rand($kinds)]);
+                          ->setKind($kinds[array_rand($kinds)])
+                          ->setDisplay(true)
+                          ->setWeekendSki(false);
             
             $manager->persist($accommodation);
             $this->addReference('accommodation-' . $i, $accommodation);

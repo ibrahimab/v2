@@ -16,10 +16,9 @@ services:
 
     app.breadcrumb_listener:
         class: AppBundle\EventListener\BreadcrumbListener
-        arguments: [@app.annotations.breadcrumbs]
+        arguments: [@app.annotations.breadcrumbs, @twig]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
-            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
         
     twig.text_extension:
         class: Twig_Extensions_Extension_Text
@@ -69,6 +68,10 @@ services:
         class:     AppBundle\Entity\Boooking\Survey\SurveyRepository
         arguments: [AppBundle\Entity\Booking\Survey\Survey]
         parent:    repository
+        
+    service.javascript:
+        class:      AppBundle\Service\Javascript\JavascriptService
+        arguments:  [[]]
         
     service.api.accommodation:
         class:     AppBundle\Service\Api\Accommodation\AccommodationService

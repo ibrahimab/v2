@@ -54,6 +54,20 @@ class Accommodation implements AccommodationServiceEntityInterface
     private $kind;
     
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="tonen", type="boolean")
+     */
+    private $display;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="weekendski", type="boolean")
+     */
+    private $weekendSki;
+    
+    /**
      * Kind identifiers for translations
      *
      * @var array
@@ -165,5 +179,41 @@ class Accommodation implements AccommodationServiceEntityInterface
     public function getKindIdentifier()
     {
         return (isset(self::$kindIdentifiers[$this->getKind()]) ? self::$kindIdentifiers[$this->getKind()] : null);
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setDisplay($display)
+    {
+        $this->display = $display;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getDisplay()
+    {
+        return $this->display;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setWeekendSki($weekendSki)
+    {
+        $this->weekendSki = $weekendSki;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getWeekendSki()
+    {
+        return $this->weekendSki;
     }
 }

@@ -13,4 +13,20 @@ use       Doctrine\ORM\EntityRepository;
  */
 class RegionRepository extends BaseRepository implements RegionServiceRepositoryInterface
 {
+    /**
+     * {@InheritDoc}
+     */
+    public function findByLocaleName($name, $locale)
+    {
+        $field = $this->getLocaleField('name', $locale);
+        $qb    = $this->createQueryBuilder('r');
+        $expr  = $qb->expr();
+        
+        $qb->where($expr->eq('r.' . $field, ':name'))
+           ->setParameters([
+               'name' => $name,
+           ]);
+           
+        return $qb->getQuery()->getSingleResult();
+    }
 }

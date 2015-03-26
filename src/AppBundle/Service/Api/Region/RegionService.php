@@ -46,4 +46,12 @@ class RegionService
     {
         return $this->regionServiceRepository->find($by);
     }
+    
+    /**
+     * Find region by its name, with locale in mind
+     */
+    public function findByLocaleName($name, $locale)
+    {
+        return $this->regionServiceRepository->findByLocaleName($name, $locale);
+    }
 }

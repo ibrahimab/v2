@@ -31,7 +31,8 @@ interface CountryServiceRepositoryInterface
      *
      * @param string $name
      * @param string $locale
+     * @param string $sort
      * @return CountryServiceEntityInterface
      */
-    public function findByLocaleName($name, $locale);
+    public function findByLocaleName($name, $locale, $sort = 'alpha');
 }

@@ -24,6 +24,9 @@ class SurveyServiceTest extends \Codeception\TestCase\Test
         $this->serviceContainer = $this->getModule('Symfony2')->container;
         $this->surveyService    = $this->serviceContainer->get('service.api.survey');
         $this->typeService      = $this->serviceContainer->get('service.api.type');
+        
+        // clearing doctrine
+        $this->serviceContainer->get('doctrine')->getManager()->clear();
     }
     
     protected function _after()
@@ -55,14 +58,14 @@ class SurveyServiceTest extends \Codeception\TestCase\Test
         }
     }
     
-    public function testCountSurveysMultipleTypes()
+    public function testGetStatsSurveysMultipleTypes()
     {
         $types = $this->typeService->all(['limit' => 3]);
         $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Type\TypeServiceEntityInterface', $types);
         
         $surveyStats = $this->surveyService->statsByTypes($types);
         $this->assertInternalType('array', $surveyStats);
-        
+
         foreach ($surveyStats as $surveyStat) {
             $this->assertEquals(1, intval($surveyStat['surveyCount']));
         }

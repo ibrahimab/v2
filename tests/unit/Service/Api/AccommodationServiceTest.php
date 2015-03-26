@@ -1,5 +1,5 @@
 <?php
-namespace Api;
+namespace Service\Api;
 
 use       AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
 
@@ -24,6 +24,9 @@ class AccommodationsTest extends \Codeception\TestCase\Test
     {
         $this->serviceContainer     = $this->getModule('Symfony2')->container;
         $this->accommodationService = $this->serviceContainer->get('service.api.accommodation');
+        
+        // clearing doctrine
+        $this->serviceContainer->get('doctrine')->getManager()->clear();
     }
     
     protected function _after()

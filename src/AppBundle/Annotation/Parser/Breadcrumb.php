@@ -22,7 +22,7 @@ class Breadcrumb extends Parser
             $sortedAnnotations[] = $unsortedAnnotation;
             $level              += 1;
         }
-        
+
         usort($sortedAnnotations, function($a, $b) {
             return ($a->getLevel() < $b->getLevel() ? -1 : 1);
         });
@@ -34,7 +34,7 @@ class Breadcrumb extends Parser
             $annotation->setLevel($level++);
             $annotations[] = $annotation;
         }
-        
+
         return $annotations;
     }
 }

@@ -18,17 +18,21 @@ class Breadcrumb
 {
     private $name;
     private $title;
+    private $translate;
     private $path;
+    private $pathParams;
     private $active;
     private $level;
     
     public function __construct(array $values)
     {
-        $this->name   = (isset($values['name'])   ? $values['name']   : null);
-        $this->title  = (isset($values['title'])  ? $values['title']  : null);
-        $this->path   = (isset($values['path'])   ? $values['path']   : null);
-        $this->active = (isset($values['active']) ? $values['active'] : false);
-        $this->level  = (isset($values['level'])  ? $values['level']  : null);
+        $this->name       = (isset($values['name'])       ? $values['name']       : null);
+        $this->title      = (isset($values['title'])      ? $values['title']      : null);
+        $this->translate  = (isset($values['translate'])  ? $values['translate']  : false);
+        $this->path       = (isset($values['path'])       ? $values['path']       : null);
+        $this->pathParams = (isset($values['pathParams']) ? $values['pathParams'] : []);
+        $this->active     = (isset($values['active'])     ? $values['active']     : false);
+        $this->level      = (isset($values['level'])      ? $values['level']      : null);
     }
     
     public function getName()
@@ -41,9 +45,19 @@ class Breadcrumb
         return $this->title;
     }
     
+    public function translate()
+    {
+        return $this->translate;
+    }
+    
     public function getPath()
     {
         return $this->path;
+    }
+    
+    public function getPathParams()
+    {
+        return $this->pathParams;
     }
     
     public function getActive()

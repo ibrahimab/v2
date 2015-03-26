@@ -11,6 +11,143 @@ interface RegionServiceEntityInterface
     public function getId();
 
     /**
+     * Set name
+     *
+     * @param string $name
+     * @return RegionServiceEntityInterface
+     */
+    public function setName($name);
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName();
+    
+    /**
+     * Set english name
+     *
+     * @param string $englishName
+     * @return RegionServiceEntityInterface
+     */
+    public function setEnglishName($englishName);
+    
+    /**
+     * Get english name
+     *
+     * @return string
+     */
+    public function getEnglishName();
+    
+    /**
+     * Set German name
+     *
+     * @param string $germanName
+     * @return RegionServiceEntityInterface
+     */
+    public function setGermanName($germanName);
+    
+    /**
+     * Get German name
+     *
+     * @return string
+     */
+    public function getGermanName();
+    
+    /**
+     * Set locale names
+     * 
+     * @param array $localeNames
+     * @return RegionServiceEntityInterface
+     */
+    public function setLocaleNames($localeNames);
+    
+    /**
+     * Get locale name
+     *
+     * @param string $locale
+     * @return string
+     */
+    public function getLocaleName($locale);
+
+    /**
+     * Set shortDescription
+     *
+     * @param string $shortDescription
+     * @return RegionServiceEntityInterface
+     */
+    public function setShortDescription($shortDescription);
+
+    /**
+     * Get shortDescription
+     *
+     * @return string 
+     */
+    public function getShortDescription();
+    
+    /**
+     * Set Locale short descriptions
+     * 
+     * @param array $localeShortDescriptions
+     * @return RegionServiceEntityInterface
+     */
+    public function setLocaleShortDescriptions($localeShortDescriptions);
+
+    /**
+     * Get Locale short description
+     *
+     * @param string $locale
+     * @return string
+     */
+    public function getLocaleShortDescription($locale);
+    
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return RegionServiceEntityInterface
+     */
+    public function setDescription($description);
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription();
+    
+    /**
+     * Set locale descriptions
+     *
+     * @param array $localeDescriptions
+     * @return RegionServiceEntityInterface
+     */
+    public function setLocaleDescriptions($localeDescriptions);
+    
+    /**
+     * Get locale description
+     *
+     * @return string
+     */
+    public function getLocaleDescription($locale);
+
+    /**
+     * Set alternativeName
+     *
+     * @param string $alternativeName
+     * @return RegionServiceEntityInterface
+     */
+    public function setAlternativeName($alternativeName);
+
+    /**
+     * Get alternativeName
+     *
+     * @return string 
+     */
+    public function getAlternativeName();
+
+    /**
      * Set season
      *
      * @param integer $season
@@ -41,36 +178,6 @@ interface RegionServiceEntityInterface
     public function getWebsites();
 
     /**
-     * Set shortDescription
-     *
-     * @param string $shortDescription
-     * @return RegionServiceEntityInterface
-     */
-    public function setShortDescription($shortDescription);
-
-    /**
-     * Get shortDescription
-     *
-     * @return string 
-     */
-    public function getShortDescription();
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     * @return RegionServiceEntityInterface
-     */
-    public function setDescription($description);
-
-    /**
-     * Get description
-     *
-     * @return string 
-     */
-    public function getDescription();
-
-    /**
      * Set minimumAltitude
      *
      * @param integer $minimumAltitude
@@ -99,36 +206,96 @@ interface RegionServiceEntityInterface
      * @return integer 
      */
     public function getMaximumAltitude();
-
+    
     /**
-     * Set name
+     * Set total elevators
      *
-     * @param string $name
+     * @param integer $totalElevators
      * @return RegionServiceEntityInterface
      */
-    public function setName($name);
-
+    public function setTotalElevators($totalElevators);
+    
     /**
-     * Get name
+     * Get total elevators
      *
-     * @return string 
+     * @return integer
      */
-    public function getName();
-
+    public function getTotalElevators();
+    
     /**
-     * Set alternativeName
+     * Set total slopes distance
      *
-     * @param string $alternativeName
+     * @param integer $totalSlopesDistance
      * @return RegionServiceEntityInterface
      */
-    public function setAlternativeName($alternativeName);
-
+    public function setTotalSlopesDistance($totalSlopesDistance);
+    
     /**
-     * Get alternativeName
+     * Get total total slopes distance
      *
-     * @return string 
+     * @return integer
      */
-    public function getAlternativeName();
+    public function getTotalSlopesDistance();
+    
+    /**
+     * Set total blue slopes
+     *
+     * @param integer $totalBlueSlopes
+     * @return RegionServiceEntityInterface
+     */
+    public function setTotalBlueSlopes($totalBlueSlopes);
+    
+    /**
+     * Get total blue slopes
+     *
+     * @return integer
+     */
+    public function getTotalBlueSlopes();
+    
+    /**
+     * Set total red slopes
+     *
+     * @param integer $totalRedSlopes
+     * @return RegionServiceEntityInterface
+     */
+    public function setTotalRedSlopes($totalRedSlopes);
+    
+    /**
+     * Get total red slopes
+     *
+     * @return integer
+     */
+    public function getTotalRedSlopes();
+    
+    /**
+     * Set total black slopes
+     *
+     * @param integer $totalRedSlopes
+     * @return RegionServiceEntityInterface
+     */
+    public function setTotalBlackSlopes($totalBlackSlopes);
+    
+    /**
+     * Get total black slopes
+     *
+     * @return integer
+     */
+    public function getTotalBlackSlopes();
+    
+    /**
+     * Set types count
+     *
+     * @param integer $typesCount
+     * @return RegionServiceEntityInterface
+     */
+    public function setTypesCount($typesCount);
+    
+    /**
+     * Get types count
+     *
+     * @return integer
+     */
+    public function getTypesCount();
 
     /**
      * Set createdAt

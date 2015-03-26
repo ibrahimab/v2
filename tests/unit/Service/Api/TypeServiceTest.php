@@ -18,16 +18,26 @@ class TypeServiceTest extends \Codeception\TestCase\Test
      * @var \AppBundle\Service\Api\TypeService
      */
     protected $typeService;
+    
+    /**
+     * @var \AppBundle\Service\Api\RegionService
+     */
+    protected $regionService;
 
     protected function _before()
     {
         $this->serviceContainer = $this->getModule('Symfony2')->container;
         $this->typeService      = $this->serviceContainer->get('service.api.type');
+        $this->regionService    = $this->serviceContainer->get('service.api.region');
+        
+        // clearing doctrine
+        $this->serviceContainer->get('doctrine')->getManager()->clear();
     }
     
     protected function _after()
     {
-        $this->typeService = null;
+        $this->typeService   = null;
+        $this->regionService = null;
     }
 
     public function testGetTypes()
@@ -71,5 +81,22 @@ class TypeServiceTest extends \Codeception\TestCase\Test
         // get surveys
         $surveys = $type->getSurveys();
         $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Booking\Survey\SurveyServiceEntityInterface', $surveys);
+    }
+    
+    public function testCountByRegions()
+    {
+        $regions = $this->regionService->all(['where' => ['id' => [1, 2]]]);
+        $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Region\RegionServiceEntityInterface', $regions);
+        
+        // counting accommodations
+        $accommodationsCount = $this->typeService->countByRegions($regions);
+
+        // asserting that region ID = 1 has 1 accommodation
+        $this->assertArrayHasKey(1, $accommodationsCount);
+        $this->assertSame(1, $accommodationsCount[1]);
+        
+        // asserting that region ID = 2 has 1 accommodation
+        $this->assertArrayHasKey(2, $accommodationsCount);
+        $this->assertSame(1, $accommodationsCount[2]);
     }
 }

@@ -36,13 +36,6 @@ class Country implements CountryServiceEntityInterface
      * @ORM\Column(name="naam", type="string", length=50)
      */
     private $name;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="altnaam", type="string", length=255)
-     */
-    private $alternativeName;
     
     /**
      * @var string
@@ -57,6 +50,13 @@ class Country implements CountryServiceEntityInterface
      * @ORM\Column(name="naam_de", type="string", length=50)
      */
     private $germanName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="altnaam", type="string", length=255)
+     */
+    private $alternativeName;
 
     /**
      * @var boolean
@@ -129,6 +129,27 @@ class Country implements CountryServiceEntityInterface
     private $germanDescription;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="omschrijving_openklap", type="text")
+     */
+    private $additionalDescription;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="omschrijving_openklap_en", type="text")
+     */
+    private $englishAdditionalDescription;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="omschrijving_openklap_de", type="text")
+     */
+    private $germanAdditionalDescription;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="kleurcode", type="smallint")
@@ -148,6 +169,27 @@ class Country implements CountryServiceEntityInterface
      * @ORM\Column(name="accommodatiecodes", type="simple_array")
      */
     private $accommodationCodes;
+    
+    /**
+     * Virtual field that holds the types count
+     *
+     * @var integer
+     */
+    private $typesCount;
+    
+    /**
+     * Virtual field that holds the average ratings for a country
+     * 
+     * @var integer
+     */
+    private $averageRatings = 0;
+    
+    /**
+     * Virtual field that holds the ratings count for a country
+     * 
+     * @var integer
+     */
+    private $ratingsCount = 0;
 
     /**
      * @var \DateTime
@@ -275,7 +317,7 @@ class Country implements CountryServiceEntityInterface
         // normalize locales
         $localeNames = array_change_key_case($localeNames);
         
-        $this->setName(isset($localeName['nl']) ? $localeNames['nl'] : '');
+        $this->setName(isset($localeNames['nl']) ? $localeNames['nl'] : '');
         $this->setEnglishName(isset($localeNames['en']) ? $localeNames['en'] : '');
         $this->setGermanName(isset($localeNames['de']) ? $localeNames['de'] : '');
         
@@ -601,6 +643,100 @@ class Country implements CountryServiceEntityInterface
         
         return $localeDescription;
     }
+    
+
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setAdditionalDescription($additionaldescription)
+    {
+        $this->additionalDescription = $additionaldescription;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getAdditionalDescription()
+    {
+        return $this->additionalDescription;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setEnglishAdditionalDescription($englishAdditionalDescription)
+    {
+        $this->englishAdditionalDescription = $englishAdditionalDescription;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getEnglishAdditionalDescription()
+    {
+        return $this->englishAdditionalDescription;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setGermanAdditionalDescription($germanAdditionalDescription)
+    {
+        $this->germanAdditionalDescription = $germanAdditionalDescription;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getGermanAdditionalDescription()
+    {
+        return $this->germanAdditionalDescription;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setLocaleAdditionalDescriptions($localeAdditionalDescriptions)
+    {
+        // normalize locales
+        $localeAdditionalDescriptions = array_change_key_case($localeAdditionalDescriptions);
+        
+        $this->setAdditionalDescription(isset($localeAdditionalDescriptions['nl']) ? $localeAdditionalDescriptions['nl'] : '');
+        $this->setEnglishAdditionalDescription(isset($localeAdditionalDescriptions['en']) ? $localeAdditionalDescriptions['en'] : '');
+        $this->setGermanAdditionalDescription(isset($localeAdditionalDescriptions['de']) ? $localeAdditionalDescriptions['de'] : '');
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getLocaleAdditionalDescription($locale)
+    {
+        $locale = strtolower($locale);
+        switch ($locale) {
+            
+            case 'en':
+                $localeAdditionalDescription = $this->getEnglishAdditionalDescription();
+                break;
+                
+            case 'de':
+                $localeAdditionalDescription = $this->getGermanAdditionalDescription();
+                break;
+            
+            case 'nl':
+            default:
+                $localeAdditionalDescription = $this->getAdditionalDescription();
+                break;
+        }
+        
+        return $localeAdditionalDescription;
+    }
 
     /**
      * {@InheritDoc}
@@ -655,7 +791,61 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->accommodationCodes;
     }
-
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setTypesCount($typesCount)
+    {
+        $this->typesCount = $typesCount;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getTypesCount()
+    {
+        return $this->typesCount;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setAverageRatings($averageRatings)
+    {
+        $this->averageRatings = $averageRatings;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getAverageRatings()
+    {
+        return $this->averageRatings;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setRatingsCount($ratingsCount)
+    {
+        $this->ratingsCount = $ratingsCount;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getRatingsCount()
+    {
+        return $this->ratingsCount;
+    }
+    
     /**
      * {@InheritDoc}
      */

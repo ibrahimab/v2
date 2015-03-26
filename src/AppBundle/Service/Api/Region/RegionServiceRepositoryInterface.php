@@ -21,6 +21,16 @@ interface RegionServiceRepositoryInterface
      * Finding a single region
      *
      * @param array $by
+     * @return RegionServiceEntityInterface
      */
     public function find($by = []);
+    
+    /**
+     * Find by locale name
+     *
+     * @param string $name
+     * @param string $locale
+     * @return RegionServiceEntityInterface
+     */
+    public function findByLocaleName($name, $locale);
 }

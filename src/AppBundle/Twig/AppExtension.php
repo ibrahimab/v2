@@ -2,6 +2,7 @@
 namespace AppBundle\Twig;
 
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
+use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       Symfony\Component\DependencyInjection\ContainerInterface;
 use       Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use       Symfony\Bridge\Twig\Extension\RoutingExtension;
@@ -41,9 +42,12 @@ class AppExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('locale_url',  [$this, 'getUrl'],  ['is_safe_callback' => [$this, 'isUrlGenerationSafe']]),
-            new \Twig_SimpleFunction('locale_path', [$this, 'getPath'], ['is_safe_callback' => [$this, 'isUrlGenerationSafe']]),
-            new \Twig_SimpleFunction('image_url',   [$this, 'imageUrl']),
+            new \Twig_SimpleFunction('locale_url',   [$this, 'getUrl'],      ['is_safe_callback' => [$this, 'isUrlGenerationSafe']]),
+            new \Twig_SimpleFunction('locale_path',  [$this, 'getPath'],     ['is_safe_callback' => [$this, 'isUrlGenerationSafe']]),
+            new \Twig_SimpleFunction('type_image',   [$this, 'getTypeImage']),
+            new \Twig_SimpleFunction('region_image', [$this, 'getRegionImage']),
+            new \Twig_SimpleFunction('breadcrumbs',  [$this, 'breadcrumbs'], ['is_safe' => ['html'], 'needs_environment' => true]),
+            new \Twig_SimpleFunction('get_locale',   [$this, 'getLocale']),
         ];
     }
     
@@ -53,7 +57,7 @@ class AppExtension extends \Twig_Extension
      * @param TypeServiceEntityInterface $type
      * @return string
      */
-    public function imageUrl(TypeServiceEntityInterface $type)
+    public function getTypeImage(TypeServiceEntityInterface $type)
     {
         $rootDir = $this->container->get('kernel')->getRootDir();
         $path    = dirname($rootDir) . '/web/chalet/pic/cms/';
@@ -69,19 +73,44 @@ class AppExtension extends \Twig_Extension
         return '/chalet/' . $cache . $file . '.jpg';
     }
     
+    public function getRegionImage(RegionServiceEntityInterface $region)
+    {
+        $rootDir   = $this->container->get('kernel')->getRootDir();
+        $path      = dirname($rootDir) . '/web/chalet/pic/cms/skigebieden/';
+        $directory = new \DirectoryIterator($path);
+        $iterator  = new \IteratorIterator($directory);
+        $pattern   = new \RegexIterator($iterator, '/^' . $region->getId() . '-[0-9]{1,3}\.jpg$/i', \RecursiveRegexIterator::GET_MATCH);
+        
+        // get first image
+        $pattern->next();
+        
+        $filename = $pattern->current();
+        if (is_array($filename)) {
+            $filename = 'skigebieden/' . current($filename);
+        } else {
+            $filename = 'accommodaties/0.jpg';
+        }
+        
+        return '/chalet/pic/cms/' . $filename;
+    }
+    
     /**
      * Wrapper around path function of twig to automatically add _<locale> to the route name
      */
     public function getPath($name, $parameters = array(), $relative = false)
     {
         $locale = $this->container->get('request')->getLocale();
-        return $this->generator->generate(($name . '_' . $locale), $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
+        $exists = $this->generator->getRouteCollection()->get($name . '_' . $locale) !== null;
+        
+        return $this->generator->generate(($name . ($exists ? ('_' . $locale) : '')), $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
     }
     
     public function getUrl($name, $parameters = array(), $schemeRelative = false)
     {
         $locale = $this->container->get('request')->getLocale();
-        return $this->generator->generate(($name . '_' . $locale), $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
+        $exists = $this->generator->getRouteCollection()->get($name . '_' . $locale) !== null;
+        
+        return $this->generator->generate(($name . ($exists ? ('_' . $locale) : '')), $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
     }
     
     /**
@@ -120,6 +149,45 @@ class AppExtension extends \Twig_Extension
         }
 
         return array();
+    }
+    
+    public function breadcrumbs(\Twig_Environment $twig, $placeholders = [], $params = [])
+    {
+        $annotations  = $this->container->get('request')->attributes->get('breadcrumbs');
+        $breadcrumbs  = [];
+        $replacements = array_values($placeholders);
+        $placeholders = array_map(function($placeholder) { return '{' . $placeholder .'}'; }, array_keys($placeholders));
+
+        foreach ($annotations as $annotation) {
+            
+            $pathParams = [];
+            foreach ($params as $key => $value) {
+                
+                if (in_array($key, $annotation->getPathParams())) {
+                    $pathParams[$key] = $value;
+                }
+            }
+            
+            $breadcrumbs[] = [
+                
+               'title'     => str_replace($placeholders, $replacements, $annotation->getTitle()),
+               'path'      => $annotation->getPath(),
+               'params'    => $pathParams,
+               'active'    => $annotation->getActive(),
+               'translate' => $annotation->translate(),
+            ];
+        }
+
+        return $twig->render('partials/breadcrumbs.html.twig', ['breadcrumbs' => $breadcrumbs]);
+    }
+    
+    public function getLocale()
+    {
+        if (null === $this->locale) {
+            $this->locale = $this->container->get('request')->getLocale();
+        }
+        
+        return $this->locale;
     }
     
     /**

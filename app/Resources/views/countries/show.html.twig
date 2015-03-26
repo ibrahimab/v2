@@ -1,43 +1,131 @@
 {% extends 'layouts/default.html.twig' %}
 
+{% block breadcrumbs %}
+    {{ breadcrumbs({countryName: country.getLocaleName(get_locale())}, {countrySlug: country.getLocaleName(get_locale())}) }}
+{% endblock %}
+
 {% block body %}
     
     {{ parent() }}
 
-    {% set locale = app.request.locale %}
-
     <!-- content -->
     <section class="landing">
         <div class="row" id="area-specs"><!-- id="area-specs" -->
-            <h1>{{ country.getLocaleTitle(locale) }} <i class="sprite sprite-flag-{{ country.startCode }}"></i></h1>
+            <h1>{{ country.getLocaleTitle(get_locale()) }} <i class="sprite sprite-flag-{{ country.startCode }}"></i></h1>
         </div>
         <div class="row">
             <div class="large-8 medium-8 columns">
-                {% if country.getLocaleShortDescription(locale) %}
-                    <p>{{ country.getShortDescription(locale) }}</p>
+                <p>{{ country.getLocaleDescription(get_locale())|nl2br }}</p>
+                {% if country.getLocaleAdditionalDescription(get_locale()) %}
+                    <p>{{ country.getLocaleAdditionalDescription(get_locale())|nl2br }}</p>
                 {% endif %}
-                <p>{{ country.getLocaleDescription(locale) }}</p>
+                <p><a href="#">Bekijk al onze chalets en appartementen in {{ country.getLocaleName(get_locale()) }}</a></p>
                 
             </div>
             <div class="large-4 medium-4 columns">
-                <h3>{{ 'features'|trans }} {{ country.getLocaleName(locale) }}</h3>
+                <h3>{{ 'features'|trans }} {{ country.getLocaleName(get_locale()) }}</h3>
                 <ul class="landing-details">
-                    <li>{{ 'chalets-apartments'|trans }}<span>245</span></li>
-                    <li>{{ 'average-rating'|trans }}<span>7,9</span></li>
-                    <li>{{ 'ratings' }}<span>198</span></li>
+                    <li>{{ 'chalets-apartments'|trans|capitalize }}<span>{{ country.getTypesCount() }}</span></li>
+                    <li>{{ 'average-rating'|trans }}<span>{{ country.getAverageRatings() }}</span></li>
+                    <li>{{ 'ratings'|trans }}<span>{{ country.getRatingsCount() }}</span></li>
                 </ul>
-                <h3>{{ 'go-directly-to'|trans }}</h3>
-                <ul class="landing-details">
-                    {% set france      = 'france'|trans %}
-                    {% set austria     = 'austria'|trans %}
-                    {% set switzerland = 'switzerland'|trans %}
-                    {% set italy       = 'italy'|trans %}
-                        
-                    <li><a href="{{ locale_path('country', {countrySlug: france}) }}">{{ france }}</a></li>
-                    <li><a href="{{ locale_path('country', {countrySlug: austria})}}">{{ austria }}</a></li>
-                    <li><a href="{{ locale_path('country', {countrySlug: switzerland}) }}">{{ switzerland }}</a></li>
-                    <li><a href="{{ locale_path('country', {countrySlug: italy}) }}">{{ italy }}</a></li>
-                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <section id="area-selected">
+        <h2>{{ 'ski-areas'|trans}} {{ country.name|trans }}<i class="sprite sprite-flag-{{ country.startcode }}"></i></h2>
+        <div class="row" id="sort-items">
+            <div class="large-12 columns">
+                <div class="row">
+                    <div class="small-6 medium-9 large-9 columns">
+                        <label for="sort-option" class="right inline">Sorteren op:</label>
+                    </div>
+                    <div class="small-6 medium-3 large-3 columns">
+                        <select class="radius right" id="sort-option" data-role="sort-regions">
+                            <option value="alpha"{{ (sort is same as('alpha') ? ' selected="selected"' : '') }}>Alfabetisch</option>
+                            <option value="accommodations"{{ (sort is same as('accommodations') ? ' selected="selected"' : '') }}>Aantal accommodaties</option>
+                            <option value="slopes"{{ (sort is same as('slopes') ? ' selected="selected"' : '') }}>Aantal kilometers piste</option>
+                            <option value="altitude"{{ (sort is same as('altitude') ? ' selected="selected"' : '') }}>Hoogte</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" data-equalizer>
+            {% for region in regions %}
+            <div class="small-12 medium-3 large-3 columns{{ (( ((loop.index % 4) is same as(0)) or loop.last) ? ' end' : '') }}">
+                <article class="overview" data-equalizer-watch>
+                    <div class="accom-img">
+                        <img src="{{ region_image(region) }}" alt="{{ region.getLocaleName(get_locale()) }}" />
+                    </div>
+                    <div class="accom-desc">
+                        <div class="title"><a href="zoekboek.html">{{ region.getLocaleName(get_locale()) }}</a></div>
+                        <br />
+                        <div class="chalets"><i class="sprite sprite-gray-chalet"></i><strong>{{ region.getTypesCount() }}</strong> chalets &amp; appartementen</div>
+                        {% if region.getMinimumAltitude() == region.getMaximumAltitude() %}
+                            <div class="mountain"><i class="sprite sprite-gray-mountain"></i>Ligt tussen <strong>{{ region.getMinimumAltitude() }}</strong> {{ 'and'|trans }} <strong>{{ region.getMaximumAltitude() }}</strong> m hoogte</div>
+                        {% else %}
+                            <div class="mountain"><i class="sprite sprite-gray-mountain"></i>Ligt op <strong>{{ region.getMaximumAltitude() }}</strong> m hoogte</div>
+                        {% endif %}
+                        <div class="pistes"><i class="sprite sprite-icon-pistes"></i>Ruim <strong>{{ region.getTotalSlopesDistance() }}</strong> km pistes</div>
+                    </div>
+                </article>
+            </div>
+            {% if (loop.index % 4) is same as(0) %}
+            </div><div class="row" data-equalizer>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </section>
+
+    {% set france      = 'france'|trans %}
+    {% set austria     = 'austria'|trans %}
+    {% set switzerland = 'switzerland'|trans %}
+    {% set italy       = 'italy'|trans %}
+
+    <section class="area-countries">
+        <h2>Direct naar</h2>
+        <div class="row">
+            <div class="small-12 medium-3 large-3 columns">
+                <article class="overview" data-equalizer-watch>
+                    <div class="accom-img">
+                        <img src="/chalet/pic/cms/skigebieden/13-1.jpg" alt="France" />
+                    </div>
+                    <div class="accom-desc">
+                        <div class="title"><a href="{{ locale_path('show_country', {countrySlug: france}) }}"><i class="sprite sprite-flag-F"></i>{{ france }}</a></div>
+                    </div>
+                </article>
+            </div>
+            <div class="small-12 medium-3 large-3 columns">
+                <article class="overview" data-equalizer-watch>
+                    <div class="accom-img">
+                        <img src="/chalet/pic/cms/skigebieden/202-1.jpg" alt="Italy" />
+                    </div>
+                    <div class="accom-desc">
+                        <div class="title"><a href="{{ locale_path('show_country', {countrySlug: italy}) }}"><i class="sprite sprite-flag-I"></i>{{ italy }}</a></div>
+                    </div>
+                </article>
+            </div>
+            <div class="small-12 medium-3 large-3 columns">
+                <article class="overview" data-equalizer-watch>
+                    <div class="accom-img">
+                        <img src="/chalet/pic/cms/skigebieden/200-1.jpg" alt="Austria" />
+                    </div>
+                    <div class="accom-desc">
+                        <div class="title"><a href="{{ locale_path('show_country', {countrySlug: austria})}}"><i class="sprite sprite-flag-O"></i>{{ austria }}</a></div>
+                    </div>
+                </article>
+            </div>
+            <div class="small-12 medium-3 large-3 columns end">
+                <article class="overview" data-equalizer-watch>
+                    <div class="accom-img">
+                        <img src="/chalet/pic/cms/skigebieden/65-1.jpg" alt="Switzerland" height="200" />
+                    </div>
+                    <div class="accom-desc">
+                        <div class="title"><a href="{{ locale_path('show_country', {countrySlug: switzerland}) }}"><i class="sprite sprite-flag-Z"></i>{{ switzerland }}</a></div>
+                    </div>
+                </article>
             </div>
         </div>
     </section>

@@ -2,6 +2,7 @@
 namespace AppBundle\Service\Api\Booking\Survey;
 
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
+use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
 
 class SurveyService
 {
@@ -44,7 +45,7 @@ class SurveyService
     
     /**
      * @param TypeServiceEntityInterface $type
-     * @return integer
+     * @return array
      */
     public function statsByType(TypeServiceEntityInterface $type)
     {
@@ -58,5 +59,14 @@ class SurveyService
     public function statsByTypes($types)
     {
         return $this->surveyRepository->statsByTypes($types);
+    }
+    
+    /**
+     * @param CountryServiceEntityInterface $type
+     * @return array
+     */
+    public function statsByCountry(CountryServiceEntityInterface $country)
+    {
+        return $this->surveyRepository->statsByCountry($country);
     }
 }

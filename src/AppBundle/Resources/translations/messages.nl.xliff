@@ -57,6 +57,16 @@
         <target>Pension</target>
         <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
       </trans-unit>
+      <trans-unit id="11ef521f70854107a328afbaa22be36d09084b25" resname="countries">
+        <source>countries</source>
+        <target>Landen</target>
+        <jms:reference-file line="2">views/partials/breadcrumbs.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e5bd0083ce2c37a3ebcf28a89c8026378b3c409e" resname="frontpage">
+        <source>frontpage</source>
+        <target>Home</target>
+        <jms:reference-file line="2">views/partials/breadcrumbs.html.twig</jms:reference-file>
+      </trans-unit>
     </body>
   </file>
 </xliff>

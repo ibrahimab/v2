@@ -119,4 +119,34 @@ interface AccommodationServiceEntityInterface
      * @return string
      */
     public function getKindIdentifier();
+
+    /**
+     * Set display flag
+     *
+     * @param boolean
+     * @return AccommodationServiceEntityInterface
+     */
+    public function setDisplay($display);
+
+    /**
+     * Get display flag
+     *
+     * @return boolean
+     */
+    public function getDisplay();
+
+    /**
+     * Set weekend ski flag
+     *
+     * @param boolean
+     * @return AccommodationServiceEntityInterface
+     */
+    public function setWeekendSki($weekendSki);
+
+    /**
+     * Get weekend ski flag
+     *
+     * @return boolean
+     */
+    public function getWeekendSki();
 }
