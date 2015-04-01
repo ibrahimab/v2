@@ -15,6 +15,33 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
     /**
      * {@InheritDoc}
      */
+    public function countByRegion($region)
+    {
+        $qb   = $this->createQueryBuilder('t');
+        $expr = $qb->expr();
+        
+        $qb->select('COUNT(t.id) AS typesCount')
+           ->leftJoin('t.accommodation', 'a')
+           ->leftJoin('a.place', 'p')
+           ->leftJoin('p.region', 'r')
+           ->where($expr->eq('r', ':region'))
+           ->andWhere($expr->eq('a.display', ':display'))
+           ->andWhere($expr->eq('t.display', ':display'))
+           ->andWhere($expr->eq('a.weekendSki', ':weekendski'))
+           ->setParameters([
+               
+               'region'     => $region,
+               'display'    => true,
+               'weekendski' => false,
+           ]);
+        
+        $result = $qb->getQuery()->getSingleScalarResult();
+        return intval($result);
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
     public function countByRegions($regions)
     {
         $qb   = $this->createQueryBuilder('t');

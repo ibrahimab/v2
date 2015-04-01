@@ -357,6 +357,35 @@ interface RegionServiceEntityInterface
      * @return integer
      */
     public function getTypesCount();
+    
+    /**
+     * Set average ratings for this region
+     *
+     * @return RegionServiceEntityInterface
+     */
+    public function setAverageRatings($averageRatings);
+    
+    /**
+     * Get average ratings for this region
+     * 
+     * @return integer
+     */
+    public function getAverageRatings();
+    
+    /**
+     * Set Ratings count
+     *
+     * @param integer $ratingsCount
+     * @return RegionServiceEntityInterface
+     */
+    public function setRatingsCount($ratingsCount);
+    
+    /**
+     * Get Ratings count
+     *
+     * @return integer
+     */
+    public function getRatingsCount();
 
     /**
      * Set createdAt

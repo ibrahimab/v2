@@ -20,6 +20,14 @@ interface TypeServiceRepositoryInterface {
     public function find($by = []);
     
     /**
+     * Counting types of all the accommodations for region given, returns count
+     *
+     * @param RegionServiceEntityInterface $region
+     * @return integer
+     */
+    public function countByRegion($region);
+    
+    /**
      * Counting types of all the accommodations for every region given, returns array with region ID as its key and the count as its value
      *
      * @param RegionServiceEntityInterface[] $regions

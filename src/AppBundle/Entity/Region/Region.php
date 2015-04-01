@@ -134,6 +134,20 @@ class Region implements RegionServiceEntityInterface
      * @var integer
      */
     private $typesCount;
+    
+    /**
+     * Virtual field that holds the average ratings for a region
+     * 
+     * @var integer
+     */
+    private $averageRatings = 0;
+    
+    /**
+     * Virtual field that holds the ratings count for a region
+     * 
+     * @var integer
+     */
+    private $ratingsCount = 0;
 
     /**
      * @var integer
@@ -774,6 +788,42 @@ class Region implements RegionServiceEntityInterface
     public function getTypesCount()
     {
         return $this->typesCount;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setAverageRatings($averageRatings)
+    {
+        $this->averageRatings = $averageRatings;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getAverageRatings()
+    {
+        return $this->averageRatings;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setRatingsCount($ratingsCount)
+    {
+        $this->ratingsCount = $ratingsCount;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getRatingsCount()
+    {
+        return $this->ratingsCount;
     }
 
     /**

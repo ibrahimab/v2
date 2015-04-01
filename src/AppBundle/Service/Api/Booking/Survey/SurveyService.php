@@ -2,6 +2,7 @@
 namespace AppBundle\Service\Api\Booking\Survey;
 
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
+use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
 
 class SurveyService
@@ -62,7 +63,16 @@ class SurveyService
     }
     
     /**
-     * @param CountryServiceEntityInterface $type
+     * @param RegionServiceEntityInterface $region
+     * @return array
+     */
+    public function statsByRegion(RegionServiceEntityInterface $region)
+    {
+        return $this->surveyRepository->statsByRegion($region);
+    }
+    
+    /**
+     * @param CountryServiceEntityInterface $country
      * @return array
      */
     public function statsByCountry(CountryServiceEntityInterface $country)

@@ -48,12 +48,12 @@ class RegionRepository extends BaseRepository implements RegionServiceRepository
         $qb    = $this->createQueryBuilder('r');
         $expr  = $qb->expr();
         
-        $qb->select('r, partial c.{id, name, englishName, germanName}, partial p.{id}')
+        $qb->select('r, partial c.{id, name, englishName, germanName}, partial p.{id, name}')
            ->from('AppBundle\Entity\Place\Place', 'p')
            ->leftJoin('p.country', 'c')
            ->where($expr->eq('r', 'p.region'))
            ->andWhere($expr->eq('r.' . $field, ':fieldName'))
-           ->setMaxResults(1)
+           ->groupBy('p.id')
            ->setParameters([
                'fieldName' => $value,
            ]);

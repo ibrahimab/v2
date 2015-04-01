@@ -60,8 +60,13 @@ class CountriesController extends Controller
             $country->setTypesCount(array_sum($typesCount));
         }
         
-        $country->setRatingsCount(intval($stats['surveyCount']));
-        $country->setAverageRatings(round($stats['surveyAverageOverallRating'], 1));
+        if (isset($stats['surveyCount'])) {
+            $country->setRatingsCount(intval($stats['surveyCount']));
+        }
+        
+        if (isset($stats['surveyAverageOverallRating'])) {
+            $country->setAverageRatings(round($stats['surveyAverageOverallRating'], 1));
+        }
         
         foreach ($allRegions as $region) {
             

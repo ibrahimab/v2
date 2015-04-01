@@ -268,6 +268,21 @@ interface CountryServiceEntityInterface
     public function getAverageRatings();
     
     /**
+     * Set Ratings count
+     *
+     * @param integer $ratingsCount
+     * @return CountryServiceEntityInterface
+     */
+    public function setRatingsCount($ratingsCount);
+    
+    /**
+     * Get Ratings count
+     *
+     * @return integer
+     */
+    public function getRatingsCount();
+    
+    /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
