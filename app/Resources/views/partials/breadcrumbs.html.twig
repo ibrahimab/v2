@@ -2,7 +2,13 @@
     
     {% for breadcrumb in breadcrumbs %}
         {% if breadcrumb.active %}
-            <li role="menuitem" class="current">{{ breadcrumb.title }}</li>
+            <li role="menuitem" class="current">
+                {% if breadcrumb.translate %}
+                    {{ breadcrumb.title|trans }}
+                {% else %}
+                    {{ breadcrumb.title }}
+                {% endif %}
+            </li>
         {% else %}
             <li role="menuitem">
                 <a href="{{ locale_path(breadcrumb.path, breadcrumb.params) }}">

@@ -120,6 +120,6 @@ class JavascriptServiceTest extends \Codeception\TestCase\Test
     public function testGetWithDot()
     {
         $this->javascriptService->set('attribute', []);
-        dump($this->javascriptService->getWithDot());
+//        dump($this->javascriptService->getWithDot());
     }
 }

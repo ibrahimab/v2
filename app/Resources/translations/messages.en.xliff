@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2015-03-26T17:06:21Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
+  <file date="2015-03-30T09:31:18Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
+      <trans-unit id="5780daf6db0b013dbf82807c9f85abba683b0820" resname="about">
+        <source>about</source>
+        <target>About us</target>
+        <jms:reference-file line="21">views/partials/footer.html.twig</jms:reference-file>
+      </trans-unit>
       <trans-unit id="cffa50a32cb13a240d705317bcec65dd1f31b6ad" resname="and">
         <source>and</source>
         <target>and</target>
@@ -15,19 +20,40 @@
       <trans-unit id="1fe80e506149e4b49ca3560003edd2b8d57e6d9e" resname="austria">
         <source>austria</source>
         <target>Austria</target>
-        <jms:reference-file line="83">views/countries/show.html.twig</jms:reference-file>
         <jms:reference-file line="21">views/layouts/home.html.twig</jms:reference-file>
+        <jms:reference-file line="2">views/partials/countries.html.twig</jms:reference-file>
+        <jms:reference-file line="61">views/partials/footer.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="3de6bd54d1a2d5e58c511fe96a0e3b9d1615ecbe" resname="average-rating">
         <source>average-rating</source>
         <target>Average rating</target>
         <jms:reference-file line="29">views/countries/show.html.twig</jms:reference-file>
       </trans-unit>
+      <trans-unit id="169254c45fa4ed7ea11c00541ffb17b0cde39625" resname="blog">
+        <source>blog</source>
+        <target>Blog</target>
+        <jms:reference-file line="23">views/partials/footer.html.twig</jms:reference-file>
+      </trans-unit>
       <trans-unit id="742b1b106252bfe3aa8adb921e6d345220789712" resname="chalets-apartments">
         <source>chalets-apartments</source>
         <target>chalets and apartments</target>
         <jms:reference-file line="28">views/countries/show.html.twig</jms:reference-file>
         <jms:reference-file line="16">views/layouts/home.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="1a73af9e7ae00182733b2292511b814be66f065f" resname="contact">
+        <source>contact</source>
+        <target>Contact</target>
+        <jms:reference-file line="24">views/partials/footer.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3e3ad2dbdd16803952ae53c7b954562e6150c8a9" resname="disclaimer">
+        <source>disclaimer</source>
+        <target>Disclaimer</target>
+        <jms:reference-file line="27">views/partials/footer.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e75bc04532a5639ed1e96d1a467f9ce694094864" resname="faq">
+        <source>faq</source>
+        <target>Frequently asked questions</target>
+        <jms:reference-file line="25">views/partials/footer.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="4f944542e06cd6f28fa72685120ec1c9e2b84a27" resname="features">
         <source>features</source>
@@ -37,8 +63,9 @@
       <trans-unit id="23e591e8c36dda987970603ad0fdd031b7dff9f9" resname="france">
         <source>france</source>
         <target>France</target>
-        <jms:reference-file line="82">views/countries/show.html.twig</jms:reference-file>
         <jms:reference-file line="20">views/layouts/home.html.twig</jms:reference-file>
+        <jms:reference-file line="1">views/partials/countries.html.twig</jms:reference-file>
+        <jms:reference-file line="60">views/partials/footer.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="2d9f00ce031fa21d9e978534c1c88150e4c6fe01" resname="general.or">
         <source>general.or</source>
@@ -96,16 +123,32 @@
         <target>in</target>
         <jms:reference-file line="17">views/layouts/home.html.twig</jms:reference-file>
       </trans-unit>
+      <trans-unit id="b45795c696a53fec0f2c2839f64f576e399a2114" resname="insurances">
+        <source>insurances</source>
+        <target>Insurances</target>
+        <jms:reference-file line="22">views/partials/footer.html.twig</jms:reference-file>
+      </trans-unit>
       <trans-unit id="c073d97dd896ff8dfbf1d4c8aface94beadf7a8e" resname="italy">
         <source>italy</source>
         <target>Italy</target>
-        <jms:reference-file line="85">views/countries/show.html.twig</jms:reference-file>
         <jms:reference-file line="23">views/layouts/home.html.twig</jms:reference-file>
+        <jms:reference-file line="4">views/partials/countries.html.twig</jms:reference-file>
+        <jms:reference-file line="63">views/partials/footer.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="96ed5c5789b174a01557791c8e936673ae4d973f" resname="privacy">
+        <source>privacy</source>
+        <target>Privacy</target>
+        <jms:reference-file line="28">views/partials/footer.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="7bb083edad4751b79c6b2a9a76f28d0181ae8973" resname="ratings">
         <source>ratings</source>
         <target>Ratings</target>
         <jms:reference-file line="30">views/countries/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f062ef59202249cde5de26ada9e2b02fcf9ccecd" resname="sitemap">
+        <source>sitemap</source>
+        <target>Sitemap</target>
+        <jms:reference-file line="29">views/partials/footer.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="81c79e28c645f32c15a986124496624568227611" resname="ski-areas">
         <source>ski-areas</source>
@@ -116,8 +159,14 @@
       <trans-unit id="bbe956747bd1d5990a3bd561eb86cbbcf6642915" resname="switzerland">
         <source>switzerland</source>
         <target>Switzerland</target>
-        <jms:reference-file line="84">views/countries/show.html.twig</jms:reference-file>
         <jms:reference-file line="22">views/layouts/home.html.twig</jms:reference-file>
+        <jms:reference-file line="3">views/partials/countries.html.twig</jms:reference-file>
+        <jms:reference-file line="62">views/partials/footer.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ce620d6749880d79c700eb0ae2a56646f3a59bc5" resname="terms">
+        <source>terms</source>
+        <target>Terms</target>
+        <jms:reference-file line="26">views/partials/footer.html.twig</jms:reference-file>
       </trans-unit>
     </body>
   </file>

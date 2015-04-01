@@ -1,0 +1,50 @@
+{% set france      = 'france'|trans %}
+{% set austria     = 'austria'|trans %}
+{% set switzerland = 'switzerland'|trans %}
+{% set italy       = 'italy'|trans %}
+
+<section class="area-countries">
+    <h2>Ga direct naar</h2>
+    <div class="row">
+        <div class="small-12 medium-3 large-3 columns">
+            <article class="overview" data-equalizer-watch>
+                <div class="accom-img">
+                    <img src="/chalet/pic/cms/skigebieden/13-1.jpg" alt="France" />
+                </div>
+                <div class="accom-desc">
+                    <div class="title"><a href="{{ locale_path('show_country', {countrySlug: france}) }}"><i class="sprite sprite-flag-F"></i>{{ france }}</a></div>
+                </div>
+            </article>
+        </div>
+        <div class="small-12 medium-3 large-3 columns">
+            <article class="overview" data-equalizer-watch>
+                <div class="accom-img">
+                    <img src="/chalet/pic/cms/skigebieden/200-1.jpg" alt="Austria" />
+                </div>
+                <div class="accom-desc">
+                    <div class="title"><a href="{{ locale_path('show_country', {countrySlug: austria})}}"><i class="sprite sprite-flag-O"></i>{{ austria }}</a></div>
+                </div>
+            </article>
+        </div>
+        <div class="small-12 medium-3 large-3 columns">
+            <article class="overview" data-equalizer-watch>
+                <div class="accom-img">
+                    <img src="/chalet/pic/cms/skigebieden/65-1.jpg" alt="Switzerland" height="200" />
+                </div>
+                <div class="accom-desc">
+                    <div class="title"><a href="{{ locale_path('show_country', {countrySlug: switzerland}) }}"><i class="sprite sprite-flag-Z"></i>{{ switzerland }}</a></div>
+                </div>
+            </article>
+        </div>
+        <div class="small-12 medium-3 large-3 columns end">
+            <article class="overview" data-equalizer-watch>
+                <div class="accom-img">
+                    <img src="/chalet/pic/cms/skigebieden/202-1.jpg" alt="Italy" />
+                </div>
+                <div class="accom-desc">
+                    <div class="title"><a href="{{ locale_path('show_country', {countrySlug: italy}) }}"><i class="sprite sprite-flag-I"></i>{{ italy }}</a></div>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>

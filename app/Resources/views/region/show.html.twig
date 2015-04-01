@@ -1,0 +1,20 @@
+{% extends 'layouts/default.html.twig' %}
+
+{% block breadcrumbs %}
+    {{ 
+        breadcrumbs({
+            countryName: place.getCountry().getLocaleName(get_locale()), 
+            regionName: region.getLocaleName(get_locale())
+        }, {
+            countrySlug: place.getCountry().getLocaleName(get_locale())
+        })
+    }}
+{% endblock %}
+
+{% block body %}
+    
+    {{ parent() }}
+    
+    
+    
+{% endblock %}

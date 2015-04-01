@@ -33,4 +33,13 @@ interface RegionServiceRepositoryInterface
      * @return RegionServiceEntityInterface
      */
     public function findByLocaleName($name, $locale);
+    
+    /**
+     * Find by locale name
+     *
+     * @param string $name
+     * @param string $locale
+     * @return RegionServiceEntityInterface
+     */
+    public function findByLocaleSeoName($seoName, $locale);
 }

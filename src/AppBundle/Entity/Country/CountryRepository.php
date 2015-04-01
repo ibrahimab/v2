@@ -41,7 +41,7 @@ class CountryRepository extends BaseRepository implements CountryServiceReposito
         $qb        = $this->createQueryBuilder('c');
         $expr      = $qb->expr();
         
-        $qb->select('partial r.{id, name, englishName, germanName, minimumAltitude, maximumAltitude, totalSlopesDistance}, partial c.{id, name, englishName, germanName, title, englishTitle, 
+        $qb->select('partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, minimumAltitude, maximumAltitude, totalSlopesDistance}, partial c.{id, name, englishName, germanName, title, englishTitle, 
                      germanTitle, startCode, shortDescription, englishShortDescription, germanShortDescription, description, englishDescription, germanDescription, additionalDescription, englishAdditionalDescription, germanAdditionalDescription}, 
                      partial p.{id}')
            ->leftJoin('c.places', 'p')

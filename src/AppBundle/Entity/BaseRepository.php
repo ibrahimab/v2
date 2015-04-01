@@ -23,20 +23,19 @@ class BaseRepository extends EntityRepository
     public function getLocaleField($field, $locale)
     {
         $locale = strtolower($locale);
-        $field  = ucfirst(strtolower($field));
         switch ($locale) {
             
             case 'en':
-                $localeField = 'english' . $field;
+                $localeField = 'english' . ucfirst($field);
                 break;
                 
             case 'de':
-                $localeField = 'german' . $field;
+                $localeField = 'german' . ucfirst($field);
                 break;
                 
             case 'nl':
             default:
-                $localeField = strtolower($field);
+                $localeField = $field;
                 break;
         }
         

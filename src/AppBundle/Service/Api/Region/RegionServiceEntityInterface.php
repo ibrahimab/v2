@@ -72,6 +72,67 @@ interface RegionServiceEntityInterface
     public function getLocaleName($locale);
 
     /**
+     * Set seo name
+     *
+     * @param string $seoName
+     * @return RegionServiceEntityInterface
+     */
+    public function setSeoName($seoName);
+
+    /**
+     * Get seo name
+     *
+     * @return string 
+     */
+    public function getSeoName();
+    
+    /**
+     * Set english seo name
+     *
+     * @param string $englishSeoName
+     * @return RegionServiceEntityInterface
+     */
+    public function setEnglishSeoName($englishSeoName);
+    
+    /**
+     * Get english seo name
+     *
+     * @return string
+     */
+    public function getEnglishSeoName();
+    
+    /**
+     * Set German seo name
+     *
+     * @param string $germanSeoName
+     * @return RegionServiceEntityInterface
+     */
+    public function setGermanSeoName($germanSeoName);
+    
+    /**
+     * Get German seo name
+     *
+     * @return string
+     */
+    public function getGermanSeoName();
+    
+    /**
+     * Set locale seo names
+     * 
+     * @param array $localeSeoNames
+     * @return RegionServiceEntityInterface
+     */
+    public function setLocaleSeoNames($localeSeoNames);
+    
+    /**
+     * Get locale seo name
+     *
+     * @param string $locale
+     * @return string
+     */
+    public function getLocaleSeoName($locale);
+
+    /**
      * Set shortDescription
      *
      * @param string $shortDescription

@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 use       AppBundle\Annotation\Breadcrumb;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
@@ -16,14 +17,25 @@ use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
  * @since   0.0.1
  *
  * @Breadcrumb(name="frontpage", title="frontpage", translate=true, path="home")
- * @Breadcrumb(name="countries", title="countries", translate=true, path="show_country", pathParams={"countrySlug"})
  */
 class CountriesController extends Controller
 {
     /**
+     * @Route(path="/wintersport/landen",      name="show_countries_nl")
+     * @Route(path="/winter-sports/countries", name="show_countries_en")
+     * @Breadcrumb(name="countries", title="countries", translate=true, active=true)
+     * @Template(":Countries:index.html.twig")
+     */
+    public function index()
+    {
+        return [];
+    }
+    
+    /**
      * @Route(path="/wintersport/land/{countrySlug}/{sort}",      name="show_country_nl", defaults={"sort"="alpha"}, options={"expose"=true})
      * @Route(path="/winter-sports/country/{countrySlug}/{sort}", name="show_country_en", defaults={"sort"="alpha"}, options={"expose"=true})
-     * @Breadcrumb(name="country_show", title="{countryName}", active=true)
+     * @Breadcrumb(name="countries", title="countries", translate=true, path="show_countries")
+     * @Breadcrumb(name="show_country", title="{countryName}", active=true)
      */
     public function show($countrySlug, $sort)
     {

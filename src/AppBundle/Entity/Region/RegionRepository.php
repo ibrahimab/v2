@@ -2,7 +2,9 @@
 namespace AppBundle\Entity\Region;
 
 use       AppBundle\Entity\BaseRepository;
+use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceRepositoryInterface;
+use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
 use       Doctrine\ORM\EntityRepository;
 
 /**
@@ -18,15 +20,44 @@ class RegionRepository extends BaseRepository implements RegionServiceRepository
      */
     public function findByLocaleName($name, $locale)
     {
-        $field = $this->getLocaleField('name', $locale);
+        return $this->findByLocaleField('name', $name, $locale);
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function findByLocaleSeoName($seoName, $locale)
+    {
+        return $this->findByLocaleField('seoName', $seoName, $locale);
+    }
+    
+    /**
+     * This method fetches a region based on a locale field,
+     * Because of certain schema design decisions of the old website
+     * regions do 
+     * 
+     *
+     * @param string $field
+     * @param string $value
+     * @param string $locale
+     * @return array [0 => RegionServiceEntityInterface, 1 => PlaceServiceEntityInterface]
+     */
+    public function findByLocaleField($field, $value, $locale)
+    {
+        $field = $this->getLocaleField($field, $locale);
         $qb    = $this->createQueryBuilder('r');
         $expr  = $qb->expr();
         
-        $qb->where($expr->eq('r.' . $field, ':name'))
+        $qb->select('r, partial c.{id, name, englishName, germanName}, partial p.{id}')
+           ->from('AppBundle\Entity\Place\Place', 'p')
+           ->leftJoin('p.country', 'c')
+           ->where($expr->eq('r', 'p.region'))
+           ->andWhere($expr->eq('r.' . $field, ':fieldName'))
+           ->setMaxResults(1)
            ->setParameters([
-               'name' => $name,
+               'fieldName' => $value,
            ]);
-           
-        return $qb->getQuery()->getSingleResult();
+
+        return $qb->getQuery()->getResult();
     }
 }

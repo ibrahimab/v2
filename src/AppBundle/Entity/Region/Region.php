@@ -46,6 +46,27 @@ class Region implements RegionServiceEntityInterface
     /**
      * @var string
      *
+     * @ORM\Column(name="seonaam", type="string", length=100)
+     */
+    private $seoName;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="seonaam_en", type="string", length=100)
+     */
+    private $englishSeoName;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="seonaam_de", type="string", length=100)
+     */
+    private $germanSeoName;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="altnaam", type="string", length=255)
      */
     private $alternativeName;
@@ -277,6 +298,100 @@ class Region implements RegionServiceEntityInterface
         }
         
         return $localeName;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setSeoName($seoName)
+    {
+        $this->seoName = $seoName;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getSeoName()
+    {
+        return $this->seoName;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setEnglishSeoName($englishSeoName)
+    {
+        $this->englishSeoName = $englishSeoName;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getEnglishSeoName()
+    {
+        return $this->englishSeoName;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setGermanSeoName($germanSeoName)
+    {
+        $this->germanSeoName = $germanSeoName;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getGermanSeoName()
+    {
+        return $this->germanSeoName;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setLocaleSeoNames($localeSeoNames)
+    {
+        // normalize locales
+        $localeSeoNames = array_change_key_case($localeSeoNames);
+        
+        $this->setSeoName(isset($localeSeoNames['nl']) ? $localeSeoNames['nl'] : '');
+        $this->setEnglishSeoName(isset($localeSeoNames['en']) ? $localeSeoNames['en'] : '');
+        $this->setGermanSeoName(isset($localeSeoNames['de']) ? $localeSeoNames['de'] : '');
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getLocaleSeoName($locale)
+    {
+        $locale = strtolower($locale);
+        switch ($locale) {
+            
+            case 'en':
+                $localeSeoName = $this->getEnglishSeoName();
+                break;
+                
+            case 'de':
+                $localeSeoName = $this->getGermanSeoName();
+                break;
+            
+            case 'nl':
+            default:
+                $localeSeoName = $this->getSeoName();
+                break;
+        }
+        
+        return $localeSeoName;
     }
 
     /**

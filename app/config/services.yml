@@ -28,6 +28,9 @@ services:
     app.annotations.breadcrumbs:
         class: AppBundle\Annotation\Parser\Breadcrumb
         arguments: [@annotation_reader]
+        
+    app.utils:
+        class: AppBundle\Service\Utils
     
     repository:
         abstract:        true
