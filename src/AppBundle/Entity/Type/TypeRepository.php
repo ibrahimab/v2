@@ -15,12 +15,28 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
     /**
      * {@InheritDoc}
      */
+    public function findByPlace($place)
+    {
+        $qb   = $this->createQueryBuilder('t');
+        $expr = $qb->expr();
+        
+        $qb->select('partial t.{id, name}')
+           ->leftJoin('t.accommodation', 'a')
+           ->where($expr->eq('a.place', ':place'))
+           ->setParameter('place', $place);
+        
+        return $qb->getQuery()->getResult();
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
     public function countByRegion($region)
     {
         $qb   = $this->createQueryBuilder('t');
         $expr = $qb->expr();
         
-        $qb->select('COUNT(t.id) AS typesCount')
+        $qb->select('p.id as placeId, COUNT(t.id) AS typesCount')
            ->leftJoin('t.accommodation', 'a')
            ->leftJoin('a.place', 'p')
            ->leftJoin('p.region', 'r')
@@ -28,6 +44,7 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
            ->andWhere($expr->eq('a.display', ':display'))
            ->andWhere($expr->eq('t.display', ':display'))
            ->andWhere($expr->eq('a.weekendSki', ':weekendski'))
+           ->groupBy('p.id')
            ->setParameters([
                
                'region'     => $region,
@@ -35,8 +52,9 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
                'weekendski' => false,
            ]);
         
-        $result = $qb->getQuery()->getSingleScalarResult();
-        return intval($result);
+        $results = $qb->getQuery()->getResult();
+        
+        return array_map('intval', array_column($results, 'typesCount', 'placeId'));
     }
     
     /**

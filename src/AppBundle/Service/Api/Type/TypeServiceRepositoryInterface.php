@@ -20,6 +20,14 @@ interface TypeServiceRepositoryInterface {
     public function find($by = []);
     
     /**
+     * Select types by place
+     *
+     * @param  PlaceServiceEntityInterface $place
+     * @return TypeServiceEntityInterface[]
+     */
+    public function findByPlace($place);
+    
+    /**
      * Counting types of all the accommodations for region given, returns count
      *
      * @param RegionServiceEntityInterface $region

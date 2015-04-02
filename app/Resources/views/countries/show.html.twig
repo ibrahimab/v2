@@ -79,6 +79,6 @@
         </div>
     </section>
 
-    {% include 'partials/countries.html.twig' %}
+    {% include 'partials/countries.html.twig' with { active_country: country.getStartCode() } only %}
     
 {% endblock %}

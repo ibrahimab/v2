@@ -22,6 +22,12 @@ class LoadRegionData extends AbstractFixture
                         'en' => 'EN Region #' . $i,
                         'de' => 'DE Region #' . $i,
                    ])
+                  ->setLocaleSeoNames([
+    
+                      'nl' => 'NL Seo Region #' . $i,
+                      'en' => 'EN Seo Region #' . $i,
+                      'de' => 'DE Seo Region #' . $i,
+                  ])
                    ->setLocaleShortDescriptions([
                        
                        'nl' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam amet.',
@@ -41,7 +47,7 @@ class LoadRegionData extends AbstractFixture
                    ->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor nisi ligula, molestie facilisis lorem fringilla sit amet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent euismod eros ut elementum ultricies. Nam nec ipsum ac turpis tempus eleifend vitae in est. Donec sed sapien orci. Suspendisse scelerisque sed quam a sagittis. Pellentesque nibh quam, semper in viverra at, sodales in risus. Sed vitae arcu erat. Sed sagittis gravida egestas. Nam sed dolor rhoncus, gravida ex non, euismod nisi. Donec quis nunc eu quam convallis maximus accumsan ac dui. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.')
                    ->setMinimumAltitude(rand(3000, 8000))
                    ->setMaximumAltitude(rand(8000, 12000))
-                   ->setTotalSlopeDistance($i)
+                   ->setTotalSlopesDistance($i)
                    ->setCreatedAt($now)
                    ->setUpdatedAt($now);
             

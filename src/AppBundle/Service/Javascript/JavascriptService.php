@@ -3,7 +3,6 @@ namespace AppBundle\Service\Javascript;
 
 use       AppBundle\Service\Javascript\Exception\ExistsException;
 use       AppBundle\Service\Javascript\Exception\NotFoundException;
-use       Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * JavascriptService exposes a simple API to manage the global JS object that is available
@@ -37,8 +36,15 @@ class JavascriptService
      * Checking if attribute exists
      */
     public function exists($attribute)
-    {
-        return isset($this->attributes[$attribute]);
+    {   
+        try {
+            
+            $this->get($attribute);
+            return true;
+            
+        } catch (NotFoundException $e) {
+            return false;
+        }
     }
     
     /**
@@ -51,27 +57,9 @@ class JavascriptService
      */
     public function set($attribute, $value = null)
     {
-        if (true === $this->exists($attribute)) {
-            
-            throw new ExistsException(vsprintf('%s could not be set, it already exists with value: %s. Please use #override to override it', 
-                                      [$attribute, $this->get($attribute)]));
-        }
-        
-        $this->attributes[$attribute] = $value;
-        
-        return $this;
-    }
-    
-    /**
-     * Override/set attribute
-     *
-     * @param string $attribute
-     * @param mixed $value
-     * @return JavascriptService
-     */
-    public function override($attribute, $value = null)
-    {
-        $this->attributes[$attribute] = $value;
+        $this->dot($attribute, function(&$foundAttribute) use ($value) {
+            $foundAttribute = $value;
+        });
         
         return $this;
     }
@@ -85,7 +73,10 @@ class JavascriptService
     public function delete($attribute)
     {
         if (true === $this->exists($attribute)) {
-            unset($this->attributes[$attribute]);
+            
+            $this->dot($attribute, function(&$foundAttribute) {
+                $foundAttribute = null;
+            });
         }
         
         return $this;
@@ -99,13 +90,13 @@ class JavascriptService
      * @throws NotFoundException
      */
     public function get($attribute)
-    {
-        if (false === $this->exists($attribute)) {
+    {   
+        $result = $this->dot($attribute);
+        if (null === $result) {
             throw new NotFoundException(vsprintf('%s could not be found', [$attribute]));
         }
         
-        
-        return $this->attributes[$attribute];
+        return $result;
     }
     
     /**
@@ -123,14 +114,14 @@ class JavascriptService
             throw new NotFoundException(vsprintf('%s could not be found', [$attribute]));
         }
         
-        if (is_array($this->get($attribute))) {
+        $this->dot($attribute, function(&$foundAttribute) use ($value) {
             
-            array_push($this->attributes[$attribute], $value);
-            
-        } else {
-            
-            throw new NoArrayException(vsprintf('%s is not an array, cannot add element', $attribute));
-        }
+            if (is_array($foundAttribute)) {
+                array_push($foundAttribute, $value);
+            } else {
+                throw new NoArrayException(vsprintf('%s is not an array, cannot add element', $attribute));
+            }
+        });
         
         return $this;
     }
@@ -148,11 +139,14 @@ class JavascriptService
             throw new NotFoundException(vsprintf('%s could not be found', [$attribute]));
         }
         
-        if (is_array($this->get($attribute))) {
-            return array_pop($this->attributes[$attribute]);
-        }
-        
-        throw new NoArrayException(vsprintf('%s is not an array, cannot pop element', $attribute));
+        return $this->dot($attribute, function(&$foundAttribute) {
+            
+            if (is_array($foundAttribute)) {
+                return array_pop($foundAttribute);
+            } else {
+                throw new NoArrayException(vsprintf('%s is not an array, cannot pop element', $attribute));
+            }
+        });
     }
     
     /**
@@ -214,13 +208,17 @@ class JavascriptService
         return $this->attributes;
     }
     
-    public function dump()
+    public function dot($attribute, $callback = null)
     {
-        $args = func_get_args();
-        foreach ($args as $arg) {
+        $current =& $this->attributes;
+        $path    =  strtok($attribute, '.');
+        
+        while (false !== $path) {
             
-            echo '<pre>', var_dump($arg) , '</pre>';
-            echo "\n --------------- \n";
+            $current =& $current[$path];
+            $path    =  strtok('.');
         }
+        
+        return (null !== $callback ? $callback($current) : $current);
     }
 }

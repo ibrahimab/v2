@@ -3,6 +3,7 @@ namespace AppBundle\Twig;
 
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
+use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
 use       Symfony\Component\DependencyInjection\ContainerInterface;
 use       Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use       Symfony\Bridge\Twig\Extension\RoutingExtension;
@@ -46,6 +47,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('locale_path',  [$this, 'getPath'],     ['is_safe_callback' => [$this, 'isUrlGenerationSafe']]),
             new \Twig_SimpleFunction('type_image',   [$this, 'getTypeImage']),
             new \Twig_SimpleFunction('region_image', [$this, 'getRegionImage']),
+            new \Twig_SimpleFunction('place_image', [$this, 'getPlaceImage']),
             new \Twig_SimpleFunction('breadcrumbs',  [$this, 'breadcrumbs'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new \Twig_SimpleFunction('get_locale',   [$this, 'getLocale']),
         ];
@@ -86,9 +88,30 @@ class AppExtension extends \Twig_Extension
         
         $filename = $pattern->current();
         if (is_array($filename)) {
-            $filename = 'skigebieden/' . current($filename);
+            $filename = 'skigebieden/' . $filename[0];
         } else {
             $filename = 'accommodaties/0.jpg';
+        }
+        
+        return '/chalet/pic/cms/' . $filename;
+    }
+    
+    public function getPlaceImage(PlaceServiceEntityInterface $place)
+    {
+        $rootDir   = $this->container->get('kernel')->getRootDir();
+        $path      = dirname($rootDir) . '/web/chalet/pic/cms/plaatsen/';
+        $directory = new \DirectoryIterator($path);
+        $iterator  = new \IteratorIterator($directory);
+        $pattern   = new \RegexIterator($iterator, '/^' . $place->getId() . '-[0-9]{1,3}\.jpg$/i', \RecursiveRegexIterator::GET_MATCH);
+        
+        // get first image
+        $pattern->next();
+        
+        $filename = $pattern->current();
+        if (is_array($filename)) {
+            $filename = 'plaatsen/' . $filename[0];
+        } else {
+            $filename = 'plaatsen/0.jpg';
         }
         
         return '/chalet/pic/cms/' . $filename;

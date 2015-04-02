@@ -98,4 +98,13 @@ class PlaceServiceTest extends \Codeception\TestCase\Test
         
         $this->assertInstanceOf('AppBundle\Service\Api\Country\CountryServiceEntityInterface', $country);
     }
+    
+    public function testGetPlaceByLocaleSeoName()
+    {
+        $place = $this->placeService->find();
+        $this->assertInstanceOf('AppBundle\Service\Api\Place\PlaceServiceEntityInterface', $place);
+        
+        $otherPlace = $this->placeService->findByLocaleSeoName($place->getSeoName(), 'nl');
+        $this->assertInstanceOf('AppBundle\Service\Api\Place\PlaceServiceEntityInterface', $otherPlace);
+    }
 }

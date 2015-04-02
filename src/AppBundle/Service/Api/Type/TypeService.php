@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Service\Api\Type;
 use       AppBundle\Service\Api\Type\TypeServiceRepositoryInterface;
+use       AppBundle\Service\Api\Place\PlaceServiceRepositoryInterface;
 
 class TypeService
 {    
@@ -42,6 +43,17 @@ class TypeService
     public function find($by = [])
     {
         return $this->typeRepository->find($by);
+    }
+    
+    /**
+     * Get types by place
+     *
+     * @param  PlaceServiceEntityInterface
+     * @return TypeServiceEntityInterface[]
+     */
+    public function findByPlace($place)
+    {
+        return $this->typeRepository->findByPlace($place);
     }
     
     /**

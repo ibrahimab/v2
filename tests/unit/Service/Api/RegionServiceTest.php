@@ -51,9 +51,9 @@ class RegionServiceTest extends \Codeception\TestCase\Test
         $region = $this->regionService->find();
         $this->assertInstanceOf('AppBundle\Service\Api\Region\RegionServiceEntityInterface', $region);
 
-        $localeRegionNL = $this->regionService->findByLocaleName($region->getName(), 'nl');
-        $localeRegionEN = $this->regionService->findByLocaleName($region->getEnglishName(), 'en');
-        $localeRegionDE = $this->regionService->findByLocaleName($region->getGermanName(), 'de');
+        $localeRegionNL = $this->regionService->findByLocaleName($region->getName(), 'nl')[0]->getRegion();
+        $localeRegionEN = $this->regionService->findByLocaleName($region->getEnglishName(), 'en')[0]->getRegion();
+        $localeRegionDE = $this->regionService->findByLocaleName($region->getGermanName(), 'de')[0]->getRegion();
         
         $this->assertInstanceOf('AppBundle\Service\Api\Region\RegionServiceEntityInterface', $localeRegionNL, 'Dutch variant not found');
         $this->assertInstanceOf('AppBundle\Service\Api\Region\RegionServiceEntityInterface', $localeRegionEN, 'English variant not found');

@@ -15,6 +15,249 @@ interface PlaceServiceEntityInterface
     public function getId();
 
     /**
+     * Set name
+     *
+     * @param string $name
+     * @return PlaceServiceEntityInterface
+     */
+    public function setName($name);
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName();
+    
+    /**
+     * Set english name
+     *
+     * @param string $englishName
+     * @return PlaceServiceEntityInterface
+     */
+    public function setEnglishName($englishName);
+    
+    /**
+     * Get english name
+     *
+     * @return string
+     */
+    public function getEnglishName();
+    
+    /**
+     * Set German name
+     *
+     * @param string $germanName
+     * @return PlaceServiceEntityInterface
+     */
+    public function setGermanName($germanName);
+    
+    /**
+     * Get German name
+     *
+     * @return string
+     */
+    public function getGermanName();
+    
+    /**
+     * Set locale names
+     * 
+     * @param array $localeNames
+     * @return PlaceServiceEntityInterface
+     */
+    public function setLocaleNames($localeNames);
+    
+    /**
+     * Get locale name
+     *
+     * @param string $locale
+     * @return string
+     */
+    public function getLocaleName($locale);
+
+    /**
+     * Set seo name
+     *
+     * @param string $seoName
+     * @return PlaceServiceEntityInterface
+     */
+    public function setSeoName($seoName);
+
+    /**
+     * Get seo name
+     *
+     * @return string 
+     */
+    public function getSeoName();
+    
+    /**
+     * Set english seo name
+     *
+     * @param string $englishSeoName
+     * @return PlaceServiceEntityInterface
+     */
+    public function setEnglishSeoName($englishSeoName);
+    
+    /**
+     * Get english seo name
+     *
+     * @return string
+     */
+    public function getEnglishSeoName();
+    
+    /**
+     * Set German seo name
+     *
+     * @param string $germanSeoName
+     * @return PlaceServiceEntityInterface
+     */
+    public function setGermanSeoName($germanSeoName);
+    
+    /**
+     * Get German seo name
+     *
+     * @return string
+     */
+    public function getGermanSeoName();
+    
+    /**
+     * Set locale seo names
+     * 
+     * @param array $localeSeoNames
+     * @return PlaceServiceEntityInterface
+     */
+    public function setLocaleSeoNames($localeSeoNames);
+    
+    /**
+     * Get locale seo name
+     *
+     * @param string $locale
+     * @return string
+     */
+    public function getLocaleSeoName($locale);
+
+    /**
+     * Set alternativeName
+     *
+     * @param string $alternativeName
+     * @return PlaceServiceEntityInterface
+     */
+    public function setAlternativeName($alternativeName);
+
+    /**
+     * Get alternativeName
+     *
+     * @return string 
+     */
+    public function getAlternativeName();
+
+    /**
+     * Set visibleAlternativeName
+     *
+     * @param string $visibleAlternativeName
+     * @return PlaceServiceEntityInterface
+     */
+    public function setVisibleAlternativeName($visibleAlternativeName);
+
+    /**
+     * Get visibleAlternativeName
+     *
+     * @return string 
+     */
+    public function getVisibleAlternativeName();
+
+    /**
+     * Set shortDescription
+     *
+     * @param string $shortDescription
+     * @return PlaceServiceEntityInterface
+     */
+    public function setShortDescription($shortDescription);
+
+    /**
+     * Get shortDescription
+     *
+     * @return string 
+     */
+    public function getShortDescription();
+
+    /**
+     * Set englishShortDescription
+     *
+     * @param string $englishShortDescription
+     * @return PlaceServiceEntityInterface
+     */
+    public function setEnglishShortDescription($englishShortDescription);
+
+    /**
+     * Get englishShortDescription
+     *
+     * @return string 
+     */
+    public function getEnglishShortDescription();
+
+    /**
+     * Set germanShortDescription
+     *
+     * @param string $germanShortDescription
+     * @return PlaceServiceEntityInterface
+     */
+    public function setGermanShortDescription($germanShortDescription);
+
+    /**
+     * Get germanShortDescription
+     *
+     * @return string 
+     */
+    public function getGermanShortDescription();
+    
+    /**
+     * Set Locale short descriptions
+     * 
+     * @param array $localeShortDescriptions
+     * @return PlaceServiceEntityInterface
+     */
+    public function setLocaleShortDescriptions($localeShortDescriptions);
+
+    /**
+     * Get Locale short description
+     *
+     * @param string $locale
+     * @return string
+     */
+    public function getLocaleShortDescription($locale);
+    
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return PlaceServiceEntityInterface
+     */
+    public function setDescription($description);
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription();
+    
+    /**
+     * Set locale descriptions
+     *
+     * @param array $localeDescriptions
+     * @return PlaceServiceEntityInterface
+     */
+    public function setLocaleDescriptions($localeDescriptions);
+    
+    /**
+     * Get locale description
+     *
+     * @return string
+     */
+    public function getLocaleDescription($locale);
+
+    /**
      * Set siblingId
      *
      * @param integer $siblingId
@@ -120,49 +363,34 @@ interface PlaceServiceEntityInterface
     public function getSeason();
 
     /**
-     * Set name
+     * Set altitude
      *
-     * @param string $name
+     * @param integer $altitude
      * @return PlaceServiceEntityInterface
      */
-    public function setName($name);
+    public function setAltitude($altitude);
 
     /**
-     * Get name
+     * Get altitude
      *
-     * @return string 
+     * @return integer 
      */
-    public function getName();
+    public function getAltitude();
 
     /**
-     * Set alternativeName
+     * Set distance from utrecht
      *
-     * @param string $alternativeName
+     * @param integer $distanceFromUtrecht
      * @return PlaceServiceEntityInterface
      */
-    public function setAlternativeName($alternativeName);
+    public function setDistanceFromUtrecht($distanceFromUtrecht);
 
     /**
-     * Get alternativeName
+     * Get distance from utrecht
      *
-     * @return string 
+     * @return integer 
      */
-    public function getAlternativeName();
-
-    /**
-     * Set visibleAlternativeName
-     *
-     * @param string $visibleAlternativeName
-     * @return PlaceServiceEntityInterface
-     */
-    public function setVisibleAlternativeName($visibleAlternativeName);
-
-    /**
-     * Get visibleAlternativeName
-     *
-     * @return string 
-     */
-    public function getVisibleAlternativeName();
+    public function getDistanceFromUtrecht();
 
     /**
      * Set websites
@@ -178,36 +406,6 @@ interface PlaceServiceEntityInterface
      * @return array 
      */
     public function getWebsites();
-
-    /**
-     * Set shortDescription
-     *
-     * @param string $shortDescription
-     * @return PlaceServiceEntityInterface
-     */
-    public function setShortDescription($shortDescription);
-
-    /**
-     * Get shortDescription
-     *
-     * @return string 
-     */
-    public function getShortDescription();
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     * @return PlaceServiceEntityInterface
-     */
-    public function setDescription($description);
-
-    /**
-     * Get description
-     *
-     * @return string 
-     */
-    public function getDescription();
     
     /**
      * Set latitude
@@ -238,6 +436,50 @@ interface PlaceServiceEntityInterface
      * @return string
      */
     public function getLongitude();
+    
+    /**
+     * Set types count
+     *
+     * @param integer $typesCount
+     * @return PlaceServiceEntityInterface
+     */
+    public function setTypesCount($typesCount);
+    
+    /**
+     * Get types count
+     *
+     * @return integer
+     */
+    public function getTypesCount();
+    
+    /**
+     * Set average ratings for this region
+     *
+     * @return PlaceServiceEntityInterface
+     */
+    public function setAverageRatings($averageRatings);
+    
+    /**
+     * Get average ratings for this region
+     * 
+     * @return integer
+     */
+    public function getAverageRatings();
+    
+    /**
+     * Set Ratings count
+     *
+     * @param integer $ratingsCount
+     * @return PlaceServiceEntityInterface
+     */
+    public function setRatingsCount($ratingsCount);
+    
+    /**
+     * Get Ratings count
+     *
+     * @return integer
+     */
+    public function getRatingsCount();
 
     /**
      * Set createdAt

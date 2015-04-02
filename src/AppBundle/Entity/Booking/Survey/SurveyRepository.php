@@ -68,7 +68,7 @@ class SurveyRepository extends BaseRepository implements SurveyServiceRepository
                         'weekendSki'   => 0,
                     ])
                     ->getQuery();
-        
+
         return $query->getSingleResult();
     }
 

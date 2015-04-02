@@ -30,21 +30,25 @@ class RegionsController extends Controller
      */
     public function show($regionSlug)
     {
-        $regionService   = $this->container->get('service.api.region');
+        $regionService   = $this->get('service.api.region');
         $typeService     = $this->get('service.api.type');
         $surveyService   = $this->get('service.api.survey');
         
-        $regionAndPlaces = $regionService->findByLocaleSeoName($regionSlug, $this->getRequest()->getLocale());
-        if (false === isset($regionAndPlaces[0])) {
+        $places          = [];
+        $allPlaces       = $regionService->findByLocaleSeoName($regionSlug, $this->getRequest()->getLocale());
+
+        if (count($allPlaces) === 0) {
             return $this->createNotFoundException('Could not find region with slug=' . $regionSlug);
         }
 
-        $region          = $regionAndPlaces[0];
-        $place           = $regionAndPlaces[1];
+        $place           = $allPlaces[0];
+        $region          = $place->getRegion();
         $typesCount      = $typeService->countByRegion($region);
         $stats           = $surveyService->statsByRegion($region);
 
-        $region->setTypesCount($typesCount);
+        if (count($typesCount) > 0) {
+            $region->setTypesCount(array_sum($typesCount));
+        }
         
         if (isset($stats['surveyCount'])) {
             $region->setRatingsCount(intval($stats['surveyCount']));
@@ -54,11 +58,20 @@ class RegionsController extends Controller
             $region->setAverageRatings(round($stats['surveyAverageOverallRating'], 1));
         }
         
+        foreach ($allPlaces as $place) {
+            
+            if (true === array_key_exists($place->getId(), $typesCount)) {
+                
+                $place->setTypesCount($typesCount[$place->getId()]);
+                $places[] = $place;
+            }
+        }
+        
         return [
             
             'region'  => $region,
             'country' => $place->getCountry(),
-            'places'  => array_slice($regionAndPlaces, 1),
+            'places'  => $places,
         ];
     }
 }

@@ -31,6 +31,7 @@ class PlaceService
      * Fetching all the places based on the options passed in. The supported options are: 'where', 'order', 'limit', 'offset'
      *
      * @param array $options
+     * @return PlaceServiceEntityInterface[]
      */
     public function all($options = [])
     {
@@ -41,9 +42,21 @@ class PlaceService
      * Finding a single place, based on criteria passed in
      *
      * @param array $by
+     * @return PlaceServiceEntityInterface
      */
     public function find($by = [])
     {
         return $this->placeServiceRepository->find($by);
+    }
+    
+    /**
+     * Finding a single place, based on criteria passed in
+     *
+     * @param array $by
+     * @return PlaceServiceEntityInterface
+     */
+    public function findByLocaleSeoName($seoName, $locale)
+    {
+        return $this->placeServiceRepository->findByLocaleSeoName($seoName, $locale);
     }
 }

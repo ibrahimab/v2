@@ -38,24 +38,20 @@
     </section>
     
     <section id="area-selected">
-        <h2>{{ 'ski-areas'|trans}} {{ region.getLocaleName(get_locale()) }}</h2>
+        <h2>{{ 'places'|trans}} {{ region.getLocaleName(get_locale()) }}</h2>
         <div class="row" data-equalizer>
             {% for place in places %}
             <div class="small-12 medium-3 large-3 columns{{ (( ((loop.index % 4) is same as(0)) or loop.last) ? ' end' : '') }}">
                 <article class="overview" data-equalizer-watch>
                     <div class="accom-img">
-                        <!-- ><img src="{{ region_image(region) }}" alt="{{ region.getLocaleName(get_locale()) }}" /> -->
+                        <img src="{{ place_image(place) }}" alt="{{ place.getLocaleName(get_locale()) }}" />
                     </div>
                     <div class="accom-desc">
-                        <div class="title"><a href="{{ locale_path('show_region', {regionSlug: region.getLocaleSeoName(get_locale())}) }}">{{ place.getName() }}</a></div>
+                        <div class="title"><a href="{{ locale_path('show_place', {placeSlug: place.getLocaleSeoName(get_locale())}) }}">{{ place.getLocaleName(get_locale()) }}</a></div>
                         <br />
-                        <div class="chalets"><i class="sprite sprite-gray-chalet"></i><strong>{{ region.getTypesCount() }}</strong> chalets &amp; appartementen</div>
-                        {% if region.getMinimumAltitude() == region.getMaximumAltitude() %}
-                            <div class="mountain"><i class="sprite sprite-gray-mountain"></i>Ligt tussen <strong>{{ region.getMinimumAltitude() }}</strong> {{ 'and'|trans }} <strong>{{ region.getMaximumAltitude() }}</strong> m hoogte</div>
-                        {% else %}
-                            <div class="mountain"><i class="sprite sprite-gray-mountain"></i>Ligt op <strong>{{ region.getMaximumAltitude() }}</strong> m hoogte</div>
-                        {% endif %}
-                        <div class="pistes"><i class="sprite sprite-icon-pistes"></i>Ruim <strong>{{ region.getTotalSlopesDistance() }}</strong> km pistes</div>
+                        <div class="chalets"><i class="sprite sprite-gray-chalet"></i><strong>{{ place.getTypesCount() }}</strong> chalets &amp; appartementen</div>
+                        <div class="chalets"><i class="sprite sprite-gray-mountain"></i><strong>{{ place.getAltitude() }}</strong> m hoogte</div>
+                        <div class="chalets"><i class="fi-compass"></i> <strong>{{ place.getDistanceFromUtrecht() }}</strong> km afstand van Utrecht</div>
                     </div>
                 </article>
             </div>
@@ -65,5 +61,7 @@
             {% endfor %}
         </div>
     </section>
+
+    {% include 'partials/countries.html.twig' with { active_country: country.getStartCode() } only %}
     
 {% endblock %}

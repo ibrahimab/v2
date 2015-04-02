@@ -5,29 +5,15 @@
 //main menu
 var $cont = $('#nav-container');
 var $body = $('body');
-var $logo = $('#logo');
-var logos = null;
-
-$(function() {
-    
-    // getting the logos
-    logos = {big: $logo.data('big'), small: $logo.data('small')}; 
-});
 
 $(document).scroll(function() {
     var $scrl = $(this).scrollTop();
     if ($scrl>0){
         $cont.addClass('small');
         $body.addClass('smallfix');
-        if (null !== logos) {
-            $logo.attr('src', logos['small']);
-        }
     } else {
         $cont.removeClass('small');
         $body.removeClass('smallfix');
-        if (null !== logos) {
-            $logo.attr('src', logos['big']);
-        }
     }
 });
 //'boek nu' change position on small devices

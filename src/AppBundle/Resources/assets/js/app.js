@@ -14,4 +14,10 @@
         window.location.href = Routing.generate('show_country_nl', { countrySlug: country, sort: sort });
     });
     
+    $('.accom-slides').slick({
+        lazyLoad: 'ondemand',
+        slidesToShow: 1,
+        slidesToScroll: 1
+    });
+    
 })(jQuery, Routing);

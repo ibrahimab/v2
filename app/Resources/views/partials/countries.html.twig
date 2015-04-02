@@ -5,9 +5,16 @@
 
 <section class="area-countries">
     <h2>Ga direct naar</h2>
+    {% if active_country is not defined %}
+    <div class="row">
+        <div class="small-12 columns">
+            <p>Als je in onderstaand overzicht op één van de landen klikt, dan ga je naar de pagina met uitgebreide informatie over wintersport in respectievelijk Frankrijk, Oostenrijk, Zwitserland of Italië. Op deze pagina's is het ook mogelijk om te sorteren op het aantal accommodaties per skigebied, aantal kilometers piste en de hoogte van het skigebied.</p>
+        </div>
+    </div>
+    {% endif %}
     <div class="row">
         <div class="small-12 medium-3 large-3 columns">
-            <article class="overview" data-equalizer-watch>
+            <article class="overview{% if active_country == 'F' %} active-block{% endif %}" data-equalizer-watch>
                 <div class="accom-img">
                     <img src="/chalet/pic/cms/skigebieden/13-1.jpg" alt="France" />
                 </div>
@@ -17,7 +24,7 @@
             </article>
         </div>
         <div class="small-12 medium-3 large-3 columns">
-            <article class="overview" data-equalizer-watch>
+            <article class="overview{% if active_country == 'O' %} active-block{% endif %}" data-equalizer-watch>
                 <div class="accom-img">
                     <img src="/chalet/pic/cms/skigebieden/200-1.jpg" alt="Austria" />
                 </div>
@@ -27,7 +34,7 @@
             </article>
         </div>
         <div class="small-12 medium-3 large-3 columns">
-            <article class="overview" data-equalizer-watch>
+            <article class="overview{% if active_country == 'Z' %} active-block{% endif %}" data-equalizer-watch>
                 <div class="accom-img">
                     <img src="/chalet/pic/cms/skigebieden/65-1.jpg" alt="Switzerland" height="200" />
                 </div>
@@ -37,7 +44,7 @@
             </article>
         </div>
         <div class="small-12 medium-3 large-3 columns end">
-            <article class="overview" data-equalizer-watch>
+            <article class="overview{% if active_country == 'I' %} active-block{% endif %}" data-equalizer-watch>
                 <div class="accom-img">
                     <img src="/chalet/pic/cms/skigebieden/202-1.jpg" alt="Italy" />
                 </div>

@@ -29,6 +29,7 @@ class TypeServiceTest extends \Codeception\TestCase\Test
         $this->serviceContainer = $this->getModule('Symfony2')->container;
         $this->typeService      = $this->serviceContainer->get('service.api.type');
         $this->regionService    = $this->serviceContainer->get('service.api.region');
+        $this->placeService     = $this->serviceContainer->get('service.api.place');
         
         // clearing doctrine
         $this->serviceContainer->get('doctrine')->getManager()->clear();
@@ -38,6 +39,7 @@ class TypeServiceTest extends \Codeception\TestCase\Test
     {
         $this->typeService   = null;
         $this->regionService = null;
+        $this->placeService  = null;
     }
 
     public function testGetTypes()
@@ -98,5 +100,14 @@ class TypeServiceTest extends \Codeception\TestCase\Test
         // asserting that region ID = 2 has 1 accommodation
         $this->assertArrayHasKey(2, $accommodationsCount);
         $this->assertSame(1, $accommodationsCount[2]);
+    }
+    
+    public function testGetTypesByPlace()
+    {
+        $place = $this->placeService->find();
+        $this->assertInstanceOf('AppBundle\Service\Api\Place\PlaceServiceEntityInterface', $place);
+        
+        $types = $this->typeService->findByPlace($place);
+        $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Type\TypeServiceEntityInterface', $types);
     }
 }

@@ -22,13 +22,35 @@ class LoadPlaceData extends AbstractFixture implements DependentFixtureInterface
             $place->setRegion($this->getReference('region-' . $i))
                   ->setCountry($this->getReference('country-' . $j))
                   ->setSeason((($i % 2) === 0 ? 1 : 2))
-                  ->setName('Place #' . $i)
+                  ->setLocaleNames([
+    
+                      'nl' => 'NL Place #' . $i,
+                      'en' => 'EN Place #' . $i,
+                      'de' => 'DE Place #' . $i,
+                  ])
+                  ->setLocaleSeoNames([
+    
+                      'nl' => 'NL Seo Place #' . $i,
+                      'en' => 'EN Seo Place #' . $i,
+                      'de' => 'DE Seo Place #' . $i,
+                  ])
                   ->setAlternativeName('Alt Place #' . $i)
-                  ->setShortDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam amet.')
+                  ->setLocaleShortDescriptions([
+                      
+                      'nl' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam amet.',
+                      'en' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam amet.',
+                      'de' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam amet.',
+                  ])
+                  ->setLocaleDescriptions([
+                      
+                      'nl' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor nisi ligula, molestie facilisis lorem fringilla sit amet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent euismod eros ut elementum ultricies. Nam nec ipsum ac turpis tempus eleifend vitae in est. Donec sed sapien orci. Suspendisse scelerisque sed quam a sagittis. Pellentesque nibh quam, semper in viverra at, sodales in risus. Sed vitae arcu erat. Sed sagittis gravida egestas. Nam sed dolor rhoncus, gravida ex non, euismod nisi. Donec quis nunc eu quam convallis maximus accumsan ac dui. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
+                      'en' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor nisi ligula, molestie facilisis lorem fringilla sit amet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent euismod eros ut elementum ultricies. Nam nec ipsum ac turpis tempus eleifend vitae in est. Donec sed sapien orci. Suspendisse scelerisque sed quam a sagittis. Pellentesque nibh quam, semper in viverra at, sodales in risus. Sed vitae arcu erat. Sed sagittis gravida egestas. Nam sed dolor rhoncus, gravida ex non, euismod nisi. Donec quis nunc eu quam convallis maximus accumsan ac dui. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
+                      'de' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor nisi ligula, molestie facilisis lorem fringilla sit amet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent euismod eros ut elementum ultricies. Nam nec ipsum ac turpis tempus eleifend vitae in est. Donec sed sapien orci. Suspendisse scelerisque sed quam a sagittis. Pellentesque nibh quam, semper in viverra at, sodales in risus. Sed vitae arcu erat. Sed sagittis gravida egestas. Nam sed dolor rhoncus, gravida ex non, euismod nisi. Donec quis nunc eu quam convallis maximus accumsan ac dui. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
+                  ])
                   ->setWebsites((array)array_rand(array_flip($websites), rand(1, $total_websites)))
-                  ->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor nisi ligula, molestie facilisis lorem fringilla sit amet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent euismod eros ut elementum ultricies. Nam nec ipsum ac turpis tempus eleifend vitae in est. Donec sed sapien orci. Suspendisse scelerisque sed quam a sagittis. Pellentesque nibh quam, semper in viverra at, sodales in risus. Sed vitae arcu erat. Sed sagittis gravida egestas. Nam sed dolor rhoncus, gravida ex non, euismod nisi. Donec quis nunc eu quam convallis maximus accumsan ac dui. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.')
                   ->setLatitude(52.076091)
                   ->setLongitude(4.892198)
+                  ->setAltitude(rand(1000, 8000))
                   ->setCreatedAt($now)
                   ->setUpdatedAt($now);
             
