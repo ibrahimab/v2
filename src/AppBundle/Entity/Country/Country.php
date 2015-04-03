@@ -131,6 +131,27 @@ class Country implements CountryServiceEntityInterface
     /**
      * @var string
      *
+     * @ORM\Column(name="descriptiontag", type="string", length=159)
+     */
+    private $descriptionTag;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descriptiontag_en", type="string", length=159)
+     */
+    private $englishDescriptionTag;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descriptiontag_de", type="string", length=159)
+     */
+    private $germanDescriptionTag;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="omschrijving_openklap", type="text")
      */
     private $additionalDescription;
@@ -545,7 +566,7 @@ class Country implements CountryServiceEntityInterface
             
             case 'nl':
             default:
-                $localeShortDescription = $this->getDescription();
+                $localeShortDescription = $this->getShortDescription();
                 break;
         }
         
@@ -643,8 +664,98 @@ class Country implements CountryServiceEntityInterface
         
         return $localeDescription;
     }
-    
 
+    /**
+     * {@InheritDoc}
+     */
+    public function setDescriptionTag($descriptionTag)
+    {
+        $this->descriptionTag = $descriptionTag;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getDescriptionTag()
+    {
+        return $this->descriptionTag;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setEnglishDescriptionTag($englishDescriptionTag)
+    {
+        $this->englishDescriptionTag = $englishDescriptionTag;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getEnglishDescriptionTag()
+    {
+        return $this->englishDescriptionTag;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setGermanDescriptionTag($germanDescriptionTag)
+    {
+        $this->germanDescriptionTag = $germanDescriptionTag;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getGermanDescriptionTag()
+    {
+        return $this->germanDescriptionTag;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setLocaleDescriptionTags($localeDescriptionTags)
+    {
+        // normalize locales
+        $localeDescriptionTags = array_change_key_case($localeDescriptionTags);
+        
+        $this->setDescriptionTag(isset($localeDescriptionTags['nl']) ? $localeDescriptionTags['nl'] : '');
+        $this->setEnglishDescriptionTag(isset($localeDescriptionTags['en']) ? $localeDescriptionTags['en'] : '');
+        $this->setGermanDescriptionTag(isset($localeDescriptionTags['de']) ? $localeDescriptionTags['de'] : '');
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getLocaleDescriptionTag($locale)
+    {
+        $locale = strtolower($locale);
+        switch ($locale) {
+            
+            case 'en':
+                $localeDescriptionTag = $this->getEnglishDescriptionTag();
+                break;
+                
+            case 'de':
+                $localeDescriptionTag = $this->getGermanDescriptionTag();
+                break;
+            
+            case 'nl':
+            default:
+                $localeDescriptionTag = $this->getDescriptionTag();
+                break;
+        }
+        
+        return $localeDescriptionTag;
+    }
 
     /**
      * {@InheritDoc}

@@ -3,7 +3,6 @@ namespace AppBundle\EventListener;
 
 use       AppBundle\Annotation\Parser\Breadcrumb as BreadcrumbParser;
 use       Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use       Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
 class BreadcrumbListener
 {

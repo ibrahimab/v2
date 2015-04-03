@@ -4,6 +4,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
         <meta name="apple-mobile-web-app-title" content="Chalet.nl" />
+        {% block seo %}{% endblock %}
         <title>{% block title %}Chalet.nl{% endblock %}</title>
         
         {% stylesheets 'bundles/app/css/foundation.css'
@@ -17,13 +18,17 @@
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" />
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster" />
     
-        {% javascripts '@AppBundle/Resources/assets/js/vendor/modernizr.js' %}
+        {% javascripts 'bundles/app/js/vendor/modernizr.js'
+                       '@AppBundle/Resources/assets/js/chalet.js' %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
+        
+        <script type="text/javascript">var Chalet = {{ js_object()|json_encode()|raw }}</script>
         
         {% block stylesheets %}{% endblock %}
             
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        
     </head>
     {% set _body_id    = block('bodyId') %}
     {% set _body_class = block('bodyClass') %}
@@ -33,15 +38,15 @@
         {% block body %}{% endblock %}
         {% include 'partials/footer.html.twig' %}
         
-        {% javascripts '@AppBundle/Resources/assets/js/vendor/jquery.js'
-                       '@AppBundle/Resources/assets/js/vendor/jquery.color.js'
-                       '@AppBundle/Resources/assets/js/foundation.min.js'
-                       '@AppBundle/Resources/assets/js/vendor/jquery.placeholder.js'
-                       '@AppBundle/Resources/assets/js/foundation/foundation.offcanvas.js'
-                       '@AppBundle/Resources/assets/js/vendor/slick.min.js'
+        {% javascripts 'bundles/app/js/vendor/jquery.js'
+                       'bundles/app/js/vendor/jquery.color.js'
+                       'bundles/app/js/foundation.min.js'
+                       'bundles/app/js/vendor/jquery.placeholder.js'
+                       'bundles/app/js/foundation/foundation.offcanvas.js'
+                       'bundles/app/js/vendor/slick.min.js'
                        'bundles/fosjsrouting/js/router.js'
                        'js/fos_js_routes.js'
-                       '@AppBundle/Resources/assets/js/layout.js'
+                       'bundles/app/js/layout.js'
                        '@AppBundle/Resources/assets/js/app.js' %}
                    
             <script type="text/javascript" src="{{ asset_url }}"></script>

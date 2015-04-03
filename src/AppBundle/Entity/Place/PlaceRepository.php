@@ -29,6 +29,7 @@ class PlaceRepository extends BaseRepository implements PlaceServiceRepositoryIn
            ->leftJoin('p.region', 'r')
            ->leftJoin('p.country', 'c')
            ->where($expr->eq('p.' . $field, ':seoName'))
+           ->setMaxResults(1)
            ->setParameters([
                'seoName' => $seoName,
            ]);

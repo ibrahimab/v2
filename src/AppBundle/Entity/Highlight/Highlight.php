@@ -3,6 +3,7 @@ namespace AppBundle\Entity\Highlight;
 
 use       AppBundle\Service\Api\Highlight\HighlightServiceEntityInterface;
 use       Doctrine\ORM\Mapping as ORM;
+use       JsonSerializable;
 
 /**
  * Highlight
@@ -10,7 +11,7 @@ use       Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="hoogtepunt")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Highlight\HighlightRepository")
  */
-class Highlight implements HighlightServiceEntityInterface
+class Highlight implements HighlightServiceEntityInterface, JsonSerializable
 {
     /**
      * @var integer
@@ -277,5 +278,12 @@ class Highlight implements HighlightServiceEntityInterface
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+    
+    public function jsonSerialize()
+    {
+        return [
+            'test' => 'me',
+        ];
     }
 }

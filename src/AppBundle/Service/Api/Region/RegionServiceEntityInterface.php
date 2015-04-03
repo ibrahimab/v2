@@ -269,19 +269,19 @@ interface RegionServiceEntityInterface
     public function getMaximumAltitude();
     
     /**
-     * Set total elevators
+     * Set total lifts
      *
-     * @param integer $totalElevators
+     * @param integer $totalLifts
      * @return RegionServiceEntityInterface
      */
-    public function setTotalElevators($totalElevators);
+    public function setTotalLifts($totalLifts);
     
     /**
-     * Get total elevators
+     * Get total lifts
      *
      * @return integer
      */
-    public function getTotalElevators();
+    public function getTotalLifts();
     
     /**
      * Set total slopes distance

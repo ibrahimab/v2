@@ -19,6 +19,12 @@ services:
         arguments: [@app.annotations.breadcrumbs, @twig]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            
+    app.global_javascript_listener:
+        class: AppBundle\EventListener\GlobalJavascriptListener
+        arguments: [@service.javascript]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
         
     twig.text_extension:
         class: Twig_Extensions_Extension_Text

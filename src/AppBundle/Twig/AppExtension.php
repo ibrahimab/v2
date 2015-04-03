@@ -47,9 +47,11 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('locale_path',  [$this, 'getPath'],     ['is_safe_callback' => [$this, 'isUrlGenerationSafe']]),
             new \Twig_SimpleFunction('type_image',   [$this, 'getTypeImage']),
             new \Twig_SimpleFunction('region_image', [$this, 'getRegionImage']),
-            new \Twig_SimpleFunction('place_image', [$this, 'getPlaceImage']),
+            new \Twig_SimpleFunction('place_image',  [$this, 'getPlaceImage']),
             new \Twig_SimpleFunction('breadcrumbs',  [$this, 'breadcrumbs'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new \Twig_SimpleFunction('get_locale',   [$this, 'getLocale']),
+            new \Twig_SimpleFunction('js_object',    [$this, 'getJavascriptObject']),
+            new \Twig_SimpleFunction('region_ski_run_map', [$this, 'getRegionSkiRunMap']),
         ];
     }
     
@@ -94,6 +96,18 @@ class AppExtension extends \Twig_Extension
         }
         
         return '/chalet/pic/cms/' . $filename;
+    }
+    
+    public function getRegionSkiRunMap(RegionServiceEntityInterface $region)
+    {
+        $rootDir = $this->container->get('kernel')->getRootDir();
+        $path    = dirname($rootDir) . '/web/chalet/pic/cms/skigebieden_pistekaarten/';
+
+        if (file_exists($path . $region->getId() . '.jpg')) {
+            return '/chalet/pic/cms/skigebieden_pistekaarten/' . $region->getId(). '.jpg';
+        }
+        
+        return null;
     }
     
     public function getPlaceImage(PlaceServiceEntityInterface $place)
@@ -211,6 +225,11 @@ class AppExtension extends \Twig_Extension
         }
         
         return $this->locale;
+    }
+    
+    public function getJavascriptObject()
+    {
+        return $this->container->get('service.javascript')->toArray();
     }
     
     /**

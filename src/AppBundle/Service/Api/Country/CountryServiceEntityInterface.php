@@ -179,6 +179,36 @@ interface CountryServiceEntityInterface
     public function getDescription();
     
     /**
+     * Set description
+     *
+     * @param string $description
+     * @return CountryServiceEntityInterface
+     */
+    public function setEnglishDescription($englishDescription);
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getEnglishDescription();
+    
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return CountryServiceEntityInterface
+     */
+    public function setGermanDescription($germanDescription);
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getGermanDescription();
+    
+    /**
      * Set locale descriptions
      *
      * @param array $localeDescriptions
@@ -192,6 +222,66 @@ interface CountryServiceEntityInterface
      * @return string
      */
     public function getLocaleDescription($locale);
+    
+    /**
+     * Set description
+     *
+     * @param string $descriptionTag
+     * @return CountryServiceEntityInterface
+     */
+    public function setDescriptionTag($descriptionTag);
+
+    /**
+     * Get descriptionTag
+     *
+     * @return string 
+     */
+    public function getDescriptionTag();
+    
+    /**
+     * Set descriptionTag
+     *
+     * @param string $descriptionTag
+     * @return CountryServiceEntityInterface
+     */
+    public function setEnglishDescriptionTag($englishDescriptionTag);
+
+    /**
+     * Get descriptionTag
+     *
+     * @return string 
+     */
+    public function getEnglishDescriptionTag();
+    
+    /**
+     * Set description
+     *
+     * @param string $descriptionTag
+     * @return CountryServiceEntityInterface
+     */
+    public function setGermanDescriptionTag($germanDescriptionTag);
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getGermanDescriptionTag();
+    
+    /**
+     * Set locale descriptions
+     *
+     * @param array $localeDescriptions
+     * @return CountryServiceEntityInterface
+     */
+    public function setLocaleDescriptionTags($localeDescriptionTags);
+    
+    /**
+     * Get locale description
+     *
+     * @return string
+     */
+    public function getLocaleDescriptionTag($locale);
 
     /**
      * Set colourCode

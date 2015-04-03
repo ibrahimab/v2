@@ -175,7 +175,42 @@ class Region implements RegionServiceEntityInterface
      *
      * @ORM\Column(name="aantalliften", type="integer")
      */
-    private $totalElevators;
+    private $totalLifts;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="aantalstoeltjesliften", type="integer")
+     */
+    private $totalChairLifts;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="aantalsleepliften", type="integer")
+     */
+    private $totalSkiTowsLifts;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="aantalcabineliften", type="integer")
+     */
+    private $totalCabineLifts;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="aantalloipes", type="integer")
+     */
+    private $totalTrails;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="kmloipes", type="integer")
+     */
+    private $totalTrailsDistance;
     
     /**
      * @var integer
@@ -183,6 +218,13 @@ class Region implements RegionServiceEntityInterface
      * @ORM\Column(name="aantalblauwepistes", type="integer")
      */
     private $totalBlueSlopes;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="kmblauwepistes", type="integer")
+     */
+    private $totalBlueSlopesDistance;
 
     /**
      * @var integer
@@ -190,6 +232,13 @@ class Region implements RegionServiceEntityInterface
      * @ORM\Column(name="aantalrodepistes", type="integer")
      */
     private $totalRedSlopes;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="kmrodepistes", type="integer")
+     */
+    private $totalRedSlopesDistance;
     
     /**
      * @var integer
@@ -197,6 +246,35 @@ class Region implements RegionServiceEntityInterface
      * @ORM\Column(name="aantalzwartepistes", type="integer")
      */
     private $totalBlackSlopes;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="kmzwartepistes", type="integer")
+     */
+    private $totalBlackSlopesDistance;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="weerbericht", type="string", length=255)
+     */
+    private $weatherReportLink;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="webcam", type="string", length=255)
+     */
+    private $webcamLink;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="kaart", type="string", length=255)
+     */
+    private $skiRunsMapLink;
+    
 
     /**
      * @var \DateTime
@@ -513,7 +591,7 @@ class Region implements RegionServiceEntityInterface
             
             case 'nl':
             default:
-                $localeShortDescription = $this->getDescription();
+                $localeShortDescription = $this->getShortDescription();
                 break;
         }
         
@@ -687,9 +765,9 @@ class Region implements RegionServiceEntityInterface
     /**
      * {@InheritDoc}
      */
-    public function setTotalElevators($totalElevators)
+    public function setTotalLifts($totalLifts)
     {
-        $this->totalElevators = $totalElevators;
+        $this->totalLifts = $totalLifts;
         
         return $this;
     }
@@ -697,9 +775,63 @@ class Region implements RegionServiceEntityInterface
     /**
      * {@InheritDoc}
      */
-    public function getTotalElevators()
+    public function getTotalLifts()
     {
-        return $this->totalElevators;
+        return $this->totalLifts;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setTotalChairLifts($totalChairLifts)
+    {
+        $this->totalChairLifts = $totalChairLifts;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getTotalChairLifts()
+    {
+        return $this->totalChairLifts;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setTotalCabineLifts($totalCabineLifts)
+    {
+        $this->totalCabineLifts = $totalCabineLifts;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getTotalCabineLifts()
+    {
+        return $this->totalCabineLifts;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setTotalSkiTowsLifts($totalSkiTowsLifts)
+    {
+        $this->totalSkiTowsLifts = $totalSkiTowsLifts;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getTotalSkiTowsLifts()
+    {
+        return $this->totalSkiTowsLifts;
     }
     
     /**
@@ -723,6 +855,24 @@ class Region implements RegionServiceEntityInterface
     /**
      * {@InheritDoc}
      */
+    public function setTotalTrailsDistance($totalTrailsDistance)
+    {
+        $this->totalTrailsDistance = $totalTrailsDistance;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getTotalTrailsDistance()
+    {
+        return $this->totalTrailsDistance;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
     public function setTotalBlueSlopes($totalBlueSlopes)
     {
         $this->totalBlueSlopes = $totalBlueSlopes;
@@ -734,6 +884,22 @@ class Region implements RegionServiceEntityInterface
     public function getTotalBlueSlopes()
     {
         return $this->totalBlueSlopes;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setTotalBlueSlopesDistance($totalBlueSlopesDistance)
+    {
+        $this->totalBlueSlopesDistance = $totalBlueSlopesDistance;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getTotalBlueSlopesDistance()
+    {
+        return $this->totalBlueSlopesDistance;
     }
     
     /**
@@ -757,6 +923,24 @@ class Region implements RegionServiceEntityInterface
     /**
      * {@InheritDoc}
      */
+    public function setTotalRedSlopesDistance($totalRedSlopesDistance)
+    {
+        $this->totalRedSlopesDistance = $totalRedSlopesDistance;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getTotalRedSlopesDistance()
+    {
+        return $this->totalRedSlopesDistance;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
     public function setTotalBlackSlopes($totalBlackSlopes)
     {
         $this->totalBlackSlopes = $totalBlackSlopes;
@@ -770,6 +954,24 @@ class Region implements RegionServiceEntityInterface
     public function getTotalBlackSlopes()
     {
         return $this->totalBlackSlopes;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setTotalBlackSlopesDistance($totalBlackSlopesDistance)
+    {
+        $this->totalBlackSlopesDistance = $totalBlackSlopesDistance;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getTotalBlackSlopesDistance()
+    {
+        return $this->totalBlackSlopesDistance;
     }
     
     /**
@@ -824,6 +1026,60 @@ class Region implements RegionServiceEntityInterface
     public function getRatingsCount()
     {
         return $this->ratingsCount;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setWeatherReportLink($weatherReportLink)
+    {
+        $this->weatherReportLink = $weatherReportLink;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getWeatherReportLink()
+    {
+        return $this->weatherReportLink;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setWebcamLink($webcamLink)
+    {
+        $this->webcamLink = $webcamLink;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getWebcamLink()
+    {
+        return $this->webcamLink;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setSkiRunsMapLink($skiRunsMapLink)
+    {
+        $this->skiRunsMapLink = $skiRunsMapLink;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getSkiRunsMapLink()
+    {
+        return $this->skiRunsMapLink;
     }
 
     /**
