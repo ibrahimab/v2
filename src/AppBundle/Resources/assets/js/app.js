@@ -23,6 +23,9 @@
         window.open(jq(this).attr('href'));
     });
     
+    /**
+     * This listener allows for collapsable lists
+     */
     jq('body').on('click', '[data-role="toggle-long-list"]', function(event) {
         
         event.preventDefault();
@@ -43,6 +46,22 @@
             list.find('li:nth-child(n+4)').not(element).slideDown();
             icon.removeClass(icon.data('closed-icon')).addClass(icon.data('opened-icon'));
         }
+    });
+    
+    // setting up scroll button for long pages
+    jq(function() {
+        
+        jq.scrollUp({
+            
+            scrollName: 'scroll-icon',
+            animation: 'fade',
+            activeOverlay: '#00FFFF',
+            scrollImg: {
+                
+                active: true,
+                type: 'background'
+            }
+        });
     });
     
 })(jQuery, Routing);

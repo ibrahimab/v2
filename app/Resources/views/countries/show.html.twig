@@ -81,7 +81,7 @@
                     <div class="accom-desc">
                         <div class="title"><a href="{{ locale_path('show_region', {regionSlug: region.getLocaleSeoName(get_locale())}) }}">{{ region.getLocaleName(get_locale()) }}</a></div>
                         <br />
-                        <div class="chalets"><i class="sprite sprite-gray-chalet"></i><strong>{{ region.getTypesCount() }}</strong> chalets &amp; appartementen</div>
+                        <div class="chalets"><i class="sprite sprite-gray-chalet"></i><strong>{{ region.getTypesCount() }}</strong> {% if region.getTypesCount() is same as(1) %}{{ 'chalet-or-apartment'|trans }}{% else %}{{ 'chalets-apartments'|trans }}{% endif %}</div>
                         {% if region.getMinimumAltitude() == region.getMaximumAltitude() %}
                             <div class="mountain"><i class="sprite sprite-gray-mountain"></i>Ligt tussen <strong>{{ region.getMinimumAltitude() }}</strong> {{ 'and'|trans }} <strong>{{ region.getMaximumAltitude() }}</strong> m hoogte</div>
                         {% else %}
