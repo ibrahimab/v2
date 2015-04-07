@@ -2,3 +2,4 @@
 ================================================
 
 Testing hipchat github connection
+Second try
