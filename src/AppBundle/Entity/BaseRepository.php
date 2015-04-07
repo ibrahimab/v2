@@ -62,4 +62,21 @@ class BaseRepository extends EntityRepository
     {
         return $this->findOneBy($by);
     }
+    
+    public function publishedExpr($fieldPrefix, $expr)
+    {
+        return $expr->andX(
+        
+            $expr->andX(
+                
+                $expr->isNotNull($fieldPrefix . '.publishedAt'),
+                $expr->lte($fieldPrefix . '.publishedAt', ':now')
+            ),
+            $expr->orX(
+            
+                $expr->isNull($fieldPrefix . '.expiredAt'),
+                $expr->gt($fieldPrefix . '.expiredAt', ':now')
+            )
+        );
+    }
 }

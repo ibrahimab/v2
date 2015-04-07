@@ -48,6 +48,9 @@ class LoadRegionData extends AbstractFixture
                    ->setMinimumAltitude(rand(3000, 8000))
                    ->setMaximumAltitude(rand(8000, 12000))
                    ->setTotalSlopesDistance($i)
+                   ->setWeatherReportLink('http://www.google.nl')
+                   ->setWebcamLink('http://www.google.nl')
+                   ->setSkiRunsMapLink('http://www.google.nl')
                    ->setCreatedAt($now)
                    ->setUpdatedAt($now);
             

@@ -36,19 +36,7 @@ class HighlightRepository extends BaseRepository implements HighlightServiceRepo
            ->leftJoin('p.region', 'r')
            ->leftJoin('p.country', 'c')
            ->where($expr->eq('h.display', ':display'))
-           ->andWhere($expr->andX(
-        
-               $expr->andX(
-                   
-                   $expr->isNotNull('h.publishedAt'),
-                   $expr->lte('h.publishedAt', ':now')
-               ),
-               $expr->orX(
-               
-                   $expr->isNull('h.expiredAt'),
-                   $expr->gt('h.expiredAt', ':now')
-               )
-           ))
+           ->andWhere($this->publishedExpr('h', $expr))
            ->setParameters([
                
                'display' => true,

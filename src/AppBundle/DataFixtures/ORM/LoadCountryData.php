@@ -28,6 +28,12 @@ class LoadCountryData extends AbstractFixture
                         'en' => 'Country Title #' . $i,
                         'de' => 'Country Title #' . $i,
                     ])
+                    ->setLocaleDescriptionTags([
+                        
+                        'nl' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam amet.',
+                        'en' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam amet.',
+                        'de' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam amet.',
+                    ])
                     ->setLocaleShortDescriptions([
                         
                         'nl' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam amet.',

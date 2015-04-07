@@ -4,6 +4,8 @@
     
     {{ parent() }}
     
-    {% include 'pages/highlights.html.twig' with {'highlights': highlights } only %}
+    {% include 'partials/highlights.html.twig'      with {'highlights':     highlights }     only %}
+    
+    {% include 'partials/homepage_blocks.html.twig' with {'homepageBlocks': homepageBlocks } only %}
     
 {% endblock %}

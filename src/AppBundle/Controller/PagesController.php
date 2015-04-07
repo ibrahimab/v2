@@ -2,6 +2,7 @@
 namespace AppBundle\Controller;
 
 use       AppBundle\Annotation\Breadcrumb;
+use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterface;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -25,10 +26,12 @@ class PagesController extends Controller
      */
     public function home()
     {
-        $config           = $this->container->getParameter('app');
-        $surveyService    = $this->get('service.api.survey');
-        $highlightService = $this->get('service.api.highlight');
+        $config               = $this->container->getParameter('app');
+        $surveyService        = $this->get('service.api.survey');
+        $highlightService     = $this->get('service.api.highlight');
+        $homepageBlockService = $this->get('service.api.homepageblock');
         
+        $homepageBlocks   = $homepageBlockService->published();
         $highlights       = $highlightService->displayable(['limit' => $config['service']['api']['highlight']['limit']]);
         $types            = [];
         
@@ -45,8 +48,22 @@ class PagesController extends Controller
             $types[$surveyStat['typeId']]->setSurveyAverageOverallRating($surveyStat['surveyAverageOverallRating']);
         }
         
+        $groupedHomepageBlocks = ['left' => [], 'right' => []];
+        foreach ($homepageBlocks as $block) {
+            
+            if ($block->getPosition() === HomepageBlockServiceEntityInterface::POSITION_LEFT) {
+                $groupedHomepageBlocks['left'][] = $block;
+            }
+            
+            if ($block->getPosition() === HomepageBlockServiceEntityInterface::POSITION_RIGHT) {
+                $groupedHomepageBlocks['right'][] = $block;
+            }
+        }
+        
         return [
-            'highlights' => $highlights
+            
+            'highlights'     => $highlights,
+            'homepageBlocks' => $groupedHomepageBlocks,
         ];
     }
     

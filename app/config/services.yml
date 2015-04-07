@@ -78,6 +78,11 @@ services:
         arguments: [AppBundle\Entity\Booking\Survey\Survey]
         parent:    repository
         
+    repository.homepageblock:
+        class:     AppBundle\Entity\HomepageBlockRepository
+        arguments: [AppBundle\Entity\HomepageBlock\HomepageBlock]
+        parent:    repository
+        
     service.javascript:
         class:      AppBundle\Service\Javascript\JavascriptService
         arguments:  [[]]
@@ -109,3 +114,7 @@ services:
     service.api.survey:
         class:     AppBundle\Service\Api\Booking\Survey\SurveyService
         arguments: ["@repository.survey"]
+            
+    service.api.homepageblock:
+        class:     AppBundle\Service\Api\HomepageBlock\HomepageBlockService
+        arguments: ["@repository.homepageblock"]

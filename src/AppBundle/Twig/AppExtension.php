@@ -4,6 +4,7 @@ namespace AppBundle\Twig;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
+use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterface;
 use       Symfony\Component\DependencyInjection\ContainerInterface;
 use       Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use       Symfony\Bridge\Twig\Extension\RoutingExtension;
@@ -43,14 +44,15 @@ class AppExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('locale_url',   [$this, 'getUrl'],      ['is_safe_callback' => [$this, 'isUrlGenerationSafe']]),
-            new \Twig_SimpleFunction('locale_path',  [$this, 'getPath'],     ['is_safe_callback' => [$this, 'isUrlGenerationSafe']]),
-            new \Twig_SimpleFunction('type_image',   [$this, 'getTypeImage']),
+            new \Twig_SimpleFunction('locale_url', [$this, 'getUrl'], ['is_safe_callback' => [$this, 'isUrlGenerationSafe']]),
+            new \Twig_SimpleFunction('locale_path', [$this, 'getPath'], ['is_safe_callback' => [$this, 'isUrlGenerationSafe']]),
+            new \Twig_SimpleFunction('type_image', [$this, 'getTypeImage']),
             new \Twig_SimpleFunction('region_image', [$this, 'getRegionImage']),
-            new \Twig_SimpleFunction('place_image',  [$this, 'getPlaceImage']),
-            new \Twig_SimpleFunction('breadcrumbs',  [$this, 'breadcrumbs'], ['is_safe' => ['html'], 'needs_environment' => true]),
-            new \Twig_SimpleFunction('get_locale',   [$this, 'getLocale']),
-            new \Twig_SimpleFunction('js_object',    [$this, 'getJavascriptObject']),
+            new \Twig_SimpleFunction('place_image', [$this, 'getPlaceImage']),
+            new \Twig_SimpleFunction('homepage_block_image', [$this, 'getHomepageBlockImage']),
+            new \Twig_SimpleFunction('breadcrumbs', [$this, 'breadcrumbs'], ['is_safe' => ['html'], 'needs_environment' => true]),
+            new \Twig_SimpleFunction('get_locale', [$this, 'getLocale']),
+            new \Twig_SimpleFunction('js_object', [$this, 'getJavascriptObject']),
             new \Twig_SimpleFunction('region_ski_run_map', [$this, 'getRegionSkiRunMap']),
         ];
     }
@@ -129,6 +131,18 @@ class AppExtension extends \Twig_Extension
         }
         
         return '/chalet/pic/cms/' . $filename;
+    }
+    
+    public function getHomepageBlockImage(HomepageBlockServiceEntityInterface $homepageBlock)
+    {
+        $rootDir = $this->container->get('kernel')->getRootDir();
+        $path    = dirname($rootDir) . '/web/chalet/pic/cms/homepageblokken/';
+
+        if (file_exists($path . $homepageBlock->getId() . '.jpg')) {
+            return '/chalet/pic/cms/homepageblokken/' . $homepageBlock->getId(). '.jpg';
+        }
+        
+        return null;
     }
     
     /**

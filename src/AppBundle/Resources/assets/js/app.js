@@ -7,7 +7,7 @@
      */
     jq('body').on('change', '[data-role="sort-regions"]', function() {
         
-        var country = Chalet['app']['route']['params']['countrySlug'];
+        var country = Chalet.get().app.route.params.countrySlug;
         var sort    = jq(this).val();
         
         window.location.href = Routing.generate('show_country_nl', { countrySlug: country, sort: sort });
@@ -26,6 +26,7 @@
     jq('body').on('click', '[data-role="toggle-long-list"]', function(event) {
         
         event.preventDefault();
+        
         var element = jq(this);
         var icon    = element.find('[data-role="toggle-icon-long-list"]');
         var list    = element.parents('ul[data-role="long-list"]');
