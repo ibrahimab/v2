@@ -9,6 +9,14 @@ namespace AppBundle\Service\Api\Country;
 interface CountryServiceRepositoryInterface
 {
     /**
+     * Setting season
+     * 
+     * @param integer $season
+     * @return CountryServiceRepositoryInterface
+     */
+    public function setSeason($season);
+    
+    /**
      * Fetching countries
      *
      * Fetching all the places based on the options passed in. The supported options are: 'where', 'order', 'limit', 'offset'

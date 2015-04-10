@@ -18,13 +18,18 @@ services:
         class: AppBundle\EventListener\BreadcrumbListener
         arguments: [@app.annotations.breadcrumbs, @twig]
         tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 1 }
             
     app.global_javascript_listener:
         class: AppBundle\EventListener\GlobalJavascriptListener
         arguments: [@service.javascript]
         tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 5 }
+            
+    app.season_listener:
+        class: AppBundle\EventListener\SeasonListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 10 }
         
     twig.text_extension:
         class: Twig_Extensions_Extension_Text
@@ -110,6 +115,8 @@ services:
     service.api.country:
         class:     AppBundle\Service\Api\Country\CountryService
         arguments: ["@repository.country"]
+        calls:
+            - [setSeason, [@request_stack]]
             
     service.api.survey:
         class:     AppBundle\Service\Api\Booking\Survey\SurveyService

@@ -1,5 +1,7 @@
 <?php
 namespace AppBundle\Entity;
+
+use       Doctrine\ORM\Query\Expr;
 use       Doctrine\ORM\EntityRepository;
 
 /**
@@ -10,16 +12,45 @@ use       Doctrine\ORM\EntityRepository;
  * @package Chalet
  */
 class BaseRepository extends EntityRepository
-{   
+{
+    /**
+     * @var integer
+     */
+    protected $season;
+    
+    /**
+     * Setting season
+     *
+     * @param integer $season
+     * @return BaseRepository
+     */
+    public function setSeason($season)
+    {
+        $this->season = $season;
+        
+        return $this;
+    }
+    
     /**
      * Getting either the option passed in or the default
-     * 
+     *
+     * @param array $options
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
      */
     public static function getOption($options, $key, $default = null)
     {
         return isset($options[$key]) ? $options[$key] : $default;
     }
     
+    /**
+     * Getting locale field
+     *
+     * @param string $field
+     * @param string $locale
+     * @return string
+     */
     public function getLocaleField($field, $locale)
     {
         $locale = strtolower($locale);
@@ -63,6 +94,13 @@ class BaseRepository extends EntityRepository
         return $this->findOneBy($by);
     }
     
+    /**
+     * Published expression for QueryBuilder instances
+     * 
+     * @param string $fieldPrefix
+     * @param Expr $expr
+     * @return Expr
+     */
     public function publishedExpr($fieldPrefix, $expr)
     {
         return $expr->andX(

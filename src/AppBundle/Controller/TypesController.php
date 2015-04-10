@@ -39,8 +39,7 @@ class TypesController extends Controller
     {
         $typeService = $this->get('service.api.type');
         $type        = $typeService->findById($typeId);
-        
-                //
+
         // $this->get('translator')->trans('catering');
         // $this->get('translator')->trans('ski-run');
         // $this->get('translator')->trans('sauna');

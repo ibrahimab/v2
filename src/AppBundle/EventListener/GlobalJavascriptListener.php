@@ -38,6 +38,7 @@ class GlobalJavascriptListener
         $attributes = $request->attributes;
         
         $this->javascriptService->set('app.locale', $request->getLocale());
+        $this->javascriptService->set('app.season', $attributes->get('_season'));
         $this->javascriptService->set('app.controller', $attributes->get('_controller'));
         $this->javascriptService->set('app.route.name', $attributes->get('_route'));
         $this->javascriptService->set('app.route.params', $attributes->get('_route_params'));

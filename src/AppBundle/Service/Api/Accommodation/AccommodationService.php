@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Service\Api\Accommodation;
+
 use       AppBundle\Service\Api\Accommodation\AccommodationServiceRepositoryInterface;
 
 class AccommodationService
