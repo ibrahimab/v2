@@ -1,5 +1,5 @@
 <?php
-namespace Api;
+namespace AppBundle\Tests\Unit\Service\Api;
 
 
 class TypeServiceTest extends \Codeception\TestCase\Test
@@ -87,7 +87,7 @@ class TypeServiceTest extends \Codeception\TestCase\Test
     
     public function testCountByRegions()
     {
-        $regions = $this->regionService->all(['where' => ['id' => [1, 2]]]);
+        $regions = $this->regionService->all(['where' => ['id' => [1]]]);
         $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Region\RegionServiceEntityInterface', $regions);
         
         // counting accommodations
@@ -96,10 +96,18 @@ class TypeServiceTest extends \Codeception\TestCase\Test
         // asserting that region ID = 1 has 1 accommodation
         $this->assertArrayHasKey(1, $accommodationsCount);
         $this->assertSame(1, $accommodationsCount[1]);
+    }
+    
+    public function testCountByPlace()
+    {
+        $place = $this->placeService->find();
+        $this->assertInstanceOf('AppBundle\Service\Api\Place\PlaceServiceEntityInterface', $place);
         
-        // asserting that region ID = 2 has 1 accommodation
-        $this->assertArrayHasKey(2, $accommodationsCount);
-        $this->assertSame(1, $accommodationsCount[2]);
+        // counting accommodations
+        $accommodationsCount = $this->typeService->countByPlace($place);
+
+        // asserting that place ID = 1 has 1 accommodation
+        $this->assertEquals(1, $accommodationsCount);
     }
     
     public function testGetTypesByPlace()
@@ -107,7 +115,40 @@ class TypeServiceTest extends \Codeception\TestCase\Test
         $place = $this->placeService->find();
         $this->assertInstanceOf('AppBundle\Service\Api\Place\PlaceServiceEntityInterface', $place);
         
-        $types = $this->typeService->findByPlace($place);
+        $types = $this->typeService->findByPlace($place, 2);
         $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Type\TypeServiceEntityInterface', $types);
+    }
+    
+    public function testFindTypeById()
+    {
+        /**
+         * This service endpoint needs to find all the associations without additional
+         * queries to the database
+         */
+        $debugLogger   = new \Doctrine\DBAL\Logging\DebugStack();
+        $profiler      = $this->serviceContainer->get('doctrine')->getConnection()->getConfiguration()->setSQLLogger($debugLogger);
+        $queriesStart  = count($debugLogger->queries);
+        
+        $type          = $this->typeService->findById(1);
+        $accommodation = $type->getAccommodation();
+        $place         = $accommodation->getPlace();
+        $region        = $place->getRegion();
+        $country       = $place->getCountry();
+        
+        // forcing queries
+        $accommodation->getName();
+        $place->getName();
+        $region->getName();
+        $country->getName();
+        
+        $this->assertInstanceOf('AppBundle\Service\Api\Type\TypeServiceEntityInterface', $type);
+        $this->assertInstanceOf('AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface', $accommodation);
+        $this->assertInstanceOf('AppBundle\Service\Api\Place\PlaceServiceEntityInterface', $place);
+        $this->assertInstanceOf('AppBundle\Service\Api\Region\RegionServiceEntityInterface', $region);
+        $this->assertInstanceOf('AppBundle\Service\Api\Country\CountryServiceEntityInterface', $country);
+        
+        $queriesEnd = count($debugLogger->queries);
+        
+        $this->assertEquals(1, ($queriesEnd - $queriesStart));
     }
 }

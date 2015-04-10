@@ -52,7 +52,8 @@ class PlaceService
     /**
      * Finding a single place, based on criteria passed in
      *
-     * @param array $by
+     * @param string $seoName
+     * @param string $locale
      * @return PlaceServiceEntityInterface
      */
     public function findByLocaleSeoName($seoName, $locale)

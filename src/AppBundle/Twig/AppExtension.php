@@ -11,7 +11,6 @@ use       Symfony\Bridge\Twig\Extension\RoutingExtension;
 
 class AppExtension extends \Twig_Extension
 {
-    
     /**
      * @var ContainerInterface
      */
@@ -58,6 +57,18 @@ class AppExtension extends \Twig_Extension
     }
     
     /**
+     * Registering filters
+     * 
+     * @return array
+     */
+    public function getFilters()
+    {
+        return [
+            new \Twig_SimpleFilter('bbcode', [$this, 'bbcode'], array('pre_escape' => 'html', 'is_safe' => array('html'))),
+        ];
+    }
+    
+    /**
      * Getting Image url from a Type Entity
      *
      * @param TypeServiceEntityInterface $type
@@ -78,7 +89,13 @@ class AppExtension extends \Twig_Extension
         
         return '/chalet/' . $cache . $file . '.jpg';
     }
-    
+
+    /**
+     * Getting Region ski runs map image
+     * 
+     * @param RegionServiceEntityInterface $region
+     * @return string
+     */
     public function getRegionImage(RegionServiceEntityInterface $region)
     {
         $rootDir   = $this->container->get('kernel')->getRootDir();
@@ -99,7 +116,13 @@ class AppExtension extends \Twig_Extension
         
         return '/chalet/pic/cms/' . $filename;
     }
-    
+
+    /**
+     * Getting Region ski runs map image
+     * 
+     * @param RegionServiceEntityInterface $region
+     * @return string
+     */
     public function getRegionSkiRunMap(RegionServiceEntityInterface $region)
     {
         $rootDir = $this->container->get('kernel')->getRootDir();
@@ -111,7 +134,13 @@ class AppExtension extends \Twig_Extension
         
         return null;
     }
-    
+
+    /**
+     * Getting Place image
+     * 
+     * @param PlaceServiceEntityInterface $place
+     * @return string
+     */
     public function getPlaceImage(PlaceServiceEntityInterface $place)
     {
         $rootDir   = $this->container->get('kernel')->getRootDir();
@@ -133,6 +162,12 @@ class AppExtension extends \Twig_Extension
         return '/chalet/pic/cms/' . $filename;
     }
     
+    /**
+     * Getting Homepage block image
+     * 
+     * @param HomepageBlockServiceEntityInterface $homepageBlock
+     * @return string|null
+     */
     public function getHomepageBlockImage(HomepageBlockServiceEntityInterface $homepageBlock)
     {
         $rootDir = $this->container->get('kernel')->getRootDir();
@@ -147,6 +182,11 @@ class AppExtension extends \Twig_Extension
     
     /**
      * Wrapper around path function of twig to automatically add _<locale> to the route name
+     *
+     * @param string $name
+     * @param array $parameters
+     * @param boolean $relative
+     * @return string
      */
     public function getPath($name, $parameters = array(), $relative = false)
     {
@@ -156,6 +196,14 @@ class AppExtension extends \Twig_Extension
         return $this->generator->generate(($name . ($exists ? ('_' . $locale) : '')), $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
     }
     
+    /**
+     * Getting absolute version of path (locale aware)
+     *
+     * @param string $name
+     * @param array $parameters
+     * @param boolean $schemeRelative
+     * @return string
+     */
     public function getUrl($name, $parameters = array(), $schemeRelative = false)
     {
         $locale = $this->container->get('request')->getLocale();
@@ -202,6 +250,14 @@ class AppExtension extends \Twig_Extension
         return array();
     }
     
+    /**
+     * Generating breadcrumbs
+     *
+     * @param \Twig_Environment $twig
+     * @param array $placeholders
+     * @param array $params
+     * @return string
+     */
     public function breadcrumbs(\Twig_Environment $twig, $placeholders = [], $params = [])
     {
         $annotations  = $this->container->get('request')->attributes->get('breadcrumbs');
@@ -232,6 +288,11 @@ class AppExtension extends \Twig_Extension
         return $twig->render('partials/breadcrumbs.html.twig', ['breadcrumbs' => $breadcrumbs]);
     }
     
+    /**
+     * Getting locale
+     *
+     * @return string
+     */
     public function getLocale()
     {
         if (null === $this->locale) {
@@ -241,9 +302,25 @@ class AppExtension extends \Twig_Extension
         return $this->locale;
     }
     
+    /**
+     * Return Javascript Object created by controller/services
+     *
+     * @return array
+     */
     public function getJavascriptObject()
     {
         return $this->container->get('service.javascript')->toArray();
+    }
+    
+    /**
+     * Helper method for formatting bbcode
+     *
+     * @param string $text
+     * @return string
+     */
+    public function bbcode($text)
+    {
+        return $this->container->get('app.utils')->bbcode($text);
     }
     
     /**

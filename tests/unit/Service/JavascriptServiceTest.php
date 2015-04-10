@@ -1,5 +1,5 @@
 <?php
-namespace Service;
+namespace AppBundle\Tests\Unit\Service;
 
 use       AppBundle\Service\Javascript\JavascriptService;
 

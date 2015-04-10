@@ -1,7 +1,9 @@
 <?php
 namespace AppBundle\Service\Api\Type;
+
 use       AppBundle\Service\Api\Type\TypeServiceRepositoryInterface;
-use       AppBundle\Service\Api\Place\PlaceServiceRepositoryInterface;
+use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
+use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 
 class TypeService
 {    
@@ -48,12 +50,24 @@ class TypeService
     /**
      * Get types by place
      *
-     * @param  PlaceServiceEntityInterface
+     * @param  PlaceServiceEntityInterface $place
+     * @param  integer $limit
      * @return TypeServiceEntityInterface[]
      */
-    public function findByPlace($place)
+    public function findByPlace(PlaceServiceEntityInterface $place, $limit)
     {
-        return $this->typeRepository->findByPlace($place);
+        return $this->typeRepository->findByPlace($place, $limit);
+    }
+    
+    /**
+     * Counting all the types of all the accommodations for place provided
+     *
+     * @param PlaceServiceEntityInterface $place
+     * @return integer
+     */
+    public function countByPlace(PlaceServiceEntityInterface $place)
+    {
+        return $this->typeRepository->countByPlace($place);
     }
     
     /**
@@ -62,7 +76,7 @@ class TypeService
      * @param RegionServiceEntityInterface $region
      * @return integer
      */
-    public function countByRegion($region)
+    public function countByRegion(RegionServiceEntityInterface $region)
     {
         return $this->typeRepository->countByRegion($region);
     }
@@ -76,5 +90,16 @@ class TypeService
     public function countByRegions($regions)
     {
         return $this->typeRepository->countByRegions($regions);
+    }
+    
+    /**
+     * Getting type and its associations in one query by ID
+     *
+     * @param integer $typeId
+     * @return TypeServiceEntityInterface
+     */
+    public function findById($typeId)
+    {
+        return $this->typeRepository->findById($typeId);
     }
 }

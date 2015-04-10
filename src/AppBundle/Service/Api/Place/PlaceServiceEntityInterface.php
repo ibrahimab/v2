@@ -241,6 +241,36 @@ interface PlaceServiceEntityInterface
      * @return string 
      */
     public function getDescription();
+
+    /**
+     * Set englishDescription
+     *
+     * @param string $englishDescription
+     * @return PlaceServiceEntityInterface
+     */
+    public function setEnglishDescription($englishDescription);
+
+    /**
+     * Get englishDescription
+     *
+     * @return string 
+     */
+    public function getEnglishDescription();
+
+    /**
+     * Set germanDescription
+     *
+     * @param string $germanDescription
+     * @return PlaceServiceEntityInterface
+     */
+    public function setGermanDescription($germanDescription);
+
+    /**
+     * Get germanDescription
+     *
+     * @return string 
+     */
+    public function getGermanDescription();
     
     /**
      * Set locale descriptions

@@ -16,7 +16,8 @@ class PlaceRepository extends BaseRepository implements PlaceServiceRepositoryIn
     /**
      * Finding a single place by its seo name
      *
-     * @param array $by
+     * @param string $seoName
+     * @param string $locale
      * @return PlaceServiceEntityInterface
      */
     public function findByLocaleSeoName($seoName, $locale)

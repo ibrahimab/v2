@@ -29,7 +29,7 @@ class LoadSurveyData extends AbstractFixture implements DependentFixtureInterfac
                    ->setWebsiteTextModifiedLanguage('[EN] ' . $dummy, 'en')
                    ->setWebsiteTextModifiedLanguage('[DE] ' . $dummy, 'de')
                    ->setWebsiteName(($i % 2) === 0 ? 'Ibrahim' : '')
-                   ->setReviewed(rand(1,3))
+                   ->setReviewed(($i === 1 ? 1 : (rand(1,3))))
                    ->setLanguage($language)
                    ->setArrivalAt($now)
                    ->setDepartureAt($next_week)
@@ -45,7 +45,7 @@ class LoadSurveyData extends AbstractFixture implements DependentFixtureInterfac
                    4             => rand(1, 10),
                    5             => rand(1, 10),
                    6             => rand(1, 10),
-                   7             => ($i === 1 ? 1 : rand(1, 10)),
+                   7             => rand(1, 10),
                    'explanation' => $dummy,
                ], 
                

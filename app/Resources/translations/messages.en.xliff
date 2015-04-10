@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2015-04-07T17:06:17Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
+  <file date="2015-04-10T12:54:05Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -25,12 +25,12 @@
       <trans-unit id="e4c1a71b066bed67f705260636e0539ee05bec6c" resname="altitude">
         <source>altitude</source>
         <target>Altitude</target>
-        <jms:reference-file line="114">views/region/show.html.twig</jms:reference-file>
+        <jms:reference-file line="132">views/region/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="cffa50a32cb13a240d705317bcec65dd1f31b6ad" resname="and">
         <source>and</source>
         <target>and</target>
-        <jms:reference-file line="86">views/countries/show.html.twig</jms:reference-file>
+        <jms:reference-file line="87">views/countries/show.html.twig</jms:reference-file>
         <jms:reference-file line="18">views/layouts/home.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="1fe80e506149e4b49ca3560003edd2b8d57e6d9e" resname="austria">
@@ -44,7 +44,7 @@
         <source>average-rating</source>
         <target>Average rating</target>
         <jms:reference-file line="3">views/partials/features.html.twig</jms:reference-file>
-        <jms:reference-file line="35">views/places/show.html.twig</jms:reference-file>
+        <jms:reference-file line="36">views/places/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="169254c45fa4ed7ea11c00541ffb17b0cde39625" resname="blog">
         <source>blog</source>
@@ -54,17 +54,18 @@
       <trans-unit id="8d26e007d15031b026751b3ae040951e69ed1dd4" resname="chalet-or-apartment">
         <source>chalet-or-apartment</source>
         <target>chalet or apartment</target>
-        <jms:reference-file line="84">views/countries/show.html.twig</jms:reference-file>
+        <jms:reference-file line="85">views/countries/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="742b1b106252bfe3aa8adb921e6d345220789712" resname="chalets-apartments">
         <source>chalets-apartments</source>
         <target>chalets and apartments</target>
         <jms:reference-file line="3">views/countries/show.html.twig</jms:reference-file>
-        <jms:reference-file line="84">views/countries/show.html.twig</jms:reference-file>
+        <jms:reference-file line="85">views/countries/show.html.twig</jms:reference-file>
         <jms:reference-file line="16">views/layouts/home.html.twig</jms:reference-file>
         <jms:reference-file line="2">views/partials/features.html.twig</jms:reference-file>
-        <jms:reference-file line="34">views/places/show.html.twig</jms:reference-file>
-        <jms:reference-file line="113">views/region/show.html.twig</jms:reference-file>
+        <jms:reference-file line="35">views/places/show.html.twig</jms:reference-file>
+        <jms:reference-file line="45">views/places/show.html.twig</jms:reference-file>
+        <jms:reference-file line="131">views/region/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="1a73af9e7ae00182733b2292511b814be66f065f" resname="contact">
         <source>contact</source>
@@ -79,7 +80,7 @@
       <trans-unit id="9bac056d3d90ef2fe4df10504e6c0f8152d64da9" resname="distance-to-utrecht">
         <source>distance-to-utrecht</source>
         <target>Distance to Utrecht</target>
-        <jms:reference-file line="115">views/region/show.html.twig</jms:reference-file>
+        <jms:reference-file line="133">views/region/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="e75bc04532a5639ed1e96d1a467f9ce694094864" resname="faq">
         <source>faq</source>
@@ -90,7 +91,7 @@
         <source>features</source>
         <target>Features</target>
         <jms:reference-file line="41">views/countries/show.html.twig</jms:reference-file>
-        <jms:reference-file line="32">views/places/show.html.twig</jms:reference-file>
+        <jms:reference-file line="33">views/places/show.html.twig</jms:reference-file>
         <jms:reference-file line="31">views/region/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="23e591e8c36dda987970603ad0fdd031b7dff9f9" resname="france">
@@ -134,12 +135,12 @@
       <trans-unit id="3609bce29c5bf74a194c4d9f6133894b7061f6bb" resname="homepage.highlight.suitable-for">
         <source>homepage.highlight.suitable-for</source>
         <target>Geschikt voor %optimal% tot %maximum% personen</target>
-        <jms:reference-file line="30">views/partials/highlight.html.twig</jms:reference-file>
+        <jms:reference-file line="31">views/partials/highlight.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="ce0738a141253a5b698957656251e76ae3ef161e" resname="homepage.highlight.suitable-for-max">
         <source>homepage.highlight.suitable-for-max</source>
         <target>Geschikt tot %maximum% personen</target>
-        <jms:reference-file line="28">views/partials/highlight.html.twig</jms:reference-file>
+        <jms:reference-file line="29">views/partials/highlight.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="e8ac4088e022529361aa1b2e3d8f57bf905f5d6f" resname="homepage.highlights">
         <source>homepage.highlights</source>
@@ -168,40 +169,45 @@
         <jms:reference-file line="4">views/partials/countries.html.twig</jms:reference-file>
         <jms:reference-file line="63">views/partials/footer.html.twig</jms:reference-file>
       </trans-unit>
+      <trans-unit id="207b877e13437b35b3fbae5c20219eecd6c828f1" resname="layout">
+        <source>layout</source>
+        <target>layout</target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
       <trans-unit id="228e4845cd5d87d2ea8a7f5ac1f32007f3ecf48f" resname="length-black-ski-runs">
         <source>length-black-ski-runs</source>
         <target>Length black ski runs</target>
-        <jms:reference-file line="72">views/region/show.html.twig</jms:reference-file>
+        <jms:reference-file line="87">views/region/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="9b593a9179f3dc1121f950cfe5881cd3d27aa8f8" resname="length-blue-ski-runs">
         <source>length-blue-ski-runs</source>
         <target>Length blue ski runs</target>
-        <jms:reference-file line="64">views/region/show.html.twig</jms:reference-file>
+        <jms:reference-file line="75">views/region/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="3d8580a1c74fab0b46aeb34a8910d30810d0661e" resname="length-red-ski-runs">
         <source>length-red-ski-runs</source>
         <target>Length red ski runs</target>
-        <jms:reference-file line="68">views/region/show.html.twig</jms:reference-file>
+        <jms:reference-file line="81">views/region/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="99e8bfcc5fb27701ea3159893c11d5f42f62565c" resname="length-ski-runs">
         <source>length-ski-runs</source>
         <target>Length ski runs</target>
-        <jms:reference-file line="60">views/region/show.html.twig</jms:reference-file>
+        <jms:reference-file line="69">views/region/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="8bbfdba1224b919603b3355e9bfe95326167ec0a" resname="length-trails">
         <source>length-trails</source>
         <target>Length trails</target>
-        <jms:reference-file line="76">views/region/show.html.twig</jms:reference-file>
+        <jms:reference-file line="93">views/region/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="379e75c850e1334ef7bece52694c2f26cebec78f" resname="links">
         <source>links</source>
         <target>Links</target>
-        <jms:reference-file line="83">views/region/show.html.twig</jms:reference-file>
+        <jms:reference-file line="101">views/region/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="324d2c4f8c42abc418bde82c7fea830b4d70309c" resname="places">
         <source>places</source>
         <target>Places</target>
-        <jms:reference-file line="102">views/region/show.html.twig</jms:reference-file>
+        <jms:reference-file line="120">views/region/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="96ed5c5789b174a01557791c8e936673ae4d973f" resname="privacy">
         <source>privacy</source>
@@ -212,7 +218,8 @@
         <source>ratings</source>
         <target>Ratings</target>
         <jms:reference-file line="4">views/partials/features.html.twig</jms:reference-file>
-        <jms:reference-file line="36">views/places/show.html.twig</jms:reference-file>
+        <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
+        <jms:reference-file line="37">views/places/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="f062ef59202249cde5de26ada9e2b02fcf9ccecd" resname="sitemap">
         <source>sitemap</source>
@@ -228,8 +235,8 @@
       <trans-unit id="5a3fbcf9367f983d660e23050f8c20db96a3d127" resname="ski-runs-map">
         <source>ski-runs-map</source>
         <target>Ski runs map</target>
-        <jms:reference-file line="92">views/region/show.html.twig</jms:reference-file>
-        <jms:reference-file line="95">views/region/show.html.twig</jms:reference-file>
+        <jms:reference-file line="110">views/region/show.html.twig</jms:reference-file>
+        <jms:reference-file line="113">views/region/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="bbe956747bd1d5990a3bd561eb86cbbcf6642915" resname="switzerland">
         <source>switzerland</source>
@@ -246,32 +253,32 @@
       <trans-unit id="64ffde76c5720f116fc4182a411d38173d6a2790" resname="total-cabine-lifts">
         <source>total-cabine-lifts</source>
         <target>Total cable cars and cabine lifts</target>
-        <jms:reference-file line="56">views/region/show.html.twig</jms:reference-file>
+        <jms:reference-file line="63">views/region/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="a99dff520ebed0b7c38223a3c2db3ed8cbf99b38" resname="total-chair-lifts">
         <source>total-chair-lifts</source>
         <target>Total chair lifts</target>
-        <jms:reference-file line="48">views/region/show.html.twig</jms:reference-file>
+        <jms:reference-file line="51">views/region/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="3c35d93fc242e2943fbedcd27653b1e6810ace4a" resname="total-lifts">
         <source>total-lifts</source>
         <target>Total lifts</target>
-        <jms:reference-file line="44">views/region/show.html.twig</jms:reference-file>
+        <jms:reference-file line="45">views/region/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="f99a2be2e1a4b42c09a44ad223e72b57eafbbde3" resname="total-ski-tows-lifts">
         <source>total-ski-tows-lifts</source>
         <target>Total ski tows lifts</target>
-        <jms:reference-file line="52">views/region/show.html.twig</jms:reference-file>
+        <jms:reference-file line="57">views/region/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="e6250c057c736d3ece9d3e68f5a20c8c12c585bb" resname="weather-report">
         <source>weather-report</source>
         <target>Weather report</target>
-        <jms:reference-file line="89">views/region/show.html.twig</jms:reference-file>
+        <jms:reference-file line="107">views/region/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="75f5540a4254c10b1e0a5ab37182f52a6636b692" resname="webcam">
         <source>webcam</source>
         <target>Webcam</target>
-        <jms:reference-file line="86">views/region/show.html.twig</jms:reference-file>
+        <jms:reference-file line="104">views/region/show.html.twig</jms:reference-file>
       </trans-unit>
     </body>
   </file>

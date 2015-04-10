@@ -1,0 +1,587 @@
+{% extends 'layouts/default.html.twig' %}
+
+{% set locale                 = get_locale() %}
+{% set accommodation          = type.getAccommodation() %}
+{% set country, region, place = accommodation.getPlace().getCountry(), accommodation.getPlace().getRegion(), accommodation.getPlace() %}
+
+{% 
+    set localeData = {
+
+        name: {
+            
+            country:       country.getLocaleName(locale),
+            region:        region.getLocaleName(locale),
+            place:         place.getLocaleName(locale),
+            accommodation: accommodation.getLocaleName(locale),
+            type:          type.getLocaleName(locale)
+        },
+        seo:  {
+            
+            country: country.getLocaleName(locale),
+            region:  region.getLocaleSeoName(locale),
+            place:   place.getLocaleSeoName(locale)
+        }
+    }
+%}
+
+{% block breadcrumbs %}
+    {{ 
+        breadcrumbs({
+            
+            countryName:       localeData['name']['country'],
+            regionName:        localeData['name']['region'],
+            placeName:         localeData['name']['place'],
+            accommodationName: localeData['name']['accommodation']
+            
+        }, {
+            
+            countrySlug: localeData['seo']['country'],
+            regionSlug:  localeData['seo']['region'],
+            placeSlug:   localeData['seo']['place'],
+        })
+    }}
+    
+    
+{% endblock %}
+    
+{% block body %}
+    
+    {{ parent() }}
+    
+    <section id="accom" class="discount">
+        <div class="row">
+            <div id="accom-left" class="small-12 medium-8 large-9 columns">
+                <div class="overview sale">
+                    <div class="accom-desc">
+                        <div class="location">
+                            <span class="area"><a href="{{ locale_path('show_region', { regionSlug: localeData['seo']['region'] }) }}" title="{{ localeData['name']['region'] }}">{{ localeData['name']['region'] }}</a></span>, <span class="city"><a href="{{ locale_path('show_place', { placeSlug: localeData['seo']['place'] }) }}" title="{{ localeData['name']['place'] }}">{{ localeData['name']['place'] }}</a></span>, <span class="country"><a href="{{ locale_path('show_country', { countrySlug: localeData['seo']['country'] } ) }}" title="{{ localeData['name']['country'] }}">{{ localeData['name']['country'] }}</a></span>
+                        </div>
+                        <h1>{{ ('type.kind.' ~ accommodation.getKindIdentifier() )|trans ~ ' ' ~ localeData['name']['accommodation'] }}</h1>
+                        <div class="type"><h3>{{ localeData['name']['type'] }}</h3><a href="#types" class="goto" title="Bekijk alle foto's">Overige type's</a></div>
+                        <div class="accom-img">
+                            <div class="accom-slides show-for-small">
+                                <div><a href=""><img data-lazy="/bundles/app/img/accom/accom-2.jpg" alt="" /></a></div>
+                                <div><a href=""><img data-lazy="/bundles/app/img/accom/accom-1.jpg" alt="" /></a></div>
+                                <div><a href=""><img data-lazy="/bundles/app/img/accom/accom-3.jpg" alt="" /></a></div>
+                                <div><a href=""><img data-lazy="/bundles/app/img/accom/accom-4.jpg" alt="" /></a></div>
+                            </div>
+                            <div class="accom-img-big-1 row hide-for-small">
+                                <div class="large-8 medium-8 columns">
+                                    <img src="/bundles/app/img/accom/accom-3.jpg" alt="" />
+                                </div>
+                                <div class="large-4 medium-4 columns">
+                                    <img src="/bundles/app/img/accom/accom-1.jpg" alt="" />
+                                    <img src="/bundles/app/img/accom/accom-2.jpg" alt="" />
+                                </div>
+                            </div>
+                            <div class="circle"><span>Aan-</span><span>bieding</span></div>
+                            <a href="#images" class="button goto blank small radius" title="Bekijk alle foto's"><i class="fi-photo"></i>Bekijk alle foto's</a><!--class goto-->
+                            <a href="detail-variant.html" >[Bekijk variant]</a>
+                            <div id="details-for-mobile" class="show-for-small-99">                                        
+                            </div>
+                        </div>
+                        <h2>{{ type.getLocaleShortDescription(locale) ? type.getLocaleShortDescription : accommodation.getLocaleShortDescription(locale) }}</h2>
+                        <ul class="inline-list">
+                            {% set features     = type.getFeatures() ? type.getFeatures() : accommodation.getFeatures() %}
+                            {% set featuresList = features.get() %}
+                            {% for feature in featuresList %}
+                            <li>{{ feature|trans }}</li>
+                            {% endfor %}
+                            
+                        </ul>
+                        <p>{{ (type.getLocaleDescription(locale) ? type.getLocaleDescription(locale) : accommodation.getLocaleDescription(locale))|nl2br }}</p>
+                    </div>
+                
+                    <div id="mapping" class="mapping">
+                        <h3>{{ 'layout'|trans|capitalize }}</h3>
+                        <div class="text">
+                            <p>{{ (type.getLocaleLayout(locale) ? type.getLocaleLayout(locale) : accommodation.getLocaleLayout(locale))|nl2br }}</p>
+                        </div>
+                    </div>
+                
+                    <div id="types">
+                        <h3>Prijs &amp; beschikbaarheid</h3>
+                        <div class="row">
+                            <div class="small-12 medium-6 large-6 columns">
+                                <p>In euro’s, per accomodatie, inclusief skipas</p>
+                            </div>
+                            <div class="small-6 medium-3 large-3 columns">
+                                <i class="sprite sprite-icon-data-not-available">Niet beschikbaar</i>
+                            </div>
+                            <div class="small-6 medium-3 large-3 columns">
+                                <i class="sprite sprite-icon-data-discount-type">Aanbiedingsprijs</i>
+                            </div>
+                        </div>
+                        <div id="types-nav">
+                            <a href="#next" class="next"></a>
+                            <a href="#prev" class="prev"></a>
+                        </div>
+                        <table class="responsive">
+                            <tr>
+                                <th>&nbsp;</th>
+                                <th colspan="4" id="feb">Februari 2015</th>
+                                <th colspan="4" id="mrt">Maart 2015</th>
+                                <th colspan="4" id="apr">April 2015</th>
+                                <th colspan="5" id="may">Mei 2015</th>
+                            </tr>
+                            <tr>
+                                <td>Aankomstdatum</td>
+                                <td>07</td>
+                                <td>14</td>
+                                <td>21</td>
+                                <td>28</td>
+                                <td>07</td>
+                                <td>14</td>
+                                <td>21</td>
+                                <td>28</td>
+                                <td>04</td>
+                                <td>11</td>
+                                <td>18</td>
+                                <td>25</td>
+                                <td>02</td>
+                                <td>09</td>
+                                <td>16</td>
+                                <td>23</td>
+                                <td>30</td>
+                            </tr>
+                            <tr>
+                                <td>Aankomstdag</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                            </tr>
+                            <tr>
+                                <td>Aantal nachten</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                            </tr>
+                            <tr class="percentage data">
+                                <td><strong>Accomodatiekorting</strong></td>
+                                <td>20%</td>
+                                <td>&nbsp;</td>
+                                <td>10%</td>
+                                <td>30%</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>20%</td>
+                                <td>30%</td>
+                                <td>&nbsp;</td>
+                                <td>20%</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>30%</td>
+                                <td>30%</td>
+                                <td>30%</td>
+                            </tr>
+                            <tr class="data">
+                                <td><strong>8 personen</strong></td>
+                                <td><strong>325</strong></td>
+                                <td>315</td>
+                                <td><strong>325</strong></td>
+                                <td><strong>325</strong></td>
+                                <td>&nbsp;</td>
+                                <td>380</td>
+                                <td>370</td>
+                                <td>360</td>
+                                <td><strong>325</strong></td>
+                                <td><strong>325</strong></td>
+                                <td>350</td>
+                                <td><strong>325</strong></td>
+                                <td>320</td>
+                                <td>315</td>
+                                <td><strong>325</strong></td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="data">
+                                <td><strong>10 personen</strong></td>
+                                <td><strong>325</strong></td>
+                                <td>325</td>
+                                <td><strong>325</strong></td>
+                                <td><strong>325</strong></td>
+                                <td>390</td>
+                                <td>380</td>
+                                <td>370</td>
+                                <td>360</td>
+                                <td><strong>325</strong></td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>310</td>
+                                <td>315</td>
+                                <td>325</td>
+                                <td>335</td>
+                                <td>345</td>
+                            </tr>
+                            <tr class="data">
+                                <td><strong>12 personen</strong></td>
+                                <td><strong>325</strong></td>
+                                <td>480</td>
+                                <td><strong>325</strong></td>
+                                <td><strong>325</strong></td>
+                                <td>450</td>
+                                <td>440</td>
+                                <td>440</td>
+                                <td>460</td>
+                                <td><strong>325</strong></td>
+                                <td><strong>325</strong></td>
+                                <td>440</td>
+                                <td><strong>325</strong></td>
+                                <td>410</td>
+                                <td>415</td>
+                                <td><strong>325</strong></td>
+                                <td><strong>325</strong></td>
+                                <td><strong>325</strong></td>
+                            </tr>                                
+                        </table>
+                        <div class="row">
+                            <div class="small-12 medium-12 large-12 columns">
+                                <a href="" class="button small orange radius right" title="Boek nu">Boek nu</a>
+                                <a href="" class="button small radius right" title="Optie aanvragen">Optie aanvragen</a>
+                            </div>
+                        </div>
+                        <div id="types-inex" class="row">
+                            <div class="large-6 columns">
+                                <p>Inclusief</p>
+                                <ul>
+                                    <li>6-daagse skipas Alpe d'Huez / Grand Domaine (250 km piste)</li>
+                                    <li>Water en elektra.</li>
+                                    <li>Eén kinderbed en kinderstoel aanwezig.</li>
+                                </ul>
+                                <p>Verplicht te voldoen</p>
+                                <ul>
+                                    <li>Borg (&euro; 400,- contant te voldoen) en toeristenbelasting.</li>
+                                    <li>Bedlinnen (zelf te verzorgen of te huur: &euro; 14,- p.p., opgeven bij reservering).</li>
+                                    <li>Handdoeken (zelf te verzorgen of te huur: &euro; 8,- per set, opgeven bij reservering).</li>
+                                    <li>Keukenlinnen (zelf te verzorgen). Huisdieren zijn op aanvraag toegestaan (&euro; 35,- per dier per verblijf).</li>
+                                    <li>Eindschoonmaak: &euro; 150,- verplicht ter plaatse te voldoen.</li>
+                                    <li>Reserveringskosten (&euro; 20,- per boeking).</li>
+                                </ul>
+                            </div>
+                            <div class="large-6 columns">
+                                <p>Optioneel</p>
+                                <ul>
+                                    <li>Gebruik fitness (tegen betaling)</li>
+                                    <li>Gebruik wellness (tegen betaling)</li>
+                                    <li>Bekijk ook onze extra opties</li>
+                                </ul>
+                                <p>Diversen</p>
+                                <ul>
+                                    <li>Ontvangst ter plaatse</li>
+                                    <li>Ligging van de accommodatie</li>
+                                    <li>Comfort / inrichting</li>
+                                    <li>Hygiene / schoonmaak</li>
+                                    <li>Faciliteiten in en rondom de accommodatie</li>
+                                    <li>Prijs / kwaliteitverhouding</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div id="extras" class="extras">
+                        <div class="small-12 medium-8 large-9 columns">
+                            <h3>Extra opties winter 2014/2015</h3>
+                        </div>
+                        <div class="small-12 medium-4 large-3 columns">
+                            <select class="radius">
+                                <option value="1">zaterdag 7 maart</option>
+                                <option value="2">zaterdag 14 maart</option>
+                            </select>
+                        </div>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th><span class="price has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide prijsinformatie bij Ski's volwassen]">Ski's volwassen<i class="fi-info"></i></span></th>
+                                        <th>Prijs</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Huur Bronze Schoenen</td>
+                                        <td>&euro; 27,50</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Huur Bronze Ski's + Stokken</td>
+                                        <td>&euro; 57,50</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Huur Bronze Ski's + Schoenen + Stokken</td>
+                                        <td>&euro; 75,-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-wrapper hide"><!-- class hide-->
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th><span class="price has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide prijsinformatie bij Snowboard Volwassenen]">Snowboard Volwassenen<i class="fi-info"></i></span></th>
+                                        <th>Prijs</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Zilver Boots</td>
+                                        <td>&euro; 35,-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Zilver Snowboard</td>
+                                        <td>&euro; 72,50</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Zilver Snowboard + Boots</td>
+                                        <td>&euro; 92,-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Goud Boots</td>
+                                        <td>&euro; 45,-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Goud Snowboard</td>
+                                        <td>&euro; 82,50</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Goud Snowboard + Boots</td>
+                                        <td>&euro; 102,-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="readmore"><a href="" class="button blank small radius" title="Toon alle extra opties"><i class="sprite sprite-icon-close-all"></i>Toon alle extra opties</a><a href="" class="button small radius right" title="Prijs berekenen">Prijs berekenen</a></div>
+                    </div>
+                
+                    <div id="types-other" class="table-wrapper">
+                        <h3>Overige type accommodaties</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th><span>Per</span>sonen</th>
+                                    <th><span>Slaap</span>kamers</th>
+                                    <th><span>Bad</span>kamers</th>
+                                    <th>Type</th>
+                                    <th>Beoordeling (#)</th>
+                                    <th>&nbsp;</th>
+                                    <th><span>Prijs accom</span>modatie</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="sale-type"><!-- notice this row is in discount -->
+                                    <td><i class="sprite sprite-icon-torso"></i>6</td>
+                                    <td><i class="sprite sprite-icon-sleep"></i>4</td>
+                                    <td><i class="sprite sprite-icon-bath"></i>2</td>
+                                    <td>Type 1a</td>
+                                    <td><span>8,5</span>(11)</td>
+                                    <td><i class="sprite sprite-icon-discount"></i></td>
+                                    <td>&euro; 295,-<i class="fi-info"></i></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="sprite sprite-icon-torso"></i>8-10</td>
+                                    <td><i class="sprite sprite-icon-sleep"></i>4</td>
+                                    <td><i class="sprite sprite-icon-bath"></i>2</td>
+                                    <td>Type 1</td>
+                                    <td><span>7,5</span>(8)</td>
+                                    <td>&nbsp;</td>
+                                    <td>&euro; 270,-<i class="fi-info"></i></td>
+                                </tr>
+                                <tr class="sale-type"><!-- notice this row is in discount -->
+                                    <td><i class="sprite sprite-icon-torso"></i>11-12</td>
+                                    <td><i class="sprite sprite-icon-sleep"></i>6</td>
+                                    <td><i class="sprite sprite-icon-bath"></i>3</td>
+                                    <td>Type 3, met sauna</td>
+                                    <td><span>9,2</span>(12)</td>
+                                    <td><i class="sprite sprite-icon-discount"></i></td>
+                                    <td>&euro; 290,-<i class="fi-info"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                
+                    <div id="reviews" class="reviews">
+                        <h3>11 Beoordelingen, gemiddeld<span>8,5</span></h3>
+                        <article class="review-item">
+                            <div class="row">
+                                <div class="small-12 medium-12 large-6 columns">
+                                    <span class="rating">8,5</span>
+                                    <span class="author">Luc Hoeijmans,</span>
+                                    <span class="date">april 2015</span>
+                                    <p>Ligging ten opzichte van tracks, uitstekend. moeilijke toegang tot apparatuur en bagage. Goede persoonlijke aandacht, maar schaars en arm huishouden.</p>
+                                </div>
+                                <div class="small-12 medium-12 large-6 columns">
+                                    <ul class="ratings">
+                                        <li>Ontvangst ter plaatse<span>10</span></li>
+                                        <li>Ligging van de accommodatie<span>9</span></li>
+                                        <li>Comfort / inrichting<span>9</span></li>
+                                        <li>Hygiene / schoonmaak<span>8</span></li>
+                                        <li>Faciliteiten in en rondom de accommodatie<span>7</span></li>
+                                        <li>Prijs / kwaliteitverhouding<span>8</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="review-item">
+                            <div class="row">
+                                <div class="small-12 medium-12 large-6 columns">
+                                    <span class="rating">9,5</span>
+                                    <span class="author">Anoniem,</span>
+                                    <span class="date">maart 2015</span>
+                                    <p>Zeer mooie residentie, top ligging, leuk skigebied voor de niet te veeleisende skiër. We waren hier voor de 2e maal en nu het geheel volledig is afgewerkt met restaurant, bar en receptie geeft dit het geheel een 5-sterren allure!</p>
+                                </div>
+                                <div class="small-12 medium-12 large-6 columns">
+                                    <ul class="ratings">
+                                        <li>Ontvangst ter plaatse<span>8</span></li>
+                                        <li>Ligging van de accommodatie<span>9</span></li>
+                                        <li>Comfort / inrichting<span>9</span></li>
+                                        <li>Hygiene / schoonmaak<span>7</span></li>
+                                        <li>Faciliteiten in en rondom de accommodatie<span>8</span></li>
+                                        <li>Prijs / kwaliteitverhouding<span>10</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="review-item hide">
+                            <div class="row">
+                                <div class="small-12 medium-12 large-6 columns">
+                                    <span class="rating">8,5</span>
+                                    <span class="author">Els de Groot,</span>
+                                    <span class="date">februari 2015</span>
+                                    <p>Ligging ten opzichte van tracks, uitstekend. moeilijke toegang tot apparatuur en bagage. Goede persoonlijke aandacht, maar schaars en arm huishouden.</p>
+                                </div>
+                                <div class="small-12 medium-12 large-6 columns">
+                                    <ul class="ratings">
+                                        <li>Ontvangst ter plaatse<span>10</span></li>
+                                        <li>Ligging van de accommodatie<span>9</span></li>
+                                        <li>Comfort / inrichting<span>9</span></li>
+                                        <li>Hygiene / schoonmaak<span>8</span></li>
+                                        <li>Faciliteiten in en rondom de accommodatie<span>7</span></li>
+                                        <li>Prijs / kwaliteitverhouding<span>8</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </article>
+                        <div class="readmore"><a href="" class="button blank small radius" title="Toon meer beoordelingen"><i class="sprite sprite-icon-close-all"></i>Toon meer beoordelingen</a></div>
+                    </div>
+                
+                    <div id="images" class="images">
+                        <h3>Foto's</h3>
+                        <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-2">
+                            <li><a href="" class="th"><img src="/bundles/app/img/accom/accom-8.jpg" alt="" /></a></li>
+                            <li><a href="" class="th"><img src="/bundles/app/img/accom/accom-9.jpg" alt="" /></a></li>
+                        </ul>
+                        <div class="hide">
+                            <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
+                                <li><a href="" class="th"><img src="/bundles/app/img/accom/accom-10.jpg" alt="" /></a></li>
+                                <li><a href="" class="th"><img src="/bundles/app/img/accom/accom-11.jpg" alt="" /></a></li>
+                                <li><a href="" class="th"><img src="/bundles/app/img/accom/accom-1.jpg" alt="" /></a></li>
+                                <li><a href="" class="th"><img src="/bundles/app/img/accom/accom-2.jpg" alt="" /></a></li>
+                                <li><a href="" class="th"><img src="/bundles/app/img/accom/accom-3.jpg" alt="" /></a></li>
+                                <li><a href="" class="th"><img src="/bundles/app/img/accom/accom-4.jpg" alt="" /></a></li>
+                                <li><a href="" class="th"><img src="/bundles/app/img/accom/accom-5.jpg" alt="" /></a></li>
+                                <li><a href="" class="th"><img src="/bundles/app/img/accom/accom-6.jpg" alt="" /></a></li>
+                            </ul>
+                        </div>
+                        <div class="readmore"><a href="" class="button blank small radius" title="Toon meer foto's"><i class="sprite sprite-icon-close-all"></i>Toon meer foto's</a></div>
+                    </div>
+                
+                    <div id="map" class="map">
+                        <h3>Ligging</h3>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d10872.578233269292!2d13.616262280751943!3d47.057014559511806!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4770c38ff36f5fa7%3A0x4e4d1da98316d57a!2sHotel+Katschberghof!5e0!3m2!1snl!2snl!4v1424201744170" width="888" height="400" frameborder="0" style="border:0"></iframe>
+                    
+                        <div class="readmore"><a href="" class="button blank small radius" title="Bekijk al onze accommodaties in dit gebied"><i class="sprite sprite-icon-close-all"></i>Bekijk al onze accommodaties in dit gebied</a></div>
+                    </div>
+                </div>
+            </div>
+            <div id="accom-right" class="small-12 medium-4 large-3 columns">
+                <div id="accom-main-box-container">
+                    <div id="accom-main-box">
+                        <div class="price-details">
+                            <span class="price-info">Prijs per persoon per week, vanaf</span>
+                            <span class="price has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide prijsinformatie bij dit zoekresultaat]">&euro; 1.265,-<i class="fi-info"></i></span>
+                            <span class="price-inc"><i class="sprite sprite-icon-skipass"></i>Inclusief 6daagse skipas</span>
+                        </div>
+                        <hr />
+                        <ul class="accom-details">
+                            <li>Personen<span>6<i class="sprite sprite-icon-torso"></i></span></li>
+                            <li>Slaapkamers<span>4<i class="sprite sprite-icon-sleep"></i></span></li>
+                            <li>Badkamers<span>2<i class="sprite sprite-icon-bath"></i></span></li>
+                            <li>Oppervlakte<span>55 m&sup2;<i class="sprite sprite-icon-surface"></i></span></li>
+                        </ul>
+                        <div class="rating">
+                            <span class="stars has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide informatie bij klassering]"><i class="sprite sprite-star"></i><i class="sprite sprite-star"></i><i class="sprite sprite-star"></i><i class="sprite sprite-star"></i><i class="sprite sprite-star-empty"></i><i class="fi-info"></i></span>
+                            <span class="rate">8,5</span> (<a href="#reviews" class="goto" title="Bekijk beoordelingen">11 beoordelingen</a>)
+                        </div>
+                        <hr />
+                        <a href="" class="button large radius" title="Boek nu">Boek nu</a>
+                        <div class="social-buttons">
+                            <a href="" class="button social fb tiny radius" title="Like"><i class="fi-social-facebook"></i>Deel</a>
+                            <a href="" class="button social tw tiny radius" title="Tweet"><i class="fi-social-twitter"></i>Tweet</a>
+                            <a href="" class="button social ml tiny radius" title="Mail"><i class="fi-mail"></i>Mail</a>
+                            <div class="heart"><a href="" class="button social tiny radius" title="Dit resultaat opslaan in mijn favorieten"><i class="fi-heart"></i>Favoriet</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="accom-village">
+                    <div class="location">
+                        <span class="city">Skidorp: Oz-en-Oisans</span>
+                        <span class="area"><a href="landen.html" title="Agnieres-en-Devoluy">Alpe d'Huez (Grand Domaine)</a></span>, <span class="country"><a href="landen.html" title="Frankrijk">Frankrijk</a></span>
+                        <span class="mountain"><i class="fi-mountains"></i>ligt op <em>1.345 meter</em> hoogte</span>
+                        <span class="distance"><i class="fi-compass"></i><em>1.205 km</em> van Utrecht</span>
+                    </div>
+                    <div class="hide-for-small"><!-- class hide-for-small-->
+                        <img src="img/content/village-demo-1.jpg" alt="Skidorp: Oz-en-Oisans" />
+                        <div class="text">
+                            <p>Oz-en-Oisans is een modern, maar knus gebouwd dorpje gelegen tussen de dennenbossen van Frankrijk.</p>
+                        </div>
+                    </div>
+                    <a href="" title="Meer informatie" class="more">Meer informatie</a>
+                </div>
+                <div id="accom-area">
+                    <div class="location">
+                        <span class="city">Skigebied: Alpe d'Huez (Grand Domaine)</span>
+                        <span class="mountain"><i class="sprite sprite-icon-mountain"></i>ligt op <em>2.545 meter</em> hoogte</span>
+                        <span class="piste"><i class="sprite sprite-icon-pistes"></i><em>186 km</em> pistes</span>
+                    </div>
+                    <div class="hide-for-small"><!-- class hide-for-small-->
+                        <img src="img/content/area-demo-1.jpg" alt="Skidorp: Oz-en-Oisans" />
+                        <div class="text">
+                            <p>Het skigebied Alpe d'Huez dankt zijn bekendheid voornamelijk aan de beklimming in de Tour de France en natuurlijk het fietsevenement Alpe d'HuZes.</p>
+                        </div>
+                    </div>
+                    <a href="" title="Meer informatie" class="more">Meer informatie</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

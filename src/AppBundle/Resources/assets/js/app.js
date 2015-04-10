@@ -55,7 +55,6 @@
             
             scrollName: 'scroll-icon',
             animation: 'fade',
-            activeOverlay: '#00FFFF',
             scrollImg: {
                 
                 active: true,

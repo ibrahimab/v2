@@ -2,6 +2,7 @@
 namespace AppBundle\Service\Api\Booking\Survey;
 
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
+use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
 
@@ -18,6 +19,12 @@ interface SurveyServiceRepositoryInterface
      * @return array
      */
     public function statsByTypes($types);
+    
+    /**
+     * @param PlaceServiceEntityInterface $place
+     * @return array
+     */
+    public function statsByPlace(PlaceServiceEntityInterface $place);
     
     /**
      * @param RegionServiceEntityInterface $region

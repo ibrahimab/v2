@@ -6,6 +6,7 @@ use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use       Doctrine\ORM\NoResultException;
 
 /**
  * CountriesController
@@ -38,7 +39,7 @@ class RegionsController extends Controller
         $allPlaces       = $regionService->findByLocaleSeoName($regionSlug, $this->getRequest()->getLocale());
 
         if (count($allPlaces) === 0) {
-            return $this->createNotFoundException('Could not find region with slug=' . $regionSlug);
+            throw $this->createNotFoundException('Could not find region with slug=' . $regionSlug);
         }
 
         $place           = $allPlaces[0];

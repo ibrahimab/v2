@@ -1,5 +1,5 @@
 <?php
-namespace Api;
+namespace AppBundle\Tests\Unit\Service\Api;
 
 
 class SurveyServiceTest extends \Codeception\TestCase\Test
@@ -24,6 +24,9 @@ class SurveyServiceTest extends \Codeception\TestCase\Test
         $this->serviceContainer = $this->getModule('Symfony2')->container;
         $this->surveyService    = $this->serviceContainer->get('service.api.survey');
         $this->typeService      = $this->serviceContainer->get('service.api.type');
+        $this->countryService   = $this->serviceContainer->get('service.api.country');
+        $this->regionService    = $this->serviceContainer->get('service.api.region');
+        $this->placeService     = $this->serviceContainer->get('service.api.place');
         
         // clearing doctrine
         $this->serviceContainer->get('doctrine')->getManager()->clear();
@@ -31,8 +34,11 @@ class SurveyServiceTest extends \Codeception\TestCase\Test
     
     protected function _after()
     {
-        $this->surveyService = null;
-        $this->typeService   = null;
+        $this->surveyService  = null;
+        $this->typeService    = null;
+        $this->countryService = null;
+        $this->regionService  = null;
+        $this->placeService   = null;
     }
 
     public function testGetSurveys()
@@ -52,10 +58,7 @@ class SurveyServiceTest extends \Codeception\TestCase\Test
         $this->assertInstanceOf('AppBundle\Service\Api\Type\TypeServiceEntityInterface', $type);
         
         $surveyStats = $this->surveyService->statsByType($type);
-        
-        foreach ($surveyStats as $surveyStat) {
-            $this->assertEquals(1, $surveyStat['surveyCount']);
-        }
+        $this->assertArrayHasKey('surveyCount', $surveyStats);
     }
     
     public function testGetStatsSurveysMultipleTypes()
@@ -71,11 +74,38 @@ class SurveyServiceTest extends \Codeception\TestCase\Test
         }
     }
     
+    public function testCountSurveysSingleCountry()
+    {
+        $country = $this->countryService->find(['id' => 1]);
+        $this->assertInstanceOf('AppBundle\Service\Api\Country\CountryServiceEntityInterface', $country);
+        
+        $surveyStats = $this->surveyService->statsByCountry($country);
+        $this->assertArrayHasKey('surveyCount', $surveyStats);
+    }
+    
+    public function testCountSurveysSingleRegion()
+    {
+        $region = $this->regionService->find(['id' => 1]);
+        $this->assertInstanceOf('AppBundle\Service\Api\Region\RegionServiceEntityInterface', $region);
+        
+        $surveyStats = $this->surveyService->statsByRegion($region);
+        $this->assertArrayHasKey('surveyCount', $surveyStats);
+    }
+    
+    public function testCountSurveysSinglePlace()
+    {
+        $place = $this->placeService->find(['id' => 1]);
+        $this->assertInstanceOf('AppBundle\Service\Api\Place\PlaceServiceEntityInterface', $place);
+        
+        $surveyStats = $this->surveyService->statsByPlace($place);
+        $this->assertArrayHasKey('surveyCount', current($surveyStats));
+    }
+    
     public function testGetOverallRatingSurvey()
     {
-        $survey = $this->surveyService->find(['id' => 1]);
+        $survey = $this->surveyService->find(['question_1_7' => 1]);
         
-        $this->assertInstanceOf('AppBundle\Service\Api\Booking\Survey\SurveyServiceEntityInterface', $survey, 'Check if there is a survey which has question_1_7 = 1, or else repopulate fixtures into test database');
+        $this->assertInstanceOf('AppBundle\Service\Api\Booking\Survey\SurveyServiceEntityInterface', $survey);
         $this->assertEquals(1, $survey->getOverallRating());
     }
     
@@ -86,9 +116,6 @@ class SurveyServiceTest extends \Codeception\TestCase\Test
         
         // then get overall rating
         $surveyStats = $this->surveyService->statsByType($type);
-        
-        foreach ($surveyStats as $surveyStat) {
-            $this->assertEquals(1, $surveyStat['surveyAverageOverallRating']);
-        }
+        $this->assertArrayHasKey('surveyAverageOverallRating', $surveyStats);
     }
 }

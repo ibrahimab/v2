@@ -45,9 +45,79 @@ class Type implements TypeServiceEntityInterface
     /**
      * @var string
      *
+     * @ORM\Column(name="naam_en", type="string", length=100)
+     */
+    private $englishName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="naam_de", type="string", length=100)
+     */
+    private $germanName;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="korteomschrijving", type="string", length=70)
      */
     private $shortDescription;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="korteomschrijving_en", type="string", length=70)
+     */
+    private $englishShortDescription;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="korteomschrijving_de", type="string", length=70)
+     */
+    private $germanShortDescription;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="omschrijving", type="text")
+     */
+    private $description;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="omschrijving_en", type="text")
+     */
+    private $englishDescription;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="omschrijving_de", type="text")
+     */
+    private $germanDescription;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="indeling", type="text")
+     */
+    private $layout;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="indeling_en", type="text")
+     */
+    private $englishLayout;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="indeling_de", type="text")
+     */
+    private $germanLayout;
 
     /**
      * @var integer
@@ -78,11 +148,11 @@ class Type implements TypeServiceEntityInterface
     private $display;
 
     /**
-     * @var string
+     * @var array
      *
-     * @ORM\Column(name="omschrijving", type="text")
+     * @ORM\Column(name="kenmerken", type="features_type_array")
      */
-    private $description;
+    private $features;
 
     /**
      * @var string
@@ -118,6 +188,13 @@ class Type implements TypeServiceEntityInterface
      * @ORM\Column(name="kwaliteit", type="smallint")
      */
     private $quality;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="zoekvolgorde", type="smallint")
+     */
+    private $searchOrder;
     
     /**
      * @var SurveyServiceEntityInterface
@@ -221,6 +298,65 @@ class Type implements TypeServiceEntityInterface
     /**
      * {@InheritDoc}
      */
+    public function setEnglishName($englishName)
+    {
+        $this->englishName = $englishName;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getEnglishName()
+    {
+        return $this->englishName;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setGermanName($germanName)
+    {
+        $this->germanName = $germanName;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getGermanName()
+    {
+        return $this->germanName;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setLocaleNames($localeNames)
+    {
+        // normalize locales
+        $localeNames = array_change_key_case($localeNames);
+        
+        $this->setName(isset($localeNames['nl']) ? $localeNames['nl'] : '');
+        $this->setEnglishName(isset($localeNames['en']) ? $localeNames['en'] : '');
+        $this->setGermanName(isset($localeNames['de']) ? $localeNames['de'] : '');
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getLocaleName($locale)
+    {
+        return $this->getLocaleField('name', $locale, ['nl', 'en', 'de']);
+    }
+
+    /**
+     * {@InheritDoc}
+     */
     public function setShortDescription($shortDescription)
     {
         $this->shortDescription = $shortDescription;
@@ -234,6 +370,215 @@ class Type implements TypeServiceEntityInterface
     public function getShortDescription()
     {
         return $this->shortDescription;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setEnglishShortDescription($englishShortDescription)
+    {
+        $this->englishShortDescription = $englishShortDescription;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getEnglishShortDescription()
+    {
+        return $this->englishShortDescription;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setGermanShortDescription($germanShortDescription)
+    {
+        $this->germanShortDescription = $germanShortDescription;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getGermanShortDescription()
+    {
+        return $this->germanShortDescription;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setLocaleShortDescriptions($localeShortDescriptions)
+    {
+        // normalize locales
+        $localeShortDescriptions = array_change_key_case($localeShortDescriptions);
+        
+        $this->setShortDescription(isset($localeShortDescriptions['nl']) ? $localeShortDescriptions['nl'] : '');
+        $this->setEnglishShortDescription(isset($localeShortDescriptions['en']) ? $localeShortDescriptions['en'] : '');
+        $this->setGermanShortDescription(isset($localeShortDescriptions['de']) ? $localeShortDescriptions['de'] : '');
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getLocaleShortDescription($locale)
+    {
+        return $this->getLocaleField('shortDescription', $locale, ['nl', 'en', 'de']);
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setEnglishDescription($englishDescription)
+    {
+        $this->englishDescription = $englishDescription;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getEnglishDescription()
+    {
+        return $this->englishDescription;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setGermanDescription($germanDescription)
+    {
+        $this->germanDescription = $germanDescription;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getGermanDescription()
+    {
+        return $this->germanDescription;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setLocaleDescriptions($localeDescriptions)
+    {
+        // normalize locales
+        $localeDescriptions = array_change_key_case($localeDescriptions);
+        
+        $this->setDescription(isset($localeDescriptions['nl']) ? $localeDescriptions['nl'] : '');
+        $this->setEnglishDescription(isset($localeDescriptions['en']) ? $localeDescriptions['en'] : '');
+        $this->setGermanDescription(isset($localeDescriptions['de']) ? $localeDescriptions['de'] : '');
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getLocaleDescription($locale)
+    {
+        return $this->getLocaleField('description', $locale, ['nl', 'en', 'de']);
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setLayout($layout)
+    {
+        $this->layout = $layout;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getLayout()
+    {
+        return $this->layout;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setEnglishLayout($englishLayout)
+    {
+        $this->englishLayout = $englishLayout;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getEnglishLayout()
+    {
+        return $this->englishLayout;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setGermanLayout($germanLayout)
+    {
+        $this->germanLayout = $germanLayout;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getGermanLayout()
+    {
+        return $this->germanLayout;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setLocaleLayouts($localeLayouts)
+    {
+        // normalize locales
+        $localeLayouts = array_change_key_case($localeLayouts);
+        
+        $this->setLayout(isset($localeLayouts['nl']) ? $localeLayouts['nl'] : '');
+        $this->setEnglishLayout(isset($localeLayouts['en']) ? $localeLayouts['en'] : '');
+        $this->setGermanLayout(isset($localeLayouts['de']) ? $localeLayouts['de'] : '');
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getLocaleLayout($locale)
+    {   
+        return $this->getLocaleField('layout', $locale, ['nl', 'en', 'de']);
     }
 
     /**
@@ -311,9 +656,9 @@ class Type implements TypeServiceEntityInterface
     /**
      * {@InheritDoc}
      */
-    public function setDescription($description)
+    public function setFeatures($features)
     {
-        $this->description = $description;
+        $this->features = $features;
 
         return $this;
     }
@@ -321,11 +666,11 @@ class Type implements TypeServiceEntityInterface
     /**
      * {@InheritDoc}
      */
-    public function getDescription()
+    public function getFeatures()
     {
-        return $this->description;
+        return $this->features;
     }
-
+    
     /**
      * {@InheritDoc}
      */
@@ -419,6 +764,24 @@ class Type implements TypeServiceEntityInterface
     /**
      * {@InheritDoc}
      */
+    public function setSearchOrder($searchOrder)
+    {
+        $this->searchOrder = $searchOrder;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getSearchOrder()
+    {
+        return $this->searchOrder;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
     public function setSurveys($surveys)
     {
         $this->surveys = $surveys;
@@ -501,5 +864,32 @@ class Type implements TypeServiceEntityInterface
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getLocaleField($field, $locale, $allowedLocales)
+    {
+        $locale        = strtolower($locale);
+        $allowedLocale = in_array($locale, $allowedLocales);
+        
+        switch (true) {
+            
+            case $allowedLocale && $locale === 'en':
+                $localized = $this->{'getEnglish' . $field}();
+                break;
+                
+            case $allowedLocale && $locale === 'en':
+                $localized = $this->{'getGerman' . $field}();
+                break;
+            
+            case $allowedLocale && $locale === 'en':
+            default:
+                $localized = $this->{'get' . $field}();
+                break;
+        }
+        
+        return $localized;
     }
 }

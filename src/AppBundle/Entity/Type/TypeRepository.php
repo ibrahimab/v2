@@ -1,6 +1,8 @@
 <?php
 namespace AppBundle\Entity\Type;
 use       AppBundle\Service\Api\Type\TypeServiceRepositoryInterface;
+use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
+use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Entity\BaseRepository;
 
 /**
@@ -15,15 +17,23 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
     /**
      * {@InheritDoc}
      */
-    public function findByPlace($place)
+    public function findByPlace(PlaceServiceEntityInterface $place, $limit)
     {
         $qb   = $this->createQueryBuilder('t');
         $expr = $qb->expr();
         
-        $qb->select('partial t.{id, name}')
+        $qb->select('partial t.{id, optimalResidents, maxResidents, quality}, partial a.{id, name, kind, quality}')
            ->leftJoin('t.accommodation', 'a')
            ->where($expr->eq('a.place', ':place'))
-           ->setParameter('place', $place);
+           ->andWhere($expr->eq('t.display', ':display'))
+           ->andWhere($expr->eq('a.display', ':display'))
+           ->setMaxResults($limit)
+           ->orderBy('t.searchOrder', 'ASC')
+           ->setParameters([
+               
+               'place'   => $place,
+               'display' => true,
+           ]);
         
         return $qb->getQuery()->getResult();
     }
@@ -31,7 +41,32 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
     /**
      * {@InheritDoc}
      */
-    public function countByRegion($region)
+    public function countByPlace(PlaceServiceEntityInterface $place)
+    {
+        $qb   = $this->createQueryBuilder('t');
+        $expr = $qb->expr();
+        
+        $qb->select('COUNT(t.id)')
+           ->leftJoin('t.accommodation', 'a')
+           ->leftJoin('a.place', 'p')
+           ->where($expr->eq('p', ':place'))
+           ->andWhere($expr->eq('a.display', ':display'))
+           ->andWhere($expr->eq('t.display', ':display'))
+           ->andWhere($expr->eq('a.weekendSki', ':weekendski'))
+           ->setParameters([
+               
+               'place'      => $place,
+               'display'    => true,
+               'weekendski' => false,
+           ]);
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function countByRegion(RegionServiceEntityInterface $region)
     {
         $qb   = $this->createQueryBuilder('t');
         $expr = $qb->expr();
@@ -84,5 +119,24 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
         $results = $qb->getQuery()->getResult();
 
         return array_map('intval', array_column($results, 'typesCount', 'regionId'));
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function findById($typeId)
+    {
+        $qb   = $this->createQueryBuilder('t');
+        $expr = $qb->expr();
+        
+        $qb->select('t, a, p, r, c')
+           ->leftJoin('t.accommodation', 'a')
+           ->leftJoin('a.place', 'p')
+           ->leftJoin('p.region', 'r')
+           ->leftJoin('p.country', 'c')
+           ->where($expr->eq('t.id', ':type'))
+           ->setParameters(['type' => $typeId]);
+           
+        return $qb->getQuery()->getSingleResult();
     }
 }

@@ -6,6 +6,7 @@ use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use       Doctrine\ORM\NoResultException;
 
 /**
  * CountriesController
@@ -43,9 +44,11 @@ class CountriesController extends Controller
         $typeService    = $this->get('service.api.type');
         $surveyService  = $this->get('service.api.survey');
 
-        $country        = $countryService->findByLocaleName($countrySlug, $this->getRequest()->getLocale(), $sort);
-        
-        if (null === $country) {
+        try {
+            
+            $country        = $countryService->findByLocaleName($countrySlug, $this->getRequest()->getLocale(), $sort);
+            
+        } catch (NoResultException $e) {
             throw $this->createNotFoundException('Country with name = ' . $countrySlug . ' could not be found');
         }
         

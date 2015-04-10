@@ -1,5 +1,5 @@
 <?php
-namespace Service\Api;
+namespace AppBundle\Tests\Unit\Service\Api;
 
 use       AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
 
@@ -52,15 +52,15 @@ class AccommodationsTest extends \Codeception\TestCase\Test
             
             $this->assertInstanceOf('AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface', $accommodation);
             $this->assertEquals(1, $accommodation->getId());
-            $this->assertEquals('Accommodation #1', $accommodation->getName());
+            $this->assertEquals('NL Accommodation #1', $accommodation->getName());
 
         
             // Getting accommodation by Name
-            $accommodation = $this->accommodationService->find(['name' => 'Accommodation #1']);
+            $accommodation = $this->accommodationService->find(['name' => 'NL Accommodation #1']);
             
             $this->assertInstanceOf('AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface', $accommodation);
             $this->assertEquals(1, $accommodation->getId());
-            $this->assertEquals('Accommodation #1', $accommodation->getName());
+            $this->assertEquals('NL Accommodation #1', $accommodation->getName());
     }
     
     public function testNotFoundAccommodations()

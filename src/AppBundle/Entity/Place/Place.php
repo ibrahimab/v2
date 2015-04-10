@@ -567,7 +567,7 @@ class Place implements PlaceServiceEntityInterface
             
             case 'nl':
             default:
-                $localeShortDescription = $this->getDescription();
+                $localeShortDescription = $this->getShortDescription();
                 break;
         }
         

@@ -1,0 +1,189 @@
+<?php
+namespace AppBundle\Concern\FeatureConcern;
+
+/**
+ * 
+ */
+class FeatureConcernAccommodation extends FeatureConcern
+{
+    const FEATURE_WINTER_CATERING                  = 1;
+    const FEATURE_WINTER_SKI_RUN                   = 2;
+    const FEATURE_WINTER_SAUNA_PRIVATE             = 3;
+    const FEATURE_WINTER_SWIMMING_POOL_PRIVATE     = 4;
+    const FEATURE_WINTER_CHILD_FRIENDLY            = 5;
+    const FEATURE_WINTER_LARGE_GROUPS              = 6;
+    const FEATURE_WINTER_PRICE_CONSCIOUS           = 7;
+    const FEATURE_WINTER_TOP_SELECTION             = 8;
+    const FEATURE_WINTER_WINTER_WELLNESS           = 9;
+    const FEATURE_WINTER_SAUNA                     = 10;
+    const FEATURE_WINTER_SWIMMING_POOL             = 11;
+    const FEATURE_WINTER_FIREPLACE                 = 12;
+    const FEATURE_WINTER_PETS_ALLOWED              = 13;
+    const FEATURE_WINTER_ALLERGY_FREE              = 14;
+    const FEATURE_WINTER_RENT_SUNDAY               = 15;
+    const FEATURE_WINTER_SPECIAL                   = 16;
+    const FEATURE_WINTER_WASHING_MACHINE           = 17;
+    const FEATURE_WINTER_BALCONY                   = 18;
+    const FEATURE_WINTER_BALCONY_TERRACE           = 19;
+    const FEATURE_WINTER_PETS_DISALLOWED           = 20;
+    const FEATURE_WINTER_INTERNET                  = 21;
+    const FEATURE_WINTER_CHARMING_CHALET           = 22;
+    const FEATURE_WINTER_INTERNET_WIFI             = 23;
+    const FEATURE_WINTER_JACUZZI                   = 24;
+    
+    const FEATURE_SUMMER_ACTIVE_IN_MOUNTAINS       = 1;
+    const FEATURE_SUMMER_GOLF_COURSE               = 2;
+    const FEATURE_SUMMER_SAUNA_PRIVATE             = 3;
+    const FEATURE_SUMMER_SWIMMING_POOL_PRIVATE     = 4;
+    const FEATURE_SUMMER_CHILD_FRIENDLY            = 5;
+    const FEATURE_SUMMER_LARGE_GROUPS              = 6;
+    const FEATURE_SUMMER_PRICE_CONSCIOUS           = 7;
+    const FEATURE_SUMMER_TOP_SELECTION             = 8;
+    const FEATURE_SUMMER_WELLNESS_FACILITIES       = 9;
+    const FEATURE_SUMMER_SAUNA                     = 10;
+    const FEATURE_SUMMER_SWIMMING_POOL             = 11;
+    const FEATURE_SUMMER_FIREPLACE                 = 12;
+    const FEATURE_SUMMER_PETS_ALLOWED              = 13;
+    const FEATURE_SUMMER_ALLERGY_FREE              = 14;
+    const FEATURE_SUMMER_RENT_SUNDAY               = 15;
+    const FEATURE_SUMMER_CHALET_BY_WATER           = 16;
+    const FEATURE_SUMMER_VIVANT                    = 17;
+    const FEATURE_SUMMER_CHALET_FOR_TWO            = 18;
+    const FEATURE_SUMMER_TENNIS_COURT_CHALET       = 19;
+    const FEATURE_SUMMER_WINE_REGION               = 20;
+    const FEATURE_SUMMER_CITY_TRIP                 = 21;
+    const FEATURE_SUMMER_CHALET_DETACHED           = 22;
+    const FEATURE_SUMMER_CHALET_ATTACHED           = 23;
+    const FEATURE_SUMMER_HOLIDAY_PARK              = 24;
+    const FEATURE_SUMMER_FARM_GUEST                = 25;
+    const FEATURE_SUMMER_TOYS                      = 26;
+    const FEATURE_SUMMER_CHALET_DETACHED_MULTIPLE  = 27;
+    const FEATURE_SUMMER_SPECIAL                   = 28;
+    const FEATURE_SUMMER_TENNIS_COURT_SURROUNDING  = 29;
+    const FEATURE_SUMMER_GARDEN_TERRACE_PRIVATE    = 30;
+    const FEATURE_SUMMER_HORSEBACK_RIDING          = 31;
+    const FEATURE_SUMMER_WASHING_MACHINE           = 32;
+    const FEATURE_SUMMER_BALCONY_PRIVATE           = 33;
+    const FEATURE_SUMMER_GARDEN_TERRACE_BALCONY    = 34;
+    const FEATURE_SUMMER_PETS_DISALLOWED           = 35;
+    const FEATURE_SUMMER_INTERNET                  = 36;
+    const FEATURE_SUMMER_WINE_DOMAIN               = 37;
+    const FEATURE_SUMMER_GARDEN_FENCED             = 38;
+    const FEATURE_SUMMER_CENTRE_WALKING_DISTANCE   = 39;
+    const FEATURE_SUMMER_RESTAURANT_ON_DOMAIN      = 40;
+    const FEATURE_SUMMER_AGRITURISMO               = 41;
+    const FEATURE_SUMMER_INTERNET_WIFI             = 42;
+    const FEATURE_SUMMER_GROUND_LEVEL              = 43;
+    const FEATURE_SUMMER_NOT_GROUND_LEVEL          = 44;
+    const FEATURE_SUMMER_AIRCONDITIONING           = 45;
+    const FEATURE_SUMMER_BARBECUE_COMMON           = 46;
+    const FEATURE_SUMMER_BARBECUE_PRIVATE          = 47;
+    const FEATURE_SUMMER_CHILD_BED                 = 48;
+    const FEATURE_SUMMER_JACUZZI                   = 49;
+    const FEATURE_SUMMER_CHILD_SEAT                = 50;
+    const FEATURE_SUMMER_DISHWASHER                = 51;
+    const FEATURE_SUMMER_ACTIVITIES                = 52;
+    const FEATURE_SUMMER_AGRITURISMO_A             = 53;
+    const FEATURE_SUMMER_AGRITURISMO_B             = 54;
+    const FEATURE_SUMMER_AGRITURISMO_C             = 55;
+    const FEATURE_SUMMER_ANIMATION                 = 56;
+    const FEATURE_SUMMER_FARM_ANIMALS              = 57;
+    const FEATURE_SUMMER_CYCLING                   = 58;
+    const FEATURE_SUMMER_CHILD_FRIENDLY_POOL       = 59;
+    const FEATURE_SUMMER_BREAKFAST_POSSIBLE        = 60;
+    
+    protected $identifiers = [
+        
+        self::FEATURE_SUMMER => [
+        
+            self::FEATURE_CATERING                     => 'catering',
+            self::FEATURE_SKI_RUN                      => 'ski-run',
+            self::FEATURE_SAUNA_PRIVATE                => 'sauna-private',
+            self::FEATURE_SWIMMING_POOL_PRIVATE        => 'swimming-pool-private',
+            self::FEATURE_CHILD_FRIENDLY               => 'child-friendly',
+            self::FEATURE_LARGE_GROUPS                 => 'large-groups',
+            self::FEATURE_PRICE_CONSCIOUS              => 'price-conscious',
+            self::FEATURE_TOP_SELECTION                => 'top-selection',
+            self::FEATURE_WINTER_WELLNESS              => 'winter-wellness',
+            self::FEATURE_SAUNA                        => 'sauna',
+            self::FEATURE_SWIMMING_POOL                => 'swimming-pool',
+            self::FEATURE_FIREPLACE                    => 'fireplace',
+            self::FEATURE_PETS_ALLOWED                 => 'pets-allowed',
+            self::FEATURE_ALLERGY_FREE                 => 'allergy-free',
+            self::FEATURE_RENT_SUNDAY                  => 'rent-sunday',
+            self::FEATURE_SPECIAL                      => 'special',
+            self::FEATURE_WASHING_MACHINE              => 'waching-machine',
+            self::FEATURE_BALCONY                      => 'balcony',
+            self::FEATURE_BALCONY_TERRACE              => 'balcony-terrace',
+            self::FEATURE_PETS_DISALLOWED              => 'pets-disallowed',
+            self::FEATURE_INTERNET                     => 'internet',
+            self::FEATURE_CHARMING_CHALET              => 'charming-chalet',
+            self::FEATURE_INTERNET_WIFI                => 'internet-wifi',
+            self::FEATURE_JACUZZI                      => 'jacuzzi',
+        ]
+    ],
+    
+    self::FEATURE_WINTER => [
+        
+        self::FEATURE_SUMMER_ACTIVE_IN_MOUNTAINS       => 'active-in-mountains';
+        self::FEATURE_SUMMER_GOLF_COURSE               => 'golf-course';
+        self::FEATURE_SUMMER_SAUNA_PRIVATE             => 'sauna-private';
+        self::FEATURE_SUMMER_SWIMMING_POOL_PRIVATE     => 'swimming-pool-private';
+        self::FEATURE_SUMMER_CHILD_FRIENDLY            => 'child-friendly';
+        self::FEATURE_SUMMER_LARGE_GROUPS              => 'large-groups';
+        self::FEATURE_SUMMER_PRICE_CONSCIOUS           => 'price-conscious';
+        self::FEATURE_SUMMER_TOP_SELECTION             => 'top-selection';
+        self::FEATURE_SUMMER_WELLNESS_FACILITIES       => 'wellness-facilities';
+        self::FEATURE_SUMMER_SAUNA                     => 'sauna';
+        self::FEATURE_SUMMER_SWIMMING_POOL             => 'swimming-pool';
+        self::FEATURE_SUMMER_FIREPLACE                 => 'fireplace';
+        self::FEATURE_SUMMER_PETS_ALLOWED              => 'pets-allowed';
+        self::FEATURE_SUMMER_ALLERGY_FREE              => 'allergy-free';
+        self::FEATURE_SUMMER_RENT_SUNDAY               => 'rent-sunday';
+        self::FEATURE_SUMMER_CHALET_BY_WATER           => 'chalet-by-water';
+        self::FEATURE_SUMMER_VIVANT                    => 'vivant';
+        self::FEATURE_SUMMER_CHALET_FOR_TWO            => 'chalet-for-two';
+        self::FEATURE_SUMMER_TENNIS_COURT_CHALET       => 'tennis-court-chalet';
+        self::FEATURE_SUMMER_WINE_REGION               => 'wine-region';
+        self::FEATURE_SUMMER_CITY_TRIP                 => 'city-trip';
+        self::FEATURE_SUMMER_CHALET_DETACHED           => 'chalet-detached';
+        self::FEATURE_SUMMER_CHALET_ATTACHED           => 'chalet-attached';
+        self::FEATURE_SUMMER_HOLIDAY_PARK              => 'holiday-park';
+        self::FEATURE_SUMMER_FARM_GUEST                => 'farm-guest';
+        self::FEATURE_SUMMER_TOYS                      => 'toys';
+        self::FEATURE_SUMMER_CHALET_DETACHED_MULTIPLE  => 'chalet-detached-multiple';
+        self::FEATURE_SUMMER_SPECIAL                   => 'special';
+        self::FEATURE_SUMMER_TENNIS_COURT_SURROUNDING  => 'tennis-court-surrounding';
+        self::FEATURE_SUMMER_GARDEN_TERRACE_PRIVATE    => 'garden-terrace-private';
+        self::FEATURE_SUMMER_HORSEBACK_RIDING          => 'horseback-riding';
+        self::FEATURE_SUMMER_WASHING_MACHINE           => 'washing-machine';
+        self::FEATURE_SUMMER_BALCONY_PRIVATE           => 'balcony-private';
+        self::FEATURE_SUMMER_GARDEN_TERRACE_BALCONY    => 'garden-terrace-balcony';
+        self::FEATURE_SUMMER_PETS_DISALLOWED           => 'pets-disallowed';
+        self::FEATURE_SUMMER_INTERNET                  => 'internet';
+        self::FEATURE_SUMMER_WINE_DOMAIN               => 'wine-domain';
+        self::FEATURE_SUMMER_GARDEN_FENCED             => 'garden-fenced';
+        self::FEATURE_SUMMER_CENTRE_WALKING_DISTANCE   => 'centre-walking-distance';
+        self::FEATURE_SUMMER_RESTAURANT_ON_DOMAIN      => 'restaurant-on-domain';
+        self::FEATURE_SUMMER_AGRITURISMO               => 'agriturismo';
+        self::FEATURE_SUMMER_INTERNET_WIFI             => 'internet-wifi';
+        self::FEATURE_SUMMER_GROUND_LEVEL              => 'ground-level';
+        self::FEATURE_SUMMER_NOT_GROUND_LEVEL          => 'not-ground-level';
+        self::FEATURE_SUMMER_AIRCONDITIONING           => 'airconditioning';
+        self::FEATURE_SUMMER_BARBECUE_COMMON           => 'barbecue-common';
+        self::FEATURE_SUMMER_BARBECUE_PRIVATE          => 'barbecue-private';
+        self::FEATURE_SUMMER_CHILD_BED                 => 'child-bed';
+        self::FEATURE_SUMMER_JACUZZI                   => 'jacuzzi';
+        self::FEATURE_SUMMER_CHILD_SEAT                => 'child-seat';
+        self::FEATURE_SUMMER_DISHWASHER                => 'dishwasher';
+        self::FEATURE_SUMMER_ACTIVITIES                => 'activities';
+        self::FEATURE_SUMMER_AGRITURISMO_A             => 'agriturismo-a';
+        self::FEATURE_SUMMER_AGRITURISMO_B             => 'agriturismo-b';
+        self::FEATURE_SUMMER_AGRITURISMO_C             => 'agriturismo-c';
+        self::FEATURE_SUMMER_ANIMATION                 => 'animation';
+        self::FEATURE_SUMMER_FARM_ANIMALS              => 'farm-animals';
+        self::FEATURE_SUMMER_CYCLING                   => 'cycling';
+        self::FEATURE_SUMMER_CHILD_FRIENDLY_POOL       => 'child-friendly-pool';
+        self::FEATURE_SUMMER_BREAKFAST_POSSIBLE        => 'breakfast-possible';
+    ],
+}

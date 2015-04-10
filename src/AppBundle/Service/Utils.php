@@ -11,12 +11,30 @@ class Utils
      */
     public function seo($text)
     {
-    	$text = $this->normalize($text);
-    	$text = preg_replace('/[^A-Za-z0-9_\-]/', '-', $text);
-    	$text = preg_replace('/-{2,}/', '-', $text);
-    	$text = preg_replace('/-$/', '', $text);
-        
-    	return urlencode($text);
+    	return urlencode(preg_replace([
+    	    
+            '/[^A-Za-z0-9_\-]/',
+            '/-{2,}/',
+            '/-$/',
+            
+    	], ['-', '-', ''], $this->normalize($text)));
+    }
+    
+    public function bbcode($text)
+    {
+        return preg_replace([
+            
+            '/\[([bi])\](.+?)\[\/\1\]/i',
+            '/\[(link)=((?:http:\/\/|www)?[^\/]+?)\](.+?)\[\/\1\]/i',
+            '/\[(link)=([\/].+?)\](.+?)\[\/\1\]/i',
+            
+        ], [
+            
+            '<$1>$2</$1>',
+            '<a href="$2" data-role="new-window">$3</a>',
+            '<a href="$2">$3</a>',
+            
+        ], $text);
     }
     
     /**

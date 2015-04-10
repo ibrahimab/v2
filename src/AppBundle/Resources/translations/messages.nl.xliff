@@ -2,58 +2,58 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
   <file date="2015-03-17T14:51:27Z" source-language="nl" target-language="nl" datatype="plaintext" original="not.available">
     <body>
-      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="homepage.highlight.type.kind.chalet">
-        <source>homepage.highlight.type.kind.chalet</source>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="type.kind.chalet">
+        <source>type.kind.chalet</source>
         <target>Chalet</target>
         <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="2cdbffdcaef5be538a4f7aadef779924ede1c7d7" resname="homepage.highlight.type.kind.apartment">
-        <source>homepage.highlight.type.kind.apartment</source>
+      <trans-unit id="2cdbffdcaef5be538a4f7aadef779924ede1c7d7" resname="type.kind.apartment">
+        <source>type.kind.apartment</source>
         <target>Apartment</target>
         <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="14e833557d06a77a35a73e93cc9fe9606e84c4cf" resname="homepage.highlight.type.kind.hotel">
-        <source>homepage.highlight.type.kind.hotel</source>
+      <trans-unit id="14e833557d06a77a35a73e93cc9fe9606e84c4cf" resname="type.kind.hotel">
+        <source>type.kind.hotel</source>
         <target>Hotel</target>
         <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="2eb89e200ba9d97218f59bc8ace047c60dbaceeb" resname="homepage.highlight.type.kind.chalet-apartment">
-        <source>homepage.highlight.type.kind.chalet-apartment</source>
+      <trans-unit id="2eb89e200ba9d97218f59bc8ace047c60dbaceeb" resname="type.kind.chalet-apartment">
+        <source>type.kind.chalet-apartment</source>
         <target>Chalet-apartment</target>
         <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="3e19cb738d3fb485ea8bc4550ae4533ce49a26ca" resname="homepage.highlight.type.kind.holiday-house">
-        <source>homepage.highlight.type.kind.holiday-house</source>
+      <trans-unit id="3e19cb738d3fb485ea8bc4550ae4533ce49a26ca" resname="type.kind.holiday-house">
+        <source>type.kind.holiday-house</source>
         <target>Holiday House</target>
         <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="208d788ad4ab65ae7811c07f9dedf5be920c566e" resname="homepage.highlight.type.kind.villa">
-        <source>homepage.highlight.type.kind.villa</source>
+      <trans-unit id="208d788ad4ab65ae7811c07f9dedf5be920c566e" resname="type.kind.villa">
+        <source>type.kind.villa</source>
         <target>Villa</target>
         <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="36e473c8b75b36f9c84c540d332250cf4e210829" resname="homepage.highlight.type.kind.castle">
-        <source>homepage.highlight.type.kind.castle</source>
+      <trans-unit id="36e473c8b75b36f9c84c540d332250cf4e210829" resname="type.kind.castle">
+        <source>type.kind.castle</source>
         <target>Castle</target>
         <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="eddfa629370a87eb0fdff5edc96da1f6d99fb7ce" resname="homepage.highlight.type.kind.holiday-park">
-        <source>homepage.highlight.type.kind.holiday-park</source>
+      <trans-unit id="eddfa629370a87eb0fdff5edc96da1f6d99fb7ce" resname="type.kind.holiday-park">
+        <source>type.kind.holiday-park</source>
         <target>Holiday Park</target>
         <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="76f7732f1c8e140210c5894626a56da78783fb9e" resname="homepage.highlight.type.kind.agriturismo">
-        <source>homepage.highlight.type.kind.agriturismo</source>
+      <trans-unit id="76f7732f1c8e140210c5894626a56da78783fb9e" resname="type.kind.agriturismo">
+        <source>type.kind.agriturismo</source>
         <target>Agriturismo</target>
         <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="9120580e94f134cb7c9f27cd1e43dbc82980e152" resname="homepage.highlight.type.kind.domain">
-        <source>homepage.highlight.type.kind.domain</source>
+      <trans-unit id="9120580e94f134cb7c9f27cd1e43dbc82980e152" resname="type.kind.domain">
+        <source>type.kind.domain</source>
         <target>Domain</target>
         <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="5257ab4bb925a14262dfee7c42cea13dc0c36b08" resname="homepage.highlight.type.kind.pension">
-        <source>homepage.highlight.type.kind.pension</source>
+      <trans-unit id="5257ab4bb925a14262dfee7c42cea13dc0c36b08" resname="type.kind.pension">
+        <source>type.kind.pension</source>
         <target>Pension</target>
         <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
       </trans-unit>
@@ -66,6 +66,131 @@
         <source>frontpage</source>
         <target>Home</target>
         <jms:reference-file line="2">views/partials/breadcrumbs.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e28b9a67a1231a0194bbf2ff12fc92f8987eedf3" resname="allergy-free">
+        <source>allergy-free</source>
+        <target>allergievrij</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="6d55c0974cae7bb49038fef910fdca5b8fcb7c3b" resname="balcony">
+        <source>balcony</source>
+        <target>balkon</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="bbb8e20167f8be636256bb4b933ee574d6f54918" resname="balcony-terrace">
+        <source>balcony-terrace</source>
+        <target>terras of balkon</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="9c411a87892de724fbae6ca06998bf9b76caf2c2" resname="catering">
+        <source>catering</source>
+        <target>catering mogelijk</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="79c0ab7e3fc9c944965fd3cdad95955d0c417a6d" resname="chalet-for-two">
+        <source>chalet-for-two</source>
+        <target>huisje voor 2</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="419e90a2e8f06425355494a91eda9944aba86fd0" resname="charming-chalet">
+        <source>charming-chalet</source>
+        <target>charmant chalet</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="52ebb5d148dddb5b912944853ba2a7eb5d1aebdd" resname="child-friendly">
+        <source>child-friendly</source>
+        <target>goed voor kids</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="7b363470c975efcc337c522ff8e3a8094115b0c4" resname="fireplace">
+        <source>fireplace</source>
+        <target>open haard/houtkachel</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4d0fb475b242228032cbdf6d53924d2538df037b" resname="internet">
+        <source>internet</source>
+        <target>internetverbinding</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="2b2066a3806e57fd87043ad309ca4feb64ed87ed" resname="internet-wifi">
+        <source>internet-wifi</source>
+        <target>internet via Wi-Fi</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="7188ccf72ed11f3741b738051504b60d2fe9e6d4" resname="jacuzzi">
+        <source>jacuzzi</source>
+        <target>Jacuzzi/bubbelbad</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f8d9858fe593d903cf30cd44e5e41e4fa757b51e" resname="large-groups">
+        <source>large-groups</source>
+        <target>grote groepen</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5d921904a9e53f36a16796b9134a9211a2f60a9e" resname="pets-allowed">
+        <source>pets-allowed</source>
+        <target>huisdieren toegestaan</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c3d3bfb30375b0ce6a67deca054b04293f655021" resname="pets-disallowed">
+        <source>pets-disallowed</source>
+        <target>huisdieren NIET toegestaan</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="6b75b2e08f0d8da7a0c8c653b5c637886e3281a0" resname="price-conscious">
+        <source>price-conscious</source>
+        <target>prijsbewust</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="0154c045c1dded1b28f27b5cdf62894c61228d99" resname="rent-sunday">
+        <source>rent-sunday</source>
+        <target>verhuur zondag t/m zondag</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="2cc815a825f9ee8fdb7b09c1b07cf04455506ab6" resname="sauna">
+        <source>sauna</source>
+        <target>sauna</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e69329417863e59c023bacf55fa2827aa3ebe6b7" resname="sauna-private">
+        <source>sauna-private</source>
+        <target>sauna (privé)</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="cc2c782233352b9cfe39d0006e36b13497b4d685" resname="ski-run">
+        <source>ski-run</source>
+        <target>aan de piste</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ba36b97a41e7faf742ab09bf88405ac04f99599a" resname="special">
+        <source>special</source>
+        <target>bijzonder</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f2f579804ea5ca7a8aab3cb178b42090e1a38580" resname="swimming-pool">
+        <source>swimming-pool</source>
+        <target>zwembad</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="a2f7a47687f68a771c4fd6969b7df3398d82bc00" resname="swimming-pool-private">
+        <source>swimming-pool-private</source>
+        <target>zwembad (privé)</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ac68e4537b919b83bbea219cb7af9e1b8be8a13f" resname="top-selection">
+        <source>top-selection</source>
+        <target>alleen het allerbeste (topselectie)</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3260ff5ee379bae608979670c351a9c70b049733" resname="waching-machine">
+        <source>waching-machine</source>
+        <target>wasmachine</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c958c6288cc65b81937b004bc906302b1abb7146" resname="winter-wellness">
+        <source>winter-wellness</source>
+        <target>winter-wellness</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
       </trans-unit>
     </body>
   </file>

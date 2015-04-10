@@ -2,6 +2,9 @@
 {% set austria     = 'austria'|trans %}
 {% set switzerland = 'switzerland'|trans %}
 {% set italy       = 'italy'|trans %}
+{% if active_country is not defined %}
+    {% set active_country = 'NONE' %}
+{% endif %}
 
 <section class="area-countries">
     <h2>Ga direct naar</h2>

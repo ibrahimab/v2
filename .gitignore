@@ -9,6 +9,7 @@
 /composer.phar
 /vendor/
 /web/bundles/
+.DS_Store
 
 # Node modules, for less compile
 /node_modules/

@@ -5,6 +5,7 @@ use       AppBundle\Annotation\Breadcrumb;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use       Doctrine\ORM\NoResultException;
 
 /**
  * PlacesController
@@ -30,13 +31,47 @@ class PlacesController extends Controller
      */
     public function show($placeSlug)
     {
-        $placeService = $this->get('service.api.place');
-        $typeService  = $this->get('service.api.type');
+        $placeService  = $this->get('service.api.place');
+        $typeService   = $this->get('service.api.type');
+        $surveyService = $this->get('service.api.survey');
         
-        $place        = $placeService->findByLocaleSeoName($placeSlug, $this->getRequest()->getLocale());
-        $types        = $typeService->findByPlace($place);
+        try {
+            
+            $place        = $placeService->findByLocaleSeoName($placeSlug, $this->getRequest()->getLocale());
+            
+        } catch (NoResultException $e) {
+            throw $this->createNotFoundException('Place could not be found');
+        }
+        
+        
+        $typesCount   = $typeService->countByPlace($place);
+        $surveyStats = $surveyService->statsByPlace($place);
+        $placeTypes   = $typeService->findByPlace($place, 3);
+        $types        = [];
+        
+        $place->setTypesCount($typesCount);
+        
+        if (($total = count($surveyStats)) > 0) {
+            
+            $place->setRatingsCount(array_sum(array_map('intval', array_column($surveyStats, 'surveyCount'))));
+            $place->setAverageRatings(
+                round((array_sum(array_map('floatval', array_column($surveyStats, 'surveyAverageOverallRating'))) / $total), 1)
+            );
+        }
+        
+        foreach ($placeTypes as $type) {
+            $types[$type->getId()] = $type;
+        }
 
-        $place->setTypesCount(count($types));
+        foreach ($surveyStats as $surveyStat) {
+            
+            if (!isset($types[$surveyStat['typeId']])) {
+                continue;
+            }
+            
+            $types[$surveyStat['typeId']]->setSurveyCount($surveyStat['surveyCount']);
+            $types[$surveyStat['typeId']]->setSurveyAverageOverallRating($surveyStat['surveyAverageOverallRating']);
+        }
         
         return [
             

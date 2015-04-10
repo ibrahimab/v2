@@ -1,5 +1,5 @@
 <?php
-namespace Api;
+namespace AppBundle\Tests\Unit\Service\Api;
 
 
 class HomepageBlockServiceTest extends \Codeception\TestCase\Test
