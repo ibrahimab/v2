@@ -221,6 +221,21 @@ interface AccommodationServiceEntityInterface
     public function getLocaleDescription($locale);
     
     /**
+     * set season
+     *
+     * @param string $season
+     * @return AccommodationServiceEntityInterface
+     */
+    public function setSeason($season);
+    
+    /**
+     * Get season
+     * 
+     * @return string
+     */
+    public function getSeason();
+    
+    /**
      * set layout
      *
      * @param string $layout

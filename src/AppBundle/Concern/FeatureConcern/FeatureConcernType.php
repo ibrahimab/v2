@@ -66,7 +66,7 @@ class FeatureConcernType extends FeatureConcern
      */
     protected $identifiers = [
         
-        self::FEATURE_TYPE_WINTER => [
+        self::FEATURE_SEASON_WINTER => [
         
             self::FEATURE_WINTER_CATERING                 => 'catering',
             self::FEATURE_WINTER_SKI_RUN                  => 'ski-run',
@@ -93,21 +93,21 @@ class FeatureConcernType extends FeatureConcern
             self::FEATURE_WINTER_JACUZZI                  => 'jacuzzi',
         ],
         
-        self::FEATURE_TYPE_SUMMER => [
+        self::FEATURE_SEASON_SUMMER => [
             
             self::FEATURE_SUMMER_CHALET_FOR_TWO           => 'chalet-for-two',
             self::FEATURE_SUMMER_CHALET_DETACHED          => 'chalet-detached',
-            self::FEATURE_SUMMER_SAUNA_PRIVATE            => 'sauna-private',
+            // self::FEATURE_SUMMER_SAUNA_PRIVATE         => 'sauna-private',
             self::FEATURE_SUMMER_SWIMMING_POOL_PRIVATE    => 'swimming-pool-private',
             self::FEATURE_SUMMER_CHILD_FRIENDLY           => 'child-friendly',
             self::FEATURE_SUMMER_LARGE_GROUPS             => 'large-groups',
-            self::FEATURE_SUMMER_PRICE_CONSCIOUS          => 'price-conscious',
-            self::FEATURE_SUMMER_TOP_SELECTION            => 'top-selection',
-            self::FEATURE_SUMMER_TOUCH_OF_WELLNESS        => 'touch-of-wellness',
-            self::FEATURE_SUMMER_FIREPLACE                => 'fireplace',
+            // self::FEATURE_SUMMER_PRICE_CONSCIOUS       => 'price-conscious',
+            // self::FEATURE_SUMMER_TOP_SELECTION         => 'top-selection',
+            // self::FEATURE_SUMMER_TOUCH_OF_WELLNESS     => 'touch-of-wellness',
+            // self::FEATURE_SUMMER_FIREPLACE             => 'fireplace',
             self::FEATURE_SUMMER_PETS_ALLOWED             => 'pets-allowed',
-            self::FEATURE_SUMMER_ALLERGY_FREE             => 'allergy-free',
-            self::FEATURE_SUMMER_RENT_SUNDAY              => 'rent-sunday',
+            // self::FEATURE_SUMMER_ALLERGY_FREE          => 'allergy-free',
+            // self::FEATURE_SUMMER_RENT_SUNDAY           => 'rent-sunday',
             self::FEATURE_SUMMER_CHALET_ATTACHED          => 'chalet-attached',
             self::FEATURE_SUMMER_CHALET_DETACHED_MULTIPLE => 'chalet-detached-multiple',
             self::FEATURE_SUMMER_SPECIAL                  => 'special',
@@ -115,7 +115,7 @@ class FeatureConcernType extends FeatureConcern
             self::FEATURE_SUMMER_WASHING_MACHINE          => 'washing-machine',
             self::FEATURE_SUMMER_BALCONY_PRIVATE          => 'balcony-private',
             self::FEATURE_SUMMER_GARDEN_TERRACE_BALCONY   => 'garden-terrace-balcony',
-            self::FEATURE_SUMMER_PETS_DISALLOWED          => 'pets-disallowed',
+            // self::FEATURE_SUMMER_PETS_DISALLOWED       => 'pets-disallowed',
             self::FEATURE_SUMMER_INTERNET                 => 'internet',
             self::FEATURE_SUMMER_GARDEN_FENCED            => 'garden-fenced',
             self::FEATURE_SUMMER_INTERNET_WIFI            => 'internet-wifi',

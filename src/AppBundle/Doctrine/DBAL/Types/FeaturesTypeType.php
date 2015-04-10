@@ -5,7 +5,7 @@ use       AppBundle\Concern\FeatureConcern\FeatureConcernType;
 use       Doctrine\DBAL\Platforms\AbstractPlatform;
 use       Doctrine\DBAL\Types\SimpleArrayType;
 
-class FeaturesTypeArray extends SimpleArrayType
+class FeaturesTypeType extends SimpleArrayType
 {
     const FEATURES_TYPE = 'features_type';
     
@@ -20,7 +20,7 @@ class FeaturesTypeArray extends SimpleArrayType
     
     public function convertToPhpValue($value, AbstractPlatform $platform)
     {
-        if (trim($value) === '' || false === ($data = is_array(parent::convertToPhpValue($value, $platform)))) {
+        if (trim($value) === '' || false === (is_array($data = parent::convertToPhpValue($value, $platform)))) {
             return null;
         }
         

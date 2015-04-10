@@ -20,7 +20,9 @@ class FeaturesAccommodationType extends SimpleArrayType
     
     public function convertToPhpValue($value, AbstractPlatform $platform)
     {
-        $data = parent::convertToPhpValue($value, $platform);
+        if (trim($value) === '' || false === (is_array($data = parent::convertToPhpValue($value, $platform)))) {
+            return null;
+        }
         
         return new FeatureConcernAccommodation($data);
     }

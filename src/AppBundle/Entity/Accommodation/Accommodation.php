@@ -81,6 +81,13 @@ class Accommodation implements AccommodationServiceEntityInterface
     private $germanDescription;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="wzt", type="smallint")
+     */
+    private $season;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="indeling", type="text")
@@ -126,7 +133,7 @@ class Accommodation implements AccommodationServiceEntityInterface
     /**
      * @var array
      *
-     * @ORM\Column(name="kenmerken", type="features_accommodation_array")
+     * @ORM\Column(name="kenmerken", type="features_accommodation")
      */
     private $features;
     
@@ -406,6 +413,24 @@ class Accommodation implements AccommodationServiceEntityInterface
     public function getLocaleDescription($locale)
     {   
         return $this->getLocaleField('description', $locale, ['nl', 'en', 'de']);
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setSeason($season)
+    {
+        $this->season = $season;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getSeason()
+    {
+        return $this->season;
     }
 
     /**

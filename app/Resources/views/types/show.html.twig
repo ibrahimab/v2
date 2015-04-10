@@ -83,7 +83,7 @@
                         <h2>{{ type.getLocaleShortDescription(locale) ? type.getLocaleShortDescription : accommodation.getLocaleShortDescription(locale) }}</h2>
                         <ul class="inline-list">
                             {% set features     = type.getFeatures() ? type.getFeatures() : accommodation.getFeatures() %}
-                            {% set featuresList = features.get() %}
+                            {% set featuresList = features.get(accommodation.getSeason()) %}
                             {% for feature in featuresList %}
                             <li>{{ feature|trans }}</li>
                             {% endfor %}
