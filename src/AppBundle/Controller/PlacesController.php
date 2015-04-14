@@ -45,7 +45,7 @@ class PlacesController extends Controller
         
         
         $typesCount   = $typeService->countByPlace($place);
-        $surveyStats = $surveyService->statsByPlace($place);
+        $surveyStats  = $surveyService->statsByPlace($place);
         $placeTypes   = $typeService->findByPlace($place, 3);
         $types        = [];
         

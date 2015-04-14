@@ -4,19 +4,18 @@ namespace AppBundle\EventListener;
 use       Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use       Symfony\Component\HttpKernel\KernelEvents;
 use       Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use       Symfony\Component\DependencyInjection\ContainerInterface;
 
 class LocaleListener implements EventSubscriberInterface
 {
     /**
-     * @var ContainerInterface
+     * @var array
      */
-    protected $container;
+    protected $parameters;
     
     /**
      * @var array
      */
-    protected $domainLocales;
+    protected $domains;
     
     /**
      * @var string
@@ -24,14 +23,14 @@ class LocaleListener implements EventSubscriberInterface
     protected $defaultLocale;
     
     /**
-     * @param ContainerInterface $container
+     * @param array $parameters
      * @param string $defaultLocale
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct($parameters)
     {
-        $this->container = $container;
-        $this->domainLocales = $container->getParameter('app')['domain_locales'];
-        $this->defaultLocale = $container->getParameter('app')['default_locale'];
+        $this->parameters    = $parameters;
+        $this->domains       = $parameters['domain'];
+        $this->defaultLocale = $parameters['default_locale'];
     }
     
     /**
@@ -47,8 +46,8 @@ class LocaleListener implements EventSubscriberInterface
         $domain = $request->getHost();
         $locale = $this->defaultLocale;
         
-        if (array_key_exists($domain, $this->domainLocales)) {
-            $locale = $this->domainLocales[$domain];
+        if (array_key_exists($domain, $this->domains)) {
+            $locale = $this->domains[$domain]['locale'];
         }
 
         $request->setLocale($locale);

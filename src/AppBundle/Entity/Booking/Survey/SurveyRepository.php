@@ -100,7 +100,7 @@ class SurveyRepository extends BaseRepository implements SurveyServiceRepository
                     ])
                     ->groupBy('t.id')
                     ->getQuery();
-                    
+
         return $query->getArrayResult();
     }
 

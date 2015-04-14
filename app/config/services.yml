@@ -8,33 +8,35 @@ services:
             - { name: twig.extension }
         arguments: [@service_container, @router]
         
-    app.locale_listener:
+    app.event_listener.locale:
         class: AppBundle\EventListener\LocaleListener
-        arguments: [@service_container]
+        arguments: ["%app%"]
         tags:
             - { name: kernel.event_subscriber }
 
-    app.breadcrumb_listener:
+    app.event_listener.breadcrumb:
         class: AppBundle\EventListener\BreadcrumbListener
         arguments: [@app.annotations.breadcrumbs, @twig]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 1 }
             
-    app.global_javascript_listener:
+    app.event_listener.global_javascript:
         class: AppBundle\EventListener\GlobalJavascriptListener
         arguments: [@service.javascript]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 5 }
             
-    app.season_listener:
+    app.event_listener.season:
         class: AppBundle\EventListener\SeasonListener
+        arguments: [@app.concern.season]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 10 }
-        
-    twig.text_extension:
-        class: Twig_Extensions_Extension_Text
+            
+    app.event_listener.hostname:
+        class: AppBundle\EventListener\HostnameListener
+        arguments: [@app.concern.website]
         tags:
-            - { name: twig.extension }
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 15 }
             
     app.annotations.breadcrumbs:
         class: AppBundle\Annotation\Parser\Breadcrumb
@@ -42,11 +44,22 @@ services:
         
     app.utils:
         class: AppBundle\Service\Utils
+        
+    app.concern.season:
+        class: AppBundle\Concern\SeasonConcern
+        arguments: ["%app%"]
+        
+    app.concern.website:
+        class: AppBundle\Concern\WebsiteConcern
+        arguments: ["%app%"]
     
     repository:
         abstract:        true
         factory_service: doctrine.orm.entity_manager
         factory_method:  getRepository
+        calls:
+            - [setSeason,  [@app.concern.season]]
+            - [setWebsite, [@app.concern.website]]
         
     repository.accommodation:
         class:     AppBundle\Entity\Accommodation\AccommodationRepository
@@ -115,8 +128,6 @@ services:
     service.api.country:
         class:     AppBundle\Service\Api\Country\CountryService
         arguments: ["@repository.country"]
-        calls:
-            - [setSeason, [@request_stack]]
             
     service.api.survey:
         class:     AppBundle\Service\Api\Booking\Survey\SurveyService
@@ -125,3 +136,8 @@ services:
     service.api.homepageblock:
         class:     AppBundle\Service\Api\HomepageBlock\HomepageBlockService
         arguments: ["@repository.homepageblock"]
+        
+    twig.text_extension:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }

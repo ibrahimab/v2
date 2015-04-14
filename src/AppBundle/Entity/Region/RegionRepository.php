@@ -52,10 +52,14 @@ class RegionRepository extends BaseRepository implements RegionServiceRepository
            ->from('AppBundle\Entity\Place\Place', 'p')
            ->leftJoin('p.region', 'r')
            ->leftJoin('p.country', 'c')
-           ->andWhere($expr->eq('r.' . $field, ':fieldName'))
+           ->where($expr->eq('r.' . $field, ':fieldName'))
+           ->andWhere($expr->eq('p.season', ':season'))
+           ->andWhere($expr->eq('r.season', ':season'))
            ->groupBy('p.id')
            ->setParameters([
+               
                'fieldName' => $value,
+               'season'    => $this->getSeason(),
            ]);
 
         return $qb->getQuery()->getResult();

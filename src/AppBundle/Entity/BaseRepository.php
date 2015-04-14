@@ -1,6 +1,8 @@
 <?php
 namespace AppBundle\Entity;
 
+use       AppBundle\Concern\SeasonConcern;
+use       AppBundle\Concern\WebsiteConcern;
 use       Doctrine\ORM\Query\Expr;
 use       Doctrine\ORM\EntityRepository;
 
@@ -21,14 +23,32 @@ class BaseRepository extends EntityRepository
     /**
      * Setting season
      *
-     * @param integer $season
-     * @return BaseRepository
+     * @param SeasonConcern $seasonConcern
+     * @return void
      */
-    public function setSeason($season)
+    public function setSeason(SeasonConcern $seasonConcern)
     {
-        $this->season = $season;
-        
-        return $this;
+        $this->season = $seasonConcern->get();
+    }
+    
+    /**
+     * Getting season
+     *
+     * @return integer
+     */
+    public function getSeason()
+    {
+        return $this->season;
+    }
+    
+    public function setWebsite(WebsiteConcern $websiteConcern)
+    {
+        $this->website = $websiteConcern->get();
+    }
+    
+    public function getWebsite()
+    {
+        return $this->website;
     }
     
     /**

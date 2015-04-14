@@ -1,6 +1,8 @@
 <?php
 namespace AppBundle\Service\Api\Country;
 
+use       AppBundle\Concern\SeasonConcern;
+
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
  * @since   0.0.1
@@ -11,10 +13,17 @@ interface CountryServiceRepositoryInterface
     /**
      * Setting season
      * 
-     * @param integer $season
-     * @return CountryServiceRepositoryInterface
+     * @param SeasonConcern $seasonConcern
+     * @return void
      */
-    public function setSeason($season);
+    public function setSeason(SeasonConcern $seasonConcern);
+    
+    /**
+     * Getting season
+     *
+     * @return integer
+     */
+    public function getSeason();
     
     /**
      * Fetching countries

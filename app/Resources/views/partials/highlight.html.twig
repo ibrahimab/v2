@@ -12,16 +12,10 @@
         </div>
         <div class="accom-desc">
             <div class="title">
-                <a href="{{ highlight.type.id }}">{{ ('type.kind.' ~ highlight.type.accommodation.kindIdentifier)|trans ~ ' ' ~ highlight.type.accommodation.getLocaleName(locale) ~ ' ' ~ highlight.type.getLocaleName(locale) }}</a>
+                <a href="{{ locale_path('show_type', { beginCode: place.getCountry().getStartCode(), typeId: highlight.type.id }) }}">{{ ('type.kind.' ~ highlight.type.accommodation.kindIdentifier)|trans ~ ' ' ~ highlight.type.accommodation.getLocaleName(locale) ~ ' ' ~ highlight.type.getLocaleName(locale) }}</a>
                 <span>
                     {% set quality = (highlight.type.getQuality() > 0 ? highlight.type.getQuality() : highlight.type.accommodation.getQuality()) %}
-                    {% for i in 1..5 %}
-                        {% if i <= quality %}
-                            <i class="sprite sprite-star"></i>
-                        {% else %}
-                            <i class="sprite sprite-star-empty"></i>
-                        {% endif %}
-                    {% endfor %}
+                    {% include 'partials/quality_stars.html.twig' with {quality: quality} only %}
                 </span>
             </div>
             <div class="location"><span class="city"><a href="{{ locale_path('show_place', { placeSlug: place.getLocaleSeoName(locale) }) }}" title="{{ place.getLocaleName(locale) }}">{{ place.getLocaleName(locale) }}</a></span>, <span class="area"><a href="{{ locale_path('show_region', { regionSlug: place.region.getLocaleSeoName(locale) }) }}" title="{{ place.region.getLocaleName(locale) }}">{{ place.region.getLocaleName(locale) }}</a></span>, <span class="country"><a href="{{ locale_path('show_country', { countrySlug: place.country.getLocaleName(locale) }) }}" title="{{ place.country.getLocaleName(locale) }}">{{ place.country.getLocaleName(locale) }}</a></span></div>

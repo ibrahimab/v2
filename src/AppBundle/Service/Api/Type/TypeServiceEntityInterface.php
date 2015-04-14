@@ -417,6 +417,226 @@ interface TypeServiceEntityInterface {
     public function getMaxResidents();
     
     /**
+     * Set bedrooms
+     *
+     * @param integer $bedrooms
+     * @return TypeServiceEntityInterface
+     */
+    public function setBedrooms($bedrooms);
+    
+    /**
+     * Get bedrooms
+     *
+     * @return integer
+     */
+    public function getBedrooms();
+    
+    /**
+     * Set bedroomsextra
+     *
+     * @param string $bedroomsExtra
+     * @return TypeServiceEntityInterface
+     */
+    public function setBedroomsExtra($bedroomsExtra);
+    
+    /**
+     * Get bedroomsextra
+     *
+     * @return string
+     */
+    public function getBedroomsExtra();
+    
+    /**
+     * Set english bedroomsextra
+     *
+     * @param string $englishBedroomsExtra
+     * @return TypeServiceEntityInterface
+     */
+    public function setEnglishBedroomsExtra($englishBedroomsExtra);
+    
+    /**
+     * Get english bedroomsextra
+     *
+     * @return string
+     */
+    public function getEnglishBedroomsExtra();
+    
+    /**
+     * Set german bedroomsextra
+     *
+     * @param string $germanBedroomsExtra
+     * @return TypeServiceEntityInterface
+     */
+    public function setGermanBedroomsExtra($germanBedroomsExtra);
+    
+    /**
+     * Get german bedroomsextra
+     *
+     * @return string
+     */
+    public function getGermanBedroomsExtra();
+    
+    /**
+     * set all locale bedroomsextra fields
+     *
+     * @param string $localeBedroomsExtras
+     * @return TypeServiceEntityInterface
+     */
+    public function setLocaleBedroomsExtras($localeBedroomsExtras);
+    
+    /**
+     * Get locale bedroomsextra
+     * 
+     * @return string
+     */
+    public function getLocaleBedroomsExtra($locale);
+    
+    /**
+     * Set bathrooms
+     *
+     * @param integer $bathrooms
+     * @return TypeServiceEntityInterface
+     */
+    public function setBathrooms($bathrooms);
+    
+    /**
+     * Get bedrooms
+     *
+     * @return integer
+     */
+    public function getBathrooms();
+    
+    /**
+     * Set bathroomsextra
+     *
+     * @param string $bathroomsExtra
+     * @return TypeServiceEntityInterface
+     */
+    public function setBathroomsExtra($bathroomsExtra);
+    
+    /**
+     * Get bathroomsextra
+     *
+     * @return string
+     */
+    public function getBathroomsExtra();
+    
+    /**
+     * Set english bathroomsextra
+     *
+     * @param string $englishBathroomsExtra
+     * @return TypeServiceEntityInterface
+     */
+    public function setEnglishBathroomsExtra($englishBathroomsExtra);
+    
+    /**
+     * Get english bedroomsextra
+     *
+     * @return string
+     */
+    public function getEnglishBathroomsExtra();
+    
+    /**
+     * Set german bathroomsextra
+     *
+     * @param string $germanBathroomsExtra
+     * @return TypeServiceEntityInterface
+     */
+    public function setGermanBathroomsExtra($germanBathroomsExtra);
+    
+    /**
+     * Get german bathroomsextra
+     *
+     * @return string
+     */
+    public function getGermanBathroomsExtra();
+    
+    /**
+     * set all locale bathroomsextra fields
+     *
+     * @param string $localeBathroomsExtras
+     * @return TypeServiceEntityInterface
+     */
+    public function setLocaleBathroomsExtras($localeBathroomsExtras);
+    
+    /**
+     * Get locale bathroomsextra
+     * 
+     * @return string
+     */
+    public function getLocaleBathroomsExtra($locale);
+    
+    /**
+     * Set surface
+     */
+    public function setSurface($surface);
+    
+    /**
+     * Get surface
+     */
+    public function getSurface();
+    
+    /**
+     * Set surfaceExtra
+     *
+     * @param string $surfaceExtra
+     * @return TypeServiceEntityInterface
+     */
+    public function setSurfaceExtra($surfaceExtra);
+    
+    /**
+     * Get surfaceExtra
+     *
+     * @return string
+     */
+    public function getSurfaceExtra();
+    
+    /**
+     * Set english surfaceExtra
+     *
+     * @param string $englishSurfaceExtra
+     * @return TypeServiceEntityInterface
+     */
+    public function setEnglishSurfaceExtra($englishSurfaceExtra);
+    
+    /**
+     * Get english surfaceextra
+     *
+     * @return string
+     */
+    public function getEnglishSurfaceExtra();
+    
+    /**
+     * Set german surfaceextra
+     *
+     * @param string $germanSurfaceExtra
+     * @return TypeServiceEntityInterface
+     */
+    public function setGermanSurfaceExtra($germanSurfaceExtra);
+    
+    /**
+     * Get german surfaceextra
+     *
+     * @return string
+     */
+    public function getGermanSurfaceExtra();
+    
+    /**
+     * set all locale surfaceextra fields
+     *
+     * @param string $localeSurfaceExtras
+     * @return TypeServiceEntityInterface
+     */
+    public function setLocaleSurfaceExtras($localeSurfaceExtras);
+    
+    /**
+     * Get locale surfaceextra
+     * 
+     * @return string
+     */
+    public function getLocaleSurfaceExtra($locale);
+    
+    /**
      * Setting quality
      *
      * @param integer $quality

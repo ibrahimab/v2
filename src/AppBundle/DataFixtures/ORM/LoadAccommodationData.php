@@ -47,6 +47,7 @@ class LoadAccommodationData extends AbstractFixture implements DependentFixtureI
                           ->setDisplay(true)
                           ->setQuality(rand(1, 5))
                           ->setWeekendSki(($i === 1 ? false : ($i % 2 === 0)))
+                          ->setSeason(1)
                           ->setSearchOrder($i)
                           ->setCreatedAt($now)
                           ->setUpdatedAt($now);

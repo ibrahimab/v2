@@ -23,7 +23,7 @@
     {{ parent() }}
 
     <!-- content -->
-    <section class="landing">
+    <section class="landing landing-page">
         <div class="row" id="area-specs"><!-- id="area-specs" -->
             <h1>{{ country.getLocaleTitle(get_locale()) }} <i class="sprite sprite-flag-{{ country.startCode }}"></i></h1>
         </div>
@@ -52,7 +52,7 @@
         </div>
     </section>
     
-    <section id="area-selected">
+    <section id="area-selected" class="country-page">
         <h3>{{ 'ski-areas'|trans}} {{ country.name|trans }} <i class="sprite sprite-flag-{{ country.startcode }}"></i></h3>
         <div class="row" id="sort-items">
             <div class="large-12 columns">

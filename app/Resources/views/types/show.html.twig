@@ -25,6 +25,7 @@
 %}
 
 {% block breadcrumbs %}
+    
     {{ 
         breadcrumbs({
             
@@ -40,7 +41,6 @@
             placeSlug:   localeData['seo']['place'],
         })
     }}
-    
     
 {% endblock %}
     
@@ -397,33 +397,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="sale-type"><!-- notice this row is in discount -->
-                                    <td><i class="sprite sprite-icon-torso"></i>6</td>
-                                    <td><i class="sprite sprite-icon-sleep"></i>4</td>
-                                    <td><i class="sprite sprite-icon-bath"></i>2</td>
-                                    <td>Type 1a</td>
+                                {% set types = accommodation.getTypes().toArray() %}
+                                {% set l = types|sortprop('name') %}
+                                {% for t in types %}
+                                <tr><!-- notice this row is in discount -->
+                                    <td><i class="sprite sprite-icon-torso"></i>{{ (t.getOptimalResidents() == t.getMaxResidents() ? t.getOptimalResidents() : (t.getOptimalResidents() ~ ' - ' ~ t.getMaxResidents())) }}</td>
+                                    <td><i class="sprite sprite-icon-sleep"></i>{{ t.getBedrooms() ~ (t.getLocaleBedroomsExtra(locale) != '' ? (' ' ~ t.getLocaleBedroomsExtra(locale)) : '') }}</td>
+                                    <td><i class="sprite sprite-icon-bath"></i>{{ t.getBathrooms() ~ (t.getLocaleBathroomsExtra(locale) != '' ? (' ' ~ t.getLocaleBathroomsExtra(locale)) : '') }}</td>
+                                    <td>{{ t.getLocaleName(locale) }}</td>
                                     <td><span>8,5</span>(11)</td>
                                     <td><i class="sprite sprite-icon-discount"></i></td>
                                     <td>&euro; 295,-<i class="fi-info"></i></td>
                                 </tr>
-                                <tr>
-                                    <td><i class="sprite sprite-icon-torso"></i>8-10</td>
-                                    <td><i class="sprite sprite-icon-sleep"></i>4</td>
-                                    <td><i class="sprite sprite-icon-bath"></i>2</td>
-                                    <td>Type 1</td>
-                                    <td><span>7,5</span>(8)</td>
-                                    <td>&nbsp;</td>
-                                    <td>&euro; 270,-<i class="fi-info"></i></td>
-                                </tr>
-                                <tr class="sale-type"><!-- notice this row is in discount -->
-                                    <td><i class="sprite sprite-icon-torso"></i>11-12</td>
-                                    <td><i class="sprite sprite-icon-sleep"></i>6</td>
-                                    <td><i class="sprite sprite-icon-bath"></i>3</td>
-                                    <td>Type 3, met sauna</td>
-                                    <td><span>9,2</span>(12)</td>
-                                    <td><i class="sprite sprite-icon-discount"></i></td>
-                                    <td>&euro; 290,-<i class="fi-info"></i></td>
-                                </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -532,13 +518,13 @@
                         </div>
                         <hr />
                         <ul class="accom-details">
-                            <li>Personen<span>6<i class="sprite sprite-icon-torso"></i></span></li>
-                            <li>Slaapkamers<span>4<i class="sprite sprite-icon-sleep"></i></span></li>
-                            <li>Badkamers<span>2<i class="sprite sprite-icon-bath"></i></span></li>
-                            <li>Oppervlakte<span>55 m&sup2;<i class="sprite sprite-icon-surface"></i></span></li>
+                            <li>Personen<span>{{ ( type.getOptimalResidents() == type.getMaxResidents() ? type.getOptimalResidents() : (type.getOptimalResidents() ~ ' - ' ~ type.getMaxResidents()) ) }}<i class="sprite sprite-icon-torso"></i></span></li>
+                            <li>Slaapkamers<span>{{ type.getBedrooms() }} {{ type.getLocaleBedroomsExtra(locale) }}<i class="sprite sprite-icon-sleep"></i></span></li>
+                            <li>Badkamers<span>{{ type.getBathrooms() }} {{ type.getLocaleBathroomsExtra(locale) }}<i class="sprite sprite-icon-bath"></i></span></li>
+                            <li>Oppervlakte<span>{{ type.getSurface() }} m&sup2; {{ (type.getLocaleSurfaceExtra(locale) != '' ? (' - ' ~ type.getLocaleSurfaceExtra(locale)) : type.getLocaleSurfaceExtra(locale)) }}<i class="sprite sprite-icon-surface"></i></span></li>
                         </ul>
                         <div class="rating">
-                            <span class="stars has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide informatie bij klassering]"><i class="sprite sprite-star"></i><i class="sprite sprite-star"></i><i class="sprite sprite-star"></i><i class="sprite sprite-star"></i><i class="sprite sprite-star-empty"></i><i class="fi-info"></i></span>
+                            <span class="stars has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide informatie bij klassering]">{% include 'partials/quality_stars.html.twig' with {quality: (type.getQuality() > 0 ? type.getQuality() : accommodation.getQuality())} only %}<i class="fi-info"></i></span>
                             <span class="rate">8,5</span> (<a href="#reviews" class="goto" title="Bekijk beoordelingen">11 beoordelingen</a>)
                         </div>
                         <hr />
@@ -553,32 +539,36 @@
                 </div>
                 <div id="accom-village">
                     <div class="location">
-                        <span class="city">Skidorp: Oz-en-Oisans</span>
-                        <span class="area"><a href="landen.html" title="Agnieres-en-Devoluy">Alpe d'Huez (Grand Domaine)</a></span>, <span class="country"><a href="landen.html" title="Frankrijk">Frankrijk</a></span>
-                        <span class="mountain"><i class="fi-mountains"></i>ligt op <em>1.345 meter</em> hoogte</span>
-                        <span class="distance"><i class="fi-compass"></i><em>1.205 km</em> van Utrecht</span>
+                        <span class="city">Skidorp: {{ localeData['name']['place'] }}</span>
+                        <span class="area"><a href="{{ locale_path('show_region', { regionSlug: localeData['seo']['region'] }) }}" title="{{ localeData['name']['region'] }}">{{ localeData['name']['region'] }}</a></span>, <span class="country"><a href="{{ locale_path('show_country', { countrySlug: localeData['seo']['country'] }) }}" title="{{ localeData['name']['country'] }}">{{ localeData['name']['country'] }}</a></span>
+                        <span class="mountain"><i class="fi-mountains"></i>ligt op <em>{{ place.getAltitude() }} meter</em> hoogte</span>
+                        <span class="distance"><i class="fi-compass"></i><em>{{ place.getDistanceFromUtrecht() }} km</em> van Utrecht</span>
                     </div>
                     <div class="hide-for-small"><!-- class hide-for-small-->
-                        <img src="img/content/village-demo-1.jpg" alt="Skidorp: Oz-en-Oisans" />
+                        <img src="{{ place_image(place) }}" alt="{{ localeData['name']['place'] }}" />
                         <div class="text">
-                            <p>Oz-en-Oisans is een modern, maar knus gebouwd dorpje gelegen tussen de dennenbossen van Frankrijk.</p>
+                            <p>{{ place.getLocaleShortDescription(locale) }}</p>
                         </div>
                     </div>
-                    <a href="" title="Meer informatie" class="more">Meer informatie</a>
+                    <a href="{{ locale_path('show_place', { placeSlug: localeData['seo']['place'] }) }}" title="Meer informatie" class="more">Meer informatie</a>
                 </div>
                 <div id="accom-area">
                     <div class="location">
-                        <span class="city">Skigebied: Alpe d'Huez (Grand Domaine)</span>
-                        <span class="mountain"><i class="sprite sprite-icon-mountain"></i>ligt op <em>2.545 meter</em> hoogte</span>
-                        <span class="piste"><i class="sprite sprite-icon-pistes"></i><em>186 km</em> pistes</span>
+                        <span class="city">Skigebied: {{ localeData['name']['region'] }}</span>
+                        {% if region.getMinimumAltitude() == region.getMaximumAltitude() %}
+                            <span class="mountain"><i class="sprite sprite-icon-mountain"></i>ligt op <em>{{ region.getMinimumAltitude() }} meter</em> hoogte</span>
+                        {% else %}
+                            <span class="mountain"><i class="sprite sprite-icon-mountain"></i>ligt tussen <em>{{ region.getMinimumAltitude() }} en {{ region.getMaximumAltitude() }} meter</em> hoogte</span>
+                        {% endif %}
+                        <span class="piste"><i class="sprite sprite-icon-pistes"></i><em>{{ region.getTotalSlopesDistance() }} km</em> pistes</span>
                     </div>
                     <div class="hide-for-small"><!-- class hide-for-small-->
-                        <img src="img/content/area-demo-1.jpg" alt="Skidorp: Oz-en-Oisans" />
+                        <img src="{{ region_image(region) }}" alt="{{ localeData['name']['region'] }}" />
                         <div class="text">
-                            <p>Het skigebied Alpe d'Huez dankt zijn bekendheid voornamelijk aan de beklimming in de Tour de France en natuurlijk het fietsevenement Alpe d'HuZes.</p>
+                            <p>{{ region.getLocaleShortDescription(locale) }}</p>
                         </div>
                     </div>
-                    <a href="" title="Meer informatie" class="more">Meer informatie</a>
+                    <a href="{{ locale_path('show_region', { regionSlug: localeData['seo']['region'] }) }}" title="Meer informatie" class="more">Meer informatie</a>
                 </div>
             </div>
         </div>

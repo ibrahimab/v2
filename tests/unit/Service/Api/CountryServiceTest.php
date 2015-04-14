@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Tests\Unit\Service\Api;
 
+use       AppBundle\Concern\SeasonConcern;
 
 class CountryServiceTest extends \Codeception\TestCase\Test
 {
@@ -59,7 +60,7 @@ class CountryServiceTest extends \Codeception\TestCase\Test
     {
         $country = $this->countryService->find();
         $this->assertInstanceOf('AppBundle\Service\Api\Country\CountryServiceEntityInterface', $country);
-        
+
         $localeCountryNL = $this->countryService->findByLocaleName($country->getName(), 'nl');
         $localeCountryEN = $this->countryService->findByLocaleName($country->getEnglishName(), 'en');
         $localeCountryDE = $this->countryService->findByLocaleName($country->getGermanName(), 'de');

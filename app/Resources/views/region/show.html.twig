@@ -16,7 +16,7 @@
     {{ parent() }}
     
     <!-- content -->
-    <section class="landing">
+    <section class="landing region-page">
         <div class="row" id="area-specs"><!-- id="area-specs" -->
             <h1>{{ 'Wintersport'|trans }} {{ region.getLocaleName(get_locale()) }}</h1>
         </div>
@@ -116,7 +116,7 @@
         </div>
     </section>
     
-    <section id="area-selected">
+    <section id="area-selected" class="region-page">
         <h4>{{ 'places'|trans}} {{ region.getLocaleName(get_locale()) }}</h4>
         <div class="row" data-equalizer>
             {% for place in places %}

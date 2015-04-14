@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2015-04-10T12:56:14Z" source-language="en" target-language="nl" datatype="plaintext" original="not.available">
+  <file date="2015-04-13T14:11:14Z" source-language="en" target-language="nl" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -175,12 +175,12 @@
       </trans-unit>
       <trans-unit id="3609bce29c5bf74a194c4d9f6133894b7061f6bb" resname="homepage.highlight.suitable-for">
         <source>homepage.highlight.suitable-for</source>
-        <target>Geschikt voor %optimal% tot %maximum% personen</target>
+        <target>Geschikt voor %optimal% - %maximum% personen</target>
         <jms:reference-file line="31">views/partials/highlight.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="ce0738a141253a5b698957656251e76ae3ef161e" resname="homepage.highlight.suitable-for-max">
         <source>homepage.highlight.suitable-for-max</source>
-        <target>Geschikt tot %maximum% personen</target>
+        <target>Geschikt voor %maximum% personen</target>
         <jms:reference-file line="29">views/partials/highlight.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="e8ac4088e022529361aa1b2e3d8f57bf905f5d6f" resname="homepage.highlights">

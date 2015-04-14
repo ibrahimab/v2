@@ -21,7 +21,7 @@ class LoadPlaceData extends AbstractFixture implements DependentFixtureInterface
             $place = new Place();
             $place->setRegion($this->getReference('region-' . $i))
                   ->setCountry($this->getReference('country-' . $j))
-                  ->setSeason((($i % 2) === 0 ? 1 : 2))
+                  ->setSeason(1)
                   ->setLocaleNames([
     
                       'nl' => 'NL Place #' . $i,

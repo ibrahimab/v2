@@ -1,6 +1,8 @@
 <?php
 namespace AppBundle\Service\Api\Place;
 
+use       AppBundle\Concern\SeasonConcern;
+
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
  * @since   0.0.1
@@ -8,6 +10,20 @@ namespace AppBundle\Service\Api\Place;
  */
 interface PlaceServiceRepositoryInterface
 {
+    /**
+     * Setting season
+     * 
+     * @param SeasonConcern $seasonConcern
+     * @return void
+     */
+    public function setSeason(SeasonConcern $seasonConcern);
+    
+    /**
+     * Getting season
+     *
+     * @return integer
+     */
+    public function getSeason();
     /**
      * Fetching places
      *

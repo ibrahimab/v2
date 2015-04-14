@@ -30,9 +30,13 @@ class PlaceRepository extends BaseRepository implements PlaceServiceRepositoryIn
            ->leftJoin('p.region', 'r')
            ->leftJoin('p.country', 'c')
            ->where($expr->eq('p.' . $field, ':seoName'))
+           ->andWhere($expr->eq('p.season', ':season'))
+           ->andWhere($expr->eq('r.season', ':season'))
            ->setMaxResults(1)
            ->setParameters([
+               
                'seoName' => $seoName,
+               'season'  => $this->getSeason(),
            ]);
 
         return $qb->getQuery()->getSingleResult();

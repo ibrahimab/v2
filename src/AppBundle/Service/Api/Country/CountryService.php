@@ -1,8 +1,6 @@
 <?php
 namespace AppBundle\Service\Api\Country;
 
-use       Symfony\Component\HttpFoundation\RequestStack;
-
 /**
  * This is the CountryService, with this service you can manipulate countries
  *
@@ -25,19 +23,6 @@ class CountryService
     public function __construct(CountryServiceRepositoryInterface $countryServiceRepository)
     {
         $this->countryServiceRepository = $countryServiceRepository;
-    }
-    
-    /**
-     * @param RequestStack $requestStack
-     * @return CountryService
-     */
-    public function setSeason(RequestStack $requestStack)
-    {
-        dump($requestStack->getMasterRequest());exit;
-        $this->season = $requestStack->attributes->get('_season');
-        $this->countryServiceRepository->setSeason($this->season);
-        
-        return $this;
     }
     
     /**

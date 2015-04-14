@@ -73,8 +73,3 @@ parameters:
                 locale:  nl
                 website: W
                 season:  1
-            
-        service:
-            api:
-                highlight:
-                    limit: 6

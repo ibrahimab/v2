@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Tests\Unit\Service\Api;
 
+use       AppBundle\Concern\SeasonConcern;
 
 class RegionServiceTest extends \Codeception\TestCase\Test
 {
@@ -48,7 +49,7 @@ class RegionServiceTest extends \Codeception\TestCase\Test
     
     public function testGetRegionByLocaleName()
     {
-        $region = $this->regionService->find();
+        $region = $this->regionService->find(['season' => SeasonConcern::DEFAULT_SEASON]);
         $this->assertInstanceOf('AppBundle\Service\Api\Region\RegionServiceEntityInterface', $region);
 
         $localeRegionNL = $this->regionService->findByLocaleName($region->getName(), 'nl')[0]->getRegion();

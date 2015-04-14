@@ -65,6 +65,7 @@ class AppExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFilter('bbcode', [$this, 'bbcode'], array('pre_escape' => 'html', 'is_safe' => array('html'))),
+            new \Twig_SimpleFilter('sortprop', [$this, 'sortByProperty']),
         ];
     }
     
@@ -260,7 +261,7 @@ class AppExtension extends \Twig_Extension
      */
     public function breadcrumbs(\Twig_Environment $twig, $placeholders = [], $params = [])
     {
-        $annotations  = $this->container->get('request')->attributes->get('breadcrumbs');
+        $annotations  = $this->container->get('request')->attributes->get('_breadcrumbs');
         $breadcrumbs  = [];
         $replacements = array_values($placeholders);
         $placeholders = array_map(function($placeholder) { return '{' . $placeholder .'}'; }, array_keys($placeholders));
@@ -321,6 +322,13 @@ class AppExtension extends \Twig_Extension
     public function bbcode($text)
     {
         return $this->container->get('app.utils')->bbcode($text);
+    }
+    
+    public function sortByProperty($objects, $property)
+    {
+        return usort($objects, function($a, $b) use ($property) {
+            return strcmp($a->{'get' . $property}(), $b->{'get' . $property}());
+        });
     }
     
     /**

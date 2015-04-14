@@ -41,6 +41,6 @@ class BreadcrumbListener
         // parse controller
         $annotations = $this->parser->parse($controller, $method);
         
-        $event->getRequest()->attributes->set('breadcrumbs', $annotations);
+        $event->getRequest()->attributes->set('_breadcrumbs', $annotations);
     }
 }

@@ -129,13 +129,24 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
         $qb   = $this->createQueryBuilder('t');
         $expr = $qb->expr();
         
-        $qb->select('t, a, p, r, c')
+        $qb->select('t, a, p, r, c, at')
            ->leftJoin('t.accommodation', 'a')
+           ->leftJoin('a.types', 'at')
            ->leftJoin('a.place', 'p')
            ->leftJoin('p.region', 'r')
            ->leftJoin('p.country', 'c')
            ->where($expr->eq('t.id', ':type'))
-           ->setParameters(['type' => $typeId]);
+           ->andWhere($expr->eq('t.display', ':display'))
+           ->andWhere($expr->eq('a.display', ':display'))
+           ->andWhere($expr->eq('a.weekendSki', ':weekendSki'))
+           ->andWhere($expr->eq('at.display', ':display'))
+           ->setParameters([
+               
+               'type'       => $typeId,
+               'display'    => true,
+               'weekendSki' => false,
+           ])
+           ->orderBy('at.maxResidents');
            
         return $qb->getQuery()->getSingleResult();
     }

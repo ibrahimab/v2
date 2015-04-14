@@ -47,12 +47,18 @@ class CountryRepository extends BaseRepository implements CountryServiceReposito
            ->leftJoin('c.places', 'p')
            ->leftJoin('p.region', 'r')
            ->where($expr->eq('c.' . $field, ':name'))
+           ->andWhere($expr->eq('r.season', ':season'))
+           ->andWhere('r.websites LIKE :website')
+           ->andWhere('p.websites LIKE :website')
            ->groupBy('r.id')
            ->orderBy($sortField, $sortOrder)
            ->setParameters([
-               'name' => $name,
+               
+               'name'    => $name,
+               'season'  => $this->getSeason(),
+               'website' => '%' . $this->getWebsite() . '%',
            ]);
-           
+ 
         return $qb->getQuery()->getSingleResult();
     }
 }

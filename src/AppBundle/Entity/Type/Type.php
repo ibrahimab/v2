@@ -185,6 +185,90 @@ class Type implements TypeServiceEntityInterface
     /**
      * @var integer
      *
+     * @ORM\Column(name="slaapkamers", type="smallint")
+     */
+    private $bedrooms;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="slaapkamersextra", type="string", length=255)
+     */
+    private $bedroomsExtra;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="slaapkamersextra_en", type="string", length=255)
+     */
+    private $englishBedroomsExtra;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="slaapkamersextra_de", type="string", length=255)
+     */
+    private $germanBedroomsExtra;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="badkamers", type="smallint")
+     */
+    private $bathrooms;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="badkamersextra", type="string", length=255)
+     */
+    private $bathroomsExtra;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="badkamersextra_en", type="string", length=255)
+     */
+    private $englishBathroomsExtra;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="badkamersextra_de", type="string", length=255)
+     */
+    private $germanBathroomsExtra;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="oppervlakte", type="integer")
+     */
+    private $surface;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="oppervlakteextra", type="string", length=255)
+     */
+    private $surfaceExtra;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="oppervlakteextra_en", type="string", length=255)
+     */
+    private $englishSurfaceExtra;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="oppervlakteextra_de", type="string", length=255)
+     */
+    private $germanSurfaceExtra;
+    
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="kwaliteit", type="smallint")
      */
     private $quality;
@@ -741,6 +825,267 @@ class Type implements TypeServiceEntityInterface
     public function getMaxResidents()
     {
         return $this->maxResidents;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setBedrooms($bedrooms)
+    {
+        $this->bedrooms = $bedrooms;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getBedrooms()
+    {
+        return $this->bedrooms;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setBedroomsExtra($bedroomsExtra)
+    {
+        $this->bedroomsExtra = $bedroomsExtra;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getBedroomsExtra()
+    {
+        return $this->bedroomsExtra;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setEnglishBedroomsExtra($englishBedroomsExtra)
+    {
+        $this->englishBedroomsExtra = $englishBedroomsExtra;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getEnglishBedroomsExtra()
+    {
+        return $this->englishBedroomsExtra;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setGermanBedroomsExtra($germanBedroomsExtra)
+    {
+        $this->germanBedroomsExtra = $germanBedroomsExtra;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getGermanBedroomsExtra()
+    {
+        return $this->germanBedroomsExtra;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setLocaleBedroomsExtras($localeBedroomsExtras)
+    {
+        // normalize locales
+        $localeBedroomsExtras = array_change_key_case($localeBedroomsExtras);
+        
+        $this->setBedroomsExtra(isset($localeBedroomsExtras['nl']) ? $localeBedroomsExtras['nl'] : '');
+        $this->setEnglishBedroomsExtra(isset($localeBedroomsExtras['en']) ? $localeBedroomsExtras['en'] : '');
+        $this->setGermanBedroomsExtra(isset($localeBedroomsExtras['de']) ? $localeBedroomsExtras['de'] : '');
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getLocaleBedroomsExtra($locale)
+    {   
+        return $this->getLocaleField('bedroomsextra', $locale, ['nl', 'en', 'de']);
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setBathrooms($bathrooms)
+    {
+        $this->bathrooms = $bathrooms;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getBathrooms()
+    {
+        return $this->bathrooms;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setBathroomsExtra($bathroomsExtra)
+    {
+        $this->bathroomsExtra = $bathroomsExtra;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getBathroomsExtra()
+    {
+        return $this->bathroomsExtra;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setEnglishBathroomsExtra($englishBathroomsExtra)
+    {
+        $this->englishBathroomsExtra = $englishBathroomsExtra;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getEnglishBathroomsExtra()
+    {
+        return $this->englishBathroomsExtra;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setGermanBathroomsExtra($germanBathroomsExtra)
+    {
+        $this->germanBathroomsExtra = $germanBathroomsExtra;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getGermanBathroomsExtra()
+    {
+        return $this->germanBathroomsExtra;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setLocaleBathroomsExtras($localeBathroomsExtras)
+    {
+        // normalize locales
+        $localeBathroomsExtras = array_change_key_case($localeBathroomsExtras);
+        
+        $this->setBathroomsExtra(isset($localeBathroomsExtras['nl']) ? $localeBathroomsExtras['nl'] : '');
+        $this->setEnglishBathroomsExtra(isset($localeBedroomsExtras['en']) ? $localeBathroomsExtras['en'] : '');
+        $this->setGermanBathroomsExtra(isset($localeBathroomsExtras['de']) ? $localeBathroomsExtras['de'] : '');
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getLocaleBathroomsExtra($locale)
+    {   
+        return $this->getLocaleField('bathroomsextra', $locale, ['nl', 'en', 'de']);
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setSurface($surface)
+    {
+        $this->surface = $surface;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getSurface()
+    {
+        return $this->surface;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setSurfaceExtra($surfaceExtra)
+    {
+        $this->surfaceExtra = $surfaceExtra;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getSurfaceExtra()
+    {
+        return $this->surfaceExtra;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setEnglishSurfaceExtra($englishSurfaceExtra)
+    {
+        $this->englishSurfaceExtra = $englishSurfaceExtra;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getEnglishSurfaceExtra()
+    {
+        return $this->englishSurfaceExtra;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setGermanSurfaceExtra($germanSurfaceExtra)
+    {
+        $this->germanSurfaceExtra = $germanSurfaceExtra;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getGermanSurfaceExtra()
+    {
+        return $this->germanSurfaceExtra;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setLocaleSurfaceExtras($localeSurfaceExtras)
+    {
+        // normalize locales
+        $localeSurfaceExtras = array_change_key_case($localeSurfaceExtras);
+        
+        $this->setSurfaceExtra(isset($localeSurfaceExtras['nl']) ? $localeSurfaceExtras['nl'] : '');
+        $this->setEnglishSurfaceExtra(isset($localeSurfaceExtras['en']) ? $localeSurfaceExtras['en'] : '');
+        $this->setGermanSurfaceExtra(isset($localeSurfaceExtras['de']) ? $localeSurfaceExtras['de'] : '');
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getLocaleSurfaceExtra($locale)
+    {   
+        return $this->getLocaleField('surfaceExtra', $locale, ['nl', 'en', 'de']);
     }
     
     /**
