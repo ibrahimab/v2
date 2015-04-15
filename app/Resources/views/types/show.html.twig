@@ -414,70 +414,7 @@
                         </table>
                     </div>
                 
-                    <div id="reviews" class="reviews">
-                        <h3>11 Beoordelingen, gemiddeld<span>8,5</span></h3>
-                        <article class="review-item">
-                            <div class="row">
-                                <div class="small-12 medium-12 large-6 columns">
-                                    <span class="rating">8,5</span>
-                                    <span class="author">Luc Hoeijmans,</span>
-                                    <span class="date">april 2015</span>
-                                    <p>Ligging ten opzichte van tracks, uitstekend. moeilijke toegang tot apparatuur en bagage. Goede persoonlijke aandacht, maar schaars en arm huishouden.</p>
-                                </div>
-                                <div class="small-12 medium-12 large-6 columns">
-                                    <ul class="ratings">
-                                        <li>Ontvangst ter plaatse<span>10</span></li>
-                                        <li>Ligging van de accommodatie<span>9</span></li>
-                                        <li>Comfort / inrichting<span>9</span></li>
-                                        <li>Hygiene / schoonmaak<span>8</span></li>
-                                        <li>Faciliteiten in en rondom de accommodatie<span>7</span></li>
-                                        <li>Prijs / kwaliteitverhouding<span>8</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </article>
-                        <article class="review-item">
-                            <div class="row">
-                                <div class="small-12 medium-12 large-6 columns">
-                                    <span class="rating">9,5</span>
-                                    <span class="author">Anoniem,</span>
-                                    <span class="date">maart 2015</span>
-                                    <p>Zeer mooie residentie, top ligging, leuk skigebied voor de niet te veeleisende skiër. We waren hier voor de 2e maal en nu het geheel volledig is afgewerkt met restaurant, bar en receptie geeft dit het geheel een 5-sterren allure!</p>
-                                </div>
-                                <div class="small-12 medium-12 large-6 columns">
-                                    <ul class="ratings">
-                                        <li>Ontvangst ter plaatse<span>8</span></li>
-                                        <li>Ligging van de accommodatie<span>9</span></li>
-                                        <li>Comfort / inrichting<span>9</span></li>
-                                        <li>Hygiene / schoonmaak<span>7</span></li>
-                                        <li>Faciliteiten in en rondom de accommodatie<span>8</span></li>
-                                        <li>Prijs / kwaliteitverhouding<span>10</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </article>
-                        <article class="review-item hide">
-                            <div class="row">
-                                <div class="small-12 medium-12 large-6 columns">
-                                    <span class="rating">8,5</span>
-                                    <span class="author">Els de Groot,</span>
-                                    <span class="date">februari 2015</span>
-                                    <p>Ligging ten opzichte van tracks, uitstekend. moeilijke toegang tot apparatuur en bagage. Goede persoonlijke aandacht, maar schaars en arm huishouden.</p>
-                                </div>
-                                <div class="small-12 medium-12 large-6 columns">
-                                    <ul class="ratings">
-                                        <li>Ontvangst ter plaatse<span>10</span></li>
-                                        <li>Ligging van de accommodatie<span>9</span></li>
-                                        <li>Comfort / inrichting<span>9</span></li>
-                                        <li>Hygiene / schoonmaak<span>8</span></li>
-                                        <li>Faciliteiten in en rondom de accommodatie<span>7</span></li>
-                                        <li>Prijs / kwaliteitverhouding<span>8</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </article>
-                        <div class="readmore"><a href="" class="button blank small radius" title="Toon meer beoordelingen"><i class="sprite sprite-icon-close-all"></i>Toon meer beoordelingen</a></div>
-                    </div>
+                    {% include 'partials/surveys.html.twig' with {'surveyData': surveyData} only %}
                 
                     <div id="images" class="images">
                         <h3>Foto's</h3>

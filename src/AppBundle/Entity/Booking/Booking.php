@@ -2,6 +2,7 @@
 namespace AppBundle\Entity\Booking;
 
 use       AppBundle\Service\Api\Booking\BookingServiceEntityInterface;
+use       AppBundle\Service\Api\Survey\SurveyServiceEntityInterface;
 use       Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,6 +21,13 @@ class Booking implements BookingServiceEntityInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+    
+    /**
+     * @var SurveyServiceEntityInterface[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Booking\Survey\Survey", mappedBy="booking")
+     */
+    private $surveys;
 
     /**
      * @var string
@@ -176,6 +184,14 @@ class Booking implements BookingServiceEntityInterface
      */
     private $language;
 
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->surveys = new ArrayCollection();
+    }
 
     /**
      * {@InheritDoc}

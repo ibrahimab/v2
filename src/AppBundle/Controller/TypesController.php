@@ -2,10 +2,10 @@
 namespace AppBundle\Controller;
 
 use       AppBundle\Annotation\Breadcrumb;
-use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use       Doctrine\ORM\NoResultException;
 
 /**
  * CountriesController
@@ -37,9 +37,18 @@ class TypesController extends Controller
      */
     public function showAction($beginCode, $typeId)
     {
-        $typeService = $this->get('service.api.type');
-        $type        = $typeService->findById($typeId);
-
+        $typeService   = $this->get('service.api.type');
+        $surveyService = $this->get('service.api.booking.survey');
+        
+        try {
+            
+            $type = $typeService->findById($typeId);
+            
+        } catch (NoResultException $e) {
+            throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found');
+        }
+        
+        $surveyData = $surveyService->allByType($type);
         // $this->get('translator')->trans('catering');
         // $this->get('translator')->trans('ski-run');
         // $this->get('translator')->trans('sauna');
@@ -66,13 +75,10 @@ class TypesController extends Controller
         // $this->get('translator')->trans('charming-chalet');
         // $this->get('translator')->trans('internet-wifi');
         // $this->get('translator')->trans('jacuzzi');
-        
-        if (null === $type) {
-            throw $this->createNotFoundException('Type with code=' . $typeCode . ' could not be found');
-        }
-        
         return [
-            'type' => $type,
+            
+            'type'       => $type,
+            'surveyData' => $surveyData,
         ];
     }
 }

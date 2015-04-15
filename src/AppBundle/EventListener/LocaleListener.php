@@ -22,6 +22,17 @@ class LocaleListener implements EventSubscriberInterface
      */
     protected $defaultLocale;
     
+    const LOCALE_NL = 'nl';
+    const LOCALE_EN = 'en';
+    const LOCALE_DE = 'de';
+    
+    protected $systemLocales = [
+        
+        self::LOCALE_NL => 'nl_NL',
+        self::LOCALE_EN => 'en_GB',
+        self::LOCALE_DE => 'de_DE',
+    ];
+    
     /**
      * @param array $parameters
      * @param string $defaultLocale

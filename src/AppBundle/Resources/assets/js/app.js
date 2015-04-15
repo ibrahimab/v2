@@ -1,11 +1,13 @@
 (function(jq, Routing) {
     'use strict';
     
+    var body = jq('body');
+    
     /**
      * This method listens for changes in the sort select field to re-order
      * all the regions based on the selected value
      */
-    jq('body').on('change', '[data-role="sort-regions"]', function() {
+    body.on('change', '[data-role="sort-regions"]', function() {
         
         var country = Chalet.get().app.route.params.countrySlug;
         var sort    = jq(this).val();
@@ -17,7 +19,7 @@
      * This listener allows links to be opened in a new window/tab by using the
      * data-role attribute
      */
-    jq('body').on('click', '[data-role="new-window"]', function(event) {
+    body.on('click', '[data-role="new-window"]', function(event) {
         
         event.preventDefault();
         window.open(jq(this).attr('href'));
@@ -26,7 +28,7 @@
     /**
      * This listener allows for collapsable lists
      */
-    jq('body').on('click', '[data-role="toggle-long-list"]', function(event) {
+    body.on('click', '[data-role="toggle-long-list"]', function(event) {
         
         event.preventDefault();
         
@@ -45,6 +47,28 @@
             element.data('opened', true);
             list.find('li:nth-child(n+4)').not(element).slideDown();
             icon.removeClass(icon.data('closed-icon')).addClass(icon.data('opened-icon'));
+        }
+    });
+    
+    /**
+     * Survey toggler
+     */
+    body.on('click', '[data-action="toggle-review"]', function(event) {
+        
+        event.preventDefault();
+        
+        var element = jq(this);
+        var elements = jq('[data-role="review"]');
+        
+        elements.not(element).data('review-shown', false);
+        elements.find('[data-role="review-text"]').slideUp();//.addClass('hide');
+        elements.find('[data-role="review-ratings"]').slideUp();//.addClass('hide');
+        
+        if (true !== element.data('review-shown')) {
+            
+            element.data('review-shown', true);
+            element.find('[data-role="review-text"]').slideDown();//.removeClass('hide');
+            element.find('[data-role="review-ratings"]').slideDown();//.removeClass('hide');
         }
     });
     

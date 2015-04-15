@@ -1254,11 +1254,11 @@ class Type implements TypeServiceEntityInterface
                 $localized = $this->{'getEnglish' . $field}();
                 break;
                 
-            case $allowedLocale && $locale === 'en':
+            case $allowedLocale && $locale === 'de':
                 $localized = $this->{'getGerman' . $field}();
                 break;
             
-            case $allowedLocale && $locale === 'en':
+            case $allowedLocale && $locale === 'nl':
             default:
                 $localized = $this->{'get' . $field}();
                 break;

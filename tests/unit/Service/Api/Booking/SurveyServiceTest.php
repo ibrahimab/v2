@@ -40,15 +40,32 @@ class SurveyServiceTest extends \Codeception\TestCase\Test
         $this->regionService  = null;
         $this->placeService   = null;
     }
-
+    
     public function testGetSurveys()
+    {
+        // get surveys
+        $limit   = 3;
+        $surveys = $this->surveyService->all(['limit' => $limit]);
+        
+        $this->assertCount($limit, $surveys);
+        $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Booking\Survey\SurveyServiceEntityInterface', $surveys);
+    }
+    
+    public function testGetSurvey()
+    {
+        // get survey
+        $survey = $this->surveyService->find();
+        $this->assertInstanceOf('AppBundle\Service\Api\Booking\Survey\SurveyServiceEntityInterface', $survey);
+    }
+
+    public function testGetSurveysByType()
     {
         // Get type
         $type  = $this->typeService->find();
         $this->assertInstanceOf('AppBundle\Service\Api\Type\TypeServiceEntityInterface', $type);
         
         // get surveys
-        $surveys = $this->surveyService->all(['where' => ['type' => $type]]);
+        $surveys = $this->surveyService->allByType($type);
         $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Booking\Survey\SurveyServiceEntityInterface', $surveys);
     }
     

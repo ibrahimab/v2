@@ -1,0 +1,7 @@
+<div id="reviews" class="reviews">
+    {% set surveys = surveyData.surveys %}
+    <h3>{{ surveys|length }} Beoordelingen, gemiddeld<span>{{ surveyData.average|number_format(1, ',', '') }}</span></h3>
+    {% for survey in surveys %}
+        {% include 'partials/survey/survey.html.twig' with {'survey': survey, 'loop': loop} only %}
+    {% endfor %}
+</div>

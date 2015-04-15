@@ -48,6 +48,30 @@ interface SurveyServiceRepositoryInterface
     public function getWebsite();
     
     /**
+     * Get single survey by some criteria
+     *
+     * @param array $by
+     * @return SurveyServiceEntityInterface
+     */
+    public function find($by = []);
+    
+    /**
+     * Get all the surveys based on criteria passed in
+     *
+     * @param array options
+     * @return SurveyServiceEntityInterface[]
+     */
+    public function all($options = []);
+    
+    /**
+     * Get all the surveys based on criteria passed in
+     *
+     * @param  TypeServiceEntityInterface $type
+     * @return SurveyServiceEntityInterface[]
+     */
+    public function allByType(TypeServiceEntityInterface $type);
+    
+    /**
      * @param TypeServiceEntityInterface $type
      * @return array
      */

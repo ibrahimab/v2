@@ -146,7 +146,12 @@ services:
         class:     AppBundle\Service\Api\HomepageBlock\HomepageBlockService
         arguments: ["@repository.homepageblock"]
         
-    twig.text_extension:
+    twig.extension.text:
         class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }
+            
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
         tags:
             - { name: twig.extension }

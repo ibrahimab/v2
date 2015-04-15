@@ -46,6 +46,17 @@ class SurveyService
     }
     
     /**
+     * Get all the surveys based on criteria passed in
+     *
+     * @param  TypeServiceEntityInterface $type
+     * @return SurveyServiceEntityInterface[]
+     */
+    public function allByType(TypeServiceEntityInterface $type)
+    {
+        return $this->surveyRepository->allByType($type);
+    }
+    
+    /**
      * @param TypeServiceEntityInterface $type
      * @return array
      */

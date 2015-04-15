@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Entity\Booking\Survey;
 
+use       AppBundle\Concern\WebsiteConcern;
 use       AppBundle\Service\Api\Booking\BookingServiceEntityInterface;
 use       AppBundle\Service\Api\Booking\Survey\SurveyServiceEntityInterface;
 use       Doctrine\ORM\Mapping as ORM;
@@ -22,6 +23,13 @@ class Survey implements SurveyServiceEntityInterface
     private $booking;
 
     /**
+     * Average
+     *
+     * @var float
+     */
+    private $average = 0.0;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="websitetekst", type="text")
@@ -33,28 +41,28 @@ class Survey implements SurveyServiceEntityInterface
      *
      * @ORM\Column(name="websitetekst_gewijzigd", type="text")
      */
-    private $websiteTextModified;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="websitetekst_gewijzigd_en", type="text")
-     */
-    private $websiteTextModifiedEnglish;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="websitetekst_gewijzigd_de", type="text")
-     */
-    private $websiteTextModifiedGerman;
+    private $originalWebsiteTextModified;
 
     /**
      * @var string
      *
      * @ORM\Column(name="websitetekst_gewijzigd_nl", type="text")
      */
-    private $websiteTextModifiedDutch;
+    private $dutchWebsiteTextModified;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="websitetekst_gewijzigd_en", type="text")
+     */
+    private $englishWebsiteTextModified;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="websitetekst_gewijzigd_de", type="text")
+     */
+    private $germanWebsiteTextModified;
 
     /**
      * @var string
@@ -341,6 +349,24 @@ class Survey implements SurveyServiceEntityInterface
     /**
      * {@InheritDoc}
      */
+    public function setAverage($average)
+    {
+        $this->average = $average;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getAverage()
+    {
+        return $this->average;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
     public function setBooking($booking)
     {
         $this->booking = $booking;
@@ -377,9 +403,9 @@ class Survey implements SurveyServiceEntityInterface
     /**
      * {@InheritDoc}
      */
-    public function setWebsiteTextModified($websiteTextModified)
+    public function setOriginalWebsiteTextModified($originalWebsiteTextModified)
     {
-        $this->websiteTextModified = $websiteTextModified;
+        $this->originalWebsiteTextModified = $originalWebsiteTextModified;
 
         return $this;
     }
@@ -387,36 +413,140 @@ class Survey implements SurveyServiceEntityInterface
     /**
      * {@InheritDoc}
      */
-    public function getWebsiteTextModified()
+    public function getOriginalWebsiteTextModified()
     {
-        return $this->websiteTextModified;
+        return $this->originalWebsiteTextModified;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setDutchWebsiteTextModified($dutchWebsiteTextModified)
+    {
+        $this->dutchWebsiteTextModified = $dutchWebsiteTextModified;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getDutchWebsiteTextModified()
+    {
+        return $this->dutchWebsiteTextModified;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setEnglishWebsiteTextModified($englishWebsiteTextModified)
+    {
+        $this->englishWebsiteTextModified = $englishWebsiteTextModified;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getEnglishWebsiteTextModified()
+    {
+        return $this->englishWebsiteTextModified;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setGermanWebsiteTextModified($germanWebsiteTextModified)
+    {
+        $this->germanWebsiteTextModified = $germanWebsiteTextModified;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getGermanWebsiteTextModified()
+    {
+        return $this->germanWebsiteTextModified;
     }
     
     /**
      * {@InheritDoc}
      */
-    public function setWebsiteTextModifiedLanguage($text, $language)
+    public function setLocaleWebsiteTextModified($text, $locale)
     {
-        switch (strtolower($language)) {
+        switch (strtolower($locale)) {
             
             case 'de':
             
-                $this->websiteTextModifiedGerman = $text;
+                $this->setGermanWebsiteTextModified($text);
                 break;
                 
             case 'en':
         
-                $this->websiteTextModifiedEnglish = $text;
+                $this->setEnglishWebsiteTextModified($text);
                 break;
                 
             case 'nl':
             default:
         
-                $this->websiteTextModifiedDutch = $text;
+                $this->setDutchWebsiteTextModified($text);
                 break;
         }
         
         return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getLocaleWebsiteTextModified($locale)
+    {
+        $locale = strtolower($locale);
+        
+        if ($this->getLanguage() === $locale) {
+            return $this->getOriginalWebsiteTextModified();
+        }
+
+        return $this->getLocaleField('websiteTextModified', $locale, ['nl', 'en', 'de']);
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getFlag($website)
+    {
+        switch (true) {
+                
+            case in_array($website, [WebsiteConcern::CHALET_BE, WebsiteConcern::ITALISSIMA_BE]):
+            
+                $flag = 'be';
+                break;
+                
+            case in_array($website, [WebsiteConcern::CHALET_EU, WebsiteConcern::WEBSITE_CHALETS_IN_VALLANDRY_COM, WebsiteConcern::ITALYHOMES_EU]):
+            
+                $flag = 'en';
+                break;
+                
+            case in_array($website, [WebsiteConcern::CHALET_ONLINE_DE]):
+            
+                $flag = 'de';
+                break;
+            
+            case in_array($website, [WebsiteConcern::WEBSITE_CHALET_NL, 
+                                     WebsiteConcern::WEBSITE_CHALET_TOUR_NL, 
+                                     WebsiteConcern::WEBSITE_CHALETS_IN_VALLANDRY, 
+                                     WebsiteConcern::WEBSITE_VENTURASOL_NL, 
+                                     WebsiteConcern::WEBSITE_VENTURASOL_VACANCES_NL, 
+                                     WebsiteConcern::ZOMERHUISJE_NL, 
+                                     WebsiteConcern::ITALISSIMA_NL]):
+            default:
+        
+                $flag = 'nl';
+                break;
+        }
     }
 
     /**
@@ -594,5 +724,46 @@ class Survey implements SurveyServiceEntityInterface
         }
         
         return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getAnswer($questionNumber, $n)
+    {
+        $property = 'question_' . $questionNumber . '_' . $n;
+        
+        if (false === property_exists($this, $property)) {
+            return false;
+        }
+        
+        return $this->{$property};
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getLocaleField($field, $locale, $allowedLocales)
+    {
+        $locale        = strtolower($locale);
+        $allowedLocale = in_array($locale, $allowedLocales);
+        
+        switch (true) {
+            
+            case $allowedLocale && $locale === 'en':
+                $localized = $this->{'getEnglish' . $field}();
+                break;
+                
+            case $allowedLocale && $locale === 'de':
+                $localized = $this->{'getGerman' . $field}();
+                break;
+            
+            case $allowedLocale && $locale === 'nl':
+            default:
+                $localized = $this->{'getDutch' . $field}();
+                break;
+        }
+        
+        return $localized;
     }
 }

@@ -13,7 +13,49 @@ use       Doctrine\ORM\EntityRepository;
  * SurveyRepository
  */
 class SurveyRepository extends BaseRepository implements SurveyServiceRepositoryInterface
-{   
+{
+    public function allByType(TypeServiceEntityInterface $type)
+    {
+        $qb    = $this->createQueryBuilder('s');
+        $expr  = $qb->expr();
+        
+        $qb->select('s AS survey, partial t.{id}, partial a.{id}, partial b.{id, exactArrivalAt}, AVG(s.question_1_7) AS average')
+           ->leftJoin('s.type', 't')
+           ->leftJoin('t.accommodation', 'a')
+           ->leftJoin('s.booking', 'b')
+           ->where($expr->eq('t', ':type'))
+           ->andWhere($expr->gt('s.question_1_7', ':question_1_7'))
+           ->andWhere($expr->eq('s.reviewed', ':reviewed'))
+           ->andWhere($expr->eq('t.display', ':display'))
+           ->andWhere($expr->eq('a.display', ':display'))
+           ->andWhere($expr->eq('a.weekendSki', ':weekendSki'))
+           ->orderBy('b.exactArrivalAt DESC, b.id')
+           ->groupBy('s.booking')
+           ->setParameters([
+                  
+               'type'          => $type,
+               'question_1_7'  => 0,
+               'reviewed'      => 1,
+               'display'       => 1,
+               'weekendSki'    => false,
+           ]);
+
+        $results = $qb->getQuery()->getResult();
+        $surveys = [];
+        $average = 0.0;
+
+        foreach ($results as $result) {
+        
+            $result['survey']->setAverage($result['average']);
+            $surveys[] = $result['survey'];
+            $average  += floatval($result['average']);
+            
+            $d[$result['survey']->getBooking()->getId()] = true;
+        }
+
+        return ['surveys' => $surveys, 'average' => ($average / count($surveys))];
+    }
+    
     /**
      * {@InheritDoc}
      */
