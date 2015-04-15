@@ -102,7 +102,7 @@ class PlaceServiceTest extends \Codeception\TestCase\Test
     
     public function testGetPlaceByLocaleSeoName()
     {
-        $place = $this->placeService->find(['season' => SeasonConcern::DEFAULT_SEASON]);
+        $place = $this->placeService->find(['season' => SeasonConcern::SEASON_WINTER]);
         $this->assertInstanceOf('AppBundle\Service\Api\Place\PlaceServiceEntityInterface', $place);
         
         $otherPlace = $this->placeService->findByLocaleSeoName($place->getSeoName(), 'nl');

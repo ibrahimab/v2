@@ -519,9 +519,9 @@
                         <hr />
                         <ul class="accom-details">
                             <li>Personen<span>{{ ( type.getOptimalResidents() == type.getMaxResidents() ? type.getOptimalResidents() : (type.getOptimalResidents() ~ ' - ' ~ type.getMaxResidents()) ) }}<i class="sprite sprite-icon-torso"></i></span></li>
-                            <li>Slaapkamers<span>{{ type.getBedrooms() }} {{ type.getLocaleBedroomsExtra(locale) }}<i class="sprite sprite-icon-sleep"></i></span></li>
-                            <li>Badkamers<span>{{ type.getBathrooms() }} {{ type.getLocaleBathroomsExtra(locale) }}<i class="sprite sprite-icon-bath"></i></span></li>
-                            <li>Oppervlakte<span>{{ type.getSurface() }} m&sup2; {{ (type.getLocaleSurfaceExtra(locale) != '' ? (' - ' ~ type.getLocaleSurfaceExtra(locale)) : type.getLocaleSurfaceExtra(locale)) }}<i class="sprite sprite-icon-surface"></i></span></li>
+                            <li>Slaapkamers<span>{{ type.getBedrooms() }}<i class="sprite sprite-icon-sleep"></i></span>{% if type.getLocaleBedroomsExtra(locale) != '' %}<span class="extra">({{ type.getLocaleBedroomsExtra(locale) }})</span>{% endif %}</span></li>
+                            <li>Badkamers<span>{{ type.getBathrooms() }}<i class="sprite sprite-icon-bath"></i></span>{% if type.getLocaleBathroomsExtra(locale) != '' %}<span class="extra">({{ type.getLocaleBathroomsExtra(locale) }})</span>{% endif %}</li>
+                            <li>Oppervlakte<span>{{ type.getSurface() }} m&sup2;{% if type.getLocaleSurfaceExtra(locale) != '' %} - {{ type.getLocaleSurfaceExtra(locale) }}&sup2;{% endif %}<i class="sprite sprite-icon-surface"></i></span></li>
                         </ul>
                         <div class="rating">
                             <span class="stars has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide informatie bij klassering]">{% include 'partials/quality_stars.html.twig' with {quality: (type.getQuality() > 0 ? type.getQuality() : accommodation.getQuality())} only %}<i class="fi-info"></i></span>
