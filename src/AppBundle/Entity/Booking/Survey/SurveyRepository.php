@@ -21,7 +21,7 @@ class SurveyRepository extends BaseRepository implements SurveyServiceRepository
     {
         $qb    = $this->createQueryBuilder('s');
         $expr  = $qb->expr();
-        $query = $qb->select('COUNT(s.id) AS surveyCount, AVG(s.question_1_7) AS surveyAverageOverallRating')
+        $query = $qb->select('COUNT(s.booking) AS surveyCount, AVG(s.question_1_7) AS surveyAverageOverallRating')
                     ->leftJoin('s.type', 't')
                     ->leftJoin('t.accommodation', 'a')
                     ->where($expr->eq('t', ':type'))
@@ -50,7 +50,7 @@ class SurveyRepository extends BaseRepository implements SurveyServiceRepository
     {
         $qb    = $this->createQueryBuilder('s');
         $expr  = $qb->expr();
-        $query = $qb->select('s.typeId, COUNT(s.id) AS surveyCount, AVG(s.question_1_7) AS surveyAverageOverallRating')
+        $query = $qb->select('s.typeId, COUNT(s.booking) AS surveyCount, AVG(s.question_1_7) AS surveyAverageOverallRating')
                     ->leftJoin('s.type', 't')
                     ->leftJoin('t.accommodation', 'a')
                     ->where($qb->expr()->in('s.type', ':types'))
@@ -80,7 +80,7 @@ class SurveyRepository extends BaseRepository implements SurveyServiceRepository
     {
         $qb    = $this->createQueryBuilder('s');
         $expr  = $qb->expr();
-        $query = $qb->select('t.id as typeId, COUNT(s.id) AS surveyCount, AVG(s.question_1_7) AS surveyAverageOverallRating')
+        $query = $qb->select('t.id as typeId, COUNT(s.booking) AS surveyCount, AVG(s.question_1_7) AS surveyAverageOverallRating')
                     ->innerJoin('s.type', 't')
                     ->innerJoin('t.accommodation', 'a')
                     ->innerJoin('a.place', 'p')
@@ -111,7 +111,7 @@ class SurveyRepository extends BaseRepository implements SurveyServiceRepository
     {
         $qb    = $this->createQueryBuilder('s');
         $expr  = $qb->expr();
-        $query = $qb->select('COUNT(s.id) AS surveyCount, AVG(s.question_1_7) AS surveyAverageOverallRating')
+        $query = $qb->select('COUNT(s.booking) AS surveyCount, AVG(s.question_1_7) AS surveyAverageOverallRating')
                     ->innerJoin('s.type', 't')
                     ->innerJoin('t.accommodation', 'a')
                     ->innerJoin('a.place', 'p')
@@ -141,7 +141,7 @@ class SurveyRepository extends BaseRepository implements SurveyServiceRepository
     {
         $qb    = $this->createQueryBuilder('s');
         $expr  = $qb->expr();
-        $query = $qb->select('COUNT(s.id) AS surveyCount, AVG(s.question_1_7) AS surveyAverageOverallRating')
+        $query = $qb->select('COUNT(s.booking) AS surveyCount, AVG(s.question_1_7) AS surveyAverageOverallRating')
                     ->innerJoin('s.type', 't')
                     ->innerJoin('t.accommodation', 'a')
                     ->innerJoin('a.place', 'p')

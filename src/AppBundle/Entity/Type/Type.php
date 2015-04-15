@@ -34,6 +34,11 @@ class Type implements TypeServiceEntityInterface
      * @ORM\JoinColumn(name="accommodatie_id", referencedColumnName="accommodatie_id")
      */
     private $accommodation;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Booking\Booking", mappedBy="type")
+     */
+    private $bookings;
 
     /**
      * @var string
@@ -833,6 +838,8 @@ class Type implements TypeServiceEntityInterface
     public function setBedrooms($bedrooms)
     {
         $this->bedrooms = $bedrooms;
+        
+        return $this;
     }
     
     /**
@@ -849,6 +856,8 @@ class Type implements TypeServiceEntityInterface
     public function setBedroomsExtra($bedroomsExtra)
     {
         $this->bedroomsExtra = $bedroomsExtra;
+        
+        return $this;
     }
     
     /**
@@ -865,6 +874,8 @@ class Type implements TypeServiceEntityInterface
     public function setEnglishBedroomsExtra($englishBedroomsExtra)
     {
         $this->englishBedroomsExtra = $englishBedroomsExtra;
+        
+        return $this;
     }
     
     /**
@@ -881,6 +892,8 @@ class Type implements TypeServiceEntityInterface
     public function setGermanBedroomsExtra($germanBedroomsExtra)
     {
         $this->germanBedroomsExtra = $germanBedroomsExtra;
+        
+        return $this;
     }
     
     /**
@@ -920,6 +933,8 @@ class Type implements TypeServiceEntityInterface
     public function setBathrooms($bathrooms)
     {
         $this->bathrooms = $bathrooms;
+        
+        return $this;
     }
     
     /**
@@ -936,6 +951,8 @@ class Type implements TypeServiceEntityInterface
     public function setBathroomsExtra($bathroomsExtra)
     {
         $this->bathroomsExtra = $bathroomsExtra;
+        
+        return $this;
     }
     
     /**
@@ -952,6 +969,8 @@ class Type implements TypeServiceEntityInterface
     public function setEnglishBathroomsExtra($englishBathroomsExtra)
     {
         $this->englishBathroomsExtra = $englishBathroomsExtra;
+        
+        return $this;
     }
     
     /**
@@ -968,6 +987,8 @@ class Type implements TypeServiceEntityInterface
     public function setGermanBathroomsExtra($germanBathroomsExtra)
     {
         $this->germanBathroomsExtra = $germanBathroomsExtra;
+        
+        return $this;
     }
     
     /**
@@ -1007,6 +1028,8 @@ class Type implements TypeServiceEntityInterface
     public function setSurface($surface)
     {
         $this->surface = $surface;
+        
+        return $this;
     }
     
     /**
@@ -1023,6 +1046,8 @@ class Type implements TypeServiceEntityInterface
     public function setSurfaceExtra($surfaceExtra)
     {
         $this->surfaceExtra = $surfaceExtra;
+        
+        return $this;
     }
     
     /**
@@ -1039,6 +1064,8 @@ class Type implements TypeServiceEntityInterface
     public function setEnglishSurfaceExtra($englishSurfaceExtra)
     {
         $this->englishSurfaceExtra = $englishSurfaceExtra;
+        
+        return $this;
     }
     
     /**
@@ -1055,6 +1082,8 @@ class Type implements TypeServiceEntityInterface
     public function setGermanSurfaceExtra($germanSurfaceExtra)
     {
         $this->germanSurfaceExtra = $germanSurfaceExtra;
+        
+        return $this;
     }
     
     /**

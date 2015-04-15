@@ -21,7 +21,7 @@ class LoadSurveyData extends AbstractFixture implements DependentFixtureInterfac
             $language = $lang[rand(0, 2)];
             $survey   = new Survey();
             
-            $survey->setId($i)
+            $survey->setBooking($this->getReference('booking-' . $i))
                    ->setType($this->getReference('type-' . $i))
                    ->setWebsiteText('[' . strtoupper($language) . '] ' . $dummy)
                    ->setWebsiteTextModified('[' . strtoupper($lang[rand(0, 2)]) . ']' . $dummy)
@@ -97,6 +97,6 @@ class LoadSurveyData extends AbstractFixture implements DependentFixtureInterfac
     
     public function getDependencies()
     {
-        return ['AppBundle\DataFixtures\ORM\LoadTypeData'];
+        return ['AppBundle\DataFixtures\ORM\LoadTypeData', 'AppBundle\DataFixtures\ORM\LoadBookingData'];
     }
 }

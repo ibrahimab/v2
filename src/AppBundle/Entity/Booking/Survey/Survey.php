@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Entity\Booking\Survey;
 
+use       AppBundle\Service\Api\Booking\BookingServiceEntityInterface;
 use       AppBundle\Service\Api\Booking\Survey\SurveyServiceEntityInterface;
 use       Doctrine\ORM\Mapping as ORM;
 /**
@@ -12,12 +13,13 @@ use       Doctrine\ORM\Mapping as ORM;
 class Survey implements SurveyServiceEntityInterface
 {
     /**
-     * @var integer
+     * @var BookingServiceEntityInterface
      *
-     * @ORM\Column(name="boeking_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Booking\Booking", inversedBy="surveys")
      * @ORM\Id
+     * @ORM\JoinColumn(name="boeking_id", referencedColumnName="boeking_id")
      */
-    private $id;
+    private $booking;
 
     /**
      * @var string
@@ -327,17 +329,6 @@ class Survey implements SurveyServiceEntityInterface
      * @ORM\Column(name="vraag7", type="integer")
      */
     private $question_7;
-
-
-    /**
-     * {@InheritDoc}
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        
-        return $this;
-    }
     
     /**
      * {@InheritDoc}
@@ -345,6 +336,24 @@ class Survey implements SurveyServiceEntityInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setBooking($booking)
+    {
+        $this->booking = $booking;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getBooking()
+    {
+        return $this->booking;
     }
 
     /**

@@ -2,8 +2,11 @@
 namespace AppBundle\Service\Api\Place;
 
 use       AppBundle\Concern\SeasonConcern;
+use       AppBundle\Concern\WebsiteConcern;
 
 /**
+ * PlaceServiceRepositoryInterface
+ *
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
  * @since   0.0.1
  * @package Chalet
@@ -24,6 +27,22 @@ interface PlaceServiceRepositoryInterface
      * @return integer
      */
     public function getSeason();
+    
+    /**
+     * Setting website
+     * 
+     * @param WebsiteConcern $seasonConcern
+     * @return void
+     */
+    public function setWebsite(WebsiteConcern $websiteConcern);
+    
+    /**
+     * Getting website
+     *
+     * @return integer
+     */
+    public function getWebsite();
+    
     /**
      * Fetching places
      *

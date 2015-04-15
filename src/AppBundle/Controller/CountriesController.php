@@ -42,7 +42,7 @@ class CountriesController extends Controller
     {
         $countryService = $this->get('service.api.country');
         $typeService    = $this->get('service.api.type');
-        $surveyService  = $this->get('service.api.survey');
+        $surveyService  = $this->get('service.api.booking.survey');
 
         try {
             

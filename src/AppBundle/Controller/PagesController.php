@@ -27,7 +27,7 @@ class PagesController extends Controller
     public function home()
     {
         $config               = $this->container->getParameter('app');
-        $surveyService        = $this->get('service.api.survey');
+        $surveyService        = $this->get('service.api.booking.survey');
         $highlightService     = $this->get('service.api.highlight');
         $homepageBlockService = $this->get('service.api.homepageblock');
         

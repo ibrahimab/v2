@@ -91,7 +91,12 @@ services:
         arguments: [AppBundle\Entity\Country\Country]
         parent:    repository
         
-    repository.survey:
+    repository.booking:
+        class:     AppBundle\Entity\Booking\BookingRepository
+        arguments: [AppBundle\Entity\Booking\Booking]
+        parent:    repository
+        
+    repository.booking.survey:
         class:     AppBundle\Entity\Boooking\Survey\SurveyRepository
         arguments: [AppBundle\Entity\Booking\Survey\Survey]
         parent:    repository
@@ -128,10 +133,14 @@ services:
     service.api.country:
         class:     AppBundle\Service\Api\Country\CountryService
         arguments: ["@repository.country"]
+        
+    service.api.booking:
+        class:     AppBundle\Service\Api\Booking\BookingService
+        arguments: ["@repository.booking"]
             
-    service.api.survey:
+    service.api.booking.survey:
         class:     AppBundle\Service\Api\Booking\Survey\SurveyService
-        arguments: ["@repository.survey"]
+        arguments: ["@repository.booking.survey"]
             
     service.api.homepageblock:
         class:     AppBundle\Service\Api\HomepageBlock\HomepageBlockService

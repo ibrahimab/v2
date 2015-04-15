@@ -1,11 +1,48 @@
 <?php
 namespace AppBundle\Service\Api\Highlight;
 
+use       AppBundle\Concern\SeasonConcern;
+use       AppBundle\Concern\WebsiteConcern;
+
 /**
- * To use the Highlight Service, one must provide a repository that implements this interface
+ * HighlightServiceRepositoryInterface
+ *
+ * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
+ * @since   0.0.1
+ * @package Chalet
  */
 interface HighlightServiceRepositoryInterface
 {
+    /**
+     * Setting season
+     * 
+     * @param SeasonConcern $seasonConcern
+     * @return void
+     */
+    public function setSeason(SeasonConcern $seasonConcern);
+    
+    /**
+     * Getting season
+     *
+     * @return integer
+     */
+    public function getSeason();
+    
+    /**
+     * Setting website
+     * 
+     * @param WebsiteConcern $seasonConcern
+     * @return void
+     */
+    public function setWebsite(WebsiteConcern $websiteConcern);
+    
+    /**
+     * Getting website
+     *
+     * @return integer
+     */
+    public function getWebsite();
+    
     /**
      * Get all highlights
      *

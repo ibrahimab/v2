@@ -13,6 +13,9 @@ class LoadTypeData extends AbstractFixture implements DependentFixtureInterface
     {
         $batch           = 100;
         $websites        = ['C', 'W', 'E', 'T', 'B', 'V', 'Q', 'Z', 'N', 'I', 'K', 'X', 'Y'];
+        $short_dummy     = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam amet.';
+        $dummy           = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor nisi ligula, molestie facilisis lorem fringilla sit amet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent euismod eros ut elementum ultricies. Nam nec ipsum ac turpis tempus eleifend vitae in est. Donec sed sapien orci. Suspendisse scelerisque sed quam a sagittis. Pellentesque nibh quam, semper in viverra at, sodales in risus. Sed vitae arcu erat. Sed sagittis gravida egestas. Nam sed dolor rhoncus, gravida ex non, euismod nisi. Donec quis nunc eu quam convallis maximus accumsan ac dui. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.';
+        $extra_dummy     = 'met bla bla bla bla';
         $total_websites  = count($websites);
         $now             = new \DateTime('now');
         
@@ -27,21 +30,21 @@ class LoadTypeData extends AbstractFixture implements DependentFixtureInterface
                  ])
                  ->setLocaleShortDescriptions([
                      
-                     'nl' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam amet.',
-                     'en' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam amet.',
-                     'de' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam amet.',
+                     'nl' => $short_dummy,
+                     'en' => $short_dummy,
+                     'de' => $short_dummy,
                  ])
                  ->setLocaleDescriptions([
                      
-                     'nl' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor nisi ligula, molestie facilisis lorem fringilla sit amet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent euismod eros ut elementum ultricies. Nam nec ipsum ac turpis tempus eleifend vitae in est. Donec sed sapien orci. Suspendisse scelerisque sed quam a sagittis. Pellentesque nibh quam, semper in viverra at, sodales in risus. Sed vitae arcu erat. Sed sagittis gravida egestas. Nam sed dolor rhoncus, gravida ex non, euismod nisi. Donec quis nunc eu quam convallis maximus accumsan ac dui. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
-                     'en' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor nisi ligula, molestie facilisis lorem fringilla sit amet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent euismod eros ut elementum ultricies. Nam nec ipsum ac turpis tempus eleifend vitae in est. Donec sed sapien orci. Suspendisse scelerisque sed quam a sagittis. Pellentesque nibh quam, semper in viverra at, sodales in risus. Sed vitae arcu erat. Sed sagittis gravida egestas. Nam sed dolor rhoncus, gravida ex non, euismod nisi. Donec quis nunc eu quam convallis maximus accumsan ac dui. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
-                     'de' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor nisi ligula, molestie facilisis lorem fringilla sit amet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent euismod eros ut elementum ultricies. Nam nec ipsum ac turpis tempus eleifend vitae in est. Donec sed sapien orci. Suspendisse scelerisque sed quam a sagittis. Pellentesque nibh quam, semper in viverra at, sodales in risus. Sed vitae arcu erat. Sed sagittis gravida egestas. Nam sed dolor rhoncus, gravida ex non, euismod nisi. Donec quis nunc eu quam convallis maximus accumsan ac dui. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
+                     'nl' => $dummy,
+                     'en' => $dummy,
+                     'de' => $dummy,
                  ])
                  ->setLocaleLayouts([
                      
-                     'nl' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor nisi ligula, molestie facilisis lorem fringilla sit amet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent euismod eros ut elementum ultricies. Nam nec ipsum ac turpis tempus eleifend vitae in est. Donec sed sapien orci. Suspendisse scelerisque sed quam a sagittis. Pellentesque nibh quam, semper in viverra at, sodales in risus. Sed vitae arcu erat. Sed sagittis gravida egestas. Nam sed dolor rhoncus, gravida ex non, euismod nisi. Donec quis nunc eu quam convallis maximus accumsan ac dui. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
-                     'en' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor nisi ligula, molestie facilisis lorem fringilla sit amet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent euismod eros ut elementum ultricies. Nam nec ipsum ac turpis tempus eleifend vitae in est. Donec sed sapien orci. Suspendisse scelerisque sed quam a sagittis. Pellentesque nibh quam, semper in viverra at, sodales in risus. Sed vitae arcu erat. Sed sagittis gravida egestas. Nam sed dolor rhoncus, gravida ex non, euismod nisi. Donec quis nunc eu quam convallis maximus accumsan ac dui. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
-                     'de' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor nisi ligula, molestie facilisis lorem fringilla sit amet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent euismod eros ut elementum ultricies. Nam nec ipsum ac turpis tempus eleifend vitae in est. Donec sed sapien orci. Suspendisse scelerisque sed quam a sagittis. Pellentesque nibh quam, semper in viverra at, sodales in risus. Sed vitae arcu erat. Sed sagittis gravida egestas. Nam sed dolor rhoncus, gravida ex non, euismod nisi. Donec quis nunc eu quam convallis maximus accumsan ac dui. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
+                     'nl' => $dummy,
+                     'en' => $dummy,
+                     'de' => $dummy,
                  ])
                  ->setFeatures(new FeatureConcernType((array)(array_rand(array_flip(range(1, 23)), rand(1, rand(1, 23))))))
                  ->setInventory(rand(0, 10))
@@ -53,6 +56,27 @@ class LoadTypeData extends AbstractFixture implements DependentFixtureInterface
                  ->setLongitude(4.892198)
                  ->setOptimalResidents(rand(6,12))
                  ->setMaxResidents(rand(13,20))
+                 ->setBedrooms(rand(1, 10))
+                 ->setLocaleBedroomsExtras([
+                     
+                     'nl' => $extra_dummy,
+                     'en' => $extra_dummy,
+                     'de' => $extra_dummy,
+                 ])
+                 ->setBathrooms(rand(1, 10))
+                 ->setLocaleBathroomsExtras([
+                     
+                     'nl' => $extra_dummy,
+                     'en' => $extra_dummy,
+                     'de' => $extra_dummy,
+                 ])
+                 ->setSurface(rand(1, 10))
+                 ->setLocaleSurfaceExtras([
+                     
+                     'nl' => $extra_dummy,
+                     'en' => $extra_dummy,
+                     'de' => $extra_dummy,
+                 ])
                  ->setSearchOrder($i)
                  ->setCreatedAt($now)
                  ->setUpdatedAt($now)

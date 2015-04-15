@@ -1,17 +1,17 @@
 <?php
-namespace AppBundle\Service\Api\HomepageBlock;
+namespace AppBundle\Service\Api\Booking;
 
 use       AppBundle\Concern\SeasonConcern;
 use       AppBundle\Concern\WebsiteConcern;
 
 /**
- * HomepageBlockServiceRepositoryInterface
+ * BookingServiceRepositoryInterface
  *
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
  * @since   0.0.1
  * @package Chalet
  */
-interface HomepageBlockServiceRepositoryInterface
+interface BookingServiceRepositoryInterface
 {
     /**
      * Setting season
@@ -42,30 +42,20 @@ interface HomepageBlockServiceRepositoryInterface
      * @return integer
      */
     public function getWebsite();
-    
+        
     /**
-     * Fetching homepage blocks
+     * This method selects all the bookings based on criteria
      *
-     * Fetching all the homepage blocks based on the options passed in. The supported options are: 'where', 'order', 'limit', 'offset'
-     *
-     * @param array $options
-     * @return HomepageBlockServiceEntityInterface[]
+     * @param  array $options
+     * @return BookingServiceRepositoryInterface[]
      */
-    public function all($options = []);
+    public function all($options  = []);
     
     /**
-     * Finding a single homepage blocks
+     * Select a single booking with a flag (be it any field the booking has)
      *
-     * @param array $by
-     * @return HomepageBlockServiceEntityInterface
+     * @param  array $by
+     * @return BookingServiceRepositoryInterface|null
      */
     public function find($by = []);
-    
-    /**
-     * Finding published blocks
-     *
-     * @param array $options
-     * @return HomepageBlockServiceEntityInterface[]
-     */
-    public function published($options = []);
 }

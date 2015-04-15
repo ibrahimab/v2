@@ -1,24 +1,39 @@
 <?php
 namespace AppBundle\Service\Api\Booking\Survey;
 
+use       AppBundle\Service\Api\Booking\BookingServiceEntityInterface;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 
-interface SurveyServiceEntityInterface {
-    
-    /**
-     * Set Booking ID
-     * 
-     * @param integer $id
-     * @return SurveyServiceEntityInterface
-     */
-    public function setId($id);
-    
+/**
+ * SurveyServiceEntityInterface
+ *
+ * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
+ * @since   0.0.1
+ * @package Chalet
+ */
+interface SurveyServiceEntityInterface
+{    
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId();
+    public function getId(); 
+
+    /**
+     * Set booking
+     *
+     * @param BookingServiceEntityInterface $booking
+     * @return SurveyServiceEntityInterface
+     */
+    public function setBooking($booking);
+
+    /**
+     * Get booking
+     *
+     * @return BookingServiceEntityInterface 
+     */
+    public function getBooking();
 
     /**
      * Set websiteText

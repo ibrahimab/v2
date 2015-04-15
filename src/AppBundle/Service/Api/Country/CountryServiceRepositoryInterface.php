@@ -2,6 +2,7 @@
 namespace AppBundle\Service\Api\Country;
 
 use       AppBundle\Concern\SeasonConcern;
+use       AppBundle\Concern\WebsiteConcern;
 
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
@@ -24,6 +25,21 @@ interface CountryServiceRepositoryInterface
      * @return integer
      */
     public function getSeason();
+    
+    /**
+     * Setting website
+     * 
+     * @param WebsiteConcern $seasonConcern
+     * @return void
+     */
+    public function setWebsite(WebsiteConcern $websiteConcern);
+    
+    /**
+     * Getting website
+     *
+     * @return integer
+     */
+    public function getWebsite();
     
     /**
      * Fetching countries

@@ -57,6 +57,7 @@ doctrine:
         types:
             features_type: AppBundle\Doctrine\DBAL\Types\FeaturesTypeType
             features_accommodation: AppBundle\Doctrine\DBAL\Types\FeaturesAccommodationType
+            timestamp: AppBundle\Doctrine\DBAL\Types\TimestampType
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: "%kernel.root_dir%/data/data.db3"

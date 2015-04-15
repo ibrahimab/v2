@@ -33,7 +33,7 @@ class PlacesController extends Controller
     {
         $placeService  = $this->get('service.api.place');
         $typeService   = $this->get('service.api.type');
-        $surveyService = $this->get('service.api.survey');
+        $surveyService = $this->get('service.api.booking.survey');
         
         try {
             
