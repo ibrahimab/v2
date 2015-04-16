@@ -2,7 +2,7 @@
 <div class="small-{{ small_size|default(12) }} medium-{{ medium_size|default(4) }} large-{{ large_size|default(4) }} columns {% if end == true %}end{% endif %}">
     <article class="overview sale" data-equalizer-watch>
         <div class="accom-img">
-            <a href="detail.html"><img src="{{ type_image(highlight.type)  | imagine_filter('overview_image') }}" alt="{{ highlight.type.accommodation.getLocaleName(locale) }}" /></a>
+            <a href="detail.html"><img src="{{ type_image(highlight.type)|imagine_filter('overview_image') }}" alt="{{ highlight.type.accommodation.getLocaleName(locale) }}" /></a>
             <div class="circle"><span>Aan-</span><span>bieding</span></div>
             <div class="heart"><a href="" title="Dit resultaat opslaan in mijn favorieten"><i class="fi-heart"></i></a></div>
             {% set surveyCount = highlight.type.surveyCount %}

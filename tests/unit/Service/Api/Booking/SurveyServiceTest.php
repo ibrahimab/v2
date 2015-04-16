@@ -65,8 +65,9 @@ class SurveyServiceTest extends \Codeception\TestCase\Test
         $this->assertInstanceOf('AppBundle\Service\Api\Type\TypeServiceEntityInterface', $type);
         
         // get surveys
-        $surveys = $this->surveyService->allByType($type);
-        $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Booking\Survey\SurveyServiceEntityInterface', $surveys);
+        $surveyData = $this->surveyService->allByType($type);
+        $this->assertArrayHasKey('surveys', $surveyData);
+        $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Booking\Survey\SurveyServiceEntityInterface', $surveyData['surveys']);
     }
     
     public function testCountSurveysSingleType()

@@ -23,7 +23,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "liip/imagine-bundle": "~1.2",
         "jms/i18n-routing-bundle": "~1.0",
-        "friendsofsymfony/jsrouting-bundle": "~1.5"
+        "friendsofsymfony/jsrouting-bundle": "~1.5",
+        "symfony/finder": "~2.6"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",

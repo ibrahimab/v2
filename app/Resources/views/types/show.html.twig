@@ -3,7 +3,7 @@
 {% set locale                 = get_locale() %}
 {% set accommodation          = type.getAccommodation() %}
 {% set country, region, place = accommodation.getPlace().getCountry(), accommodation.getPlace().getRegion(), accommodation.getPlace() %}
-
+{% set images                 = type_images(type) %}
 {% 
     set localeData = {
 
@@ -66,13 +66,23 @@
                                 <div><a href=""><img data-lazy="/bundles/app/img/accom/accom-4.jpg" alt="" /></a></div>
                             </div>
                             <div class="accom-img-big-1 row hide-for-small">
-                                <div class="large-8 medium-8 columns">
-                                    <img src="/bundles/app/img/accom/accom-3.jpg" alt="" />
-                                </div>
-                                <div class="large-4 medium-4 columns">
-                                    <img src="/bundles/app/img/accom/accom-1.jpg" alt="" />
-                                    <img src="/bundles/app/img/accom/accom-2.jpg" alt="" />
-                                </div>
+                                {% for image in images['above'] %}
+                                
+                                    {% if loop.index == 1 %}
+                                        
+                                        <div class="large-8 medium-8 columns">
+                                            <img src="{{ image }}" alt="" />
+                                        </div>
+                                        <div class="large-4 medium-4 column">
+                                        
+                                    {% else %}
+                                    
+                                        <img src="{{ image }}" alt="" />
+                                    
+                                    {% endif %}
+                                    
+                                {% endfor %}
+                                        </div>
                             </div>
                             <div class="circle"><span>Aan-</span><span>bieding</span></div>
                             <a href="#images" class="button goto blank small radius" title="Bekijk alle foto's"><i class="fi-photo"></i>Bekijk alle foto's</a><!--class goto-->
@@ -419,19 +429,15 @@
                     <div id="images" class="images">
                         <h3>Foto's</h3>
                         <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-2">
-                            <li><a href="" class="th"><img src="/bundles/app/img/accom/accom-8.jpg" alt="" /></a></li>
-                            <li><a href="" class="th"><img src="/bundles/app/img/accom/accom-9.jpg" alt="" /></a></li>
+                            {% for image in images['below'] %}
+                                <li><a href="" class="th"><img src="{{ image }}" alt="" /></a></li>
+                            {% endfor %}
                         </ul>
                         <div class="hide">
                             <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
-                                <li><a href="" class="th"><img src="/bundles/app/img/accom/accom-10.jpg" alt="" /></a></li>
-                                <li><a href="" class="th"><img src="/bundles/app/img/accom/accom-11.jpg" alt="" /></a></li>
-                                <li><a href="" class="th"><img src="/bundles/app/img/accom/accom-1.jpg" alt="" /></a></li>
-                                <li><a href="" class="th"><img src="/bundles/app/img/accom/accom-2.jpg" alt="" /></a></li>
-                                <li><a href="" class="th"><img src="/bundles/app/img/accom/accom-3.jpg" alt="" /></a></li>
-                                <li><a href="" class="th"><img src="/bundles/app/img/accom/accom-4.jpg" alt="" /></a></li>
-                                <li><a href="" class="th"><img src="/bundles/app/img/accom/accom-5.jpg" alt="" /></a></li>
-                                <li><a href="" class="th"><img src="/bundles/app/img/accom/accom-6.jpg" alt="" /></a></li>
+                                {% for image in images['rest'] %}
+                                    <li><a href="" class="th"><img src="{{ image }}" alt="" /></a></li>
+                                {% endfor %}
                             </ul>
                         </div>
                         <div class="readmore"><a href="" class="button blank small radius" title="Toon meer foto's"><i class="sprite sprite-icon-close-all"></i>Toon meer foto's</a></div>

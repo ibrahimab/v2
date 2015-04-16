@@ -40,20 +40,22 @@ class SurveyRepository extends BaseRepository implements SurveyServiceRepository
                'weekendSki'    => false,
            ]);
 
-        $results = $qb->getQuery()->getResult();
-        $surveys = [];
-        $average = 0.0;
+        $results  = $qb->getQuery()->getResult();
+        $surveys  = [];
+        $averages = 0.0;
 
         foreach ($results as $result) {
         
             $result['survey']->setAverage($result['average']);
-            $surveys[] = $result['survey'];
-            $average  += floatval($result['average']);
             
-            $d[$result['survey']->getBooking()->getId()] = true;
+            $surveys[] = $result['survey'];
+            $averages  += floatval($result['average']);
         }
-
-        return ['surveys' => $surveys, 'average' => ($average / count($surveys))];
+        
+        $total   = count($surveys);
+        $average = ($total > 0 ? ($averages / $total) : 0);
+        
+        return ['surveys' => $surveys, 'average' => $average];
     }
     
     /**
