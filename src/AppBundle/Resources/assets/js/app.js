@@ -61,14 +61,17 @@
         var elements = jq('[data-role="review"]');
         
         elements.not(element).data('review-shown', false);
-        elements.find('[data-role="review-text"]').slideUp();//.addClass('hide');
-        elements.find('[data-role="review-ratings"]').slideUp();//.addClass('hide');
+        elements.find('[data-role="review-text"]').slideUp();
+        elements.find('[data-role="review-ratings"]').slideUp();
         
         if (true !== element.data('review-shown')) {
             
             element.data('review-shown', true);
-            element.find('[data-role="review-text"]').slideDown();//.removeClass('hide');
-            element.find('[data-role="review-ratings"]').slideDown();//.removeClass('hide');
+            element.find('[data-role="review-text"]').slideDown();
+            element.find('[data-role="review-ratings"]').slideDown();
+            
+        } else {
+            element.data('review-shown', false);
         }
     });
     

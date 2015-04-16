@@ -48,7 +48,7 @@
         <div class="row">
             {% for type in types %}
             
-                {% include 'partials/highlight.html.twig' with { 'highlight': { 'type': type }, place: place, 'end': ( ((loop.index % 3) is same as(0)) or loop.last ) } only %}
+                {% include 'partials/highlight/highlight.html.twig' with { 'highlight': { 'type': type }, place: place, 'end': ( ((loop.index % 3) is same as(0)) or loop.last ) } only %}
             
             {% endfor %}
         </div>

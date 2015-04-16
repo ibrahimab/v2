@@ -1,5 +1,5 @@
 {% set locale = get_locale() %}
-<a href="#" data-role="review" data-action="toggle-review">
+<a href="#" data-role="review" data-action="toggle-review"{% if loop.index <= 2 %} data-review-shown="true"{%endif%}>
     <article class="review-item">
         <div class="row">
             <div class="small-12 medium-12 large-6 columns">

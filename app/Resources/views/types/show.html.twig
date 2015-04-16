@@ -80,7 +80,7 @@
                             <div id="details-for-mobile" class="show-for-small-99">                                        
                             </div>
                         </div>
-                        <h2>{{ type.getLocaleShortDescription(locale) ? type.getLocaleShortDescription : accommodation.getLocaleShortDescription(locale) }}</h2>
+                        <h2>{{ type.getLocaleShortDescription(locale) ? type.getLocaleShortDescription(locale) : accommodation.getLocaleShortDescription(locale) }}</h2>
                         <ul class="inline-list">
                             {% set features     = type.getFeatures() ? type.getFeatures() : accommodation.getFeatures() %}
                             {% set featuresList = features.get(accommodation.getSeason()) %}
