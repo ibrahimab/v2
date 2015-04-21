@@ -82,7 +82,9 @@
                                     {% endif %}
                                     
                                 {% endfor %}
+                                {% if images['above']|length > 0 %}
                                         </div>
+                                {% endif %}
                             </div>
                             <div class="circle"><span>Aan-</span><span>bieding</span></div>
                             <a href="#images" class="button goto blank small radius" title="Bekijk alle foto's"><i class="fi-photo"></i>Bekijk alle foto's</a><!--class goto-->
@@ -446,7 +448,6 @@
                     <div id="map" class="map">
                         <h3>Ligging</h3>
                         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d10872.578233269292!2d13.616262280751943!3d47.057014559511806!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4770c38ff36f5fa7%3A0x4e4d1da98316d57a!2sHotel+Katschberghof!5e0!3m2!1snl!2snl!4v1424201744170" width="888" height="400" frameborder="0" style="border:0"></iframe>
-                    
                         <div class="readmore"><a href="" class="button blank small radius" title="Bekijk al onze accommodaties in dit gebied"><i class="sprite sprite-icon-close-all"></i>Bekijk al onze accommodaties in dit gebied</a></div>
                     </div>
                 </div>

@@ -16,6 +16,11 @@ class SeasonConcern
     const SEASON_SUMMER  = 2;
     
     /**
+     * @var array
+     */
+    private $domains;
+    
+    /**
      * @var integer
      */
     private $season;
@@ -35,7 +40,7 @@ class SeasonConcern
      */
     public function set($hostname)
     {
-        if (in_array($hostname, $this->domains)) {
+        if (array_key_exists($hostname, $this->domains)) {
             $this->season = $this->domains[$hostname]['season'];
         }
     }

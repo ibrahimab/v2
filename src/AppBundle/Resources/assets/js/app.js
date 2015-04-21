@@ -88,6 +88,8 @@
                 type: 'background'
             }
         });
+        
+        jq('[data-role="italy-maps"]').vectorMap({map: 'it_mill_en'});
     });
     
 })(jQuery, Routing);

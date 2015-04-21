@@ -5,6 +5,7 @@ use       AppBundle\Annotation\Breadcrumb;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use       Symfony\Component\HttpFoundation\Response;
 use       Doctrine\ORM\NoResultException;
 
 /**
@@ -36,6 +37,7 @@ class CountriesController extends Controller
      * @Route(path="/winter-sports/country/{countrySlug}/{sort}", name="show_country_en", defaults={"sort"="alpha"}, options={"expose"=true})
      * @Breadcrumb(name="countries", title="countries", translate=true, path="show_countries")
      * @Breadcrumb(name="show_country", title="{countryName}", active=true)
+     * @Template(":Countries:show.html.twig")
      */
     public function show($countrySlug, $sort)
     {
@@ -89,6 +91,11 @@ class CountriesController extends Controller
             });
         }
         
-        return $this->render('countries/show.html.twig', ['country' => $country, 'regions' => $regions, 'sort' => $sort]);
+        return [
+            
+            'country' => $country, 
+            'regions' => $regions, 
+            'sort'    => $sort
+        ];
     }
 }

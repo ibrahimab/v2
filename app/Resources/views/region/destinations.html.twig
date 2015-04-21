@@ -1,0 +1,33 @@
+{% extends 'layouts/default.html.twig' %}
+
+{% set title = 'destinations'|trans %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block seo %}
+    
+    {% include 'layouts/seo-block.html.twig' with {
+        
+        'meta_title':       title,
+        'meta_description': 'Bestemmingen in Italië'
+        
+    } only %}
+    
+{% endblock %}
+
+{% block breadcrumbs %}
+    {{ breadcrumbs() }}
+{% endblock %}
+
+{% block body %}
+    
+    {{ parent() }}
+
+    <h1>{{ 'destinations'|trans }}</h1>
+    
+    <section class="landing">
+        <div class="row">
+            <div data-role="italy-maps" style="height: 300px;"></div>
+        </div>
+    </section>
+    
+{% endblock %}

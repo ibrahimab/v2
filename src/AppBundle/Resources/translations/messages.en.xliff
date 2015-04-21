@@ -192,6 +192,11 @@
         <target>winter-wellness</target>
         <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
       </trans-unit>
+      <trans-unit id="ck933jsd3kj4332kkjdmdnjsjhhj21334hj3jjh3" resname="destinations">
+        <source>destinations</source>
+        <target>Destinations</target>
+        <jms:reference-file line="98">Controller/CountriesController.php</jms:reference-file>
+      </trans-unit>
     </body>
   </file>
 </xliff>
