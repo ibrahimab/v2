@@ -79,6 +79,9 @@
             }
         });
         
+        /** 
+         * This code handles the scroll to top button on every page
+         */
         jq.scrollUp({
             
             scrollName: 'scroll-icon',
@@ -90,104 +93,176 @@
             }
         });
         
+        /**
+         * This code handles the destinations map
+         * It generates it via the jqvmap jQuery plugin
+         * with some modifications to make it work in the new design
+         * 
+         * @TODO: refactor this so this code only gets loaded on destinations page
+         */
         var italyMaps         = jq('[data-role="italy-maps"]');
-        var disabledRegionIds = Chalet.get()['app']['country']['disabledRegions'];
-        var disabledRegions   = {};
-        var normalColor       = '#ffd38f';
-        var hoverColor        = '#ff9900';
+        if (italyMaps.length > 0) {
         
-        for (var i in disabledRegionIds) {
-            disabledRegions['IT-' + disabledRegionIds[i]] = '#e0d1cc';
-        }
+            var disabledRegionIds = Chalet.get()['app']['country']['disabledRegions'];
+            var disabledRegions   = {};
+            var normalColor       = '#ffd38f';
+            var hoverColor        = '#ff9900';
+            var pinId             = 230;
+            var pins              = {};
+            pins['IT-142']        = jq('[data-role="pin-html"][data-pin-id="IT-' + pinId + '"]').html();
         
-        italyMaps.vectorMap({
+            for (var i in disabledRegionIds) {
+                disabledRegions['IT-' + disabledRegionIds[i]] = '#e0d1cc';
+            }
+        
+            italyMaps.vectorMap({
             
-            map: 'it_mill_en',
-			backgroundColor: '#ffffff',
-			borderColor: '#ffffff',
-			color: normalColor,
-			hoverColor: hoverColor,
-			selectedColor: '#ff9900',
-			borderOpacity: 1,
-			enableZoom: false,
-			onLabelShow: function(event, label, code) {
+                map: 'it_mill_en',
+    			backgroundColor: '#ffffff',
+    			borderColor: '#ffffff',
+    			color: normalColor,
+    			hoverColor: hoverColor,
+    			selectedColor: '#ff9900',
+    			borderOpacity: 1,
+    			enableZoom: false,
+                pins: pins,
+    			onLabelShow: function(event, label, code) {
                 
-                var id         = code.replace('IT-', '');
-                var region     = jq('[data-role="region"][data-region-id="' + id + '"]');
+                    var id         = code.replace('IT-', '');
+                    var region     = jq('[data-role="region"][data-region-id="' + id + '"]');
                 
-                if (region.length > 0) {
+                    if (region.length > 0) {
                 
-                    if (undefined === region.data('region-label')) {
+                        if (undefined === region.data('region-label')) {
                     
-                        var name       = region.data('region-name');
-                        var typesCount = region.data('region-types-count');
+                            var name       = region.data('region-name');
+                            var typesCount = region.data('region-types-count');
                 
-                        region.data('region-label', name + ': ' + typesCount + ' ' + 'vakantiehui' + (typesCount === 1 ? 's' : 'zen'));   
+                            region.data('region-label', name + ': ' + typesCount + ' ' + 'vakantiehui' + (typesCount === 1 ? 's' : 'zen'));   
+                        }
+                
+                        label.text(region.data('region-label'));
+                    
+                    } else {
+                        return false;
                     }
+    			},
+    			onRegionOut: function(event, code, region) {
                 
-                    label.text(region.data('region-label'));
-                    
-                } else {
-                    return false;
-                }
-			},
-			onRegionOut: function(event, code, region) {
-                
-                jq('[data-role="region"][data-region-id="' + code.replace('IT-', '') + '"]')
-                    .find('a')
-                    .removeClass('hovered-region');
-			},
-            onRegionClick: function(event, code, region) {
-
-                if (disabledRegions.hasOwnProperty(code)) {
-                    
-                    event.preventDefault();
-                    
-                } else {
-                    
-                    var id               = code.replace('IT-', '');
-                    var region           = jq('[data-role="region"][data-region-id="' + id + '"]');
-                    var destination      = region.find('a').attr('href');
-                    
-                    window.location.href = destination;
-                }
-            },
-            onRegionOver: function(event, code) {
-                
-                if (disabledRegions.hasOwnProperty(code)) {
-                
-                    italyMaps.css('cursor', 'default');
-                    event.preventDefault();
-                
-                } else {
-                    
-                    italyMaps.css('cursor', 'pointer');
                     jq('[data-role="region"][data-region-id="' + code.replace('IT-', '') + '"]')
                         .find('a')
-                        .addClass('hovered-region');
+                        .removeClass('hovered-region');
+    			},
+                onRegionClick: function(event, code, region) {
+
+                    if (disabledRegions.hasOwnProperty(code)) {
+                    
+                        event.preventDefault();
+                    
+                    } else {
+                    
+                        var id               = code.replace('IT-', '');
+                        var region           = jq('[data-role="region"][data-region-id="' + id + '"]');
+                        var destination      = region.find('a').attr('href');
+                    
+                        window.location.href = destination;
+                    }
+                },
+                onRegionOver: function(event, code) {
+                
+                    if (disabledRegions.hasOwnProperty(code)) {
+                
+                        italyMaps.css('cursor', 'default');
+                        event.preventDefault();
+                
+                    } else {
+                    
+                        italyMaps.css('cursor', 'pointer');
+                        jq('[data-role="region"][data-region-id="' + code.replace('IT-', '') + '"]')
+                            .find('a')
+                            .addClass('hovered-region');
+                    }
                 }
-            }
-        });
+            });
 
-        italyMaps.vectorMap('set', 'colors', disabledRegions);
+            italyMaps.vectorMap('set', 'colors', disabledRegions);
         
-        jq('[data-role="region-list"] a').hover(
+            jq('[data-role="region-list"] a').hover(
             
-            function() {
+                function() {
                 
-                var region = jq(this).parents('li');
-                var id     = region.data('region-id');
+                    var region = jq(this).parents('li');
+                    var id     = region.data('region-id');
                 
-                italyMaps.find('#jqvmap1_IT-' + id).attr('fill', hoverColor);
-            },
-            function() {
+                    italyMaps.find('#jqvmap1_IT-' + id).attr('fill', hoverColor);
+                },
+                function() {
                 
-                var region = jq(this).parents('li');
-                var id     = region.data('region-id');
+                    var region = jq(this).parents('li');
+                    var id     = region.data('region-id');
 
-                italyMaps.find('#jqvmap1_IT-' + id).attr('fill', normalColor);
+                    italyMaps.find('#jqvmap1_IT-' + id).attr('fill', normalColor);
+                }
+            );
+            
+            var gardameer        = jq('[data-role="region"][data-region-id="' + pinId + '"]');
+            var gardameerData    = {};
+            var customPin        = jq('#jqvmap1_IT-142_pin');
+            var customPinTooltip = jq('[data-role="pin-tooltip"]');
+            
+            if (gardameer.length > 0) {
+                
+                gardameerData['name']       = gardameer.data('region-name');
+                gardameerData['typesCount'] = gardameer.data('region-types-count');
+                gardameerData['label']      = (gardameerData['name'] + ': ' + gardameerData['typesCount'] + ' ' + 'vakantiehui' + (gardameerData['typesCount'] === 1 ? 's' : 'zen'));
+
+                customPinTooltip.text(gardameerData['label']);
+                customPin.delegate('[data-role="pin-content"]', 'mouseover mouseout', function(event) {
+                    
+                    if (event.type === 'mouseover') {
+                        
+                        customPinTooltip.text(gardameerData['label']).show();
+                        jq('[data-role="region"][data-region-id="' + pinId + '"]').addClass('hovered-region');
+                        
+                    } else {
+                        
+                        customPinTooltip.hide();
+                        jq('[data-role="region"][data-region-id="' + pinId + '"]').removeClass('hovered-region');
+                    }
+                });
+                
+                customPin.mousemove(function(event) {
+                    
+                    if (customPinTooltip.is(':visible')) {
+
+                        var left = event.pageX - 15 - customPinTooltip.width();
+                        var top  = event.pageY - 15 - customPinTooltip.height();
+
+                        if(left < 0)
+                           left = event.pageX + 15;
+                        if(top < 0)
+                            top = event.pageY + 15;
+
+                        // @TODO:
+                        // ibo fixed this issue because of the position: relative; from DMG
+                        // still to do: fix this in master repository of jqvmap
+                        top  = top - 600;
+                        left = left - 100;
+                        customPinTooltip.css({
+                            
+                            left: left,
+                            top: top
+                      });
+                    }
+                });
+                
+                customPin.click(function(event) {
+                    
+                    var destination      = jq('[data-role="region"][data-region-id="' + pinId + '"]').find('a').attr('href');
+                    window.location.href = destination;
+                });
             }
-        );
+        }
     });
     
 })(jQuery, Routing);
