@@ -69,4 +69,12 @@ interface PlaceServiceRepositoryInterface
      * @return PlaceServiceEntityInterface
      */
     public function findByLocaleSeoName($seoName, $locale);
+    
+    /**
+     * Getting places flagged as 'homepage' place
+     *
+     * @param array $options
+     * @return PlaceServiceEntityInterface[]
+     */
+    public function homepagePlaces($options = []);
 }

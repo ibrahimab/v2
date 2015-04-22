@@ -14,11 +14,7 @@ use       AppBundle\Service\Api\Place\PlaceServiceRepositoryInterface;
 class PlaceRepository extends BaseRepository implements PlaceServiceRepositoryInterface
 {
     /**
-     * Finding a single place by its seo name
-     *
-     * @param string $seoName
-     * @param string $locale
-     * @return PlaceServiceEntityInterface
+     * {@InheritDoc}
      */
     public function findByLocaleSeoName($seoName, $locale)
     {
@@ -40,5 +36,14 @@ class PlaceRepository extends BaseRepository implements PlaceServiceRepositoryIn
            ]);
 
         return $qb->getQuery()->getSingleResult();
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function homepagePlaces($options = [])
+    {
+        $limit = self::getOption($options, 'limit', 3);
+        return $this->all(['where' => ['showOnHomepage' => true], 'limit' => $limit]);
     }
 }

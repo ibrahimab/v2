@@ -1,6 +1,8 @@
 <?php
 namespace AppBundle\Tests\Unit\Service\Api;
 
+use       AppBundle\Entity\Country\Country;
+use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
 use       AppBundle\Concern\SeasonConcern;
 
 class CountryServiceTest extends \Codeception\TestCase\Test
@@ -77,8 +79,15 @@ class CountryServiceTest extends \Codeception\TestCase\Test
     public function testGetRegionsByCountry()
     {
         $countryId = 5;
-        $regions   = $this->countryService->getRegionsByCountryId($countryId);
-
-        $this->assertContainsInstancesOf('AppBundle\Service\Api\Region\RegionServiceEntityInterface', $regions);
+        $country   = new Country($countryId);
+        $this->assertEquals($countryId, $country->getId());
+        
+        $country   = $this->countryService->findRegions($country);
+        $places    = $country->getPlaces();
+        $regions   = $places->map(function(PlaceServiceEntityInterface $place) { return $place->getRegion(); });
+        
+        $this->assertInstanceOf('AppBundle\Service\Api\Country\CountryServiceEntityInterface', $country);
+        $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Place\PlaceServiceEntityInterface', $places);
+        $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Region\RegionServiceEntityInterface', $regions);
     }
 }

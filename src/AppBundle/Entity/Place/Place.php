@@ -227,6 +227,13 @@ class Place implements PlaceServiceEntityInterface
      * @ORM\Column(name="gps_long", type="string", length=12)
      */
     private $longitude;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="toon_op_homepage", type="boolean")
+     */
+    private $showOnHomepage;
 
     /**
      * @var \DateTime
@@ -934,6 +941,24 @@ class Place implements PlaceServiceEntityInterface
     public function getRatingsCount()
     {
         return $this->ratingsCount;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setShowOnHomepage($showOnHomepage)
+    {
+        $this->showOnHomepage = $showOnHomepage;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getShowOnHomepage()
+    {
+        return $this->showOnHomepage;
     }
 
     /**

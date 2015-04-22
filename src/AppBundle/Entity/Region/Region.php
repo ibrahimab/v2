@@ -275,7 +275,13 @@ class Region implements RegionServiceEntityInterface
      */
     private $skiRunsMapLink;
     
-
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="toon_op_homepage", type="boolean")
+     */
+    private $showOnHomepage;
+    
     /**
      * @var \DateTime
      *
@@ -1080,6 +1086,24 @@ class Region implements RegionServiceEntityInterface
     public function getSkiRunsMapLink()
     {
         return $this->skiRunsMapLink;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setShowOnHomepage($showOnHomepage)
+    {
+        $this->showOnHomepage = $showOnHomepage;
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getShowOnHomepage()
+    {
+        return $this->showOnHomepage;
     }
 
     /**

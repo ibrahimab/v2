@@ -51,6 +51,7 @@ class LoadPlaceData extends AbstractFixture implements DependentFixtureInterface
                   ->setLatitude(52.076091)
                   ->setLongitude(4.892198)
                   ->setAltitude(rand(1000, 8000))
+                  ->setShowOnHomepage(($i < 6))
                   ->setCreatedAt($now)
                   ->setUpdatedAt($now);
             

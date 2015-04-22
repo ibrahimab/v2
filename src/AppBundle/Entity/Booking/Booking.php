@@ -4,6 +4,7 @@ namespace AppBundle\Entity\Booking;
 use       AppBundle\Service\Api\Booking\BookingServiceEntityInterface;
 use       AppBundle\Service\Api\Survey\SurveyServiceEntityInterface;
 use       Doctrine\ORM\Mapping as ORM;
+use       Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Booking

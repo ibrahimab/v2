@@ -51,6 +51,7 @@ class LoadRegionData extends AbstractFixture
                    ->setWeatherReportLink('http://www.google.nl')
                    ->setWebcamLink('http://www.google.nl')
                    ->setSkiRunsMapLink('http://www.google.nl')
+                   ->setShowOnHomepage(($i < 6))
                    ->setCreatedAt($now)
                    ->setUpdatedAt($now);
             

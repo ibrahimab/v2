@@ -510,6 +510,21 @@ interface PlaceServiceEntityInterface
      * @return integer
      */
     public function getRatingsCount();
+    
+    /**
+     * Set flag show on homepage
+     *
+     * @param boolean $showOnHomepage
+     * @return PlaceServiceEntityInterface
+     */
+    public function setShowOnHomepage($showOnHomepage);
+    
+    /**
+     * Get flag show on homepage
+     *
+     * @return boolean
+     */
+    public function getShowOnHomepage();
 
     /**
      * Set createdAt
