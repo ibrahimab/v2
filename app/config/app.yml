@@ -1,5 +1,6 @@
 parameters:
     app:
+        minimalSurveyCount: 1
         countries:
             I: 5
             K: 5

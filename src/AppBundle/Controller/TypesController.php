@@ -77,8 +77,9 @@ class TypesController extends Controller
         // $this->get('translator')->trans('jacuzzi');
         return [
             
-            'type'       => $type,
-            'surveyData' => $surveyData,
+            'type'               => $type,
+            'surveyData'         => $surveyData,
+            'minimalSurveyCount' => $this->container->getParameter('app')['minimalSurveyCount'],
         ];
     }
 }

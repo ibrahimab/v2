@@ -4,6 +4,8 @@
 {% set accommodation          = type.getAccommodation() %}
 {% set country, region, place = accommodation.getPlace().getCountry(), accommodation.getPlace().getRegion(), accommodation.getPlace() %}
 {% set images                 = type_images(type) %}
+{% set surveyCount            = surveyData.surveys|length %}
+{% set surveyAverage          = surveyData.average|number_format(1, ',', '') %}
 {% 
     set localeData = {
 
@@ -426,7 +428,7 @@
                         </table>
                     </div>
                 
-                    {% include 'partials/surveys.html.twig' with {'surveyData': surveyData} only %}
+                    {% include 'partials/surveys.html.twig' with {'surveyData': surveyData, 'surveyCount': surveyCount, 'surveyAverage': surveyAverage, 'minimalSurveyCount': minimalSurveyCount} only %}
                 
                     <div id="images" class="images">
                         <h3>Foto's</h3>
@@ -469,7 +471,9 @@
                         </ul>
                         <div class="rating">
                             <span class="stars has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide informatie bij klassering]">{% include 'partials/quality_stars.html.twig' with {quality: (type.getQuality() > 0 ? type.getQuality() : accommodation.getQuality())} only %}<i class="fi-info"></i></span>
-                            <span class="rate">8,5</span> (<a href="#reviews" class="goto" title="Bekijk beoordelingen">11 beoordelingen</a>)
+                            {% if surveyCount > minimalSurveyCount %}
+                                <span class="rate">{{ surveyAverage  }}</span> (<a href="#reviews" class="goto" title="Bekijk beoordelingen">{{ surveyCount }} beoordelingen</a>)
+                            {% endif %}
                         </div>
                         <hr />
                         <a href="" class="button large radius" title="Boek nu">Boek nu</a>
