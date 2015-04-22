@@ -61,4 +61,12 @@ class CountryService
     {
         return $this->countryServiceRepository->findByLocaleName($name, $locale, $sort);
     }
+    
+    /**
+     * Finding regions by country
+     */
+    public function findRegions(CountryServiceEntityInterface $country)
+    {
+        return $this->countryServiceRepository->findRegions($country);
+    }
 }

@@ -17,13 +17,13 @@ use       Doctrine\ORM\NoResultException;
  * @since   0.0.1
  *
  * @Breadcrumb(name="frontpage", title="frontpage", translate=true, path="home")
- * @Breadcrumb(name="countries", title="countries", translate=true, path="show_countries")
  */
 class RegionController extends Controller
 {
     /**
      * @Route(path="/wintersport/skigebied/{regionSlug}", name="show_region_nl")
      * @Route(path="/winter-sports/region/{regionSlug}",  name="show_region_en")
+     * @Breadcrumb(name="countries", title="countries", translate=true, path="show_countries")
      * @Breadcrumb(name="show_country", title="{countryName}", path="show_country", pathParams={"countrySlug"})
      * @Breadcrumb(name="show_region", title="{regionName}", active=true)
      * @Template(":Region:show.html.twig")
@@ -73,16 +73,5 @@ class RegionController extends Controller
             'country' => $place->getCountry(),
             'places'  => $places,
         ];
-    }
-    
-    /**
-     * @Route(path="/bestemmingen", name="destinations_nl")
-     * @Route(path="/bestemmingen", name="destinations_nl")
-     * @Breadcrumb(name="destinations", title="destinations", translate=true, active=true)
-     * @Template(":Region:destinations.html.twig")
-     */
-    public function destinations()
-    {
-        return [];
     }
 }

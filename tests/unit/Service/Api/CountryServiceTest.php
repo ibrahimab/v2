@@ -73,4 +73,12 @@ class CountryServiceTest extends \Codeception\TestCase\Test
         $this->assertEquals($country->getId(), $localeCountryEN->getId());
         $this->assertEquals($country->getId(), $localeCountryDE->getId());
     }
+    
+    public function testGetRegionsByCountry()
+    {
+        $countryId = 5;
+        $regions   = $this->countryService->getRegionsByCountryId($countryId);
+
+        $this->assertContainsInstancesOf('AppBundle\Service\Api\Region\RegionServiceEntityInterface', $regions);
+    }
 }

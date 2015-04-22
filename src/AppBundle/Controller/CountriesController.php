@@ -2,6 +2,9 @@
 namespace AppBundle\Controller;
 
 use       AppBundle\Annotation\Breadcrumb;
+use       AppBundle\Entity\Country\Country;
+use       AppBundle\Concern\WebsiteConcern;
+use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -96,6 +99,59 @@ class CountriesController extends Controller
             'country' => $country, 
             'regions' => $regions, 
             'sort'    => $sort
+        ];
+    }
+    
+    /**
+     * @Route(path="/bestemmingen", name="destinations_nl")
+     * @Route(path="/bestemmingen", name="destinations_nl")
+     * @Breadcrumb(name="destinations", title="destinations", translate=true, active=true)
+     * @Template(":Region:destinations.html.twig")
+     */
+    public function destinations()
+    {
+        $countryService    = $this->get('service.api.country');
+        $typeService       = $this->get('service.api.type');
+        $javascriptService = $this->get('service.javascript');
+        $websiteConcern    = $this->get('app.concern.website');
+        $parameters        = $this->container->getParameter('app');
+        $currentWebsite    = $websiteConcern->get();
+
+        if (false === in_array($currentWebsite, [WebsiteConcern::WEBSITE_ITALISSIMA_NL, WebsiteConcern::WEBSITE_ITALISSIMA_BE])) {
+            throw $this->createNotFoundException('This page is only available for italissima!');
+        }
+        
+        if (true === in_array($currentWebsite, [WebsiteConcern::WEBSITE_ITALISSIMA_NL, WebsiteConcern::WEBSITE_ITALISSIMA_BE])) {
+            $countryId = $parameters['countries'][$currentWebsite];
+        }
+        
+        $country    = new Country($countryId);
+        $country    = $countryService->findRegions($country);
+        $places     = $country->getPlaces();
+        $allRegions = $places->map(function(PlaceServiceEntityInterface $place) {
+            return $place->getRegion();
+        })->toArray();
+        
+        $typesCount = $typeService->countByRegions($allRegions);
+        
+        $regions         = [];
+        $disabledRegions = [];
+        foreach ($allRegions as $region) {
+            
+            if (isset($typesCount[$region->getId()])) {
+                
+                $region->setTypesCount($typesCount[$region->getId()]);
+                $regions[] = $region;
+                
+            } else {
+                $disabledRegions[] = $region->getId();
+            }
+        }
+        
+        $javascriptService->set('app.country.disabledRegions', $disabledRegions);
+        
+        return [
+            'regions' => $regions,
         ];
     }
 }

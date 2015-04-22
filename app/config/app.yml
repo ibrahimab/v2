@@ -1,5 +1,8 @@
 parameters:
     app:
+        countries:
+            I: 5
+            K: 5
         default_locale:  nl
         default_website: C
         default_season:  1

@@ -227,9 +227,13 @@ class Country implements CountryServiceEntityInterface
     private $updatedAt;
 
 
-    public function __construct()
+    public function __construct($id = null)
     {
         $this->places = new ArrayCollection();
+        
+        if (null !== $id) {
+            $this->id = $id;
+        }
     }
 
     /**

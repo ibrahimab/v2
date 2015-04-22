@@ -4,14 +4,14 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block seo %}
-    
+
     {% include 'layouts/seo-block.html.twig' with {
-        
+
         'meta_title':       title,
         'meta_description': 'Bestemmingen in Italië'
-        
+
     } only %}
-    
+
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -24,10 +24,23 @@
 
     <h1>{{ 'destinations'|trans }}</h1>
     
-    <section class="landing">
+    <section class="landing bottom_spacer" style="position:inherit;">
         <div class="row">
-            <div data-role="italy-maps" style="height: 300px;"></div>
+            <div class="large-8 columns">
+                <div data-role="italy-maps" style="width: 490px; height: 590px;"></div>
+            </div>
+            <div class="large-4 columns end">
+                <ul class="destination-regions" data-role="region-list">
+                    {% for region in regions %}
+                    <li data-role="region" data-region-id="{{ region.getId() }}" data-region-name="{{ region.getLocaleName(get_locale()) }}" data-region-types-count="{{ region.getTypesCount() }}">
+                        <a href="{{ locale_path('show_region', {'regionSlug': region.getLocaleSeoName(get_locale())}) }}">
+                            ({{ region.getId() }}) - {{ region.getLocaleName(get_locale()) }} ({{ region.getTypesCount() }})
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
-    </section>
+    </div>
     
 {% endblock %}

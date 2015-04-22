@@ -2,6 +2,7 @@
 namespace AppBundle\Entity\Country;
 
 use       AppBundle\Entity\BaseRepository;
+use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
 use       AppBundle\Service\Api\Country\CountryServiceRepositoryInterface;
 use       Doctrine\ORM\EntityRepository;
 
@@ -59,6 +60,27 @@ class CountryRepository extends BaseRepository implements CountryServiceReposito
                'website' => '%' . $this->getWebsite() . '%',
            ]);
  
+        return $qb->getQuery()->getSingleResult();
+    }
+    
+    public function findRegions(CountryServiceEntityInterface $country)
+    {
+        $qb   = $this->createQueryBuilder('c');
+        $expr = $qb->expr();
+        
+        $qb->select('partial p.{id}, partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}, partial c.{id, name, englishName, germanName}')
+           ->leftJoin('c.places', 'p')
+           ->leftJoin('p.region', 'r')
+           ->where($expr->eq('c.id', ':countryId'))
+           ->andWhere($expr->eq('r.season', ':season'))
+           ->groupBy('r.id')
+           ->orderBy('r.name', 'ASC')
+           ->setParameters([
+               
+               'countryId' => $country->getId(),
+               'season'    => $this->getSeason(),
+           ]);
+           
         return $qb->getQuery()->getSingleResult();
     }
 }

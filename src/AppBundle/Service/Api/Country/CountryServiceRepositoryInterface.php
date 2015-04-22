@@ -3,6 +3,7 @@ namespace AppBundle\Service\Api\Country;
 
 use       AppBundle\Concern\SeasonConcern;
 use       AppBundle\Concern\WebsiteConcern;
+use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
@@ -68,4 +69,12 @@ interface CountryServiceRepositoryInterface
      * @return CountryServiceEntityInterface
      */
     public function findByLocaleName($name, $locale, $sort = 'alpha');
+    
+    /**
+     * Finding regions by country
+     *
+     * @param CountryServiceEntityInterface $country
+     * @return RegionServiceEntityInterface[]
+     */
+    public function findRegions(CountryServiceEntityInterface $country);
 }
