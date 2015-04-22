@@ -50,11 +50,15 @@ class RegionService
     }
     
     /**
-     * Find region by its name, with locale in mind
+     * This method fetches a region based on a locale field,
+     * Because of certain schema design decisions of the old website
+     * regions do 
+     * 
      *
-     * @param string $name
+     * @param string $field
+     * @param string $value
      * @param string $locale
-     * @return RegionServiceEntityInterface
+     * @return array [0 => RegionServiceEntityInterface, 1 => PlaceServiceEntityInterface]
      */
     public function findByLocaleName($name, $locale)
     {
@@ -71,5 +75,15 @@ class RegionService
     public function findByLocaleSeoName($seoName, $locale)
     {
         return $this->regionServiceRepository->findByLocaleSeoName($seoName, $locale);
+    }
+    
+    /**
+     * Find random region with the homepage flag on
+     *
+     * @return RegionServiceEntityInterface
+     */
+    public function findHomepageRegion()
+    {
+        return $this->regionServiceRepository->findHomepageRegion();
     }
 }

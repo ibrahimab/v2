@@ -64,4 +64,10 @@ class RegionServiceTest extends \Codeception\TestCase\Test
         $this->assertEquals($region->getId(), $localeRegionEN->getId());
         $this->assertEquals($region->getId(), $localeRegionDE->getId());
     }
+    
+    public function testGetHomepageRegion()
+    {
+        $region = $this->regionService->findHomepageRegion();
+        $this->assertInstanceOf('AppBundle\Service\AppBundle\Region\RegionServiceEntityInterface', $region);
+    }
 }

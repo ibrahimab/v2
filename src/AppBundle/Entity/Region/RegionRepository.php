@@ -32,15 +32,7 @@ class RegionRepository extends BaseRepository implements RegionServiceRepository
     }
     
     /**
-     * This method fetches a region based on a locale field,
-     * Because of certain schema design decisions of the old website
-     * regions do 
-     * 
-     *
-     * @param string $field
-     * @param string $value
-     * @param string $locale
-     * @return array [0 => RegionServiceEntityInterface, 1 => PlaceServiceEntityInterface]
+     * {@InheritDoc}
      */
     public function findByLocaleField($field, $value, $locale)
     {
@@ -62,6 +54,24 @@ class RegionRepository extends BaseRepository implements RegionServiceRepository
                'season'    => $this->getSeason(),
            ]);
 
+        return $qb->getQuery()->getResult();
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function findHomepageRegion()
+    {
+        $qb   = $this->createQueryBuilder('r');
+        $expr = $qb->expr();
+        
+        $qb->select('partial r.{id, name, englishName, germanName, startCode}')
+           ->where($expr->eq('r.showOnHomepage', ':showOnHomepage'))
+           ->setParameters([
+               'showOnHomepage' => true,
+           ])
+           ->orderBy('RAND()');
+        
         return $qb->getQuery()->getResult();
     }
 }
