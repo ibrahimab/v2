@@ -10,7 +10,7 @@ class ContactController extends Controller
 {
     /**
      * @Route("/contact", name="contact")
-     * @Template(":Contact:new.html.twig")
+     * @Template(":contact:new.html.twig")
      * @Method("GET")
      */
     public function newAction()

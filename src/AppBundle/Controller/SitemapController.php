@@ -9,7 +9,7 @@ class SitemapController extends Controller
 {
     /**
      * @Route("/sitemap", name="sitemap")
-     * @Template(":Sitemap:index.html.twig")
+     * @Template(":sitemap:index.html.twig")
      */
     public function index()
     {

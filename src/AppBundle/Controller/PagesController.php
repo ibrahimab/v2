@@ -22,7 +22,7 @@ class PagesController extends Controller
 {
     /**
      * @Route("/", name="home")
-     * @Template(":Pages:home.html.twig")
+     * @Template(":pages:home.html.twig")
      */
     public function home()
     {
@@ -71,7 +71,7 @@ class PagesController extends Controller
      * @Route("/over-ons", name="page_about_nl")
      * @Route("/about-us", name="page_about_en")
      * @Breadcrumb(name="about", title="about", translate=true, active=true)
-     * @Template(":Pages:about.html.twig")
+     * @Template(":pages:about.html.twig")
      */
     public function about()
     {
@@ -82,7 +82,7 @@ class PagesController extends Controller
      * @Route("/verzekeringen", name="page_insurances_nl")
      * @Route("/insurances", name="page_insurances_en")
      * @Breadcrumb(name="insurances", title="insurances", translate=true, active=true)
-     * @Template(":Pages:insurances.html.twig")
+     * @Template(":pages:insurances.html.twig")
      */
     public function insurances()
     {
@@ -93,7 +93,7 @@ class PagesController extends Controller
      * @Route("/veel-gestelde-vragen", name="page_faq_nl")
      * @Route("/frequently-asked-questions", name="page_faq_en")
      * @Breadcrumb(name="faq", title="faq", translate=true, active=true)
-     * @Template(":Pages:faq.html.twig")
+     * @Template(":pages:faq.html.twig")
      */
     public function faq()
     {
@@ -104,7 +104,7 @@ class PagesController extends Controller
      * @Route("/algemene-voorwaarden", name="page_terms_nl")
      * @Route("/terms", name="page_terms_en")
      * @Breadcrumb(name="terms", title="terms", translate=true, active=true)
-     * @Template(":Pages:terms.html.twig")
+     * @Template(":pages:terms.html.twig")
      */
     public function terms()
     {
@@ -114,7 +114,7 @@ class PagesController extends Controller
     /**
      * @Route("/disclaimer", name="page_disclaimer")
      * @Breadcrumb(name="disclaimer", title="disclaimer", translate=true, active=true)
-     * @Template(":Pages:disclaimer.html.twig")
+     * @Template(":pages:disclaimer.html.twig")
      */
     public function disclaimer()
     {
@@ -124,7 +124,7 @@ class PagesController extends Controller
     /**
      * @Route("/privacy", name="page_privacy")
      * @Breadcrumb(name="privacy", title="privacy", translate=true, active=true)
-     * @Template(":Pages:privacy.html.twig")
+     * @Template(":pages:privacy.html.twig")
      */
     public function privacy()
     {

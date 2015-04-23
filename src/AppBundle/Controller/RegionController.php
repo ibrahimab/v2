@@ -26,7 +26,7 @@ class RegionController extends Controller
      * @Breadcrumb(name="countries", title="countries", translate=true, path="show_countries")
      * @Breadcrumb(name="show_country", title="{countryName}", path="show_country", pathParams={"countrySlug"})
      * @Breadcrumb(name="show_region", title="{regionName}", active=true)
-     * @Template(":Region:show.html.twig")
+     * @Template(":region:show.html.twig")
      */
     public function show($regionSlug)
     {

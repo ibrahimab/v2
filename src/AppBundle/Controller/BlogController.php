@@ -23,7 +23,7 @@ class BlogController extends Controller
     /**
      * @Route("/blog", name="blog")
      * @Breadcrumb(name="blog_index", title="blog_index", translate=true, active=true)
-     * @Template(":Blog:index.html.twig")
+     * @Template(":blog:index.html.twig")
      * @Method("Get")
      */
     public function index()

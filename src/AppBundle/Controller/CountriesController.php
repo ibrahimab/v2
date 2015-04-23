@@ -28,7 +28,7 @@ class CountriesController extends Controller
      * @Route(path="/wintersport/landen",      name="show_countries_nl")
      * @Route(path="/winter-sports/countries", name="show_countries_en")
      * @Breadcrumb(name="countries", title="countries", translate=true, active=true)
-     * @Template(":Countries:index.html.twig")
+     * @Template(":countries:index.html.twig")
      */
     public function index()
     {
@@ -40,7 +40,7 @@ class CountriesController extends Controller
      * @Route(path="/winter-sports/country/{countrySlug}/{sort}", name="show_country_en", defaults={"sort"="alpha"}, options={"expose"=true})
      * @Breadcrumb(name="countries", title="countries", translate=true, path="show_countries")
      * @Breadcrumb(name="show_country", title="{countryName}", active=true)
-     * @Template(":Countries:show.html.twig")
+     * @Template(":countries:show.html.twig")
      */
     public function show($countrySlug, $sort)
     {
@@ -106,7 +106,7 @@ class CountriesController extends Controller
      * @Route(path="/bestemmingen", name="destinations_nl")
      * @Route(path="/bestemmingen", name="destinations_nl")
      * @Breadcrumb(name="destinations", title="destinations", translate=true, active=true)
-     * @Template(":Region:destinations.html.twig")
+     * @Template(":region:destinations.html.twig")
      */
     public function destinations()
     {

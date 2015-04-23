@@ -27,7 +27,7 @@ class PlacesController extends Controller
      * @Breadcrumb(name="show_country", title="{countryName}", path="show_country", pathParams={"countrySlug"})
      * @Breadcrumb(name="show_region", title="{regionName}", path="show_region", pathParams={"regionSlug"})
      * @Breadcrumb(name="show_place", title="{placeName}", active=true)
-     * @Template(":Places:show.html.twig")
+     * @Template(":places:show.html.twig")
      */
     public function show($placeSlug)
     {

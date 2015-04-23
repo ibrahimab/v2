@@ -33,7 +33,7 @@ class TypesController extends Controller
      * @Breadcrumb(name="show_region",  title="{regionName}",        path="show_region",  pathParams={"regionSlug"})
      * @Breadcrumb(name="show_place",   title="{placeName}",         path="show_place",   pathParams={"placeSlug"})
      * @Breadcrumb(name="show_type",    title="{accommodationName}", active=true)
-     * @Template(":Types:show.html.twig")
+     * @Template(":types:show.html.twig")
      */
     public function showAction($beginCode, $typeId)
     {
