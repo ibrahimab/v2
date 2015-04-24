@@ -10,12 +10,14 @@
 /vendor/
 /web/bundles/
 .DS_Store
+.composer
 
 # Node modules, for less compile
 /node_modules/
 
 # Old website
 /web/chalet
+/web/seo_laden.php
 
 # Tests
 tests/_output/*
