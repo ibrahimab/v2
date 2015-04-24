@@ -2,6 +2,7 @@
 namespace AppBundle\Entity\Place;
 
 use       AppBundle\Entity\BaseRepository;
+use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Place\PlaceServiceRepositoryInterface;
 
 /**
@@ -41,9 +42,22 @@ class PlaceRepository extends BaseRepository implements PlaceServiceRepositoryIn
     /**
      * {@InheritDoc}
      */
-    public function homepagePlaces($options = [])
+    public function findHomepagePlaces(RegionServiceEntityInterface $region, $options = [])
     {
         $limit = self::getOption($options, 'limit', 3);
-        return $this->all(['where' => ['showOnHomepage' => true], 'limit' => $limit]);
+        $qb    = $this->createQueryBuilder('p');
+        $expr  = $qb->expr();
+
+        $qb->select('partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}')
+           ->where($expr->eq('p.showOnHomepage', ':showOnHomepage'))
+           ->andWhere($expr->eq('p.region', ':region'))
+           ->setMaxResults($limit)
+           ->setParameters([
+               
+               'showOnHomepage' => true,
+               'region'         => $region,
+           ]);
+
+        return $qb->getQuery()->getResult();
     }
 }

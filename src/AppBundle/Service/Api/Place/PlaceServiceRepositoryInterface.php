@@ -3,6 +3,7 @@ namespace AppBundle\Service\Api\Place;
 
 use       AppBundle\Concern\SeasonConcern;
 use       AppBundle\Concern\WebsiteConcern;
+use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 
 /**
  * PlaceServiceRepositoryInterface
@@ -73,8 +74,9 @@ interface PlaceServiceRepositoryInterface
     /**
      * Getting places flagged as 'homepage' place
      *
+     * @param RegionServiceEntityInterface $region
      * @param array $options
      * @return PlaceServiceEntityInterface[]
      */
-    public function homepagePlaces($options = []);
+    public function findHomepagePlaces(RegionServiceEntityInterface $region, $options = []);
 }

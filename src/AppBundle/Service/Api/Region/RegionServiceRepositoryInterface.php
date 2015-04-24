@@ -79,9 +79,10 @@ interface RegionServiceRepositoryInterface
     public function findByLocaleSeoName($seoName, $locale);
     
     /**
-     * Find random region flagged as 'homepage' region
+     * Find random regions flagged as 'homepage' region
      *
+     * @param array $options
      * @return RegionServiceEntityInterface
      */
-    public function findHomepageRegion();
+    public function findHomepageRegions($options = []);
 }

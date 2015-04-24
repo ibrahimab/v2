@@ -1,6 +1,8 @@
 <?php
 namespace AppBundle\Service\Api\Place;
 
+use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
+
 /**
  * This is the PlaceService, with this service you can manipulate places
  *
@@ -64,11 +66,12 @@ class PlaceService
     /**
      * Getting places flagged as 'homepage' place
      *
+     * @param RegionServiceEntityInterface $region
      * @param array $options
      * @return PlaceServiceEntityInterface[]
      */
-    public function homepagePlaces($options = [])
+    public function findHomepagePlaces(RegionServiceEntityInterface $region, $options = [])
     {
-        return $this->placeServiceRepository->homepagePlaces();
+        return $this->placeServiceRepository->findHomepagePlaces($region, $options);
     }
 }
