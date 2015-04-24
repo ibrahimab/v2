@@ -8,7 +8,9 @@
 /bin/
 /composer.phar
 /vendor/
-/web/bundles/
+/web/bundles/*
+!/web/bundles/app/
+!web/bundles/app/*
 .DS_Store
 .composer
 
