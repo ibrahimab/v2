@@ -6,6 +6,7 @@ use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceRepositoryInterface;
 use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
 use       Doctrine\ORM\EntityRepository;
+use       Doctrine\ORM\Query\Expr;
 
 /**
  * RegionRepository
@@ -60,18 +61,38 @@ class RegionRepository extends BaseRepository implements RegionServiceRepository
     /**
      * {@InheritDoc}
      */
-    public function findHomepageRegion()
+    public function findHomepageRegions($options = [])
     {
-        $qb   = $this->createQueryBuilder('r');
-        $expr = $qb->expr();
-        
-        $qb->select('partial r.{id, name, englishName, germanName, startCode}')
+        $limit = self::getOption($options, 'limit', 1);
+        $qb    = $this->createQueryBuilder('r');
+        $expr  = $qb->expr();
+
+        $qb->select('partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, totalSlopesDistance, minimumAltitude, maximumAltitude}, RAND() AS HIDDEN rand_seed')
            ->where($expr->eq('r.showOnHomepage', ':showOnHomepage'))
            ->setParameters([
                'showOnHomepage' => true,
            ])
-           ->orderBy('RAND()');
-        
+           ->setMaxResults($limit)
+           ->orderBy('rand_seed');
+
         return $qb->getQuery()->getResult();
+        
+        // $qb   = $this->getEntityManager()->createQueryBuilder();
+        // $expr = $qb->expr();
+        //
+        // $qb->select('partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}, partial p.{id, name, englishName, germanName, country}, RAND() AS HIDDEN rank_seed')
+        //    ->from('AppBundle\Entity\Place\Place', 'p')
+        //    ->join('AppBundle\Entity\Region\Region', 'r', Expr\Join::WITH, $expr->eq('p.region', 'r'))
+        //    ->where($expr->eq('p.showOnHomepage', ':showOnHomepage'))
+        //    ->andWhere($expr->eq('r.showOnHomepage', ':showOnHomepage'))
+        //    ->setMaxResults($limit)
+        //    ->groupBy('p,')
+        //    ->orderBy('rank_seed')
+        //    ->setParameters([
+        //        'showOnHomepage' => true,
+        //    ]);
+        //
+        //    dump($qb->getQuery()->getSql());
+        // dump($qb->getQuery()->getResult());
     }
 }

@@ -14,6 +14,7 @@ class PlaceServiceTest extends \Codeception\TestCase\Test
     {
         $this->serviceContainer = $this->getModule('Symfony2')->container;
         $this->placeService     = $this->serviceContainer->get('service.api.place');
+        $this->regionService    = $this->serviceContainer->get('service.api.region');
         
         // clearing doctrine
         $this->serviceContainer->get('doctrine')->getManager()->clear();
@@ -111,9 +112,12 @@ class PlaceServiceTest extends \Codeception\TestCase\Test
     
     public function testGetHomepagePlaces()
     {
-        $limit  = 3;
-        $places = $this->placeService->homepagePlaces(['limit' => $limit]);
+        $regions = $this->regionService->findHomepageRegions(['limit' => 1]);
+        $this->assertInstanceOf('AppBundle\Service\Api\Region\RegionServiceEntityInterface', $regions[0]);
         
+        $limit   = 1;
+        $places  = $this->placeService->findHomepagePlaces($regions[0], ['limit' => $limit]);
+
         $this->assertCount($limit, $places);
         $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Place\PlaceServiceEntityInterface', $places);
     }

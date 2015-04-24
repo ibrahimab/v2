@@ -30,10 +30,22 @@ class PagesController extends Controller
         $surveyService        = $this->get('service.api.booking.survey');
         $highlightService     = $this->get('service.api.highlight');
         $homepageBlockService = $this->get('service.api.homepageblock');
+        $regionService        = $this->get('service.api.region');
+        $placeService         = $this->get('service.api.place');
         
-        $homepageBlocks   = $homepageBlockService->published();
-        $highlights       = $highlightService->displayable(['limit' => $config['service']['api']['highlight']['limit']]);
-        $types            = [];
+        $regions              = $regionService->findHomepageRegions();
+        $places               = [];
+        $region               = null;
+
+        if (count($regions) > 0) {
+            
+            $region = $regions[0];
+            $places = $placeService->findHomepagePlaces($region, ['limit' => 3]);
+        }
+        
+        $homepageBlocks       = $homepageBlockService->published();
+        $highlights           = $highlightService->displayable(['limit' => $config['service']['api']['highlight']['limit']]);
+        $types                = [];
         
         foreach ($highlights as $highlight) {
             
@@ -41,11 +53,14 @@ class PagesController extends Controller
             $types[$type->getId()] = $type;
         }
         
-        $surveyStats = $surveyService->statsByTypes($types);
-        foreach ($surveyStats as $surveyStat) {
+        if (count($types) > 0) {
+        
+            $surveyStats = $surveyService->statsByTypes($types);
+            foreach ($surveyStats as $surveyStat) {
             
-            $types[$surveyStat['typeId']]->setSurveyCount($surveyStat['surveyCount']);
-            $types[$surveyStat['typeId']]->setSurveyAverageOverallRating($surveyStat['surveyAverageOverallRating']);
+                $types[$surveyStat['typeId']]->setSurveyCount($surveyStat['surveyCount']);
+                $types[$surveyStat['typeId']]->setSurveyAverageOverallRating($surveyStat['surveyAverageOverallRating']);
+            }
         }
         
         $groupedHomepageBlocks = ['left' => [], 'right' => []];
@@ -62,6 +77,8 @@ class PagesController extends Controller
         
         return [
             
+            'region'         => $region,
+            'places'         => $places,
             'highlights'     => $highlights,
             'homepageBlocks' => $groupedHomepageBlocks,
         ];

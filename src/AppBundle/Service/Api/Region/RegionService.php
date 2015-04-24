@@ -78,12 +78,13 @@ class RegionService
     }
     
     /**
-     * Find random region with the homepage flag on
+     * Find random regions with the homepage flag on
      *
+     * @param array $options
      * @return RegionServiceEntityInterface
      */
-    public function findHomepageRegion()
+    public function findHomepageRegions($options = [])
     {
-        return $this->regionServiceRepository->findHomepageRegion();
+        return $this->regionServiceRepository->findHomepageRegions($options);
     }
 }
