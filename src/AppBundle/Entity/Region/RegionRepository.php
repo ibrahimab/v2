@@ -69,30 +69,15 @@ class RegionRepository extends BaseRepository implements RegionServiceRepository
 
         $qb->select('partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, totalSlopesDistance, minimumAltitude, maximumAltitude}, RAND() AS HIDDEN rand_seed')
            ->where($expr->eq('r.showOnHomepage', ':showOnHomepage'))
+           ->andWhere($expr->like('r.websites', ':website'))
            ->setParameters([
+               
                'showOnHomepage' => true,
+               'website'        => '%' . $this->getWebsite(). '%'
            ])
            ->setMaxResults($limit)
            ->orderBy('rand_seed');
 
         return $qb->getQuery()->getResult();
-        
-        // $qb   = $this->getEntityManager()->createQueryBuilder();
-        // $expr = $qb->expr();
-        //
-        // $qb->select('partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}, partial p.{id, name, englishName, germanName, country}, RAND() AS HIDDEN rank_seed')
-        //    ->from('AppBundle\Entity\Place\Place', 'p')
-        //    ->join('AppBundle\Entity\Region\Region', 'r', Expr\Join::WITH, $expr->eq('p.region', 'r'))
-        //    ->where($expr->eq('p.showOnHomepage', ':showOnHomepage'))
-        //    ->andWhere($expr->eq('r.showOnHomepage', ':showOnHomepage'))
-        //    ->setMaxResults($limit)
-        //    ->groupBy('p,')
-        //    ->orderBy('rank_seed')
-        //    ->setParameters([
-        //        'showOnHomepage' => true,
-        //    ]);
-        //
-        //    dump($qb->getQuery()->getSql());
-        // dump($qb->getQuery()->getResult());
     }
 }

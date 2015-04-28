@@ -3,6 +3,7 @@ namespace AppBundle\Controller;
 
 use       AppBundle\Annotation\Breadcrumb;
 use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterface;
+use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -32,58 +33,69 @@ class PagesController extends Controller
         $homepageBlockService = $this->get('service.api.homepageblock');
         $regionService        = $this->get('service.api.region');
         $placeService         = $this->get('service.api.place');
-        
-        $regions              = $regionService->findHomepageRegions();
+        $typeService          = $this->get('service.api.type');
+
+        $regions              = $regionService->findHomepageRegions(['limit' => 1]);
         $places               = [];
         $region               = null;
 
         if (count($regions) > 0) {
-            
-            $region = $regions[0];
-            $places = $placeService->findHomepagePlaces($region, ['limit' => 3]);
+
+            $region      = $regions[0];
+            $places      = $placeService->findHomepagePlaces($region, ['limit' => 3]);
+            $regionCount = $typeService->countByRegion($region);
+            $region->setTypesCount(array_sum($regionCount))
+                   ->setPlacesCount(count($regionCount));
+
+            foreach ($places as $place) {
+
+                if (isset($regionCount[$place->getId()])) {
+                    $place->setTypesCount($regionCount[$place->getId()]);
+                }
+            }
         }
-        
+
         $homepageBlocks       = $homepageBlockService->published();
         $highlights           = $highlightService->displayable(['limit' => $config['service']['api']['highlight']['limit']]);
         $types                = [];
-        
+
         foreach ($highlights as $highlight) {
-            
+
             $type                  = $highlight->getType();
             $types[$type->getId()] = $type;
         }
-        
+
         if (count($types) > 0) {
-        
+
             $surveyStats = $surveyService->statsByTypes($types);
             foreach ($surveyStats as $surveyStat) {
-            
+
                 $types[$surveyStat['typeId']]->setSurveyCount($surveyStat['surveyCount']);
                 $types[$surveyStat['typeId']]->setSurveyAverageOverallRating($surveyStat['surveyAverageOverallRating']);
             }
         }
-        
+
         $groupedHomepageBlocks = ['left' => [], 'right' => []];
         foreach ($homepageBlocks as $block) {
-            
+
             if ($block->getPosition() === HomepageBlockServiceEntityInterface::POSITION_LEFT) {
                 $groupedHomepageBlocks['left'][] = $block;
             }
-            
+
             if ($block->getPosition() === HomepageBlockServiceEntityInterface::POSITION_RIGHT) {
                 $groupedHomepageBlocks['right'][] = $block;
             }
         }
-        
+
         return [
-            
+
             'region'         => $region,
             'places'         => $places,
             'highlights'     => $highlights,
             'homepageBlocks' => $groupedHomepageBlocks,
         ];
     }
-    
+
     /**
      * @Route("/over-ons", name="page_about_nl")
      * @Route("/about-us", name="page_about_en")

@@ -28,14 +28,14 @@ class Place implements PlaceServiceEntityInterface
      * @ORM\Column(name="naam", type="string", length=100)
      */
     private $name;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="naam_en", type="string", length=100)
      */
     private $englishName;
-    
+
     /**
      * @var string
      *
@@ -49,14 +49,14 @@ class Place implements PlaceServiceEntityInterface
      * @ORM\Column(name="seonaam", type="string", length=100)
      */
     private $seoName;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="seonaam_en", type="string", length=100)
      */
     private $englishSeoName;
-    
+
     /**
      * @var string
      *
@@ -84,14 +84,14 @@ class Place implements PlaceServiceEntityInterface
      * @ORM\Column(name="korteomschrijving", type="string", length=70)
      */
     private $shortDescription;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="korteomschrijving_en", type="string", length=70)
      */
     private $englishShortDescription;
-    
+
     /**
      * @var string
      *
@@ -105,14 +105,14 @@ class Place implements PlaceServiceEntityInterface
      * @ORM\Column(name="omschrijving", type="text")
      */
     private $description;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="omschrijving_en", type="text")
      */
     private $englishDescription;
-    
+
     /**
      * @var string
      *
@@ -126,7 +126,7 @@ class Place implements PlaceServiceEntityInterface
      * @ORM\Column(name="hoortbij_plaats_id", type="integer")
      */
     private $siblingId;
-    
+
     /**
      * @var Place
      *
@@ -141,7 +141,7 @@ class Place implements PlaceServiceEntityInterface
      * @ORM\Column(name="skigebied_id", type="integer")
      */
     private $regionId;
-    
+
     /**
      * @var integer
      *
@@ -149,14 +149,14 @@ class Place implements PlaceServiceEntityInterface
      * @ORM\JoinColumn(name="skigebied_id", referencedColumnName="skigebied_id")
      */
     private $region;
-    
+
     /**
      * @var AccommodationServiceEntityInterface[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Accommodation\Accommodation", mappedBy="place")
      */
     private $accommodations;
-    
+
     /**
      * @var CountryServiceEntityInterface
      *
@@ -192,42 +192,42 @@ class Place implements PlaceServiceEntityInterface
      * @ORM\Column(name="websites", type="simple_array")
      */
     private $websites;
-    
+
     /**
-     * This virtual field contains the types count within a certain place 
+     * This virtual field contains the types count within a certain region
      *
      * @var integer
      */
     private $typesCount;
-    
+
     /**
      * Virtual field that holds the average ratings for a place
-     * 
+     *
      * @var integer
      */
     private $averageRatings = 0;
-    
+
     /**
      * Virtual field that holds the ratings count for a place
-     * 
+     *
      * @var integer
      */
     private $ratingsCount = 0;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="gps_lat", type="string", length=12)
      */
     private $latitude;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="gps_long", type="string", length=12)
      */
     private $longitude;
-    
+
     /**
      * @var boolean
      *
@@ -254,7 +254,7 @@ class Place implements PlaceServiceEntityInterface
     {
         $this->accommodations = new ArrayCollection();
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -280,17 +280,17 @@ class Place implements PlaceServiceEntityInterface
     {
         return $this->name;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setEnglishName($englishName)
     {
         $this->englishName = $englishName;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -298,17 +298,17 @@ class Place implements PlaceServiceEntityInterface
     {
         return $this->englishName;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setGermanName($germanName)
     {
         $this->germanName = $germanName;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -316,7 +316,7 @@ class Place implements PlaceServiceEntityInterface
     {
         return $this->germanName;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -324,14 +324,14 @@ class Place implements PlaceServiceEntityInterface
     {
         // normalize locales
         $localeNames = array_change_key_case($localeNames);
-        
+
         $this->setName(isset($localeNames['nl']) ? $localeNames['nl'] : '');
         $this->setEnglishName(isset($localeNames['en']) ? $localeNames['en'] : '');
         $this->setGermanName(isset($localeNames['de']) ? $localeNames['de'] : '');
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -339,21 +339,21 @@ class Place implements PlaceServiceEntityInterface
     {
         $locale = strtolower($locale);
         switch ($locale) {
-            
+
             case 'en':
                 $localeName = $this->getEnglishName();
                 break;
-                
+
             case 'de':
                 $localeName = $this->getGermanName();
                 break;
-            
+
             case 'nl':
             default:
                 $localeName = $this->getName();
                 break;
         }
-        
+
         return $localeName;
     }
 
@@ -374,17 +374,17 @@ class Place implements PlaceServiceEntityInterface
     {
         return $this->seoName;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setEnglishSeoName($englishSeoName)
     {
         $this->englishSeoName = $englishSeoName;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -392,17 +392,17 @@ class Place implements PlaceServiceEntityInterface
     {
         return $this->englishSeoName;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setGermanSeoName($germanSeoName)
     {
         $this->germanSeoName = $germanSeoName;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -410,7 +410,7 @@ class Place implements PlaceServiceEntityInterface
     {
         return $this->germanSeoName;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -418,14 +418,14 @@ class Place implements PlaceServiceEntityInterface
     {
         // normalize locales
         $localeSeoNames = array_change_key_case($localeSeoNames);
-        
+
         $this->setSeoName(isset($localeSeoNames['nl']) ? $localeSeoNames['nl'] : '');
         $this->setEnglishSeoName(isset($localeSeoNames['en']) ? $localeSeoNames['en'] : '');
         $this->setGermanSeoName(isset($localeSeoNames['de']) ? $localeSeoNames['de'] : '');
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -433,21 +433,21 @@ class Place implements PlaceServiceEntityInterface
     {
         $locale = strtolower($locale);
         switch ($locale) {
-            
+
             case 'en':
                 $localeSeoName = $this->getEnglishSeoName();
                 break;
-                
+
             case 'de':
                 $localeSeoName = $this->getGermanSeoName();
                 break;
-            
+
             case 'nl':
             default:
                 $localeSeoName = $this->getSeoName();
                 break;
         }
-        
+
         return $localeSeoName;
     }
 
@@ -504,17 +504,17 @@ class Place implements PlaceServiceEntityInterface
     {
         return $this->shortDescription;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setEnglishShortDescription($englishShortDescription)
     {
         $this->englishShortDescription = $englishShortDescription;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -522,17 +522,17 @@ class Place implements PlaceServiceEntityInterface
     {
         return $this->englishShortDescription;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setGermanShortDescription($germanShortDescription)
     {
         $this->germanShortDescription = $germanShortDescription;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -540,7 +540,7 @@ class Place implements PlaceServiceEntityInterface
     {
         return $this->germanShortDescription;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -548,14 +548,14 @@ class Place implements PlaceServiceEntityInterface
     {
         // normalize locales
         $localeShortDescriptions = array_change_key_case($localeShortDescriptions);
-        
+
         $this->setShortDescription(isset($localeShortDescriptions['nl']) ? $localeShortDescriptions['nl'] : '');
         $this->setEnglishShortDescription(isset($localeShortDescriptions['en']) ? $localeShortDescriptions['en'] : '');
         $this->setGermanShortDescription(isset($localeShortDescriptions['de']) ? $localeShortDescriptions['de'] : '');
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -563,21 +563,21 @@ class Place implements PlaceServiceEntityInterface
     {
         $locale = strtolower($locale);
         switch ($locale) {
-            
+
             case 'en':
                 $localeShortDescription = $this->getEnglishShortDescription();
                 break;
-                
+
             case 'de':
                 $localeShortDescription = $this->getGermanShortDescription();
                 break;
-            
+
             case 'nl':
             default:
                 $localeShortDescription = $this->getShortDescription();
                 break;
         }
-        
+
         return $localeShortDescription;
     }
 
@@ -598,17 +598,17 @@ class Place implements PlaceServiceEntityInterface
     {
         return $this->description;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setEnglishDescription($englishDescription)
     {
         $this->englishDescription = $englishDescription;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -616,7 +616,7 @@ class Place implements PlaceServiceEntityInterface
     {
         return $this->englishDescription;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -624,7 +624,7 @@ class Place implements PlaceServiceEntityInterface
     {
         $this->germanDescription = $germanDescription;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -632,7 +632,7 @@ class Place implements PlaceServiceEntityInterface
     {
         return $this->germanDescription;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -640,14 +640,14 @@ class Place implements PlaceServiceEntityInterface
     {
         // normalize locales
         $localeDescriptions = array_change_key_case($localeDescriptions);
-        
+
         $this->setDescription(isset($localeDescriptions['nl']) ? $localeDescriptions['nl'] : '');
         $this->setEnglishDescription(isset($localeDescriptions['en']) ? $localeDescriptions['en'] : '');
         $this->setGermanDescription(isset($localeDescriptions['de']) ? $localeDescriptions['de'] : '');
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -655,21 +655,21 @@ class Place implements PlaceServiceEntityInterface
     {
         $locale = strtolower($locale);
         switch ($locale) {
-            
+
             case 'en':
                 $localeDescription = $this->getEnglishDescription();
                 break;
-                
+
             case 'de':
                 $localeDescription = $this->getGermanDescription();
                 break;
-            
+
             case 'nl':
             default:
                 $localeDescription = $this->getDescription();
                 break;
         }
-        
+
         return $localeDescription;
     }
 
@@ -690,17 +690,17 @@ class Place implements PlaceServiceEntityInterface
     {
         return $this->siblingId;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setSibling($sibling)
     {
         $this->sibling = $sibling;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -751,10 +751,10 @@ class Place implements PlaceServiceEntityInterface
     public function setAccommodations($accommodations)
     {
         $this->accommodations = $accommodations;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -762,17 +762,17 @@ class Place implements PlaceServiceEntityInterface
     {
         return $this->accommodations;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setCountry($country)
     {
         $this->country = $country;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -852,17 +852,17 @@ class Place implements PlaceServiceEntityInterface
     {
         return $this->websites;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setLatitude($latitude)
     {
         $this->latitude = $latitude;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -870,17 +870,17 @@ class Place implements PlaceServiceEntityInterface
     {
         return $this->latitude;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setLongitude($longitude)
     {
         $this->longitude = $longitude;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -888,17 +888,17 @@ class Place implements PlaceServiceEntityInterface
     {
         return $this->longitude;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setTypesCount($typesCount)
     {
         $this->typesCount = $typesCount;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -906,17 +906,17 @@ class Place implements PlaceServiceEntityInterface
     {
         return $this->typesCount;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setAverageRatings($averageRatings)
     {
         $this->averageRatings = $averageRatings;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -924,17 +924,17 @@ class Place implements PlaceServiceEntityInterface
     {
         return $this->averageRatings;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setRatingsCount($ratingsCount)
     {
         $this->ratingsCount = $ratingsCount;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -942,17 +942,17 @@ class Place implements PlaceServiceEntityInterface
     {
         return $this->ratingsCount;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setShowOnHomepage($showOnHomepage)
     {
         $this->showOnHomepage = $showOnHomepage;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -972,7 +972,7 @@ class Place implements PlaceServiceEntityInterface
     }
 
     /**
-     * {@InheritDoc} 
+     * {@InheritDoc}
      */
     public function getCreatedAt()
     {

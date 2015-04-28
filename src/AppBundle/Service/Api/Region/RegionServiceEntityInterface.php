@@ -6,7 +6,7 @@ interface RegionServiceEntityInterface
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId();
 
@@ -21,10 +21,10 @@ interface RegionServiceEntityInterface
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName();
-    
+
     /**
      * Set english name
      *
@@ -32,14 +32,14 @@ interface RegionServiceEntityInterface
      * @return RegionServiceEntityInterface
      */
     public function setEnglishName($englishName);
-    
+
     /**
      * Get english name
      *
      * @return string
      */
     public function getEnglishName();
-    
+
     /**
      * Set German name
      *
@@ -47,22 +47,22 @@ interface RegionServiceEntityInterface
      * @return RegionServiceEntityInterface
      */
     public function setGermanName($germanName);
-    
+
     /**
      * Get German name
      *
      * @return string
      */
     public function getGermanName();
-    
+
     /**
      * Set locale names
-     * 
+     *
      * @param array $localeNames
      * @return RegionServiceEntityInterface
      */
     public function setLocaleNames($localeNames);
-    
+
     /**
      * Get locale name
      *
@@ -82,10 +82,10 @@ interface RegionServiceEntityInterface
     /**
      * Get seo name
      *
-     * @return string 
+     * @return string
      */
     public function getSeoName();
-    
+
     /**
      * Set english seo name
      *
@@ -93,14 +93,14 @@ interface RegionServiceEntityInterface
      * @return RegionServiceEntityInterface
      */
     public function setEnglishSeoName($englishSeoName);
-    
+
     /**
      * Get english seo name
      *
      * @return string
      */
     public function getEnglishSeoName();
-    
+
     /**
      * Set German seo name
      *
@@ -108,22 +108,22 @@ interface RegionServiceEntityInterface
      * @return RegionServiceEntityInterface
      */
     public function setGermanSeoName($germanSeoName);
-    
+
     /**
      * Get German seo name
      *
      * @return string
      */
     public function getGermanSeoName();
-    
+
     /**
      * Set locale seo names
-     * 
+     *
      * @param array $localeSeoNames
      * @return RegionServiceEntityInterface
      */
     public function setLocaleSeoNames($localeSeoNames);
-    
+
     /**
      * Get locale seo name
      *
@@ -143,13 +143,13 @@ interface RegionServiceEntityInterface
     /**
      * Get shortDescription
      *
-     * @return string 
+     * @return string
      */
     public function getShortDescription();
-    
+
     /**
      * Set Locale short descriptions
-     * 
+     *
      * @param array $localeShortDescriptions
      * @return RegionServiceEntityInterface
      */
@@ -162,7 +162,7 @@ interface RegionServiceEntityInterface
      * @return string
      */
     public function getLocaleShortDescription($locale);
-    
+
     /**
      * Set description
      *
@@ -174,10 +174,10 @@ interface RegionServiceEntityInterface
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription();
-    
+
     /**
      * Set locale descriptions
      *
@@ -185,7 +185,7 @@ interface RegionServiceEntityInterface
      * @return RegionServiceEntityInterface
      */
     public function setLocaleDescriptions($localeDescriptions);
-    
+
     /**
      * Get locale description
      *
@@ -204,7 +204,7 @@ interface RegionServiceEntityInterface
     /**
      * Get alternativeName
      *
-     * @return string 
+     * @return string
      */
     public function getAlternativeName();
 
@@ -219,7 +219,7 @@ interface RegionServiceEntityInterface
     /**
      * Get season
      *
-     * @return integer 
+     * @return integer
      */
     public function getSeason();
 
@@ -234,7 +234,7 @@ interface RegionServiceEntityInterface
     /**
      * Get websites
      *
-     * @return array 
+     * @return array
      */
     public function getWebsites();
 
@@ -249,7 +249,7 @@ interface RegionServiceEntityInterface
     /**
      * Get minimumAltitude
      *
-     * @return integer 
+     * @return integer
      */
     public function getMinimumAltitude();
 
@@ -264,10 +264,10 @@ interface RegionServiceEntityInterface
     /**
      * Get maximumAltitude
      *
-     * @return integer 
+     * @return integer
      */
     public function getMaximumAltitude();
-    
+
     /**
      * Set total lifts
      *
@@ -275,14 +275,14 @@ interface RegionServiceEntityInterface
      * @return RegionServiceEntityInterface
      */
     public function setTotalLifts($totalLifts);
-    
+
     /**
      * Get total lifts
      *
      * @return integer
      */
     public function getTotalLifts();
-    
+
     /**
      * Set total slopes distance
      *
@@ -290,14 +290,14 @@ interface RegionServiceEntityInterface
      * @return RegionServiceEntityInterface
      */
     public function setTotalSlopesDistance($totalSlopesDistance);
-    
+
     /**
      * Get total total slopes distance
      *
      * @return integer
      */
     public function getTotalSlopesDistance();
-    
+
     /**
      * Set total blue slopes
      *
@@ -305,14 +305,14 @@ interface RegionServiceEntityInterface
      * @return RegionServiceEntityInterface
      */
     public function setTotalBlueSlopes($totalBlueSlopes);
-    
+
     /**
      * Get total blue slopes
      *
      * @return integer
      */
     public function getTotalBlueSlopes();
-    
+
     /**
      * Set total red slopes
      *
@@ -320,14 +320,14 @@ interface RegionServiceEntityInterface
      * @return RegionServiceEntityInterface
      */
     public function setTotalRedSlopes($totalRedSlopes);
-    
+
     /**
      * Get total red slopes
      *
      * @return integer
      */
     public function getTotalRedSlopes();
-    
+
     /**
      * Set total black slopes
      *
@@ -335,14 +335,14 @@ interface RegionServiceEntityInterface
      * @return RegionServiceEntityInterface
      */
     public function setTotalBlackSlopes($totalBlackSlopes);
-    
+
     /**
      * Get total black slopes
      *
      * @return integer
      */
     public function getTotalBlackSlopes();
-    
+
     /**
      * Set types count
      *
@@ -350,28 +350,43 @@ interface RegionServiceEntityInterface
      * @return RegionServiceEntityInterface
      */
     public function setTypesCount($typesCount);
-    
+
     /**
      * Get types count
      *
      * @return integer
      */
     public function getTypesCount();
-    
+
+	/**
+	 * Set number of places
+	 *
+	 * @param integer $placesCount
+	 * @return RegionServiceEntityInterface
+	 */
+	public function setPlacesCount($placesCount);
+
+	/**
+	 * Get number of places
+	 *
+	 * @return integer
+	 */
+	public function getPlacesCount();
+
     /**
      * Set average ratings for this region
      *
      * @return RegionServiceEntityInterface
      */
     public function setAverageRatings($averageRatings);
-    
+
     /**
      * Get average ratings for this region
-     * 
+     *
      * @return integer
      */
     public function getAverageRatings();
-    
+
     /**
      * Set Ratings count
      *
@@ -379,14 +394,14 @@ interface RegionServiceEntityInterface
      * @return RegionServiceEntityInterface
      */
     public function setRatingsCount($ratingsCount);
-    
+
     /**
      * Get Ratings count
      *
      * @return integer
      */
     public function getRatingsCount();
-    
+
     /**
      * Set flag show on homepage
      *
@@ -394,7 +409,7 @@ interface RegionServiceEntityInterface
      * @return PlaceServiceEntityInterface
      */
     public function setShowOnHomepage($showOnHomepage);
-    
+
     /**
      * Get flag show on homepage
      *
@@ -413,7 +428,7 @@ interface RegionServiceEntityInterface
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt();
 
@@ -428,7 +443,7 @@ interface RegionServiceEntityInterface
     /**
      * Get updatedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdatedAt();
 }
