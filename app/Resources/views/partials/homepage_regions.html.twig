@@ -24,10 +24,9 @@
     </div>
     <div class="row" id="area-specs"><!-- id="area-specs" -->
         <div class="large-12 columns">
-            <span class="area-spec"><i class="sprite sprite-blue-pistes"></i>{{ region.getTotalSlopesDistance() }} kilometer piste totaal</span>
-            <span class="area-spec"><i class="sprite sprite-blue-mountain"></i>hoogte {{ region.getMinimumAltitude() }}{{ (region.getMinimumAltitude() == region.getMaximumAltitude() ? (' - ' ~ region.getMaximumAltitude()) : '') }} meter</span>
-            <span class="area-spec"><i class="sprite sprite-blue-snow"></i>Op dit moment 150 cm sneeuw op de pistes</span>
-            <span class="area-spec"><i class="sprite sprite-blue-chalet"></i>{{ region.getTypesCount() }} chalets en appartementen verdeelt over {{ region.getPlacesCount() }} skidorpen</span>
+            <span class="area-spec"><i class="sprite sprite-blue-pistes"></i> {{ region.getTotalSlopesDistance() }} kilometer piste totaal</span>
+            <span class="area-spec"><i class="sprite sprite-blue-mountain"></i> hoogte {{ region.getMinimumAltitude() }}{{ (region.getMinimumAltitude() == region.getMaximumAltitude() ? (' - ' ~ region.getMaximumAltitude()) : '') }} meter</span>
+            <span class="area-spec"><i class="sprite sprite-blue-chalet"></i> {{ region.getTypesCount() }} chalets en appartementen verdeelt over {{ region.getPlacesCount() ~ (region.getPlacesCount() == 1 ? ' skidorp' : ' skipdorpen') }}</span>
         </div>
     </div>
     <div class="row" data-equalizer><!-- each row contains 3 villages -->
@@ -39,7 +38,7 @@
     </div>
     <div class="row">
         <div class="large-12 centered columns">
-            <a href="" class="button small radius" title="Meer over Skigebied Les Trois Vallees">Meer over Les Trois Vallees</a>
+            <a href="{{ locales['seo']['region'] }}" class="button small radius" title="Meer over Skigebied Les Trois Vallees">Meer over {{ locales['name']['region'] }}</a>
             <a href="zoekboek.html" class="button small radius" title="Bekijk alle skigebieden" style="margin-left:10px;">Bekijk alle skigebieden</a>
         </div>
     </div>
