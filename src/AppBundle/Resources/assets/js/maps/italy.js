@@ -12,7 +12,7 @@
             jqvmapElementId: 'jqvmap1',
             mapId:           'it_mill_en',
             mapPrefix:       'IT',
-            disabledIds:     Chalet.get()['app']['country']['disabledRegions'],
+            disabledIds:     {},
             disabledRegions: {},
             backgroundColor: '#ffffff',
             borderColor:     '#ffffff',
@@ -32,6 +32,8 @@
         },
 
         initialize: function(selector) {
+
+            this.settings['disabledIds'] = Chalet.get()['app']['country']['disabledRegions'];
 
             for (var i in this.settings['disabledIds']) {
                 this.settings['disabledRegions'][this.settings['mapPrefix'] + '-' + this.settings['disabledIds'][i]] = this.settings['disabledColor'];

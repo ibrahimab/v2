@@ -100,8 +100,10 @@
          *
          * @TODO: refactor this so this code only gets loaded on destinations page
          */
-        var italyMaps = Chalet.Maps.Italy.initialize('[data-role="italy-maps"]');
-        console.log(italyMaps);
+        console.log(Chalet.get());
+        if (Chalet.get()['app']['controller'] === 'countries::destinations') {
+            var italyMaps = Chalet.Maps.Italy.initialize('[data-role="italy-maps"]');
+        }
 
         /**
          * Render a google maps element using just data-role="google-maps"

@@ -1,13 +1,13 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
 services:
-    
+
     app.twig_app_extension:
         class: AppBundle\Twig\AppExtension
         tags:
             - { name: twig.extension }
         arguments: [@service_container, @router]
-        
+
     app.event_listener.locale:
         class: AppBundle\EventListener\LocaleListener
         arguments: ["%app%"]
@@ -19,40 +19,37 @@ services:
         arguments: [@app.annotations.breadcrumbs, @twig]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 1 }
-            
+
     app.event_listener.global_javascript:
         class: AppBundle\EventListener\GlobalJavascriptListener
-        arguments: [@service.javascript]
+        arguments: [@service.javascript, @service.utils]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 5 }
-            
+
     app.event_listener.season:
         class: AppBundle\EventListener\SeasonListener
         arguments: [@app.concern.season]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 10 }
-            
+
     app.event_listener.hostname:
         class: AppBundle\EventListener\HostnameListener
         arguments: [@app.concern.website]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 15 }
-            
+
     app.annotations.breadcrumbs:
         class: AppBundle\Annotation\Parser\Breadcrumb
         arguments: [@annotation_reader]
-        
-    app.utils:
-        class: AppBundle\Service\Utils
-        
+
     app.concern.season:
         class: AppBundle\Concern\SeasonConcern
         arguments: ["%app%"]
-        
+
     app.concern.website:
         class: AppBundle\Concern\WebsiteConcern
         arguments: ["%app%"]
-    
+
     repository:
         abstract:        true
         factory_service: doctrine.orm.entity_manager
@@ -60,97 +57,100 @@ services:
         calls:
             - [setSeason,  [@app.concern.season]]
             - [setWebsite, [@app.concern.website]]
-        
+
     repository.accommodation:
         class:     AppBundle\Entity\Accommodation\AccommodationRepository
         arguments: [AppBundle\Entity\Accommodation\Accommodation]
         parent:    repository
-        
+
     repository.highlight:
         class:     AppBundle\Entity\Highlight\HighlightRepository
         arguments: [AppBundle\Entity\Highlight\Highlight]
         parent:    repository
-        
+
     repository.type:
         class:     AppBundle\Entity\Type\TypeRepository
         arguments: [AppBundle\Entity\Type\Type]
         parent:    repository
-        
+
     repository.place:
         class:     AppBundle\Entity\Place\PlaceRepository
         arguments: [AppBundle\Entity\Place\Place]
         parent:    repository
-        
+
     repository.region:
         class:     AppBundle\Entity\Region\RegionRepository
         arguments: [AppBundle\Entity\Region\Region]
         parent:    repository
-        
+
     repository.country:
         class:     AppBundle\Entity\Country\CountryRepository
         arguments: [AppBundle\Entity\Country\Country]
         parent:    repository
-        
+
     repository.booking:
         class:     AppBundle\Entity\Booking\BookingRepository
         arguments: [AppBundle\Entity\Booking\Booking]
         parent:    repository
-        
+
     repository.booking.survey:
         class:     AppBundle\Entity\Boooking\Survey\SurveyRepository
         arguments: [AppBundle\Entity\Booking\Survey\Survey]
         parent:    repository
-        
+
     repository.homepageblock:
         class:     AppBundle\Entity\HomepageBlockRepository
         arguments: [AppBundle\Entity\HomepageBlock\HomepageBlock]
         parent:    repository
-        
+
     service.javascript:
         class:      AppBundle\Service\Javascript\JavascriptService
         arguments:  [[]]
-        
+
+    service.utils:
+        class: AppBundle\Service\Utils
+
     service.api.accommodation:
         class:     AppBundle\Service\Api\Accommodation\AccommodationService
         arguments: ["@repository.accommodation"]
-            
+
     service.api.highlight:
         class:     AppBundle\Service\Api\Highlight\HighlightService
         arguments: ["@repository.highlight"]
-            
+
     service.api.type:
         class:     AppBundle\Service\Api\Type\TypeService
         arguments: ["@repository.type"]
-            
+
     service.api.place:
         class:     AppBundle\Service\Api\Place\PlaceService
         arguments: ["@repository.place"]
-            
+
     service.api.region:
         class:     AppBundle\Service\Api\Region\RegionService
         arguments: ["@repository.region"]
-            
+
     service.api.country:
         class:     AppBundle\Service\Api\Country\CountryService
         arguments: ["@repository.country"]
-        
+
     service.api.booking:
         class:     AppBundle\Service\Api\Booking\BookingService
         arguments: ["@repository.booking"]
-            
+
     service.api.booking.survey:
         class:     AppBundle\Service\Api\Booking\Survey\SurveyService
         arguments: ["@repository.booking.survey"]
-            
+
     service.api.homepageblock:
         class:     AppBundle\Service\Api\HomepageBlock\HomepageBlockService
         arguments: ["@repository.homepageblock"]
-        
+
     twig.extension.text:
         class: Twig_Extensions_Extension_Text
         tags:
             - { name: twig.extension }
-            
+
     twig.extension.intl:
         class: Twig_Extensions_Extension_Intl
         tags:
