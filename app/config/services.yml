@@ -108,7 +108,7 @@ services:
         arguments:  [[]]
 
     service.utils:
-        class: AppBundle\Service\Utils
+        class: AppBundle\Service\UtilsService
 
     service.api.accommodation:
         class:     AppBundle\Service\Api\Accommodation\AccommodationService

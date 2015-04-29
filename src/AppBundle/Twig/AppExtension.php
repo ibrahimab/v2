@@ -16,22 +16,22 @@ class AppExtension extends \Twig_Extension
      * @var ContainerInterface
      */
     private $container;
-    
+
     /**
      * @var string
      */
     private $locale;
-    
+
     /**
      * @var UrlGeneratorInterface
      */
     private $generator;
-    
+
     /**
      * @var string
      */
     private $oldImageRoot;
-    
+
     /**
      * @param ContainerInterface $container
      */
@@ -40,7 +40,7 @@ class AppExtension extends \Twig_Extension
         $this->container = $container;
         $this->generator = $generator;
     }
-    
+
     /**
      * Registering functions
      *
@@ -62,10 +62,10 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('region_skirun_map_image', [$this, 'getRegionSkiRunMapImage']),
         ];
     }
-    
+
     /**
      * Registering filters
-     * 
+     *
      * @return array
      */
     public function getFilters()
@@ -75,7 +75,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFilter('sortprop', [$this, 'sortByProperty']),
         ];
     }
-    
+
     /**
      * Returns old image root directory
      *
@@ -86,10 +86,10 @@ class AppExtension extends \Twig_Extension
         if (null === $this->oldImageRoot) {
             $this->oldImageRoot = dirname($this->container->get('kernel')->getRootDir()) . '/web/chalet/pic';
         }
-        
+
         return $this->oldImageRoot;
     }
-    
+
     /**
      * Returns old image url prefix
      */
@@ -97,7 +97,7 @@ class AppExtension extends \Twig_Extension
     {
         return '/chalet/pic/cms/';
     }
-    
+
     /**
      * Getting Image url from a Type Entity
      *
@@ -113,17 +113,17 @@ class AppExtension extends \Twig_Extension
         $accommodationFile = $this->getOldImageRoot() . '/cms/hoofdfoto_accommodatie/' . $accommodationId . '.jpg';
 
         if (file_exists($typeFile)) {
-            
+
             $filename = 'hoofdfoto_type/' . $typeId. '.jpg';
-            
+
         } elseif (file_exists($accommodationFile)) {
-            
+
             $filename = 'hoofdfoto_accommodatie/' . $accommodationId . '.jpg';
         }
-        
+
         return $this->getOldImageUrlPrefix() . $filename;
     }
-    
+
     /**
      * Getting all the type images from its directory
      *
@@ -135,45 +135,45 @@ class AppExtension extends \Twig_Extension
         $finder     = new Finder();
         $foundFiles = $finder->files()
                          ->in([
-                             $dir . 'types', 
-                             $dir . 'types_specifiek', 
-                             $dir . 'types_specifiek_tn', 
-                             $dir . 'hoofdfoto_type', 
-                             $dir . 'types_breed', 
+                             $dir . 'types',
+                             $dir . 'types_specifiek',
+                             $dir . 'types_specifiek_tn',
+                             $dir . 'hoofdfoto_type',
+                             $dir . 'types_breed',
                              $dir . 'hoofdfoto_accommodatie'
                          ])
                          ->depth('== 0')
                          ->name('/^' . $type->getId() . '(-[0-9]+)?\.jpg/i');
-        
+
         $files = ['rest' => [], 'above' => [], 'below' => []];
-        
+
         $i = 1;
         foreach ($foundFiles as $file) {
-            
+
             $parent         = basename($file->getPath());
             $filename       = $this->getOldImageUrlPrefix() . $parent . '/' . $file->getFilename();
-            
+
             if ($parent === 'types' && $i <= $above_limit) {
                 $files['above'][] = $filename;
             }
-            
+
             if ($i <= $below_limit) {
-                
+
                 $files['below'][] = $filename;
-                
+
             } else {
                 $files['rest'][] = $filename;
             }
-            
+
             $i += 1;
         }
-        
+
         return $files;
     }
 
     /**
      * Getting Region ski runs map image
-     * 
+     *
      * @param RegionServiceEntityInterface $region
      * @return string
      */
@@ -186,13 +186,13 @@ class AppExtension extends \Twig_Extension
                            ->getIterator();
         $iterator->next();
         $file = $iterator->current();
-        
+
         return $this->getOldImageUrlPrefix() . 'skigebieden/' . ($file === null ? '0.jpg' : $file->getFilename());
     }
 
     /**
      * Getting Region ski runs map image
-     * 
+     *
      * @param RegionServiceEntityInterface $region
      * @return string
      */
@@ -204,13 +204,13 @@ class AppExtension extends \Twig_Extension
         if (file_exists($file)) {
             $filename = 'skigebieden_pistekaarten/' . $region->getId(). '.jpg';
         }
-        
+
         return $this->getOldImageUrlPrefix() . $filename;
     }
 
     /**
      * Getting Place image
-     * 
+     *
      * @param PlaceServiceEntityInterface $place
      * @return string
      */
@@ -223,13 +223,13 @@ class AppExtension extends \Twig_Extension
                            ->getIterator();
         $iterator->next();
         $file = $iterator->current();
-        
+
         return $this->getOldImageUrlPrefix() . 'plaatsen/' . ($file === null ? '0.jpg' : $file->getFilename());
     }
-    
+
     /**
      * Getting Homepage block image
-     * 
+     *
      * @param HomepageBlockServiceEntityInterface $homepageBlock
      * @return string|null
      */
@@ -242,10 +242,10 @@ class AppExtension extends \Twig_Extension
         if (file_exists($file)) {
             $filename = 'homepageblokken/' . $homepageBlockId . '.jpg';
         }
-        
+
         return $this->getOldImageUrlPrefix() . $filename;
     }
-    
+
     /**
      * Wrapper around path function of twig to automatically add _<locale> to the route name
      *
@@ -258,10 +258,10 @@ class AppExtension extends \Twig_Extension
     {
         $locale = $this->container->get('request')->getLocale();
         $exists = $this->generator->getRouteCollection()->get($name . '_' . $locale) !== null;
-        
+
         return $this->generator->generate(($name . ($exists ? ('_' . $locale) : '')), $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
     }
-    
+
     /**
      * Getting absolute version of path (locale aware)
      *
@@ -274,10 +274,10 @@ class AppExtension extends \Twig_Extension
     {
         $locale = $this->container->get('request')->getLocale();
         $exists = $this->generator->getRouteCollection()->get($name . '_' . $locale) !== null;
-        
+
         return $this->generator->generate(($name . ($exists ? ('_' . $locale) : '')), $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
     }
-    
+
     /**
      * Determines at compile time whether the generated URL will be safe and thus
      * saving the unneeded automatic escaping for performance reasons.
@@ -315,7 +315,7 @@ class AppExtension extends \Twig_Extension
 
         return array();
     }
-    
+
     /**
      * Generating breadcrumbs
      *
@@ -332,17 +332,17 @@ class AppExtension extends \Twig_Extension
         $placeholders = array_map(function($placeholder) { return '{' . $placeholder .'}'; }, array_keys($placeholders));
 
         foreach ($annotations as $annotation) {
-            
+
             $pathParams = [];
             foreach ($params as $key => $value) {
-                
+
                 if (in_array($key, $annotation->getPathParams())) {
                     $pathParams[$key] = $value;
                 }
             }
-            
+
             $breadcrumbs[] = [
-                
+
                'title'     => str_replace($placeholders, $replacements, $annotation->getTitle()),
                'path'      => $annotation->getPath(),
                'params'    => $pathParams,
@@ -353,7 +353,7 @@ class AppExtension extends \Twig_Extension
 
         return $twig->render('partials/breadcrumbs.html.twig', ['breadcrumbs' => $breadcrumbs]);
     }
-    
+
     /**
      * Getting locale
      *
@@ -364,10 +364,10 @@ class AppExtension extends \Twig_Extension
         if (null === $this->locale) {
             $this->locale = $this->container->get('request')->getLocale();
         }
-        
+
         return $this->locale;
     }
-    
+
     /**
      * Return Javascript Object created by controller/services
      *
@@ -377,7 +377,7 @@ class AppExtension extends \Twig_Extension
     {
         return $this->container->get('service.javascript')->toArray();
     }
-    
+
     /**
      * Helper method for formatting bbcode
      *
@@ -386,16 +386,16 @@ class AppExtension extends \Twig_Extension
      */
     public function bbcode($text)
     {
-        return $this->container->get('app.utils')->bbcode($text);
+        return $this->container->get('service.utils')->bbcode($text);
     }
-    
+
     public function sortByProperty($objects, $property)
     {
         return usort($objects, function($a, $b) use ($property) {
             return strcmp($a->{'get' . $property}(), $b->{'get' . $property}());
         });
     }
-    
+
     /**
      * @return string
      */
