@@ -6,11 +6,11 @@
 {% set images                 = type_images(type) %}
 {% set surveyCount            = surveyData.surveys|length %}
 {% set surveyAverage          = surveyData.average|number_format(1, ',', '') %}
-{% 
+{%
     set localeData = {
 
         name: {
-            
+
             country:       country.getLocaleName(locale),
             region:        region.getLocaleName(locale),
             place:         place.getLocaleName(locale),
@@ -18,7 +18,7 @@
             type:          type.getLocaleName(locale)
         },
         seo:  {
-            
+
             country: country.getLocaleName(locale),
             region:  region.getLocaleSeoName(locale),
             place:   place.getLocaleSeoName(locale)
@@ -27,29 +27,29 @@
 %}
 
 {% block breadcrumbs %}
-    
-    {{ 
+
+    {{
         breadcrumbs({
-            
+
             countryName:       localeData['name']['country'],
             regionName:        localeData['name']['region'],
             placeName:         localeData['name']['place'],
             accommodationName: localeData['name']['accommodation']
-            
+
         }, {
-            
+
             countrySlug: localeData['seo']['country'],
             regionSlug:  localeData['seo']['region'],
             placeSlug:   localeData['seo']['place'],
         })
     }}
-    
+
 {% endblock %}
-    
+
 {% block body %}
-    
+
     {{ parent() }}
-    
+
     <section id="accom" class="discount">
         <div class="row">
             <div id="accom-left" class="small-12 medium-8 large-9 columns">
@@ -69,20 +69,20 @@
                             </div>
                             <div class="accom-img-big-1 row hide-for-small">
                                 {% for image in images['above'] %}
-                                
+
                                     {% if loop.index == 1 %}
-                                        
+
                                         <div class="large-8 medium-8 columns">
                                             <img src="{{ image }}" alt="" />
                                         </div>
                                         <div class="large-4 medium-4 column">
-                                        
+
                                     {% else %}
-                                    
+
                                         <img src="{{ image }}" alt="" />
-                                    
+
                                     {% endif %}
-                                    
+
                                 {% endfor %}
                                 {% if images['above']|length > 0 %}
                                         </div>
@@ -91,7 +91,7 @@
                             <div class="circle"><span>Aan-</span><span>bieding</span></div>
                             <a href="#images" class="button goto blank small radius" title="Bekijk alle foto's"><i class="fi-photo"></i>Bekijk alle foto's</a><!--class goto-->
                             <a href="detail-variant.html" >[Bekijk variant]</a>
-                            <div id="details-for-mobile" class="show-for-small-99">                                        
+                            <div id="details-for-mobile" class="show-for-small-99">
                             </div>
                         </div>
                         <h2>{{ type.getLocaleShortDescription(locale) ? type.getLocaleShortDescription(locale) : accommodation.getLocaleShortDescription(locale) }}</h2>
@@ -101,18 +101,18 @@
                             {% for feature in featuresList %}
                             <li>{{ feature|trans }}</li>
                             {% endfor %}
-                            
+
                         </ul>
                         <p>{{ (type.getLocaleDescription(locale) ? type.getLocaleDescription(locale) : accommodation.getLocaleDescription(locale))|nl2br }}</p>
                     </div>
-                
+
                     <div id="mapping" class="mapping">
                         <h3>{{ 'layout'|trans|capitalize }}</h3>
                         <div class="text">
                             <p>{{ (type.getLocaleLayout(locale) ? type.getLocaleLayout(locale) : accommodation.getLocaleLayout(locale))|nl2br }}</p>
                         </div>
                     </div>
-                
+
                     <div id="types">
                         <h3>Prijs &amp; beschikbaarheid</h3>
                         <div class="row">
@@ -277,7 +277,7 @@
                                 <td><strong>325</strong></td>
                                 <td><strong>325</strong></td>
                                 <td><strong>325</strong></td>
-                            </tr>                                
+                            </tr>
                         </table>
                         <div class="row">
                             <div class="small-12 medium-12 large-12 columns">
@@ -322,7 +322,7 @@
                             </div>
                         </div>
                     </div>
-                
+
                     <div id="extras" class="extras">
                         <div class="small-12 medium-8 large-9 columns">
                             <h3>Extra opties winter 2014/2015</h3>
@@ -395,7 +395,7 @@
                         </div>
                         <div class="readmore"><a href="" class="button blank small radius" title="Toon alle extra opties"><i class="sprite sprite-icon-close-all"></i>Toon alle extra opties</a><a href="" class="button small radius right" title="Prijs berekenen">Prijs berekenen</a></div>
                     </div>
-                
+
                     <div id="types-other" class="table-wrapper">
                         <h3>Overige type accommodaties</h3>
                         <table>
@@ -427,9 +427,9 @@
                             </tbody>
                         </table>
                     </div>
-                
+
                     {% include 'partials/surveys.html.twig' with {'surveyData': surveyData, 'surveyCount': surveyCount, 'surveyAverage': surveyAverage, 'minimalSurveyCount': minimalSurveyCount} only %}
-                
+
                     <div id="images" class="images">
                         <h3>Foto's</h3>
                         <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-2">
@@ -446,10 +446,10 @@
                         </div>
                         <div class="readmore"><a href="" class="button blank small radius" title="Toon meer foto's"><i class="sprite sprite-icon-close-all"></i>Toon meer foto's</a></div>
                     </div>
-                
+
                     <div id="map" class="map">
                         <h3>Ligging</h3>
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d10872.578233269292!2d13.616262280751943!3d47.057014559511806!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4770c38ff36f5fa7%3A0x4e4d1da98316d57a!2sHotel+Katschberghof!5e0!3m2!1snl!2snl!4v1424201744170" width="888" height="400" frameborder="0" style="border:0"></iframe>
+                        <div data-role="google-maps" class="google-maps"></div>
                         <div class="readmore"><a href="" class="button blank small radius" title="Bekijk al onze accommodaties in dit gebied"><i class="sprite sprite-icon-close-all"></i>Bekijk al onze accommodaties in dit gebied</a></div>
                     </div>
                 </div>

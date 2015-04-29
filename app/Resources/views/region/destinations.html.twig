@@ -19,11 +19,11 @@
 {% endblock %}
 
 {% block body %}
-    
+
     {{ parent() }}
 
     <h1>{{ 'destinations'|trans }}</h1>
-    
+
     <section class="landing bottom_spacer" style="position:inherit;">
         <div class="row">
             <div class="large-8 columns">
@@ -42,8 +42,9 @@
             </div>
         </div>
         <div class="hide" data-role="pin-html" data-pin-id="IT-230">
-            <div data-role="pin-content" class="pin_content">&nbsp;</div><div data-role="pin-tooltip" class="pin_tip jqvmap-label"></div>
-        </div>
+            <div data-role="pin-content" class="pin_content">&nbsp;</div>
+		</div>
+		<div data-role="pin-tooltip" class="pin_tip jqvmap-label"></div>
     </div>
-    
+
 {% endblock %}
