@@ -23,7 +23,7 @@ class RegionRepository extends BaseRepository implements RegionServiceRepository
     {
         return $this->findByLocaleField('name', $name, $locale);
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -31,7 +31,7 @@ class RegionRepository extends BaseRepository implements RegionServiceRepository
     {
         return $this->findByLocaleField('seoName', $seoName, $locale);
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -40,8 +40,8 @@ class RegionRepository extends BaseRepository implements RegionServiceRepository
         $field = $this->getLocaleField($field, $locale);
         $qb    = $this->getEntityManager()->createQueryBuilder();
         $expr  = $qb->expr();
-        
-        $qb->select('r, partial c.{id, name, englishName, germanName, startCode}, partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, altitude, distanceFromUtrecht}')
+
+        $qb->select('r, partial c.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, startCode}, partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, altitude, distanceFromUtrecht}')
            ->from('AppBundle\Entity\Place\Place', 'p')
            ->leftJoin('p.region', 'r')
            ->leftJoin('p.country', 'c')
@@ -50,14 +50,14 @@ class RegionRepository extends BaseRepository implements RegionServiceRepository
            ->andWhere($expr->eq('r.season', ':season'))
            ->groupBy('p.id')
            ->setParameters([
-               
+
                'fieldName' => $value,
                'season'    => $this->getSeason(),
            ]);
 
         return $qb->getQuery()->getResult();
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -71,7 +71,7 @@ class RegionRepository extends BaseRepository implements RegionServiceRepository
            ->where($expr->eq('r.showOnHomepage', ':showOnHomepage'))
            ->andWhere($expr->like('r.websites', ':website'))
            ->setParameters([
-               
+
                'showOnHomepage' => true,
                'website'        => '%' . $this->getWebsite(). '%'
            ])

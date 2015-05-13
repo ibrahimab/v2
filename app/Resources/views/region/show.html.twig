@@ -1,20 +1,20 @@
 {% extends 'layouts/default.html.twig' %}
 
 {% block breadcrumbs %}
-    {{ 
+    {{
         breadcrumbs({
-            countryName: country.getLocaleName(get_locale()), 
+            countryName: country.getLocaleName(get_locale()),
             regionName:  region.getLocaleName(get_locale())
         }, {
-            countrySlug: country.getLocaleName(get_locale())
+            countrySlug: country.getLocaleSeoName(get_locale())
         })
     }}
 {% endblock %}
 
 {% block body %}
-    
+
     {{ parent() }}
-    
+
     <!-- content -->
     <section class="landing region-page">
         <div class="row" id="area-specs"><!-- id="area-specs" -->
@@ -25,18 +25,18 @@
                 <h2>{{ region.getLocaleShortDescription(get_locale())|nl2br }}</h2>
                 <p>{{ region.getLocaleDescription(get_locale())|bbcode|nl2br }}</p>
                 <h3><a href="{{ locale_path('show_region', {regionSlug: region.getLocaleSeoName(get_locale())}) }}" class="button small radius" title="Bekijk het gehele aanbod">Bekijk al onze chalets en appartementen in {{ region.getLocaleName(get_locale()) }}</a></h3>
-                
+
             </div>
             <div class="large-4 medium-4 columns">
                 <h5>{{ 'features'|trans }} {{ region.getLocaleName(get_locale()) }}</h5>
-                {% 
-                    include 'partials/features.html.twig' with { 
-                    
-                        typesCount: region.getTypesCount(), 
-                        averageRatings: region.getAverageRatings(), 
+                {%
+                    include 'partials/features.html.twig' with {
+
+                        typesCount: region.getTypesCount(),
+                        averageRatings: region.getAverageRatings(),
                         ratingsCount: region.getRatingsCount()
-                        
-                    } only 
+
+                    } only
                 %}
                 <h6>{{ 'additional-info'|trans }}</h6>
                 <ul class="landing-details landing-details-short" data-role="long-list">
@@ -112,10 +112,10 @@
                 </ul>
                 <h6>{{ 'ski-runs-map'|trans }}</h6>
                 <img src="{{ region_skirun_map_image(region) }}" />
-            </div> 
+            </div>
         </div>
     </section>
-    
+
     <section id="area-selected" class="region-page">
         <h4>{{ 'places'|trans}} {{ region.getLocaleName(get_locale()) }}</h4>
         <div class="row" data-equalizer>
@@ -142,5 +142,5 @@
     </section>
 
     {% include 'partials/countries.html.twig' with { active_country: country.getStartCode() } only %}
-    
+
 {% endblock %}

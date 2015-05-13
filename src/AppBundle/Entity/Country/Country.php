@@ -22,7 +22,7 @@ class Country implements CountryServiceEntityInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
      * @var PlaceServiceEntityInterface[]
      *
@@ -36,20 +36,41 @@ class Country implements CountryServiceEntityInterface
      * @ORM\Column(name="naam", type="string", length=50)
      */
     private $name;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="naam_en", type="string", length=50)
      */
     private $englishName;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="naam_de", type="string", length=50)
      */
     private $germanName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="seonaam", type="string", length=100)
+     */
+    private $seoName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="seonaam_en", type="string", length=100)
+     */
+    private $englishSeoName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="seonaam_de", type="string", length=100)
+     */
+    private $germanSeoName;
 
     /**
      * @var string
@@ -71,14 +92,14 @@ class Country implements CountryServiceEntityInterface
      * @ORM\Column(name="titel", type="string", length=70)
      */
     private $title;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="titel_en", type="string", length=70)
      */
     private $englishTitle;
-    
+
     /**
      * @var string
      *
@@ -92,14 +113,14 @@ class Country implements CountryServiceEntityInterface
      * @ORM\Column(name="korteomschrijving", type="string", length=70)
      */
     private $shortDescription;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="korteomschrijving_en", type="string", length=70)
      */
     private $englishShortDescription;
-    
+
     /**
      * @var string
      *
@@ -113,14 +134,14 @@ class Country implements CountryServiceEntityInterface
      * @ORM\Column(name="omschrijving", type="text")
      */
     private $description;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="omschrijving_en", type="text")
      */
     private $englishDescription;
-    
+
     /**
      * @var string
      *
@@ -134,14 +155,14 @@ class Country implements CountryServiceEntityInterface
      * @ORM\Column(name="descriptiontag", type="string", length=159)
      */
     private $descriptionTag;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="descriptiontag_en", type="string", length=159)
      */
     private $englishDescriptionTag;
-    
+
     /**
      * @var string
      *
@@ -155,14 +176,14 @@ class Country implements CountryServiceEntityInterface
      * @ORM\Column(name="omschrijving_openklap", type="text")
      */
     private $additionalDescription;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="omschrijving_openklap_en", type="text")
      */
     private $englishAdditionalDescription;
-    
+
     /**
      * @var string
      *
@@ -176,10 +197,10 @@ class Country implements CountryServiceEntityInterface
      * @ORM\Column(name="kleurcode", type="smallint")
      */
     private $colourCode;
-    
+
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(name="begincode", type="string", length=2)
      */
     private $startCode;
@@ -190,24 +211,24 @@ class Country implements CountryServiceEntityInterface
      * @ORM\Column(name="accommodatiecodes", type="simple_array")
      */
     private $accommodationCodes;
-    
+
     /**
      * Virtual field that holds the types count
      *
      * @var integer
      */
     private $typesCount;
-    
+
     /**
      * Virtual field that holds the average ratings for a country
-     * 
+     *
      * @var integer
      */
     private $averageRatings = 0;
-    
+
     /**
      * Virtual field that holds the ratings count for a country
-     * 
+     *
      * @var integer
      */
     private $ratingsCount = 0;
@@ -230,7 +251,7 @@ class Country implements CountryServiceEntityInterface
     public function __construct($id = null)
     {
         $this->places = new ArrayCollection();
-        
+
         if (null !== $id) {
             $this->id = $id;
         }
@@ -243,17 +264,17 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->id;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setPlaces($places)
     {
         $this->places = $places;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -279,17 +300,17 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->name;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setEnglishName($englishName)
     {
         $this->englishName = $englishName;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -297,17 +318,17 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->englishName;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setGermanName($germanName)
     {
         $this->germanName = $germanName;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -333,7 +354,7 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->alternativeName;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -341,14 +362,14 @@ class Country implements CountryServiceEntityInterface
     {
         // normalize locales
         $localeNames = array_change_key_case($localeNames);
-        
+
         $this->setName(isset($localeNames['nl']) ? $localeNames['nl'] : '');
         $this->setEnglishName(isset($localeNames['en']) ? $localeNames['en'] : '');
         $this->setGermanName(isset($localeNames['de']) ? $localeNames['de'] : '');
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -356,22 +377,116 @@ class Country implements CountryServiceEntityInterface
     {
         $locale = strtolower($locale);
         switch ($locale) {
-            
+
             case 'en':
                 $localeName = $this->getEnglishName();
                 break;
-                
+
             case 'de':
                 $localeName = $this->getGermanName();
                 break;
-            
+
             case 'nl':
             default:
                 $localeName = $this->getName();
                 break;
         }
-        
+
         return $localeName;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setSeoName($seoName)
+    {
+        $this->seoName = $seoName;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getSeoName()
+    {
+        return $this->seoName;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setEnglishSeoName($englishSeoName)
+    {
+        $this->englishSeoName = $englishSeoName;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getEnglishSeoName()
+    {
+        return $this->englishSeoName;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setGermanSeoName($germanSeoName)
+    {
+        $this->germanSeoName = $germanSeoName;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getGermanSeoName()
+    {
+        return $this->germanSeoName;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setLocaleSeoNames($localeSeoNames)
+    {
+        // normalize locales
+        $localeSeoNames = array_change_key_case($localeSeoNames);
+
+        $this->setSeoName(isset($localeSeoNames['nl']) ? $localeSeoNames['nl'] : '');
+        $this->setEnglishSeoName(isset($localeSeoNames['en']) ? $localeSeoNames['en'] : '');
+        $this->setGermanSeoName(isset($localeSeoNames['de']) ? $localeSeoNames['de'] : '');
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getLocaleSeoName($locale)
+    {
+        $locale = strtolower($locale);
+        switch ($locale) {
+
+            case 'en':
+                $localeSeoName = $this->getEnglishSeoName();
+                break;
+
+            case 'de':
+                $localeSeoName = $this->getGermanSeoName();
+                break;
+
+            case 'nl':
+            default:
+                $localeSeoName = $this->getSeoName();
+                break;
+        }
+
+        return $localeSeoName;
     }
 
     /**
@@ -409,17 +524,17 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->title;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setEnglishTitle($englishTitle)
     {
         $this->englishTitle = $englishTitle;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -427,22 +542,22 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->englishTitle;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setGermanTitle($germanTitle)
     {
         $this->germanTitle = $germanTitle;
-        
+
         return $this;
     }
-    
+
     public function getGermanTitle()
     {
         return $this->germanTitle;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -450,14 +565,14 @@ class Country implements CountryServiceEntityInterface
     {
         // normalize locales
         $localeTitles = array_change_key_case($localeTitles);
-        
+
         $this->setTitle(isset($localeTitles['nl']) ? $localeTitles['nl'] : '');
         $this->setEnglishTitle(isset($localeTitles['en']) ? $localeTitles['en'] : '');
         $this->setGermanTitle(isset($localeTitles['de']) ? $localeTitles['de'] : '');
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -465,21 +580,21 @@ class Country implements CountryServiceEntityInterface
     {
         $locale = strtolower($locale);
         switch ($locale) {
-            
+
             case 'en':
                 $localeTitle = $this->getEnglishTitle();
                 break;
-                
+
             case 'de':
                 $localeTitle = $this->getGermanTitle();
                 break;
-            
+
             case 'nl':
             default:
                 $localeTitle = $this->getTitle();
                 break;
         }
-        
+
         return $localeTitle;
     }
 
@@ -500,17 +615,17 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->shortDescription;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setEnglishShortDescription($englishShortDescription)
     {
         $this->englishShortDescription = $englishShortDescription;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -518,17 +633,17 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->englishShortDescription;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setGermanShortDescription($germanShortDescription)
     {
         $this->germanShortDescription = $germanShortDescription;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -536,7 +651,7 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->germanShortDescription;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -544,14 +659,14 @@ class Country implements CountryServiceEntityInterface
     {
         // normalize locales
         $localeShortDescriptions = array_change_key_case($localeShortDescriptions);
-        
+
         $this->setShortDescription(isset($localeShortDescriptions['nl']) ? $localeShortDescriptions['nl'] : '');
         $this->setEnglishShortDescription(isset($localeShortDescriptions['en']) ? $localeShortDescriptions['en'] : '');
         $this->setGermanShortDescription(isset($localeShortDescriptions['de']) ? $localeShortDescriptions['de'] : '');
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -559,21 +674,21 @@ class Country implements CountryServiceEntityInterface
     {
         $locale = strtolower($locale);
         switch ($locale) {
-            
+
             case 'en':
                 $localeShortDescription = $this->getEnglishShortDescription();
                 break;
-                
+
             case 'de':
                 $localeShortDescription = $this->getGermanShortDescription();
                 break;
-            
+
             case 'nl':
             default:
                 $localeShortDescription = $this->getShortDescription();
                 break;
         }
-        
+
         return $localeShortDescription;
     }
 
@@ -594,17 +709,17 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->description;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setEnglishDescription($englishDescription)
     {
         $this->englishDescription = $englishDescription;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -612,7 +727,7 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->englishDescription;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -620,7 +735,7 @@ class Country implements CountryServiceEntityInterface
     {
         $this->germanDescription = $germanDescription;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -628,7 +743,7 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->germanDescription;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -636,14 +751,14 @@ class Country implements CountryServiceEntityInterface
     {
         // normalize locales
         $localeDescriptions = array_change_key_case($localeDescriptions);
-        
+
         $this->setDescription(isset($localeDescriptions['nl']) ? $localeDescriptions['nl'] : '');
         $this->setEnglishDescription(isset($localeDescriptions['en']) ? $localeDescriptions['en'] : '');
         $this->setGermanDescription(isset($localeDescriptions['de']) ? $localeDescriptions['de'] : '');
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -651,21 +766,21 @@ class Country implements CountryServiceEntityInterface
     {
         $locale = strtolower($locale);
         switch ($locale) {
-            
+
             case 'en':
                 $localeDescription = $this->getEnglishDescription();
                 break;
-                
+
             case 'de':
                 $localeDescription = $this->getGermanDescription();
                 break;
-            
+
             case 'nl':
             default:
                 $localeDescription = $this->getDescription();
                 break;
         }
-        
+
         return $localeDescription;
     }
 
@@ -686,17 +801,17 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->descriptionTag;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setEnglishDescriptionTag($englishDescriptionTag)
     {
         $this->englishDescriptionTag = $englishDescriptionTag;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -704,7 +819,7 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->englishDescriptionTag;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -712,7 +827,7 @@ class Country implements CountryServiceEntityInterface
     {
         $this->germanDescriptionTag = $germanDescriptionTag;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -720,7 +835,7 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->germanDescriptionTag;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -728,14 +843,14 @@ class Country implements CountryServiceEntityInterface
     {
         // normalize locales
         $localeDescriptionTags = array_change_key_case($localeDescriptionTags);
-        
+
         $this->setDescriptionTag(isset($localeDescriptionTags['nl']) ? $localeDescriptionTags['nl'] : '');
         $this->setEnglishDescriptionTag(isset($localeDescriptionTags['en']) ? $localeDescriptionTags['en'] : '');
         $this->setGermanDescriptionTag(isset($localeDescriptionTags['de']) ? $localeDescriptionTags['de'] : '');
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -743,21 +858,21 @@ class Country implements CountryServiceEntityInterface
     {
         $locale = strtolower($locale);
         switch ($locale) {
-            
+
             case 'en':
                 $localeDescriptionTag = $this->getEnglishDescriptionTag();
                 break;
-                
+
             case 'de':
                 $localeDescriptionTag = $this->getGermanDescriptionTag();
                 break;
-            
+
             case 'nl':
             default:
                 $localeDescriptionTag = $this->getDescriptionTag();
                 break;
         }
-        
+
         return $localeDescriptionTag;
     }
 
@@ -778,17 +893,17 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->additionalDescription;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setEnglishAdditionalDescription($englishAdditionalDescription)
     {
         $this->englishAdditionalDescription = $englishAdditionalDescription;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -796,7 +911,7 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->englishAdditionalDescription;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -804,7 +919,7 @@ class Country implements CountryServiceEntityInterface
     {
         $this->germanAdditionalDescription = $germanAdditionalDescription;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -812,7 +927,7 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->germanAdditionalDescription;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -820,14 +935,14 @@ class Country implements CountryServiceEntityInterface
     {
         // normalize locales
         $localeAdditionalDescriptions = array_change_key_case($localeAdditionalDescriptions);
-        
+
         $this->setAdditionalDescription(isset($localeAdditionalDescriptions['nl']) ? $localeAdditionalDescriptions['nl'] : '');
         $this->setEnglishAdditionalDescription(isset($localeAdditionalDescriptions['en']) ? $localeAdditionalDescriptions['en'] : '');
         $this->setGermanAdditionalDescription(isset($localeAdditionalDescriptions['de']) ? $localeAdditionalDescriptions['de'] : '');
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -835,21 +950,21 @@ class Country implements CountryServiceEntityInterface
     {
         $locale = strtolower($locale);
         switch ($locale) {
-            
+
             case 'en':
                 $localeAdditionalDescription = $this->getEnglishAdditionalDescription();
                 break;
-                
+
             case 'de':
                 $localeAdditionalDescription = $this->getGermanAdditionalDescription();
                 break;
-            
+
             case 'nl':
             default:
                 $localeAdditionalDescription = $this->getAdditionalDescription();
                 break;
         }
-        
+
         return $localeAdditionalDescription;
     }
 
@@ -870,17 +985,17 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->colourCode;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setStartCode($startCode)
     {
         $this->startCode = $startCode;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -906,17 +1021,17 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->accommodationCodes;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setTypesCount($typesCount)
     {
         $this->typesCount = $typesCount;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -924,17 +1039,17 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->typesCount;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setAverageRatings($averageRatings)
     {
         $this->averageRatings = $averageRatings;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -942,17 +1057,17 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->averageRatings;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setRatingsCount($ratingsCount)
     {
         $this->ratingsCount = $ratingsCount;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -960,7 +1075,7 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->ratingsCount;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -972,7 +1087,7 @@ class Country implements CountryServiceEntityInterface
     }
 
     /**
-     * {@InheritDoc} 
+     * {@InheritDoc}
      */
     public function getCreatedAt()
     {

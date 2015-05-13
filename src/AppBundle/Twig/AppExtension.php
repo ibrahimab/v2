@@ -73,6 +73,7 @@ class AppExtension extends \Twig_Extension
         return [
             new \Twig_SimpleFilter('bbcode', [$this, 'bbcode'], array('pre_escape' => 'html', 'is_safe' => array('html'))),
             new \Twig_SimpleFilter('sortprop', [$this, 'sortByProperty']),
+			new \Twig_SimpleFilter('seo', [$this, 'seo']),
         ];
     }
 
@@ -395,6 +396,17 @@ class AppExtension extends \Twig_Extension
             return strcmp($a->{'get' . $property}(), $b->{'get' . $property}());
         });
     }
+
+	/**
+	 * Normalizing text
+	 *
+	 * @param string $text
+	 * @return string
+	 */
+	public function seo($text)
+	{
+		return $this->container->get('service.utils')->seo($text);
+	}
 
     /**
      * @return string
