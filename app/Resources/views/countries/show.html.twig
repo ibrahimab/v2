@@ -4,14 +4,14 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block seo %}
-    
+
     {% include 'layouts/seo-block.html.twig' with {
-        
+
         'meta_title':       title,
         'meta_description': country.getLocaleDescriptionTag(get_locale())
-        
+
     } only %}
-    
+
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -19,13 +19,13 @@
 {% endblock %}
 
 {% block body %}
-    
+
     {{ parent() }}
 
     <!-- content -->
     <section class="landing landing-page">
         <div class="row" id="area-specs"><!-- id="area-specs" -->
-            <h1>{{ country.getLocaleTitle(get_locale()) }} <i class="sprite sprite-flag-{{ country.startCode }}"></i></h1>
+            <h1><i class="sprite sprite-flag-{{ country.startCode }}"></i> {{ country.getLocaleTitle(get_locale()) }}</h1>
         </div>
         <div class="row">
             <div class="large-8 medium-8 columns">
@@ -37,21 +37,21 @@
                     <a href="{{ locale_path('show_country', {countrySlug: country.getLocaleName(get_locale())}) }}" class="button small radius" title="Bekijk het gehele aanbod">Bekijk al onze chalets en appartementen in {{ country.getLocaleName(get_locale()) }}</a>
                 </h2>
             </div>
-            <div class="large-4 medium-4 columns"> 
+            <div class="large-4 medium-4 columns">
                 <h4>{{ 'features'|trans }} {{ country.getLocaleName(get_locale()) }}</h4>
-                {% 
-                    include 'partials/features.html.twig' with { 
-                    
-                        typesCount: country.getTypesCount(), 
-                        averageRatings: country.getAverageRatings(), 
-                        ratingsCount: country.getRatingsCount() 
-                        
-                    } only 
+                {%
+                    include 'partials/features.html.twig' with {
+
+                        typesCount: country.getTypesCount(),
+                        averageRatings: country.getAverageRatings(),
+                        ratingsCount: country.getRatingsCount()
+
+                    } only
                 %}
             </div>
         </div>
     </section>
-    
+
     <section id="area-selected" class="country-page">
         <h3>{{ 'ski-areas'|trans}} {{ country.name|trans }} <i class="sprite sprite-flag-{{ country.startcode }}"></i></h3>
         <div class="row" id="sort-items">
@@ -101,5 +101,5 @@
     </section>
 
     {% include 'partials/countries.html.twig' with { active_country: country.getStartCode() } only %}
-    
+
 {% endblock %}
