@@ -13,6 +13,7 @@
 !web/bundles/app/*
 .DS_Store
 .composer
+.htaccess
 
 # Node modules, for less compile
 /node_modules/

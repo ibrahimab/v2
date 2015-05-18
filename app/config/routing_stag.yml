@@ -1,2 +1,4 @@
 imports:
     - { resource: routing_dev.yml }
+
+_assetic: null
