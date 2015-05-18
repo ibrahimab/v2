@@ -1,4 +1,4 @@
-imports:
-    - { resource: routing_dev.yml }
-
 _assetic: null
+
+_main:
+    resource: routing_dev.yml
