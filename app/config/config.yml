@@ -72,6 +72,17 @@ doctrine:
             numeric_functions:
                 Rand: AppBundle\Doctrine\DQL\RandFunction
 
+doctrine_mongodb:
+    connections:
+        default:
+            server: %mongodb_server%
+            options:
+                connect: true
+    default_database: local
+    document_managers:
+        default:
+            auto_mapping: true
+
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"
@@ -85,7 +96,7 @@ liip_imagine:
     resolvers:
         default:
             web_path: ~
-    
+
     filter_sets:
         cache: ~
         overview_image:
@@ -96,7 +107,7 @@ liip_imagine:
             animated: false
             filters:
                 thumbnail: { size: [600, null] }
-                
+
 jms_translation:
     configs:
         app:
