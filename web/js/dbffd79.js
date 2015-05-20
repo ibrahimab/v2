@@ -7133,6 +7133,28 @@ jQuery(function() {
         /**
          * This listener allows for collapsable lists
          */
+        var slideDown = function(element) {
+
+            element.slideDown(50, function() {
+
+                var next = jq(this).next('[data-role="long-list-item"]');
+                if (next) {
+                    slideDown(next);
+                }
+            });
+        };
+
+        var slideUp = function(element) {
+
+            element.slideUp(50, function() {
+
+                var prev = jq(this).prev('[data-role="long-list-item"]');
+                if (prev) {
+                    slideUp(prev);
+                }
+            });
+        };
+
         body.on('click', '[data-role="toggle-long-list"]', function(event) {
 
             event.preventDefault();
@@ -7144,13 +7166,14 @@ jQuery(function() {
             if (true === element.data('opened')) {
 
                 element.data('opened', false);
-                list.find('li:nth-child(n+4)').not(element).slideUp();
+
+                slideUp(list.find('li[data-role="long-list-item"]:last'));
                 icon.removeClass(icon.data('opened-icon')).addClass(icon.data('closed-icon'));
 
             } else {
 
                 element.data('opened', true);
-                list.find('li:nth-child(n+4)').not(element).slideDown();
+                slideDown(list.find('li[data-role="long-list-item"]:first'));
                 icon.removeClass(icon.data('closed-icon')).addClass(icon.data('opened-icon'));
             }
         });
@@ -7201,7 +7224,6 @@ jQuery(function() {
          *
          * @TODO: refactor this so this code only gets loaded on destinations page
          */
-        console.log(Chalet.get());
         if (Chalet.get()['app']['controller'] === 'countries::destinations') {
             var italyMaps = Chalet.Maps.Italy.initialize('[data-role="italy-maps"]');
         }
