@@ -54,6 +54,8 @@
             });
         };
 
+        jq('ul[data-role="long-list"] li:nth-child(n+4):not([data-role="toggle-long-list"])').attr('data-role', 'long-list-item');
+
         body.on('click', '[data-role="toggle-long-list"]', function(event) {
 
             event.preventDefault();
@@ -65,7 +67,6 @@
             if (true === element.data('opened')) {
 
                 element.data('opened', false);
-
                 slideUp(list.find('li[data-role="long-list-item"]:last'));
                 icon.removeClass(icon.data('opened-icon')).addClass(icon.data('closed-icon'));
 
