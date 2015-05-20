@@ -74,13 +74,22 @@ $('#search-filter .title').click(function() {//close ALL filters
         $('#search-filter .search-filter-default h2').removeClass('closed');        
     }else{
         $('#search-filter .title').addClass('closed');
-        $('#search-filter .search-filter-default .fields').slideUp();        
+        $('#search-filter .search-filter-default .fields').slideUp();
         $('#search-filter .search-filter-default h2').addClass('closed');  
-    }   
+    }
     return false;
 });
 $('.readmore a').click(function() {//open close div (class=readmore)
-    var getParent =  "." + $(this).parents('div:eq(1)').attr('class');
+    var el = $(this);
+    var state = el.data('state');
+
+    if (state === 'open') {
+        el.find('span').text(el.data('open-title'));
+    } else {
+        el.find('span').text(el.data('close-title'));
+    }
+    el.data('state', (el.data('state') === 'open' ? 'close' : 'open'));
+    var getParent =  "." + el.parents('div:eq(1)').attr('class');
     $(getParent+ ' .readmore a').toggleClass('open');
     $(getParent+ ' .hide').slideToggle('slow');
     return false;
@@ -88,18 +97,18 @@ $('.readmore a').click(function() {//open close div (class=readmore)
 //checkboxes and radios
 function setupLabel() {
     if ($('.label_check input').length) {
-        $('.label_check').each(function(){ 
+        $('.label_check').each(function(){
             $(this).removeClass('c_on');
         });
-        $('.label_check input:checked').each(function(){ 
+        $('.label_check input:checked').each(function(){
             $(this).parent('label').addClass('c_on');
-        });                
+        });
     };
     if ($('.label_radio input').length) {
-        $('.label_radio').each(function(){ 
+        $('.label_radio').each(function(){
             $(this).removeClass('r_on');
         });
-        $('.label_radio input:checked').each(function(){ 
+        $('.label_radio input:checked').each(function(){
             $(this).parent('label').addClass('r_on');
         });
     };
@@ -109,7 +118,7 @@ $(document).ready(function(){
     $('.label_check, .label_radio').click(function(){
         setupLabel();
     });
-    setupLabel(); 
+    setupLabel();
 });
 //go to next month - 'boek nu' table
 $( "table.responsive" ).append($('#types-nav'));
@@ -145,7 +154,7 @@ jQuery(document).ready(function() {
         } else {
             jQuery('.go-up').fadeOut(duration);
         }
-    });    
+    });
     jQuery('.go-up').click(function(e) {
         e.preventDefault();
         jQuery('html, body').animate({scrollTop: 0}, duration);
@@ -155,11 +164,11 @@ jQuery(document).ready(function() {
 
 jQuery(document).foundation();
 jQuery(function() {
-    
+
     $('input').placeholder({customClass:'my-placeholder'});
-    
+
     $('.accom-slides').slick({
-        
+
         lazyLoad: 'ondemand',
         slidesToShow: 1,
         slidesToScroll: 1
