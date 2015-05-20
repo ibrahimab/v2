@@ -101,7 +101,6 @@
                             {% for feature in featuresList %}
                             <li>{{ feature|trans }}</li>
                             {% endfor %}
-
                         </ul>
                         <p>{{ (type.getLocaleDescription(locale) ? type.getLocaleDescription(locale) : accommodation.getLocaleDescription(locale))|nl2br }}</p>
                     </div>
@@ -489,8 +488,8 @@
                     <div class="location">
                         <span class="city">Skidorp: {{ localeData['name']['place'] }}</span>
                         <span class="area"><a href="{{ locale_path('show_region', { regionSlug: localeData['seo']['region'] }) }}" title="{{ localeData['name']['region'] }}">{{ localeData['name']['region'] }}</a></span>, <span class="country"><a href="{{ locale_path('show_country', { countrySlug: localeData['seo']['country'] }) }}" title="{{ localeData['name']['country'] }}">{{ localeData['name']['country'] }}</a></span>
-                        <span class="mountain"><i class="fi-mountains"></i>ligt op <em>{{ place.getAltitude() }} meter</em> hoogte</span>
-                        <span class="distance"><i class="fi-compass"></i><em>{{ place.getDistanceFromUtrecht() }} km</em> van Utrecht</span>
+                        <span class="mountain"><i class="sprite sprite-icon-mountain"></i> ligt op <em>{{ place.getAltitude() }} meter</em> hoogte</span>
+                        <span class="distance"><i class="fi-compass fi-gray"></i><em>{{ place.getDistanceFromUtrecht() }} km</em> van Utrecht</span>
                     </div>
                     <div class="hide-for-small"><!-- class hide-for-small-->
                         <img src="{{ place_image(place) }}" alt="{{ localeData['name']['place'] }}" />
