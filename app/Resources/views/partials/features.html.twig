@@ -1,5 +1,5 @@
 <ul class="landing-details" itemscope itemtype="http://data-vocabulary.org/Review-aggregate">
     <li>{{ 'chalets-apartments'|trans|capitalize }}<span>{{ typesCount }}</span></li>
     <li itemprop="rating" itemscope itemtype="http://data-vocabulary.org/Rating">{{ 'average-rating'|trans }}<span itemprop="average">{{ averageRatings }}</span><span class="hide" itemprop="best">10</span></li>
-    <li>{{ 'ratings'|trans }}<span itemprop="votes">{{ ratingsCount }}</span></li>
+    <li>{{ 'ratings'|trans }}<span itemprop="votes">{{ ratingsCount|number_format(0, '.', '') }}</span></li>
 </ul>

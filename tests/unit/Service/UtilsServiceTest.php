@@ -40,14 +40,11 @@ class UtilsServiceTest extends \Codeception\TestCase\Test
 
 	public function testNormalizingText()
 	{
-		$normalizingText 		 = "ábçdéfghïjklmñòpqrstûvwxyz";
-		$expectingNormalizedText = "abcdefghijklmnopqrstuvwxyz";
+		$normalizingText 		 = "ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñš";
+		$expectingNormalizedText = 'AAAAAAaaaaaaOOOOOOooooooEEEEeeeeCcIIIIiiiiUUUUuuuuyNns';
 		$normalizedText			 = $this->utilsService->normalizeText($normalizingText);
-
-		dump($normalizingText);
-		dump($normalizedText);
-		exit;
-		$this->assertTrue(strlen($normalizedText) === 26);
+		dump(iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $normalizingText));
+		$this->assertTrue(strlen($normalizedText) === 54);
 		$this->assertEquals($expectingNormalizedText, $normalizedText);
 	}
 }

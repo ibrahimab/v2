@@ -16,6 +16,6 @@ class ListsServiceTest extends \Codeception\TestCase\Test
 
     protected function _after()
     {
-        $this->placeService = null;
+        $this->listService = null;
     }
 }
