@@ -50,7 +50,7 @@ services:
         class: AppBundle\Concern\WebsiteConcern
         arguments: ["%app%"]
 
-    repository:
+    repository.orm:
         abstract:        true
         factory_service: doctrine.orm.entity_manager
         factory_method:  getRepository
@@ -58,50 +58,75 @@ services:
             - [setSeason,  [@app.concern.season]]
             - [setWebsite, [@app.concern.website]]
 
+    repository.odm:
+        abstract:        true
+        factory_service: doctrine.odm.mongodb.document_manager
+        factory_method:  getRepository
+
     repository.accommodation:
         class:     AppBundle\Entity\Accommodation\AccommodationRepository
         arguments: [AppBundle\Entity\Accommodation\Accommodation]
-        parent:    repository
+        parent:    repository.orm
 
     repository.highlight:
         class:     AppBundle\Entity\Highlight\HighlightRepository
         arguments: [AppBundle\Entity\Highlight\Highlight]
-        parent:    repository
+        parent:    repository.orm
 
     repository.type:
         class:     AppBundle\Entity\Type\TypeRepository
         arguments: [AppBundle\Entity\Type\Type]
-        parent:    repository
+        parent:    repository.orm
 
     repository.place:
         class:     AppBundle\Entity\Place\PlaceRepository
         arguments: [AppBundle\Entity\Place\Place]
-        parent:    repository
+        parent:    repository.orm
 
     repository.region:
         class:     AppBundle\Entity\Region\RegionRepository
         arguments: [AppBundle\Entity\Region\Region]
-        parent:    repository
+        parent:    repository.orm
 
     repository.country:
         class:     AppBundle\Entity\Country\CountryRepository
         arguments: [AppBundle\Entity\Country\Country]
-        parent:    repository
+        parent:    repository.orm
 
     repository.booking:
         class:     AppBundle\Entity\Booking\BookingRepository
         arguments: [AppBundle\Entity\Booking\Booking]
-        parent:    repository
+        parent:    repository.orm
 
     repository.booking.survey:
         class:     AppBundle\Entity\Boooking\Survey\SurveyRepository
         arguments: [AppBundle\Entity\Booking\Survey\Survey]
-        parent:    repository
+        parent:    repository.orm
 
     repository.homepageblock:
-        class:     AppBundle\Entity\HomepageBlockRepository
+        class:     AppBundle\Entity\HomepageBlock\HomepageBlockRepository
         arguments: [AppBundle\Entity\HomepageBlock\HomepageBlock]
-        parent:    repository
+        parent:    repository.orm
+
+    repository.file.accommodation:
+        class:     AppBundle\Document\File\AccommodationRepository
+        arguments: [AppBundle\Document\File\Accommodation]
+        parent:    repository.odm
+
+    repository.file.type:
+        class:     AppBundle\Document\File\TypeRepository
+        arguments: [AppBundle\Document\File\Type]
+        parent:    repository.odm
+
+    repository.file.region:
+        class:     AppBundle\Document\File\RegionRepository
+        arguments: [AppBundle\Document\File\Region]
+        parent:    repository.odm
+
+    repository.file.place:
+        class:     AppBundle\Document\File\PlaceRepository
+        arguments: [AppBundle\Document\File\Place]
+        parent:    repository.odm
 
     service.javascript:
         class:      AppBundle\Service\Javascript\JavascriptService
@@ -145,6 +170,22 @@ services:
     service.api.homepageblock:
         class:     AppBundle\Service\Api\HomepageBlock\HomepageBlockService
         arguments: ["@repository.homepageblock"]
+
+    service.api.file.accommodation:
+        class:     AppBundle\Service\Api\File\Accommodation\AccommodationService
+        arguments: ["@repository.file.accommodation"]
+
+    service.api.file.type:
+        class:     AppBundle\Service\Api\File\Type\TypeService
+        arguments: ["@repository.file.type"]
+
+    service.api.file.region:
+        class:     AppBundle\Service\Api\File\Region\RegionService
+        arguments: ["@repository.file.region"]
+
+    service.api.file.place:
+        class:     AppBundle\Service\Api\File\Place\PlaceService
+        arguments: ["@repository.file.place"]
 
     twig.extension.text:
         class: Twig_Extensions_Extension_Text
