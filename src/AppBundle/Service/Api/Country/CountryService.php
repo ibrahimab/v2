@@ -26,6 +26,17 @@ class CountryService
     }
     
     /**
+     * Fetch active countries
+     *
+     * @param array $options
+     * @return CountryServiceEntityInterface[]
+     */
+    public function findActive()
+    {
+        return $this->countryServiceRepository->findActive();
+    }
+    
+    /**
      * Fetch all the countries
      *
      * Fetching all the countries based on the options passed in. The supported options are: 'where', 'order', 'limit', 'offset'

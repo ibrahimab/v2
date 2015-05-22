@@ -87,6 +87,13 @@ class Country implements CountryServiceEntityInterface
     private $display;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="zomertonen", type="boolean")
+     */
+    private $summerDisplay;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="titel", type="string", length=70)
@@ -505,6 +512,24 @@ class Country implements CountryServiceEntityInterface
     public function getDisplay()
     {
         return $this->display;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setSummerDisplay($summerDisplay)
+    {
+        $this->summerDisplay = $summerDisplay;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getSummerDisplay()
+    {
+        return $this->summerDisplay;
     }
 
     /**

@@ -1,7 +1,7 @@
 <?php
 namespace AppBundle\Entity\Country;
-
 use       AppBundle\Entity\BaseRepository;
+use       AppBundle\Concern\SeasonConcern;
 use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
 use       AppBundle\Service\Api\Country\CountryServiceRepositoryInterface;
 use       Doctrine\ORM\EntityRepository;
@@ -14,6 +14,18 @@ use       Doctrine\ORM\EntityRepository;
  */
 class CountryRepository extends BaseRepository implements CountryServiceRepositoryInterface
 {
+	public function findActive()
+	{
+		$qb   = $this->createQueryBuilder('c');
+		$expr = $qb->expr();
+		
+		$qb->select('partial c.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, startCode}')
+		   ->where($expr->eq('c.' . ($this->getSeason() === SeasonConcern::SEASON_WINTER ? 'd' : 'summerD') . 'isplay', ':display'))
+		   ->setParameter('display',true);
+		
+		return $qb->getQuery()->getResult();
+	}
+	
     /**
      * {@InheritDoc}
      */

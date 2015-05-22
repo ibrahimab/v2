@@ -128,6 +128,11 @@ services:
         arguments: [AppBundle\Document\File\Place]
         parent:    repository.odm
 
+    repository.file.country:
+        class:     AppBundle\Document\File\CountryRepository
+        arguments: [AppBundle\Document\File\Country]
+        parent:    repository.odm
+
     service.javascript:
         class:      AppBundle\Service\Javascript\JavascriptService
         arguments:  [[]]
@@ -186,6 +191,10 @@ services:
     service.api.file.place:
         class:     AppBundle\Service\Api\File\Place\PlaceService
         arguments: ["@repository.file.place"]
+
+    service.api.file.country:
+        class:     AppBundle\Service\Api\File\Country\CountryService
+        arguments: ["@repository.file.country"]
 
     twig.extension.text:
         class: Twig_Extensions_Extension_Text

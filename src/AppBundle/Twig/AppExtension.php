@@ -4,6 +4,7 @@ namespace AppBundle\Twig;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
+use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
 use       AppBundle\Service\Api\File\Type\TypeService as TypeFileService;
 use		  AppBundle\Service\Api\File\Accommodation\AccommodationService as AccommodationFileService;
 use		  AppBundle\Service\Api\File\Region\RegionService as RegionFileService;
@@ -57,6 +58,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('type_image', [$this, 'getTypeImage']),
             new \Twig_SimpleFunction('type_images', [$this, 'getTypeImages']),
             new \Twig_SimpleFunction('region_image', [$this, 'getRegionImage']),
+            new \Twig_SimpleFunction('country_image', [$this, 'getCountryImage']),
             new \Twig_SimpleFunction('place_image', [$this, 'getPlaceImage']),
             new \Twig_SimpleFunction('homepage_block_image', [$this, 'getHomepageBlockImage']),
             new \Twig_SimpleFunction('breadcrumbs', [$this, 'breadcrumbs'], ['is_safe' => ['html'], 'needs_environment' => true]),
@@ -257,6 +259,19 @@ class AppExtension extends \Twig_Extension
 
         return $this->getOldImageUrlPrefix() . '/' . $filename;
     }
+	
+	public function getCountryImage($countryId)
+	{
+        $countryFileService = $this->container->get('service.api.file.country');
+		$countryImage       = $countryFileService->getImage($countryId);
+		$path			  = $this->getOldImageUrlPrefix() . '/accommodaties/0.jpg';
+
+		if (null !== $countryImage) {
+			$path = $this->getOldImageUrlPrefix() . '/' . $countryImage->getDirectory() .  '/' . $countryImage->getFilename();
+		}
+
+        return $path;
+	}
 
     /**
      * Wrapper around path function of twig to automatically add _<locale> to the route name

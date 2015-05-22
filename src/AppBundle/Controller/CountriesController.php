@@ -33,7 +33,11 @@ class CountriesController extends Controller
      */
     public function index()
     {
-        return [];
+		$countryService = $this->get('service.api.country');
+
+        return [
+        	'countries' => $countryService->findActive(),
+		];
     }
 
     /**

@@ -43,6 +43,15 @@ interface CountryServiceRepositoryInterface
     public function getWebsite();
     
     /**
+     * Fetching active countries
+     *
+     * Fetching all the active countries
+     *
+     * @return CountryServiceEntityInterface[]
+     */
+    public function findActive();
+    
+    /**
      * Fetching countries
      *
      * Fetching all the places based on the options passed in. The supported options are: 'where', 'order', 'limit', 'offset'

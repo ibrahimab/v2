@@ -163,6 +163,21 @@ interface CountryServiceEntityInterface
     public function getDisplay();
 
     /**
+     * Set summer display
+     *
+     * @param boolean $summerDisplay
+     * @return CountryServiceEntityInterface
+     */
+    public function setSummerDisplay($summerDisplay);
+
+    /**
+     * Get summer display
+     *
+     * @return boolean
+     */
+    public function getSummerDisplay();
+
+    /**
      * Set title
      *
      * @param string $title
