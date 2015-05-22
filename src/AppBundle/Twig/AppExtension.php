@@ -4,6 +4,9 @@ namespace AppBundle\Twig;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
+use       AppBundle\Service\Api\File\Type\TypeService as TypeFileService;
+use		  AppBundle\Service\Api\File\Accommodation\AccommodationService as AccommodationFileService;
+use		  AppBundle\Service\Api\File\Region\RegionService as RegionFileService;
 use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterface;
 use       Symfony\Component\DependencyInjection\ContainerInterface;
 use       Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -96,7 +99,7 @@ class AppExtension extends \Twig_Extension
      */
     public function getOldImageUrlPrefix()
     {
-        return '/chalet/pic/cms/';
+        return '/chalet-pic';
     }
 
     /**
@@ -107,69 +110,76 @@ class AppExtension extends \Twig_Extension
      */
     public function getTypeImage(TypeServiceEntityInterface $type)
     {
-        $filename          = 'accommodaties/0.jpg';
-        $typeId            = $type->getId();
-        $accommodationId   = $type->getAccommodation()->getId();
-        $typeFile          = $this->getOldImageRoot() . '/cms/hoofdfoto_type/' . $typeId . '.jpg';
-        $accommodationFile = $this->getOldImageRoot() . '/cms/hoofdfoto_accommodatie/' . $accommodationId . '.jpg';
+        $typeFileService = $this->container->get('service.api.file.type');
+		$mainImage		 = $typeFileService->getMainImage($type);
+		$path			 = $this->getOldImageUrlPrefix() . '/types/0.jpg';
 
-        if (file_exists($typeFile)) {
+		if (null === $mainImage) {
 
-            $filename = 'hoofdfoto_type/' . $typeId. '.jpg';
+			$accommodationFileService = $this->container->get('service.api.file.accommodation');
+			$mainImage				  = $accommodationFileService->getMainImage($type->getAccommodation());
+		}
 
-        } elseif (file_exists($accommodationFile)) {
+		if (null !== $mainImage) {
+			$path = $this->getOldImageUrlPrefix() . '/' . $mainImage->getDirectory() .  '/' . $mainImage->getFilename();
+		}
 
-            $filename = 'hoofdfoto_accommodatie/' . $accommodationId . '.jpg';
-        }
-
-        return $this->getOldImageUrlPrefix() . $filename;
+        return $path;
     }
 
     /**
      * Getting all the type images from its directory
      *
+	 * @param TypeServiceEntityInterface $type
+	 * @param int $above_limit This defines how many images above should be displayed
+	 * @param int $below_limit This defines how many image below are displayed by default
      * @return Finder
      */
     public function getTypeImages(TypeServiceEntityInterface $type, $above_limit = 3, $below_limit = 2)
     {
-        $dir        = $this->getOldImageRoot() . '/cms/';
-        $finder     = new Finder();
-        $foundFiles = $finder->files()
-                         ->in([
-                             $dir . 'types',
-                             $dir . 'types_specifiek',
-                             $dir . 'types_specifiek_tn',
-                             $dir . 'hoofdfoto_type',
-                             $dir . 'types_breed',
-                             $dir . 'hoofdfoto_accommodatie'
-                         ])
-                         ->depth('== 0')
-                         ->name('/^' . $type->getId() . '(-[0-9]+)?\.jpg/i');
+		$typeFileService = $this->container->get('service.api.file.type');
+		$files	 		 = $typeFileService->getImages($type);
+		$images			 = ['above' => [], 'below' => [], 'rest' => []];
+		$above_done		 = 1;
+		$below_done		 = 1;
 
-        $files = ['rest' => [], 'above' => [], 'below' => []];
+		foreach ($files as $file) {
 
-        $i = 1;
-        foreach ($foundFiles as $file) {
+			if ($file->getKind() === TypeFileService::MAIN_IMAGE && $above_done <= $above_limit) {
 
-            $parent         = basename($file->getPath());
-            $filename       = $this->getOldImageUrlPrefix() . $parent . '/' . $file->getFilename();
+				$images['above'][] = $this->getOldImageUrlPrefix() . '/' . $file->getDirectory() . '/' . $file->getFilename();
+				$above_done 	  += 1;
 
-            if ($parent === 'types' && $i <= $above_limit) {
-                $files['above'][] = $filename;
-            }
+			} else {
 
-            if ($i <= $below_limit) {
+				$images[($below_done <= $below_limit ? 'below': 'rest')][] = $this->getOldImageUrlPrefix() . '/' . $file->getDirectory() . '/' . $file->getFilename();
 
-                $files['below'][] = $filename;
+				$below_done += 1;
+			}
+		}
 
-            } else {
-                $files['rest'][] = $filename;
-            }
+		if (count($images['above']) === 0) {
 
-            $i += 1;
-        }
+			$accommodationFileService = $this->container->get('service.api.file.accommodation');
+			$files					  = $accommodationFileService->getImages($type->getAccommodation());
 
-        return $files;
+			foreach ($files as $file) {
+
+				if ($file->getKind() === AccommodationFileService::MAIN_IMAGE && $above_done <= $above_limit) {
+
+					$images['above'][] = $this->getOldImageUrlPrefix() . '/' . $file->getDirectory() . '/' . $file->getFilename();
+					$above_done		  += 1;
+
+				} else {
+
+					$images[($below_done <= $below_limit ? 'below': 'rest')][] = $this->getOldImageUrlPrefix() . '/' . $file->getDirectory() . '/' . $file->getFileName();
+
+					$below_done += 1;
+				}
+			}
+		}
+
+        return $images;
     }
 
     /**
@@ -180,15 +190,15 @@ class AppExtension extends \Twig_Extension
      */
     public function getRegionImage(RegionServiceEntityInterface $region)
     {
-        $finder   = new Finder();
-        $iterator = $finder->files()
-                           ->in($this->getOldImageRoot() . '/cms/skigebieden')
-                           ->name('/^' . $region->getId() . '-1\.jpg$/i')
-                           ->getIterator();
-        $iterator->next();
-        $file = $iterator->current();
+        $regionFileService = $this->container->get('service.api.file.region');
+		$regionImage       = $regionFileService->getImage($region);
+		$path			   = $this->getOldImageUrlPrefix() . '/skigebieden/0.jpg';
 
-        return $this->getOldImageUrlPrefix() . 'skigebieden/' . ($file === null ? '0.jpg' : $file->getFilename());
+		if (null !== $regionImage) {
+			$path = $this->getOldImageUrlPrefix() . '/' . $regionImage->getDirectory() .  '/' . $regionImage->getFilename();
+		}
+
+        return $path;
     }
 
     /**
@@ -199,14 +209,15 @@ class AppExtension extends \Twig_Extension
      */
     public function getRegionSkiRunMapImage(RegionServiceEntityInterface $region)
     {
-        $file     = $this->getOldImageRoot() . '/cms/skigebieden_pistekaarten/' . $region->getId() . '.jpg';
-        $filename = 'skigebieden_pistekaarten/0.jpg';
+        $regionFileService = $this->container->get('service.api.file.region');
+		$regionImage       = $regionFileService->getSkiRunsMapImage($region);
+		$path			   = $this->getOldImageUrlPrefix() . '/skigebieden/0.jpg';
 
-        if (file_exists($file)) {
-            $filename = 'skigebieden_pistekaarten/' . $region->getId(). '.jpg';
-        }
+		if (null !== $regionImage) {
+			$path = $this->getOldImageUrlPrefix() . '/' . $regionImage->getDirectory() .  '/' . $regionImage->getFilename();
+		}
 
-        return $this->getOldImageUrlPrefix() . $filename;
+        return $path;
     }
 
     /**
@@ -217,15 +228,15 @@ class AppExtension extends \Twig_Extension
      */
     public function getPlaceImage(PlaceServiceEntityInterface $place)
     {
-        $finder   = new Finder();
-        $iterator = $finder->files()
-                           ->in($this->getOldImageRoot() . '/cms/plaatsen')
-                           ->name('/^' . $place->getId() . '-1\.jpg$/i')
-                           ->getIterator();
-        $iterator->next();
-        $file = $iterator->current();
+        $placeFileService = $this->container->get('service.api.file.place');
+		$placeImage       = $placeFileService->getImage($place);
+		$path			  = $this->getOldImageUrlPrefix() . '/accommodaties/0.jpg';
 
-        return $this->getOldImageUrlPrefix() . 'plaatsen/' . ($file === null ? '0.jpg' : $file->getFilename());
+		if (null !== $placeImage) {
+			$path = $this->getOldImageUrlPrefix() . '/' . $placeImage->getDirectory() .  '/' . $placeImage->getFilename();
+		}
+
+        return $path;
     }
 
     /**
@@ -244,7 +255,7 @@ class AppExtension extends \Twig_Extension
             $filename = 'homepageblokken/' . $homepageBlockId . '.jpg';
         }
 
-        return $this->getOldImageUrlPrefix() . $filename;
+        return $this->getOldImageUrlPrefix() . '/' . $filename;
     }
 
     /**

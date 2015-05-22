@@ -19,7 +19,7 @@ class BaseRepository extends EntityRepository
      * @var integer
      */
     protected $season;
-    
+
     /**
      * Setting season
      *
@@ -30,7 +30,7 @@ class BaseRepository extends EntityRepository
     {
         $this->season = $seasonConcern->get();
     }
-    
+
     /**
      * Getting season
      *
@@ -40,17 +40,17 @@ class BaseRepository extends EntityRepository
     {
         return $this->season;
     }
-    
+
     public function setWebsite(WebsiteConcern $websiteConcern)
     {
         $this->website = $websiteConcern->get();
     }
-    
+
     public function getWebsite()
     {
         return $this->website;
     }
-    
+
     /**
      * Getting either the option passed in or the default
      *
@@ -63,7 +63,7 @@ class BaseRepository extends EntityRepository
     {
         return isset($options[$key]) ? $options[$key] : $default;
     }
-    
+
     /**
      * Getting locale field
      *
@@ -75,24 +75,24 @@ class BaseRepository extends EntityRepository
     {
         $locale = strtolower($locale);
         switch ($locale) {
-            
+
             case 'en':
                 $localeField = 'english' . ucfirst($field);
                 break;
-                
+
             case 'de':
                 $localeField = 'german' . ucfirst($field);
                 break;
-                
+
             case 'nl':
             default:
                 $localeField = $field;
                 break;
         }
-        
+
         return $localeField;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -102,10 +102,10 @@ class BaseRepository extends EntityRepository
         $order    = self::getOption($options, 'order',  null);
         $limit    = self::getOption($options, 'limit',  null);
         $offset   = self::getOption($options, 'offset', null);
-        
+
         return $this->findBy($criteria, $order, $limit, $offset);
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -113,10 +113,10 @@ class BaseRepository extends EntityRepository
     {
         return $this->findOneBy($by);
     }
-    
+
     /**
      * Published expression for QueryBuilder instances
-     * 
+     *
      * @param string $fieldPrefix
      * @param Expr $expr
      * @return Expr
@@ -124,14 +124,14 @@ class BaseRepository extends EntityRepository
     public function publishedExpr($fieldPrefix, $expr)
     {
         return $expr->andX(
-        
+
             $expr->andX(
-                
+
                 $expr->isNotNull($fieldPrefix . '.publishedAt'),
                 $expr->lte($fieldPrefix . '.publishedAt', ':now')
             ),
             $expr->orX(
-            
+
                 $expr->isNull($fieldPrefix . '.expiredAt'),
                 $expr->gt($fieldPrefix . '.expiredAt', ':now')
             )

@@ -9,17 +9,17 @@ class AccommodationService
      * @var AccommodationServiceRepositoryInterface
      */
     private $accommodationRepository;
-    
+
     /**
      * Constructor
-     * 
+     *
      * @param AccommodationServiceRepositoryInterface $accommodationRepository
      */
     public function __construct(AccommodationServiceRepositoryInterface $accommodationRepository)
     {
         $this->accommodationRepository = $accommodationRepository;
     }
-    
+
     /**
      * Get all accommodations
      * The options array accepts a 'where', 'order' and 'limit' key that customizes
@@ -32,7 +32,7 @@ class AccommodationService
     {
         return $this->accommodationRepository->all($options);
     }
-    
+
     /**
      * Get a single accommodation with certain criteria defined on the $by parameter
      *
@@ -43,7 +43,7 @@ class AccommodationService
     {
         return $this->accommodationRepository->find($by);
     }
-    
+
     public function clean()
     {
         $this->accommodationRepository->clean();
