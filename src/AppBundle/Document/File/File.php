@@ -29,9 +29,15 @@ class File implements FileServiceEntityInterface
 
 	/** @ODM\String */
 	private $filename;
+	
+	/** @ODM\String */
+	private $label;
 
 	/** @ODM\String */
 	private $directory;
+	
+	/** @var string */
+	private $url_prefix;
 
 	/** @ODM\Int */
 	private $width;
@@ -83,6 +89,24 @@ class File implements FileServiceEntityInterface
 	{
 		return $this->filename;
 	}
+	
+	/**
+	 * {@InheritDoc}
+	 */
+	public function setLabel($label)
+	{
+		$this->label = $label;
+		
+		return $this;
+	}
+	
+	/**
+	 * {@InheritDoc}
+	 */
+	public function getLabel()
+	{
+		return $this->label;
+	}
 
 	/**
 	 * {@InheritDoc}
@@ -100,6 +124,32 @@ class File implements FileServiceEntityInterface
 	public function getDirectory()
 	{
 		return $this->directory;
+	}
+	
+	/**
+	 * {@InheritDoc}
+	 */
+	public function setUrlPrefix($urlPrefix)
+	{
+		$this->url_prefix = $urlPrefix;
+		
+		return $this;
+	}
+	
+	/**
+	 * {@InheritDoc}
+	 */
+	public function getUrlPrefix()
+	{
+		return $this->url_prefix;
+	}
+	
+	/**
+	 * {@InheritDoc}
+	 */
+	public function getLocation()
+	{
+		return $this->getUrlPrefix() . '/' . $this->getDirectory() . '/' . $this->getFilename();
 	}
 
 	/**

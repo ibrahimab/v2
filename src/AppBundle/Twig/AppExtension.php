@@ -5,9 +5,14 @@ use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
 use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
+use       AppBundle\Document\File\Country\CountryFileDocument;
 use       AppBundle\Service\Api\File\Type\TypeService as TypeFileService;
+use		  AppBundle\Document\File\Type as TypeFileDocument;
 use		  AppBundle\Service\Api\File\Accommodation\AccommodationService as AccommodationFileService;
+use		  AppBundle\Document\File\Accomodation as AccommodationFileDocument;
 use		  AppBundle\Service\Api\File\Region\RegionService as RegionFileService;
+use		  AppBundle\Document\File\Region as RegionFileDocument;
+use		  AppBundle\Document\File\Place as PlaceFileDocument;
 use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterface;
 use       Symfony\Component\DependencyInjection\ContainerInterface;
 use       Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -114,17 +119,21 @@ class AppExtension extends \Twig_Extension
     {
         $typeFileService = $this->container->get('service.api.file.type');
 		$mainImage		 = $typeFileService->getMainImage($type);
-		$path			 = $this->getOldImageUrlPrefix() . '/types/0.jpg';
 
 		if (null === $mainImage) {
 
 			$accommodationFileService = $this->container->get('service.api.file.accommodation');
 			$mainImage				  = $accommodationFileService->getMainImage($type->getAccommodation());
+		
+			if (null === $mainImage) {
+			
+				$mainImage = new AccommodationFileDocument();
+				$mainImage->setDirectory('accommodaties');
+				$mainImage->setFilename('0.jpg');
+			}	
 		}
-
-		if (null !== $mainImage) {
-			$path = $this->getOldImageUrlPrefix() . '/' . $mainImage->getDirectory() .  '/' . $mainImage->getFilename();
-		}
+		
+		$mainImage->setUrlPrefix($this->getOldImageUrlPrefix());
 
         return $path;
     }
@@ -147,14 +156,16 @@ class AppExtension extends \Twig_Extension
 
 		foreach ($files as $file) {
 
+			$file->setUrlPrefix($this->getOldImageUrlPrefix());
+
 			if ($file->getKind() === TypeFileService::MAIN_IMAGE && $above_done <= $above_limit) {
 
-				$images['above'][] = $this->getOldImageUrlPrefix() . '/' . $file->getDirectory() . '/' . $file->getFilename();
+				$images['above'][] = $file;
 				$above_done 	  += 1;
 
 			} else {
 
-				$images[($below_done <= $below_limit ? 'below': 'rest')][] = $this->getOldImageUrlPrefix() . '/' . $file->getDirectory() . '/' . $file->getFilename();
+				$images[($below_done <= $below_limit ? 'below': 'rest')][] = $file;
 
 				$below_done += 1;
 			}
@@ -167,14 +178,16 @@ class AppExtension extends \Twig_Extension
 
 			foreach ($files as $file) {
 
+				$file->setUrlPrefix($this->getOldImageUrlPrefix());
+				
 				if ($file->getKind() === AccommodationFileService::MAIN_IMAGE && $above_done <= $above_limit) {
 
-					$images['above'][] = $this->getOldImageUrlPrefix() . '/' . $file->getDirectory() . '/' . $file->getFilename();
+					$images['above'][] = $file;
 					$above_done		  += 1;
 
 				} else {
 
-					$images[($below_done <= $below_limit ? 'below': 'rest')][] = $this->getOldImageUrlPrefix() . '/' . $file->getDirectory() . '/' . $file->getFileName();
+					$images[($below_done <= $below_limit ? 'below': 'rest')][] = $file;
 
 					$below_done += 1;
 				}
@@ -194,13 +207,17 @@ class AppExtension extends \Twig_Extension
     {
         $regionFileService = $this->container->get('service.api.file.region');
 		$regionImage       = $regionFileService->getImage($region);
-		$path			   = $this->getOldImageUrlPrefix() . '/accommodaties/0.jpg';
-
-		if (null !== $regionImage) {
-			$path = $this->getOldImageUrlPrefix() . '/' . $regionImage->getDirectory() .  '/' . $regionImage->getFilename();
+		
+		if (null === $regionImage) {
+			
+			$regionImage = new RegionFileDocument();
+			$regionImage->setDirectory('accommodaties');
+			$regionImage->setFilename('0.jpg');
 		}
+		
+		$regionImage->setUrlPrefix($this->getOldImageUrlPrefix());
 
-        return $path;
+        return $regionImage;
     }
 
     /**
@@ -213,13 +230,16 @@ class AppExtension extends \Twig_Extension
     {
         $regionFileService = $this->container->get('service.api.file.region');
 		$regionImage       = $regionFileService->getSkiRunsMapImage($region);
-		$path			   = $this->getOldImageUrlPrefix() . '/accommodaties/0.jpg';
 
-		if (null !== $regionImage) {
-			$path = $this->getOldImageUrlPrefix() . '/' . $regionImage->getDirectory() .  '/' . $regionImage->getFilename();
+		if (null === $regionImage) {
+			
+			$regionImage = new RegionFileDocument();
+			$regionImage->setUrlPrefix($this->getOldImageUrlPrefix());
+			$regionImage->setDirectory('accommodaties');
+			$regionImage->setFilename('0.jpg');
 		}
 
-        return $path;
+        return $regionImage;
     }
 
     /**
@@ -232,13 +252,17 @@ class AppExtension extends \Twig_Extension
     {
         $placeFileService = $this->container->get('service.api.file.place');
 		$placeImage       = $placeFileService->getImage($place);
-		$path			  = $this->getOldImageUrlPrefix() . '/accommodaties/0.jpg';
 
-		if (null !== $placeImage) {
-			$path = $this->getOldImageUrlPrefix() . '/' . $placeImage->getDirectory() .  '/' . $placeImage->getFilename();
+		if (null === $placeImage) {
+			
+			$placeImage = new PlaceFileDocument();
+			$placeImage->setDirectory('accommodaties');
+			$placeImage->setFilename('0.jpg');
 		}
+		
+		$placeImage->setUrlPrefix($this->getOldImageUrlPrefix());
 
-        return $path;
+        return $placeImage;
     }
 
     /**
@@ -264,10 +288,13 @@ class AppExtension extends \Twig_Extension
 	{
         $countryFileService = $this->container->get('service.api.file.country');
 		$countryImage       = $countryFileService->getImage($countryId);
-		$path			  = $this->getOldImageUrlPrefix() . '/accommodaties/0.jpg';
 
-		if (null !== $countryImage) {
-			$path = $this->getOldImageUrlPrefix() . '/' . $countryImage->getDirectory() .  '/' . $countryImage->getFilename();
+		if (null === $countryImage) {
+
+			$countryImage = new CountryFileDocument();
+			$countryImage->setUrlPrefix($this->getOldImageUrlPrefix());
+			$countryImage->setDirectory('accommodaties');
+			$countryImage->setFilename('0.jpg');
 		}
 
         return $path;

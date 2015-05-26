@@ -73,13 +73,13 @@
                                     {% if loop.index == 1 %}
 
                                         <div class="large-8 medium-8 columns">
-                                            <a href="{{ image }}" data-featherlight="image"><img src="{{ image }}" alt="" /></a>
+                                            <a href="{{ image.getLocation() }}" data-lightbox="Afbeeldingen accommodatie"{% if image.getLabel() %}data-lightbox-title="image.getLabel()"{% endif %}><img src="{{ image.getLocation() }}" alt="" /></a>
                                         </div>
                                         <div class="large-4 medium-4 column">
 
                                     {% else %}
 
-                                        <a href="{{ image }}" data-featherlight="image"><img src="{{ image }}" alt="" /></a>
+                                        <a href="{{ image.getLocation() }}" data-lightbox="Afbeeldingen accommodatie"{% if image.getLabel() %}data-lightbox-title="image.getLabel()"{% endif %}><img src="{{ image.getLocation() }}" alt="" /></a>
 
                                     {% endif %}
 
@@ -395,7 +395,7 @@
                     </div>
 
                     <div id="types-other" class="table-wrapper">
-                        <h3>Overige type accommodaties</h3>
+                        <h3>Overige types van deze accommodatie</h3>
                         <table>
                             <thead>
                                 <tr>
@@ -432,13 +432,13 @@
                         <h3>Foto's</h3>
                         <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-2">
                             {% for image in images['below'] %}
-                                <li><a href="{{ image }}" data-featherlight="image" class="th"><img src="{{ image }}" alt="" /></a></li>
+                                <li><a href="{{ image.getLocation() }}"{% if image.getLabel() %}data-lightbox-title="image.getLabel()"{% endif %} class="th" data-lightbox="Afbeeldingen accommodatie"><img src="{{ image.getLocation() }}" alt="" /></a></li>
                             {% endfor %}
                         </ul>
                         <div class="hide">
                             <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
                                 {% for image in images['rest'] %}
-                                    <li><a href="{{ image }}" data-featherlight="image" class="th"><img src="{{ image }}" alt="" /></a></li>
+                                    <li><a href="{{ image.getLocation() }}"{% if image.getLabel() %}data-lightbox-title="image.getLabel()"{% endif %} class="th" data-lightbox="Afbeeldingen accommodatie"><img src="{{ image.getLocation() }}" alt="" /></a></li>
                                 {% endfor %}
                             </ul>
                         </div>
@@ -491,7 +491,7 @@
                         <span class="distance"><i class="fi-compass fi-gray"></i><em>{{ place.getDistanceFromUtrecht() }} km</em> van Utrecht</span>
                     </div>
                     <div class="hide-for-small"><!-- class hide-for-small-->
-                        <img src="{{ place_image(place) }}" alt="{{ localeData['name']['place'] }}" />
+                        <img src="{{ place_image(place).getLocation() }}" alt="{{ localeData['name']['place'] }}" />
                         <div class="text">
                             <p>{{ place.getLocaleShortDescription(locale) }}</p>
                         </div>
@@ -509,7 +509,7 @@
                         <span class="piste"><i class="sprite sprite-icon-pistes"></i><em>{{ region.getTotalSlopesDistance() }} km</em> pistes</span>
                     </div>
                     <div class="hide-for-small"><!-- class hide-for-small-->
-                        <img src="{{ region_image(region) }}" alt="{{ localeData['name']['region'] }}" />
+                        <img src="{{ region_image(region).getLocation() }}" alt="{{ localeData['name']['region'] }}" />
                         <div class="text">
                             <p>{{ region.getLocaleShortDescription(locale) }}</p>
                         </div>

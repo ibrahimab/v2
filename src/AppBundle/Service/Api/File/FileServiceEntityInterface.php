@@ -46,6 +46,21 @@ interface FileServiceEntityInterface
 	 * @return string
 	 */
 	public function getFileName();
+	
+	/**
+	 * Setting label
+	 *
+	 * @param string $label
+	 * @return FileServiceEntityInterface
+	 */
+	public function setLabel($label);
+	
+	/**
+	 * Getting label
+	 * 
+	 * @return string
+	 */
+	public function getLabel();
 
 	/**
 	 * Setting directory
@@ -61,6 +76,28 @@ interface FileServiceEntityInterface
 	 * @return string
 	 */
 	public function getDirectory();
+	
+	/**
+	 * Setting url prefix
+	 *
+	 * @param string $urlPrefix
+	 * @return FileServiceEntityInterface
+	 */
+	public function setUrlPrefix($urlPrefix);
+
+	/**
+	 * Getting url prefix
+	 *
+	 * @return string
+	 */
+	public function getUrlPrefix();
+	
+	/**
+	 * Getting location of image
+	 *
+	 * @return string
+	 */
+	public function getLocation();
 
 	/**
 	 * Setting kind
