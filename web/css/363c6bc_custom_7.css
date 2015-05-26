@@ -6,21 +6,21 @@
  * @since      1.0.0
  */
 @media only screen and (min-width: 40em) {
-  body#home.smallfix div#row-top {
+  body.smallfix div#row-top {
     min-height: 64px;
   }
-  body#home.smallfix div#column-logo img {
+  body.smallfix div#column-logo img {
     width: 65px;
   }
-  body#home.smallfix div#column-contact div {
+  body.smallfix div#column-contact div {
     padding-top: 0.4rem;
   }
-  body#home.smallfix div #column-dropdown button {
+  body.smallfix div #column-dropdown button {
     padding: 0.5rem 0.5rem 0.5rem 1.5rem;
   }
 }
 @media only screen and (min-width: 40rem) and (max-width: 64rem) {
-  body#home.smallfix div#column-dropdown button {
+  body.smallfix div#column-dropdown button {
     margin-top: 0.5rem;
     padding: 0.5rem 0.5rem 0.5rem 0.7rem;
   }
@@ -187,4 +187,17 @@ div.google-maps {
 }
 .fi-gray {
   color: #828282;
+}
+#accom h1 {
+  margin-left: 0;
+}
+#accom .type a {
+  margin-left: 0;
+}
+.chalets-data-box {
+  display: inline-block;
+  width: 88%;
+}
+.chalets-icon-box {
+  vertical-align: top;
 }

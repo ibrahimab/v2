@@ -128,9 +128,9 @@
                     <div class="accom-desc">
                         <div class="title"><a href="{{ locale_path('show_place', {placeSlug: place.getLocaleSeoName(get_locale())}) }}">{{ place.getLocaleName(get_locale()) }}</a></div>
                         <br />
-                        <div class="chalets"><i class="sprite sprite-gray-chalet"></i><strong>{{ place.getTypesCount() }}</strong> {{ 'chalets-apartments'|trans }}</div>
-                        <div class="chalets"><i class="sprite sprite-gray-mountain"></i><strong>{{ place.getAltitude() }}</strong> m {{ 'altitude'|trans }}</div>
-                        <div class="chalets"><i class="fi-compass"></i> <strong>{{ place.getDistanceFromUtrecht() }}</strong> km {{ 'distance-to-utrecht'|trans }}</div>
+                        <div class="chalets"><i class="sprite sprite-gray-chalet chalets-icon-box"></i><span class="chalets-data-box"><strong>{{ place.getTypesCount() }}</strong> {{ 'chalets-apartments'|trans }}</span></div>
+                        <div class="chalets"><i class="sprite sprite-gray-mountain chalets-icon-box"></i><span class="chalets-data-box"><strong>{{ place.getAltitude() }}</strong> m {{ 'altitude'|trans }}</span></div>
+                        <div class="chalets"><i class="fi-compass fi-gray chalets-icon-box"></i><span class="chalets-data-box"><strong>{{ place.getDistanceFromUtrecht() }}</strong> km {{ 'distance-to-utrecht'|trans }}</span></div>
                     </div>
                 </article>
             </div>

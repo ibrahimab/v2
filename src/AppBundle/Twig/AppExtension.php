@@ -194,7 +194,7 @@ class AppExtension extends \Twig_Extension
     {
         $regionFileService = $this->container->get('service.api.file.region');
 		$regionImage       = $regionFileService->getImage($region);
-		$path			   = $this->getOldImageUrlPrefix() . '/skigebieden/0.jpg';
+		$path			   = $this->getOldImageUrlPrefix() . '/accommodaties/0.jpg';
 
 		if (null !== $regionImage) {
 			$path = $this->getOldImageUrlPrefix() . '/' . $regionImage->getDirectory() .  '/' . $regionImage->getFilename();
@@ -213,7 +213,7 @@ class AppExtension extends \Twig_Extension
     {
         $regionFileService = $this->container->get('service.api.file.region');
 		$regionImage       = $regionFileService->getSkiRunsMapImage($region);
-		$path			   = $this->getOldImageUrlPrefix() . '/skigebieden/0.jpg';
+		$path			   = $this->getOldImageUrlPrefix() . '/accommodaties/0.jpg';
 
 		if (null !== $regionImage) {
 			$path = $this->getOldImageUrlPrefix() . '/' . $regionImage->getDirectory() .  '/' . $regionImage->getFilename();

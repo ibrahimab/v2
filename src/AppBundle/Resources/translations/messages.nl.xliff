@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="2eb89e200ba9d97218f59bc8ace047c60dbaceeb" resname="type.kind.chalet-apartment">
         <source>type.kind.chalet-apartment</source>
-        <target>Chalet-apartment</target>
+        <target>Chalet-appartement</target>
         <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="3e19cb738d3fb485ea8bc4550ae4533ce49a26ca" resname="type.kind.holiday-house">

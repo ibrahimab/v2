@@ -59,7 +59,7 @@
                         <div class="location">
                             <span class="area"><a href="{{ locale_path('show_region', { regionSlug: localeData['seo']['region'] }) }}" title="{{ localeData['name']['region'] }}">{{ localeData['name']['region'] }}</a></span>, <span class="city"><a href="{{ locale_path('show_place', { placeSlug: localeData['seo']['place'] }) }}" title="{{ localeData['name']['place'] }}">{{ localeData['name']['place'] }}</a></span>, <span class="country"><a href="{{ locale_path('show_country', { countrySlug: localeData['seo']['country'] } ) }}" title="{{ localeData['name']['country'] }}">{{ localeData['name']['country'] }}</a></span>
                         </div>
-                        <div class="type"><h3>{{ localeData['name']['type'] }}</h3><a href="#types" class="goto" title="Bekijk alle foto's">Overige type's</a></div>
+                        <div class="type">{% if localeData['name']['type'] is not empty %}<h3>{{ localeData['name']['type'] }}</h3>{% endif %}<a href="#types-other" class="goto" title="Bekijk alle foto's">Overige type's</a></div>
                         <div class="accom-img">
                             <div class="accom-slides show-for-small">
                                 <div><a href=""><img data-lazy="/bundles/app/img/accom/accom-2.jpg" alt="" /></a></div>
@@ -90,7 +90,6 @@
                             </div>
                             <div class="circle"><span>Aan-</span><span>bieding</span></div>
                             <a href="#images" class="button goto blank small radius" title="Bekijk alle foto's"><i class="fi-photo"></i>Bekijk alle foto's</a><!--class goto-->
-                            <a href="detail-variant.html" >[Bekijk variant]</a>
                             <div id="details-for-mobile" class="show-for-small-99">
                             </div>
                         </div>
@@ -112,7 +111,7 @@
                         </div>
                     </div>
 
-                    <div id="types">
+                    <div id="price-availability">
                         <h3>Prijs &amp; beschikbaarheid</h3>
                         <div class="row">
                             <div class="small-12 medium-6 large-6 columns">
