@@ -197,6 +197,11 @@
         <target>Destinations</target>
         <jms:reference-file line="98">Controller/CountriesController.php</jms:reference-file>
       </trans-unit>
+      <trans-unit id="ck933jsd3kj4332kkjdmdnjsjhhj21334hj3jjh3" resname="chalet-attached">
+        <source>chalet-attached</source>
+        <target>niet vrijstaand/geschakeld/appartement</target>
+        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
     </body>
   </file>
 </xliff>
