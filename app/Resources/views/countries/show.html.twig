@@ -83,7 +83,7 @@
                             <div class="title">{{ region.getLocaleName(get_locale()) }}</div>
                             <br />
                             <div class="chalets"><i class="sprite sprite-gray-chalet chalets-icon-box"></i><span class="chalets-data-box"><strong>{{ region.getTypesCount() }}</strong> {% if region.getTypesCount() is same as(1) %}{{ 'chalet-or-apartment'|trans }}{% else %}{{ 'chalets-apartments'|trans }}{% endif %}</span></div>
-                            {% if region.getMinimumAltitude() == region.getMaximumAltitude() %}
+                            {% if region.getMinimumAltitude() != region.getMaximumAltitude() %}
                                 <div class="mountain"><i class="sprite sprite-gray-mountain chalets-icon-box"></i><span class="chalets-data-box">Ligt tussen <strong>{{ region.getMinimumAltitude() }}</strong> {{ 'and'|trans }} <strong>{{ region.getMaximumAltitude() }}</strong> m hoogte</span></div>
                             {% else %}
                                 <div class="mountain"><i class="sprite sprite-gray-mountain chalets-icon-box"></i><span class="chalets-data-box">Ligt op <strong>{{ region.getMaximumAltitude() }}</strong> m hoogte</span></div>
