@@ -1,24 +1,54 @@
 <?php
 namespace AppBundle\Service\Api\Booking\Survey;
 
+use       AppBundle\Service\Api\Booking\BookingServiceEntityInterface;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 
-interface SurveyServiceEntityInterface {
-    
-    /**
-     * Set Booking ID
-     * 
-     * @param integer $id
-     * @return SurveyServiceEntityInterface
-     */
-    public function setId($id);
-    
+/**
+ * SurveyServiceEntityInterface
+ *
+ * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
+ * @since   0.0.1
+ * @package Chalet
+ */
+interface SurveyServiceEntityInterface
+{    
     /**
      * Get id
      *
      * @return integer 
      */
     public function getId();
+
+    /**
+     * Set Average
+     *
+     * @param  float $average
+     * @return SurveyServiceEntityInterface
+     */
+    public function setAverage($average);
+
+    /**
+     * Get Average
+     *
+     * @return float
+     */
+    public function getAverage();
+
+    /**
+     * Set booking
+     *
+     * @param BookingServiceEntityInterface $booking
+     * @return SurveyServiceEntityInterface
+     */
+    public function setBooking($booking);
+
+    /**
+     * Get booking
+     *
+     * @return BookingServiceEntityInterface 
+     */
+    public function getBooking();
 
     /**
      * Set websiteText
@@ -41,23 +71,84 @@ interface SurveyServiceEntityInterface {
      * @param string $websiteTextModified
      * @return SurveyServiceEntityInterface
      */
-    public function setWebsiteTextModified($websiteTextModified);
+    public function setOriginalWebsiteTextModified($originalWebsiteTextModified);
 
     /**
-     * Get websiteText
+     * Get Origal WebsiteText
      *
      * @return string 
      */
-    public function getWebsiteTextModified();
-    
+    public function getOriginalWebsiteTextModified();
+
     /**
-     * Set website modified text in a certain language
+     * Set DutchWebsiteTextModified
      *
-     * @param string $text
-     * @param string $language
+     * @param string $dutchWebsiteTextModified
      * @return SurveyServiceEntityInterface
      */
-    public function setWebsiteTextModifiedLanguage($text, $language);
+    public function setDutchWebsiteTextModified($dutchWebsiteTextModified);
+
+    /**
+     * Get DutchWebsiteTextModified
+     *
+     * @return string 
+     */
+    public function getDutchWebsiteTextModified();
+
+    /**
+     * Set EnglishWebsiteTextModified
+     *
+     * @param string $englishWebsiteTextModified
+     * @return SurveyServiceEntityInterface
+     */
+    public function setEnglishWebsiteTextModified($englishWebsiteTextModified);
+
+    /**
+     * Get EnglishWebsiteTextModified
+     *
+     * @return string 
+     */
+    public function getEnglishWebsiteTextModified();
+
+    /**
+     * Set GermanWebsiteTextModified
+     *
+     * @param string $germanWebsiteTextModified
+     * @return SurveyServiceEntityInterface
+     */
+    public function setGermanWebsiteTextModified($germanWebsiteTextModified);
+
+    /**
+     * Get GermanWebsiteTextModified
+     *
+     * @return string 
+     */
+    public function getGermanWebsiteTextModified();
+    
+    /**
+     * Set website modified text in a certain locale
+     *
+     * @param string $text
+     * @param string $locale
+     * @return SurveyServiceEntityInterface
+     */
+    public function setLocaleWebsiteTextModified($text, $locale);
+
+    /**
+     * Get localized website text based on the website provided
+     *
+     * @param string $website
+     * @return string
+     */
+    public function getLocaleWebsiteTextModified($locale);
+    
+    /**
+     * Get flag
+     *
+     * @param string $website
+     * @return string
+     */
+    public function getFlag($website);
 
     /**
      * Set language
@@ -185,6 +276,15 @@ interface SurveyServiceEntityInterface {
      * @return integer 
      */
     public function getOverallRating();
+    
+    /**
+     * Get answer
+     *
+     * @param integer $questionNumber
+     * @param integer $n
+     * @return integer
+     */
+    public function getAnswer($questionNumber, $n);
     
     /**
      * @param array $answers

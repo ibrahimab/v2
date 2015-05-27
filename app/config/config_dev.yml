@@ -46,7 +46,7 @@ assetic:
     filters:
         less:
             node: /usr/local/nvm/versions/node/v0.12.0/bin/node
-            node_paths: [/var/www/v2-dev.chalet.nl/node_modules]
+            node_paths: [/var/www/local.chalet.nl/node_modules]
             apply_to: "\.less"
 
 #swiftmailer:

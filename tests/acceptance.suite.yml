@@ -11,4 +11,4 @@ modules:
         - AcceptanceHelper
     config:
         PhpBrowser:
-            url: 'http://local.v2-dev.chalet.nl'
+            url: 'http://local.chalet.nl'

@@ -1,0 +1,366 @@
+/*https://github.com/draeton/stitches*/
+.sprite {
+    background-image: url(../img/spritesheet.png);
+    background-repeat: no-repeat;
+    display: block;
+}
+
+.sprite-bg-menu {
+    width: 1px;
+    height: 200px;
+    background-position: -5px -5px;
+}
+
+.sprite-blue-arrow {
+    width: 16px;
+    height: 16px;
+    background-position: -16px -5px;
+}
+
+.sprite-blue-chalet {
+    width: 24px;
+    height: 24px;
+    background-position: -42px -5px;
+}
+
+.sprite-blue-checked {
+    width: 16px;
+    height: 16px;
+    background-position: -76px -5px;
+}
+
+.sprite-blue-mountain {
+    width: 24px;
+    height: 24px;
+    background-position: -102px -5px;
+}
+
+.sprite-blue-pistes {
+    width: 24px;
+    height: 24px;
+    background-position: -136px -5px;
+}
+
+.sprite-blue-snow {
+    width: 24px;
+    height: 24px;
+    background-position: -170px -5px;
+}
+
+.sprite-breadcrumb-arrow {
+    width: 5px;
+    height: 9px;
+    background-position: -204px -5px;
+}
+
+.sprite-check-off {
+    width: 20px;
+    height: 20px;
+    background-position: -219px -5px;
+}
+
+.sprite-check-on {
+    width: 20px;
+    height: 20px;
+    background-position: -249px -5px;
+}
+
+.sprite-flag-at {
+    width: 53px;
+    height: 40px;
+    background-position: -204px -35px;
+}
+
+.sprite-flag-ch {
+    width: 53px;
+    height: 40px;
+    background-position: -16px -85px;
+}
+
+.sprite-flag-de {
+    width: 53px;
+    height: 40px;
+    background-position: -79px -85px;
+}
+
+.sprite-flag-fr {
+    width: 53px;
+    height: 40px;
+    background-position: -142px -85px;
+}
+
+.sprite-flag-it {
+    width: 53px;
+    height: 40px;
+    background-position: -205px -85px;
+}
+
+.sprite-gray-chalet {
+    width: 16px;
+    height: 16px;
+    background-position: -16px -35px;
+}
+
+.sprite-gray-mountain {
+    width: 16px;
+    height: 16px;
+    background-position: -76px -35px;
+}
+
+.sprite-green-checked {
+    width: 16px;
+    height: 16px;
+    background-position: -267px -35px;
+}
+
+.sprite-icon-bath {
+    width: 18px;
+    height: 19px;
+    background-position: -268px -61px;
+}
+
+.sprite-icon-big {
+    width: 64px;
+    height: 64px;
+    background-position: -16px -135px;
+}
+
+.sprite-icon-close {
+    width: 11px;
+    height: 8px;
+    background-position: -16px -61px;
+}
+
+.sprite-icon-close-all {
+    width: 11px;
+    height: 11px;
+    background-position: -37px -61px;
+}
+
+.sprite-icon-data-discount-type {
+    width: 20px;
+    height: 20px;
+    background-position: -90px -135px;
+}
+
+.sprite-icon-data-not-available {
+    width: 20px;
+    height: 20px;
+    background-position: -120px -135px;
+}
+
+.sprite-icon-discount {
+    width: 38px;
+    height: 38px;
+    background-position: -150px -135px;
+}
+
+.sprite-icon-medium {
+    width: 32px;
+    height: 32px;
+    background-position: -198px -135px;
+}
+
+.sprite-icon-mountain {
+    width: 18px;
+    height: 19px;
+    background-position: -268px -90px;
+}
+
+.sprite-icon-open {
+    width: 11px;
+    height: 8px;
+    background-position: -58px -61px;
+}
+
+.sprite-icon-open-all {
+    width: 11px;
+    height: 11px;
+    background-position: -79px -61px;
+}
+
+.sprite-icon-pistes {
+    width: 18px;
+    height: 19px;
+    background-position: -268px -119px;
+}
+
+.sprite-icon-plus {
+    width: 14px;
+    height: 13px;
+    background-position: -100px -61px;
+}
+
+.sprite-icon-skipass-blue {
+    width: 21px;
+    height: 15px;
+    background-position: -240px -148px;
+}
+
+.sprite-icon-skipass-gray {
+    width: 21px;
+    height: 15px;
+    background-position: -90px -173px;
+}
+
+.sprite-icon-skipass-red {
+    width: 21px;
+    height: 15px;
+    background-position: -240px -173px;
+}
+
+.sprite-icon-sleep {
+    width: 18px;
+    height: 19px;
+    background-position: -90px -198px;
+}
+
+.sprite-icon-small {
+    width: 16px;
+    height: 16px;
+    background-position: -118px -198px;
+}
+
+.sprite-icon-snow {
+    width: 18px;
+    height: 19px;
+    background-position: -144px -198px;
+}
+
+.sprite-icon-surface {
+    width: 19px;
+    height: 19px;
+    background-position: -172px -198px;
+}
+
+.sprite-icon-surface-big {
+    width: 24px;
+    height: 24px;
+    background-position: -201px -198px;
+}
+
+.sprite-icon-torso {
+    width: 18px;
+    height: 19px;
+    background-position: -235px -198px;
+}
+
+.sprite-logo-sgr-footer {
+    width: 33px;
+    height: 31px;
+    background-position: -5px -227px;
+}
+
+.sprite-payment- {
+    width: 28px;
+    height: 24px;
+    background-position: -48px -227px;
+}
+
+.sprite-payment-bankcontact {
+    width: 45px;
+    height: 27px;
+    background-position: -86px -227px;
+}
+
+.sprite-payment-ideal {
+    width: 31px;
+    height: 27px;
+    background-position: -141px -227px;
+}
+
+.sprite-payment-mastercard {
+    width: 47px;
+    height: 27px;
+    background-position: -235px -227px;
+}
+
+.sprite-payment-visa {
+    width: 81px;
+    height: 27px;
+    background-position: -293px -5px;
+}
+
+.sprite-slick-next {
+    width: 8px;
+    height: 12px;
+    background-position: -124px -42px;
+}
+
+.sprite-slick-prev {
+    width: 8px;
+    height: 12px;
+    background-position: -142px -42px;
+}
+
+.sprite-social-fb {
+    width: 25px;
+    height: 24px;
+    background-position: -160px -42px;
+}
+
+.sprite-social-fb-big {
+    width: 32px;
+    height: 32px;
+    background-position: -296px -42px;
+}
+
+.sprite-social-plus {
+    width: 24px;
+    height: 24px;
+    background-position: -338px -42px;
+}
+
+.sprite-social-plus-big {
+    width: 32px;
+    height: 32px;
+    background-position: -338px -76px;
+}
+
+.sprite-social-twitter {
+    width: 24px;
+    height: 24px;
+    background-position: -296px -118px;
+}
+
+.sprite-social-twitter-big {
+    width: 32px;
+    height: 32px;
+    background-position: -330px -118px;
+}
+
+.sprite-star {
+    width: 17px;
+    height: 16px;
+    background-position: -271px -160px;
+}
+
+.sprite-star-empty {
+    width: 17px;
+    height: 16px;
+    background-position: -298px -160px;
+}
+
+.sprite-subnav-discount {
+    width: 40px;
+    height: 38px;
+    background-position: -325px -160px;
+}
+
+.sprite-subnav-home {
+    width: 40px;
+    height: 38px;
+    background-position: -292px -208px;
+}
+
+.sprite-subnav-search {
+    width: 41px;
+    height: 38px;
+    background-position: -182px -256px;
+}
+
+.sprite-subnav-skiareas {
+    width: 40px;
+    height: 38px;
+    background-position: -292px -256px;
+}

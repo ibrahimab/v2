@@ -1,6 +1,8 @@
 <?php
 namespace AppBundle\Entity\Type;
 use       AppBundle\Service\Api\Type\TypeServiceRepositoryInterface;
+use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
+use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Entity\BaseRepository;
 
 /**
@@ -15,21 +17,137 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
     /**
      * {@InheritDoc}
      */
-    public function all($options = [])
+    public function findByPlace(PlaceServiceEntityInterface $place, $limit)
     {
-        $criteria = self::getOption($options, 'where',  []);
-        $order    = self::getOption($options, 'order',  null);
-        $limit    = self::getOption($options, 'limit',  null);
-        $offset   = self::getOption($options, 'offset', null);
+        $qb   = $this->createQueryBuilder('t');
+        $expr = $qb->expr();
         
-        return $this->findBy($criteria, $order, $limit, $offset);
+        $qb->select('partial t.{id, optimalResidents, maxResidents, quality}, partial a.{id, name, kind, quality}')
+           ->leftJoin('t.accommodation', 'a')
+           ->where($expr->eq('a.place', ':place'))
+           ->andWhere($expr->eq('t.display', ':display'))
+           ->andWhere($expr->eq('a.display', ':display'))
+           ->setMaxResults($limit)
+           ->orderBy('t.searchOrder', 'ASC')
+           ->setParameters([
+               
+               'place'   => $place,
+               'display' => true,
+           ]);
+        
+        return $qb->getQuery()->getResult();
     }
     
     /**
      * {@InheritDoc}
      */
-    public function find($by = [])
+    public function countByPlace(PlaceServiceEntityInterface $place)
     {
-        return $this->findOneBy($by);
+        $qb   = $this->createQueryBuilder('t');
+        $expr = $qb->expr();
+        
+        $qb->select('COUNT(t.id)')
+           ->leftJoin('t.accommodation', 'a')
+           ->leftJoin('a.place', 'p')
+           ->where($expr->eq('p', ':place'))
+           ->andWhere($expr->eq('a.display', ':display'))
+           ->andWhere($expr->eq('t.display', ':display'))
+           ->andWhere($expr->eq('a.weekendSki', ':weekendski'))
+           ->setParameters([
+               
+               'place'      => $place,
+               'display'    => true,
+               'weekendski' => false,
+           ]);
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function countByRegion(RegionServiceEntityInterface $region)
+    {
+        $qb   = $this->createQueryBuilder('t');
+        $expr = $qb->expr();
+        
+        $qb->select('p.id as placeId, COUNT(t.id) AS typesCount')
+           ->leftJoin('t.accommodation', 'a')
+           ->leftJoin('a.place', 'p')
+           ->leftJoin('p.region', 'r')
+           ->where($expr->eq('r', ':region'))
+           ->andWhere($expr->eq('a.display', ':display'))
+           ->andWhere($expr->eq('t.display', ':display'))
+           ->andWhere($expr->eq('a.weekendSki', ':weekendski'))
+           ->groupBy('p.id')
+           ->setParameters([
+               
+               'region'     => $region,
+               'display'    => true,
+               'weekendski' => false,
+           ]);
+        
+        $results = $qb->getQuery()->getResult();
+        
+        return array_map('intval', array_column($results, 'typesCount', 'placeId'));
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function countByRegions($regions)
+    {
+        $qb   = $this->createQueryBuilder('t');
+        $expr = $qb->expr();
+        
+        $qb->select('r.id as regionId, COUNT(t.id) AS typesCount')
+           ->leftJoin('t.accommodation', 'a')
+           ->leftJoin('a.place', 'p')
+           ->leftJoin('p.region', 'r')
+           ->groupBy('r.id')
+           ->where($expr->in('r', ':regions'))
+           ->andWhere($expr->eq('a.display', ':display'))
+           ->andWhere($expr->eq('t.display', ':display'))
+           ->andWhere($expr->eq('a.weekendSki', ':weekendski'))
+           ->setParameters([
+               
+               'regions'    => $regions,
+               'display'    => true,
+               'weekendski' => false,
+           ]);
+        
+        $results = $qb->getQuery()->getResult();
+
+        return array_map('intval', array_column($results, 'typesCount', 'regionId'));
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function findById($typeId)
+    {
+        $qb   = $this->createQueryBuilder('t');
+        $expr = $qb->expr();
+        
+        $qb->select('t, a, p, r, c, at')
+           ->leftJoin('t.accommodation', 'a')
+           ->leftJoin('a.types', 'at')
+           ->leftJoin('a.place', 'p')
+           ->leftJoin('p.region', 'r')
+           ->leftJoin('p.country', 'c')
+           ->where($expr->eq('t.id', ':type'))
+           ->andWhere($expr->eq('t.display', ':display'))
+           ->andWhere($expr->eq('a.display', ':display'))
+           ->andWhere($expr->eq('a.weekendSki', ':weekendSki'))
+           ->andWhere($expr->eq('at.display', ':display'))
+           ->setParameters([
+               
+               'type'       => $typeId,
+               'display'    => true,
+               'weekendSki' => false,
+           ])
+           ->orderBy('at.maxResidents');
+           
+        return $qb->getQuery()->getSingleResult();
     }
 }

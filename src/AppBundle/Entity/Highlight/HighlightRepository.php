@@ -29,26 +29,14 @@ class HighlightRepository extends BaseRepository implements HighlightServiceRepo
         $qb       = $this->createQueryBuilder('h');
         $expr     = $qb->expr();
         
-        $qb->select('partial h.{id, publishedAt, expiredAt}, partial t.{id, optimalResidents, maxResidents, quality}, partial a.{id, name, kind}, partial p.{id, name}, partial r.{id, name}, partial c.{id, name}')
+        $qb->select('partial h.{id, publishedAt, expiredAt}, partial t.{id, optimalResidents, maxResidents, quality}, partial a.{id, name, kind, quality}, partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}, partial r.{id, name, name, englishName, germanName, seoName, englishSeoName, germanSeoName}, partial c.{id, name, englishName, germanName, startCode}')
            ->leftJoin('h.type', 't')
            ->leftJoin('t.accommodation', 'a')
            ->leftJoin('a.place', 'p')
            ->leftJoin('p.region', 'r')
            ->leftJoin('p.country', 'c')
            ->where($expr->eq('h.display', ':display'))
-           ->andWhere($expr->andX(
-        
-               $expr->andX(
-                   
-                   $expr->isNotNull('h.publishedAt'),
-                   $expr->lte('h.publishedAt', ':now')
-               ),
-               $expr->orX(
-               
-                   $expr->isNull('h.expiredAt'),
-                   $expr->gt('h.expiredAt', ':now')
-               )
-           ))
+           ->andWhere($this->publishedExpr('h', $expr))
            ->setParameters([
                
                'display' => true,

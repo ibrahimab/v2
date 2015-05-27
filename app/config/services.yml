@@ -1,88 +1,207 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
 services:
-    
+
     app.twig_app_extension:
         class: AppBundle\Twig\AppExtension
         tags:
             - { name: twig.extension }
         arguments: [@service_container, @router]
-        
-    app.locale_listener:
-        class: AppBundle\Listener\LocaleListener
-        arguments: [@service_container]
+
+    app.event_listener.locale:
+        class: AppBundle\EventListener\LocaleListener
+        arguments: ["%app%"]
         tags:
             - { name: kernel.event_subscriber }
-        
-    twig.text_extension:
-        class: Twig_Extensions_Extension_Text
+
+    app.event_listener.breadcrumb:
+        class: AppBundle\EventListener\BreadcrumbListener
+        arguments: [@app.annotations.breadcrumbs, @twig]
         tags:
-            - { name: twig.extension }
-    
-    repository:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 1 }
+
+    app.event_listener.global_javascript:
+        class: AppBundle\EventListener\GlobalJavascriptListener
+        arguments: [@service.javascript, @service.utils]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 5 }
+
+    app.event_listener.season:
+        class: AppBundle\EventListener\SeasonListener
+        arguments: [@app.concern.season]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 10 }
+
+    app.event_listener.hostname:
+        class: AppBundle\EventListener\HostnameListener
+        arguments: [@app.concern.website]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 15 }
+
+    app.annotations.breadcrumbs:
+        class: AppBundle\Annotation\Parser\Breadcrumb
+        arguments: [@annotation_reader]
+
+    app.concern.season:
+        class: AppBundle\Concern\SeasonConcern
+        arguments: ["%app%"]
+
+    app.concern.website:
+        class: AppBundle\Concern\WebsiteConcern
+        arguments: ["%app%"]
+
+    repository.orm:
         abstract:        true
         factory_service: doctrine.orm.entity_manager
         factory_method:  getRepository
-        
+        calls:
+            - [setSeason,  [@app.concern.season]]
+            - [setWebsite, [@app.concern.website]]
+
+    repository.odm:
+        abstract:        true
+        factory_service: doctrine.odm.mongodb.document_manager
+        factory_method:  getRepository
+
     repository.accommodation:
         class:     AppBundle\Entity\Accommodation\AccommodationRepository
         arguments: [AppBundle\Entity\Accommodation\Accommodation]
-        parent:    repository
-        
+        parent:    repository.orm
+
     repository.highlight:
         class:     AppBundle\Entity\Highlight\HighlightRepository
         arguments: [AppBundle\Entity\Highlight\Highlight]
-        parent:    repository
-        
+        parent:    repository.orm
+
     repository.type:
         class:     AppBundle\Entity\Type\TypeRepository
         arguments: [AppBundle\Entity\Type\Type]
-        parent:    repository
-        
+        parent:    repository.orm
+
     repository.place:
         class:     AppBundle\Entity\Place\PlaceRepository
         arguments: [AppBundle\Entity\Place\Place]
-        parent:    repository
-        
+        parent:    repository.orm
+
     repository.region:
         class:     AppBundle\Entity\Region\RegionRepository
         arguments: [AppBundle\Entity\Region\Region]
-        parent:    repository
-        
+        parent:    repository.orm
+
     repository.country:
         class:     AppBundle\Entity\Country\CountryRepository
         arguments: [AppBundle\Entity\Country\Country]
-        parent:    repository
-        
-    repository.survey:
+        parent:    repository.orm
+
+    repository.booking:
+        class:     AppBundle\Entity\Booking\BookingRepository
+        arguments: [AppBundle\Entity\Booking\Booking]
+        parent:    repository.orm
+
+    repository.booking.survey:
         class:     AppBundle\Entity\Boooking\Survey\SurveyRepository
         arguments: [AppBundle\Entity\Booking\Survey\Survey]
-        parent:    repository
-        
+        parent:    repository.orm
+
+    repository.homepageblock:
+        class:     AppBundle\Entity\HomepageBlock\HomepageBlockRepository
+        arguments: [AppBundle\Entity\HomepageBlock\HomepageBlock]
+        parent:    repository.orm
+
+    repository.file.accommodation:
+        class:     AppBundle\Document\File\AccommodationRepository
+        arguments: [AppBundle\Document\File\Accommodation]
+        parent:    repository.odm
+
+    repository.file.type:
+        class:     AppBundle\Document\File\TypeRepository
+        arguments: [AppBundle\Document\File\Type]
+        parent:    repository.odm
+
+    repository.file.region:
+        class:     AppBundle\Document\File\RegionRepository
+        arguments: [AppBundle\Document\File\Region]
+        parent:    repository.odm
+
+    repository.file.place:
+        class:     AppBundle\Document\File\PlaceRepository
+        arguments: [AppBundle\Document\File\Place]
+        parent:    repository.odm
+
+    repository.file.country:
+        class:     AppBundle\Document\File\CountryRepository
+        arguments: [AppBundle\Document\File\Country]
+        parent:    repository.odm
+
+    service.javascript:
+        class:      AppBundle\Service\Javascript\JavascriptService
+        arguments:  [[]]
+
+    service.utils:
+        class: AppBundle\Service\UtilsService
+
     service.api.accommodation:
         class:     AppBundle\Service\Api\Accommodation\AccommodationService
         arguments: ["@repository.accommodation"]
-            
+
     service.api.highlight:
         class:     AppBundle\Service\Api\Highlight\HighlightService
         arguments: ["@repository.highlight"]
-            
+
     service.api.type:
         class:     AppBundle\Service\Api\Type\TypeService
         arguments: ["@repository.type"]
-            
+
     service.api.place:
         class:     AppBundle\Service\Api\Place\PlaceService
         arguments: ["@repository.place"]
-            
+
     service.api.region:
         class:     AppBundle\Service\Api\Region\RegionService
         arguments: ["@repository.region"]
-            
+
     service.api.country:
         class:     AppBundle\Service\Api\Country\CountryService
         arguments: ["@repository.country"]
-            
-    service.api.survey:
+
+    service.api.booking:
+        class:     AppBundle\Service\Api\Booking\BookingService
+        arguments: ["@repository.booking"]
+
+    service.api.booking.survey:
         class:     AppBundle\Service\Api\Booking\Survey\SurveyService
-        arguments: ["@repository.survey"]
+        arguments: ["@repository.booking.survey"]
+
+    service.api.homepageblock:
+        class:     AppBundle\Service\Api\HomepageBlock\HomepageBlockService
+        arguments: ["@repository.homepageblock"]
+
+    service.api.file.accommodation:
+        class:     AppBundle\Service\Api\File\Accommodation\AccommodationService
+        arguments: ["@repository.file.accommodation"]
+
+    service.api.file.type:
+        class:     AppBundle\Service\Api\File\Type\TypeService
+        arguments: ["@repository.file.type"]
+
+    service.api.file.region:
+        class:     AppBundle\Service\Api\File\Region\RegionService
+        arguments: ["@repository.file.region"]
+
+    service.api.file.place:
+        class:     AppBundle\Service\Api\File\Place\PlaceService
+        arguments: ["@repository.file.place"]
+
+    service.api.file.country:
+        class:     AppBundle\Service\Api\File\Country\CountryService
+        arguments: ["@repository.file.country"]
+
+    twig.extension.text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }
+
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }

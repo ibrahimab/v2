@@ -21,15 +21,15 @@ class LoadSurveyData extends AbstractFixture implements DependentFixtureInterfac
             $language = $lang[rand(0, 2)];
             $survey   = new Survey();
             
-            $survey->setId($i)
+            $survey->setBooking($this->getReference('booking-' . $i))
                    ->setType($this->getReference('type-' . $i))
                    ->setWebsiteText('[' . strtoupper($language) . '] ' . $dummy)
-                   ->setWebsiteTextModified('[' . strtoupper($lang[rand(0, 2)]) . ']' . $dummy)
-                   ->setWebsiteTextModifiedLanguage('[NL] ' . $dummy, 'nl')
-                   ->setWebsiteTextModifiedLanguage('[EN] ' . $dummy, 'en')
-                   ->setWebsiteTextModifiedLanguage('[DE] ' . $dummy, 'de')
+                   ->setOriginalWebsiteTextModified('[' . strtoupper($lang[rand(0, 2)]) . ']' . $dummy)
+                   ->setLocaleWebsiteTextModified('[NL] ' . $dummy, 'nl')
+                   ->setLocaleWebsiteTextModified('[EN] ' . $dummy, 'en')
+                   ->setLocaleWebsiteTextModified('[DE] ' . $dummy, 'de')
                    ->setWebsiteName(($i % 2) === 0 ? 'Ibrahim' : '')
-                   ->setReviewed(rand(1,3))
+                   ->setReviewed(($i === 1 ? 1 : (rand(1,3))))
                    ->setLanguage($language)
                    ->setArrivalAt($now)
                    ->setDepartureAt($next_week)
@@ -45,7 +45,7 @@ class LoadSurveyData extends AbstractFixture implements DependentFixtureInterfac
                    4             => rand(1, 10),
                    5             => rand(1, 10),
                    6             => rand(1, 10),
-                   7             => ($i === 1 ? 1 : rand(1, 10)),
+                   7             => rand(1, 10),
                    'explanation' => $dummy,
                ], 
                
@@ -97,6 +97,6 @@ class LoadSurveyData extends AbstractFixture implements DependentFixtureInterfac
     
     public function getDependencies()
     {
-        return ['AppBundle\DataFixtures\ORM\LoadTypeData'];
+        return ['AppBundle\DataFixtures\ORM\LoadTypeData', 'AppBundle\DataFixtures\ORM\LoadBookingData'];
     }
 }

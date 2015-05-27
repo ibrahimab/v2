@@ -23,6 +23,97 @@ class Region implements RegionServiceEntityInterface
     private $id;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="naam", type="string", length=100)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="naam_en", type="string", length=100)
+     */
+    private $englishName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="naam_de", type="string", length=100)
+     */
+    private $germanName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="seonaam", type="string", length=100)
+     */
+    private $seoName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="seonaam_en", type="string", length=100)
+     */
+    private $englishSeoName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="seonaam_de", type="string", length=100)
+     */
+    private $germanSeoName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="altnaam", type="string", length=255)
+     */
+    private $alternativeName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="korteomschrijving", type="string", length=70)
+     */
+    private $shortDescription;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="korteomschrijving_en", type="string", length=70)
+     */
+    private $englishShortDescription;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="korteomschrijving_de", type="string", length=70)
+     */
+    private $germanShortDescription;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="omschrijving", type="text")
+     */
+    private $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="omschrijving_en", type="text")
+     */
+    private $englishDescription;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="omschrijving_de", type="text")
+     */
+    private $germanDescription;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="wzt", type="smallint")
@@ -37,18 +128,33 @@ class Region implements RegionServiceEntityInterface
     private $websites;
 
     /**
-     * @var string
+     * This virtual field contains the types count within a certain region
+     * (composed by counting types of all the accommodations of all the places inside the Region)
      *
-     * @ORM\Column(name="korteomschrijving", type="string", length=70)
+     * @var integer
      */
-    private $shortDescription;
+    private $typesCount;
 
     /**
-     * @var string
+     * This virtual field contains the places count within a certain region
      *
-     * @ORM\Column(name="omschrijving", type="text")
+     * @var integer
      */
-    private $description;
+    private $placesCount;
+
+    /**
+     * Virtual field that holds the average ratings for a region
+     *
+     * @var integer
+     */
+    private $averageRatings = 0;
+
+    /**
+     * Virtual field that holds the ratings count for a region
+     *
+     * @var integer
+     */
+    private $ratingsCount = 0;
 
     /**
      * @var integer
@@ -65,18 +171,123 @@ class Region implements RegionServiceEntityInterface
     private $maximumAltitude;
 
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="naam", type="string", length=100)
+     * @ORM\Column(name="kilometerpiste", type="integer")
      */
-    private $name;
+    private $totalSlopesDistance;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="aantalliften", type="integer")
+     */
+    private $totalLifts;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="aantalstoeltjesliften", type="integer")
+     */
+    private $totalChairLifts;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="aantalsleepliften", type="integer")
+     */
+    private $totalSkiTowsLifts;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="aantalcabineliften", type="integer")
+     */
+    private $totalCabineLifts;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="aantalloipes", type="integer")
+     */
+    private $totalTrails;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="kmloipes", type="integer")
+     */
+    private $totalTrailsDistance;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="aantalblauwepistes", type="integer")
+     */
+    private $totalBlueSlopes;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="kmblauwepistes", type="integer")
+     */
+    private $totalBlueSlopesDistance;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="aantalrodepistes", type="integer")
+     */
+    private $totalRedSlopes;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="kmrodepistes", type="integer")
+     */
+    private $totalRedSlopesDistance;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="aantalzwartepistes", type="integer")
+     */
+    private $totalBlackSlopes;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="kmzwartepistes", type="integer")
+     */
+    private $totalBlackSlopesDistance;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="altnaam", type="string", length=255)
+     * @ORM\Column(name="weerbericht", type="string", length=255)
      */
-    private $alternativeName;
+    private $weatherReportLink;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="webcam", type="string", length=255)
+     */
+    private $webcamLink;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="kaart", type="string", length=255)
+     */
+    private $skiRunsMapLink;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="toon_op_homepage", type="boolean")
+     */
+    private $showOnHomepage;
 
     /**
      * @var \DateTime
@@ -98,6 +309,398 @@ class Region implements RegionServiceEntityInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setEnglishName($englishName)
+    {
+        $this->englishName = $englishName;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getEnglishName()
+    {
+        return $this->englishName;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setGermanName($germanName)
+    {
+        $this->germanName = $germanName;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getGermanName()
+    {
+        return $this->germanName;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setLocaleNames($localeNames)
+    {
+        // normalize locales
+        $localeNames = array_change_key_case($localeNames);
+
+        $this->setName(isset($localeNames['nl']) ? $localeNames['nl'] : '');
+        $this->setEnglishName(isset($localeNames['en']) ? $localeNames['en'] : '');
+        $this->setGermanName(isset($localeNames['de']) ? $localeNames['de'] : '');
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getLocaleName($locale)
+    {
+        $locale = strtolower($locale);
+        switch ($locale) {
+
+            case 'en':
+                $localeName = $this->getEnglishName();
+                break;
+
+            case 'de':
+                $localeName = $this->getGermanName();
+                break;
+
+            case 'nl':
+            default:
+                $localeName = $this->getName();
+                break;
+        }
+
+        return $localeName;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setSeoName($seoName)
+    {
+        $this->seoName = $seoName;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getSeoName()
+    {
+        return $this->seoName;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setEnglishSeoName($englishSeoName)
+    {
+        $this->englishSeoName = $englishSeoName;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getEnglishSeoName()
+    {
+        return $this->englishSeoName;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setGermanSeoName($germanSeoName)
+    {
+        $this->germanSeoName = $germanSeoName;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getGermanSeoName()
+    {
+        return $this->germanSeoName;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setLocaleSeoNames($localeSeoNames)
+    {
+        // normalize locales
+        $localeSeoNames = array_change_key_case($localeSeoNames);
+
+        $this->setSeoName(isset($localeSeoNames['nl']) ? $localeSeoNames['nl'] : '');
+        $this->setEnglishSeoName(isset($localeSeoNames['en']) ? $localeSeoNames['en'] : '');
+        $this->setGermanSeoName(isset($localeSeoNames['de']) ? $localeSeoNames['de'] : '');
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getLocaleSeoName($locale)
+    {
+        $locale = strtolower($locale);
+        switch ($locale) {
+
+            case 'en':
+                $localeSeoName = $this->getEnglishSeoName();
+                break;
+
+            case 'de':
+                $localeSeoName = $this->getGermanSeoName();
+                break;
+
+            case 'nl':
+            default:
+                $localeSeoName = $this->getSeoName();
+                break;
+        }
+
+        return $localeSeoName;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setAlternativeName($alternativeName)
+    {
+        $this->alternativeName = $alternativeName;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getAlternativeName()
+    {
+        return $this->alternativeName;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setShortDescription($shortDescription)
+    {
+        $this->shortDescription = $shortDescription;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getShortDescription()
+    {
+        return $this->shortDescription;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setEnglishShortDescription($englishShortDescription)
+    {
+        $this->englishShortDescription = $englishShortDescription;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getEnglishShortDescription()
+    {
+        return $this->englishShortDescription;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setGermanShortDescription($germanShortDescription)
+    {
+        $this->germanShortDescription = $germanShortDescription;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getGermanShortDescription()
+    {
+        return $this->germanShortDescription;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setLocaleShortDescriptions($localeShortDescriptions)
+    {
+        // normalize locales
+        $localeShortDescriptions = array_change_key_case($localeShortDescriptions);
+
+        $this->setShortDescription(isset($localeShortDescriptions['nl']) ? $localeShortDescriptions['nl'] : '');
+        $this->setEnglishShortDescription(isset($localeShortDescriptions['en']) ? $localeShortDescriptions['en'] : '');
+        $this->setGermanShortDescription(isset($localeShortDescriptions['de']) ? $localeShortDescriptions['de'] : '');
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getLocaleShortDescription($locale)
+    {
+        $locale = strtolower($locale);
+        switch ($locale) {
+
+            case 'en':
+                $localeShortDescription = $this->getEnglishShortDescription();
+                break;
+
+            case 'de':
+                $localeShortDescription = $this->getGermanShortDescription();
+                break;
+
+            case 'nl':
+            default:
+                $localeShortDescription = $this->getShortDescription();
+                break;
+        }
+
+        return $localeShortDescription;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setEnglishDescription($englishDescription)
+    {
+        $this->englishDescription = $englishDescription;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getEnglishDescription()
+    {
+        return $this->englishDescription;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setGermanDescription($germanDescription)
+    {
+        $this->germanDescription = $germanDescription;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getGermanDescription()
+    {
+        return $this->germanDescription;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setLocaleDescriptions($localeDescriptions)
+    {
+        // normalize locales
+        $localeDescriptions = array_change_key_case($localeDescriptions);
+
+        $this->setDescription(isset($localeDescriptions['nl']) ? $localeDescriptions['nl'] : '');
+        $this->setEnglishDescription(isset($localeDescriptions['en']) ? $localeDescriptions['en'] : '');
+        $this->setGermanDescription(isset($localeDescriptions['de']) ? $localeDescriptions['de'] : '');
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getLocaleDescription($locale)
+    {
+        $locale = strtolower($locale);
+        switch ($locale) {
+
+            case 'en':
+                $localeDescription = $this->getEnglishDescription();
+                break;
+
+            case 'de':
+                $localeDescription = $this->getGermanDescription();
+                break;
+
+            case 'nl':
+            default:
+                $localeDescription = $this->getDescription();
+                break;
+        }
+
+        return $localeDescription;
     }
 
     /**
@@ -139,42 +742,6 @@ class Region implements RegionServiceEntityInterface
     /**
      * {@InheritDoc}
      */
-    public function setShortDescription($shortDescription)
-    {
-        $this->shortDescription = $shortDescription;
-
-        return $this;
-    }
-
-    /**
-     * {@InheritDoc}
-     */
-    public function getShortDescription()
-    {
-        return $this->shortDescription;
-    }
-
-    /**
-     * {@InheritDoc}
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * {@InheritDoc}
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * {@InheritDoc}
-     */
     public function setMinimumAltitude($minimumAltitude)
     {
         $this->minimumAltitude = $minimumAltitude;
@@ -211,9 +778,9 @@ class Region implements RegionServiceEntityInterface
     /**
      * {@InheritDoc}
      */
-    public function setName($name)
+    public function setTotalLifts($totalLifts)
     {
-        $this->name = $name;
+        $this->totalLifts = $totalLifts;
 
         return $this;
     }
@@ -221,17 +788,17 @@ class Region implements RegionServiceEntityInterface
     /**
      * {@InheritDoc}
      */
-    public function getName()
+    public function getTotalLifts()
     {
-        return $this->name;
+        return $this->totalLifts;
     }
 
     /**
      * {@InheritDoc}
      */
-    public function setAlternativeName($alternativeName)
+    public function setTotalChairLifts($totalChairLifts)
     {
-        $this->alternativeName = $alternativeName;
+        $this->totalChairLifts = $totalChairLifts;
 
         return $this;
     }
@@ -239,9 +806,329 @@ class Region implements RegionServiceEntityInterface
     /**
      * {@InheritDoc}
      */
-    public function getAlternativeName()
+    public function getTotalChairLifts()
     {
-        return $this->alternativeName;
+        return $this->totalChairLifts;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setTotalCabineLifts($totalCabineLifts)
+    {
+        $this->totalCabineLifts = $totalCabineLifts;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getTotalCabineLifts()
+    {
+        return $this->totalCabineLifts;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setTotalSkiTowsLifts($totalSkiTowsLifts)
+    {
+        $this->totalSkiTowsLifts = $totalSkiTowsLifts;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getTotalSkiTowsLifts()
+    {
+        return $this->totalSkiTowsLifts;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setTotalSlopesDistance($totalSlopesDistance)
+    {
+        $this->totalSlopesDistance = $totalSlopesDistance;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getTotalSlopesDistance()
+    {
+        return $this->totalSlopesDistance;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setTotalTrailsDistance($totalTrailsDistance)
+    {
+        $this->totalTrailsDistance = $totalTrailsDistance;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getTotalTrailsDistance()
+    {
+        return $this->totalTrailsDistance;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setTotalBlueSlopes($totalBlueSlopes)
+    {
+        $this->totalBlueSlopes = $totalBlueSlopes;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getTotalBlueSlopes()
+    {
+        return $this->totalBlueSlopes;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setTotalBlueSlopesDistance($totalBlueSlopesDistance)
+    {
+        $this->totalBlueSlopesDistance = $totalBlueSlopesDistance;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getTotalBlueSlopesDistance()
+    {
+        return $this->totalBlueSlopesDistance;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setTotalRedSlopes($totalRedSlopes)
+    {
+        $this->totalRedSlopes = $totalRedSlopes;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getTotalRedSlopes()
+    {
+        return $this->totalRedSlopes;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setTotalRedSlopesDistance($totalRedSlopesDistance)
+    {
+        $this->totalRedSlopesDistance = $totalRedSlopesDistance;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getTotalRedSlopesDistance()
+    {
+        return $this->totalRedSlopesDistance;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setTotalBlackSlopes($totalBlackSlopes)
+    {
+        $this->totalBlackSlopes = $totalBlackSlopes;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getTotalBlackSlopes()
+    {
+        return $this->totalBlackSlopes;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setTotalBlackSlopesDistance($totalBlackSlopesDistance)
+    {
+        $this->totalBlackSlopesDistance = $totalBlackSlopesDistance;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getTotalBlackSlopesDistance()
+    {
+        return $this->totalBlackSlopesDistance;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setTypesCount($typesCount)
+    {
+        $this->typesCount = $typesCount;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getTypesCount()
+    {
+        return $this->typesCount;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setPlacesCount($placesCount)
+    {
+        $this->placesCount = $placesCount;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getPlacesCount()
+    {
+        return $this->placesCount;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setAverageRatings($averageRatings)
+    {
+        $this->averageRatings = $averageRatings;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getAverageRatings()
+    {
+        return $this->averageRatings;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setRatingsCount($ratingsCount)
+    {
+        $this->ratingsCount = $ratingsCount;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getRatingsCount()
+    {
+        return $this->ratingsCount;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setWeatherReportLink($weatherReportLink)
+    {
+        $this->weatherReportLink = $weatherReportLink;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getWeatherReportLink()
+    {
+        return $this->weatherReportLink;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setWebcamLink($webcamLink)
+    {
+        $this->webcamLink = $webcamLink;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getWebcamLink()
+    {
+        return $this->webcamLink;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setSkiRunsMapLink($skiRunsMapLink)
+    {
+        $this->skiRunsMapLink = $skiRunsMapLink;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getSkiRunsMapLink()
+    {
+        return $this->skiRunsMapLink;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setShowOnHomepage($showOnHomepage)
+    {
+        $this->showOnHomepage = $showOnHomepage;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getShowOnHomepage()
+    {
+        return $this->showOnHomepage;
     }
 
     /**
@@ -255,7 +1142,7 @@ class Region implements RegionServiceEntityInterface
     }
 
     /**
-     * {@InheritDoc} 
+     * {@InheritDoc}
      */
     public function getCreatedAt()
     {

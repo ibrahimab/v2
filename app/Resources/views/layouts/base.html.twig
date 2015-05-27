@@ -4,44 +4,65 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
         <meta name="apple-mobile-web-app-title" content="Chalet.nl" />
+        {% block seo %}{% endblock %}
         <title>{% block title %}Chalet.nl{% endblock %}</title>
-        
+
         {% stylesheets 'bundles/app/css/foundation.css'
                        'bundles/app/css/app.css'
+                       'bundles/app/css/slick.css'
+                       'bundles/app/css/jqvmap.css'
                        'bundles/app/foundation-icons/foundation-icons.css'
+					   'bundles/app/css/lightbox.css'
                        '@AppBundle/Resources/assets/css/custom.less' filter='cssrewrite' %}
             <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
-    
+
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" />
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster" />
-    
-        {% javascripts '@AppBundle/Resources/assets/js/vendor/modernizr.js' %}
+
+        {% javascripts 'bundles/app/js/vendor/modernizr.js'
+                       '@AppBundle/Resources/assets/js/chalet.js' %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
-        
+
+        <script type="text/javascript">Chalet.import({{ js_object()|json_encode()|raw }});</script>
+
         {% block stylesheets %}{% endblock %}
-            
+
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+
     </head>
-    {% set _body_id = block('bodyId') %}
-    <body{% if _body_id is not empty %} id="{{ _body_id }}"{% endif %}>
-        
+    {% set _body_id    = block('bodyId') %}
+    {% set _body_class = block('bodyClass') %}
+    <body{% if _body_id is not empty %} id="{{ _body_id }}"{% endif %}{% if _body_class is not empty %} class="{{ _body_class }}"{%endif %}>
+
+        {% include 'partials/header.html.twig' %}
         {% block body %}{% endblock %}
         {% include 'partials/footer.html.twig' %}
-        
-        {% javascripts '@AppBundle/Resources/assets/js/vendor/jquery.js'
-                       '@AppBundle/Resources/assets/js/vendor/jquery.color.js'
-                       '@AppBundle/Resources/assets/js/foundation.min.js'
-                       '@AppBundle/Resources/assets/js/vendor/jquery.placeholder.js'
-                       '@AppBundle/Resources/assets/js/app.js' %}
-                   
+
+        {% javascripts 'bundles/app/js/vendor/jquery.js'
+                       'bundles/app/js/vendor/jquery.color.js'
+                       'bundles/app/js/vendor/jquery.scrollup.js'
+                       'bundles/app/js/vendor/foundation.min.js'
+                       'bundles/app/js/vendor/jquery.placeholder.js'
+                       'bundles/app/js/vendor/foundation/foundation.offcanvas.js'
+                       'bundles/app/js/vendor/jqvmap/jqvmap.js'
+                       'bundles/app/js/vendor/jqvmap/italy.map.js'
+                       'bundles/app/js/vendor/foundation/responsive-tables.js'
+                       'bundles/app/js/vendor/slick.min.js'
+					   'bundles/app/js/vendor/lightbox.min.js'
+                       'bundles/fosjsrouting/js/router.js'
+                       'js/fos_js_routes.js'
+                       'bundles/app/js/layout.js'
+                       '@AppBundle/Resources/assets/js/app.js'
+					   '@AppBundle/Resources/assets/js/maps/italy.js' %}
+
             <script type="text/javascript" src="{{ asset_url }}"></script>
-                   
+
         {% endjavascripts %}
-    
+
         <script async type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"></script>
-        
+
         {% block javascripts %}{% endblock %}
     </body>
 </html>

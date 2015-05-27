@@ -1,0 +1,169 @@
+/**
+ * This file contains custom modifications to the design deliverd by BuroDMG
+ *
+ * @updated_at 2015-03-09 10:40
+ * @version    1.0.0
+ */
+/**
+ * @since 1.0.0
+ */
+@media only screen and (min-width: 40em) {
+  body#home.smallfix div#row-top {
+    min-height: 64px;
+  }
+  body#home.smallfix div#column-logo img {
+    width: 65px;
+  }
+  body#home.smallfix div#column-contact div {
+    padding-top: 0.4rem;
+  }
+  body#home.smallfix div #column-dropdown button {
+    padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+  }
+}
+@media only screen and (min-width: 40rem) and (max-width: 64rem) {
+  body#home.smallfix div#column-dropdown button {
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.5rem 0.5rem 0.7rem;
+  }
+}
+/**
+ * This fixes the max font size problem
+ */
+@media (min-width: 1300px) {
+  #home header #header-usp .title-usp {
+    font-size: 96px;
+  }
+  #home header #header-usp .title-usp span {
+    font-size: 2.4rem;
+  }
+}
+/**
+ * Renaming the sprite flags classes in the CSS to use begincode 
+ * of the country instead of introducing a new field in the database
+ */
+.sprite-flag-O {
+  background-position: -338px -266px;
+  height: 23px;
+  width: 31px;
+}
+.sprite-flag-Z {
+  background-position: -174px -266px;
+  height: 23px;
+  width: 31px;
+}
+.sprite-flag-D {
+  background-position: -215px -266px;
+  height: 23px;
+  width: 31px;
+}
+.sprite-flag-F {
+  background-position: -256px -266px;
+  height: 23px;
+  width: 31px;
+}
+.sprite-flag-I {
+  background-position: -297px -266px;
+  height: 23px;
+  width: 31px;
+}
+/**
+ * Country list on the countries page to align the flags with the text
+ */
+section.area-countries a i {
+  vertical-align: middle;
+  margin-right: 10px;
+}
+section.area-countries {
+  background-color: #dde3ef;
+}
+section.area-countries .columns {
+  margin-bottom: 2rem;
+}
+section.area-countries .accom-desc {
+  padding: 1.03em 0 0 1.03em;
+}
+footer ul li a {
+  vertical-align: middle;
+}
+#column-contact a#contact-chat,
+#column-contact a#opening-hours-contact {
+  text-decoration: underline;
+}
+.active-block {
+  border: 1px solid #d4213b;
+}
+section.landing h2 {
+  font-size: 1.3rem;
+  margin-top: 0;
+  text-align: left;
+}
+.landing-page h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+}
+.landing-page h3 i {
+  margin-left: 5px;
+}
+.landing-page h4,
+.landing-page h5,
+.landing-page h6 {
+  color: #193761;
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-top: 0;
+  text-align: left;
+}
+.place-page h3,
+.region-page h3 {
+  text-align: left;
+}
+.place-page h4,
+.region-page h4 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+}
+ul.landing-details-short li:nth-child(n+4) {
+  display: none;
+}
+ul.landing-details-short li.toggle {
+  cursor: pointer;
+  display: block;
+  border-top: thin solid #bfbfbf;
+}
+ul.landing-details-short li.toggle i {
+  margin: 0 auto;
+  margin-top: 5px;
+  display: block;
+  color: #bfbfbf;
+}
+#scroll-icon {
+  background-image: url("/bundles/app/img/icons/scroll-icon.png");
+  bottom: 20px;
+  right: 20px;
+  width: 38px;
+  height: 38px;
+}
+div.region-block a,
+div.region-block a:hover,
+div.region-block a:active {
+  text-decoration: none;
+  color: #222222;
+}
+.accom-details span.extra {
+  float: none;
+  display: inline-block;
+  text-align: right;
+  width: 100%;
+  font-weight: normal !important;
+}
+ul.destination-regions {
+  list-style-type: none;
+}
+ul.destination-regions li a.hovered-region,
+ul.destination-regions li a:hover {
+  color: #ff9900;
+  text-decoration: none;
+}

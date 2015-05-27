@@ -14,7 +14,9 @@
         "doctrine/orm": "~2.2,>=2.2.3,<2.5",
         "doctrine/dbal": "<2.5",
         "doctrine/doctrine-bundle": "~1.2",
-        "twig/extensions": "~1.0",
+        "doctrine/mongodb-odm": "1.0.0-BETA12",
+        "doctrine/mongodb-odm-bundle": "3.0.0-BETA6",
+        "twig/extensions": "~1.2",
         "symfony/assetic-bundle": "~2.3",
         "symfony/swiftmailer-bundle": "~2.3",
         "symfony/monolog-bundle": "~2.4",
@@ -22,7 +24,9 @@
         "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
         "incenteev/composer-parameter-handler": "~2.0",
         "liip/imagine-bundle": "~1.2",
-        "jms/i18n-routing-bundle": "~1.0"
+        "jms/i18n-routing-bundle": "~1.0",
+        "friendsofsymfony/jsrouting-bundle": "~1.5",
+        "symfony/finder": "~2.6"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",

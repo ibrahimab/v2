@@ -1,7 +1,31 @@
 {% extends 'layouts/base.html.twig' %}
 
+{% block bodyClass %}landing-page{% endblock %}
 {% block body %}
     
-    <h1>Default Main CSS</h1>
+    <!-- header -->
+    <header>
+        <div id="header-container">
+            <div class="row">
+                <div class="small-12 medium-0 large-4 columns">
+                </div>
+                <div class="small-12 medium-12 large-8 columns hide-for-small">
+                    <dl class="sub-nav">
+                        <dd class="sub-home"><a href="{{ path('home') }}"><i class="fi-home"></i></a></dd>
+                        <dd class="sub-search"><a href="zoekboek.html">Zoek en boek</a></dd>
+                        <dd class="sub-skiareas active"><a href="{{ locale_path('show_countries') }}">Skigebieden</a></dd>
+                        <dd class="sub-discount"><a href="">Aanbiedingen</a></dd>
+                    </dl>                    
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!--breadcrumbs -->
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            {% block breadcrumbs %}{% endblock breadcrumbs %}
+        </div>
+    </div>
     
 {% endblock %}
