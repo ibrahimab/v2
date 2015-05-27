@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Document\File;
+use		  AppBundle\Document\BaseRepository;
 use		  AppBundle\Service\Api\File\FileServiceEntityInterface;
 use 	  Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
@@ -11,10 +12,10 @@ use 	  Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  * @package Chalet
  */
 /** @ODM\MappedSuperclass */
-class File implements FileServiceEntityInterface
+class File extends BaseRepository implements FileServiceEntityInterface
 {
 	/**
-	 * @ODM\Id(strategy="AUTO")
+	 * @ODM\Id
 	 */
 	private $_id;
 
@@ -29,13 +30,13 @@ class File implements FileServiceEntityInterface
 
 	/** @ODM\String */
 	private $filename;
-	
+
 	/** @ODM\String */
 	private $label;
 
 	/** @ODM\String */
 	private $directory;
-	
+
 	/** @var string */
 	private $url_prefix;
 
@@ -89,17 +90,17 @@ class File implements FileServiceEntityInterface
 	{
 		return $this->filename;
 	}
-	
+
 	/**
 	 * {@InheritDoc}
 	 */
 	public function setLabel($label)
 	{
 		$this->label = $label;
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * {@InheritDoc}
 	 */
@@ -125,17 +126,17 @@ class File implements FileServiceEntityInterface
 	{
 		return $this->directory;
 	}
-	
+
 	/**
 	 * {@InheritDoc}
 	 */
 	public function setUrlPrefix($urlPrefix)
 	{
 		$this->url_prefix = $urlPrefix;
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * {@InheritDoc}
 	 */
@@ -143,7 +144,7 @@ class File implements FileServiceEntityInterface
 	{
 		return $this->url_prefix;
 	}
-	
+
 	/**
 	 * {@InheritDoc}
 	 */

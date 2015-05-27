@@ -21,6 +21,18 @@ use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
  */
 class PagesController extends Controller
 {
+	/**
+	 * @Route("/test", name="bla")
+	 */
+	public function test()
+	{
+		$normalizingText = 'ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñš';
+		$utilsService = $this->get('service.utils');
+
+		dump($utilsService->normalizeText($normalizingText));
+		exit;
+	}
+
     /**
      * @Route("/", name="home")
      * @Template(":pages:home.html.twig")
