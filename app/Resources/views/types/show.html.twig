@@ -1,0 +1,523 @@
+{% extends 'layouts/default.html.twig' %}
+
+{% set locale                 = get_locale() %}
+{% set accommodation          = type.getAccommodation() %}
+{% set country, region, place = accommodation.getPlace().getCountry(), accommodation.getPlace().getRegion(), accommodation.getPlace() %}
+{% set images                 = type_images(type) %}
+{% set surveyCount            = surveyData.surveys|length %}
+{% set surveyAverage          = surveyData.average|number_format(1, ',', '') %}
+{%
+    set localeData = {
+
+        name: {
+
+            country:       country.getLocaleName(locale),
+            region:        region.getLocaleName(locale),
+            place:         place.getLocaleName(locale),
+            accommodation: accommodation.getLocaleName(locale),
+            type:          type.getLocaleName(locale)
+        },
+        seo:  {
+
+            country: country.getLocaleName(locale),
+            region:  region.getLocaleSeoName(locale),
+            place:   place.getLocaleSeoName(locale)
+        }
+    }
+%}
+
+{% block breadcrumbs %}
+
+    {{
+        breadcrumbs({
+
+            countryName:       localeData['name']['country'],
+            regionName:        localeData['name']['region'],
+            placeName:         localeData['name']['place'],
+            accommodationName: localeData['name']['accommodation']
+
+        }, {
+
+            countrySlug: localeData['seo']['country'],
+            regionSlug:  localeData['seo']['region'],
+            placeSlug:   localeData['seo']['place'],
+        })
+    }}
+
+{% endblock %}
+
+{% block body %}
+
+    {{ parent() }}
+
+    <section id="accom" class="discount">
+        <div class="row">
+            <div id="accom-left" class="small-12 medium-8 large-9 columns">
+                <div class="overview sale">
+                    <div class="accom-desc">
+                        <h1>{{ ('type.kind.' ~ accommodation.getKindIdentifier() )|trans ~ ' ' ~ localeData['name']['accommodation'] }}</h1>
+                        <div class="location">
+                            <span class="area"><a href="{{ locale_path('show_region', { regionSlug: localeData['seo']['region'] }) }}" title="{{ localeData['name']['region'] }}">{{ localeData['name']['region'] }}</a></span>, <span class="city"><a href="{{ locale_path('show_place', { placeSlug: localeData['seo']['place'] }) }}" title="{{ localeData['name']['place'] }}">{{ localeData['name']['place'] }}</a></span>, <span class="country"><a href="{{ locale_path('show_country', { countrySlug: localeData['seo']['country'] } ) }}" title="{{ localeData['name']['country'] }}">{{ localeData['name']['country'] }}</a></span>
+                        </div>
+                        <div class="type">{% if localeData['name']['type'] is not empty %}<h3>{{ localeData['name']['type'] }}</h3>{% endif %}<a href="#types-other" class="goto" title="Bekijk alle foto's">Overige type's</a></div>
+                        <div class="accom-img">
+                            <div class="accom-slides show-for-small">
+                                <div><a href=""><img data-lazy="/bundles/app/img/accom/accom-2.jpg" alt="" /></a></div>
+                                <div><a href=""><img data-lazy="/bundles/app/img/accom/accom-1.jpg" alt="" /></a></div>
+                                <div><a href=""><img data-lazy="/bundles/app/img/accom/accom-3.jpg" alt="" /></a></div>
+                                <div><a href=""><img data-lazy="/bundles/app/img/accom/accom-4.jpg" alt="" /></a></div>
+                            </div>
+                            <div class="accom-img-big-1 row hide-for-small">
+                                {% for image in images['above'] %}
+
+                                    {% if loop.index == 1 %}
+
+                                        <div class="large-8 medium-8 columns">
+                                            <a href="{{ image.getLocation() }}" data-lightbox="Afbeeldingen accommodatie"{% if image.getLabel() %}data-lightbox-title="image.getLabel()"{% endif %}><img src="{{ image.getLocation() }}" alt="" /></a>
+                                        </div>
+                                        <div class="large-4 medium-4 column">
+
+                                    {% else %}
+
+                                        <a href="{{ image.getLocation() }}" data-lightbox="Afbeeldingen accommodatie"{% if image.getLabel() %}data-lightbox-title="image.getLabel()"{% endif %}><img src="{{ image.getLocation() }}" alt="" /></a>
+
+                                    {% endif %}
+
+                                {% endfor %}
+                                {% if images['above']|length > 0 %}
+                                        </div>
+                                {% endif %}
+                            </div>
+                            <div class="circle"><span>Aan-</span><span>bieding</span></div>
+                            <a href="#images" class="button goto blank small radius" title="Bekijk alle foto's"><i class="fi-photo"></i>Bekijk alle foto's</a><!--class goto-->
+                            <div id="details-for-mobile" class="show-for-small-99">
+                            </div>
+                        </div>
+                        <h2>{{ type.getLocaleShortDescription(locale) ? type.getLocaleShortDescription(locale) : accommodation.getLocaleShortDescription(locale) }}</h2>
+                        <ul class="inline-list">
+                            {% set features     = type.getFeatures() ? type.getFeatures() : accommodation.getFeatures() %}
+                            {% set featuresList = features.get(accommodation.getSeason()) %}
+                            {% for feature in featuresList %}
+                            <li>{{ feature|trans }}</li>
+                            {% endfor %}
+                        </ul>
+                        <p>{{ (type.getLocaleDescription(locale) ? type.getLocaleDescription(locale) : accommodation.getLocaleDescription(locale))|nl2br }}</p>
+                    </div>
+
+                    <div id="mapping" class="mapping">
+                        <h3>{{ 'layout'|trans|capitalize }}</h3>
+                        <div class="text">
+                            <p>{{ (type.getLocaleLayout(locale) ? type.getLocaleLayout(locale) : accommodation.getLocaleLayout(locale))|nl2br }}</p>
+                        </div>
+                    </div>
+
+                    <div id="price-availability">
+                        <h3>Prijs &amp; beschikbaarheid</h3>
+                        <div class="row">
+                            <div class="small-12 medium-6 large-6 columns">
+                                <p>In euro’s, per accomodatie, inclusief skipas</p>
+                            </div>
+                            <div class="small-6 medium-3 large-3 columns">
+                                <i class="sprite sprite-icon-data-not-available">Niet beschikbaar</i>
+                            </div>
+                            <div class="small-6 medium-3 large-3 columns">
+                                <i class="sprite sprite-icon-data-discount-type">Aanbiedingsprijs</i>
+                            </div>
+                        </div>
+                        <div id="types-nav">
+                            <a href="#next" class="next"></a>
+                            <a href="#prev" class="prev"></a>
+                        </div>
+                        <table class="responsive">
+                            <tr>
+                                <th>&nbsp;</th>
+                                <th colspan="4" id="feb">Februari 2015</th>
+                                <th colspan="4" id="mrt">Maart 2015</th>
+                                <th colspan="4" id="apr">April 2015</th>
+                                <th colspan="5" id="may">Mei 2015</th>
+                            </tr>
+                            <tr>
+                                <td>Aankomstdatum</td>
+                                <td>07</td>
+                                <td>14</td>
+                                <td>21</td>
+                                <td>28</td>
+                                <td>07</td>
+                                <td>14</td>
+                                <td>21</td>
+                                <td>28</td>
+                                <td>04</td>
+                                <td>11</td>
+                                <td>18</td>
+                                <td>25</td>
+                                <td>02</td>
+                                <td>09</td>
+                                <td>16</td>
+                                <td>23</td>
+                                <td>30</td>
+                            </tr>
+                            <tr>
+                                <td>Aankomstdag</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                                <td>za</td>
+                            </tr>
+                            <tr>
+                                <td>Aantal nachten</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td>7</td>
+                            </tr>
+                            <tr class="percentage data">
+                                <td><strong>Accomodatiekorting</strong></td>
+                                <td>20%</td>
+                                <td>&nbsp;</td>
+                                <td>10%</td>
+                                <td>30%</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>20%</td>
+                                <td>30%</td>
+                                <td>&nbsp;</td>
+                                <td>20%</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>30%</td>
+                                <td>30%</td>
+                                <td>30%</td>
+                            </tr>
+                            <tr class="data">
+                                <td><strong>8 personen</strong></td>
+                                <td><strong>325</strong></td>
+                                <td>315</td>
+                                <td><strong>325</strong></td>
+                                <td><strong>325</strong></td>
+                                <td>&nbsp;</td>
+                                <td>380</td>
+                                <td>370</td>
+                                <td>360</td>
+                                <td><strong>325</strong></td>
+                                <td><strong>325</strong></td>
+                                <td>350</td>
+                                <td><strong>325</strong></td>
+                                <td>320</td>
+                                <td>315</td>
+                                <td><strong>325</strong></td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="data">
+                                <td><strong>10 personen</strong></td>
+                                <td><strong>325</strong></td>
+                                <td>325</td>
+                                <td><strong>325</strong></td>
+                                <td><strong>325</strong></td>
+                                <td>390</td>
+                                <td>380</td>
+                                <td>370</td>
+                                <td>360</td>
+                                <td><strong>325</strong></td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>310</td>
+                                <td>315</td>
+                                <td>325</td>
+                                <td>335</td>
+                                <td>345</td>
+                            </tr>
+                            <tr class="data">
+                                <td><strong>12 personen</strong></td>
+                                <td><strong>325</strong></td>
+                                <td>480</td>
+                                <td><strong>325</strong></td>
+                                <td><strong>325</strong></td>
+                                <td>450</td>
+                                <td>440</td>
+                                <td>440</td>
+                                <td>460</td>
+                                <td><strong>325</strong></td>
+                                <td><strong>325</strong></td>
+                                <td>440</td>
+                                <td><strong>325</strong></td>
+                                <td>410</td>
+                                <td>415</td>
+                                <td><strong>325</strong></td>
+                                <td><strong>325</strong></td>
+                                <td><strong>325</strong></td>
+                            </tr>
+                        </table>
+                        <div class="row">
+                            <div class="small-12 medium-12 large-12 columns">
+                                <a href="" class="button small orange radius right" title="Boek nu">Boek nu</a>
+                                <a href="" class="button small radius right" title="Optie aanvragen">Optie aanvragen</a>
+                            </div>
+                        </div>
+                        <div id="types-inex" class="row">
+                            <div class="large-6 columns">
+                                <p>Inclusief</p>
+                                <ul>
+                                    <li>6-daagse skipas Alpe d'Huez / Grand Domaine (250 km piste)</li>
+                                    <li>Water en elektra.</li>
+                                    <li>Eén kinderbed en kinderstoel aanwezig.</li>
+                                </ul>
+                                <p>Verplicht te voldoen</p>
+                                <ul>
+                                    <li>Borg (&euro; 400,- contant te voldoen) en toeristenbelasting.</li>
+                                    <li>Bedlinnen (zelf te verzorgen of te huur: &euro; 14,- p.p., opgeven bij reservering).</li>
+                                    <li>Handdoeken (zelf te verzorgen of te huur: &euro; 8,- per set, opgeven bij reservering).</li>
+                                    <li>Keukenlinnen (zelf te verzorgen). Huisdieren zijn op aanvraag toegestaan (&euro; 35,- per dier per verblijf).</li>
+                                    <li>Eindschoonmaak: &euro; 150,- verplicht ter plaatse te voldoen.</li>
+                                    <li>Reserveringskosten (&euro; 20,- per boeking).</li>
+                                </ul>
+                            </div>
+                            <div class="large-6 columns">
+                                <p>Optioneel</p>
+                                <ul>
+                                    <li>Gebruik fitness (tegen betaling)</li>
+                                    <li>Gebruik wellness (tegen betaling)</li>
+                                    <li>Bekijk ook onze extra opties</li>
+                                </ul>
+                                <p>Diversen</p>
+                                <ul>
+                                    <li>Ontvangst ter plaatse</li>
+                                    <li>Ligging van de accommodatie</li>
+                                    <li>Comfort / inrichting</li>
+                                    <li>Hygiene / schoonmaak</li>
+                                    <li>Faciliteiten in en rondom de accommodatie</li>
+                                    <li>Prijs / kwaliteitverhouding</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="extras" class="extras">
+                        <div class="small-12 medium-8 large-9 columns">
+                            <h3>Extra opties winter 2014/2015</h3>
+                        </div>
+                        <div class="small-12 medium-4 large-3 columns">
+                            <select class="radius">
+                                <option value="1">zaterdag 7 maart</option>
+                                <option value="2">zaterdag 14 maart</option>
+                            </select>
+                        </div>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th><span class="price has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide prijsinformatie bij Ski's volwassen]">Ski's volwassen<i class="fi-info"></i></span></th>
+                                        <th>Prijs</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Huur Bronze Schoenen</td>
+                                        <td>&euro; 27,50</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Huur Bronze Ski's + Stokken</td>
+                                        <td>&euro; 57,50</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Huur Bronze Ski's + Schoenen + Stokken</td>
+                                        <td>&euro; 75,-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-wrapper hide"><!-- class hide-->
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th><span class="price has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide prijsinformatie bij Snowboard Volwassenen]">Snowboard Volwassenen<i class="fi-info"></i></span></th>
+                                        <th>Prijs</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Zilver Boots</td>
+                                        <td>&euro; 35,-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Zilver Snowboard</td>
+                                        <td>&euro; 72,50</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Zilver Snowboard + Boots</td>
+                                        <td>&euro; 92,-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Goud Boots</td>
+                                        <td>&euro; 45,-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Goud Snowboard</td>
+                                        <td>&euro; 82,50</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Goud Snowboard + Boots</td>
+                                        <td>&euro; 102,-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="readmore"><a href="" class="button blank small radius" title="Toon alle extra opties" data-open-title="Toon alle extra opties" data-close-title="Verberg extra opties"><i class="sprite sprite-icon-close-all"></i><span>Toon alle extra opties</span></a><a href="" class="button small radius right" title="Prijs berekenen">Prijs berekenen</a></div>
+                    </div>
+
+                    <div id="types-other" class="table-wrapper">
+                        <h3>Overige types van deze accommodatie</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th><span>Per</span>sonen</th>
+                                    <th><span>Slaap</span>kamers</th>
+                                    <th><span>Bad</span>kamers</th>
+                                    <th>Type</th>
+                                    <th>Beoordeling (#)</th>
+                                    <th>&nbsp;</th>
+                                    <th><span>Prijs accom</span>modatie</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% set types = accommodation.getTypes().toArray() %}
+                                {% set l = types|sortprop('name') %}
+                                {% for t in types %}
+                                <tr><!-- notice this row is in discount -->
+                                    <td><i class="sprite sprite-icon-torso"></i>{{ (t.getOptimalResidents() == t.getMaxResidents() ? t.getOptimalResidents() : (t.getOptimalResidents() ~ ' - ' ~ t.getMaxResidents())) }}</td>
+                                    <td><i class="sprite sprite-icon-sleep"></i>{{ t.getBedrooms() ~ (t.getLocaleBedroomsExtra(locale) != '' ? (' ' ~ t.getLocaleBedroomsExtra(locale)) : '') }}</td>
+                                    <td><i class="sprite sprite-icon-bath"></i>{{ t.getBathrooms() ~ (t.getLocaleBathroomsExtra(locale) != '' ? (' ' ~ t.getLocaleBathroomsExtra(locale)) : '') }}</td>
+                                    <td>{{ t.getLocaleName(locale) }}</td>
+                                    <td><span>8,5</span>(11)</td>
+                                    <td><i class="sprite sprite-icon-discount"></i></td>
+                                    <td>&euro; 295,-<i class="fi-info"></i></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {% include 'partials/surveys.html.twig' with {'surveyData': surveyData, 'surveyCount': surveyCount, 'surveyAverage': surveyAverage, 'minimalSurveyCount': minimalSurveyCount} only %}
+
+                    <div id="images" class="images">
+                        <h3>Foto's</h3>
+                        <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-2">
+                            {% for image in images['below'] %}
+                                <li><a href="{{ image.getLocation() }}"{% if image.getLabel() %}data-lightbox-title="image.getLabel()"{% endif %} class="th" data-lightbox="Afbeeldingen accommodatie"><img src="{{ image.getLocation() }}" alt="" /></a></li>
+                            {% endfor %}
+                        </ul>
+                        <div class="hide">
+                            <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
+                                {% for image in images['rest'] %}
+                                    <li><a href="{{ image.getLocation() }}"{% if image.getLabel() %}data-lightbox-title="image.getLabel()"{% endif %} class="th" data-lightbox="Afbeeldingen accommodatie"><img src="{{ image.getLocation() }}" alt="" /></a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="readmore"><a href="" class="button blank small radius" title="Toon meer foto's" data-open-title="Toon meer foto's" data-close-title="Verberg foto's"><i class="sprite sprite-icon-close-all"></i><span>Toon meer foto's</span></a></div>
+                    </div>
+
+                    <div id="map" class="map">
+                        <h3>Ligging</h3>
+                        <div data-role="google-maps" class="google-maps"></div>
+                        <div class="readmore"><a href="" class="button blank small radius" title="Bekijk al onze accommodaties in dit gebied" data-open-title="Bekijk al onze accommodaties in dit gebied" data-close-title="Verberg al onze accommodaties in dit gebied"><i class="sprite sprite-icon-close-all"></i><span>Bekijk al onze accommodaties in dit gebied</span></a></div>
+                    </div>
+                </div>
+            </div>
+            <div id="accom-right" class="small-12 medium-4 large-3 columns">
+                <div id="accom-main-box-container">
+                    <div id="accom-main-box">
+                        <div class="price-details">
+                            <span class="price-info">Prijs per persoon per week, vanaf</span>
+                            <span class="price has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide prijsinformatie bij dit zoekresultaat]">&euro; 1.265,-<i class="fi-info"></i></span>
+                            <span class="price-inc"><i class="sprite sprite-icon-skipass"></i>Inclusief 6daagse skipas</span>
+                        </div>
+                        <hr />
+                        <ul class="accom-details">
+                            <li>Personen<span>{{ ( type.getOptimalResidents() == type.getMaxResidents() ? type.getOptimalResidents() : (type.getOptimalResidents() ~ ' - ' ~ type.getMaxResidents()) ) }}<i class="sprite sprite-icon-torso"></i></span></li>
+                            <li>Slaapkamers<span>{{ type.getBedrooms() }}<i class="sprite sprite-icon-sleep"></i></span>{% if type.getLocaleBedroomsExtra(locale) != '' %}<span class="extra">({{ type.getLocaleBedroomsExtra(locale) }})</span>{% endif %}</span></li>
+                            <li>Badkamers<span>{{ type.getBathrooms() }}<i class="sprite sprite-icon-bath"></i></span>{% if type.getLocaleBathroomsExtra(locale) != '' %}<span class="extra">({{ type.getLocaleBathroomsExtra(locale) }})</span>{% endif %}</li>
+                            <li>Oppervlakte<span>{{ type.getSurface() }} m&sup2;{% if type.getLocaleSurfaceExtra(locale) != '' %} - {{ type.getLocaleSurfaceExtra(locale) }}&sup2;{% endif %}<i class="sprite sprite-icon-surface"></i></span></li>
+                        </ul>
+                        <div class="rating">
+                            <span class="stars has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide informatie bij klassering]">{% include 'partials/quality_stars.html.twig' with {quality: (type.getQuality() > 0 ? type.getQuality() : accommodation.getQuality())} only %}<i class="fi-info"></i></span>
+                            {% if surveyCount > minimalSurveyCount %}
+                                <span class="rate">{{ surveyAverage  }}</span> (<a href="#reviews" class="goto" title="Bekijk beoordelingen">{{ surveyCount }} beoordelingen</a>)
+                            {% endif %}
+                        </div>
+                        <hr />
+                        <a href="" class="button large radius" title="Boek nu">Boek nu</a>
+                        <div class="social-buttons">
+                            <a href="" class="button social fb tiny radius" title="Like"><i class="fi-social-facebook"></i>Deel</a>
+                            <a href="" class="button social tw tiny radius" title="Tweet"><i class="fi-social-twitter"></i>Tweet</a>
+                            <a href="" class="button social ml tiny radius" title="Mail"><i class="fi-mail"></i>Mail</a>
+                            <div class="heart"><a href="" class="button social tiny radius" title="Dit resultaat opslaan in mijn favorieten"><i class="fi-heart"></i>Favoriet</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="accom-village">
+                    <div class="location">
+                        <span class="city">Skidorp: {{ localeData['name']['place'] }}</span>
+                        <span class="area"><a href="{{ locale_path('show_region', { regionSlug: localeData['seo']['region'] }) }}" title="{{ localeData['name']['region'] }}">{{ localeData['name']['region'] }}</a></span>, <span class="country"><a href="{{ locale_path('show_country', { countrySlug: localeData['seo']['country'] }) }}" title="{{ localeData['name']['country'] }}">{{ localeData['name']['country'] }}</a></span>
+                        <span class="mountain"><i class="sprite sprite-icon-mountain"></i> ligt op <em>{{ place.getAltitude() }} meter</em> hoogte</span>
+                        <span class="distance"><i class="fi-compass fi-gray"></i><em>{{ place.getDistanceFromUtrecht() }} km</em> van Utrecht</span>
+                    </div>
+                    <div class="hide-for-small"><!-- class hide-for-small-->
+                        <img src="{{ place_image(place).getLocation() }}" alt="{{ localeData['name']['place'] }}" />
+                        <div class="text">
+                            <p>{{ place.getLocaleShortDescription(locale) }}</p>
+                        </div>
+                    </div>
+                    <a href="{{ locale_path('show_place', { placeSlug: localeData['seo']['place'] }) }}" title="Meer informatie" class="more">Meer informatie</a>
+                </div>
+                <div id="accom-area">
+                    <div class="location">
+                        <span class="city">Skigebied: {{ localeData['name']['region'] }}</span>
+                        {% if region.getMinimumAltitude() == region.getMaximumAltitude() %}
+                            <span class="mountain"><i class="sprite sprite-icon-mountain"></i>ligt op <em>{{ region.getMinimumAltitude() }} meter</em> hoogte</span>
+                        {% else %}
+                            <span class="mountain"><i class="sprite sprite-icon-mountain"></i>ligt tussen <em>{{ region.getMinimumAltitude() }} en {{ region.getMaximumAltitude() }} meter</em> hoogte</span>
+                        {% endif %}
+                        <span class="piste"><i class="sprite sprite-icon-pistes"></i><em>{{ region.getTotalSlopesDistance() }} km</em> pistes</span>
+                    </div>
+                    <div class="hide-for-small"><!-- class hide-for-small-->
+                        <img src="{{ region_image(region).getLocation() }}" alt="{{ localeData['name']['region'] }}" />
+                        <div class="text">
+                            <p>{{ region.getLocaleShortDescription(locale) }}</p>
+                        </div>
+                    </div>
+                    <a href="{{ locale_path('show_region', { regionSlug: localeData['seo']['region'] }) }}" title="Meer informatie" class="more">Meer informatie</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

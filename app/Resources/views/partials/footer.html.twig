@@ -18,15 +18,15 @@
         <div class="large-3 medium-3 columns">
             <h4>Meer informatie</h4>
             <ul>
-                <li><a href="">Over ons</a></li>
-                <li><a href="">Verzekeringen</a></li>
-                <li><a href="">Blog</a></li>
-                <li><a href="">Contact</a></li>
-                <li><a href="">Veel gestelde vragen</a></li>
-                <li><a href="">Algemene voorwaarden</a></li>
-                <li><a href="">Disclaimer</a></li>
-                <li><a href="">Privacy-statement</a></li>
-                <li><a href="">Sitemap</a></li>
+                <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('page_about') }}">{{ 'about'|trans }}</a></li>
+                <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('page_insurances') }}">{{ 'insurances'|trans }}</a></li>
+                <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('blog') }}">{{ 'blog'|trans }}</a></li>
+                <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('contact') }}">{{ 'contact'|trans }}</a></li>
+                <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('page_faq') }}">{{ 'faq'|trans }}</a></li>
+                <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('page_terms') }}">{{ 'terms'|trans }}</a></li>
+                <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('page_disclaimer') }}">{{ 'disclaimer'|trans }}</a></li>
+                <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('page_privacy') }}">{{ 'privacy'|trans }}</a></li>
+                <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('sitemap') }}">{{ 'sitemap'|trans }}</a></li>
             </ul>
         </div>
         <div class="large-3 medium-3 columns">
@@ -38,7 +38,7 @@
             <h4>Lid SGR-Garantiefonds</h4>
             <i class="sprite sprite-logo-sgr-footer"></i>
             <h4>Reviews</h4>
-            <img src="http://placehold.it/226x150&text=Trustpilot" alt="Reviews" />
+            <div class="trustpilot-widget" data-locale="nl-NL" data-template-id="53aa8807dec7e10d38f59f32" data-businessunit-id="4f3bde44000064000512e75b" data-style-height="100%" data-style-width="216px" data-theme="light"></div>
         </div>
         <div class="large-3 medium-3 columns">
             <h4>Social media</h4>
@@ -57,6 +57,10 @@
             </div>
         </div>
     </div>
+    {% set france      = 'france'|trans %}
+    {% set austria     = 'austria'|trans %}
+    {% set switzerland = 'switzerland'|trans %}
+    {% set italy       = 'italy'|trans %}
     <section id="footer-links" class="hide-for-small">
         <div class="row">
             <div class="large-3 medium-3 columns">
@@ -64,7 +68,7 @@
                 <ul>
                     <li><i class="sprite sprite-blue-arrow"></i><a href="">Kerst in de sneeuw</a></li>
                     <li><i class="sprite sprite-blue-arrow"></i><a href="">Aan de piste</a></li>
-                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Winterwelness</a></li>
+                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Winterwellness</a></li>
                     <li><i class="sprite sprite-blue-arrow"></i><a href="">Gemak van catering</a></li>
                     <li><i class="sprite sprite-blue-arrow"></i><a href="">Prive sauna</a></li>
                     <li><i class="sprite sprite-blue-arrow"></i><a href="">Grote groepen</a></li>
@@ -74,30 +78,30 @@
             <div class="large-3 medium-3 columns">
                 <h4>Onze bestemmingen</h4>
                 <ul>
-                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Wintersport in Frankrijk</a></li>
-                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Wintersport in Oostenrijk</a></li>
-                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Wintersport in Zwitserland</a></li>
-                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Wintersport in Italie</a></li>
+                    <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('show_country', { countrySlug: france }) }}">Wintersport in {{ france }}</a></li>
+                    <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('show_country', { countrySlug: austria }) }}">Wintersport in {{ austria }}</a></li>
+                    <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('show_country', { countrySlug: switzerland }) }}">Wintersport in {{ switzerland }}</a></li>
+                    <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('show_country', { countrySlug: italy }) }}">Wintersport in {{ italy }}</a></li>
                 </ul>
             </div>
             <div class="large-3 medium-3 columns">
                 <h4>Populaire skigebieden</h4>
                 <ul>
-                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Wintersport in Les Trois Vallee</a></li>
-                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Wintersport in Les Arcs / Paradiski</a></li>
-                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Wintersport in Zillertal</a></li>
-                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Wintersport in Zell am See / Kaprun</a></li>
-                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Wintersport in Les Deux Alpes</a></li>
+                    <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('show_region', { regionSlug: 'Les-Trois-Vallees' }) }}">Wintersport in Les Trois Vall&eacute;es</a></li>
+                    <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('show_region', { regionSlug: 'Paradiski-Les-Arcs' }) }}">Wintersport in Les Arcs / Paradiski</a></li>
+                    <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('show_region', { regionSlug: 'Zillertal' } )}}">Wintersport in Zillertal</a></li>
+                    <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('show_region', { regionSlug: 'Zell-am-See-Kaprun' } ) }}">Wintersport in Zell am See / Kaprun</a></li>
+                    <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('show_region', { regionSlug: 'Les-Deux-Alpes' }) }}">Wintersport in Les Deux Alpes</a></li>
                 </ul>
             </div>
             <div class="large-3 medium-3 columns">
                 <h4>Populaire skidorpen</h4>
                 <ul>
-                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Wintersport in Koningsleiten</a></li>
-                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Wintersport in Zell am See</a></li>
-                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Wintersport in Val Thorens</a></li>
-                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Wintersport in Chatel</a></li>
-                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Wintersport in Les Menuires</a></li>
+                    <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('show_place', { placeSlug: 'Konigsleiten' } ) }}">Wintersport in K&ouml;nigsleiten</a></li>
+                    <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('show_place', { placeSlug: 'Zell-am-See' }) }}">Wintersport in Zell am See</a></li>
+                    <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('show_place', { placeSlug: 'Val-Thorens' }) }}">Wintersport in Val Thorens</a></li>
+                    <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('show_place', { placeSlug: 'Chatel' }) }}">Wintersport in Ch&acirc;tel</a></li>
+                    <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('show_place', { placeSlug: 'Les-Menuires' }) }}">Wintersport in Les Menuires</a></li>
                 </ul>
             </div>
         </div>

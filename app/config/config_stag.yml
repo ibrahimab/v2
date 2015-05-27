@@ -1,0 +1,9 @@
+imports:
+    - { resource: config_dev.yml }
+
+framework:
+    router:
+        resource: "%kernel.root_dir%/config/routing_stag.yml"
+
+assetic:
+    use_controller: false

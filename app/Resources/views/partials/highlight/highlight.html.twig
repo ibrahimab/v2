@@ -1,0 +1,29 @@
+{% set locale = get_locale() %}
+<div class="small-{{ small_size|default(12) }} medium-{{ medium_size|default(4) }} large-{{ large_size|default(4) }} columns {% if end == true %}end{% endif %}">
+    <article class="overview sale" data-equalizer-watch>
+        <div class="accom-img">
+            <a href="{{ locale_path('show_type', { beginCode: place.getCountry().getStartCode(), typeId: highlight.type.id }) }}"><img src="{{ type_image(highlight.type).getLocation() }}" alt="{{ highlight.type.accommodation.getLocaleName(locale) }}" /></a>
+            <div class="circle"><span>Aan-</span><span>bieding</span></div>
+            <div class="heart"><a href="" title="Dit resultaat opslaan in mijn favorieten"><i class="fi-heart"></i></a></div>
+            {% set surveyCount = highlight.type.surveyCount %}
+            {% if surveyCount > 1 %}
+                <div class="rating"><span class="figure">{{ highlight.type.surveyAverageOverallRating }}</span><span class="reviews-number">{{ surveyCount }} <a href="">{{ 'ratings'|trans }}</a></span></div>
+            {% endif %}
+        </div>
+        <div class="accom-desc">
+            <div class="title">
+                <a href="{{ locale_path('show_type', { beginCode: place.getCountry().getStartCode(), typeId: highlight.type.id }) }}">{{ ('type.kind.' ~ highlight.type.accommodation.kindIdentifier)|trans ~ ' ' ~ highlight.type.accommodation.getLocaleName(locale) ~ ' ' ~ highlight.type.getLocaleName(locale) }}</a>
+                <span>
+                    {% set quality = (highlight.type.getQuality() > 0 ? highlight.type.getQuality() : highlight.type.accommodation.getQuality()) %}
+                    {% include 'partials/quality_stars.html.twig' with {quality: quality} only %}
+                </span>
+            </div>
+            <div class="location"><span class="city"><a href="{{ locale_path('show_place', { placeSlug: place.getLocaleSeoName(locale) }) }}" title="{{ place.getLocaleName(locale) }}">{{ place.getLocaleName(locale) }}</a></span>, <span class="area"><a href="{{ locale_path('show_region', { regionSlug: place.region.getLocaleSeoName(locale) }) }}" title="{{ place.region.getLocaleName(locale) }}">{{ place.region.getLocaleName(locale) }}</a></span>, <span class="country"><a href="{{ locale_path('show_country', { countrySlug: place.country.getLocaleName(locale) }) }}" title="{{ place.country.getLocaleName(locale) }}">{{ place.country.getLocaleName(locale) }}</a></span></div>
+            {% if highlight.type.optimalResidents is same as(highlight.type.maxResidents) %}
+                <div class="persons"><i class="fi-torso"></i>{{ 'homepage.highlight.suitable-for-max'|trans({'%maximum%': highlight.type.maxResidents}) }}</div>
+            {% else %}
+                <div class="persons"><i class="fi-torso"></i>{{ 'homepage.highlight.suitable-for'|trans({'%optimal%': highlight.type.optimalResidents, '%maximum%': highlight.type.maxResidents}) }}</div>
+            {% endif %}
+        </div>
+    </article>
+</div>

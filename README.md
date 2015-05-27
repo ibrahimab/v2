@@ -1,6 +1,4 @@
-# Chalet.nl V2 CHANGELOG
+# Chalet.nl V2 README
 ================================================
 
-## 1.0.0 / 2015-03-06
-
-* Initial commit, setting up symfony
+- First release on 2014-05-27

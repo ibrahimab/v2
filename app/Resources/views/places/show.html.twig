@@ -1,0 +1,58 @@
+{% extends 'layouts/default.html.twig' %}
+
+{% block breadcrumbs %}
+    {{ 
+        breadcrumbs({
+            countryName: country.getLocaleName(get_locale()),
+            regionName:  region.getLocaleName(get_locale()),
+            placeName:   place.getLocaleName(get_locale())
+        }, {
+            countrySlug: country.getLocaleName(get_locale()),
+            regionSlug:  region.getLocaleSeoName(get_locale())
+        })
+    }}
+{% endblock %}
+
+{% block body %}
+    
+    {{ parent() }}
+    
+    <!-- content -->
+    <section class="landing place-page">
+        <div class="row" id="area-specs"><!-- id="area-specs" -->
+            <h1>{{ 'Wintersport'|trans }} {{ place.getLocaleName(get_locale()) }}</h1>
+        </div>
+        <div class="row">
+            <div class="large-8 medium-8 columns">
+                <h2>{{ place.getLocaleShortDescription(get_locale())|nl2br }}</h2>
+                <p>{{ place.getLocaleDescription(get_locale())|nl2br }}</p>
+                <h3 class="header-button">
+                    <a href="{{ locale_path('show_place', {placeSlug: place.getLocaleName(get_locale())}) }}" class="button small radius" title="Bekijk het gehele aanbod">Bekijk al onze chalets en appartementen in {{ place.getLocaleName(get_locale()) }}</a>
+                </h3>
+            </div>
+            <div class="large-4 medium-4 columns">
+                <h5>{{ 'features'|trans }} {{ place.getLocaleName(get_locale()) }}</h5>
+                <ul class="landing-details">
+                    <li>{{ 'chalets-apartments'|trans|capitalize }}<span>{{ place.getTypesCount() }}</span></li>
+                    <li>{{ 'average-rating'|trans }}<span>{{ place.getAverageRatings() }}</span></li>
+                    <li>{{ 'ratings'|trans }}<span>{{ place.getRatingsCount() }}</span></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <section id="area-selected" class="place-page">
+        
+        <h4>{{ 'Hoogtepunten uit ons aanbod in ' ~ place.getLocaleName(get_locale()) }}</h4>
+        
+        <div class="row">
+            {% for type in types %}
+            
+                {% include 'partials/highlight/highlight.html.twig' with { 'highlight': { 'type': type }, place: place, 'end': ( ((loop.index % 3) is same as(0)) or loop.last ) } only %}
+            
+            {% endfor %}
+        </div>
+        
+    </section>
+    
+{% endblock %}

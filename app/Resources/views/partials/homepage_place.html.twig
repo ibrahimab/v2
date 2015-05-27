@@ -1,0 +1,10 @@
+<article class="overview" data-equalizer-watch>
+    <div class="accom-img">
+        <img src="{{ place_image(place).getLocation() }}" alt="" />
+    </div>
+    <div class="accom-desc">
+        <div class="title"><a href="{{ locale_path('show_place', {placeSlug: place.getLocaleSeoName(get_locale())}) }}">{{ place.getLocaleName(get_locale()) }}</a></div>
+        <div class="chalets"><i class="sprite sprite-gray-chalet"></i>{{ place.getTypesCount() }} chalets en appartementen</div>
+        <div class="mountain"><i class="sprite sprite-gray-mountain"></i>Ligt op {{ place.getAltitude() }} meter hoogte</div>
+    </div>
+</article>

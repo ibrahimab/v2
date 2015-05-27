@@ -1,0 +1,18 @@
+<!-- content -->
+<section id="results-selected">
+    <div class="row">
+        <div class="large-12 columns">
+            <h2>{{ "homepage.highlights"|trans }}</h2>
+        </div>
+    </div>
+    <div class="row" data-equalizer><!-- each row contains 3 accom -->
+        {% for highlight in highlights %}
+            {% include 'partials/highlight/highlight.html.twig' with {'highlight': highlight, 'place': highlight.type.accommodation.place, 'end': ( ((loop.index % 3) is same as(0)) or loop.last ) } only %}
+        {% endfor %}
+    </div>
+    <div class="row">
+        <div class="large-12 centered columns">
+            <a href="zoekboek.html" class="button small radius" title="Bekijk het gehele aanbod">Bekijk het gehele aanbod</a>
+        </div>
+    </div>
+</section>

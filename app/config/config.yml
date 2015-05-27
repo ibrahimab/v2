@@ -2,10 +2,11 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: app.yml }
 
 framework:
     #esi:             ~
-    #translator:      { fallbacks: ["%locale%"] }
+    translator:      { fallbacks: ["%locale%"] }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -53,6 +54,10 @@ doctrine:
         user:     "%database_user%"
         password: "%database_password%"
         charset:  UTF8
+        types:
+            features_type: AppBundle\Doctrine\DBAL\Types\FeaturesTypeType
+            features_accommodation: AppBundle\Doctrine\DBAL\Types\FeaturesAccommodationType
+            timestamp: AppBundle\Doctrine\DBAL\Types\TimestampType
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
@@ -63,6 +68,20 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
+        dql:
+            numeric_functions:
+                Rand: AppBundle\Doctrine\DQL\RandFunction
+
+doctrine_mongodb:
+    connections:
+        default:
+            server: %mongodb_server%
+            options:
+                connect: true
+    default_database: local
+    document_managers:
+        default:
+            auto_mapping: true
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -71,3 +90,29 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+# ImagineBundle
+liip_imagine:
+    resolvers:
+        default:
+            web_path: ~
+
+    filter_sets:
+        cache: ~
+        overview_image:
+            quality: 100
+            jpeg_quality: ~
+            png_compression_level: ~
+            png_compression_filter: ~
+            animated: false
+            filters:
+                thumbnail: { size: [600, null] }
+
+jms_translation:
+    configs:
+        app:
+            dirs: [%kernel.root_dir%, %kernel.root_dir%/../src]
+            output_dir: %kernel.root_dir%/Resources/translations
+            ignored_domains: [routes]
+            excluded_names: ["*TestCase.php", "*Test.php"]
+            excluded_dirs: [cache, data, logs, tests]

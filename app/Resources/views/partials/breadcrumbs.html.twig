@@ -1,0 +1,27 @@
+<nav class="breadcrumbs" role="menubar" aria-label="breadcrumbs">
+    
+    {% for breadcrumb in breadcrumbs %}
+        {% if breadcrumb.active %}
+            <li role="menuitem" class="current">
+                {% if breadcrumb.translate %}
+                    {{ breadcrumb.title|trans }}
+                {% else %}
+                    {{ breadcrumb.title }}
+                {% endif %}
+            </li>
+        {% else %}
+            <li role="menuitem" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                <a href="{{ locale_path(breadcrumb.path, breadcrumb.params) }}" itemprop="url">
+                    <span itemprop="title">
+                        {% if breadcrumb.translate %}
+                            {{ breadcrumb.title|trans }}
+                        {% else %}
+                            {{ breadcrumb.title }}
+                        {% endif %}
+                    </span>
+                </a>
+            </li>
+        {% endif %}
+    </li>
+    {% endfor %}
+</nav>

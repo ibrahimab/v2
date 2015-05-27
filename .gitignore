@@ -8,8 +8,22 @@
 /bin/
 /composer.phar
 /vendor/
-/web/bundles/
+/web/bundles/*
+!/web/bundles/app/
+!web/bundles/app/*
+.DS_Store
+.composer
+.htaccess
 
+# Node modules, for less compile
+/node_modules/
 
 # Old website
 /web/chalet
+/web/seo_laden.php
+
+# Tests
+tests/_output/*
+
+# cache
+/web/media/cache/
