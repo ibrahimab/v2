@@ -50,4 +50,10 @@ class ListingsServiceTest extends \Codeception\TestCase\Test
 		$favorite = $this->listingService->favorite('test_user', $type);
 		$this->assertInstanceOf('AppBundle\Service\Api\Listing\ListingServiceDocumentInterface', $favorite);
 	}
+	
+	public function testCountFavorites()
+	{
+		$total = $this->listingService->countFavorites('test_user');
+		$this->assertGreaterThan(0, $total);
+	}
 }

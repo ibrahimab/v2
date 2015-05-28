@@ -6,4 +6,5 @@ interface ListingServiceRepositoryInterface
 {
 	public function favorites($userId, $options = []);
 	public function favorite($userId, TypeServiceEntityInterface $type);
+	public function countFavorites($userId);
 }

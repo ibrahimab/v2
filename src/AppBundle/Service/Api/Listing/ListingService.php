@@ -23,4 +23,9 @@ class ListingService
 	{
 		return $this->listingServiceRepository->favorite($userId, $type);
 	}
+	
+	public function countFavorites($userId)
+	{
+		return $this->listingServiceRepository->countFavorites($userId);
+	}
 }

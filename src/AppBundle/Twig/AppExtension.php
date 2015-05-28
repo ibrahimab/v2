@@ -9,7 +9,7 @@ use       AppBundle\Document\File\Country\CountryFileDocument;
 use       AppBundle\Service\Api\File\Type\TypeService as TypeFileService;
 use		  AppBundle\Document\File\Type as TypeFileDocument;
 use		  AppBundle\Service\Api\File\Accommodation\AccommodationService as AccommodationFileService;
-use		  AppBundle\Document\File\Accomodation as AccommodationFileDocument;
+use		  AppBundle\Document\File\Accommodation as AccommodationFileDocument;
 use		  AppBundle\Service\Api\File\Region\RegionService as RegionFileService;
 use		  AppBundle\Document\File\Region as RegionFileDocument;
 use		  AppBundle\Document\File\Place as PlaceFileDocument;
@@ -40,14 +40,20 @@ class AppExtension extends \Twig_Extension
      * @var string
      */
     private $oldImageRoot;
+	
+	/**
+	 * @var array
+	 */
+	private $listingsCountCache;
 
     /**
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container, UrlGeneratorInterface $generator)
     {
-        $this->container = $container;
-        $this->generator = $generator;
+        $this->container 		  = $container;
+        $this->generator 		  = $generator;
+		$this->listingsCountCache = [];
     }
 
     /**
@@ -70,6 +76,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('get_locale', [$this, 'getLocale']),
             new \Twig_SimpleFunction('js_object', [$this, 'getJavascriptObject']),
             new \Twig_SimpleFunction('region_skirun_map_image', [$this, 'getRegionSkiRunMapImage']),
+			new \Twig_SimpleFunction('favorites_count', [$this, 'favoritesCount']),
         ];
     }
 
@@ -461,6 +468,47 @@ class AppExtension extends \Twig_Extension
 	public function seo($text)
 	{
 		return $this->container->get('service.utils')->seo($text);
+	}
+	
+	/**
+	 * Getting listing count
+	 *
+	 * @param string $type
+	 * @param integer $userId
+	 * @return integer
+	 * @throws AppExtensionException
+	 */
+	protected function listingsCount($type, $userId)
+	{
+		if (isset($this->listingsCountCache[$type])) {
+			return $this->listingsCountCache[$type];
+		}
+		
+		$listingService = $this->container->get('service.api.listing');
+		$count			= 0;
+		
+		switch ($type) {
+			
+			case 'favorites':
+				$count = $listingService->countFavorites($userId);
+			break;
+			default:
+				throw AppExtensionException(sprintf('listing type \'%s\' is not supported', $type));
+		}
+		
+		return $count;
+	}
+	
+	/**
+	 * Count favorites
+	 *
+	 * @param integer $userId
+	 * @return integer
+	 * @throws AppExtensionException
+	 */
+	public function favoritesCount($userId)
+	{
+		return $this->listingsCount('favorites', $userId);
 	}
 
     /**

@@ -7,6 +7,9 @@ use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use		  Symfony\Component\HttpFoundation\Request;
+use		  Symfony\Component\HttpFoundation\Response;
+use		  Symfony\Component\HttpFoundation\Cookie;
 
 /**
  * PagesController
@@ -24,13 +27,12 @@ class PagesController extends Controller
 	/**
 	 * @Route("/test", name="bla")
 	 */
-	public function test()
+	public function test(Request $request)
 	{
-		$normalizingText = 'ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñš';
-		$utilsService = $this->get('service.utils');
-
-		dump($utilsService->normalizeText($normalizingText));
-		exit;
+		$user = $this->get('security.context')->getToken();
+		dump($user);
+		
+		return $this->render('pages/about.html.twig');
 	}
 
     /**

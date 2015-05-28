@@ -63,4 +63,10 @@ class ListingRepository extends BaseRepository implements ListingServiceReposito
 		$repository = $this->getRepository(self::FAVORITE_DOCUMENT);
 		return $repository->findOneBy(['user_id' => $userId, 'type' => $type->getId()]);
 	}
+	
+	public function countFavorites($userId)
+	{
+		$repository = $this->getRepository(self::FAVORITE_DOCUMENT);
+		return $repository->createQueryBuilder()->count(['user_id' => $userId])->getQuery()->execute();
+	}
 }
