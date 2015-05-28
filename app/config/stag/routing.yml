@@ -20,4 +20,4 @@ JMSTranslationBundle_ui:
     prefix:   /_trans
 
 _main:
-    resource: routing.yml
+    resource: "%kernel.root_dir%/config/routing.yml"

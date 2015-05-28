@@ -24,4 +24,4 @@ _assetic:
     type:     assetic
 
 _main:
-    resource: routing.yml
+    resource: "../routing.yml"

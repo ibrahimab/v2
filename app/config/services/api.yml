@@ -1,0 +1,61 @@
+# API
+services:
+    service.api.accommodation:
+        class:     AppBundle\Service\Api\Accommodation\AccommodationService
+        arguments: ["@repository.accommodation"]
+
+    service.api.highlight:
+        class:     AppBundle\Service\Api\Highlight\HighlightService
+        arguments: ["@repository.highlight"]
+
+    service.api.type:
+        class:     AppBundle\Service\Api\Type\TypeService
+        arguments: ["@repository.type"]
+
+    service.api.place:
+        class:     AppBundle\Service\Api\Place\PlaceService
+        arguments: ["@repository.place"]
+
+    service.api.region:
+        class:     AppBundle\Service\Api\Region\RegionService
+        arguments: ["@repository.region"]
+
+    service.api.country:
+        class:     AppBundle\Service\Api\Country\CountryService
+        arguments: ["@repository.country"]
+
+    service.api.booking:
+        class:     AppBundle\Service\Api\Booking\BookingService
+        arguments: ["@repository.booking"]
+
+    service.api.booking.survey:
+        class:     AppBundle\Service\Api\Booking\Survey\SurveyService
+        arguments: ["@repository.booking.survey"]
+
+    service.api.homepageblock:
+        class:     AppBundle\Service\Api\HomepageBlock\HomepageBlockService
+        arguments: ["@repository.homepageblock"]
+
+    service.api.file.accommodation:
+        class:     AppBundle\Service\Api\File\Accommodation\AccommodationService
+        arguments: ["@repository.file.accommodation"]
+
+    service.api.file.type:
+        class:     AppBundle\Service\Api\File\Type\TypeService
+        arguments: ["@repository.file.type"]
+
+    service.api.file.region:
+        class:     AppBundle\Service\Api\File\Region\RegionService
+        arguments: ["@repository.file.region"]
+
+    service.api.file.place:
+        class:     AppBundle\Service\Api\File\Place\PlaceService
+        arguments: ["@repository.file.place"]
+
+    service.api.file.country:
+        class:     AppBundle\Service\Api\File\Country\CountryService
+        arguments: ["@repository.file.country"]
+
+    service.api.listing:
+        class:     AppBundle\Service\Api\Listing\ListingService
+        arguments: ["@repository.listing"]

@@ -1,0 +1,9 @@
+# concerns
+services:
+    app.concern.season:
+        class: AppBundle\Concern\SeasonConcern
+        arguments: ["%app%"]
+
+    app.concern.website:
+        class: AppBundle\Concern\WebsiteConcern
+        arguments: ["%app%"]
