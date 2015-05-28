@@ -4,10 +4,6 @@ imports:
 # App configuration
 parameters:
     app:
-        minimalSurveyCount: 1
-        countries:
-            I: 5
-            K: 5
         default_locale:  nl
         default_website: C
         default_season:  1
