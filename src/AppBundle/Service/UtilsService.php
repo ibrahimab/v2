@@ -79,4 +79,24 @@ class UtilsService
 
 		return strtolower(str_replace('Controller', '', array_pop($names)) . '::' . $normalizingController);
 	}
+    
+    /**
+     * Generating a random token
+     *
+     * @param int $length
+     * @return string
+     */
+    public function generateToken($length = 30)
+    {
+        $characters = array_merge(range(0, 9), range('a', 'z'), range('A', 'F'));
+        $total      = count($characters);
+        $token      = '';
+        $done       = 0;
+        
+        while ($done++ < $length) {
+            $token .= $characters[mt_rand(0, $total - 1)];
+        }
+        
+        return $token;
+    }
 }
