@@ -1,2 +1,2 @@
 imports:
-    - { resource: ../dev/app.yml" }
+    - { resource: "../dev/app.yml" }
