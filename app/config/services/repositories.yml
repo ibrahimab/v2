@@ -87,3 +87,10 @@ services:
         class:     AppBundle\Document\User\UserRepository
         arguments: [AppBundle\Document\User\User]
         parent:    repository.odm
+        
+    repository.search:
+        class:     AppBundle\Entity\Search\SearchRepository
+        arguments: ["@doctrine.orm.entity_manager"]
+        calls:
+            - [setSeason,  [@app.concern.season]]
+            - [setWebsite, [@app.concern.website]]

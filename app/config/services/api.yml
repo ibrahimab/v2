@@ -59,3 +59,7 @@ services:
     service.api.user:
         class:     AppBundle\Service\Api\User\UserService
         arguments: ["@repository.user", "@security.context"]
+        
+    service.api.search:
+        class:     AppBundle\Service\Api\Search\SearchService
+        arguments: ["@repository.search"]
