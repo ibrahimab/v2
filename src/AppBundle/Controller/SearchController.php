@@ -25,7 +25,14 @@ class SearchController extends Controller
      */
     public function index()
     {
-        $this->get('translator')->trans('search-book');
-        return $this->render('search/search.html.twig');
+        $searchService = $this->get('service.api.search');
+        $results       = $searchService->build()
+                                       ->limit(3)
+                                       ->offset(0)
+                                       ->results();
+        
+        return $this->render('search/search.html.twig', [
+            'results' => $results,
+        ]);
     }
 }

@@ -41,8 +41,8 @@
                 <hr />
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
-                        {% for i in 1..5 %}
-                        {% include 'partials/search/result.html.twig' %}
+                        {% for result in results %}
+                        {% include 'partials/search/result.html.twig' with {'result': result} %}
                         {% endfor %}
                     </div>
                 </div>
