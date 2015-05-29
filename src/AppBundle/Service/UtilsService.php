@@ -45,8 +45,17 @@ class UtilsService
      */
 	public function normalizeText($text)
     {
-		return strtr($text, 'ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñš',
-                            'AAAAAAaaaaaaOOOOOOooooooEEEEeeeeCcIIIIiiiiUUUUuuuuyNns');
+		return strtr($text, [
+
+		    'Š' => 'S', 'š' => 's', 'Ð' => 'Dj','Ž' => 'Z', 'ž' => 'z',  'À' => 'A', 'Á' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Ä' => 'A',
+		    'Å' => 'A', 'Æ' => 'A', 'Ç' => 'C', 'È' => 'E', 'É' => 'E',  'Ê' => 'E', 'Ë' => 'E', 'Ì' => 'I', 'Í' => 'I', 'Î' => 'I',
+		    'Ï' => 'I', 'Ñ' => 'N', 'Ò' => 'O', 'Ó' => 'O', 'Ô' => 'O',  'Õ' => 'O', 'Ö' => 'O', 'Ø' => 'O', 'Ù' => 'U', 'Ú' => 'U',
+		    'Û' => 'U', 'Ü' => 'U', 'Ý' => 'Y', 'Þ' => 'B', 'ß' => 'Ss', 'à' => 'a', 'á' => 'a', 'â' => 'a', 'ã' => 'a', 'ä' => 'a',
+		    'å' => 'a', 'æ' => 'a', 'ç' => 'c', 'è' => 'e', 'é' => 'e',  'ê' => 'e', 'ë' => 'e', 'ì' => 'i', 'í' => 'i', 'î' => 'i',
+		    'ï' => 'i', 'ð' => 'o', 'ñ' => 'n', 'ò' => 'o', 'ó' => 'o',  'ô' => 'o', 'õ' => 'o', 'ö' => 'o', 'ø' => 'o', 'ù' => 'u',
+		    'ú' => 'u', 'û' => 'u', 'ü' => 'u', 'ý' => 'y', 'ý' => 'y', 'þ' => 'b',  'ÿ' => 'y', 'ƒ' => 'f',
+		    'ă' => 'a', 'î' => 'i', 'â' => 'a', 'ș' => 's', 'ț' => 't',  'Ă' => 'A', 'Î' => 'I', 'Â' => 'A', 'Ș' => 'S', 'Ț' => 'T',
+		]);
 	}
 
 	/**
@@ -70,4 +79,25 @@ class UtilsService
 
 		return strtolower(str_replace('Controller', '', array_pop($names)) . '::' . $normalizingController);
 	}
+    
+    /**
+     * Generating a random token
+     *
+     * @param string $seed
+     * @param int $length
+     * @return string
+     */
+    public function generateToken($seed, $length = 30)
+    {
+        $characters = array_merge(range(0, 9), range('a', 'z'), range('A', 'F'), str_split(sha1($seed) . time()));
+        $total      = count($characters);
+        $token      = '';
+        $done       = 0;
+        
+        while ($done++ < $length) {
+            $token .= $characters[mt_rand(0, $total - 1)];
+        }
+        
+        return $token;
+    }
 }

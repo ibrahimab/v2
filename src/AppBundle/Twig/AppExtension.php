@@ -9,11 +9,12 @@ use       AppBundle\Document\File\Country\CountryFileDocument;
 use       AppBundle\Service\Api\File\Type\TypeService as TypeFileService;
 use		  AppBundle\Document\File\Type as TypeFileDocument;
 use		  AppBundle\Service\Api\File\Accommodation\AccommodationService as AccommodationFileService;
-use		  AppBundle\Document\File\Accomodation as AccommodationFileDocument;
+use		  AppBundle\Document\File\Accommodation as AccommodationFileDocument;
 use		  AppBundle\Service\Api\File\Region\RegionService as RegionFileService;
 use		  AppBundle\Document\File\Region as RegionFileDocument;
 use		  AppBundle\Document\File\Place as PlaceFileDocument;
 use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterface;
+use       AppBundle\Service\Api\User\UserServiceDocumentInterface;
 use       Symfony\Component\DependencyInjection\ContainerInterface;
 use       Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use       Symfony\Component\Finder\Finder;
@@ -40,14 +41,20 @@ class AppExtension extends \Twig_Extension
      * @var string
      */
     private $oldImageRoot;
+	
+	/**
+	 * @var UserServiceDocumentInterface
+	 */
+	private $currentUser;
 
     /**
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container, UrlGeneratorInterface $generator)
     {
-        $this->container = $container;
-        $this->generator = $generator;
+        $this->container   = $container;
+        $this->generator   = $generator;
+		$this->currentUser = null;
     }
 
     /**
@@ -70,6 +77,8 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('get_locale', [$this, 'getLocale']),
             new \Twig_SimpleFunction('js_object', [$this, 'getJavascriptObject']),
             new \Twig_SimpleFunction('region_skirun_map_image', [$this, 'getRegionSkiRunMapImage']),
+			new \Twig_SimpleFunction('favorites_count', [$this, 'favoritesCount']),
+			new \Twig_SimpleFunction('viewed_count', [$this, 'viewedCount']),
         ];
     }
 
@@ -462,6 +471,46 @@ class AppExtension extends \Twig_Extension
 	{
 		return $this->container->get('service.utils')->seo($text);
 	}
+	
+	/**
+	 * Count favorites
+	 *
+	 * @return int
+	 */
+	public function favoritesCount()
+	{
+        if (null !== ($user = $this->getUser())) {
+            return $user->totalFavorites();
+        }
+        
+		return 0;
+	}
+    
+    /**
+     * Count viewed
+     *
+     * @return int
+     */
+    public function viewedCount()
+    {
+        if (null !== ($user = $this->getUser())) {
+            return $user->totalViewed();
+        }
+        
+        return 0;
+    }
+    
+    /**
+     * @return AnonymousToken
+     */
+    protected function getUser()
+    {
+        if (null === $this->currentUser) {
+            $this->currentUser = $this->container->get('service.api.user')->user();
+        }
+        
+        return $this->currentUser;
+    }
 
     /**
      * @return string

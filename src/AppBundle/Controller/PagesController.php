@@ -1,6 +1,5 @@
 <?php
 namespace AppBundle\Controller;
-
 use       AppBundle\Annotation\Breadcrumb;
 use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;

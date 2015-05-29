@@ -1,0 +1,41 @@
+<article class="overview sale" id="F242">
+    <div class="row">
+        <div class="title-ipad title medium-12 columns">
+            Chalet Le Clos du Pré
+            <span>{% include 'partials/quality_stars.html.twig' with {'quality': 1} %}</span>
+        </div>
+        <div class="small-12 medium-5 large-5 columns">
+            <div class="accom-img">
+                <div class="accom-slides">
+                    <div><img data-lazy="{{ asset('bundles/app/img/accom/accom-1.jpg') }}" alt="" /></div>
+                    <div><img data-lazy="{{ asset('bundles/app/img/accom/accom-2.jpg') }}" alt="" /></div>
+                    <div><img data-lazy="{{ asset('bundles/app/img/accom/accom-3.jpg') }}" alt="" /></div>
+                </div>
+                <div class="circle"><span>Aan-</span><span>bieding</span></div>
+                <div class="heart"><a href="" title="Dit resultaat opslaan in mijn favorieten"><i class="fi-heart"></i></a></div>
+            </div>
+        </div>
+        <div class="small-12 medium-7 large-7 columns">
+            <div class="accom-desc">
+                <div class="row">
+                    <div class="small-12 medium-7 large-8 columns">
+                        <div class="location">
+                            <span class="area">Alpe d'Huez (Grand Domaine)</span>, <span class="city">Oz-en-Oisans</span>, <span class="country">Frankrijk</span>
+                        </div>
+                        <div class="title">
+                            Chalet Le Clos du Pré
+                            <span><span>{% include 'partials/quality_stars.html.twig' with {'quality': 1} %}</span></span>
+                        </div>
+                    </div>
+                    <div class="small-12 medium-5 large-4 columns price-details">
+                        <span class="price-info">Prijs per persoon per week, vanaf</span>
+                        <span class="price has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide prijsinformatie bij dit zoekresultaat]">&euro; 265,-<i class="fi-info"></i></span>
+                        <span class="price-inc"><i class="sprite sprite-icon-skipass"></i>Inclusief skipas</span>
+                    </div>
+                </div>
+                <p>Ruime vrijstaande chalets op korte afstand van piste in Oz-en-Oisans. Mooi autovrij chaletpark bestaande uit 33 imposante vrijstaande chalets.</p>
+            </div>
+        </div>
+    </div>
+    {% include 'partials/search/types.html.twig' %}
+</article>

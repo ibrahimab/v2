@@ -1,5 +1,5 @@
 imports:
-    - { resource: config_dev.yml }
+    - { resource: "../dev/config.yml" }
 
 framework:
     test: ~
@@ -17,3 +17,6 @@ swiftmailer:
 
 parameters:
     database_name: chalet_test
+
+doctrine_mongodb:
+    default_database: chalet_test

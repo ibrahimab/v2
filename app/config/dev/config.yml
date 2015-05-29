@@ -1,9 +1,9 @@
 imports:
-    - { resource: config.yml }
+    - { resource: "../config.yml" }
 
 framework:
     router:
-        resource: "%kernel.root_dir%/config/routing_dev.yml"
+        resource: "%kernel.root_dir%/config/%kernel.environment%/routing.yml"
         strict_requirements: true
     profiler: { only_exceptions: false }
 
@@ -51,3 +51,6 @@ assetic:
 
 #swiftmailer:
 #    delivery_address: me@example.com
+
+doctrine_mongodb:
+    default_database: chalet_dev

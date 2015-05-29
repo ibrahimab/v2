@@ -19,6 +19,11 @@ class BaseRepository extends EntityRepository
      * @var integer
      */
     protected $season;
+    
+    /**
+     * @var string
+     */
+    protected $website;
 
     /**
      * Setting season
@@ -41,11 +46,21 @@ class BaseRepository extends EntityRepository
         return $this->season;
     }
 
+    /**
+     * Setting website
+     *
+     * @param WebsiteConcern $websiteConcern
+     */
     public function setWebsite(WebsiteConcern $websiteConcern)
     {
         $this->website = $websiteConcern->get();
     }
 
+    /**
+     * Getting website
+     *
+     * @return string
+     */
     public function getWebsite()
     {
         return $this->website;
