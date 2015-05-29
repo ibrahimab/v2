@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Document\User;
 use		  AppBundle\Document\BaseRepository;
+use       AppBundle\Service\Api\User\UserServiceDocumentInterface;
 use		  AppBundle\Service\Api\User\UserServiceRepositoryInterface;
 use		  Doctrine\ODM\MongoDB\DocumentManager;
 use		  Doctrine\ODM\MongoDB\DocumentRepository;
@@ -18,24 +19,8 @@ class UserRepository extends DocumentRepository implements UserServiceRepository
     /**
      * {@InheritDoc}
      */
-    public function get($userId, $fields = [], $options = [])
+    public function get($userId, $fields = [], $andWhere = [])
     {
-        return $this->findOneBy(['user_id' => $userId]);
-    }
-    
-    /**
-     * {@InheritDoc}
-     */
-    public function favorites($userId, $options = [])
-    {
-        return $this->get($userId, ['favorites' => 1], $options);
-    }
-    
-    /**
-     * {@InheritDoc}
-     */
-    public function countFavorites($userId)
-    {
-        return $this->createQueryBuilder()->count(['user_id' => $userId])->getQuery()->execute();
+        return $this->findOneBy(array_merge(['user_id' => $userId], $andWhere), ['fields' => $fields]);
     }
 }

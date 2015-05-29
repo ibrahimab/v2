@@ -10,23 +10,10 @@ namespace AppBundle\Service\Api\User;
 interface UserServiceRepositoryInterface
 {
     /**
-     * @param int $userId
+     * @param mixed $userId
      * @param array $fields
-     * @param array $options
+     * @param array $andWhere
      * @return UserServiceDocumentInterface
      */
-    public function get($userId, $fields = [], $options = []);
-    
-    /**
-     * @param int $userId
-     * @param array $options
-     * @return UserServiceDocumentInterface
-     */
-	public function favorites($userId, $options = []);
-    
-    /**
-     * @param int $userId
-     * @return int
-     */
-	public function countFavorites($userId);
+    public function get($userId, $fields = [], $andWhere = []);
 }

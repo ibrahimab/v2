@@ -58,4 +58,4 @@ services:
 
     service.api.user:
         class:     AppBundle\Service\Api\User\UserService
-        arguments: ["@repository.user"]
+        arguments: ["@repository.user", "@security.context"]

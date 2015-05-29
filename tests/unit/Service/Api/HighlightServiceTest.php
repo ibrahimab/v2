@@ -14,7 +14,7 @@ class HighlightServiceTest extends \Codeception\TestCase\Test
     protected $serviceContainer;
     
     /**
-     * @var \AppBundle\Service\Api\HighlightService
+     * @var \AppBundle\Service\Api\Highlight\HighlightService
      */
     protected $highlightService;
 

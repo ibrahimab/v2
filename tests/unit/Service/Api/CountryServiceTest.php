@@ -11,6 +11,16 @@ class CountryServiceTest extends \Codeception\TestCase\Test
      * @var \UnitTester
      */
     protected $tester;
+    
+    /**
+     * @var \appTestDebugProjectContainer
+     */
+    protected $serviceContainer;
+    
+    /**
+     * @var \AppBundle\Service\Api\Country\CountryService
+     */
+    protected $countryContainer;
 
     protected function _before()
     {

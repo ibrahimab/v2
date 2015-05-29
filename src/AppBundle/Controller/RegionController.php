@@ -1,6 +1,5 @@
 <?php
 namespace AppBundle\Controller;
-
 use       AppBundle\Annotation\Breadcrumb;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -8,12 +7,13 @@ use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use       Doctrine\ORM\NoResultException;
 
 /**
- * CountriesController
+ * RegionController
  *
  * This controller handles all the country specific pages
  *
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
  * @package Chalet
+ * @version 0.0.2
  * @since   0.0.1
  *
  * @Breadcrumb(name="frontpage", title="frontpage", translate=true, path="home")

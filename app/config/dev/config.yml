@@ -51,3 +51,6 @@ assetic:
 
 #swiftmailer:
 #    delivery_address: me@example.com
+
+doctrine_mongodb:
+    default_database: chalet_dev

@@ -18,4 +18,80 @@ interface UserServiceDocumentInterface
      * @return int
      */
 	public function getUserId();
+    
+    /**
+     * @param string $username
+     * @return UserServiceDocumentInterface
+     */
+    public function setUsername($username);
+    
+    /**
+     * @return string
+     */
+    public function getUsername();
+    
+    /**
+     * @param string $password
+     * @return UserServiceDocumentInterface
+     */
+    public function setPassword($password);
+    
+    /**
+     * @return string
+     */
+    public function getPassword();
+    
+    /**
+     * @param array
+     * @return UserServiceDocumentInterface
+     */
+    public function setFavorites($favorites);
+    
+    /**
+     * @return array
+     */
+    public function getFavorites();
+    
+    /**
+     * @return int
+     */
+    public function totalFavorites();
+    
+    /**
+     * @param array $viewed
+     * @return UserServiceDocumentInterface
+     */
+    public function setViewed($viewed);
+    
+    /**
+     * @return UserServiceDocumentInterface
+     */
+    public function getViewed();
+    
+    /**
+     * @return int
+     */
+    public function totalViewed();
+    
+    /**
+     * @param \DateTime $createdAt
+     * @return UserServiceDocumentInterface
+     */
+    public function setCreatedAt($createdAt);
+    
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt();
+    
+    /**
+     * @param \DateTime $createdAt
+     * @return UserServiceDocumentInterface
+     */
+    public function setUpdatedAt($updatedAt);
+    
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt();
 }
