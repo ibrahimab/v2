@@ -1,0 +1,55 @@
+<div id="search-filter"  class="small-12 medium-4 large-3 columns">
+    <div id="search-filter-main">
+        <h2><a href="" title="deze box in- of uitklappen">Zoek en boek</a></h2>
+        <div class="fields">
+            {% include 'partials/search/form/input.html.twig' %}
+            <a href="" class="save" title="Deze zoekopdracht opslaan">Zoekopdracht opslaan<i class="sprite sprite-icon-plus "></i></a>
+        </div>
+    </div>
+    <h2 class="title">Filter resultaten</h2>
+    <div id="search-filter-piste-distance" class="search-filter-default">
+        <h2 class="closed"><a href="" title="deze box in- of uitklappen">Afstand tot de piste</a></h2>
+        <div class="fields">
+            <label class="label_check" for="checkbox-01"><input name="sample-checkbox-01" id="checkbox-01" value="1" type="checkbox" checked />aan de piste<span>(833)</span></label>
+            <label class="label_check" for="checkbox-02"><input name="sample-checkbox-02" id="checkbox-02" value="1" type="checkbox" />max 250 meter<span>(263)</span></label>
+            <label class="label_check" for="checkbox-03"><input name="sample-checkbox-03" id="checkbox-03" value="1" type="checkbox" />max 500 meter<span>(470)</span></label>
+        </div>
+    </div>
+    <div id="search-filter-piste-length" class="search-filter-default">
+        <div class="loading"></div><!-- loading -->
+        <h2 class="closed"><a href="" title="deze box in- of uitklappen">Lengte pistes(km)</a></h2>
+        <div class="fields">
+            <label class="label_check" for="checkbox-04"><input name="sample-checkbox-04" id="checkbox-04" value="1" type="checkbox" />tot 100 km<span>(313)</span></label>
+            <label class="label_check" for="checkbox-05"><input name="sample-checkbox-05" id="checkbox-05" value="1" type="checkbox" />100 en meer<span>(623)</span></label>
+            <label class="label_check" for="checkbox-06"><input name="sample-checkbox-06" id="checkbox-06" value="1" type="checkbox" />200 en meer<span>(460)</span></label>
+            <label class="label_check" for="checkbox-07"><input name="sample-checkbox-07" id="checkbox-07" value="1" type="checkbox" />400 en meer<span>(340)</span></label>
+        </div>
+    </div>
+    <div id="search-filter-facilities" class="search-filter-default">
+        <h2 class="closed"><a href="" title="deze box in- of uitklappen">Faciliteiten</a></h2>
+        <div class="fields">
+            <label class="label_check" for="checkbox-08"><input name="sample-checkbox-08" id="checkbox-08" value="1" type="checkbox" />catering mogelijk<span>(313)</span></label>
+            <label class="label_check" for="checkbox-09"><input name="sample-checkbox-09" id="checkbox-09" value="1" type="checkbox" />goed voor kids<span>(340)</span></label>
+            <label class="label_check" for="checkbox-10"><input name="sample-checkbox-10" id="checkbox-10" value="1" type="checkbox" />huisdieren toegestaan<span>(340)</span></label>
+            <label class="label_check" for="checkbox-11"><input name="sample-checkbox-11" id="checkbox-11" value="1" type="checkbox" />internet / wifi<span>(623)</span></label>
+            <label class="label_check" for="checkbox-12"><input name="sample-checkbox-12" id="checkbox-12" value="1" type="checkbox" />openhaard / houtkachel<span>(340)</span></label>
+            <label class="label_check" for="checkbox-13"><input name="sample-checkbox-13" id="checkbox-13" value="1" type="checkbox" />prive-sauna<span>(340)</span></label>
+            <label class="label_check" for="checkbox-14"><input name="sample-checkbox-14" id="checkbox-14" value="1" type="checkbox" />sauna<span>(460)</span></label>
+            <label class="label_check" for="checkbox-15"><input name="sample-checkbox-15" id="checkbox-15" value="1" type="checkbox" />zwembad<span>(340)</span></label>
+        </div>
+    </div>
+    <div id="search-filter-themes" class="search-filter-default">
+        <h2 class="closed"><a href="" title="deze box in- of uitklappen">Thema's</a></h2>
+        <div class="fields">
+            <label class="label_check" for="checkbox-16"><input name="sample-checkbox-16" id="checkbox-16" value="1" type="checkbox" />aan de piste<span>(30)</span></label>
+            <label class="label_check" for="checkbox-17"><input name="sample-checkbox-17" id="checkbox-17" value="1" type="checkbox" />gemak van catering<span>(63)</span></label>
+            <label class="label_check" for="checkbox-17"><input name="sample-checkbox-18" id="checkbox-18" value="1" type="checkbox" />grote groepen<span>(46)</span></label>
+            <label class="label_check" for="checkbox-19"><input name="sample-checkbox-19" id="checkbox-19" value="1" type="checkbox" />kerst in de sneeuw<span>(13)</span></label>
+            <label class="label_check" for="checkbox-20"><input name="sample-checkbox-20" id="checkbox-20" value="1" type="checkbox" />prive-sauna<span>(34)</span></label>
+            <label class="label_check" for="checkbox-21"><input name="sample-checkbox-21" id="checkbox-21" value="1" type="checkbox" />winterwellness<span>(20)</span></label>
+        </div>
+    </div>
+    <div class="search-filter-default">
+        <a href="" class="button delete small radius" title="Wis alle filters">Wis alle filters</a>
+    </div>
+</div>
