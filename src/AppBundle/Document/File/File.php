@@ -12,8 +12,10 @@ use 	  Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  * @package Chalet
  */
 /** @ODM\MappedSuperclass */
-class File extends BaseRepository implements FileServiceEntityInterface
+class File implements FileServiceEntityInterface
 {
+    use BaseRepository;
+    
 	/**
 	 * @ODM\Id
 	 */

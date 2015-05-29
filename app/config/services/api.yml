@@ -56,6 +56,6 @@ services:
         class:     AppBundle\Service\Api\File\Country\CountryService
         arguments: ["@repository.file.country"]
 
-    service.api.listing:
-        class:     AppBundle\Service\Api\Listing\ListingService
-        arguments: ["@repository.listing"]
+    service.api.user:
+        class:     AppBundle\Service\Api\User\UserService
+        arguments: ["@repository.user"]

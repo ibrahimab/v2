@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\EventListener;
+use		  Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use		  Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use		  Symfony\Component\DependencyInjection\ContainerInterface;
 use       Symfony\Component\Security\Core\Util\SecureRandom;
@@ -23,6 +24,11 @@ class AnonymousListener
 	 */
 	protected $container;
     
+    /**
+     * @var string
+     */
+    protected $token;
+    
 	/**
 	 * Injecting the service container
 	 *
@@ -31,49 +37,62 @@ class AnonymousListener
 	public function __construct(ContainerInterface $container)
 	{
 		$this->container = $container;
+        $this->token     = null;
 	}
 	
-	public function onKernelResponse(FilterResponseEvent $event)
+    /**
+     * @param FilterControllerEvent $event
+     */
+	public function onKernelController(FilterControllerEvent $event)
 	{
-		$response  = $event->getResponse();
-        $request   = $event->getRequest();
-        $cookies   = $request->cookies;
-        $domain    = $event->getRequest()->server->get('HTTP_HOST');
+        if (!is_array($controller = $event->getController())) {
+            return;
+        }
+        
+        $cookies   = $event->getRequest()->cookies;
         $anonymous = $this->container->get('security.context')->getToken();
-        $secret    = $this->container->getParameter('secret');
-
-        if (false === $cookies->has('_anon_tk')) {
+        
+        if (null === $anonymous) {
+            return;
+        }
+        
+        if ($cookies->has('_anon_tk')) {
             
-            $expiration  = new \DateTime();
-            $expiration->add(new \DateInterval('P2Y'));
-            
-            $session     = $this->container->get('session');
-            $session->start();
-            
-            $token       = $this->container->get('service.utils')->generateToken();
-            $tokenCookie = new Cookie('_anon_tk', mt_rand() . '|' . $token,  $expiration, '/', $domain, true);
-            
-            $response->headers->setCookie($tokenCookie);
+            $this->token = $cookies->get('_anon_tk');
             
         } else {
             
-            exit('test');
-            $parts   = explode('.', $cookies->get('_anon_tk'));
-            $mongoId = null;
-            
-            if (count($parts) > 0) {
-                $mongoId = $parts[0];
-            }
-            
-            dump($mongoId);
-            
-            if ($hmac !== hash_hmac('sha256', $mongoId, $secret)) {
-                $cookies->remove('_anon_tk');
-            }
+            $secret      = $this->container->getParameter('secret');
+            $this->token = $this->container->get('service.utils')->generateToken($secret);
         }
         
-        $anonymous->setAttribute('_anon_tk', $cookies->get('_anon_tk'));
-        dump($anonymous);
-        // exit;
+        $anonymous->setAttribute('_anon_tk', $this->token);
 	}
+    
+    /**
+     * @param FilterResponseEvent $event
+     */
+    public function onKernelResponse(FilterResponseEvent $event)
+    {
+        $request = $event->getRequest();
+        $cookies = $request->cookies;
+        $anonymous = $this->container->get('security.context')->getToken();
+        
+        if (null === $anonymous) {
+            return;
+        }
+        
+        if (false === $cookies->has('_anon_tk')) {
+        
+            $response    = $event->getResponse();
+            $sslEnabled  = $this->container->getParameter('ssl_enabled');
+            $domain      = $request->server->get('HTTP_HOST');
+            
+            $expiration  = new \DateTime();
+            $expiration->add(new \DateInterval('P2Y'));
+
+            $tokenCookie = new Cookie('_anon_tk', $this->token,  $expiration, '/', $domain, ($sslEnabled === true));
+            $response->headers->setCookie($tokenCookie);
+        }
+    }
 }

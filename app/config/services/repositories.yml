@@ -83,6 +83,7 @@ services:
         arguments: [AppBundle\Document\File\Country]
         parent:    repository.odm
 
-    repository.listing:
-        class:     AppBundle\Document\Listing\ListingRepository
-        arguments: ["@doctrine.odm.mongodb.document_manager"]
+    repository.user:
+        class:     AppBundle\Document\User\UserRepository
+        arguments: [AppBundle\Document\User\User]
+        parent:    repository.odm

@@ -1,15 +1,11 @@
 <?php
 namespace AppBundle\Controller;
-
 use       AppBundle\Annotation\Breadcrumb;
 use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use		  Symfony\Component\HttpFoundation\Request;
-use		  Symfony\Component\HttpFoundation\Response;
-use		  Symfony\Component\HttpFoundation\Cookie;
 
 /**
  * PagesController
@@ -24,17 +20,6 @@ use		  Symfony\Component\HttpFoundation\Cookie;
  */
 class PagesController extends Controller
 {
-	/**
-	 * @Route("/test", name="bla")
-	 */
-	public function test(Request $request)
-	{
-		$user = $this->get('security.context')->getToken();
-		dump($user);
-		
-		return $this->render('pages/about.html.twig');
-	}
-
     /**
      * @Route("/", name="home")
      * @Template(":pages:home.html.twig")

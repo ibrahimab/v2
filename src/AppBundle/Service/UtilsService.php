@@ -83,12 +83,13 @@ class UtilsService
     /**
      * Generating a random token
      *
+     * @param string $seed
      * @param int $length
      * @return string
      */
-    public function generateToken($length = 30)
+    public function generateToken($seed, $length = 30)
     {
-        $characters = array_merge(range(0, 9), range('a', 'z'), range('A', 'F'));
+        $characters = array_merge(range(0, 9), range('a', 'z'), range('A', 'F'), str_split(sha1($seed) . time()));
         $total      = count($characters);
         $token      = '';
         $done       = 0;

@@ -1,17 +1,18 @@
 <?php
-namespace AppBundle\Document\Listing;
-use		  AppBundle\Service\Api\Listing\ListingServiceDocumentInterface;
+namespace AppBundle\Document\User;
+use		  AppBundle\Service\Api\User\UserServiceDocumentInterface;
 use 	  Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
- * ListingDocument
+ * UserDocument
  *
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
- * @since   0.0.1
  * @package Chalet
+ * @version 0.0.2
+ * @since   0.0.2
  */
-/** @ODM\MappedSuperclass() */
-class Listing implements ListingServiceDocumentInterface
+/** @ODM\Document(collection="users", repositoryClass="AppBundle\Document\User\UserRepository") */
+class User implements UserServiceDocumentInterface
 {
 	/**
 	 * @ODM\Id
@@ -23,11 +24,17 @@ class Listing implements ListingServiceDocumentInterface
 	 */
 	private $user_id;
 
+    /**
+     * {@InheritDoc}
+     */
 	public function getId()
 	{
 		return $this->_id;
 	}
 
+    /**
+     * {@InheritDoc}
+     */
 	public function setUserId($user_id)
 	{
 		$this->user_id = $user_id;
@@ -35,6 +42,9 @@ class Listing implements ListingServiceDocumentInterface
 		return $this;
 	}
 
+    /**
+     * {@InheritDoc}
+     */
 	public function getUserId()
 	{
 		return $this->user_id;

@@ -1,7 +1,7 @@
 <?php
 namespace AppBundle\Document;
 
-class BaseRepository
+trait BaseRepository
 {
     /**
      * Getting either the option passed in or the default
