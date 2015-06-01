@@ -24,9 +24,9 @@ class LoadTypeData extends AbstractFixture implements DependentFixtureInterface
             $type = new Type();
             $type->setLocaleNames([
     
-                     'nl' => 'NL Place #' . $i,
-                     'en' => 'EN Place #' . $i,
-                     'de' => 'DE Place #' . $i,
+                     'nl' => 'NL Type #' . $i,
+                     'en' => 'EN Type #' . $i,
+                     'de' => 'DE Type #' . $i,
                  ])
                  ->setLocaleShortDescriptions([
                      

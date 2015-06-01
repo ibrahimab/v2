@@ -19,9 +19,16 @@ class LoadCountryData extends AbstractFixture
                         'en' => 'EN Country #' . $i,
                         'de' => 'DE Country #' . $i,
                     ])
+                    ->setLocaleSeoNames([
+                        
+                        'nl' => 'NL Seo Country #' . $i,
+                        'en' => 'EN Seo Country #' . $i,
+                        'de' => 'DE Seo Country #' . $i,
+                    ])
                     ->setStartCode('C' . $i)
                     ->setAlternativeName('Alternative Country #' . $i)
                     ->setDisplay(true)
+                    ->setSummerDisplay(true)
                     ->setLocaleTitles([
                         
                         'nl' => 'Country Title #' . $i,

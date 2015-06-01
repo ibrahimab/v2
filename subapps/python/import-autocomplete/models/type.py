@@ -47,7 +47,7 @@ class Type(Base):
         
         collection = self.adapter('mongo').autocomplete
         data       = []
-
+        
         for row in self.data:
 
             data.append({
