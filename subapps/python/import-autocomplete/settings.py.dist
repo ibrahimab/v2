@@ -1,0 +1,30 @@
+"""
+This file contains settings for the import application.
+Please copy this dist file and change the settings when
+deploying it to a new server
+
+@author     Ibrahim Abdullah <ibrahim@chalet.nl>
+@package    Chalet
+@subpackage Import Autocomplete
+@version    0.0.2
+@since      0.0.2
+"""
+"""
+Connection dictionary
+"""
+connection = {
+    
+    'mysql': {
+            
+        'host':   '<host>',
+        'user':   '<user>',
+        'passwd': '<password>',
+        'db':     '<database>'
+    },
+    
+    'mongo': {
+        
+        'uri': 'mongodb://<host>:<port>/',
+        'db':  'chalet_test'
+    }
+}
