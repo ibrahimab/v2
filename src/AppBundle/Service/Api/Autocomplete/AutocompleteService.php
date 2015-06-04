@@ -11,16 +11,16 @@ namespace AppBundle\Service\Api\Autocomplete;
  */
 class AutocompleteService
 {
-	const KIND_COUNTRY		 = 'country';
-	const KIND_REGION		 = 'region';
-	const KIND_PLACE		 = 'place';
+    const KIND_COUNTRY       = 'country';
+    const KIND_REGION        = 'region';
+    const KIND_PLACE         = 'place';
     const KIND_ACCOMMODATION = 'accommodation';
     const KIND_TYPE          = 'type';
 
     private $allowedKinds    = [
 
-		self::KIND_COUNTRY, self::KIND_REGION, self::KIND_PLACE,
-		self::KIND_ACCOMMODATION, self::KIND_TYPE,
+        self::KIND_COUNTRY, self::KIND_REGION, self::KIND_PLACE,
+        self::KIND_ACCOMMODATION, self::KIND_TYPE,
     ];
 
     /**

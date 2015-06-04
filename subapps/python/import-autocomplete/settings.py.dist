@@ -13,17 +13,17 @@ deploying it to a new server
 Connection dictionary
 """
 connection = {
-    
+
     'mysql': {
-            
+
         'host':   '<host>',
         'user':   '<user>',
         'passwd': '<password>',
         'db':     '<database>'
     },
-    
+
     'mongo': {
-        
+
         'uri': 'mongodb://<host>:<port>/',
         'db':  'chalet_test'
     }

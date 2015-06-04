@@ -18,13 +18,13 @@ class Type(Base):
     @type AUTOCOMPLETE_TYPE: C{string}
     """
     AUTOCOMPLETE_TYPE = 'type'
-        
+
     """
     Fetching types from the MySQL database and saving it for later use.
     @rtype: Type
     """
     def fetch(self):
-        
+
         sql = 'SELECT `type_id` AS `id`, `accommodatie_id` AS `accommodation_id`, `naam` AS `name_nl`, `websites`, ' \
               '`naam_de` AS `name_de`, `naam_en` AS `name_en`, `naam_fr` AS `name_fr`, `zoekvolgorde` AS `order` '   \
               'FROM   `type` '                                                                                       \
@@ -34,20 +34,20 @@ class Type(Base):
         self.adapter('mysql').execute(sql)
         self.data = self.adapter('mysql').fetchall()
         return self
-    
+
     """
     Indexing the data fetched from MySQL database to mongodb
-    
+
     @rtype: Type
     """
     def insert(self):
-        
+
         if not self.data:
             return self
-        
+
         collection = self.adapter('mongo').autocomplete
         data       = []
-        
+
         for row in self.data:
 
             data.append({
@@ -56,7 +56,7 @@ class Type(Base):
                 'type_id':          row['id'],
                 'locales':          ['nl', 'en', 'fr', 'de'],
                 'name':             {
-                    
+
                     'nl': row['name_nl'],
                     'en': row['name_en'],
                     'de': row['name_de'],
