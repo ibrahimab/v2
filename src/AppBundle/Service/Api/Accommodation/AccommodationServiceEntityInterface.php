@@ -12,62 +12,62 @@ interface AccommodationServiceEntityInterface
      * @const integer
      */
     const KIND_CHALET               = 1;
-    
+
     /**
      * @const integer
      */
     const KIND_APARTMENT            = 2;
-    
+
     /**
      * @const integer
      */
     const KIND_HOTEL                = 3;
-    
+
     /**
      * @const integer
      */
     const KIND_CHALET_APARTMENT     = 4;
-    
+
     /**
      * @const integer
      */
     const KIND_HOLIDAY_HOUSE        = 6;
-    
+
     /**
      * @const integer
      */
     const KIND_VILLA                = 7;
-    
+
     /**
      * @const integer
      */
     const KIND_CASTLE               = 8;
-    
+
     /**
      * @const integer
      */
     const KIND_HOLIDAY_PARK         = 9;
-    
+
     /**
      * @const integer
      */
     const KIND_AGRITURISMO          = 10;
-    
+
     /**
      * @const integer
      */
     const KIND_DOMAIN               = 11;
-    
+
     /**
      * @const integer
      */
     const KIND_PENSION              = 12;
-    
+
     /**
      * @return int
      */
     public function getId();
-    
+
     /**
      * Set name
      *
@@ -143,10 +143,10 @@ interface AccommodationServiceEntityInterface
      * @return string
      */
     public function getGermanShortDescription();
-    
+
     /**
      * Set Locale short descriptions
-     * 
+     *
      * @param array $localeShortDescriptions
      * @return AccommodationServiceEntityInterface
      */
@@ -159,7 +159,7 @@ interface AccommodationServiceEntityInterface
      * @return string
      */
     public function getLocaleShortDescription($locale);
-    
+
     /**
      * Set description
      *
@@ -171,7 +171,7 @@ interface AccommodationServiceEntityInterface
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription();
 
@@ -186,7 +186,7 @@ interface AccommodationServiceEntityInterface
     /**
      * Get englishDescription
      *
-     * @return string 
+     * @return string
      */
     public function getEnglishDescription();
 
@@ -201,10 +201,10 @@ interface AccommodationServiceEntityInterface
     /**
      * Get germanDescription
      *
-     * @return string 
+     * @return string
      */
     public function getGermanDescription();
-    
+
     /**
      * Set locale descriptions
      *
@@ -212,14 +212,14 @@ interface AccommodationServiceEntityInterface
      * @return AccommodationServiceEntityInterface
      */
     public function setLocaleDescriptions($localeDescriptions);
-    
+
     /**
      * Get locale description
      *
      * @return string
      */
     public function getLocaleDescription($locale);
-    
+
     /**
      * set season
      *
@@ -227,14 +227,14 @@ interface AccommodationServiceEntityInterface
      * @return AccommodationServiceEntityInterface
      */
     public function setSeason($season);
-    
+
     /**
      * Get season
-     * 
+     *
      * @return string
      */
     public function getSeason();
-    
+
     /**
      * set layout
      *
@@ -242,14 +242,14 @@ interface AccommodationServiceEntityInterface
      * @return AccommodationServiceEntityInterface
      */
     public function setLayout($layout);
-    
+
     /**
      * Get layout
-     * 
+     *
      * @return string
      */
     public function getLayout();
-    
+
     /**
      * set englishLayout
      *
@@ -257,14 +257,14 @@ interface AccommodationServiceEntityInterface
      * @return AccommodationServiceEntityInterface
      */
     public function setEnglishLayout($englishLayout);
-    
+
     /**
      * Get layout
-     * 
+     *
      * @return string
      */
     public function getEnglishLayout();
-    
+
     /**
      * set germanLayout
      *
@@ -272,14 +272,14 @@ interface AccommodationServiceEntityInterface
      * @return AccommodationServiceEntityInterface
      */
     public function setGermanLayout($germanLayout);
-    
+
     /**
      * Get layout
-     * 
+     *
      * @return string
      */
     public function getGermanLayout();
-    
+
     /**
      * set germanLayout
      *
@@ -287,25 +287,25 @@ interface AccommodationServiceEntityInterface
      * @return AccommodationServiceEntityInterface
      */
     public function setLocaleLayouts($germanLayout);
-    
+
     /**
      * Get layout
-     * 
+     *
      * @return string
      */
     public function getLocaleLayout($locale);
-    
+
     /**
      * @param  TypeServiceEntityInterface[] $types
      * @return AccommodationServiceEntityInterface
      */
     public function setTypes($types);
-    
+
     /**
      * @return TypeServiceEntityInterface[]
      */
     public function getTypes();
-    
+
     /**
      * Setting Place
      *
@@ -313,25 +313,25 @@ interface AccommodationServiceEntityInterface
      * @return AccommodationServiceEntityInterface
      */
     public function setPlace($place);
-    
+
     /**
      * @return PlaceServiceEntityInterface
      */
     public function getPlace();
-    
+
     /**
      * Setting kind of accommodation
-     * 
+     *
      * @param integer
      * @return AccommodationServiceEntityInterface
      */
     public function setKind($kind);
-    
+
     /**
      * @return integer
      */
     public function getKind();
-    
+
     /**
      * @return string
      */
@@ -353,6 +353,21 @@ interface AccommodationServiceEntityInterface
     public function getDisplay();
 
     /**
+     * Set display search flag
+     *
+     * @param boolean $displaySearch
+     * @return AccommodationServiceEntityInterface
+     */
+    public function setDisplaySearch($displaySearch);
+
+    /**
+     * Get display search flag
+     *
+     * @return boolean
+     */
+    public function getDisplaySearch();
+
+    /**
      * Set features
      *
      * @param FeatureConcernAccommodation $features
@@ -366,7 +381,7 @@ interface AccommodationServiceEntityInterface
      * @return FeatureConcernAccommodation
      */
     public function getFeatures();
-    
+
     /**
      * Set quality
      *
@@ -374,14 +389,14 @@ interface AccommodationServiceEntityInterface
      * @return AccommodationServiceEntityInterface
      */
     public function setQuality($quality);
-    
+
     /**
      * Get quality
      *
      * @return integer
      */
     public function getQuality();
-    
+
     /**
      * Set search order
      *
@@ -389,7 +404,7 @@ interface AccommodationServiceEntityInterface
      * @return AccommodationServiceEntityInterface
      */
     public function setSearchOrder($searchOrder);
-    
+
     /**
      * Get searchOrder
      *
@@ -411,7 +426,7 @@ interface AccommodationServiceEntityInterface
      * @return boolean
      */
     public function getWeekendSki();
-    
+
     /**
      * General locale field getter
      *

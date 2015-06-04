@@ -15,7 +15,7 @@ use		  Doctrine\ODM\MongoDB\DocumentRepository;
 class AutocompleteRepository extends DocumentRepository implements AutocompleteServiceRepositoryInterface
 {
     use BaseRepository;
-    
+
     /**
      * Search for autocomplete results
      *
@@ -26,27 +26,52 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
      */
     public function search($term, $kinds, $options = [])
     {
-        $limit  = self::getOption($options, 'limit',  1);
-        $offset = self::getOption($options, 'offset', 0);
-        
-        $qb = $this->createQueryBuilder();
-        $qb->select('type', 'type_id')
-           ->hydrate(false)
-           ->field('type')->in($kinds)
-           ->where()
-           ->orX()
-               ->eq()->field('name')->equals(new \MongoRegex('/.*' . $term .'.*/i'))->andWhere()->field('locales')->equals(null)->end()
-               ->eq()->field('name.nl')->equals(new \MongoRegex('/.*' . $term .'.*/i'))->andWhere()->field('locales')->notEqual(null)->end()
-           ->eagerCursor(true)
-           ->skip($offset)
-           ->limit($limit)
-           ->sort('order', 'asc');
-        
-        if ($kids === ['type']) {
-            dump($qb->getQuery()->getQuery());
-            exit;
-        }
-            
-        return $qb->getQuery()->execute();
-    } 
+        $limit   = self::getOption($options, 'limit',  1);
+        $offset  = self::getOption($options, 'offset', 0);
+		$results = [];
+
+		foreach ($kinds as $kind) {
+
+			$regex = new \MongoRegex('/.*' . $term .'.*/i');
+			$qb = $this->createQueryBuilder();
+			$qb->select('type', 'type_id')
+			   ->hydrate(false)
+			   ->eagerCursor(true)
+			   ->skip($offset)
+			   ->limit($limit)
+			   ->sort('order', 'asc');
+
+			$qb
+				->field('type')
+			        ->equals($kind)
+			    ->addOr(
+			    	$qb->expr()
+			    	       ->addAnd(
+			    	           $qb->expr()
+			    	      	          ->field('name')
+			    	      		          ->equals($regex)
+			    	      		   	  ->field('locales')
+			    	      			      ->equals(null)
+			    		   )
+			    )
+			    ->addOr(
+			        $qb->expr()
+			    	       ->addAnd(
+			    		       $qb->expr()
+			    				     ->field('name.nl')
+			    					     ->equals($regex)
+			    					 ->field('locales')
+			    						 ->notEqual(null)
+			    	)
+			);
+
+	        $results[$kind] = $qb->getQuery()->execute();
+		}
+
+		if (count($kinds) === 1) {
+			$results = $results[$kinds[0]];
+		}
+
+		return $results;
+    }
 }

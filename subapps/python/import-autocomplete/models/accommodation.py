@@ -17,13 +17,13 @@ class Accommodation(Base):
     @type AUTOCOMPLETE_TYPE: C{string}
     """
     AUTOCOMPLETE_TYPE = 'accommodation'
-        
+
     """
     Fetching accommodations from the MySQL database and saving it for later use.
     @rtype: Accommodation
     """
     def fetch(self):
-        
+
         sql = 'SELECT `accommodatie_id` AS `id`, `naam` AS `name`, `websites`, `wzt` AS `season`, ' \
               '`plaats_id`   AS `place_id`, `zoekvolgorde` AS `order` '                             \
               'FROM   `accommodatie` '                                                              \
@@ -32,25 +32,26 @@ class Accommodation(Base):
 
         self.adapter('mysql').execute(sql)
         self.data = self.adapter('mysql').fetchall()
+
         return self
-    
+
     """
     Indexing the data fetched from MySQL database to mongodb
-    
+
     @rtype: Accommodation
     """
     def insert(self):
-        
+
         if not self.data:
             return self
-        
+
         collection = self.adapter('mongo').autocomplete
         data       = []
-        
+
         for row in self.data:
-            
+
             data.append({
-            
+
                 'type':     Accommodation.AUTOCOMPLETE_TYPE,
                 'type_id':  row['id'],
                 'locales':  None,
@@ -60,6 +61,6 @@ class Accommodation(Base):
                 'place_id': row['place_id'],
                 'order':    row['order']
             })
-            
+
         collection.insert(data)
         return self

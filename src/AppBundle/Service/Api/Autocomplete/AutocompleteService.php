@@ -11,31 +11,36 @@ namespace AppBundle\Service\Api\Autocomplete;
  */
 class AutocompleteService
 {
+	const KIND_COUNTRY		 = 'country';
+	const KIND_REGION		 = 'region';
+	const KIND_PLACE		 = 'place';
     const KIND_ACCOMMODATION = 'accommodation';
     const KIND_TYPE          = 'type';
-    
+
     private $allowedKinds    = [
-        self::KIND_ACCOMMODATION, self::KIND_TYPE,
+
+		self::KIND_COUNTRY, self::KIND_REGION, self::KIND_PLACE,
+		self::KIND_ACCOMMODATION, self::KIND_TYPE,
     ];
-    
+
     /**
      * @var AutocompleteServiceRepositoryInterface
      */
     private $autocompleteServiceRepository;
-    
+
     /**
      * Constructor
-     * 
+     *
      * @param AutocompleteServiceRepositoryInterface $autocompleteServiceRepository
      */
     public function __construct(AutocompleteServiceRepositoryInterface $autocompleteServiceRepository)
     {
         $this->autocompleteServiceRepository = $autocompleteServiceRepository;
     }
-    
+
     /**
      * Search endpoint
-     * 
+     *
      * @param string $term
      * @param array  $kinds
      * @param array  $options
@@ -48,7 +53,7 @@ class AutocompleteService
         if (false === !(array_diff($kinds, $this->allowedKinds))) {
             throw new AutocompleteServiceException(vsprintf('%s are not supported, supported kinds: %s', [implode(',', $kinds), implode(',', $this->allowedKinds)]));
         }
-        
+
         return $this->autocompleteServiceRepository->search($term, $kinds, $options);
     }
 }
