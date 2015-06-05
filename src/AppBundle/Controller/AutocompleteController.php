@@ -21,7 +21,7 @@ class AutocompleteController extends Controller
     public function search($term, $limit)
     {
         $autocompleteService = $this->get('service.api.autocomplete');
-        $kinds               = [AutocompleteService::KIND_COUNTRY, AutocompleteService::KIND_REGION, AutocompleteService::KIND_PLACE];
+        $kinds               = [AutocompleteService::KIND_COUNTRY, AutocompleteService::KIND_REGION, AutocompleteService::KIND_PLACE, AutocompleteService::KIND_ACCOMMODATION];
 
         $autocompleteService->search($term, $kinds, ['limit' => $limit])->parse()->flatten();
 

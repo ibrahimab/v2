@@ -31,7 +31,7 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
            ->sort('order', 'asc');
         
         $raw     = $qb->getQuery()->execute();
-        $results = [AutocompleteService::KIND_COUNTRY => [], AutocompleteService::KIND_REGION => [], AutocompleteService::KIND_PLACE => []];
+        $results = [AutocompleteService::KIND_COUNTRY => [], AutocompleteService::KIND_REGION => [], AutocompleteService::KIND_PLACE => [], AutocompleteService::KIND_ACCOMMODATION];
         
         foreach ($raw as $row) {
             $results[$row['type']][] = $row;

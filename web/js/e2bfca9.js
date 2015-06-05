@@ -7618,6 +7618,13 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         li.className = 'place';
                         
                     break;
+                        
+                    case kinds.KIND_ACCOMMODATON:
+                        
+                        a.href = '#';
+                        li.className = 'accommodation';
+                        
+                    break;
                 }
                 
                 // append all the nodes

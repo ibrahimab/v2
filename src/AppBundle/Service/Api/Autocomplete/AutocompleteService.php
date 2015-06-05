@@ -18,7 +18,7 @@ class AutocompleteService
     const KIND_TYPE          = 'type';
 
     private $allowedKinds    = [
-        self::KIND_COUNTRY, self::KIND_REGION, self::KIND_PLACE,
+        self::KIND_COUNTRY, self::KIND_REGION, self::KIND_PLACE, self::KIND_ACCOMMODATION,
     ];
 
     /**
@@ -99,6 +99,7 @@ class AutocompleteService
         $countries      = array_column((isset($results[self::KIND_COUNTRY])       ? $results[self::KIND_COUNTRY]       : []), null, 'type_id');
         $regions        = array_column((isset($results[self::KIND_REGION])        ? $results[self::KIND_REGION]        : []), null, 'type_id');
         $places         = array_column((isset($results[self::KIND_PLACE])         ? $results[self::KIND_PLACE]         : []), null, 'type_id');
+        $accommodations = array_column((isset($results[self::KIND_ACCOMMODATION]) ? $results[self::KIND_ACCOMMODATION] : []), null, 'type_id');
 
         foreach ($places as $placeId => $place) {
             
@@ -137,7 +138,7 @@ class AutocompleteService
             }
         }
         
-        $this->tree = [self::KIND_COUNTRY => $countries, self::KIND_REGION => $regions, self::KIND_PLACE => $places];
+        $this->tree = [self::KIND_COUNTRY => $countries, self::KIND_REGION => $regions, self::KIND_PLACE => $places, self::KIND_ACCOMMODATION => $accommodations];
                        
         return $this;
     }
