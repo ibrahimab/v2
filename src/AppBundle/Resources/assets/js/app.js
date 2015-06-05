@@ -4,6 +4,9 @@
     // setting up scroll button for long pages
     jq(function() {
 
+        // autocomplete
+        Chalet.Autocomplete.initialize('[data-role="autocomplete-query"]', 5, '[data-role="autocomplete-results"]');
+
         // body element cache
         var body = jq('body');
 

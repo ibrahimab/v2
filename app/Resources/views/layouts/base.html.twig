@@ -41,6 +41,7 @@
         {% include 'partials/footer.html.twig' %}
 
         {% javascripts 'bundles/app/js/vendor/jquery.js'
+                       'bundles/app/js/vendor/underscore.js'
                        'bundles/app/js/vendor/jquery.color.js'
                        'bundles/app/js/vendor/jquery.scrollup.js'
                        'bundles/app/js/vendor/foundation.min.js'
@@ -55,7 +56,8 @@
                        'js/fos_js_routes.js'
                        'bundles/app/js/layout.js'
                        '@AppBundle/Resources/assets/js/app.js'
-					   '@AppBundle/Resources/assets/js/maps/italy.js' %}
+					   '@AppBundle/Resources/assets/js/maps/italy.js'
+					   '@AppBundle/Resources/assets/js/autocomplete.js' %}
 
             <script type="text/javascript" src="{{ asset_url }}"></script>
 

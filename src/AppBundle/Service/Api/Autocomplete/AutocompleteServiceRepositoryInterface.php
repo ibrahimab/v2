@@ -27,11 +27,4 @@ interface AutocompleteServiceRepositoryInterface
      * @return TypeServiceEntityInterface[]|AccommodationServiceEntityInterface[]
      */
     public function search($term, $kinds, $options = []);
-    
-    /**
-     * Parse results to tree form
-     *
-     * @return Array
-     */
-    public function tree();
 }

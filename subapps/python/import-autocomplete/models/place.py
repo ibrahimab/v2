@@ -24,9 +24,9 @@ class Place(Base):
     """
     def fetch(self):
 
-        sql = 'SELECT `plaats_id` AS `id`, `naam` AS `name_nl`, `websites`, `wzt` AS `season`, ' \
-              '`naam_de` AS `name_de`, `naam_en` AS `name_en`, `naam_fr` AS `name_fr`  '         \
-              'FROM   `plaats` '                                                                 \
+        sql = 'SELECT `plaats_id` AS `id`, `skigebied_id` AS `region_id`, `land_id` AS `country_id`, `naam` AS `name_nl`, ' \
+              '`websites`, `wzt` AS `season`, `naam_de` AS `name_de`, `naam_en` AS `name_en`, `naam_fr` AS `name_fr`  '     \
+              'FROM   `plaats` '                                                                                            \
               'ORDER BY `naam` ASC'
 
         self.adapter('mysql').execute(sql)
@@ -53,6 +53,8 @@ class Place(Base):
 
                 'type':             Place.AUTOCOMPLETE_TYPE,
                 'type_id':          row['id'],
+                'region_id':        row['region_id'],
+                'country_id':       row['country_id'],
                 'locales':          ['nl', 'en', 'fr', 'de'],
                 'name':             {
 

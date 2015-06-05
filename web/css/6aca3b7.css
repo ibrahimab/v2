@@ -7482,13 +7482,17 @@ div.autocomplete-container div.results ul li:hover {
 }
 div.autocomplete-container div.results ul li.country {
   font-weight: bold;
-  color: #fff;
   background-color: #003366;
+}
+div.autocomplete-container div.results ul li.country span {
+  color: #fff;
 }
 div.autocomplete-container div.results ul li.region {
   font-weight: bold;
-  color: #003366;
   padding-left: 15px;
+}
+div.autocomplete-container div.results ul li.region span {
+  color: #003366;
 }
 div.autocomplete-container div.results ul li.place {
   padding-left: 30px;

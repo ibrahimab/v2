@@ -49,8 +49,21 @@ window.Chalet = (function(ns, undefined) {
 
     // getting reference to internal storage
     // for easy access
-    ns.get = function() {
-        return ns.attributes;
+    ns.get = function(attribute, _default) {
+        
+        if (undefined === attribute) {
+            return ns.attributes;
+        }
+        
+        if (undefined === ns.attributes[attribute] && undefined !== _default) {
+            return _default;
+        }
+        
+        if (undefined === ns.attributes[attribute] && undefined === _default) {
+            throw new Exception('Undefined attribute requested');
+        }
+        
+        return ns.attributes[attribute];
     };
     
     return ns;

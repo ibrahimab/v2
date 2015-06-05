@@ -31,8 +31,7 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
            ->sort('order', 'asc');
         
         $raw     = $qb->getQuery()->execute();
-        $results = [AutocompleteService::KIND_COUNTRY => [], AutocompleteService::KIND_REGION => [], AutocompleteService::KIND_PLACE => [],
-                    AutocompleteService::KIND_ACCOMMODATION => [], AutocompleteService::KIND_TYPE => []];
+        $results = [AutocompleteService::KIND_COUNTRY => [], AutocompleteService::KIND_REGION => [], AutocompleteService::KIND_PLACE => []];
         
         foreach ($raw as $row) {
             $results[$row['type']][] = $row;
@@ -59,38 +58,35 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
 
             $regex = new \MongoRegex('/.*' . $term .'.*/i');
             $qb = $this->createQueryBuilder();
-            $qb->select('type', 'type_id')
+            $qb->select()
                ->hydrate(false)
                ->eagerCursor(true)
                ->skip($offset)
                ->limit($limit)
                ->sort('order', 'asc');
 
-            $qb
-                ->field('type')
-                    ->equals($kind)
-                ->addOr(
-                    $qb->expr()
-                           ->addAnd(
-                               $qb->expr()
-                                      ->field('name')
-                                          ->equals($regex)
-                                      ->field('locales')
-                                          ->equals(null)
-                           )
-                )
-                ->addOr(
-                    $qb->expr()
-                           ->addAnd(
-                               $qb->expr()
-                                     ->field('name.nl')
-                                         ->equals($regex)
-                                     ->field('locales')
-                                         ->notEqual(null)
-                    )
-            );
+            $type     = $qb->expr()->field('type')->equals($kind);
+            
+            $name     = $qb->expr()->addOr($qb->expr()->field('name')->equals($regex)
+                                                      ->field('locales')->equals(null))
+                                                        
+                                   ->addOr($qb->expr()->field('name.nl')->equals($regex)
+                                                      ->field('locales')->notEqual(null));
+                    
+            $season   = $qb->expr()->addOr($qb->expr()->field('season')->exists(false))
+                                   ->addOr($qb->expr()->addAnd($qb->expr()->field('season')->exists(true))
+                                                      ->addAnd($qb->expr()->field('season')->equals($this->getSeason())));
 
-            $results[$kind] = $qb->getQuery()->execute();
+            $websites = $qb->expr()->addOr($qb->expr()->field('websites')->exists(false))
+                                   ->addOr($qb->expr()->addAnd($qb->expr()->field('websites')->exists(true))
+                                                      ->addAnd($qb->expr()->field('websites')->equals($this->getWebsite())));
+
+            $qb->addAnd($type)
+               ->addAnd($name)
+               ->addAnd($season)
+               ->addAnd($websites);
+ 
+            $results[$kind] = $qb->getQuery()->execute()->toArray();
         }
 
         if (count($kinds) === 1) {
@@ -98,14 +94,5 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
         }
 
         return $results;
-    }
-    
-    /**
-     * Parse results into tree form
-     *
-     * @return Array
-     */
-    public function tree()
-    {
     }
 }
