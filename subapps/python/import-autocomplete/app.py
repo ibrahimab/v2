@@ -9,23 +9,31 @@ faster autocomplete feature on the new website.
 @version    0.0.2
 @since      0.0.2
 """
+import sys
+import argparse
 import MySQLdb as mysql
 import pymongo as mongo
-import sys
 import settings
+
 from models.accommodation import Accommodation
 from models.type          import Type
 from models.country       import Country
 from models.region        import Region
 from models.place         import Place
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--env', dest='env', default='test')
+
+args   = parser.parse_args()
+
 try:
 
-    mysql_connection = mysql.connect(**settings.connection['mysql'])
+    connection       = settings.connection[args.env]
+    mysql_connection = mysql.connect(**connection['mysql'])
     mysql_cursor     = mysql_connection.cursor()
 
-    mongo_client     = mongo.MongoClient(settings.connection['mongo']['uri'])
-    mongo_database   = mongo_client[settings.connection['mongo']['db']]
+    mongo_client     = mongo.MongoClient(connection['mongo']['uri'])
+    mongo_database   = mongo_client[connection['mongo']['db']]
 
     # clearing old data
     mongo_database.autocomplete.drop()

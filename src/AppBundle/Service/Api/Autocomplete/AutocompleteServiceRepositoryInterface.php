@@ -12,6 +12,13 @@ namespace AppBundle\Service\Api\Autocomplete;
 interface AutocompleteServiceRepositoryInterface
 {
     /**
+     * Get all the autocomplete results
+     *
+     * @return Array
+     */
+    public function all();
+    
+    /**
      * Search endpoint
      *
      * @param  string $term
@@ -20,4 +27,11 @@ interface AutocompleteServiceRepositoryInterface
      * @return TypeServiceEntityInterface[]|AccommodationServiceEntityInterface[]
      */
     public function search($term, $kinds, $options = []);
+    
+    /**
+     * Parse results to tree form
+     *
+     * @return Array
+     */
+    public function tree();
 }

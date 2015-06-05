@@ -27,6 +27,11 @@ class AutocompleteService
      * @var AutocompleteServiceRepositoryInterface
      */
     private $autocompleteServiceRepository;
+    
+    /**
+     * @var array
+     */
+    private $results;
 
     /**
      * Constructor
@@ -37,6 +42,18 @@ class AutocompleteService
     {
         $this->autocompleteServiceRepository = $autocompleteServiceRepository;
     }
+    
+    /**
+     * Get all the endpoints
+     *
+     * @return Array
+     */
+    public function all()
+    {
+        $this->results = $this->autocompleteServiceRepository->all();
+        
+        return $this;
+    }
 
     /**
      * Search endpoint
@@ -44,7 +61,7 @@ class AutocompleteService
      * @param string $term
      * @param array  $kinds
      * @param array  $options
-     * @return TypeServiceEntityInterface[]|AccommodationServiceEntityInterface[]
+     * @return Array
      */
     public function search($term, $kinds, $options = [])
     {
@@ -55,5 +72,25 @@ class AutocompleteService
         }
 
         return $this->autocompleteServiceRepository->search($term, $kinds, $options);
+    }
+    
+    /**
+     * Parse results into tree format
+     *
+     * @param array $results
+     * @return Array
+     */
+    public function tree()
+    {
+        $results        = $this->results;
+        $countries      = array_column((isset($results[self::KIND_COUNTRY])       ? $results[self::KIND_COUNTRY]       : []), null, 'type_id');
+        $regions        = array_column((isset($results[self::KIND_REGION])        ? $results[self::KIND_REGION]        : []), null, 'type_id');
+        $places         = array_column((isset($results[self::KIND_PLACE])         ? $results[self::KIND_PLACE]         : []), null, 'type_id');
+        $accommodations = array_column((isset($results[self::KIND_ACCOMMODATION]) ? $results[self::KIND_ACCOMMODATION] : []), null, 'type_id');
+        $types          = array_column((isset($results[self::KIND_TYPE])          ? $results[self::KIND_TYPE]          : []), null, 'type_id');
+        
+        $tree           = [];
+        
+        dump($countries, $results, $places, $accommodations, $types);exit;
     }
 }

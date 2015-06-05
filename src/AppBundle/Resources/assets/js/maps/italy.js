@@ -1,9 +1,9 @@
-(function(Chalet, jq, undefined) {
+window.Chalet            = window.Chalet      || {};
+window.Chalet.Maps       = window.Chalet.Maps || {};
+window.Chalet.Maps.Italy = (function(ns, maps, italy, jq, undefined) {
     'use strict';
 
-    Chalet.Maps = Chalet.Maps || {};
-
-    Chalet.Maps.Italy = {
+    italy  = {
 
         Map: null,
 
@@ -33,47 +33,47 @@
 
         initialize: function(selector) {
 
-            this.settings['disabledIds'] = Chalet.get()['app']['country']['disabledRegions'];
+            italy.settings['disabledIds'] = ns.get()['app']['country']['disabledRegions'];
 
             for (var i in this.settings['disabledIds']) {
-                this.settings['disabledRegions'][this.settings['mapPrefix'] + '-' + this.settings['disabledIds'][i]] = this.settings['disabledColor'];
+                italy.settings['disabledRegions'][italy.settings['mapPrefix'] + '-' + italy.settings['disabledIds'][i]] = italy.settings['disabledColor'];
             }
 
-            var customPinData     = this.settings['customPin'];
+            var customPinData     = italy.settings['customPin'];
             customPinData['html'] = jq('[data-role="pin-html"][data-pin-id="' + customPinData['prefix'] + '-' + customPinData['id'] + '"]').html();
 
             var customPin = {};
             customPin[customPinData['prefix'] + '-' + customPinData['code']] = customPinData['html'];
 
-            this.Map = jq(selector);
-            this.Map.vectorMap({
+            italy.Map = jq(selector);
+            italy.Map.vectorMap({
 
-                map:             this.settings['mapId'],
-                backgroundColor: this.settings['backgroundColor'],
+                map:             italy.settings['mapId'],
+                backgroundColor: italy.settings['backgroundColor'],
         		borderColor:     '#ffffff',
-        		color:           this.settings['normalColor'],
-        		hoverColor:      this.settings['hoverColor'],
-        		selectedColor:   this.settings['selectedColor'],
-        		borderOpacity:   this.settings['borderOpacity'],
-        		enableZoom:      this.settings['enableZoom'],
+        		color:           italy.settings['normalColor'],
+        		hoverColor:      italy.settings['hoverColor'],
+        		selectedColor:   italy.settings['selectedColor'],
+        		borderOpacity:   italy.settings['borderOpacity'],
+        		enableZoom:      italy.settings['enableZoom'],
                 pins:            customPin,
-                onLabelShow:     this.events.onLabelShow,
-                onRegionOut:     this.events.onRegionOut,
-                onRegionClick:   this.events.onRegionClick,
-                onRegionOver:    this.events.onRegionOver
+                onLabelShow:     italy.events.onLabelShow,
+                onRegionOut:     italy.events.onRegionOut,
+                onRegionClick:   italy.events.onRegionClick,
+                onRegionOver:    italy.events.onRegionOver
             });
 
-            this.Map.vectorMap('set', 'colors', this.settings['disabledRegions']);
-            this.drawCustomPin(customPinData);
-            this.events.onRegionListHover(this.Map, this.settings);
+            italy.Map.vectorMap('set', 'colors', italy.settings['disabledRegions']);
+            italy.drawCustomPin(customPinData);
+            italy.events.onRegionListHover(italy.Map, italy.settings);
 
-            return this;
+            return italy;
         },
 
         drawCustomPin: function(pin) {
 
-            var settings         = this.settings;
-            var map              = this.Map;
+            var settings         = italy.settings;
+            var map              = italy.Map;
             var gardameer        = jq('[data-role="region"][data-region-id="' + pin['id'] + '"]');
             var gardameerData    = {};
             var customPin        = jq('#' + settings['jqvmapElementId'] + '_' + pin['prefix'] + '-' + pin['code'] + '_pin');
@@ -165,7 +165,7 @@
 
             onLabelShow: function(event, label, code) {
 
-                var id     = code.replace(Chalet.Maps.Italy.settings['mapPrefix'] + '-', '');
+                var id     = code.replace(italy.settings['mapPrefix'] + '-', '');
                 var region = jq('[data-role="region"][data-region-id="' + id + '"]');
 
                 if (region.length > 0) {
@@ -187,20 +187,20 @@
 
             onRegionOut: function(event, code, region) {
 
-                jq('[data-role="region"][data-region-id="' + code.replace(Chalet.Maps.Italy.settings['mapPrefix'] + '-', '') + '"]')
+                jq('[data-role="region"][data-region-id="' + code.replace(italy.settings['mapPrefix'] + '-', '') + '"]')
                     .find('a')
                     .removeClass('hovered-region');
             },
 
             onRegionClick: function(event, code, region) {
 
-                if (Chalet.Maps.Italy.settings['disabledRegions'].hasOwnProperty(code)) {
+                if (italy.settings['disabledRegions'].hasOwnProperty(code)) {
 
                     event.preventDefault();
 
                 } else {
 
-                    var id               = code.replace(Chalet.Maps.Italy.settings['mapPrefix'] + '-', '');
+                    var id               = code.replace(italy.settings['mapPrefix'] + '-', '');
                     var region           = jq('[data-role="region"][data-region-id="' + id + '"]');
                     var destination      = region.find('a').attr('href');
 
@@ -210,20 +210,22 @@
 
             onRegionOver: function(event, code) {
 
-                if (Chalet.Maps.Italy.settings['disabledRegions'].hasOwnProperty(code)) {
+                if (italy.settings['disabledRegions'].hasOwnProperty(code)) {
 
-                    Chalet.Maps.Italy.Map.css('cursor', 'default');
+                    italy.Map.css('cursor', 'default');
                     event.preventDefault();
 
                 } else {
 
-                    Chalet.Maps.Italy.Map.css('cursor', 'pointer');
-                    jq('[data-role="region"][data-region-id="' + code.replace(Chalet.Maps.Italy.settings['mapPrefix'] + '-', '') + '"]')
+                    italy.Map.css('cursor', 'pointer');
+                    jq('[data-role="region"][data-region-id="' + code.replace(italy.settings['mapPrefix'] + '-', '') + '"]')
                         .find('a')
                         .addClass('hovered-region');
                 }
             }
         }
     };
+    
+    return italy;
 
-})(window.Chalet = window.Chalet || {}, jQuery);
+})(window.Chalet, window.Chalet.Maps, window.Chalet.Maps.Italy || {}, jQuery);

@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Document\Autocomplete;
 use       AppBundle\Document\BaseRepository;
+use       AppBundle\Service\Api\Autocomplete\AutocompleteService;
 use       AppBundle\Service\Api\Autocomplete\AutocompleteServiceRepositoryInterface;
 use       Doctrine\ODM\MongoDB\DocumentRepository;
 
@@ -15,6 +16,30 @@ use       Doctrine\ODM\MongoDB\DocumentRepository;
 class AutocompleteRepository extends DocumentRepository implements AutocompleteServiceRepositoryInterface
 {
     use BaseRepository;
+    
+    /**
+     * Return all the autocomplete entries
+     *
+     * @return Array
+     */
+    public function all()
+    {
+        $qb = $this->createQueryBuilder();
+        $qb->select('type', 'type_id')
+           ->hydrate(false)
+           ->eagerCursor(true)
+           ->sort('order', 'asc');
+        
+        $raw     = $qb->getQuery()->execute();
+        $results = [AutocompleteService::KIND_COUNTRY => [], AutocompleteService::KIND_REGION => [], AutocompleteService::KIND_PLACE => [],
+                    AutocompleteService::KIND_ACCOMMODATION => [], AutocompleteService::KIND_TYPE => []];
+        
+        foreach ($raw as $row) {
+            $results[$row['type']][] = $row;
+        }
+        
+        return $results;
+    }
 
     /**
      * Search for autocomplete results
@@ -73,5 +98,14 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
         }
 
         return $results;
+    }
+    
+    /**
+     * Parse results into tree form
+     *
+     * @return Array
+     */
+    public function tree()
+    {
     }
 }

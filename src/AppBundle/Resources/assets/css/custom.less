@@ -251,41 +251,71 @@ div.google-maps {
 	width: 151px;
 }
 
-.chosen-single {
-
-    height: 50px !important;
-    padding-top: 13px !important;
-    background: #fff !important;
-    box-shadow: none !important;
-    font-size: 0.875rem;
-    color: rgba(0,0,0,0.75);
-    font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
-    font-weight: 400;
-    text-align: left;
-}
-
-.chosen-single div {
-    padding-top: 13px;
-}
-
-.chosen-results li {
-    text-align: left;
-}
-
-.chosen-results li.option-country {
-
-    font-weight: bold;
-    color: #ffffff;
-    background-color: #003366;
-}
-
-.chosen-results li.option-region {
-
-    padding-left: 0.8em !important;
-    color: #003366;
-    font-weight: bold;
-}
-
-.chosen-results li.option-place {
-    padding-left: 2em !important;
+div.autocomplete-container {
+ 
+    div.results {
+        
+        position: relative;
+        
+        ul {
+            
+            list-style-type: none;
+            text-align: left;
+            position: absolute;
+            top: 0;
+            background-color: #fff;
+            width: 100%;
+            margin: 0;
+            max-height: 159px;
+            z-index: 1000;
+            overflow: hidden;
+            
+            
+            li {
+                
+                height: 2rem;
+                width: 100%;
+                overflow: hidden;
+                
+                span {
+                    
+                    padding: 3px 12px;
+                    display: inline-block;
+                }
+                
+                &:hover {
+                    
+                    background-color: #3875d7;
+                    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(20%, #3875d7), color-stop(90%, #2a62bc));
+                    background-image: -webkit-linear-gradient(#3875d7 20%, #2a62bc 90%);
+                    background-image: -moz-linear-gradient(#3875d7 20%, #2a62bc 90%);
+                    background-image: -o-linear-gradient(#3875d7 20%, #2a62bc 90%);
+                    background-image: linear-gradient(#3875d7 20%, #2a62bc 90%);
+                    color: #fff !important;
+                }
+                
+                &.country {
+                    
+                    font-weight: bold;
+                    color: #fff;
+                    background-color: #003366;
+                }
+                
+                &.region {
+                    
+                    font-weight: bold;
+                    color: #003366;
+                    padding-left: 15px;
+                }
+                
+                &.place {
+                    padding-left: 30px;
+                }
+            }
+        }
+    }
+    
+    input {
+        margin-bottom: -2px;
+    }
 }

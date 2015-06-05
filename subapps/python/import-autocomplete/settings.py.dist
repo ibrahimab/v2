@@ -12,19 +12,25 @@ deploying it to a new server
 """
 Connection dictionary
 """
+from MySQLdb.cursors import DictCursor
 connection = {
 
-    'mysql': {
+    '<env>': {
+        
+        'mysql': {
 
-        'host':   '<host>',
-        'user':   '<user>',
-        'passwd': '<password>',
-        'db':     '<database>'
-    },
+            'host':        '<host>',
+            'user':        '<user>',
+            'passwd':      '<password>',
+            'db':          '<database>',
+            'cursorclass': DictCursor,
+            'charset':     'utf8'
+        },
 
-    'mongo': {
+        'mongo': {
 
-        'uri': 'mongodb://<host>:<port>/',
-        'db':  'chalet_test'
+            'uri': 'mongodb://<host>:<port>/',
+            'db':  'chalet_test'
+        }
     }
 }
