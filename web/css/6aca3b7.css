@@ -7460,7 +7460,7 @@ div.autocomplete-container div.results ul {
   margin: 0;
   max-height: 159px;
   z-index: 1000;
-  overflow: hidden;
+  overflow: scroll;
 }
 div.autocomplete-container div.results ul li {
   height: 2rem;
