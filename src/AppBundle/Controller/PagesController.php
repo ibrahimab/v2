@@ -3,6 +3,7 @@ namespace AppBundle\Controller;
 use       AppBundle\Annotation\Breadcrumb;
 use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
+use       AppBundle\Service\Api\Autocomplete\AutocompleteService;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -33,6 +34,7 @@ class PagesController extends Controller
         $regionService        = $this->get('service.api.region');
         $placeService         = $this->get('service.api.place');
         $typeService          = $this->get('service.api.type');
+        $autocompleteService  = $this->get('service.api.autocomplete');
 
         $regions              = $regionService->findHomepageRegions(['limit' => 1]);
         $places               = [];
@@ -86,12 +88,15 @@ class PagesController extends Controller
             }
         }
 
+        $autocompleteResults = $autocompleteService->search('t', [AutocompleteService::KIND_TYPE], ['limit' => 5]);
+
         return [
 
             'region'         => $region,
             'places'         => $places,
             'highlights'     => $highlights,
             'homepageBlocks' => $groupedHomepageBlocks,
+            'autocomplete'   => $autocompleteResults,
         ];
     }
 

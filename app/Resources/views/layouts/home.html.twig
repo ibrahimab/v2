@@ -27,7 +27,9 @@
             <div class="row" id="header-form-fields">
                 <form>
                     <div class="large-3 medium-3 columns">
-                        <input type="text" id="choose-destination" class="radius" placeholder="Waar wil je naar toe?">
+                        <select name="where" data-placeholder="Waar wil je naar toe?" data-role="autocomplete">
+                            {{ autocompleteResults['country'] as }}
+                        </select>
                     </div>
                     <div class="large-3 medium-3 columns">
                         <select class="radius">

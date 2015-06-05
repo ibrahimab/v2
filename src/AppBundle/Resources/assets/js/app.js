@@ -7,6 +7,8 @@
         // body element cache
         var body = jq('body');
 
+        jq('[data-role="autocomplete"]').chosen();
+
         /**
          * This method listens for changes in the sort select field to re-order
          * all the regions based on the selected value
