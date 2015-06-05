@@ -11,6 +11,8 @@ namespace AppBundle\Service\Api\Autocomplete;
  */
 class AutocompleteService
 {
+    const DEFAULT_LIMIT      = 5;
+    
     const KIND_COUNTRY       = 'country';
     const KIND_REGION        = 'region';
     const KIND_PLACE         = 'place';
@@ -40,6 +42,11 @@ class AutocompleteService
      * @var array
      */
     private $flattened;
+    
+    /**
+     * @var int
+     */
+    private $limit;
 
     /**
      * Constructor
@@ -52,6 +59,7 @@ class AutocompleteService
         $this->results                       = [];
         $this->tree                          = [];
         $this->flattened                     = [];
+        $this->limit                         = self::DEFAULT_LIMIT;
     }
     
     /**
@@ -74,7 +82,7 @@ class AutocompleteService
      * @param array  $options
      * @return Array
      */
-    public function search($term, $kinds, $options = [])
+    public function search($term, $kinds)
     {
         // array_diff should return 0 elements, so
         // casting it to boolean returns true if kinds are correct
@@ -82,7 +90,14 @@ class AutocompleteService
             throw new AutocompleteServiceException(vsprintf('%s are not supported, supported kinds: %s', [implode(',', $kinds), implode(',', $this->allowedKinds)]));
         }
 
-        $this->results = $this->autocompleteServiceRepository->search($term, $kinds, $options);
+        $this->results = $this->autocompleteServiceRepository->search($term, $kinds);
+        
+        return $this;
+    }
+    
+    public function limit($limit)
+    {
+        $this->limit = $limit;
         
         return $this;
     }
@@ -96,11 +111,16 @@ class AutocompleteService
     public function parse()
     {
         $results        = $this->results;
-        $countries      = array_column((isset($results[self::KIND_COUNTRY])       ? $results[self::KIND_COUNTRY]       : []), null, 'type_id');
-        $regions        = array_column((isset($results[self::KIND_REGION])        ? $results[self::KIND_REGION]        : []), null, 'type_id');
-        $places         = array_column((isset($results[self::KIND_PLACE])         ? $results[self::KIND_PLACE]         : []), null, 'type_id');
-        $accommodations = array_column((isset($results[self::KIND_ACCOMMODATION]) ? $results[self::KIND_ACCOMMODATION] : []), null, 'type_id');
-
+        $limit          = $this->limit;
+        $format         = function($kind) use ($results, $limit) {
+            return array_slice(array_column((isset($results[$kind]) ? $results[$kind] : []), null, 'type_id'), 0, $limit);
+        };
+        
+        $countries      = $format(self::KIND_COUNTRY);
+        $regions        = $format(self::KIND_REGION);
+        $places         = $format(self::KIND_PLACE);
+        $accommodations = $format(self::KIND_ACCOMMODATION);
+        
         foreach ($places as $placeId => $place) {
             
             if (isset($regions[$place['region_id']])) {

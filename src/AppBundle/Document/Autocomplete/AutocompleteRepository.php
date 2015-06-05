@@ -54,41 +54,45 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
         $offset  = self::getOption($options, 'offset', 0);
         $results = [];
 
-        foreach ($kinds as $kind) {
+        $regex = new \MongoRegex('/.*' . $term .'.*/i');
+        $qb = $this->createQueryBuilder();
+        $qb->select()
+           ->hydrate(false)
+           ->eagerCursor(true)
+           ->sort('order', 'asc');
 
-            $regex = new \MongoRegex('/.*' . $term .'.*/i');
-            $qb = $this->createQueryBuilder();
-            $qb->select()
-               ->hydrate(false)
-               ->eagerCursor(true)
-               ->skip($offset)
-               ->limit($limit)
-               ->sort('order', 'asc');
+        $type     = $qb->expr()->field('type')->in($kinds);
+        
+        $name     = $qb->expr()->addOr($qb->expr()->field('name')->equals($regex)
+                                                  ->field('locales')->equals(null))
+                                                    
+                               ->addOr($qb->expr()->field('name.nl')->equals($regex)
+                                                  ->field('locales')->notEqual(null));
+                
+        $season   = $qb->expr()->addOr($qb->expr()->field('season')->exists(false))
+                               ->addOr($qb->expr()->addAnd($qb->expr()->field('season')->exists(true))
+                                                  ->addAnd($qb->expr()->field('season')->equals($this->getSeason())));
 
-            $type     = $qb->expr()->field('type')->equals($kind);
+        $websites = $qb->expr()->addOr($qb->expr()->field('websites')->exists(false))
+                               ->addOr($qb->expr()->addAnd($qb->expr()->field('websites')->exists(true))
+                                                  ->addAnd($qb->expr()->field('websites')->equals($this->getWebsite())));
+
+        $qb->addAnd($type)
+           ->addAnd($name)
+           ->addAnd($season)
+           ->addAnd($websites);
+
+        $rawResults = $qb->getQuery()->execute()->toArray();
+        $results = [];
+        foreach ($rawResults as $rawResult) {
             
-            $name     = $qb->expr()->addOr($qb->expr()->field('name')->equals($regex)
-                                                      ->field('locales')->equals(null))
-                                                        
-                                   ->addOr($qb->expr()->field('name.nl')->equals($regex)
-                                                      ->field('locales')->notEqual(null));
-                    
-            $season   = $qb->expr()->addOr($qb->expr()->field('season')->exists(false))
-                                   ->addOr($qb->expr()->addAnd($qb->expr()->field('season')->exists(true))
-                                                      ->addAnd($qb->expr()->field('season')->equals($this->getSeason())));
-
-            $websites = $qb->expr()->addOr($qb->expr()->field('websites')->exists(false))
-                                   ->addOr($qb->expr()->addAnd($qb->expr()->field('websites')->exists(true))
-                                                      ->addAnd($qb->expr()->field('websites')->equals($this->getWebsite())));
-
-            $qb->addAnd($type)
-               ->addAnd($name)
-               ->addAnd($season)
-               ->addAnd($websites);
- 
-            $results[$kind] = $qb->getQuery()->execute()->toArray();
+            if (!isset($results[$rawResult['type']])) {
+                $results[$rawResult['type']] = [];
+            }
+            
+            $results[$rawResult['type']][] = $rawResult;
         }
-
+            
         if (count($kinds) === 1) {
             $results = $results[$kinds[0]];
         }
