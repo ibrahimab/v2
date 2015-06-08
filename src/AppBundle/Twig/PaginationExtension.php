@@ -2,6 +2,7 @@
 namespace AppBundle\Twig;
 use       Symfony\Component\DependencyInjection\ContainerInterface;
 use       Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use       Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * PaginationExtension
@@ -26,18 +27,29 @@ class PaginationExtension extends \Twig_Extension
     private $generator;
     
     /**
-     * @var 
+     * @var Paginator
      */
     private $paginator;
+    
+    /**
+     * @var string
+     */
+    private $locale;
+    
+    /**
+     * @var string
+     */
+    private $html;
 
     /**
      * @param ContainerInterface $container
+     * @param UrlGeneratorInterface $generator
      */
     public function __construct(ContainerInterface $container, UrlGeneratorInterface $generator)
     {
-        $this->container   = $container;
-        $this->generator   = $generator;
-		$this->currentUser = null;
+        $this->container = $container;
+        $this->generator = $generator;
+        $this->locale    = $this->container->get('request')->getLocale();
     }
     
     /**
@@ -48,6 +60,7 @@ class PaginationExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
+            
             new \Twig_SimpleFunction('set_paginator',          [$this, 'set']),
             new \Twig_SimpleFunction('get_paginator',          [$this, 'get']),
             new \Twig_SimpleFunction('count_paginator',        [$this, 'count']),
@@ -63,42 +76,73 @@ class PaginationExtension extends \Twig_Extension
      * @param  $paginator
      * @return 
      */
-    public function set($paginator)
+    public function set(Paginator $paginator)
     {
         $this->paginator = $paginator;
     }
     
+    /**
+     * Getting back Paginator Interface to be iterated over for results
+     *
+     * @return Paginator
+     */
     public function get()
     {
         return $this->paginator;
     }
     
+    /**
+     * returns TOTAL results that is being paginated on
+     *
+     * @return int
+     */
     public function count()
     {
         return count($this->paginator);
     }
     
-    public function render(\Twig_Environment $environment)
+    /**
+     * Render pagination template
+     *
+     * @return string
+     */
+    public function render(\Twig_Environment $environment, $refresh = false)
     {
-        return $environment->render('partials/pagination.html.twig', [
+        // return cache if already rendered or if refresh is not requested
+        if (null !== $this->html && false === $refresh) {
+            return $this->html;
+        }
+        
+        return $this->html = $environment->render('partials/pagination.html.twig', [
             
             'last'    => $this->paginator->page['last'],
             'current' => $this->paginator->page['current'],
         ]);
     }
     
+    /**
+     * Generate url for pagination button
+     *
+     * @return string
+     */
     public function url($page)
     {
-        $locale = $this->container->get('request')->getLocale();
-        return $this->generator->generate('search_' . $locale, ['p' => $page]);
+        return $this->generator->generate('search_' . $this->locale, ['p' => $page]);
     }
     
+    /**
+     * Active class html for active page
+     *
+     * @return string
+     */
     public function active($page)
     {
         return ((int)$this->paginator->page['current'] === (int)$page ? ' class="current"' : '');
     }
 
     /**
+     * Register pagination extension name
+     *
      * @return string
      */
     public function getName()

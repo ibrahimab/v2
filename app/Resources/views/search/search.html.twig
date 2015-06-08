@@ -16,6 +16,7 @@
             <div id="search-results" class="small-12 medium-8 large-9 columns">
                 {% include 'partials/search/tags.html.twig' %}
                 <hr />
+                {{ render_paginator() }}
                 <div class="row">
                     <div class="small-12 medium-6 large-6 columns">
                         <div class="title">{{ count_paginator() }} resultaten</div>
@@ -43,11 +44,11 @@
                 <hr />
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
-                        {# {% set results = get_paginator() %} #}
-                        {# {% set images  = search_images(results) %} #}
-                        {# {% for result in results %} #}
-                        {# {% include 'partials/search/result.html.twig' with {'result': result, 'all_images': images} %} #}
-                        {# {% endfor %} #}
+                        {% set results = get_paginator() %}
+                        {% set images  = search_images(results) %}
+                        {% for result in results %}
+                        {% include 'partials/search/result.html.twig' with {'result': result, 'all_images': images} %}
+                        {% endfor %}
                     </div>
                 </div>
                 {{ render_paginator() }}
