@@ -41,6 +41,8 @@ class SearchController extends Controller
                                        ->filter($filters)
                                        ->results();
         
+        dump($searchService->build()->block(SearchBuilder::BLOCK_FILTER));
+        
         return $this->render('search/search.html.twig', [
             'paginator' => $paginator,
         ]);

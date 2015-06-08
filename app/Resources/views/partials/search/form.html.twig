@@ -1,3 +1,4 @@
+{% set query = app.request.query.all() %}
 <div id="search-filter"  class="small-12 medium-4 large-3 columns">
     <div id="search-filter-main">
         <h2><a href="" title="deze box in- of uitklappen">Zoek en boek</a></h2>
@@ -10,7 +11,9 @@
     <div id="search-filter-piste-distance" class="search-filter-default">
         <h2 class="closed"><a href="" title="deze box in- of uitklappen">Afstand tot de piste</a></h2>
         <div class="fields">
-            <label class="label_check" for="checkbox-01"><input name="sample-checkbox-01" id="checkbox-01" value="1" type="checkbox" checked />aan de piste<span>(848)</span></label>
+            <a href="{{ locale_path('search', query|replace({f: {1: 1}})) }}">
+                <label class="label_check" for="checkbox-01"><input name="sample-checkbox-01" id="checkbox-01" value="1" type="checkbox" />aan de piste<span>(848)</span></label>
+            </a>
             <label class="label_check" for="checkbox-02"><input name="sample-checkbox-02" id="checkbox-02" value="1" type="checkbox" />max 250 meter<span>(1419)</span></label>
             <label class="label_check" for="checkbox-03"><input name="sample-checkbox-03" id="checkbox-03" value="1" type="checkbox" />max 500 meter<span>(1729)</span></label>
             <label class="label_check" for="checkbox-04"><input name="sample-checkbox-04" id="checkbox-04" value="1" type="checkbox" />max 1000 meter<span>(1933)</span></label>

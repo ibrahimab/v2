@@ -14,22 +14,22 @@ class SearchBuilder
     /**
      * @const int
      */
-    const BLOCK_WHERE = 1;
+    const BLOCK_WHERE      = 1;
                       
     /**               
      * @const int     
      */               
-    const BLOCK_LIMIT = 2;
+    const BLOCK_LIMIT      = 2;
                       
     /**               
      * @const int     
      */               
-    const BLOCK_OFFSET = 3;
+    const BLOCK_OFFSET     = 3;
     
     /**
      * @const int
      */
-    const BLOCK_SORT_BY = 4;
+    const BLOCK_SORT_BY    = 4;
     
     /**
      * @const int
@@ -39,11 +39,31 @@ class SearchBuilder
     /**
      * @const int
      */
+    const BLOCK_FILTER     = 6;
+    
+    /**
+     * @const int
+     */
     const SORT_BY_ACCOMMODATION_NAME = 1;
+    
+    /**
+     * @const int
+     */
     const SORT_BY_TYPE_PRICE         = 2;
+    
+    /**
+     * @const int
+     */
     const SORT_BY_TYPE_SEARCH_ORDER  = 3;
     
+    /**
+     * @const int
+     */
     const SORT_ORDER_ASC             = 'asc';
+    
+    /**
+     * @const int
+     */
     const SORT_ORDER_DESC            = 'desc';
     
     /**
@@ -126,6 +146,11 @@ class SearchBuilder
         return $this;
     }
     
+    /**
+     * @param int $field
+     * @param int $order
+     * @return SearchBuilder
+     */
     public function sort($field, $order)
     {
         $this->blocks[self::BLOCK_SORT_BY]    = $field;
@@ -147,7 +172,8 @@ class SearchBuilder
             case self::BLOCK_OFFSET:
             case self::BLOCK_SORT_BY:
             case self::BLOCK_SORT_ORDER:
-                $value = $this->blocks[$block];
+            case self::BLOCK_FILTER:
+                $value = (isset($this->blocks[$block]) ? $this->blocks[$block] : $default);
             break;
             
             default:
@@ -155,6 +181,21 @@ class SearchBuilder
         }
         
         return $value;
+    }
+    
+    /**
+     * @param array $data
+     * @return SearchBuilder
+     */
+    public function filter($data)
+    {
+        if (null !== $data) {
+            
+            $this->blocks[self::BLOCK_FILTER] = new FilterBuilder($data);
+            $this->blocks[self::BLOCK_FILTER]->parse();
+        }
+        
+        return $this;
     }
     
     /**

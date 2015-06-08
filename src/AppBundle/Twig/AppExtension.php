@@ -65,6 +65,7 @@ class AppExtension extends \Twig_Extension
         $this->container   = $container;
         $this->generator   = $generator;
 		$this->currentUser = null;
+        $this->locale      = $this->container->get('request')->getLocale();
     }
 
     /**
@@ -102,9 +103,11 @@ class AppExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
+            
             new \Twig_SimpleFilter('bbcode', [$this, 'bbcode'], array('pre_escape' => 'html', 'is_safe' => array('html'))),
             new \Twig_SimpleFilter('sortprop', [$this, 'sortByProperty']),
 			new \Twig_SimpleFilter('seo', [$this, 'seo']),
+            new \Twig_SimpleFilter('replace', [$this, 'replace']),
         ];
     }
 
@@ -407,10 +410,9 @@ class AppExtension extends \Twig_Extension
      */
     public function getPath($name, $parameters = array(), $relative = false)
     {
-        $locale = $this->container->get('request')->getLocale();
-        $exists = $this->generator->getRouteCollection()->get($name . '_' . $locale) !== null;
+        $exists = $this->generator->getRouteCollection()->get($name . '_' . $this->locale) !== null;
 
-        return $this->generator->generate(($name . ($exists ? ('_' . $locale) : '')), $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
+        return $this->generator->generate(($name . ($exists ? ('_' . $this->locale) : '')), $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
     }
 
     /**
@@ -423,10 +425,9 @@ class AppExtension extends \Twig_Extension
      */
     public function getUrl($name, $parameters = array(), $schemeRelative = false)
     {
-        $locale = $this->container->get('request')->getLocale();
-        $exists = $this->generator->getRouteCollection()->get($name . '_' . $locale) !== null;
+        $exists = $this->generator->getRouteCollection()->get($name . '_' . $this->locale) !== null;
 
-        return $this->generator->generate(($name . ($exists ? ('_' . $locale) : '')), $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->generator->generate(($name . ($exists ? ('_' . $this->locale) : '')), $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
     /**
@@ -596,6 +597,11 @@ class AppExtension extends \Twig_Extension
         }
         
         return $this->currentUser;
+    }
+    
+    public function replace($data, $replacement, $recursive = false)
+    {
+        return (true === $recursive ? array_replace_recursive($data, $replacement) : array_replace($data, $replacement));
     }
 
     /**
