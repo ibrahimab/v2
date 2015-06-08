@@ -41,6 +41,7 @@ class SearchBuilder
      */
     const SORT_BY_ACCOMMODATION_NAME = 1;
     const SORT_BY_TYPE_PRICE         = 2;
+    const SORT_BY_TYPE_SEARCH_ORDER  = 3;
     
     const SORT_ORDER_ASC             = 'asc';
     const SORT_ORDER_DESC            = 'desc';

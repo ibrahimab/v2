@@ -31,12 +31,14 @@ class SearchController extends Controller
         $page          = ($page === 0 ? $page : ($page - 1));
         $per_page      = intval($this->container->getParameter('app')['results_per_page']);
         $offset        = round($per_page * $page);
+        $filters       = $request->query->get('f');
         
         $searchService = $this->get('service.api.search');
         $paginator     = $searchService->build()
                                        ->limit($per_page)
                                        ->offset($offset)
-                                       ->sort(SearchBuilder::SORT_BY_ACCOMMODATION_NAME, SearchBuilder::SORT_ORDER_ASC)
+                                       ->sort(SearchBuilder::SORT_BY_TYPE_SEARCH_ORDER, SearchBuilder::SORT_ORDER_ASC)
+                                       ->filter($filters)
                                        ->results();
         
         return $this->render('search/search.html.twig', [

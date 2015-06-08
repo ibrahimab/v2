@@ -6,7 +6,7 @@ class AccommodationService
 {
 	const MAIN_IMAGE   = 'hoofdfoto_accommodatie';
 	const BELOW_IMAGE  = 'accommodaties_aanvullend_onderaan';
-    const SEARCH_IMAGE = 'accommodaties';
+    const SEARCH_IMAGE = 'hoofdfoto_accommodatie';
 
 	private $accommodationServiceRepository;
 

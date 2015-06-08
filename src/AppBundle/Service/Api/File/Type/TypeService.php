@@ -13,7 +13,7 @@ use		  AppBundle\Service\Api\File\FileServiceEntityInterface;
 class TypeService
 {
 	const MAIN_IMAGE   = 'hoofdfoto_type';
-	const SEARCH_IMAGE = 'types';
+	const SEARCH_IMAGE = 'hoofdfoto_type';
 
 	/**
 	 * @var TypeServiceRepositoryInterface

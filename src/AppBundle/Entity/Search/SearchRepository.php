@@ -135,6 +135,10 @@ class SearchRepository implements SearchServiceRepositoryInterface
             case SearchBuilder::SORT_BY_ACCOMMODATION_NAME:
                 $field = 'a.name';
             break;
+            
+            case SearchBuilder::SORT_BY_TYPE_SEARCH_ORDER:
+                $field = 't.searchOrder';
+            break;
         }
         
         return $field;
