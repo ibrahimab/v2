@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Controller;
 use       AppBundle\Annotation\Breadcrumb;
+use       AppBundle\Service\Api\Search\SearchBuilder;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -27,8 +28,9 @@ class SearchController extends Controller
     {
         $searchService = $this->get('service.api.search');
         $results       = $searchService->build()
-                                       ->limit(3)
+                                       ->limit(10)
                                        ->offset(0)
+                                       ->sort(SearchBuilder::SORT_BY_ACCOMMODATION_NAME, SearchBuilder::SORT_ORDER_ASC)
                                        ->results();
         
         return $this->render('search/search.html.twig', [

@@ -72,7 +72,7 @@ class File implements FileServiceEntityInterface
 	 */
 	public function getFileId()
 	{
-		return $this->fileId;
+		return $this->file_id;
 	}
 
 	/**

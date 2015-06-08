@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Entity\Search;
 use       AppBundle\Service\Api\Search\SearchServiceRepositoryInterface;
+use       AppBundle\Service\Api\Search\SearchService;
 use       AppBundle\Service\Api\Search\SearchBuilder;
 use       AppBundle\Concern\SeasonConcern;
 use       AppBundle\Concern\WebsiteConcern;
@@ -45,6 +46,16 @@ class SearchRepository implements SearchServiceRepositoryInterface
     const ENTITY_TYPE          = 'AppBundle:Type\Type';
     
     /**
+     * @const string
+     */
+    const SORT_BY_DEFAULT      = SearchBuilder::SORT_BY_ACCOMMODATION_NAME;
+                               
+    /**                        
+     * @const string           
+     */                        
+    const SORT_ORDER_DEFAULT   = SearchBuilder::SORT_ORDER_ASC;
+    
+    /**
      * @var integer
      */
     protected $season;
@@ -72,16 +83,78 @@ class SearchRepository implements SearchServiceRepositoryInterface
      */
     public function search(SearchBuilder $searchBuilder)
     {
-        $limit  = $searchBuilder->block(SearchBuilder::BLOCK_LIMIT);
-        $offset = $searchBuilder->block(SearchBuilder::BLOCK_OFFSET);
+        $limit       = $searchBuilder->block(SearchBuilder::BLOCK_LIMIT);
+        $offset      = $searchBuilder->block(SearchBuilder::BLOCK_OFFSET);
+        $sort_by     = $searchBuilder->block(SearchBuilder::BLOCK_SORT_BY, self::SORT_BY_DEFAULT);
+        $sort_order  = $searchBuilder->block(SearchBuilder::BLOCK_SORT_ORDER, self::SORT_ORDER_DEFAULT);
         
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->add('select', 't')
-           ->add('from', self::ENTITY_TYPE . ' t')
-           ->setMaxResults($limit)
-           ->setFirstResult($offset);
+        $paginationQuery = $this->getEntityManager()->createQueryBuilder();
+        $paginationExpr  = $paginationQuery->expr();
+        $paginationQuery->select('partial a.{id}')
+                        ->from(self::ENTITY_ACCOMMODATION, 'a')
+                        ->setMaxResults($limit)
+                        ->setFirstResult($offset)
+                        ->andWhere($paginationExpr->eq('a.display', ':display'))
+                        ->andWhere($paginationExpr->eq('a.displaySearch', ':displaySearch'))
+                        ->having($paginationExpr->gt('SIZE(a.types)', 1));
+        
+        if (null !== ($sort_field = $this->sortField($sort_by))) {
+            $paginationQuery->orderBy($sort_field, $sort_order);
+        }
+        
+        $paginationQuery->setParameters([
+            
+            'display'       => true,
+            'displaySearch' => true,
+        ]);
+        
+        $ids = $paginationQuery->getQuery()->getScalarResult();
+        if (!is_array($ids)) {
+            return [];
+        }
+        
+        $ids  = array_column($ids, 'a_id');
+        $qb   = $this->getEntityManager()->createQueryBuilder();
+        $expr = $qb->expr();
+        
+        $qb->add('select', 't,
+                            partial a.{id, name, shortDescription, englishShortDescription, germanShortDescription}, 
+                            partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}, 
+                            partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}, 
+                            partial c.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}')
+           ->add('from', self::ENTITY_ACCOMMODATION . ' a')
+           ->innerJoin('a.types', 't')
+           ->innerJoin('a.place',  'p')
+           ->innerJoin('p.region', 'r')
+           ->innerJoin('p.country', 'c')
+           ->where('a.id IN (:ids)')
+           ->andWhere($expr->eq('t.display', ':display'))
+           ->andWhere($expr->eq('t.displaySearch', ':displaySearch'))
+           ->setParameters([
+               
+               'ids'           => $ids,
+               'display'       => true,
+               'displaySearch' => true,
+           ]);
+           
+           if (null !== ($sort_field = $this->sortField($sort_by))) {
+               $qb->orderBy($sort_field, $sort_order);
+           }
         
         return $qb->getQuery()->getResult();
+    }
+    
+    public function sortField($sort)
+    {
+        $field = null;
+        switch ($sort) {
+            
+            case SearchBuilder::SORT_BY_ACCOMMODATION_NAME:
+                $field = 'a.name';
+            break;
+        }
+        
+        return $field;
     }
     
     /**

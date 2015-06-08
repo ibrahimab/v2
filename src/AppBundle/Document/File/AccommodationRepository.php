@@ -23,4 +23,13 @@ class AccommodationRepository extends DocumentRepository implements Accommodatio
 	{
 		return $this->findBy(['file_id' => $accommodation->getId()]);
 	}
+    
+    public function getSearchImages($accommodations)
+    {
+        $ids = array_map(function(AccommodationServiceEntityInterface $accommodation) {
+            return $accommodation->getId();
+        }, $accommodations);
+        
+        return $this->findBy(['file_id' => ['$in' => $ids], 'kind' => AccommodationService::SEARCH_IMAGE]);
+    }
 }

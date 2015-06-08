@@ -41,8 +41,9 @@
                 <hr />
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
+                        {% set images = search_images(results) %}
                         {% for result in results %}
-                        {% include 'partials/search/result.html.twig' with {'result': result} %}
+                        {% include 'partials/search/result.html.twig' with {'result': result, 'all_images': images} %}
                         {% endfor %}
                     </div>
                 </div>

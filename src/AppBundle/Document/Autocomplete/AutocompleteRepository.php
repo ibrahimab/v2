@@ -83,7 +83,8 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
            ->addAnd($websites);
 
         $rawResults = $qb->getQuery()->execute()->toArray();
-        $results = [];
+        $results    = [];
+        
         foreach ($rawResults as $rawResult) {
             
             if (!isset($results[$rawResult['type']])) {

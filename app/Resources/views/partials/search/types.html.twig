@@ -1,3 +1,4 @@
+{% set locale = get_locale() %}
 <div class="table-wrapper">
     <table>
         <thead>
@@ -12,51 +13,20 @@
             </tr>
         </thead>
         <tbody>
+            {% for type in types %}
             <tr class="sale-type"><!-- notice this row is in discount -->
-                <td><i class="sprite sprite-icon-torso"></i>6</td>
-                <td><i class="sprite sprite-icon-sleep"></i>4</td>
-                <td><i class="sprite sprite-icon-bath"></i>2</td>
-                <td>Type 1a</td>
+                <td>
+                    <i class="sprite sprite-icon-torso"></i>
+                    {{ ( type.getOptimalResidents() == type.getMaxResidents() ? type.getOptimalResidents() : (type.getOptimalResidents() ~ ' - ' ~ type.getMaxResidents()) ) }}
+                </td>
+                <td><i class="sprite sprite-icon-sleep"></i>{{ type.getBedrooms() }}</td>
+                <td><i class="sprite sprite-icon-bath"></i>{{ type.getBathrooms() }}</td>
+                <td>{{ type.getLocaleName(locale) }}</td>
                 <td><span>8,5</span></td>
                 <td><i class="sprite sprite-icon-discount"></i></td>
                 <td>&euro; 295,-<i class="fi-info"></i></td>
             </tr>
-            <tr>
-                <td><i class="sprite sprite-icon-torso"></i>8-10</td>
-                <td><i class="sprite sprite-icon-sleep"></i>4</td>
-                <td><i class="sprite sprite-icon-bath"></i>2</td>
-                <td>Type 1</td>
-                <td><span>7,5</span></td>
-                <td>&nbsp;</td>
-                <td>&euro; 270,-<i class="fi-info"></i></td>
-            </tr>
-            <tr class="sale-type"><!-- notice this row is in discount -->
-                <td><i class="sprite sprite-icon-torso"></i>11-12</td>
-                <td><i class="sprite sprite-icon-sleep"></i>6</td>
-                <td><i class="sprite sprite-icon-bath"></i>3</td>
-                <td>Type 3, met sauna</td>
-                <td><span>9,2</span></td>
-                <td><i class="sprite sprite-icon-discount"></i></td>
-                <td>&euro; 290,-<i class="fi-info"></i></td>
-            </tr>
-            <tr class="sale-type"><!-- notice this row is in discount -->
-                <td><i class="sprite sprite-icon-torso"></i>12</td>
-                <td><i class="sprite sprite-icon-sleep"></i>6</td>
-                <td><i class="sprite sprite-icon-bath"></i>3</td>
-                <td>Type 3</td>
-                <td><span>9,1</span></td>
-                <td><i class="sprite sprite-icon-discount"></i></td>
-                <td>&euro; 320,-<i class="fi-info"></i></td>
-            </tr>
-            <tr>
-                <td><i class="sprite sprite-icon-torso"></i>16-18</td>
-                <td><i class="sprite sprite-icon-sleep"></i>7</td>
-                <td><i class="sprite sprite-icon-bath"></i>5</td>
-                <td>Type 4</td>
-                <td><span>8,1</span></td>
-                <td>&nbsp;</td>
-                <td>&euro; 265,-<i class="fi-info"></i></td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
     <div class="table-explain">
