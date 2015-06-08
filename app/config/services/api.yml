@@ -63,3 +63,7 @@ services:
     service.api.search:
         class:     AppBundle\Service\Api\Search\SearchService
         arguments: ["@repository.search"]
+        
+    service.api.autocomplete:
+        class:     AppBundle\Service\Api\Autocomplete\AutocompleteService
+        arguments: ["@repository.autocomplete"]

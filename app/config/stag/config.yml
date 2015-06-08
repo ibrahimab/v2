@@ -7,3 +7,6 @@ framework:
 
 assetic:
     use_controller: false
+
+doctrine_mongodb:
+    default_database: chalet_stag

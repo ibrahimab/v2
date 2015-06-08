@@ -6,4 +6,5 @@ interface AccommodationServiceRepositoryInterface
 {
 	public function getMainImage(AccommodationServiceEntityInterface $accommodation);
 	public function getImages(AccommodationServiceEntityInterface $accommodation);
+	public function getSearchImages($accommodations);
 }

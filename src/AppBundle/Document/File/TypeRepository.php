@@ -22,4 +22,13 @@ class TypeRepository extends DocumentRepository implements TypeServiceRepository
 	{
 		return $this->findBy(['file_id' => $type->getId()]);
 	}
+    
+    public function getSearchImages($types)
+    {
+        $ids = array_map(function(TypeServiceEntityInterface $type) {
+            return $type->getId();
+        }, $types);
+        
+        return $this->findBy(['file_id' => ['$in' => $ids], 'kind' => TypeService::SEARCH_IMAGE]);
+    }
 }

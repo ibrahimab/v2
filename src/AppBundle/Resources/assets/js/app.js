@@ -4,6 +4,9 @@
     // setting up scroll button for long pages
     jq(function() {
 
+        // autocomplete
+        Chalet.Autocomplete.initialize('[data-role="autocomplete-query"]', 5, '[data-role="autocomplete-results"]');
+
         // body element cache
         var body = jq('body');
 
@@ -127,12 +130,6 @@
         if (Chalet.get()['app']['controller'] === 'countries::destinations') {
             var italyMaps = Chalet.Maps.Italy.initialize('[data-role="italy-maps"]');
         }
-
-        /**
-         * Render a google maps element using just data-role="google-maps"
-         */
-        // var map = Object.create({}, Maps);
-        // console.log(map)
     });
 
 })(jQuery, Routing, window.Chalet = window.Chalet || {});

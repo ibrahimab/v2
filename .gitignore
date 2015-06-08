@@ -18,6 +18,10 @@
 .vimrc
 /logs/*
 
+# python settings
+subapps/python/import-autocomplete/settings.py
+*.pyc
+
 # Node modules, for less compile
 /node_modules/
 

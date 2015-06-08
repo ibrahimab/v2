@@ -69,6 +69,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('locale_path', [$this, 'getPath'], ['is_safe_callback' => [$this, 'isUrlGenerationSafe']]),
             new \Twig_SimpleFunction('type_image', [$this, 'getTypeImage']),
             new \Twig_SimpleFunction('type_images', [$this, 'getTypeImages']),
+            new \Twig_SimpleFunction('search_images', [$this, 'getSearchImages']),
             new \Twig_SimpleFunction('region_image', [$this, 'getRegionImage']),
             new \Twig_SimpleFunction('country_image', [$this, 'getCountryImage']),
             new \Twig_SimpleFunction('place_image', [$this, 'getPlaceImage']),
@@ -153,7 +154,7 @@ class AppExtension extends \Twig_Extension
 	 * @param TypeServiceEntityInterface $type
 	 * @param int $above_limit This defines how many images above should be displayed
 	 * @param int $below_limit This defines how many image below are displayed by default
-     * @return Finder
+     * @return []
      */
     public function getTypeImages(TypeServiceEntityInterface $type, $above_limit = 3, $below_limit = 2)
     {
@@ -203,6 +204,80 @@ class AppExtension extends \Twig_Extension
 			}
 		}
 
+        return $images;
+    }
+    
+    /**
+     * @param AccommodationServiceEntityInterface[] $accommodations
+     * @return []
+     */
+    public function getSearchImages($accommodations)
+    {
+        $types = [];
+        $accommodationEntities = [];
+        
+        foreach ($accommodations as $accommodation) {
+            
+            $accommodationTypes = $accommodation->getTypes();
+            if (count($accommodationTypes) > 1) {
+                
+                $types[] = $accommodationTypes[0];
+                $accommodationEntities[$accommodationTypes[0]->getId()] = $accommodation;
+            }
+        }
+
+        $typeFileService = $this->container->get('service.api.file.type');
+        $files           = $typeFileService->getSearchImages($types);
+        $images          = [];
+        $found           = [];
+        $mapper          = [];
+        
+        foreach ($files as $file) {
+            $found[$file->getFileId()] = true;
+        }
+        
+        $notFound = [];
+        foreach ($accommodationEntities as $typeId => $accommodation) {
+            
+            if (!array_key_exists($typeId, $found)) {
+                
+                $notFound[] = $accommodation;
+                $mapper[$accommodation->getId()] = $typeId;
+            }
+        }
+
+        if (count($notFound) > 0) {
+            
+            $accommodationFileService = $this->container->get('service.api.file.accommodation');
+            $accommodationFiles       = $accommodationFileService->getSearchImages($notFound);
+        }
+
+        foreach ($files as $file) {
+            
+            if (!isset($images[$file->getFileId()])) {
+                $images[$file->getFileId()] = [];
+            }
+            
+            $file->setUrlPrefix($this->getOldImageUrlPrefix());
+            $images[$file->getFileId()][] = $file;
+        }
+        
+        foreach ($accommodationFiles as $file) {
+            
+            if (!isset($mapper[$file->getFileId()])) {
+                continue;
+            }
+                
+            $typeId = $mapper[$file->getFileId()];
+            
+            if (!isset($images[$typeId])) {
+                $images[$typeId] = [];
+            }
+            
+            $file->setUrlPrefix($this->getOldImageUrlPrefix());
+            $images[$typeId][] = $file;
+        }
+        
         return $images;
     }
 

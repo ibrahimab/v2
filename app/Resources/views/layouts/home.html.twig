@@ -27,7 +27,11 @@
             <div class="row" id="header-form-fields">
                 <form>
                     <div class="large-3 medium-3 columns">
-                        <input type="text" id="choose-destination" class="radius" placeholder="Waar wil je naar toe?">
+                        <div class="autocomplete-container">
+                            <input type="text" name="query" data-role="autocomplete-query" id="choose-destination" class="radius" placeholder="Waar wil je naartoe?"  />
+                            <div class="results" data-role="autocomplete-results">
+                            </div>
+                        </div>
                     </div>
                     <div class="large-3 medium-3 columns">
                         <select class="radius">

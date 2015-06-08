@@ -94,3 +94,11 @@ services:
         calls:
             - [setSeason,  [@app.concern.season]]
             - [setWebsite, [@app.concern.website]]
+            
+    repository.autocomplete:
+        class:     AppBundle\Document\Autocomplete\AutocompleteRepository
+        arguments: [AppBundle\Document\Autocomplete\Autocomplete]
+        parent:    repository.odm
+        calls:
+            - [setSeason,  [@app.concern.season]]
+            - [setWebsite, [@app.concern.website]]

@@ -23,7 +23,7 @@ class Accommodation implements AccommodationServiceEntityInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
      * @var TypeServiceEntityInterface[]
      *
@@ -44,14 +44,14 @@ class Accommodation implements AccommodationServiceEntityInterface
      * @ORM\Column(name="korteomschrijving", type="string", length=70)
      */
     private $shortDescription;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="korteomschrijving_en", type="string", length=70)
      */
     private $englishShortDescription;
-    
+
     /**
      * @var string
      *
@@ -65,14 +65,14 @@ class Accommodation implements AccommodationServiceEntityInterface
      * @ORM\Column(name="omschrijving", type="text")
      */
     private $description;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="omschrijving_en", type="text")
      */
     private $englishDescription;
-    
+
     /**
      * @var string
      *
@@ -93,21 +93,21 @@ class Accommodation implements AccommodationServiceEntityInterface
      * @ORM\Column(name="indeling", type="text")
      */
     private $layout;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="indeling_en", type="text")
      */
     private $englishLayout;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="indeling_de", type="text")
      */
     private $germanLayout;
-    
+
     /**
      * @var PlaceServiceEntityInterface
      *
@@ -115,14 +115,14 @@ class Accommodation implements AccommodationServiceEntityInterface
      * @ORM\JoinColumn(name="plaats_id", referencedColumnName="plaats_id")
      */
     private $place;
-    
+
     /**
      * @var integer
      *
      * @ORM\Column(name="soortaccommodatie", type="integer")
      */
     private $kind;
-    
+
     /**
      * @var boolean
      *
@@ -131,26 +131,33 @@ class Accommodation implements AccommodationServiceEntityInterface
     private $display;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="tonenzoekformulier", type="boolean")
+     */
+    private $displaySearch;
+
+    /**
      * @var array
      *
      * @ORM\Column(name="kenmerken", type="features_accommodation")
      */
     private $features;
-    
+
     /**
      * @var integer
      *
      * @ORM\Column(name="kwaliteit", type="smallint")
      */
     private $quality;
-    
+
     /**
      * @var integer
      *
      * @ORM\Column(name="zoekvolgorde", type="smallint")
      */
     private $searchOrder;
-    
+
     /**
      * @var boolean
      *
@@ -171,7 +178,7 @@ class Accommodation implements AccommodationServiceEntityInterface
      * @ORM\Column(name="editdatetime", type="datetime")
      */
     private $updatedAt;
-    
+
     /**
      * Kind identifiers for translations
      *
@@ -205,17 +212,17 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         return $this->id;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setTypes($types)
     {
         $this->types = $types;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -241,7 +248,7 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         return $this->name;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -249,17 +256,17 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         // normalize locales
         $localeNames = array_change_key_case($localeNames);
-        
+
         $this->setName(isset($localeNames['nl']) ? $localeNames['nl'] : '');
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function getLocaleName($locale)
-    {   
+    {
         return $this->getLocaleField('name', $locale, ['nl']);
     }
 
@@ -280,17 +287,17 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         return $this->shortDescription;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setEnglishShortDescription($englishShortDescription)
     {
         $this->englishShortDescription = $englishShortDescription;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -298,17 +305,17 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         return $this->englishShortDescription;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setGermanShortDescription($germanShortDescription)
     {
         $this->germanShortDescription = $germanShortDescription;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -316,7 +323,7 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         return $this->germanShortDescription;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -324,19 +331,19 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         // normalize locales
         $localeShortDescriptions = array_change_key_case($localeShortDescriptions);
-        
+
         $this->setShortDescription(isset($localeShortDescriptions['nl']) ? $localeShortDescriptions['nl'] : '');
         $this->setEnglishShortDescription(isset($localeShortDescriptions['en']) ? $localeShortDescriptions['en'] : '');
         $this->setGermanShortDescription(isset($localeShortDescriptions['de']) ? $localeShortDescriptions['de'] : '');
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function getLocaleShortDescription($locale)
-    {   
+    {
         return $this->getLocaleField('shortDescription', $locale, ['nl', 'en', 'de']);
     }
 
@@ -357,17 +364,17 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         return $this->description;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setEnglishDescription($englishDescription)
     {
         $this->englishDescription = $englishDescription;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -375,7 +382,7 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         return $this->englishDescription;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -383,7 +390,7 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         $this->germanDescription = $germanDescription;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -391,7 +398,7 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         return $this->germanDescription;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -399,19 +406,19 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         // normalize locales
         $localeDescriptions = array_change_key_case($localeDescriptions);
-        
+
         $this->setDescription(isset($localeDescriptions['nl']) ? $localeDescriptions['nl'] : '');
         $this->setEnglishDescription(isset($localeDescriptions['en']) ? $localeDescriptions['en'] : '');
         $this->setGermanDescription(isset($localeDescriptions['de']) ? $localeDescriptions['de'] : '');
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function getLocaleDescription($locale)
-    {   
+    {
         return $this->getLocaleField('description', $locale, ['nl', 'en', 'de']);
     }
 
@@ -450,17 +457,17 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         return $this->layout;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setEnglishLayout($englishLayout)
     {
         $this->englishLayout = $englishLayout;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -468,7 +475,7 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         return $this->englishLayout;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -476,7 +483,7 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         $this->germanLayout = $germanLayout;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -484,7 +491,7 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         return $this->germanLayout;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -492,19 +499,19 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         // normalize locales
         $localeLayouts = array_change_key_case($localeLayouts);
-        
+
         $this->setLayout(isset($localeLayouts['nl']) ? $localeLayouts['nl'] : '');
         $this->setEnglishLayout(isset($localeLayouts['en']) ? $localeLayouts['en'] : '');
         $this->setGermanLayout(isset($localeLayouts['de']) ? $localeLayouts['de'] : '');
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function getLocaleLayout($locale)
-    {   
+    {
         return $this->getLocaleField('layout', $locale, ['nl', 'en', 'de']);
     }
 
@@ -525,17 +532,17 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         return $this->place;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setKind($kind)
     {
         $this->kind = $kind;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -543,7 +550,7 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         return $this->kind;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -573,6 +580,24 @@ class Accommodation implements AccommodationServiceEntityInterface
     /**
      * {@InheritDoc}
      */
+    public function setDisplaySearch($displaySearch)
+    {
+        $this->displaySearch = $displaySearch;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getDisplaySearch()
+    {
+        return $this->displaySearch;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
     public function setFeatures($features)
     {
         $this->features = $features;
@@ -587,17 +612,17 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         return $this->features;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setQuality($quality)
     {
         $this->quality = $quality;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -605,17 +630,17 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         return $this->quality;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setSearchOrder($searchOrder)
     {
         $this->searchOrder = $searchOrder;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -677,7 +702,7 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         return $this->updatedAt;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -685,23 +710,23 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         $locale        = strtolower($locale);
         $allowedLocale = in_array($locale, $allowedLocales);
-        
+
         switch (true) {
-            
+
             case $allowedLocale && $locale === 'en':
                 $localized = $this->{'getEnglish' . $field}();
                 break;
-                
+
             case $allowedLocale && $locale === 'de':
                 $localized = $this->{'getGerman' . $field}();
                 break;
-            
+
             case $allowedLocale && $locale === 'nl':
             default:
                 $localized = $this->{'get' . $field}();
                 break;
         }
-        
+
         return $localized;
     }
 }

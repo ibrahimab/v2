@@ -238,7 +238,7 @@ div.google-maps {
 }
 
 .chalets-data-box {
-	
+
 	display: inline-block;
 	width: 88%;
 }
@@ -249,4 +249,79 @@ div.google-maps {
 
 #column-logo img {
 	width: 151px;
+}
+
+div.autocomplete-container {
+ 
+    div.results {
+        
+        position: relative;
+        
+        ul {
+            
+            list-style-type: none;
+            text-align: left;
+            position: absolute;
+            top: 0;
+            background-color: #fff;
+            width: 100%;
+            margin: 0;
+            max-height: 159px;
+            z-index: 1000;
+            overflow: scroll;
+            
+            
+            li {
+                
+                height: 2rem;
+                width: 100%;
+                overflow: hidden;
+                
+                span {
+                    
+                    padding: 3px 12px;
+                    display: inline-block;
+                }
+                
+                &:hover {
+                    
+                    background-color: #3875d7;
+                    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(20%, #3875d7), color-stop(90%, #2a62bc));
+                    background-image: -webkit-linear-gradient(#3875d7 20%, #2a62bc 90%);
+                    background-image: -moz-linear-gradient(#3875d7 20%, #2a62bc 90%);
+                    background-image: -o-linear-gradient(#3875d7 20%, #2a62bc 90%);
+                    background-image: linear-gradient(#3875d7 20%, #2a62bc 90%);
+                    color: #fff !important;
+                }
+                
+                &.country {
+                    
+                    font-weight: bold;
+                    background-color: #003366;
+                    
+                    span {
+                        color: #fff;
+                    }
+                }
+                
+                &.region {
+                    
+                    font-weight: bold;
+                    padding-left: 15px;
+                    
+                    span {
+                        color: #003366;
+                    }
+                }
+                
+                &.place {
+                    padding-left: 30px;
+                }
+            }
+        }
+    }
+    
+    input {
+        margin-bottom: -2px;
+    }
 }

@@ -14,12 +14,12 @@ class SearchBuilder
     /**
      * @const int
      */
-    const BLOCK_WHERE  = 1;
+    const BLOCK_WHERE = 1;
                       
     /**               
      * @const int     
      */               
-    const BLOCK_LIMIT  = 2;
+    const BLOCK_LIMIT = 2;
                       
     /**               
      * @const int     
@@ -27,17 +27,36 @@ class SearchBuilder
     const BLOCK_OFFSET = 3;
     
     /**
-     * @const array
+     * @const int
+     */
+    const BLOCK_SORT_BY = 4;
+    
+    /**
+     * @const int
+     */
+    const BLOCK_SORT_ORDER = 5;
+    
+    /**
+     * @const int
+     */
+    const SORT_BY_ACCOMMODATION_NAME = 1;
+    const SORT_BY_TYPE_PRICE         = 2;
+    
+    const SORT_ORDER_ASC             = 'asc';
+    const SORT_ORDER_DESC            = 'desc';
+    
+    /**
+     * @var array
      */
     private static $DEFAULT_BLOCK_WHERE  = [];
     
     /**
-     * @const int
+     * @var int
      */
     private static $DEFAULT_BLOCK_LIMIT  = 10;
     
     /**
-     * @const int
+     * @var int
      */
     private static $DEFAULT_BLOCK_OFFSET = 0;
     
@@ -106,22 +125,32 @@ class SearchBuilder
         return $this;
     }
     
+    public function sort($field, $order)
+    {
+        $this->blocks[self::BLOCK_SORT_BY]    = $field;
+        $this->blocks[self::BLOCK_SORT_ORDER] = $order;
+        
+        return $this;
+    }
+    
     /**
      * @param int $block
      * @return mixed
      */
-    public function block($block)
+    public function block($block, $default = null)
     {
         switch ($block) {
             
             case self::BLOCK_WHERE:
             case self::BLOCK_LIMIT:
             case self::BLOCK_OFFSET:
+            case self::BLOCK_SORT_BY:
+            case self::BLOCK_SORT_ORDER:
                 $value = $this->blocks[$block];
             break;
             
             default:
-                $value = null;
+                $value = $default;
         }
         
         return $value;
