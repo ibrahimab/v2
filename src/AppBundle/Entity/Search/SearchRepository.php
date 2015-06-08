@@ -7,6 +7,7 @@ use       AppBundle\Concern\SeasonConcern;
 use       AppBundle\Concern\WebsiteConcern;
 use       AppBundle\Entity\BaseRepository;
 use       Doctrine\ORM\EntityManager;
+use       Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * Search repository
@@ -87,33 +88,7 @@ class SearchRepository implements SearchServiceRepositoryInterface
         $offset      = $searchBuilder->block(SearchBuilder::BLOCK_OFFSET);
         $sort_by     = $searchBuilder->block(SearchBuilder::BLOCK_SORT_BY, self::SORT_BY_DEFAULT);
         $sort_order  = $searchBuilder->block(SearchBuilder::BLOCK_SORT_ORDER, self::SORT_ORDER_DEFAULT);
-        
-        $paginationQuery = $this->getEntityManager()->createQueryBuilder();
-        $paginationExpr  = $paginationQuery->expr();
-        $paginationQuery->select('partial a.{id}')
-                        ->from(self::ENTITY_ACCOMMODATION, 'a')
-                        ->setMaxResults($limit)
-                        ->setFirstResult($offset)
-                        ->andWhere($paginationExpr->eq('a.display', ':display'))
-                        ->andWhere($paginationExpr->eq('a.displaySearch', ':displaySearch'))
-                        ->having($paginationExpr->gt('SIZE(a.types)', 1));
-        
-        if (null !== ($sort_field = $this->sortField($sort_by))) {
-            $paginationQuery->orderBy($sort_field, $sort_order);
-        }
-        
-        $paginationQuery->setParameters([
-            
-            'display'       => true,
-            'displaySearch' => true,
-        ]);
-        
-        $ids = $paginationQuery->getQuery()->getScalarResult();
-        if (!is_array($ids)) {
-            return [];
-        }
-        
-        $ids  = array_column($ids, 'a_id');
+
         $qb   = $this->getEntityManager()->createQueryBuilder();
         $expr = $qb->expr();
         
@@ -127,21 +102,29 @@ class SearchRepository implements SearchServiceRepositoryInterface
            ->innerJoin('a.place',  'p')
            ->innerJoin('p.region', 'r')
            ->innerJoin('p.country', 'c')
-           ->where('a.id IN (:ids)')
-           ->andWhere($expr->eq('t.display', ':display'))
+           ->where($expr->eq('t.display', ':display'))
            ->andWhere($expr->eq('t.displaySearch', ':displaySearch'))
+           ->setMaxResults($limit)
+           ->setFirstResult($offset)
+           ->having($expr->gt('SIZE(a.types)', 1))
            ->setParameters([
                
-               'ids'           => $ids,
                'display'       => true,
                'displaySearch' => true,
            ]);
            
-           if (null !== ($sort_field = $this->sortField($sort_by))) {
-               $qb->orderBy($sort_field, $sort_order);
-           }
+        if (null !== ($sort_field = $this->sortField($sort_by))) {
+            $qb->orderBy($sort_field, $sort_order);
+        }
         
-        return $qb->getQuery()->getResult();
+        $paginator    = new Paginator($qb, true);
+        $paginator->page = [
+            
+            'current' => (round($offset / $limit) + 1),
+            'last'    => round(count($paginator) / $limit),
+        ];
+        
+        return $paginator;
     }
     
     public function sortField($sort)

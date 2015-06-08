@@ -22,7 +22,7 @@ use       Symfony\Component\HttpFoundation\Request;
 class SearchController extends Controller
 {
     /**
-     * @Route(path="/zoek-en-boek.php", name="search_nl", defaults={"p": 1})
+     * @Route(path="/zoek-en-boek.php", name="search_nl")
      * @Route(path="/search-and-book.php",  name="search_en")
      */
     public function index(Request $request)
@@ -33,14 +33,14 @@ class SearchController extends Controller
         $offset        = round($per_page * $page);
         
         $searchService = $this->get('service.api.search');
-        $results       = $searchService->build()
+        $paginator     = $searchService->build()
                                        ->limit($per_page)
                                        ->offset($offset)
                                        ->sort(SearchBuilder::SORT_BY_ACCOMMODATION_NAME, SearchBuilder::SORT_ORDER_ASC)
                                        ->results();
         
         return $this->render('search/search.html.twig', [
-            'results' => $results,
+            'paginator' => $paginator,
         ]);
     }
 }

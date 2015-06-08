@@ -20,6 +20,16 @@ use       Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use       Symfony\Component\Finder\Finder;
 use       Symfony\Bridge\Twig\Extension\RoutingExtension;
 
+/**
+ * AppExtension
+ *
+ * Global application extensions for twig templates inside AppBundle
+ *
+ * @author  Ibrahim Abdullah
+ * @package Chalet
+ * @version 0.0.2
+ * @since   0.0.2
+ */
 class AppExtension extends \Twig_Extension
 {
     /**
@@ -65,6 +75,7 @@ class AppExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
+            
             new \Twig_SimpleFunction('locale_url', [$this, 'getUrl'], ['is_safe_callback' => [$this, 'isUrlGenerationSafe']]),
             new \Twig_SimpleFunction('locale_path', [$this, 'getPath'], ['is_safe_callback' => [$this, 'isUrlGenerationSafe']]),
             new \Twig_SimpleFunction('type_image', [$this, 'getTypeImage']),
