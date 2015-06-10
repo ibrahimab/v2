@@ -136,11 +136,18 @@ class Accommodation implements AccommodationServiceEntityInterface
      * @ORM\Column(name="tonenzoekformulier", type="boolean")
      */
     private $displaySearch;
+    
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="toonper", type="smallint")
+     */
+    private $show;
 
     /**
      * @var array
      *
-     * @ORM\Column(name="kenmerken", type="features_accommodation")
+     * @ORM\Column(name="kenmerken", type="simple_array")
      */
     private $features;
 
@@ -593,6 +600,24 @@ class Accommodation implements AccommodationServiceEntityInterface
     public function getDisplaySearch()
     {
         return $this->displaySearch;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setShow($show)
+    {
+        $this->show = $show;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getShow()
+    {
+        return $this->show;
     }
 
     /**

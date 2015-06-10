@@ -39,47 +39,37 @@ class TypesController extends Controller
     {
         $typeService   = $this->get('service.api.type');
         $surveyService = $this->get('service.api.booking.survey');
+        $season        = $this->get('app.concern.season');
         
         try {
             
-            $type = $typeService->findById($typeId);
+            $type          = $typeService->findById($typeId);
+            $surveyData    = $surveyService->allByType($type);
+            $accommodation = $type->getAccommodation();
+            $place         = $accommodation->getPlace();
+            $region        = $place->getRegion();
+            $data          = [
             
-        } catch (NoResultException $e) {
-            throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found');
+                'type'         => implode(',', $type->getFeatures()),
+                'accommodatie' => implode(',', $accommodation->getFeatures()),
+                'plaats'       => implode(',', $place->getFeatures()),
+                'skigebied'    => implode(',', $region->getFeatures()),
+                'toonper'      => $accommodation->getShow(),
+            ];
+            
+            $featuresService = new \kenmerken(['seizoentype' => $season->get()]);
+            $features        = $featuresService->get_kenmerken($type->getId(), $data);
+            
+        } catch (\Exception $e) {
+            throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found: (' . $e->getMessage() . ')');
         }
         
-        $surveyData = $surveyService->allByType($type);
-        // $this->get('translator')->trans('catering');
-        // $this->get('translator')->trans('ski-run');
-        // $this->get('translator')->trans('sauna');
-        // $this->get('translator')->trans('sauna-private');
-        // $this->get('translator')->trans('swimming-pool');
-        // $this->get('translator')->trans('swimming-pool-private');
-        // $this->get('translator')->trans('child-friendly');
-        // $this->get('translator')->trans('chalet-for-two');
-        // $this->get('translator')->trans('large-groups');
-        // $this->get('translator')->trans('price-conscious');
-        // $this->get('translator')->trans('top-selection');
-        // $this->get('translator')->trans('winter-wellness');
-        // $this->get('translator')->trans('fireplace');
-        // $this->get('translator')->trans('pets-allowed');
-        // $this->get('translator')->trans('allergy-free');
-        // $this->get('translator')->trans('rent-sunday');
-        // $this->get('translator')->trans('chalet-for-two');
-        // $this->get('translator')->trans('special');
-        // $this->get('translator')->trans('waching-machine');
-        // $this->get('translator')->trans('balcony');
-        // $this->get('translator')->trans('balcony-terrace');
-        // $this->get('translator')->trans('pets-disallowed');
-        // $this->get('translator')->trans('internet');
-        // $this->get('translator')->trans('charming-chalet');
-        // $this->get('translator')->trans('internet-wifi');
-        // $this->get('translator')->trans('jacuzzi');
         return [
             
             'type'               => $type,
             'surveyData'         => $surveyData,
             'minimalSurveyCount' => $this->container->getParameter('app')['minimalSurveyCount'],
+            'features'           => array_keys($features),
         ];
     }
 }

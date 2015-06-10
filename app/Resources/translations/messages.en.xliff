@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2015-05-29T15:37:59Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
+  <file date="2015-06-10T11:50:07Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -183,7 +183,7 @@
       <trans-unit id="207b877e13437b35b3fbae5c20219eecd6c828f1" resname="layout">
         <source>layout</source>
         <target>layout</target>
-        <jms:reference-file line="108">views/types/show.html.twig</jms:reference-file>
+        <jms:reference-file line="106">views/types/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="228e4845cd5d87d2ea8a7f5ac1f32007f3ecf48f" resname="length-black-ski-runs">
         <source>length-black-ski-runs</source>
@@ -231,11 +231,6 @@
         <jms:reference-file line="4">views/partials/features.html.twig</jms:reference-file>
         <jms:reference-file line="10">partials/highlight/highlight.html.twig</jms:reference-file>
         <jms:reference-file line="38">views/places/show.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="70def0c118d00f5f6ee301bfd4d50fd4d7ba7bfd" resname="search-book">
-        <source>search-book</source>
-        <target><![CDATA[Zoek & boek]]></target>
-        <jms:reference-file line="28">AppBundle/Controller/SearchController.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="f062ef59202249cde5de26ada9e2b02fcf9ccecd" resname="sitemap">
         <source>sitemap</source>

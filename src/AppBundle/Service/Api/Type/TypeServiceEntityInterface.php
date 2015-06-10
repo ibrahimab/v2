@@ -1,7 +1,5 @@
 <?php
 namespace AppBundle\Service\Api\Type;
-
-use       AppBundle\Concern\FeatureConcern\FeatureConcernType;
 use       AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
 
 interface TypeServiceEntityInterface {
@@ -363,7 +361,7 @@ interface TypeServiceEntityInterface {
     /**
      * Set features
      *
-     * @param FeatureConcernType $features
+     * @param array $features
      * @return TypeServiceEntityInterface
      */
     public function setFeatures($features);
@@ -371,7 +369,7 @@ interface TypeServiceEntityInterface {
     /**
      * Get features
      *
-     * @return FeatureConcernType
+     * @return array
      */
     public function getFeatures();
 

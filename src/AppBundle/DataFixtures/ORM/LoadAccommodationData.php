@@ -1,7 +1,5 @@
 <?php
 namespace AppBundle\DataFixtures\ORM;
-
-use       AppBundle\Concern\FeatureConcern\FeatureConcernAccommodation;
 use       AppBundle\Entity\Accommodation\Accommodation;
 use       Doctrine\Common\DataFixtures\AbstractFixture;
 use       Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -41,7 +39,7 @@ class LoadAccommodationData extends AbstractFixture implements DependentFixtureI
                               'en' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor nisi ligula, molestie facilisis lorem fringilla sit amet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent euismod eros ut elementum ultricies. Nam nec ipsum ac turpis tempus eleifend vitae in est. Donec sed sapien orci. Suspendisse scelerisque sed quam a sagittis. Pellentesque nibh quam, semper in viverra at, sodales in risus. Sed vitae arcu erat. Sed sagittis gravida egestas. Nam sed dolor rhoncus, gravida ex non, euismod nisi. Donec quis nunc eu quam convallis maximus accumsan ac dui. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
                               'de' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor nisi ligula, molestie facilisis lorem fringilla sit amet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent euismod eros ut elementum ultricies. Nam nec ipsum ac turpis tempus eleifend vitae in est. Donec sed sapien orci. Suspendisse scelerisque sed quam a sagittis. Pellentesque nibh quam, semper in viverra at, sodales in risus. Sed vitae arcu erat. Sed sagittis gravida egestas. Nam sed dolor rhoncus, gravida ex non, euismod nisi. Donec quis nunc eu quam convallis maximus accumsan ac dui. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
                           ])
-                          ->setFeatures(new FeatureConcernAccommodation((array)(array_rand(array_flip(range(1, 24)), rand(1, rand(1, 24))))))
+                          ->setFeatures(((array)(array_rand(array_flip(range(1, 24)), rand(1, rand(1, 24))))))
                           ->setPlace($this->getReference('place-' . $i))
                           ->setKind($kinds[array_rand($kinds)])
                           ->setDisplay(true)
