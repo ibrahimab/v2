@@ -51,6 +51,11 @@ class AppKernel extends Kernel
     
     public function registerOldNamespace()
     {
+        $path = __DIR__ . '/../web/chalet';
+        
+        require_once $path . '/admin/vars_db.php';
+        require_once $path . '/admin/class.mysql.php';
+        
         spl_autoload_register(function($class) {
 
             if (file_exists($path = __DIR__ . '/../src/old-classes/siteclass.' . $class . '.php')) {

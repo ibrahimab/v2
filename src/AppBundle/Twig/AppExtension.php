@@ -92,6 +92,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('region_skirun_map_image', [$this, 'getRegionSkiRunMapImage']),
 			new \Twig_SimpleFunction('favorites_count', [$this, 'favoritesCount']),
 			new \Twig_SimpleFunction('viewed_count', [$this, 'viewedCount']),
+            new \Twig_SimpleFunction('render_rate_table', [$this, 'renderRateTable']),
         ];
     }
 
@@ -602,6 +603,18 @@ class AppExtension extends \Twig_Extension
     public function replace($data, $replacement, $recursive = false)
     {
         return (true === $recursive ? array_replace_recursive($data, $replacement) : array_replace($data, $replacement));
+    }
+    
+    /**
+     * @param TypeServiceEntityInterface $type
+     * @return string
+     */
+    public function renderRateTable(TypeServiceEntityInterface $type)
+    {
+        $wrapper = $this->container->get('old.rate.table.wrapper');
+        $wrapper->setType($type);
+        
+        return $wrapper->render();
     }
 
     /**

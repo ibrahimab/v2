@@ -12,7 +12,3 @@ services:
         class: tarieventabel
         calls:
             - [setConfiguration, [@old.configuration]]
-            
-    old.rate.table.wrapper:
-        class: AppBundle\Old\RateTableWrapper
-        arguments: ["@service_container"]
