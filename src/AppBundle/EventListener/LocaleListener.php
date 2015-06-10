@@ -1,11 +1,8 @@
 <?php
 namespace AppBundle\EventListener;
-
 use       Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use       Symfony\Component\HttpKernel\KernelEvents;
-use       Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class LocaleListener implements EventSubscriberInterface
+class LocaleListener
 {
     /**
      * @var array
@@ -37,7 +34,7 @@ class LocaleListener implements EventSubscriberInterface
      * @param array $parameters
      * @param string $defaultLocale
      */
-    public function __construct($parameters)
+    public function __construct(Array $parameters)
     {
         $this->parameters    = $parameters;
         $this->domains       = $parameters['domain'];
@@ -62,12 +59,5 @@ class LocaleListener implements EventSubscriberInterface
         }
 
         $request->setLocale($locale);
-    }
-    
-    public static function getSubscribedEvents()
-    {
-        return [
-            KernelEvents::REQUEST => [['onKernelRequest', 18]],
-        ];
     }
 }

@@ -1,11 +1,5 @@
 # listeners
 services:
-    app.event_listener.locale:
-        class: AppBundle\EventListener\LocaleListener
-        arguments: ["%app%"]
-        tags:
-            - { name: kernel.event_subscriber }
-
     app.event_listener.breadcrumb:
         class: AppBundle\EventListener\BreadcrumbListener
         arguments: [@app.annotations.breadcrumbs, @twig]
@@ -29,6 +23,12 @@ services:
         arguments: [@app.concern.website]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 15 }
+
+    app.event_listener.locale:
+        class: AppBundle\EventListener\LocaleListener
+        arguments: ["%app%"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 32 }
             
     app.event_listener.anonymous:
         class: AppBundle\EventListener\AnonymousListener

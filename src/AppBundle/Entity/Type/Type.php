@@ -162,7 +162,7 @@ class Type implements TypeServiceEntityInterface
     /**
      * @var array
      *
-     * @ORM\Column(name="kenmerken", type="features_type")
+     * @ORM\Column(name="kenmerken", type="simple_array")
      */
     private $features;
 

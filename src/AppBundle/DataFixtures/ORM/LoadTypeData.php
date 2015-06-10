@@ -1,7 +1,5 @@
 <?php
 namespace AppBundle\DataFixtures\ORM;
-
-use       AppBundle\Concern\FeatureConcern\FeatureConcernType;
 use       AppBundle\Entity\Type\Type;
 use       Doctrine\Common\DataFixtures\AbstractFixture;
 use       Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -46,7 +44,7 @@ class LoadTypeData extends AbstractFixture implements DependentFixtureInterface
                      'en' => $dummy,
                      'de' => $dummy,
                  ])
-                 ->setFeatures(new FeatureConcernType((array)(array_rand(array_flip(range(1, 23)), rand(1, rand(1, 23))))))
+                 ->setFeatures(((array)(array_rand(array_flip(range(1, 23)), rand(1, rand(1, 23))))))
                  ->setInventory(rand(0, 10))
                  ->setWebsites((array)array_rand(array_flip($websites), rand(1, $total_websites)))
                  ->setCode('T' . str_pad($i, 5, '0', STR_PAD_LEFT))

@@ -1,7 +1,5 @@
 <?php
 namespace AppBundle\Service\Api\Accommodation;
-
-use       AppBundle\Concern\FeatureConcern\FeatureConcernAccommodation;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 
@@ -368,17 +366,32 @@ interface AccommodationServiceEntityInterface
     public function getDisplaySearch();
 
     /**
+     * Set show
+     *
+     * @param int $show
+     * @return AccommodationServiceEntityInterface
+     */
+    public function setShow($show);
+
+    /**
+     * Get show
+     *
+     * @return int
+     */
+    public function getShow();
+
+    /**
      * Set features
      *
-     * @param FeatureConcernAccommodation $features
-     * @return TypeServiceEntityInterface
+     * @param array $features
+     * @return AccommodationServiceEntityInterface
      */
     public function setFeatures($features);
 
     /**
      * Get features
      *
-     * @return FeatureConcernAccommodation
+     * @return array
      */
     public function getFeatures();
 

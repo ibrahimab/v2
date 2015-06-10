@@ -49,7 +49,7 @@
 {% block body %}
 
     {{ parent() }}
-
+    
     <section id="accom" class="discount">
         <div class="row">
             <div id="accom-left" class="small-12 medium-8 large-9 columns">
@@ -95,10 +95,8 @@
                         </div>
                         <h2>{{ type.getLocaleShortDescription(locale) ? type.getLocaleShortDescription(locale) : accommodation.getLocaleShortDescription(locale) }}</h2>
                         <ul class="inline-list">
-                            {% set features     = type.getFeatures() ? type.getFeatures() : accommodation.getFeatures() %}
-                            {% set featuresList = features.get(accommodation.getSeason()) %}
-                            {% for feature in featuresList %}
-                            <li>{{ feature|trans }}</li>
+                            {% for feature in features %}
+                                <li>{{ feature|trans }}</li>
                             {% endfor %}
                         </ul>
                         <p>{{ (type.getLocaleDescription(locale) ? type.getLocaleDescription(locale) : accommodation.getLocaleDescription(locale))|nl2br }}</p>

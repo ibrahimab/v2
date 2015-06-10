@@ -20,7 +20,7 @@ use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
  * @Breadcrumb(name="frontpage", title="frontpage", translate=true, path="home")
  */
 class PagesController extends Controller
-{
+{   
     /**
      * @Route("/", name="home")
      * @Template(":pages:home.html.twig")

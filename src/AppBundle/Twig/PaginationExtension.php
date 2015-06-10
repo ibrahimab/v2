@@ -49,7 +49,7 @@ class PaginationExtension extends \Twig_Extension
     {
         $this->container = $container;
         $this->generator = $generator;
-        $this->locale    = $this->container->get('request')->getLocale();
+        $this->locale = $this->container->get('request')->getLocale();
     }
     
     /**

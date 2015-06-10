@@ -67,8 +67,8 @@ class RegionServiceTest extends \Codeception\TestCase\Test
     
     public function testGetHomepageRegions()
     {
-        $limit   = 3;
-        $regions = $this->regionService->findHomepageRegions(['limit' => 3]);
+        $limit   = 1;
+        $regions = $this->regionService->findHomepageRegions(['limit' => 1]);
         
         $this->assertCount($limit, $regions);
         $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Region\RegionServiceEntityInterface', $regions);
