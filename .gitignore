@@ -34,3 +34,6 @@ tests/_output/*
 
 # cache
 /web/media/cache/
+
+# old classes
+/src/old-classes
