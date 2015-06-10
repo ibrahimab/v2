@@ -37,9 +37,10 @@ class TypesController extends Controller
      */
     public function showAction($beginCode, $typeId)
     {
-        $typeService   = $this->get('service.api.type');
-        $surveyService = $this->get('service.api.booking.survey');
-        $season        = $this->get('app.concern.season');
+        $typeService    = $this->get('service.api.type');
+        $surveyService  = $this->get('service.api.booking.survey');
+        $season         = $this->get('app.concern.season');
+        $featureService = $this->get('old.feature');
         
         try {
             
@@ -57,8 +58,7 @@ class TypesController extends Controller
                 'toonper'      => $accommodation->getShow(),
             ];
             
-            $featuresService = new \kenmerken(['seizoentype' => $season->get()]);
-            $features        = $featuresService->get_kenmerken($type->getId(), $data);
+            $features = $featureService->get_kenmerken($type->getId(), $data);
             
         } catch (\Exception $e) {
             throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found: (' . $e->getMessage() . ')');

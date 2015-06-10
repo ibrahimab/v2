@@ -5,11 +5,11 @@
     <div id="reviews" class="reviews">
         <h3>{{ surveyCount }} beoordelingen, gemiddeld<span>{{ surveyAverage|number_format(1, ',', '') }}</span></h3>
         {% for survey in shown %}
-            {% include 'partials/survey/survey.html.twig' with {'survey': survey} only %}
+            {% include 'partials/survey/survey.html.twig' with {'survey': survey, 'loop': loop, 'total': surveyCount} only %}
         {% endfor %}
         <div class="hide">
             {% for survey in hidden %}
-                {% include 'partials/survey/survey.html.twig' with {'survey': survey} only %}
+                {% include 'partials/survey/survey.html.twig' with {'survey': survey, 'loop': loop, 'total': surveyCount} only %}
             {% endfor %}
         </div>
         <div class="readmore">
