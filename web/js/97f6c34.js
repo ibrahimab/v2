@@ -7135,6 +7135,21 @@ jQuery(function() {
         var body = jq('body');
 
         /**
+         * This methods listens for elements that are tagged to be clickable
+         * and have a data-url attribute to send the user to
+         */
+        body.on('click', '[data-role="clickable"]', function(event) {
+            
+            event.preventDefault();
+            
+            var url = jq(this).data('url');
+            
+            if (null !== url) {
+                window.location.href = url;
+            }
+        });
+
+        /**
          * This method listens for changes in the sort select field to re-order
          * all the regions based on the selected value
          */
@@ -7154,6 +7169,23 @@ jQuery(function() {
 
             event.preventDefault();
             window.open(jq(this).attr('href'));
+        });
+        
+        /**
+         * This listener allows links to be opened in a new popup by using
+         * the data-role="new-popup" attribute and defining width/height via
+         * other data attributes
+         */
+        body.on('click', '[data-role="new-popup"]', function(event) {
+            
+            event.preventDefault();
+            
+            var element = jq(this);
+            var url     = element.attr('href');
+            var width   = element.data('popup-width')  || 300;
+            var height  = element.data('popup-height') || 200;
+            
+            return window.open(url, 'new-popup', 'height=' + height + ',width=' + width + ',resizable=yes,menubar=no,location=yes', false);
         });
 
         /**

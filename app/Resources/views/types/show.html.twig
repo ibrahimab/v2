@@ -5,7 +5,7 @@
 {% set country, region, place = accommodation.getPlace().getCountry(), accommodation.getPlace().getRegion(), accommodation.getPlace() %}
 {% set images                 = type_images(type) %}
 {% set surveyCount            = surveyData.surveys|length %}
-{% set surveyAverage          = surveyData.average|number_format(1, ',', '') %}
+{% set surveyAverage          = surveyData.average %}
 {%
     set localeData = {
 
@@ -50,7 +50,7 @@
 
     {{ parent() }}
     
-    <section id="accom" class="discount">
+    <section id="accom" class="discount type-section">
         <div class="row">
             <div id="accom-left" class="small-12 medium-8 large-9 columns">
                 <div class="overview sale">
@@ -59,7 +59,8 @@
                         <div class="location">
                             <span class="area"><a href="{{ locale_path('show_region', { regionSlug: localeData['seo']['region'] }) }}" title="{{ localeData['name']['region'] }}">{{ localeData['name']['region'] }}</a></span>, <span class="city"><a href="{{ locale_path('show_place', { placeSlug: localeData['seo']['place'] }) }}" title="{{ localeData['name']['place'] }}">{{ localeData['name']['place'] }}</a></span>, <span class="country"><a href="{{ locale_path('show_country', { countrySlug: localeData['seo']['country'] } ) }}" title="{{ localeData['name']['country'] }}">{{ localeData['name']['country'] }}</a></span>
                         </div>
-                        <div class="type">{% if localeData['name']['type'] is not empty %}<h3>{{ localeData['name']['type'] }}</h3>{% endif %}<a href="#types-other" class="goto" title="Bekijk alle foto's">Overige type's</a></div>
+                        <div class="type">{% if localeData['name']['type'] is not empty %}<h3>{{ localeData['name']['type'] }} </h3>{% endif %}<a href="#types-other" class="goto button small radius right" title="Bekijk alle foto's">Overige type's</a></div>
+                        <div class="clearfix"></div>
                         <div class="accom-img">
                             <div class="accom-slides show-for-small">
                                 <div><a href=""><img data-lazy="/bundles/app/img/accom/accom-2.jpg" alt="" /></a></div>
@@ -99,6 +100,7 @@
                                 <li>{{ feature|trans }}</li>
                             {% endfor %}
                         </ul>
+                        <h3>Algemene omschrijving</h3>
                         <p>{{ (type.getLocaleDescription(locale) ? type.getLocaleDescription(locale) : accommodation.getLocaleDescription(locale))|nl2br }}</p>
                     </div>
 
@@ -410,7 +412,7 @@
                                 {% set types = accommodation.getTypes().toArray() %}
                                 {% set l = types|sortprop('name') %}
                                 {% for t in types %}
-                                <tr><!-- notice this row is in discount -->
+                                <tr{{ t.getId() == type.getId() ? ' class="active"' : '' }} data-role="clickable" data-url="{{ locale_path('show_type', { beginCode: country.getStartCode(), typeId: t.getId() }) }}"><!-- notice this row is in discount -->
                                     <td><i class="sprite sprite-icon-torso"></i>{{ (t.getOptimalResidents() == t.getMaxResidents() ? t.getOptimalResidents() : (t.getOptimalResidents() ~ ' - ' ~ t.getMaxResidents())) }}</td>
                                     <td><i class="sprite sprite-icon-sleep"></i>{{ t.getBedrooms() ~ (t.getLocaleBedroomsExtra(locale) != '' ? (' ' ~ t.getLocaleBedroomsExtra(locale)) : '') }}</td>
                                     <td><i class="sprite sprite-icon-bath"></i>{{ t.getBathrooms() ~ (t.getLocaleBathroomsExtra(locale) != '' ? (' ' ~ t.getLocaleBathroomsExtra(locale)) : '') }}</td>

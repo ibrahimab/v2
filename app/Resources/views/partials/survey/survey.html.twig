@@ -1,14 +1,14 @@
 {% set locale = get_locale() %}
-<a href="#" data-role="review" data-action="toggle-review"{% if loop.index <= 2 %} data-review-shown="true"{%endif%}>
+<a href="#">
     <article class="review-item">
         <div class="row">
             <div class="small-12 medium-12 large-6 columns">
                 <span class="rating">{{ survey.getAverage()|number_format(1, ',', '') }}</span>
                 <span class="author">{{ survey.getWebsiteName() == '' ? 'anonymous'|trans : survey.getWebsiteName() }},</span>
                 <span class="date">{{ survey.getBooking().getExactArrivalAt()|localizeddate('none', 'none', locale, null, 'MMMM y')|lower }}</span>
-                <p data-role="review-text"{% if loop.index > 2 %} class="hide"{% endif %}>{{ survey.getLocaleWebsiteTextModified(locale) }}</p>
+                <p data-role="review-text">{{ survey.getLocaleWebsiteTextModified(locale) }}</p>
             </div>
-            <div class="small-12 medium-12 large-6 columns{% if loop.index > 2 %} hide{% endif %}" data-role="review-ratings">
+            <div class="small-12 medium-12 large-6 columns">
                 <ul class="ratings">
                     <li>Ontvangst ter plaatse<span>{{ survey.getAnswer(1, 1) }}</span></li>
                     <li>Ligging van de accommodatie<span>{{ survey.getAnswer(1, 2) }}</span></li>
