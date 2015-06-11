@@ -44,6 +44,7 @@ monolog:
 assetic:
     use_controller: true
     filters:
+        cssrewrite: ~
         lessphp:
             apply_to: "\.less$"
 
