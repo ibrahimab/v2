@@ -10,3 +10,9 @@ assetic:
 
 doctrine_mongodb:
     default_database: chalet_stag
+
+assetic:
+    use_controller: true
+    filters:
+        lessphp:
+            apply_to: "\.less$"
