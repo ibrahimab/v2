@@ -5,6 +5,7 @@ use       AppBundle\Service\Api\Search\SearchBuilder;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use       Symfony\Component\HttpFoundation\Request;
+use       Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * SearchController
@@ -32,7 +33,7 @@ class SearchController extends Controller
         $per_page      = intval($this->container->getParameter('app')['results_per_page']);
         $offset        = round($per_page * $page);
         $filters       = $request->query->get('f');
-        
+
         $searchService = $this->get('service.api.search');
         $paginator     = $searchService->build()
                                        ->limit($per_page)
@@ -40,9 +41,9 @@ class SearchController extends Controller
                                        ->sort(SearchBuilder::SORT_BY_TYPE_SEARCH_ORDER, SearchBuilder::SORT_ORDER_ASC)
                                        ->filter($filters)
                                        ->results();
-        
+
         dump($searchService->build()->block(SearchBuilder::BLOCK_FILTER));
-        
+
         return $this->render('search/search.html.twig', [
             'paginator' => $paginator,
         ]);

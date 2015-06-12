@@ -11,55 +11,161 @@
     <div id="search-filter-piste-distance" class="search-filter-default">
         <h2 class="closed"><a href="" title="deze box in- of uitklappen">Afstand tot de piste</a></h2>
         <div class="fields">
-            <a href="{{ locale_path('search', query|replace({f: {1: 1}})) }}">
-                <label class="label_check" for="checkbox-01"><input name="sample-checkbox-01" id="checkbox-01" value="1" type="checkbox" />aan de piste<span>(848)</span></label>
-            </a>
-            <label class="label_check" for="checkbox-02"><input name="sample-checkbox-02" id="checkbox-02" value="1" type="checkbox" />max 250 meter<span>(1419)</span></label>
-            <label class="label_check" for="checkbox-03"><input name="sample-checkbox-03" id="checkbox-03" value="1" type="checkbox" />max 500 meter<span>(1729)</span></label>
-            <label class="label_check" for="checkbox-04"><input name="sample-checkbox-04" id="checkbox-04" value="1" type="checkbox" />max 1000 meter<span>(1933)</span></label>
+            <div class="styled_label" data-role="change-filter" data-filter="1" data-filter-value="1">
+                <label class="label_check" for="checkbox-01">
+                    <input data-group="checkbox-1" id="checkbox-01" type="checkbox" />aan de piste<span>(848)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-filter="1" data-filter-value="2">
+                <label class="label_check" for="checkbox-02">
+                    <input data-group="checkbox-1" id="checkbox-02" type="checkbox" />max 250 meter<span>(1419)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-filter="1" data-filter-value="3">
+                <label class="label_check" for="checkbox-03">
+                    <input data-group="checkbox-1" id="checkbox-03" type="checkbox" />max 500 meter<span>(1729)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-filter="1" data-filter-value="4">
+                <label class="label_check" for="checkbox-04">
+                    <input data-group="checkbox-1" id="checkbox-04" type="checkbox" />max 1000 meter<span>(1933)</span>
+                </label>
+            </div>
         </div>
     </div>
     <div id="search-filter-piste-length" class="search-filter-default">
         <h2 class="closed"><a href="" title="deze box in- of uitklappen">Aantal km pistes</a></h2>
         <div class="fields">
-            <label class="label_check" for="checkbox-05"><input name="sample-checkbox-05" id="checkbox-05" value="1" type="checkbox" />tot 100 km<span>(114)</span></label>
-            <label class="label_check" for="checkbox-06"><input name="sample-checkbox-06" id="checkbox-06" value="1" type="checkbox" />100 km en meer<span>(2140)</span></label>
-            <label class="label_check" for="checkbox-07"><input name="sample-checkbox-07" id="checkbox-07" value="1" type="checkbox" />200 km en meer<span>(1748)</span></label>
-            <label class="label_check" for="checkbox-08"><input name="sample-checkbox-08" id="checkbox-08" value="1" type="checkbox" />400 km en meer<span>(1212)</span></label>
+            <div class="styled_label" data-role="change-filter" data-filter="2" data-filter-value="1">
+                <label class="label_check" for="checkbox-05">
+                    <input data-group="checkbox-2" id="checkbox-05" type="checkbox" />tot 100 km<span>(114)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-filter="2" data-filter-value="2">
+                <label class="label_check" for="checkbox-06">
+                    <input data-group="checkbox-2" id="checkbox-06" type="checkbox" />100 km en meer<span>(2140)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-filter="2" data-filter-value="3">
+                <label class="label_check" for="checkbox-07">
+                    <input data-group="checkbox-2" id="checkbox-07" type="checkbox" />200 km en meer<span>(1748)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-filter="2" data-filter-value="4">
+                <label class="label_check" for="checkbox-08">
+                    <input data-group="checkbox-2" id="checkbox-08" type="checkbox" />400 km en meer<span>(1212)</span>
+                </label>
+            </div>
         </div>
     </div>
     <div id="search-filter-facilities" class="search-filter-default">
         <h2 class="closed"><a href="" title="deze box in- of uitklappen">Faciliteiten</a></h2>
         <div class="fields">
-            <label class="label_check" for="checkbox-09"><input name="sample-checkbox-09" id="checkbox-09" value="1" type="checkbox" />catering mogelijk<span>(351)</span></label>
-            <label class="label_check" for="checkbox-10"><input name="sample-checkbox-10" id="checkbox-10" value="1" type="checkbox" />internet / wifi<span>(1743)</span></label>
-            <label class="label_check" for="checkbox-11"><input name="sample-checkbox-11" id="checkbox-11" value="1" type="checkbox" />zwembad<span>(565)</span></label>
-            <label class="label_check" for="checkbox-12"><input name="sample-checkbox-12" id="checkbox-12" value="1" type="checkbox" />sauna<span>(1125)</span></label>
-            <label class="label_check" for="checkbox-13"><input name="sample-checkbox-13" id="checkbox-13" value="1" type="checkbox" />prive-sauna<span>(299)</span></label>
-            <label class="label_check" for="checkbox-14"><input name="sample-checkbox-14" id="checkbox-14" value="1" type="checkbox" />huisdieren toegestaan<span>(1344)</span></label>
-            <label class="label_check" for="checkbox-15"><input name="sample-checkbox-15" id="checkbox-15" value="1" type="checkbox" />openhaard / houtkachel<span>(748)</span></label>
+            <div class="styled_label" data-role="change-filter" data-filter="3" data-filter-value="1" data-filter-multi="true">
+                <label class="label_check" for="checkbox-09">
+                    <input id="checkbox-09" type="checkbox" />catering mogelijk<span>(351)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-filter="3" data-filter-value="2" data-filter-multi="true">
+                <label class="label_check" for="checkbox-10">
+                    <input id="checkbox-10" type="checkbox" />internet / wifi<span>(1743)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-filter="3" data-filter-value="3" data-filter-multi="true">
+                <label class="label_check" for="checkbox-11">
+                    <input id="checkbox-11" type="checkbox" />zwembad<span>(565)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-filter="3" data-filter-value="4" data-filter-multi="true">
+                <label class="label_check" for="checkbox-12">
+                    <input id="checkbox-12" type="checkbox" />sauna<span>(1125)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-filter="3" data-filter-value="5" data-filter-multi="true">
+                <label class="label_check" for="checkbox-13">
+                    <input id="checkbox-13" type="checkbox" />prive-sauna<span>(299)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-filter="3" data-filter-value="6" data-filter-multi="true">
+                <label class="label_check" for="checkbox-14">
+                    <input id="checkbox-14" type="checkbox" />huisdieren toegestaan<span>(1344)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-filter="3" data-filter-value="7" data-filter-multi="true">
+                <label class="label_check" for="checkbox-15">
+                    <input id="checkbox-15" type="checkbox" />openhaard / houtkachel<span>(748)</span>
+                </label>
+            </div>
         </div>
     </div>
     <div id="search-filter-bathrooms" class="search-filter-default">
         <h2 class="closed"><a href="" title="deze box in- of uitklappen">Aantal badkamers</a></h2>
         <div class="fields">
-            <label class="label_check" for="checkbox-16"><input name="sample-checkbox-16" id="checkbox-16" value="1" type="checkbox" />minimaal 2<span>(1376)</span></label>
-            <label class="label_check" for="checkbox-17"><input name="sample-checkbox-17" id="checkbox-17" value="1" type="checkbox" />minimaal 3<span>(681)</span></label>
-            <label class="label_check" for="checkbox-18"><input name="sample-checkbox-18" id="checkbox-18" value="1" type="checkbox" />minimaal 4<span>(441)</span></label>
-            <label class="label_check" for="checkbox-19"><input name="sample-checkbox-19" id="checkbox-19" value="1" type="checkbox" />minimaal 5<span>(265)</span></label>
-            <label class="label_check" for="checkbox-20"><input name="sample-checkbox-20" id="checkbox-20" value="1" type="checkbox" />minimaal 6<span>(161)</span></label>
-            <label class="label_check" for="checkbox-21"><input name="sample-checkbox-21" id="checkbox-21" value="1" type="checkbox" />minimaal 8<span>(59)</span></label>
-            <label class="label_check" for="checkbox-22"><input name="sample-checkbox-22" id="checkbox-22" value="1" type="checkbox" />minimaal 10<span>(26)</span></label>
+            <div class="styled_label" data-role="change-filter" data-filter="4" data-filter-value="1">
+                <label class="label_check" for="checkbox-16">
+                    <input data-group="checkbox-3" id="checkbox-16" type="checkbox" />minimaal 2<span>(1376)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-filter="4" data-filter-value="2">
+                <label class="label_check" for="checkbox-17">
+                    <input data-group="checkbox-3" id="checkbox-17" type="checkbox" />minimaal 3<span>(681)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-filter="4" data-filter-value="3">
+                <label class="label_check" for="checkbox-18">
+                    <input data-group="checkbox-3" id="checkbox-18" type="checkbox" />minimaal 4<span>(441)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-filter="4" data-filter-value="4">
+                <label class="label_check" for="checkbox-19">
+                    <input data-group="checkbox-3" id="checkbox-19" type="checkbox" />minimaal 5<span>(265)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-filter="4" data-filter-value="5">
+                <label class="label_check" for="checkbox-20">
+                    <input data-group="checkbox-3" id="checkbox-20" type="checkbox" />minimaal 6<span>(161)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-filter="4" data-filter-value="6">
+                <label class="label_check" for="checkbox-21">
+                    <input data-group="checkbox-3" id="checkbox-21" type="checkbox" />minimaal 8<span>(59)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-filter="4" data-filter-value="7">
+                <label class="label_check" for="checkbox-22">
+                    <input data-group="checkbox-3" id="checkbox-22" type="checkbox" />minimaal 10<span>(26)</span>
+                </label>
+            </div>
         </div>
     </div>
     <div id="search-filter-themes" class="search-filter-default">
         <h2 class="closed"><a href="" title="deze box in- of uitklappen">Thema's</a></h2>
         <div class="fields">
-            <label class="label_check" for="checkbox-23"><input name="sample-checkbox-23" id="checkbox-23" value="1" type="checkbox" />goed voor kids<span>(604)</span></label>
-            <label class="label_check" for="checkbox-24"><input name="sample-checkbox-24" id="checkbox-24" value="1" type="checkbox" />charmante skidorpen<span>(1032)</span></label>
-            <label class="label_check" for="checkbox-25"><input name="sample-checkbox-25" id="checkbox-25" value="1" type="checkbox" />10 voor apr&eacute;s-ski<span>(822)</span></label>
-            <label class="label_check" for="checkbox-26"><input name="sample-checkbox-26" id="checkbox-26" value="1" type="checkbox" />super ski-stations<span>(1031)</span></label>
-            <label class="label_check" for="checkbox-27"><input name="sample-checkbox-27" id="checkbox-27" value="1" type="checkbox" />winter-wellness<span>(792)</span></label>
+            <div class="styled_label" data-role="change-filter" data-filter="5" data-filter-value="1" data-filter-multi="true">
+                <label class="label_check" for="checkbox-23">
+                    <input id="checkbox-23" type="checkbox" />goed voor kids<span>(604)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-filter="5" data-filter-value="2" data-filter-multi="true">
+                <label class="label_check" for="checkbox-24">
+                    <input id="checkbox-24" type="checkbox" />charmante skidorpen<span>(1032)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-filter="5" data-filter-value="3" data-filter-multi="true">
+                <label class="label_check" for="checkbox-25">
+                    <input id="checkbox-25" type="checkbox" />10 voor apr&eacute;s-ski<span>(822)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-filter="5" data-filter-value="4" data-filter-multi="true">
+                <label class="label_check" for="checkbox-26">
+                    <input id="checkbox-26" type="checkbox" />super ski-stations<span>(1031)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-filter="5" data-filter-value="5" data-filter-multi="true">
+                <label class="label_check" for="checkbox-27">
+                    <input id="checkbox-27" type="checkbox" />winter-wellness<span>(792)</span>
+                </label>
+            </div>
         </div>
     </div>
     <div class="search-filter-default">
