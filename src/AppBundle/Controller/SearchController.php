@@ -23,8 +23,8 @@ use       Symfony\Component\HttpFoundation\JsonResponse;
 class SearchController extends Controller
 {
     /**
-     * @Route(path="/zoek-en-boek.php", name="search_nl")
-     * @Route(path="/search-and-book.php",  name="search_en")
+     * @Route(path="/zoek-en-boek.php", name="search_nl", options={"expose": true})
+     * @Route(path="/search-and-book.php",  name="search_en", options={"expose": true})
      */
     public function index(Request $request)
     {
@@ -42,9 +42,7 @@ class SearchController extends Controller
                                        ->filter($filters)
                                        ->results();
 
-        dump($searchService->build()->block(SearchBuilder::BLOCK_FILTER));
-
-        return $this->render('search/search.html.twig', [
+        return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', [
             'paginator' => $paginator,
         ]);
     }

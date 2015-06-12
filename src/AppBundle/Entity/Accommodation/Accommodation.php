@@ -171,6 +171,13 @@ class Accommodation implements AccommodationServiceEntityInterface
      * @ORM\Column(name="weekendski", type="boolean")
      */
     private $weekendSki;
+    
+    /**
+     * @var int
+     * 
+     * @ORM\Column(name="afstandpiste", type="integer")
+     */
+    private $distanceSlope;
 
     /**
      * @var \DateTime

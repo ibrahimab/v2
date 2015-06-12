@@ -1,0 +1,47 @@
+{{ set_paginator(paginator) }}
+
+<section id="search-filter-results">
+    <div class="row">
+        {% include 'partials/search/form.html.twig' %}
+        <div id="search-results" class="small-12 medium-8 large-9 columns">
+            {% include 'partials/search/tags.html.twig' %}
+            <hr />
+            {{ render_paginator() }}
+            <div class="row">
+                <div class="small-12 medium-6 large-6 columns">
+                    <div class="title">{{ count_paginator() }} resultaten</div>
+                </div>
+                <div class="small-12 medium-6 large-6 columns">
+                    <form>
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <div class="row">
+                                    <div class="small-3 columns">
+                                        <label for="right-label" class="right inline">Sorteren</label>
+                                    </div>
+                                    <div class="small-9 columns">
+                                        <select class="radius">
+                                            <option value="1423868400">op prijs (oplopend)</option>
+                                            <option value="1423868400">op prijs (aflopend)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="small-12 medium-12 large-12 columns">
+                    {# {% set results = get_paginator() %}
+                    {% set images  = search_images(results) %}
+                    {% for result in results %}
+                    {% include 'partials/search/result.html.twig' with {'result': result, 'all_images': images} %}
+                    {% endfor %} #}
+                </div>
+            </div>
+            {{ render_paginator() }}
+        </div>
+    </div>
+</section>

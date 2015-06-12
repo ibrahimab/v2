@@ -5,7 +5,7 @@ window.Chalet = (function(ns, jq, undefined) {
 
         initialize: function(filters) {
 
-            ns.Search.filters.filters = filters;
+            ns.Search.filters.filters = filters || ns.Search.filters.filters;
             ns.Search.events.bind();
         },
 
@@ -37,16 +37,49 @@ window.Chalet = (function(ns, jq, undefined) {
 
         actions: {
 
+            url: function() {
+                
+                var filters = ns.Search.filters.active();
+                var total   = filters.length;
+                var uri     = URI();
+
+                // remove all the filters from url
+                for (var i = 1; i <= 10; i++) {
+                    
+                    for (var j = 0; j <= 10; j++) {
+                        uri.removeQuery('f[' + i + '][' + j + ']');
+                    }
+                    
+                    uri.removeQuery('f[' + i + ']');
+                }
+                
+                for (var i in filters) {
+                    
+                    if (filters.hasOwnProperty(i)) {
+                        
+                        if (jq.isArray(filters[i])) {
+                            
+                            var total = filters[i].length;
+
+                            for (var j = 0; j < total; j++) {
+                                uri.setQuery('f[' + i + '][' + j + ']', filters[i][j]);
+                            }
+                            
+                        } else {
+                            uri.setQuery('f[' + i + ']', filters[i]);
+                        }
+                    }
+                }
+                
+                return uri.query();
+            },
+
             search: function() {
 
-                var data = window.location.search.replace('?', '');
-                // data = ns.Search.filters.active();
-                console.log(data);
-                console.log(encodeURIComponent.encode(ns.Search.filters.active()));
-                jq({
+                jq.ajax({
 
                     url: Routing.generate('search_' + ns.get('app')['locale']),
-                    data: data,
+                    data: ns.Search.actions.url(),
                     success: function(data) {
                         console.log(data);
                     }
@@ -92,11 +125,11 @@ window.Chalet = (function(ns, jq, undefined) {
                     }
 
                     if (ns.Search.filters.filters[filter].length === 0) {
-                        ns.Search.filters.filters.splice(filter, 1);
+                        delete ns.Search.filters.filters.splice[filter];
                     }
 
                 } else {
-                    ns.Search.filters.filters.splice(filter, 1);
+                    delete ns.Search.filters.filters[filter];
                 }
             },
 
