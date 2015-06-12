@@ -7,6 +7,9 @@
         // autocomplete
         Chalet.Autocomplete.initialize('[data-role="autocomplete-query"]', 5, '[data-role="autocomplete-results"]');
 
+        // search
+        Chalet.Search.initialize([]);
+
         // body element cache
         var body = jq('body');
 
@@ -15,11 +18,11 @@
          * and have a data-url attribute to send the user to
          */
         body.on('click', '[data-role="clickable"]', function(event) {
-            
+
             event.preventDefault();
-            
+
             var url = jq(this).data('url');
-            
+
             if (null !== url) {
                 window.location.href = url;
             }
@@ -46,21 +49,21 @@
             event.preventDefault();
             window.open(jq(this).attr('href'));
         });
-        
+
         /**
          * This listener allows links to be opened in a new popup by using
          * the data-role="new-popup" attribute and defining width/height via
          * other data attributes
          */
         body.on('click', '[data-role="new-popup"]', function(event) {
-            
+
             event.preventDefault();
-            
+
             var element = jq(this);
             var url     = element.attr('href');
             var width   = element.data('popup-width')  || 300;
             var height  = element.data('popup-height') || 200;
-            
+
             return window.open(url, 'new-popup', 'height=' + height + ',width=' + width + ',resizable=yes,menubar=no,location=yes', false);
         });
 

@@ -7,7 +7,7 @@
 {% block body %}
 
     {{ parent() }}
-    
+
     {{ set_paginator(paginator) }}
 
     <section id="search-filter-results">
@@ -44,16 +44,16 @@
                 <hr />
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
-                        {% set results = get_paginator() %}
+                        {# {% set results = get_paginator() %}
                         {% set images  = search_images(results) %}
                         {% for result in results %}
                         {% include 'partials/search/result.html.twig' with {'result': result, 'all_images': images} %}
-                        {% endfor %}
+                        {% endfor %} #}
                     </div>
                 </div>
                 {{ render_paginator() }}
             </div>
         </div>
     </section>
-    
+
 {% endblock %}
