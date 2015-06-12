@@ -37,9 +37,10 @@ monolog:
         #firephp:
         #    type:   firephp
         #    level:  info
-        #chromephp:
-        #    type:   chromephp
-        #    level:  info
+        chromephp:
+           type:   chromephp
+           level:  debug
+           channels: ['doctrine']
 
 assetic:
     use_controller: true
