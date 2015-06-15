@@ -25,31 +25,6 @@ class SearchRepository implements SearchServiceRepositoryInterface
     /**
      * @const string
      */
-    const ENTITY_COUNTRY       = 'AppBundle:Country\Country';
-    
-    /**
-     * @const string
-     */
-    const ENTITY_REGION        = 'AppBundle:Region\Region';
-    
-    /**
-     * @const string
-     */
-    const ENTITY_PLACE         = 'AppBundle:Place\Place';
-    
-    /**
-     * @const string
-     */
-    const ENTITY_ACCOMMODATION = 'AppBundle:Accommodation\Accommodation';
-    
-    /**
-     * @const string
-     */
-    const ENTITY_TYPE          = 'AppBundle:Type\Type';
-    
-    /**
-     * @const string
-     */
     const SORT_BY_DEFAULT      = SearchBuilder::SORT_BY_ACCOMMODATION_NAME;
                                
     /**                        
@@ -90,6 +65,7 @@ class SearchRepository implements SearchServiceRepositoryInterface
         $sort_by     = $searchBuilder->block(SearchBuilder::BLOCK_SORT_BY, self::SORT_BY_DEFAULT);
         $sort_order  = $searchBuilder->block(SearchBuilder::BLOCK_SORT_ORDER, self::SORT_ORDER_DEFAULT);
         $filters     = $searchBuilder->block(SearchBuilder::BLOCK_FILTER);
+        $where       = $searchBuilder->block(SearchBuilder::BLOCK_WHERE);
 
         $qb   = $this->getEntityManager()->createQueryBuilder();
         $expr = $qb->expr();
@@ -99,7 +75,7 @@ class SearchRepository implements SearchServiceRepositoryInterface
                             partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}, 
                             partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}, 
                             partial c.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}')
-           ->add('from', self::ENTITY_ACCOMMODATION . ' a')
+           ->add('from', 'AppBundle:Accommodation\Accommodation a')
            ->innerJoin('a.types', 't')
            ->innerJoin('a.place',  'p')
            ->innerJoin('p.region', 'r')
@@ -122,12 +98,18 @@ class SearchRepository implements SearchServiceRepositoryInterface
             $qb->orderBy($sort_field, $sort_order);
         }
         
-        $paginator    = new Paginator($qb, true);
+        $this->where($where, $qb);
+        
+        $paginator = new Paginator($qb, true);
         $paginator->page = [
             
             'current' => (round($offset / $limit) + 1),
             'last'    => round(count($paginator) / $limit),
         ];
+        
+        if ((int)$paginator->page['last'] === 0) {
+            $paginator->page['last'] = 1;
+        }
         
         return $paginator;
     }
@@ -223,11 +205,14 @@ class SearchRepository implements SearchServiceRepositoryInterface
     
     public function filters($qb, $filters)
     {
-        $this->distance($qb, $filters);
-        $this->length($qb, $filters);
-        $this->facilities($qb, $filters);
-        $this->bathroom($qb, $filters);
-        $this->themes($qb, $filters);
+        if (null !== $filters) {
+            
+            $this->distance($qb, $filters);
+            $this->length($qb, $filters);
+            $this->facilities($qb, $filters);
+            $this->bathroom($qb, $filters);
+            $this->themes($qb, $filters);
+        }
         
         return $qb;
     }
@@ -516,5 +501,23 @@ class SearchRepository implements SearchServiceRepositoryInterface
         }
         
         return $selector;
+    }
+    
+    public function where($where, $qb)
+    {
+        $expr = $qb->expr();
+        foreach ($where as $clause) {
+            
+            switch ($clause['field']) {
+                
+                case SearchBuilder::WHERE_WEEKEND_SKI:
+                    $field = 'a.weekendSki';
+                break;
+            }
+            
+            $qb->andWhere($expr->eq($field, $clause['value']));
+        }
+        
+        return $qb;
     }
 }

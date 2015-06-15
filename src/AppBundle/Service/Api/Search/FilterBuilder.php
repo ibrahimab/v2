@@ -37,6 +37,8 @@ class FilterBuilder
      * @const int
      */
     const FILTER_THEME    = 5;
+
+    const VALUE_DISTANCE_BY_SLOPE         = 50;
     
     const FILTER_DISTANCE_BY_SLOPE        = 1;
     const FILTER_DISTANCE_MAX_250         = 2;
@@ -69,8 +71,6 @@ class FilterBuilder
     const FILTER_THEME_10_FOR_APRES_SKI   = 3;
     const FILTER_THEME_SUPER_SKI_STATIONS = 4;
     const FILTER_THEME_WINTER_WELLNESS    = 5;
-    
-    const VALUE_DISTANCE_BY_SLOPE         = 50;
 
     /**
      * @const array

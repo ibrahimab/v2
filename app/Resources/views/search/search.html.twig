@@ -8,6 +8,13 @@
 
     {{ parent() }}
 
-    {% include 'search/results.html.twig' %}
+    <section id="search-filter-results">
+        <div class="row">
+            {% include 'partials/search/form.html.twig' %}
+            <div id="search-results" class="small-12 medium-8 large-9 columns">
+                {% include 'search/results.html.twig' %}
+            </div>
+        </div>
+    </section>
 
 {% endblock %}

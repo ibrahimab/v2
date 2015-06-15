@@ -39,11 +39,15 @@ class SearchController extends Controller
                                        ->limit($per_page)
                                        ->offset($offset)
                                        ->sort(SearchBuilder::SORT_BY_TYPE_SEARCH_ORDER, SearchBuilder::SORT_ORDER_ASC)
+                                       ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0)
                                        ->filter($filters)
                                        ->results();
 
         return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', [
+            
             'paginator' => $paginator,
+            'filters'   => $filters,
+            'tags'      => $filters,
         ]);
     }
 }

@@ -44,6 +44,11 @@ class SearchBuilder
     /**
      * @const int
      */
+    const WHERE_WEEKEND_SKI = 1;
+    
+    /**
+     * @const int
+     */
     const SORT_BY_ACCOMMODATION_NAME = 1;
     
     /**

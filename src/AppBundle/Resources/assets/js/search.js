@@ -3,10 +3,17 @@ window.Chalet = (function(ns, jq, undefined) {
 
     ns.Search = {
 
+        container: null,
+
         initialize: function(filters) {
 
             ns.Search.filters.filters = filters || ns.Search.filters.filters;
             ns.Search.events.bind();
+            ns.Search.setContainer();
+        },
+        
+        setContainer: function() {
+            ns.Search.container = jq('[data-role="search-results"]');
         },
 
         events: {
@@ -32,6 +39,8 @@ window.Chalet = (function(ns, jq, undefined) {
                     ns.Search.filters.add(element.data('filter'), element.data('filter-value'), element.data('filter-multi') === true);
                     element.data('action', 'remove');
                 }
+                
+                ns.Search.actions.search();
             }
         },
 
@@ -73,15 +82,23 @@ window.Chalet = (function(ns, jq, undefined) {
                 
                 return uri.query();
             },
+            
+            loader: function() {                
+                ns.Search.container.prepend('<div class="loading"></div>');
+            },
 
             search: function() {
+
+                ns.Search.actions.loader();
 
                 jq.ajax({
 
                     url: Routing.generate('search_' + ns.get('app')['locale']),
                     data: ns.Search.actions.url(),
                     success: function(data) {
-                        console.log(data);
+                        
+                        ns.Search.container.replaceWith(data);
+                        ns.Search.setContainer();
                     }
                 });
             }

@@ -240,11 +240,12 @@ class AppExtension extends \Twig_Extension
             }
         }
 
-        $typeFileService = $this->container->get('service.api.file.type');
-        $files           = $typeFileService->getSearchImages($types);
-        $images          = [];
-        $found           = [];
-        $mapper          = [];
+        $typeFileService    = $this->container->get('service.api.file.type');
+        $files              = $typeFileService->getSearchImages($types);
+        $images             = [];
+        $found              = [];
+        $mapper             = [];
+        $accommodationFiles = [];
         
         foreach ($files as $file) {
             $found[$file->getFileId()] = true;
