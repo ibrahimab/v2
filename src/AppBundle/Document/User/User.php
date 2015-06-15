@@ -45,6 +45,11 @@ class User implements UserServiceDocumentInterface
     private $viewed;
     
     /**
+     * @ODM\Collection
+     */
+    private $searches;
+    
+    /**
      * @ODM\Date
      */
     private $created_at;
@@ -58,6 +63,7 @@ class User implements UserServiceDocumentInterface
     {
         $this->favorites = [];
         $this->viewed    = [];
+        $this->searches  = [];
     }
     
 
@@ -173,6 +179,50 @@ class User implements UserServiceDocumentInterface
     public function totalViewed()
     {
         return count($this->viewed);
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getSearch($searchId)
+    {
+        foreach ($this->searches as $search) {
+            
+            if ((string)$search['_id'] === (string)$searchId) {
+                return $search;
+            }
+        }
+        
+        return null;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getSearches()
+    {
+        return $this->searches;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setSearches(Array $searches)
+    {
+        $documents = [];
+        foreach ($searches as $search) {
+            $documents[] = ['_id' => new \MogoId(), 'search' => $search];
+        }
+        
+        $this->searches = $documents;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function addSearch(Array $search)
+    {
+        array_push($this->searches, ['_id' => new \MongoId(), 'search' => $search]);
     }
     
     /**

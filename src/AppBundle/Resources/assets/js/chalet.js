@@ -1,25 +1,3 @@
-if (typeof Object.create !== 'function') {
-
-    Object.create = function(o, props) {
-
-        function F() {};
-        F.prototype = o;
-        result = new F();
-
-        if (typeof(props) === 'object') {
-
-            for (prop in props) {
-
-                if (props.hasOwnProperty(prop)) {
-                    result[prop] = props[prop].value;
-                }
-            }
-        }
-
-        return result;
-    };
-}
-
 /**
  * Chalet Object
  *
@@ -51,7 +29,7 @@ window.Chalet = (function(ns, undefined) {
         }
         
         if (undefined === ns.attributes[attribute] && undefined === _default) {
-            throw new Exception('Undefined attribute requested');
+            throw new Error('Undefined attribute requested');
         }
         
         return ns.attributes[attribute];

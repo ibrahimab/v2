@@ -94,35 +94,6 @@ $('.readmore a').click(function() {//open close div (class=readmore)
     $(getParent+ ' .hide').slideToggle('slow');
     return false;
 });
-//checkboxes and radios
-// function setupLabel() {
-//     if ($('.label_check input').length) {
-//         $('.label_check').each(function(){
-//             $(this).removeClass('c_on');
-//         });
-//         $('.label_check input:checked').each(function(){
-//             $(this).parent('label').addClass('c_on');
-//         });
-//     };
-//     if ($('.label_radio input').length) {
-//         $('.label_radio').each(function(){
-//             $(this).removeClass('r_on');
-//         });
-//         $('.label_radio input:checked').each(function(){
-//             $(this).parent('label').addClass('r_on');
-//         });
-//     };
-// };
-// $(document).ready(function(){
-//
-//     $('body').addClass('has-js');
-//     $('.label_check, .label_radio').click(function(event){
-//
-//         event.preventDefault();
-//         setupLabel();
-//     });
-//     setupLabel();
-// });
 $(document).ready(function(){
 
     $('body').addClass('has-js');
@@ -147,6 +118,12 @@ $(document).ready(function(){
         $('.styled_label label.label_radio').removeClass('r_on');
         $('.styled_label input:checked').parent('label.label_radio').addClass('r_on');
     });
+    
+    window.resetStyledInput = function() {
+        
+        $('.styled_label input:checked').prop('checked', false).parent('label.label_check').removeClass('c_on');
+        $('.styled_label input:checked').prop('checked', false).parent('label.label_radio').removeClass('r_on');
+    };
 });
 //go to next month - 'boek nu' table
 $( "table.responsive" ).append($('#types-nav'));

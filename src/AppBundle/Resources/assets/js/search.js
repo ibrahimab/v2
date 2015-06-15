@@ -22,6 +22,8 @@ window.Chalet = (function(ns, jq, undefined) {
 
                 var body = jq('body');
                 body.on('click', '[data-role="change-filter"]', ns.Search.events.change);
+                body.on('click', '[data-role="remove-filter"]', ns.Search.events.remove);
+                body.on('click', '[data-role="remove-filters"]', ns.Search.events.clear);
             },
 
             change: function(event) {
@@ -32,15 +34,40 @@ window.Chalet = (function(ns, jq, undefined) {
                 if (element.data('action') === 'remove') {
 
                     ns.Search.filters.remove(element.data('filter'), element.data('filter-value'), element.data('filter-multi') === true);
-                    element.data('action', 'add');
+                    element.data('action', 'add').attr('data-action', 'add');
 
                 } else {
 
                     ns.Search.filters.add(element.data('filter'), element.data('filter-value'), element.data('filter-multi') === true);
-                    element.data('action', 'remove');
+                    element.data('action', 'remove').attr('data-action', 'remove');
+                    
+                    if (true !== element.data('filter-multi')) {
+                        jq('[data-filter="' + element.data('filter') + '"]').not(element).data('action', 'add').attr('data-action', 'add');
+                    }
                 }
                 
                 ns.Search.actions.search();
+            },
+            
+            remove: function(event) {
+                
+                event.preventDefault();
+                var element = jq(this);
+                
+                jq('[data-role="change-filter"][data-filter="' + element.data('filter') + '"][data-filter-value="' + element.data('filter-value') + '"][data-action="remove"]').trigger('click');
+                ns.Search.actions.search();
+            },
+            
+            clear: function(event) {
+                
+                event.preventDefault();
+                
+                ns.Search.filters.clear();
+                ns.Search.actions.search();
+                
+                // resetting all the input fields
+                resetStyledInput();
+                jq('[data-role="change-filter"]').data('action', 'add').attr('data-action', 'add');
             }
         },
 
@@ -80,7 +107,7 @@ window.Chalet = (function(ns, jq, undefined) {
                     }
                 }
                 
-                return uri.query();
+                return uri;
             },
             
             loader: function() {                
@@ -90,15 +117,20 @@ window.Chalet = (function(ns, jq, undefined) {
             search: function() {
 
                 ns.Search.actions.loader();
-
+                var url = Routing.generate('search_' + ns.get('app')['locale']) + ns.Search.actions.url().search();
+                
                 jq.ajax({
 
-                    url: Routing.generate('search_' + ns.get('app')['locale']),
-                    data: ns.Search.actions.url(),
+                    url: url,
+                    data: url + ns.Search.actions.url(),
                     success: function(data) {
                         
                         ns.Search.container.replaceWith(data);
                         ns.Search.setContainer();
+                        
+                        if (window.history.pushState) {
+                            window.history.pushState({path: url}, '', url);
+                        }
                     }
                 });
             }
@@ -132,17 +164,23 @@ window.Chalet = (function(ns, jq, undefined) {
                 if (multi === true) {
 
                     var values = ns.Search.filters.filters[filter];
+                    if (undefined === values) {
+                        return;
+                    }
+                    
                     var total  = values.length;
 
                     for (var i = 0; i < total; i++) {
 
                         if (values[i] === value) {
+                            console.log('b', ns.Search.filters.filters[filter]);
                             ns.Search.filters.filters[filter].splice(i, 1);
+                            console.log('a', ns.Search.filters.filters[filter]);
                         }
                     }
 
                     if (ns.Search.filters.filters[filter].length === 0) {
-                        delete ns.Search.filters.filters.splice[filter];
+                        delete ns.Search.filters.filters[filter];
                     }
 
                 } else {

@@ -74,6 +74,31 @@ interface UserServiceDocumentInterface
     public function totalViewed();
     
     /**
+     * @param \MongoId $searchId
+     * @return array
+     */
+    public function getSearch($searchId);
+    
+    /**
+     * @return array
+     */
+    public function getSearches();
+    
+    /**
+     * @param array $searches
+     * @return UserServiceDocumentInterface
+     */
+    public function setSearches(Array $searches);
+    
+    /**
+     * Add search
+     * 
+     * @param array $search
+     * @return UserServiceDocumentInterface
+     */
+    public function addSearch(Array $search);
+    
+    /**
      * @param \DateTime $createdAt
      * @return UserServiceDocumentInterface
      */

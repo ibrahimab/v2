@@ -8,7 +8,7 @@
         Chalet.Autocomplete.initialize('[data-role="autocomplete-query"]', 5, '[data-role="autocomplete-results"]');
 
         // search
-        Chalet.Search.initialize();
+        Chalet.Search.initialize(jq.extend({}, Chalet.get('app')['tags']));
 
         // body element cache
         var body = jq('body');

@@ -98,7 +98,9 @@ class SearchRepository implements SearchServiceRepositoryInterface
             $qb->orderBy($sort_field, $sort_order);
         }
         
-        $this->where($where, $qb);
+        // $this->where($where, $qb);
+        
+        // dump($qb->getQuery()->getSQL());exit;
         
         $paginator = new Paginator($qb, true);
         $paginator->page = [
@@ -443,12 +445,12 @@ class SearchRepository implements SearchServiceRepositoryInterface
             $themes     = $filters->filter(FilterBuilder::FILTER_THEME);
             
             foreach ($themes as $theme) {
-            
+           
                 if (null !== ($selector = $this->theme($qb, $theme))) {
                     $selectors[] = $selector;
                 }
             }
-            
+          
             $and = $expr->andX();
             foreach ($selectors as $selector) {
                 $and->add($selector);
@@ -463,41 +465,42 @@ class SearchRepository implements SearchServiceRepositoryInterface
     public function theme($qb, $theme)
     {
         $expr     = $qb->expr();
-        $selector = $expr->in('p.features', ':place_features_' . $theme);
+        $selector = $expr->in('p.features', ':place_features_theme_' . $theme);
+       
         switch ($theme) {
-            
+       
             case FilterBuilder::FILTER_THEME_KIDS:
-            
-                $selector = $expr->orX($expr->in('t.features', ':type_features_' . $theme), $expr->in('a.features', ':accommodation_features_' . $theme));
+       
+                $selector = $expr->orX($expr->in('t.features', ':type_features_theme_' . $theme), $expr->in('a.features', ':accommodation_features_theme_' . $theme));
                 
-                $qb->setParameter(':type_features_' . $theme, 5);
-                $qb->setParameter(':accommodation_features_' . $theme, 5);
-                
+                $qb->setParameter(':type_features_theme_' . $theme, 5);
+                $qb->setParameter(':accommodation_features_theme_' . $theme, 5);
+       
             break;
-            
+       
             case FilterBuilder::FILTER_THEME_CHARMING_PLACES:
-                $qb->setParameter(':place_features_' . $theme, 13);
+                $qb->setParameter(':place_features_theme_' . $theme, 13);
             break;
-            
+       
             case FilterBuilder::FILTER_THEME_WINTER_WELLNESS:
-            
-                $selector = $expr->orX($expr->in('t.features', ':type_features_' . $theme), $expr->in('a.features', ':accommodation_features_' . $theme));
-                
-                $qb->setParameter(':type_features_' . $theme, 9);
-                $qb->setParameter(':accommodation_features_' . $theme, 9);
-                
+
+                $selector = $expr->orX($expr->in('t.features', ':type_features_theme_' . $theme), $expr->in('a.features', ':accommodation_features_theme_' . $theme));
+       
+                $qb->setParameter(':type_features_theme_' . $theme, 9);
+                $qb->setParameter(':accommodation_features_theme_' . $theme, 9);
+      
             break;
-            
+
             case FilterBuilder::FILTER_THEME_SUPER_SKI_STATIONS:
-                $qb->setParameter(':place_features_' . $theme, 14);
+                $qb->setParameter(':place_features_theme_' . $theme, 14);
             break;
-            
+
             case FilterBuilder::FILTER_THEME_10_FOR_APRES_SKI:
-                $qb->setParameter(':place_features_' . $theme, 6);
+                $qb->setParameter(':place_features_theme_' . $theme, 6);
             break;
             
             default:
-                return null;
+            return null;
         }
         
         return $selector;

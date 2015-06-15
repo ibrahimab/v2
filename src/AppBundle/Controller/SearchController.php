@@ -2,6 +2,7 @@
 namespace AppBundle\Controller;
 use       AppBundle\Annotation\Breadcrumb;
 use       AppBundle\Service\Api\Search\SearchBuilder;
+use       AppBundle\Service\Api\Search\FilterBuilder;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use       Symfony\Component\HttpFoundation\Request;
@@ -28,11 +29,14 @@ class SearchController extends Controller
      */
     public function index(Request $request)
     {
-        $page          = intval($request->query->get('p'));
-        $page          = ($page === 0 ? $page : ($page - 1));
-        $per_page      = intval($this->container->getParameter('app')['results_per_page']);
-        $offset        = round($per_page * $page);
-        $filters       = $request->query->get('f');
+        $page     = intval($request->query->get('p'));
+        $page     = ($page === 0 ? $page : ($page - 1));
+        $per_page = intval($this->container->getParameter('app')['results_per_page']);
+        $offset   = round($per_page * $page);
+        $filters  = $request->query->get('f', []);
+        array_walk_recursive($filters, function(&$v) {
+            $v = intval($v);
+        });
 
         $searchService = $this->get('service.api.search');
         $paginator     = $searchService->build()
@@ -42,12 +46,36 @@ class SearchController extends Controller
                                        ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0)
                                        ->filter($filters)
                                        ->results();
+        
+        $this->get('service.javascript')->set('app.tags', $filters);
 
         return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', [
             
             'paginator' => $paginator,
             'filters'   => $filters,
             'tags'      => $filters,
+            // instance needed to get constants easier from within twig template: constant('const', instance)
+            'filter_builder' => new FilterBuilder([]),
         ]);
+    }
+    
+    /**
+     * @Route(path="/zoek-en-boek/opslaan", name="save_search_nl", options={"expose": true})
+     * @Route(path="/search-and-book/save", name="save_search_en", options={"expose": true})
+     */
+    public function save(Request $request)
+    {
+        if (count($search = $request->query->get('f', [])) === 0) {
+            return $this->redirectToRoute('search_' . $request->getLocale());
+        }
+        
+        $userService = $this->get('service.api.user');
+        $user        = $userService->user();
+        
+        if (null !== $user) {
+            $userService->saveSearch($user, $request->query->get('f', []));
+        }
+        
+        return $this->redirectToRoute('search_' .  $request->getLocale());
     }
 }

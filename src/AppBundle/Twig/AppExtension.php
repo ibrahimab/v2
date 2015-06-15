@@ -92,6 +92,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('region_skirun_map_image', [$this, 'getRegionSkiRunMapImage']),
 			new \Twig_SimpleFunction('favorites_count', [$this, 'favoritesCount']),
 			new \Twig_SimpleFunction('viewed_count', [$this, 'viewedCount']),
+            new \Twig_SimpleFunction('is_checked', [$this, 'isChecked']),
         ];
     }
 
@@ -600,9 +601,25 @@ class AppExtension extends \Twig_Extension
         return $this->currentUser;
     }
     
+    /**
+     * @param array $data
+     * @param array $replacement
+     * @param boolean $recursive
+     * @return array
+     */
     public function replace($data, $replacement, $recursive = false)
     {
         return (true === $recursive ? array_replace_recursive($data, $replacement) : array_replace($data, $replacement));
+    }
+    
+    /**
+     * @param mixed $$data
+     * @param mixed $item
+     * @return string
+     */
+    public function isChecked($data, $item)
+    {
+        return ((null !== $data ? (is_array($data) ? in_array($item, $data) : (int)$data === (int)$item) : false) ? ' checked="checked"' : '');
     }
 
     /**
