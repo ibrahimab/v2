@@ -3,7 +3,7 @@
         <h2><a href="" title="deze box in- of uitklappen">Zoek en boek</a></h2>
         <div class="fields">
             {% include 'partials/search/form/input.html.twig' %}
-            <a href="{{ locale_path('save_search', {f: app.request.query.get('f', {})}) }}" class="save" title="Deze zoekopdracht opslaan">Zoekopdracht opslaan<i class="sprite sprite-icon-plus "></i></a>
+            <a href="{{ locale_path('save_search', {f: app.request.query.get('f', {})}) }}" class="save" title="Deze zoekopdracht opslaan" data-role="save-search">Zoekopdracht opslaan<i class="sprite sprite-icon-plus "></i></a>
         </div>
     </div>
     <h2 class="title">Filter resultaten</h2>
@@ -16,7 +16,7 @@
             {% set distance_max_250      = constant('FILTER_DISTANCE_MAX_250', filter_builder) %}
             {% set distance_max_500      = constant('FILTER_DISTANCE_MAX_500', filter_builder) %}
             {% set distance_max_1000     = constant('FILTER_DISTANCE_MAX_1000', filter_builder) %}
-            
+
             <div class="styled_label" data-role="change-filter" data-action="{{ filter_distance_value == distance_by_slope ? 'remove' : 'add' }}" data-filter="{{ filter_distance }}" data-filter-value="{{ distance_by_slope }}">
                 <label class="label_check" for="checkbox-01">
                     <input data-group="checkbox-1" id="checkbox-01" type="checkbox"{{ is_checked(filter_distance_value, distance_by_slope) }} />aan de piste<span>(848)</span>

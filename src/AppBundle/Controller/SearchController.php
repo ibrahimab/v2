@@ -46,11 +46,11 @@ class SearchController extends Controller
                                        ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0)
                                        ->filter($filters)
                                        ->results();
-        
+
         $this->get('service.javascript')->set('app.tags', $filters);
 
         return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', [
-            
+
             'paginator' => $paginator,
             'filters'   => $filters,
             'tags'      => $filters,
@@ -58,7 +58,7 @@ class SearchController extends Controller
             'filter_builder' => new FilterBuilder([]),
         ]);
     }
-    
+
     /**
      * @Route(path="/zoek-en-boek/opslaan", name="save_search_nl", options={"expose": true})
      * @Route(path="/search-and-book/save", name="save_search_en", options={"expose": true})
@@ -68,14 +68,18 @@ class SearchController extends Controller
         if (count($search = $request->query->get('f', [])) === 0) {
             return $this->redirectToRoute('search_' . $request->getLocale());
         }
-        
+
         $userService = $this->get('service.api.user');
         $user        = $userService->user();
-        
+        $filters     = $request->query->get('f', []);
+        array_walk_recursive($filters, function(&$v) {
+            $v = intval($v);
+        });
+
         if (null !== $user) {
-            $userService->saveSearch($user, $request->query->get('f', []));
+            $userService->saveSearch($user, $filters);
         }
-        
-        return $this->redirectToRoute('search_' .  $request->getLocale());
+
+        return $this->redirectToRoute('search_' .  $request->getLocale(), ['f' => $filters]);
     }
 }

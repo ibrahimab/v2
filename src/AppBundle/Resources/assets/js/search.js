@@ -11,7 +11,7 @@ window.Chalet = (function(ns, jq, undefined) {
             ns.Search.events.bind();
             ns.Search.setContainer();
         },
-        
+
         setContainer: function() {
             ns.Search.container = jq('[data-role="search-results"]');
         },
@@ -40,31 +40,31 @@ window.Chalet = (function(ns, jq, undefined) {
 
                     ns.Search.filters.add(element.data('filter'), element.data('filter-value'), element.data('filter-multi') === true);
                     element.data('action', 'remove').attr('data-action', 'remove');
-                    
+
                     if (true !== element.data('filter-multi')) {
                         jq('[data-filter="' + element.data('filter') + '"]').not(element).data('action', 'add').attr('data-action', 'add');
                     }
                 }
-                
+
                 ns.Search.actions.search();
             },
-            
+
             remove: function(event) {
-                
+
                 event.preventDefault();
                 var element = jq(this);
-                
+
                 jq('[data-role="change-filter"][data-filter="' + element.data('filter') + '"][data-filter-value="' + element.data('filter-value') + '"][data-action="remove"]').trigger('click');
                 ns.Search.actions.search();
             },
-            
+
             clear: function(event) {
-                
+
                 event.preventDefault();
-                
+
                 ns.Search.filters.clear();
                 ns.Search.actions.search();
-                
+
                 // resetting all the input fields
                 resetStyledInput();
                 jq('[data-role="change-filter"]').data('action', 'add').attr('data-action', 'add');
@@ -73,64 +73,69 @@ window.Chalet = (function(ns, jq, undefined) {
 
         actions: {
 
-            url: function() {
-                
+            url: function(url) {
+
                 var filters = ns.Search.filters.active();
                 var total   = filters.length;
-                var uri     = URI();
+                var uri     = URI(url);
 
                 // remove all the filters from url
                 for (var i = 1; i <= 10; i++) {
-                    
+
                     for (var j = 0; j <= 10; j++) {
                         uri.removeQuery('f[' + i + '][' + j + ']');
                     }
-                    
+
                     uri.removeQuery('f[' + i + ']');
                 }
-                
+
                 for (var i in filters) {
-                    
+
                     if (filters.hasOwnProperty(i)) {
-                        
+
                         if (jq.isArray(filters[i])) {
-                            
+
                             var total = filters[i].length;
 
                             for (var j = 0; j < total; j++) {
                                 uri.setQuery('f[' + i + '][' + j + ']', filters[i][j]);
                             }
-                            
+
                         } else {
                             uri.setQuery('f[' + i + ']', filters[i]);
                         }
                     }
                 }
-                
+
+                uri.removeQuery('p');
+
                 return uri;
             },
-            
-            loader: function() {                
+
+            loader: function() {
                 ns.Search.container.prepend('<div class="loading"></div>');
             },
 
             search: function() {
 
                 ns.Search.actions.loader();
-                var url = Routing.generate('search_' + ns.get('app')['locale']) + ns.Search.actions.url().search();
-                
+                var url = ns.Search.actions.url(Routing.generate('search_' + ns.get('app')['locale']));
+
                 jq.ajax({
 
-                    url: url,
-                    data: url + ns.Search.actions.url(),
+                    url: url.toString(),
+                    data: url.query(),
                     success: function(data) {
-                        
+
                         ns.Search.container.replaceWith(data);
                         ns.Search.setContainer();
-                        
+
                         if (window.history.pushState) {
                             window.history.pushState({path: url}, '', url);
                         }
+
+                        var save = ns.Search.actions.url(Routing.generate('save_search_' + ns.get('app')['locale']));
+                        jq('[data-role="save-search"]').attr('href', save.toString());
                     }
                 });
             }
@@ -167,7 +172,7 @@ window.Chalet = (function(ns, jq, undefined) {
                     if (undefined === values) {
                         return;
                     }
-                    
+
                     var total  = values.length;
 
                     for (var i = 0; i < total; i++) {
