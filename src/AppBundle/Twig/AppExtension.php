@@ -51,7 +51,7 @@ class AppExtension extends \Twig_Extension
      * @var string
      */
     private $oldImageRoot;
-	
+
 	/**
 	 * @var UserServiceDocumentInterface
 	 */
@@ -76,7 +76,7 @@ class AppExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            
+
             new \Twig_SimpleFunction('locale_url', [$this, 'getUrl'], ['is_safe_callback' => [$this, 'isUrlGenerationSafe']]),
             new \Twig_SimpleFunction('locale_path', [$this, 'getPath'], ['is_safe_callback' => [$this, 'isUrlGenerationSafe']]),
             new \Twig_SimpleFunction('type_image', [$this, 'getTypeImage']),
@@ -92,6 +92,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('region_skirun_map_image', [$this, 'getRegionSkiRunMapImage']),
 			new \Twig_SimpleFunction('favorites_count', [$this, 'favoritesCount']),
 			new \Twig_SimpleFunction('viewed_count', [$this, 'viewedCount']),
+            new \Twig_SimpleFunction('searches_count', [$this, 'searchesCount']),
             new \Twig_SimpleFunction('is_checked', [$this, 'isChecked']),
         ];
     }
@@ -104,7 +105,7 @@ class AppExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            
+
             new \Twig_SimpleFilter('bbcode', [$this, 'bbcode'], array('pre_escape' => 'html', 'is_safe' => array('html'))),
             new \Twig_SimpleFilter('sortprop', [$this, 'sortByProperty']),
 			new \Twig_SimpleFilter('seo', [$this, 'seo']),
@@ -221,7 +222,7 @@ class AppExtension extends \Twig_Extension
 
         return $images;
     }
-    
+
     /**
      * @param AccommodationServiceEntityInterface[] $accommodations
      * @return []
@@ -230,12 +231,12 @@ class AppExtension extends \Twig_Extension
     {
         $types = [];
         $accommodationEntities = [];
-        
+
         foreach ($accommodations as $accommodation) {
-            
+
             $accommodationTypes = $accommodation->getTypes();
             if (count($accommodationTypes) > 1) {
-                
+
                 $types[] = $accommodationTypes[0];
                 $accommodationEntities[$accommodationTypes[0]->getId()] = $accommodation;
             }
@@ -247,53 +248,53 @@ class AppExtension extends \Twig_Extension
         $found              = [];
         $mapper             = [];
         $accommodationFiles = [];
-        
+
         foreach ($files as $file) {
             $found[$file->getFileId()] = true;
         }
-        
+
         $notFound = [];
         foreach ($accommodationEntities as $typeId => $accommodation) {
-            
+
             if (!array_key_exists($typeId, $found)) {
-                
+
                 $notFound[] = $accommodation;
                 $mapper[$accommodation->getId()] = $typeId;
             }
         }
 
         if (count($notFound) > 0) {
-            
+
             $accommodationFileService = $this->container->get('service.api.file.accommodation');
             $accommodationFiles       = $accommodationFileService->getSearchImages($notFound);
         }
 
         foreach ($files as $file) {
-            
+
             if (!isset($images[$file->getFileId()])) {
                 $images[$file->getFileId()] = [];
             }
-            
+
             $file->setUrlPrefix($this->getOldImageUrlPrefix());
             $images[$file->getFileId()][] = $file;
         }
-        
+
         foreach ($accommodationFiles as $file) {
-            
+
             if (!isset($mapper[$file->getFileId()])) {
                 continue;
             }
-                
+
             $typeId = $mapper[$file->getFileId()];
-            
+
             if (!isset($images[$typeId])) {
                 $images[$typeId] = [];
             }
-            
+
             $file->setUrlPrefix($this->getOldImageUrlPrefix());
             $images[$typeId][] = $file;
         }
-        
+
         return $images;
     }
 
@@ -560,7 +561,7 @@ class AppExtension extends \Twig_Extension
 	{
 		return $this->container->get('service.utils')->seo($text);
 	}
-	
+
 	/**
 	 * Count favorites
 	 *
@@ -571,10 +572,10 @@ class AppExtension extends \Twig_Extension
         if (null !== ($user = $this->getUser())) {
             return $user->totalFavorites();
         }
-        
+
 		return 0;
 	}
-    
+
     /**
      * Count viewed
      *
@@ -585,10 +586,24 @@ class AppExtension extends \Twig_Extension
         if (null !== ($user = $this->getUser())) {
             return $user->totalViewed();
         }
-        
+
         return 0;
     }
-    
+
+    /**
+     * Count searches
+     *
+     * @return int
+     */
+    public function searchesCount()
+    {
+        if (null !== ($user = $this->getUser())) {
+            return $user->totalSearches();
+        }
+
+        return 0;
+    }
+
     /**
      * @return AnonymousToken
      */
@@ -597,10 +612,10 @@ class AppExtension extends \Twig_Extension
         if (null === $this->currentUser) {
             $this->currentUser = $this->container->get('service.api.user')->user();
         }
-        
+
         return $this->currentUser;
     }
-    
+
     /**
      * @param array $data
      * @param array $replacement
@@ -611,7 +626,7 @@ class AppExtension extends \Twig_Extension
     {
         return (true === $recursive ? array_replace_recursive($data, $replacement) : array_replace($data, $replacement));
     }
-    
+
     /**
      * @param mixed $$data
      * @param mixed $item

@@ -23,37 +23,37 @@ class User implements UserServiceDocumentInterface
 	 * @ODM\String
 	 */
 	private $user_id;
-    
+
     /**
      * @ODM\String
      */
     private $username;
-    
+
     /**
      * @ODM\String
      */
     private $password;
-    
+
     /**
      * @ODM\Collection
      */
     private $favorites;
-    
+
     /**
      * @ODM\Collection
      */
     private $viewed;
-    
+
     /**
      * @ODM\Collection
      */
     private $searches;
-    
+
     /**
      * @ODM\Date
      */
     private $created_at;
-    
+
     /**
      * @ODM\Date
      */
@@ -65,7 +65,7 @@ class User implements UserServiceDocumentInterface
         $this->viewed    = [];
         $this->searches  = [];
     }
-    
+
 
     /**
      * {@InheritDoc}
@@ -92,17 +92,17 @@ class User implements UserServiceDocumentInterface
 	{
 		return $this->user_id;
 	}
-    
+
     /**
      * {@InheritDoc}
      */
     public function setUsername($username)
     {
         $this->username = $username;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -110,17 +110,17 @@ class User implements UserServiceDocumentInterface
     {
         return $this->username;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setPassword($password)
     {
         $this->password = $password;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -128,17 +128,17 @@ class User implements UserServiceDocumentInterface
     {
         return $this->password;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setFavorites($favorites)
     {
         $this->favorites = $favorites;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -146,7 +146,7 @@ class User implements UserServiceDocumentInterface
     {
         return $this->favorites;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -154,17 +154,17 @@ class User implements UserServiceDocumentInterface
     {
         return count($this->favorites);
     }
-    
+
     /**
      * {InheritDoc}
      */
     public function setViewed($viewed)
     {
         $this->viewed = $viewed;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -172,7 +172,7 @@ class User implements UserServiceDocumentInterface
     {
         return $this->viewed;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -180,22 +180,22 @@ class User implements UserServiceDocumentInterface
     {
         return count($this->viewed);
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function getSearch($searchId)
     {
         foreach ($this->searches as $search) {
-            
+
             if ((string)$search['_id'] === (string)$searchId) {
                 return $search;
             }
         }
-        
+
         return null;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -203,7 +203,7 @@ class User implements UserServiceDocumentInterface
     {
         return $this->searches;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -213,10 +213,10 @@ class User implements UserServiceDocumentInterface
         foreach ($searches as $search) {
             $documents[] = ['_id' => new \MogoId(), 'search' => $search];
         }
-        
+
         $this->searches = $documents;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -224,17 +224,25 @@ class User implements UserServiceDocumentInterface
     {
         array_push($this->searches, ['_id' => new \MongoId(), 'search' => $search]);
     }
-    
+
+    /**
+     * {@InheritDoc}
+     */
+    public function totalSearches()
+    {
+        return count($this->searches);
+    }
+
     /**
      * {@InheritDoc}
      */
     public function setCreatedAt($created_at)
     {
         $this->created_at = $created_at;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -242,17 +250,17 @@ class User implements UserServiceDocumentInterface
     {
         return $this->created_at;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setUpdatedAt($updated_at)
     {
         $this->updated_at = $updated_at;
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */

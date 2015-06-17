@@ -21,9 +21,10 @@ window.Chalet = (function(ns, jq, undefined) {
             bind: function() {
 
                 var body = jq('body');
-                body.on('click', '[data-role="change-filter"]', ns.Search.events.change);
-                body.on('click', '[data-role="remove-filter"]', ns.Search.events.remove);
-                body.on('click', '[data-role="remove-filters"]', ns.Search.events.clear);
+                body.on('click', '[data-role="change-filter"]',   ns.Search.events.change);
+                body.on('click', '[data-role="remove-filter"]',   ns.Search.events.remove);
+                body.on('click', '[data-role="remove-filters"]',  ns.Search.events.clear);
+                body.on('click', '[data-role="paginate-search"]', ns.Search.events.paginate);
             },
 
             change: function(event) {
@@ -68,12 +69,18 @@ window.Chalet = (function(ns, jq, undefined) {
                 // resetting all the input fields
                 resetStyledInput();
                 jq('[data-role="change-filter"]').data('action', 'add').attr('data-action', 'add');
-            }
+            },
+
+            paginate: function(event) {
+
+                event.preventDefault();
+                ns.Search.actions.search(jq(this).data('page'));
+            },
         },
 
         actions: {
 
-            url: function(url) {
+            url: function(url, page) {
 
                 var filters = ns.Search.filters.active();
                 var total   = filters.length;
@@ -107,7 +114,11 @@ window.Chalet = (function(ns, jq, undefined) {
                     }
                 }
 
-                uri.removeQuery('p');
+                if (undefined !== page) {
+                    uri.setQuery('p', page);
+                } else {
+                    uri.removeQuery('p');
+                }
 
                 return uri;
             },
@@ -116,10 +127,10 @@ window.Chalet = (function(ns, jq, undefined) {
                 ns.Search.container.prepend('<div class="loading"></div>');
             },
 
-            search: function() {
+            search: function(page) {
 
                 ns.Search.actions.loader();
-                var url = ns.Search.actions.url(Routing.generate('search_' + ns.get('app')['locale']));
+                var url = ns.Search.actions.url(Routing.generate('search_' + ns.get('app')['locale']), page);
 
                 jq.ajax({
 
