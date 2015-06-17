@@ -345,10 +345,89 @@ ul.pagination li:first-child a, ul.pagination li:last-child a { border:thin #bfb
 }
 
 div.search-results-container {
-    
+
     position: relative;
-    
+
     div.loading {
         background-position-y: 0;
+    }
+}
+
+.overview .accom-img .heart span {padding:1rem;}
+
+div.table-wrapper {
+
+    display: table;
+    width: 100%;
+
+    div.table-heading {
+
+        color: #193761;
+        font-size: 0.9rem;
+        font-weight: initial;
+        display: table-row;
+
+        div.table-cell {
+
+            vertical-align: bottom;
+            padding: 0.5rem 0.625rem 0.625rem;
+        }
+
+        div.table-heading-1 { min-width: 72px; max-width: 84px; }
+        div.table-heading-2 { max-width: 105px; }
+        div.table-heading-3 { max-width: 94px; }
+        div.table-heading-4 { width: 100%; }
+        div.table-heading-5 { min-width: 120px; max-width: 120px; padding-right: 2rem; }
+        div.table-heading-6 {  }
+        div.table-heading-7 { min-width: 105px; max-width: 150px; }
+    }
+
+    div.table-row {
+
+        display: table-row;
+
+        &:nth-of-type(even) {
+            background: #F9F9F9;
+        }
+    }
+
+    div.table-cell {
+        display: table-cell;
+    }
+
+    div.table-row {
+
+        div.table-cell {
+
+            text-align: left;
+            border-top: thin solid #bfbfbf;
+            color: #818181;
+            padding: 0.5625rem 0.625rem;
+
+            &.table-cell-1 { padding-left: 0.625rem; }
+            &.table-cell-6 { text-align: center; }
+            &.table-cell-7 {
+
+                text-align: right;
+                font-size: 1rem;
+                font-weight: 700;
+
+                i {
+                    float: right;
+                    margin: 0 0 0 0.5rem;
+                }
+            }
+
+            span {
+
+                background-color: #e9edf8;
+                border-radius: 3px;
+                -moz-border-radius: 3px;
+                -webkit-border-radius: 3px;
+                font-size: 1rem;
+                margin-right: 0.5rem;
+                padding: 0.2rem;
+            }
+        }
     }
 }

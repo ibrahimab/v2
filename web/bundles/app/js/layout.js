@@ -35,11 +35,6 @@ $(document).ready(function() {
     // Bind event listener
     $(window).resize(checkWidth);
 });
-//'zoekboek' - go to detailpaga
-$('#search-filter-results #search-results .overview .row ').click(function() {
-    var getResult = "#" + $(this).parent("article").attr("id");
-    window.location.href = "detail.html?result=" + getResult;
-});
 //main menu - drop down
 $('#dropdown-saved').click(function() {
     var drpdwnW = $(this).outerWidth() - 1;
@@ -118,9 +113,9 @@ $(document).ready(function(){
         $('.styled_label label.label_radio').removeClass('r_on');
         $('.styled_label input:checked').parent('label.label_radio').addClass('r_on');
     });
-    
+
     window.resetStyledInput = function() {
-        
+
         $('.styled_label input:checked').prop('checked', false).parent('label.label_check').removeClass('c_on');
         $('.styled_label input:checked').prop('checked', false).parent('label.label_radio').removeClass('r_on');
     };
