@@ -159,4 +159,16 @@ class PagesController extends Controller
     {
         return [];
     }
+
+    /**
+     * @Route("/zoekopdrachten", name="page_searches_nl")
+     * @Route("/searches", name="page_searches_en")
+     * @Breadcrumb(name="searches", title="page_searches", translate=true, active=true)
+     */
+    public function searches()
+    {
+        return $this->render('pages/searches.html.twig', [
+            'searches' => $this->container->get('service.api.user')->user()->getSearches(),
+        ]);
+    }
 }

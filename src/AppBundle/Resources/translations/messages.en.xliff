@@ -152,6 +152,14 @@
         <target>wellness-faciliteiten</target>
         <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
       </trans-unit>
+      <trans-unit id="75f5540a4254c10b1e0a5ab37182f52a6636b692" resname="search-book">
+        <source>search-book</source>
+        <target>Search &amp; book</target>
+      </trans-unit>
+      <trans-unit id="75f5540a4254c10b1e0a5ab37182f52a6636b692" resname="searches">
+        <source>searches</source>
+        <target>Saved searches</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
