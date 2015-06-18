@@ -12,7 +12,7 @@
     </div>
 
     {% for type in types %}
-    <div class="tb-r{{ loop.index % 2 ? ' sale-type' : '' }}">
+    <a class="tb-r{{ loop.index % 2 ? ' sale-type' : '' }}" href="{{ locale_path('show_type', {'beginCode': type.getAccommodation().getPlace().getCountry().getStartCode(), 'typeId': type.getId()}) }}">
         <div class="tb-c tb-c-1">
             <i class="sprite sprite-icon-torso"></i>
             {{ ( type.getOptimalResidents() == type.getMaxResidents() ? type.getOptimalResidents() : (type.getOptimalResidents() ~ ' - ' ~ type.getMaxResidents()) ) }}
@@ -31,7 +31,7 @@
         <div class="tb-c"><span>8,5</span></div>
         <div class="tb-c tb-c-6">{% if loop.index % 2 %}<i class="sprite sprite-icon-discount"></i>{% endif %}</div>
         <div class="tb-c tb-c-7">&euro; 295,-<i class="fi-info"></i></div>
-    </div>
+    </a>
     {% endfor %}
     <div class="table-explain">
         <p>

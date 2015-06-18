@@ -387,13 +387,10 @@ div.table-wrapper {
         div.tb-h-7 { min-width: 105px; max-width: 150px; }
     }
 
-    div.tb-r {
+    a.tb-r {
 
         display: table-row;
-
-        &:nth-child(odd) {
-            background: #F9F9F9;
-        }
+        text-decoration: none !important;
 
         div.tb-c {
 
@@ -428,8 +425,17 @@ div.table-wrapper {
             }
         }
         
-        &.sale-type {
+        &:nth-child(odd) {
+            background: #F9F9F9;
+        }
+        
+        &:hover {
             
+            background-color: #e9edf8;
+            div.tb-c span { background-color: white; }
+        }
+        
+        &.sale-type {
             div.tb-c.tb-c-7 { color: #d4213b; }
         }
     }
