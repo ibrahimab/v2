@@ -110,6 +110,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFilter('sortprop', [$this, 'sortByProperty']),
 			new \Twig_SimpleFilter('seo', [$this, 'seo']),
             new \Twig_SimpleFilter('replace', [$this, 'replace']),
+            new \Twig_SimpleFilter('tokenize', [$this, 'tokenize']),
         ];
     }
 
@@ -635,6 +636,16 @@ class AppExtension extends \Twig_Extension
     public function isChecked($data, $item)
     {
         return ((null !== $data ? (is_array($data) ? in_array($item, $data) : (int)$data === (int)$item) : false) ? ' checked="checked"' : '');
+    }
+    
+    /**
+     * @param int $value
+     * @param int $filter
+     * @return string
+     */
+    public function tokenize($value, $filter)
+    {
+        return $this->container->get('service.filter')->tokenize($filter, $value);
     }
 
     /**

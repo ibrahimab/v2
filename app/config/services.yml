@@ -21,3 +21,6 @@ services:
 
     service.utils:
         class: AppBundle\Service\UtilsService
+        
+    service.filter:
+        class: AppBundle\Service\FilterService

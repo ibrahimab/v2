@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2015-03-17T14:42:15Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
+  <file date="2015-03-17T14:51:27Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <body>
       <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="type.kind.chalet">
         <source>type.kind.chalet</source>
@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="2eb89e200ba9d97218f59bc8ace047c60dbaceeb" resname="type.kind.chalet-apartment">
         <source>type.kind.chalet-apartment</source>
-        <target>Chalet-apartment</target>
+        <target>Chalet-appartement</target>
         <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="3e19cb738d3fb485ea8bc4550ae4533ce49a26ca" resname="type.kind.holiday-house">
@@ -31,6 +31,45 @@
         <source>type.kind.villa</source>
         <target>Villa</target>
         <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="36e473c8b75b36f9c84c540d332250cf4e210829" resname="type.kind.castle">
+        <source>type.kind.castle</source>
+        <target>Castle</target>
+        <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="eddfa629370a87eb0fdff5edc96da1f6d99fb7ce" resname="type.kind.holiday-park">
+        <source>type.kind.holiday-park</source>
+        <target>Holiday Park</target>
+        <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="76f7732f1c8e140210c5894626a56da78783fb9e" resname="type.kind.agriturismo">
+        <source>type.kind.agriturismo</source>
+        <target>Agriturismo</target>
+        <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="9120580e94f134cb7c9f27cd1e43dbc82980e152" resname="type.kind.domain">
+        <source>type.kind.domain</source>
+        <target>Domain</target>
+        <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5257ab4bb925a14262dfee7c42cea13dc0c36b08" resname="type.kind.pension">
+        <source>type.kind.pension</source>
+        <target>Pension</target>
+        <jms:reference-file line="10">views/partials/highlight.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="11ef521f70854107a328afbaa22be36d09084b25" resname="countries">
+        <source>countries</source>
+        <target>Landen</target>
+        <jms:reference-file line="2">views/partials/breadcrumbs.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e5bd0083ce2c37a3ebcf28a89c8026378b3c409e" resname="frontpage">
+        <source>frontpage</source>
+        <target>Home</target>
+        <jms:reference-file line="2">views/partials/breadcrumbs.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="search-book">
+        <source>search-book</source>
+        <target>Search &amp; book</target>
       </trans-unit>
       <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="jacuzzi-bubbelbad">
         <source>jacuzzi-bubbelbad</source>
@@ -151,6 +190,114 @@
         <source>wellness-faciliteiten</source>
         <target>wellness-faciliteiten</target>
         <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-distance-by-slope">
+        <source>filter-distance-by-slope</source>
+        <target>on the slopes</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-distance-max-250">
+        <source>filter-distance-max-250</source>
+        <target>max. 250 meters</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-distance-max-500">
+        <source>filter-distance-max-500</source>
+        <target>max. 500 meters</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-distance-max-1000">
+        <source>filter-distance-max-1000</source>
+        <target>max. 1000 meters</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-length-max-100">
+        <source>filter-length-max-100</source>
+        <target>up to 100 km</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-length-min-100">
+        <source>filter-length-min-100</source>
+        <target>over 100 km</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-length-min-200">
+        <source>filter-length-min-200</source>
+        <target>over 200 km</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-length-min-400">
+        <source>filter-length-min-400</source>
+        <target>over 400 km</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-facility-catering">
+        <source>filter-facility-catering</source>
+        <target>catering possible</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-facility-internet-wifi">
+        <source>filter-facility-internet-wifi</source>
+        <target>internet / Wi-Fi</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-facility-swimming-pool">
+        <source>filter-facility-swimming-pool</source>
+        <target>swimming pool</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-facility-sauna">
+        <source>filter-facility-sauna</source>
+        <target>sauna</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-facility-private-sauna">
+        <source>filter-facility-private-sauna</source>
+        <target>private sauna</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-facility-pets-allowed">
+        <source>filter-facility-pets-allowed</source>
+        <target>pets allowed</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-facility-fireplace">
+        <source>filter-facility-fireplace</source>
+        <target>fire place / wood stove</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-bathroom-min-2">
+        <source>filter-bathroom-min-2</source>
+        <target>minimum 2</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-bathroom-min-3">
+        <source>filter-bathroom-min-3</source>
+        <target>minimum 3</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-bathroom-min-4">
+        <source>filter-bathroom-min-4</source>
+        <target>minimum 4</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-bathroom-min-5">
+        <source>filter-bathroom-min-5</source>
+        <target>minimum 5</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-bathroom-min-6">
+        <source>filter-bathroom-min-6</source>
+        <target>minimum 6</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-bathroom-min-8">
+        <source>filter-bathroom-min-8</source>
+        <target>minimum 8</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-bathroom-min-10">
+        <source>filter-bathroom-min-10</source>
+        <target>minimum 10</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-theme-kids">
+        <source>filter-theme-kids</source>
+        <target>good for kids</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-theme-charming-places">
+        <source>filter-theme-charming-places</source>
+        <target>charming ski villages</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-theme-10-for-apres-ski">
+        <source>filter-theme-10-for-apres-ski</source>
+        <target>grading A for après-ski</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-theme-super-ski-stations">
+        <source>filter-theme-super-ski-stations</source>
+        <target>super ski stations</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-theme-winter-wellness">
+        <source>filter-theme-winter-wellness</source>
+        <target>winter wellness</target>
       </trans-unit>
     </body>
   </file>

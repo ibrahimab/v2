@@ -3,20 +3,17 @@
     
         {% for tag, data in tags %}
 
-            {% set filter_distance = constant('FILTER_DISTANCE', filter_builder) %}
-            {% set filter_length   = constant('FILTER_LENGTH', filter_builder) %}
-            {% set filter_facility = constant('FILTER_FACILITY', filter_builder) %}
-            {% set filter_bathroom = constant('FILTER_BATHROOM', filter_builder) %}
-            {% set filter_theme    = constant('FILTER_THEME', filter_builder) %}
+            {% set filter_distance = constant('FILTER_DISTANCE', filter_service) %}
+            {% set filter_length   = constant('FILTER_LENGTH', filter_service) %}
+            {% set filter_facility = constant('FILTER_FACILITY', filter_service) %}
+            {% set filter_bathroom = constant('FILTER_BATHROOM', filter_service) %}
+            {% set filter_theme    = constant('FILTER_THEME', filter_service) %}
 
             {% if tag == filter_distance %}
             
                 <div data-role="filter-tag">
                     Afstand tot piste:
-                    {% if data == constant('FILTER_DISTANCE_BY_SLOPE', filter_builder) %}aan de piste{% endif %}
-                    {% if data == constant('FILTER_DISTANCE_MAX_250',  filter_builder) %}max. 250 meter{% endif %}
-                    {% if data == constant('FILTER_DISTANCE_MAX_500',  filter_builder) %}max. 500 meter{% endif %}
-                    {% if data == constant('FILTER_DISTANCE_MAX_1000', filter_builder) %}max. 1000 meter{% endif %}
+                    {{ data|tokenize(filter_distance)|trans }}
                     <a href="#" data-role="remove-filter" data-filter="{{ filter_distance }}" data-filter-value="{{ data }}"><i class="fi-x"></i></a>
                 </div>
             
@@ -26,10 +23,7 @@
             
                 <div data-role="filter-tag">
                     Aantal km pistes:
-                    {% if data == constant('FILTER_LENGTH_MAX_100', filter_builder) %}tot 100 km{% endif %}
-                    {% if data == constant('FILTER_LENGTH_MIN_100', filter_builder) %}100 km en meer{% endif %}
-                    {% if data == constant('FILTER_LENGTH_MIN_200', filter_builder) %}200 km en meer{% endif %}
-                    {% if data == constant('FILTER_LENGTH_MIN_400', filter_builder) %}400 km en meer{% endif %}
+                    {{ data|tokenize(filter_length)|trans }}
                     <a href="#" data-role="remove-filter" data-filter="{{ filter_length }}" data-filter-value="{{ data }}"><i class="fi-x"></i></a>
                 </div>
             
@@ -40,14 +34,8 @@
                 {% for facility in data %}
             
                     <div data-role="filter-tag">
-                        Faciliteit: 
-                        {% if facility == constant('FILTER_FACILITY_CATERING', filter_builder) %}catering mogelijk{% endif %}
-                        {% if facility == constant('FILTER_FACILITY_INTERNET_WIFI', filter_builder) %}internet / wifi{% endif %}
-                        {% if facility == constant('FILTER_FACILITY_SWIMMING_POOL', filter_builder) %}zwembad{% endif %}
-                        {% if facility == constant('FILTER_FACILITY_SAUNA', filter_builder) %}sauna{% endif %}
-                        {% if facility == constant('FILTER_FACILITY_PRIVATE_SAUNA', filter_builder) %}priv&eacute;-sauna{% endif %}
-                        {% if facility == constant('FILTER_FACILITY_PETS_ALLOWED', filter_builder) %}huisdieren toegestaan{% endif %}
-                        {% if facility == constant('FILTER_FACILITY_FIREPLACE', filter_builder) %}openhaard / houtkachel{% endif %}
+                        Faciliteit:
+                        {{ facility|tokenize(filter_facility)|trans }}
                         <a href="#" data-role="remove-filter" data-filter="{{ filter_facility }}" data-filter-value="{{ facility }}" data-filter-multi="true"><i class="fi-x"></i></a>
                     </div>
                 
@@ -59,13 +47,7 @@
             
                 <div data-role="filter-tag">
                     Aantal badkamers:
-                    {% if data == constant('FILTER_BATHROOM_MIN_2', filter_builder) %}minimaal 2{% endif %}
-                    {% if data == constant('FILTER_BATHROOM_MIN_3', filter_builder) %}minimaal 3{% endif %}
-                    {% if data == constant('FILTER_BATHROOM_MIN_4', filter_builder) %}minimaal 4{% endif %}
-                    {% if data == constant('FILTER_BATHROOM_MIN_5', filter_builder) %}minimaal 5{% endif %}
-                    {% if data == constant('FILTER_BATHROOM_MIN_6', filter_builder) %}minimaal 6{% endif %}
-                    {% if data == constant('FILTER_BATHROOM_MIN_8', filter_builder) %}minimaal 8{% endif %}
-                    {% if data == constant('FILTER_BATHROOM_MIN_10', filter_builder) %}minimaal 10{% endif %}
+                    {{ data|tokenize(filter_bathroom)|trans }}
                     <a href="#" data-role="remove-filter" data-filter="{{ filter_bathroom }}" data-filter-value="{{ data }}"><i class="fi-x"></i></a>
                 </div>
             
@@ -77,11 +59,7 @@
             
                     <div data-role="filter-tag">
                         Thema:
-                        {% if theme == constant('FILTER_THEME_KIDS', filter_builder) %}goed voor kids{% endif %}
-                        {% if theme == constant('FILTER_THEME_CHARMING_PLACES', filter_builder) %}charmante skidorpen{% endif %}
-                        {% if theme == constant('FILTER_THEME_10_FOR_APRES_SKI', filter_builder) %}10 voor apr&eacute;s-ski{% endif %}
-                        {% if theme == constant('FILTER_THEME_SUPER_SKI_STATIONS', filter_builder) %}super ski-stations{% endif %}
-                        {% if theme == constant('FILTER_THEME_WINTER_WELLNESS', filter_builder) %}winter-wellness{% endif %}
+                        {{ theme|tokenize(filter_theme)|trans }}
                         <a href="#" data-role="remove-filter" data-filter="{{ filter_theme }}" data-filter-value="{{ theme }}" data-filter-multi="true"><i class="fi-x"></i></a>
                     </div>
             
