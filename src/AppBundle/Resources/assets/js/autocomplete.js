@@ -115,28 +115,40 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     
                     case kinds.KIND_COUNTRY:
                         
-                        a.href       = Routing.generate('show_country_' + locale, {countrySlug: name});
+                        a.setAttribute('data-role', 'autocomplete-result');
+                        a.setAttribute('data-entity', 'country');
+                        a.setAttribute('data-id', name);
+                        
                         li.className = 'country';
                         
                     break;
                     
                     case kinds.KIND_REGION:
                         
-                        a.href       = Routing.generate('show_region_' + locale, {regionSlug: name});
+                        a.setAttribute('data-role', 'autocomplete-result');
+                        a.setAttribute('data-entity', 'region');
+                        a.setAttribute('data-id', name);
+                        
                         li.className = 'region';
                         
                     break;
                     
                     case kinds.KIND_PLACE:
                         
-                        a.href       = Routing.generate('show_place_' + locale, {placeSlug: name});
+                        a.setAttribute('data-role', 'autocomplete-result');
+                        a.setAttribute('data-entity', 'place');
+                        a.setAttribute('data-id', name);
+                        
                         li.className = 'place';
                         
                     break;
                         
                     case kinds.KIND_ACCOMMODATON:
                         
-                        a.href = '#';
+                        a.setAttribute('data-role', 'autocomplete-result');
+                        a.setAttribute('data-entity', 'accommodation');
+                        a.setAttribute('data-id', result['id']);
+                        
                         li.className = 'accommodation';
                         
                     break;
