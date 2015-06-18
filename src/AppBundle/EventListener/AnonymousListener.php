@@ -49,8 +49,9 @@ class AnonymousListener
             return;
         }
         
-        $cookies   = $event->getRequest()->cookies;
-        $anonymous = $this->container->get('security.context')->getToken();
+        $cookies     = $event->getRequest()->cookies;
+        $anonymous   = $this->container->get('security.context')->getToken();
+        $userService = $this->container->get('service.api.user');
         
         if (null === $anonymous) {
             return;
@@ -65,11 +66,13 @@ class AnonymousListener
             $secret      = $this->container->getParameter('secret');
             $this->token = $this->container->get('service.utils')->generateToken($secret);
             
-            $userService = $this->container->get('service.api.user');
             $userService->create($this->token);
         }
         
         $anonymous->setAttribute('_anon_tk', $this->token);
+        
+        $javascriptService = $this->container->get('service.javascript');
+        $javascriptService->set('app.user', $userService->user());
 	}
     
     /**
@@ -86,7 +89,7 @@ class AnonymousListener
         }
         
         if (false === $cookies->has('_anon_tk')) {
-        
+            
             $response    = $event->getResponse();
             $sslEnabled  = $this->container->getParameter('ssl_enabled');
             $domain      = $request->server->get('HTTP_HOST');

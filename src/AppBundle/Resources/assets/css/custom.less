@@ -359,54 +359,52 @@ div.table-wrapper {
 
     display: table;
     width: 100%;
+    
+    div.tb-c {
+        display: table-cell;
+    }
+    
+    div.tb-h {
 
-    div.table-heading {
-
-        color: #193761;
-        font-size: 0.9rem;
-        font-weight: initial;
         display: table-row;
 
-        div.table-cell {
+        div.tb-c {
 
             vertical-align: bottom;
             padding: 0.5rem 0.625rem 0.625rem;
+            border-bottom: thin solid #bfbfbf;
+            color: #193761;
+            font-size: 0.9rem;
+            font-weight: initial;
         }
 
-        div.table-heading-1 { min-width: 72px; max-width: 84px; }
-        div.table-heading-2 { max-width: 105px; }
-        div.table-heading-3 { max-width: 94px; }
-        div.table-heading-4 { width: 100%; }
-        div.table-heading-5 { min-width: 120px; max-width: 120px; padding-right: 2rem; }
-        div.table-heading-6 {  }
-        div.table-heading-7 { min-width: 105px; max-width: 150px; }
+        div.tb-h-1 { min-width: 96px; max-width: 110px; }
+        div.tb-h-2 { max-width: 105px; }
+        div.tb-h-3 { max-width: 94px; }
+        div.tb-h-4 { width: 100%; }
+        div.tb-h-5 { min-width: 120px; max-width: 120px; }
+        div.tb-h-6 {  }
+        div.tb-h-7 { min-width: 105px; max-width: 150px; }
     }
 
-    div.table-row {
+    div.tb-r {
 
         display: table-row;
 
-        &:nth-of-type(even) {
+        &:nth-child(odd) {
             background: #F9F9F9;
         }
-    }
 
-    div.table-cell {
-        display: table-cell;
-    }
-
-    div.table-row {
-
-        div.table-cell {
+        div.tb-c {
 
             text-align: left;
-            border-top: thin solid #bfbfbf;
+            border-bottom: thin solid #bfbfbf;
             color: #818181;
             padding: 0.5625rem 0.625rem;
 
-            &.table-cell-1 { padding-left: 0.625rem; }
-            &.table-cell-6 { text-align: center; }
-            &.table-cell-7 {
+            &.tb-c-1 { padding-left: 0.625rem; }
+            &.tb-c-6 { text-align: center; }
+            &.tb-c-7 {
 
                 text-align: right;
                 font-size: 1rem;
@@ -428,6 +426,11 @@ div.table-wrapper {
                 margin-right: 0.5rem;
                 padding: 0.2rem;
             }
+        }
+        
+        &.sale-type {
+            
+            div.tb-c.tb-c-7 { color: #d4213b; }
         }
     }
 }

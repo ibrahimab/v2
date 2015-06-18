@@ -2,6 +2,7 @@
 namespace AppBundle\Document\User;
 use		  AppBundle\Service\Api\User\UserServiceDocumentInterface;
 use 	  Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use       JMS\Serializer\Annotation AS JMS;
 
 /**
  * UserDocument
@@ -11,16 +12,24 @@ use 	  Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  * @version 0.0.2
  * @since   0.0.2
  */
-/** @ODM\Document(collection="users", repositoryClass="AppBundle\Document\User\UserRepository") */
+/** 
+ * @ODM\Document(collection="users", repositoryClass="AppBundle\Document\User\UserRepository")
+ * @JMS\ExclusionPolicy("none")
+ * @JMS\AccessType("public_method")
+ */
 class User implements UserServiceDocumentInterface
 {
 	/**
 	 * @ODM\Id
+     * @JMS\Exclude
+     * @JMS\AccessType("property")
 	 */
 	private $_id;
 
 	/**
 	 * @ODM\String
+     * @JMS\Exclude
+     * @JMS\AccessType("property")
 	 */
 	private $user_id;
 
@@ -31,6 +40,7 @@ class User implements UserServiceDocumentInterface
 
     /**
      * @ODM\String
+     * @JMS\Exclude
      */
     private $password;
 
@@ -51,14 +61,22 @@ class User implements UserServiceDocumentInterface
 
     /**
      * @ODM\Date
+     * @JMS\Type("DateTime<'Y-m-d H:i:s'>")
+     * @JMS\Accessor(getter="getCreatedAt", setter="setCreatedAt")
      */
     private $created_at;
 
     /**
      * @ODM\Date
+     * @JMS\Type("DateTime<'Y-m-d H:i:s'>")
+     * @JMS\Accessor(getter="getCreatedAt", setter="setCreatedAt")
      */
     private $updated_at;
 
+    
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->favorites = [];

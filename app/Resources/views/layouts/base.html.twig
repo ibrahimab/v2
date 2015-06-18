@@ -25,7 +25,7 @@
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
 
-        <script type="text/javascript">Chalet.import({{ js_object()|json_encode()|raw }});</script>
+        <script type="text/javascript">Chalet.import({{ js_object()|serialize()|raw }});</script>
 
         {% block stylesheets %}{% endblock %}
 

@@ -1,6 +1,14 @@
 <?php
 namespace AppBundle\Service\Api\User;
 
+/**
+ * UserServiceDocumentInterface
+ *
+ * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
+ * @package Chalet
+ * @version 0.0.2
+ * @since   0.0.2
+ */
 interface UserServiceDocumentInterface
 {
     /**
