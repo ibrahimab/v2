@@ -21,7 +21,7 @@ class HighlightServiceTest extends \Codeception\TestCase\Test
     protected function _before()
     {
         $this->serviceContainer = $this->getModule('Symfony2')->container;
-        $this->highlightService = $this->serviceContainer->get('service.api.highlight');
+        $this->highlightService = $this->serviceContainer->get('app.api.highlight');
         
         // clearing doctrine
         $this->serviceContainer->get('doctrine')->getManager()->clear();

@@ -1,36 +1,36 @@
 # listeners
 services:
-    app.event_listener.breadcrumb:
+    app.listener.breadcrumb:
         class: AppBundle\EventListener\BreadcrumbListener
         arguments: [@app.annotations.breadcrumbs, @twig]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 1 }
 
-    app.event_listener.global_javascript:
+    app.listener.global_javascript:
         class: AppBundle\EventListener\GlobalJavascriptListener
-        arguments: [@service.javascript, @service.utils]
+        arguments: [@app.javascript, @app.utils]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 5 }
 
-    app.event_listener.season:
+    app.listener.season:
         class: AppBundle\EventListener\SeasonListener
         arguments: [@app.concern.season]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 10 }
 
-    app.event_listener.hostname:
+    app.listener.hostname:
         class: AppBundle\EventListener\HostnameListener
         arguments: [@app.concern.website]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 15 }
 
-    app.event_listener.locale:
+    app.listener.locale:
         class: AppBundle\EventListener\LocaleListener
         arguments: ["%app%"]
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 32 }
             
-    app.event_listener.anonymous:
+    app.listener.anonymous:
         class: AppBundle\EventListener\AnonymousListener
         arguments: [@service_container]
         tags:

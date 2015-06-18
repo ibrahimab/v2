@@ -51,7 +51,7 @@ class AnonymousListener
         
         $cookies     = $event->getRequest()->cookies;
         $anonymous   = $this->container->get('security.context')->getToken();
-        $userService = $this->container->get('service.api.user');
+        $userService = $this->container->get('app.api.user');
         
         if (null === $anonymous) {
             return;
@@ -64,14 +64,14 @@ class AnonymousListener
         } else {
             
             $secret      = $this->container->getParameter('secret');
-            $this->token = $this->container->get('service.utils')->generateToken($secret);
+            $this->token = $this->container->get('app.utils')->generateToken($secret);
             
             $userService->create($this->token);
         }
         
         $anonymous->setAttribute('_anon_tk', $this->token);
         
-        $javascriptService = $this->container->get('service.javascript');
+        $javascriptService = $this->container->get('app.javascript');
         $javascriptService->set('app.user', $userService->user());
 	}
     

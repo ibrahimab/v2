@@ -30,9 +30,9 @@ class RegionController extends Controller
      */
     public function show($regionSlug)
     {
-        $regionService   = $this->get('service.api.region');
-        $typeService     = $this->get('service.api.type');
-        $surveyService   = $this->get('service.api.booking.survey');
+        $regionService   = $this->get('app.api.region');
+        $typeService     = $this->get('app.api.type');
+        $surveyService   = $this->get('app.api.booking.survey');
         
         $places          = [];
         $allPlaces       = $regionService->findByLocaleSeoName($regionSlug, $this->getRequest()->getLocale());

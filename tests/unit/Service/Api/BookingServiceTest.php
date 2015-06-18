@@ -23,7 +23,7 @@ class BookingServiceTest extends \Codeception\TestCase\Test
     protected function _before()
     {
         $this->serviceContainer = $this->getModule('Symfony2')->container;
-        $this->bookingService   = $this->serviceContainer->get('service.api.booking');
+        $this->bookingService   = $this->serviceContainer->get('app.api.booking');
         
         // clearing doctrine
         $this->serviceContainer->get('doctrine')->getManager()->clear();

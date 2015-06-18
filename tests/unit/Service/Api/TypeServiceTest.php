@@ -27,9 +27,9 @@ class TypeServiceTest extends \Codeception\TestCase\Test
     protected function _before()
     {
         $this->serviceContainer = $this->getModule('Symfony2')->container;
-        $this->typeService      = $this->serviceContainer->get('service.api.type');
-        $this->regionService    = $this->serviceContainer->get('service.api.region');
-        $this->placeService     = $this->serviceContainer->get('service.api.place');
+        $this->typeService      = $this->serviceContainer->get('app.api.type');
+        $this->regionService    = $this->serviceContainer->get('app.api.region');
+        $this->placeService     = $this->serviceContainer->get('app.api.place');
         
         // clearing doctrine
         $this->serviceContainer->get('doctrine')->getManager()->clear();

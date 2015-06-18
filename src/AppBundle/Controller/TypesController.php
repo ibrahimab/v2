@@ -37,8 +37,8 @@ class TypesController extends Controller
      */
     public function showAction($beginCode, $typeId)
     {
-        $typeService    = $this->get('service.api.type');
-        $surveyService  = $this->get('service.api.booking.survey');
+        $typeService    = $this->get('app.api.type');
+        $surveyService  = $this->get('app.api.booking.survey');
         $season         = $this->get('app.concern.season');
         $featureService = $this->get('old.feature');
 

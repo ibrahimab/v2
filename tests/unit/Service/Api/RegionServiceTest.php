@@ -13,7 +13,7 @@ class RegionServiceTest extends \Codeception\TestCase\Test
     protected function _before()
     {
         $this->serviceContainer = $this->getModule('Symfony2')->container;
-        $this->regionService    = $this->serviceContainer->get('service.api.region');
+        $this->regionService    = $this->serviceContainer->get('app.api.region');
         
         // clearing doctrine
         $this->serviceContainer->get('doctrine')->getManager()->clear();

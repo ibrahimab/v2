@@ -17,7 +17,7 @@ class SearchServiceTest extends \Codeception\TestCase\Test
     protected function _before()
     {
         $this->serviceContainer = $this->getModule('Symfony2')->container;
-        $this->searchService    = $this->serviceContainer->get('service.api.search');
+        $this->searchService    = $this->serviceContainer->get('app.api.search');
         
         // clearing doctrine
         $this->serviceContainer->get('doctrine')->getManager()->clear();
