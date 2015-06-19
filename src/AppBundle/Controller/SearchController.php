@@ -55,7 +55,7 @@ class SearchController extends Controller
             'filters'   => $filters,
             'tags'      => $filters,
             // instance needed to get constants easier from within twig template: constant('const', instance)
-            'filter_service' => $this->container->get('service.filter'),
+            'filter_service' => $this->container->get('app.filter'),
         ]);
     }
 
