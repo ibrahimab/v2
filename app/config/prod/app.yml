@@ -4,6 +4,7 @@ imports:
 # App configuration
 parameters:
     app:
+        results_per_page: 50
         default_locale:  nl
         default_website: C
         default_season:  1

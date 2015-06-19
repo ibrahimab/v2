@@ -67,140 +67,270 @@
         <target>Home</target>
         <jms:reference-file line="2">views/partials/breadcrumbs.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="e28b9a67a1231a0194bbf2ff12fc92f8987eedf3" resname="allergy-free">
-        <source>allergy-free</source>
-        <target>allergievrij</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="jacuzzi-bubbelbad">
+        <source>jacuzzi-bubbelbad</source>
+        <target>jacuzzi / bubbelbad</target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="6d55c0974cae7bb49038fef910fdca5b8fcb7c3b" resname="balcony">
-        <source>balcony</source>
-        <target>balkon</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="bbb8e20167f8be636256bb4b933ee574d6f54918" resname="balcony-terrace">
-        <source>balcony-terrace</source>
-        <target>terras of balkon</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="9c411a87892de724fbae6ca06998bf9b76caf2c2" resname="catering">
-        <source>catering</source>
-        <target>catering mogelijk</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="79c0ab7e3fc9c944965fd3cdad95955d0c417a6d" resname="chalet-for-two">
-        <source>chalet-for-two</source>
-        <target>huisje voor 2</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="419e90a2e8f06425355494a91eda9944aba86fd0" resname="charming-chalet">
-        <source>charming-chalet</source>
-        <target>charmant chalet</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="52ebb5d148dddb5b912944853ba2a7eb5d1aebdd" resname="child-friendly">
-        <source>child-friendly</source>
-        <target>goed voor kids</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="7b363470c975efcc337c522ff8e3a8094115b0c4" resname="fireplace">
-        <source>fireplace</source>
-        <target>open haard/houtkachel</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="4d0fb475b242228032cbdf6d53924d2538df037b" resname="internet">
-        <source>internet</source>
-        <target>internetverbinding</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="2b2066a3806e57fd87043ad309ca4feb64ed87ed" resname="internet-wifi">
-        <source>internet-wifi</source>
-        <target>internet via Wi-Fi</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="7188ccf72ed11f3741b738051504b60d2fe9e6d4" resname="jacuzzi">
-        <source>jacuzzi</source>
-        <target>Jacuzzi/bubbelbad</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="f8d9858fe593d903cf30cd44e5e41e4fa757b51e" resname="large-groups">
-        <source>large-groups</source>
-        <target>grote groepen</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="5d921904a9e53f36a16796b9134a9211a2f60a9e" resname="pets-allowed">
-        <source>pets-allowed</source>
-        <target>huisdieren toegestaan</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="c3d3bfb30375b0ce6a67deca054b04293f655021" resname="pets-disallowed">
-        <source>pets-disallowed</source>
-        <target>huisdieren NIET toegestaan</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="6b75b2e08f0d8da7a0c8c653b5c637886e3281a0" resname="price-conscious">
-        <source>price-conscious</source>
-        <target>prijsbewust</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="0154c045c1dded1b28f27b5cdf62894c61228d99" resname="rent-sunday">
-        <source>rent-sunday</source>
-        <target>verhuur zondag t/m zondag</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="2cc815a825f9ee8fdb7b09c1b07cf04455506ab6" resname="sauna">
-        <source>sauna</source>
-        <target>sauna</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="e69329417863e59c023bacf55fa2827aa3ebe6b7" resname="sauna-private">
-        <source>sauna-private</source>
-        <target>sauna (privé)</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="cc2c782233352b9cfe39d0006e36b13497b4d685" resname="ski-run">
-        <source>ski-run</source>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="aan-de-piste">
+        <source>aan-de-piste</source>
         <target>aan de piste</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="ba36b97a41e7faf742ab09bf88405ac04f99599a" resname="special">
-        <source>special</source>
-        <target>bijzonder</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="catering-mogelijk">
+        <source>catering-mogelijk</source>
+        <target>catering mogelijk</target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="f2f579804ea5ca7a8aab3cb178b42090e1a38580" resname="swimming-pool">
-        <source>swimming-pool</source>
-        <target>zwembad</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="huisdieren-toegestaan">
+        <source>huisdieren-toegestaan</source>
+        <target>huisdieren toegestaan</target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="a2f7a47687f68a771c4fd6969b7df3398d82bc00" resname="swimming-pool-private">
-        <source>swimming-pool-private</source>
-        <target>zwembad (privé)</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="internet-via-wifi">
+        <source>internet-via-wifi</source>
+        <target>internet via Wi-Fi</target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="ac68e4537b919b83bbea219cb7af9e1b8be8a13f" resname="top-selection">
-        <source>top-selection</source>
-        <target>alleen het allerbeste (topselectie)</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="internetverbinding">
+        <source>internetverbinding</source>
+        <target>internetverbinding</target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="3260ff5ee379bae608979670c351a9c70b049733" resname="waching-machine">
-        <source>waching-machine</source>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="open-haard-houtkachel">
+        <source>open-haard-houtkachel</source>
+        <target>open haard / houtkachel</target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="sauna-prive">
+        <source>sauna-prive</source>
+        <target>sauna (privé)</target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="sauna-gemeenschappelijk">
+        <source>sauna-gemeenschappelijk</source>
+        <target>sauna (gemeenschappelijk)</target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="wasmachine">
+        <source>wasmachine</source>
         <target>wasmachine</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="c958c6288cc65b81937b004bc906302b1abb7146" resname="winter-wellness">
-        <source>winter-wellness</source>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="zwembad-prive">
+        <source>zwembad-prive</source>
+        <target>zwembad (privé)</target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="zwembad">
+        <source>zwembad</source>
+        <target>zwembad</target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="inclusief-skipas">
+        <source>inclusief-skipas</source>
+        <target>inclusief skipas</target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="airconditioning">
+        <source>airconditioning</source>
+        <target>airconditioning</target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="balkon-prive">
+        <source>balkon-prive</source>
+        <target>balkon (privé)</target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="barbecue">
+        <source>barbecue</source>
+        <target>barbecue</target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="centrum-op-loopafstand">
+        <source>centrum-op-loopafstand</source>
+        <target>centrum op loopafstand</target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="omheinde-tuin">
+        <source>omheinde tuin</source>
+        <target></target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="restaurant-op-domein">
+        <source>restaurant-op-domein</source>
+        <target>restaurant op domein</target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="speeltoestellen">
+        <source>speeltoestellen</source>
+        <target>speeltoestellen</target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="tennisbaan">
+        <source>tennisbaan</source>
+        <target>tennisbaan</target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="tuin-terras-prive">
+        <source>tuin-terras-prive</source>
+        <target>tuin/terras (privé)</target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="tuin-terras-of-balkon">
+        <source>tuin/terras of balkon</source>
+        <target></target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="wellness-faciliteiten">
+        <source>wellness-faciliteiten</source>
+        <target>wellness-faciliteiten</target>
+        <jms:reference-file line="99">views/types/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-distance-by-slope">
+        <source>filter-distance-by-slope</source>
+        <target>aan de piste</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-distance-max-250">
+        <source>filter-distance-max-250</source>
+        <target>max 250 meter</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-distance-max-500">
+        <source>filter-distance-max-500</source>
+        <target>max 500 meter</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-distance-max-1000">
+        <source>filter-distance-max-1000</source>
+        <target>max 1000 meter</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-length-max-100">
+        <source>filter-length-max-100</source>
+        <target>tot 100 km</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-length-min-100">
+        <source>filter-length-min-100</source>
+        <target>100 km en meer</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-length-min-200">
+        <source>filter-length-min-200</source>
+        <target>200 km en meer</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-length-min-400">
+        <source>filter-length-min-400</source>
+        <target>400 km en meer</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-facility-catering">
+        <source>filter-facility-catering</source>
+        <target>catering mogelijk</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-facility-internet-wifi">
+        <source>filter-facility-internet-wifi</source>
+        <target>internet / wifi</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-facility-swimming-pool">
+        <source>filter-facility-swimming-pool</source>
+        <target>zwembad</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-facility-sauna">
+        <source>filter-facility-sauna</source>
+        <target>sauna</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-facility-private-sauna">
+        <source>filter-facility-private-sauna</source>
+        <target>privé-sauna</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-facility-pets-allowed">
+        <source>filter-facility-pets-allowed</source>
+        <target>huisdieren toegestaan</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-facility-fireplace">
+        <source>filter-facility-fireplace</source>
+        <target>openhaard / houtkachel</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-bathroom-min-2">
+        <source>filter-bathroom-min-2</source>
+        <target>minimaal 2</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-bathroom-min-3">
+        <source>filter-bathroom-min-3</source>
+        <target>minimaal 3</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-bathroom-min-4">
+        <source>filter-bathroom-min-4</source>
+        <target>minimaal 4</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-bathroom-min-5">
+        <source>filter-bathroom-min-5</source>
+        <target>minimaal 5</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-bathroom-min-6">
+        <source>filter-bathroom-min-6</source>
+        <target>minimaal 6</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-bathroom-min-8">
+        <source>filter-bathroom-min-8</source>
+        <target>minimaal 8</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-bathroom-min-10">
+        <source>filter-bathroom-min-10</source>
+        <target>minimaal 10</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-theme-kids">
+        <source>filter-theme-kids</source>
+        <target>goed voor kids</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-theme-charming-places">
+        <source>filter-theme-charming-places</source>
+        <target>charmante skidorpen</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-theme-10-for-apres-ski">
+        <source>filter-theme-10-for-apres-ski</source>
+        <target>10 voor après-ski</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-theme-super-ski-stations">
+        <source>filter-theme-super-ski-stations</source>
+        <target>super ski-stations</target>
+      </trans-unit>
+      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-theme-winter-wellness">
+        <source>filter-theme-winter-wellness</source>
         <target>winter-wellness</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="ck933jsd3kj4332kkjdmdnjsjhhj21334hj3jjh3" resname="destinations">
-        <source>destinations</source>
-        <target>Bestemmingen</target>
-        <jms:reference-file line="98">Controller/CountriesController.php</jms:reference-file>
+      <trans-unit id="75f5540a4254c10b1e0a5ab37182f52a6636b692" resname="search-book">
+        <source>search-book</source>
+        <target>Zoek &amp; boek</target>
       </trans-unit>
-      <trans-unit id="ck933jsd3kj4332kkjdmdnjsjhhj21334hj3jjh3" resname="chalet-attached">
-        <source>chalet-attached</source>
-        <target>niet vrijstaand/geschakeld/appartement</target>
-        <jms:reference-file line="88">views/types/show.html.twig</jms:reference-file>
+      <trans-unit id="75f5540a4254c10b1e0a5ab37182f52a6636b692" resname="searches">
+        <source>searches</source>
+        <target>Opgeslagen zoekopdrachten</target>
+      </trans-unit>
+      <trans-unit id="daa50d742316e3cfc1bc4c9f271362e95f3ee975" resname="filter-distance">
+        <source>filter-distance</source>
+        <target>Afstand tot piste</target>
+        <jms:reference-file line="15">partials/search/tags.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="dd79b67da8740cca10f87ea0ba794c928c5ea23f" resname="filter-length">
+        <source>filter-length</source>
+        <target>Aantal km pistes</target>
+        <jms:reference-file line="25">partials/search/tags.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d78d95b54adefd76db895f3aed5940d63a2b5556" resname="filter-facility">
+        <source>filter-facility</source>
+        <target>Faciliteit</target>
+        <jms:reference-file line="37">partials/search/tags.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="cddbe496b82eec8b38eccf95aad342c12f91b61b" resname="filter-bathroom">
+        <source>filter-bathroom</source>
+        <target>Aantal badkamers</target>
+        <jms:reference-file line="49">partials/search/tags.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="dfce7b6feabcba2043fe203c92242683553c7898" resname="filter-theme">
+        <source>filter-theme</source>
+        <target>Thema</target>
+        <jms:reference-file line="61">partials/search/tags.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="dfce7b6feabcba2043fe203c92242683553c7898" resname="page-searches">
+        <source>page-searches</source>
+        <target>Zoekopdrachten</target>
       </trans-unit>
     </body>
   </file>

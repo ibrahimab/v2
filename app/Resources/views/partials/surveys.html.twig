@@ -1,9 +1,22 @@
 {% set surveys = surveyData.surveys %}
 {% if surveyCount > minimalSurveyCount %}
-<div id="reviews" class="reviews">
-    <h3>{{ surveyCount }} Beoordelingen, gemiddeld<span>{{ surveyAverage }}</span></h3>
-    {% for survey in surveys %}
-        {% include 'partials/survey/survey.html.twig' with {'survey': survey, 'loop': loop} only %}
-    {% endfor %}
-</div>
+    {% set shown  = surveys|slice(0, 3) %}
+    {% set hidden = surveys|slice(3) %}
+    <div id="reviews" class="reviews">
+        <h3>{{ surveyCount }} beoordelingen, gemiddeld<span>{{ surveyAverage|number_format(1, ',', '') }}</span></h3>
+        {% for survey in shown %}
+            {% include 'partials/survey/survey.html.twig' with {'survey': survey, 'loop': loop, 'total': surveyCount} only %}
+        {% endfor %}
+        <div class="hide">
+            {% for survey in hidden %}
+                {% include 'partials/survey/survey.html.twig' with {'survey': survey, 'loop': loop, 'total': surveyCount} only %}
+            {% endfor %}
+        </div>
+        <div class="readmore">
+            <a href class="button blank small radius" title="Toon alle reviews" data-open-title="Toon alle reviews" data-close-title="Verberg alle reviews">
+                <i class="sprite sprite-icon-close-all"></i>
+                <span>Toon alle reviews</span>
+            </a>
+        </div>
+    </div>
 {% endif %}

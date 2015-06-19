@@ -13,8 +13,8 @@ class PlaceServiceTest extends \Codeception\TestCase\Test
     protected function _before()
     {
         $this->serviceContainer = $this->getModule('Symfony2')->container;
-        $this->placeService     = $this->serviceContainer->get('service.api.place');
-        $this->regionService    = $this->serviceContainer->get('service.api.region');
+        $this->placeService     = $this->serviceContainer->get('app.api.place');
+        $this->regionService    = $this->serviceContainer->get('app.api.region');
 
         // clearing doctrine
         $this->serviceContainer->get('doctrine')->getManager()->clear();

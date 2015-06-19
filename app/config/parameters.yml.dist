@@ -13,3 +13,4 @@ parameters:
     mailer_password: null
     locale: nl
     secret:
+    ssl_enabled: false

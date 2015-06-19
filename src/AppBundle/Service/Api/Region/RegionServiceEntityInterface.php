@@ -418,6 +418,21 @@ interface RegionServiceEntityInterface
     public function getShowOnHomepage();
 
     /**
+     * Set features
+     *
+     * @param array $features
+     * @return RegionServiceEntityInterface
+     */
+    public function setFeatures($features);
+
+    /**
+     * Get features
+     *
+     * @return array
+     */
+    public function getFeatures();
+
+    /**
      * Set createdAt
      *
      * @param \DateTime $createdAt

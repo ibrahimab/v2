@@ -3,6 +3,8 @@ namespace AppBundle\Controller;
 use       AppBundle\Annotation\Breadcrumb;
 use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
+use       AppBundle\Service\Api\Autocomplete\AutocompleteService;
+use       AppBundle\Service\FilterService;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -19,7 +21,7 @@ use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
  * @Breadcrumb(name="frontpage", title="frontpage", translate=true, path="home")
  */
 class PagesController extends Controller
-{
+{   
     /**
      * @Route("/", name="home")
      * @Template(":pages:home.html.twig")
@@ -27,12 +29,12 @@ class PagesController extends Controller
     public function home()
     {
         $config               = $this->container->getParameter('app');
-        $surveyService        = $this->get('service.api.booking.survey');
-        $highlightService     = $this->get('service.api.highlight');
-        $homepageBlockService = $this->get('service.api.homepageblock');
-        $regionService        = $this->get('service.api.region');
-        $placeService         = $this->get('service.api.place');
-        $typeService          = $this->get('service.api.type');
+        $surveyService        = $this->get('app.api.booking.survey');
+        $highlightService     = $this->get('app.api.highlight');
+        $homepageBlockService = $this->get('app.api.homepageblock');
+        $regionService        = $this->get('app.api.region');
+        $placeService         = $this->get('app.api.place');
+        $typeService          = $this->get('app.api.type');
 
         $regions              = $regionService->findHomepageRegions(['limit' => 1]);
         $places               = [];
@@ -156,6 +158,20 @@ class PagesController extends Controller
      */
     public function privacy()
     {
+        $filterService = $this->get('app.filter');
+        
         return [];
+    }
+
+    /**
+     * @Route("/zoekopdrachten", name="page_searches_nl")
+     * @Route("/searches", name="page_searches_en")
+     * @Breadcrumb(name="searches", title="page-searches", translate=true, active=true)
+     */
+    public function searches()
+    {
+        return $this->render('pages/searches.html.twig', [
+            'saved_searches' => $this->container->get('app.api.user')->user()->getSearches(),
+        ]);
     }
 }

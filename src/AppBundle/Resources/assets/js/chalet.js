@@ -1,47 +1,40 @@
-if (typeof Object.create !== 'function') {
-
-    Object.create = function(o, props) {
-
-        function F() {};
-        F.prototype = o;
-        result = new F();
-
-        if (typeof(props) === 'object') {
-
-            for (prop in props) {
-
-                if (props.hasOwnProperty(prop)) {
-                    result[prop] = props[prop].value;
-                }
-            }
-        }
-
-        return result;
-    };
-}
-
 /**
  * Chalet Object
  *
  * @author Ibrahim Abdullah <ibrahim@chalet.nl>
  */
-(function(Chalet, undefined) {
+window.Chalet = (function(ns, undefined) {
     // creating new 'strict' namespace to keep global pollution
     // to a minimum. Code inside here can reference the namespace using the 'ns' object
     'use strict';
 
     // @property public
-    Chalet.attributes = {};
+    ns.attributes = {};
 
     // @method import - importing attributes
-    Chalet.import = function(attributes) {
-        this.attributes  = attributes;
+    ns.import = function(attributes) {
+        ns.attributes  = attributes;
     };
 
     // getting reference to internal storage
     // for easy access
-    Chalet.get = function() {
-        return this.attributes;
+    ns.get = function(attribute, _default) {
+        
+        if (undefined === attribute) {
+            return ns.attributes;
+        }
+        
+        if (undefined === ns.attributes[attribute] && undefined !== _default) {
+            return _default;
+        }
+        
+        if (undefined === ns.attributes[attribute] && undefined === _default) {
+            throw new Error('Undefined attribute requested');
+        }
+        
+        return ns.attributes[attribute];
     };
+    
+    return ns;
 
-})(window.Chalet = window.Chalet || {});
+}(window.Chalet || {}));

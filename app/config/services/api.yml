@@ -1,65 +1,69 @@
 # API
 services:
-    service.api.accommodation:
+    app.api.accommodation:
         class:     AppBundle\Service\Api\Accommodation\AccommodationService
-        arguments: ["@repository.accommodation"]
+        arguments: ["@app.repository.accommodation"]
 
-    service.api.highlight:
+    app.api.highlight:
         class:     AppBundle\Service\Api\Highlight\HighlightService
-        arguments: ["@repository.highlight"]
+        arguments: ["@app.repository.highlight"]
 
-    service.api.type:
+    app.api.type:
         class:     AppBundle\Service\Api\Type\TypeService
-        arguments: ["@repository.type"]
+        arguments: ["@app.repository.type"]
 
-    service.api.place:
+    app.api.place:
         class:     AppBundle\Service\Api\Place\PlaceService
-        arguments: ["@repository.place"]
+        arguments: ["@app.repository.place"]
 
-    service.api.region:
+    app.api.region:
         class:     AppBundle\Service\Api\Region\RegionService
-        arguments: ["@repository.region"]
+        arguments: ["@app.repository.region"]
 
-    service.api.country:
+    app.api.country:
         class:     AppBundle\Service\Api\Country\CountryService
-        arguments: ["@repository.country"]
+        arguments: ["@app.repository.country"]
 
-    service.api.booking:
+    app.api.booking:
         class:     AppBundle\Service\Api\Booking\BookingService
-        arguments: ["@repository.booking"]
+        arguments: ["@app.repository.booking"]
 
-    service.api.booking.survey:
+    app.api.booking.survey:
         class:     AppBundle\Service\Api\Booking\Survey\SurveyService
-        arguments: ["@repository.booking.survey"]
+        arguments: ["@app.repository.booking.survey"]
 
-    service.api.homepageblock:
+    app.api.homepageblock:
         class:     AppBundle\Service\Api\HomepageBlock\HomepageBlockService
-        arguments: ["@repository.homepageblock"]
+        arguments: ["@app.repository.homepageblock"]
 
-    service.api.file.accommodation:
+    app.api.file.accommodation:
         class:     AppBundle\Service\Api\File\Accommodation\AccommodationService
-        arguments: ["@repository.file.accommodation"]
+        arguments: ["@app.repository.file.accommodation"]
 
-    service.api.file.type:
+    app.api.file.type:
         class:     AppBundle\Service\Api\File\Type\TypeService
-        arguments: ["@repository.file.type"]
+        arguments: ["@app.repository.file.type"]
 
-    service.api.file.region:
+    app.api.file.region:
         class:     AppBundle\Service\Api\File\Region\RegionService
-        arguments: ["@repository.file.region"]
+        arguments: ["@app.repository.file.region"]
 
-    service.api.file.place:
+    app.api.file.place:
         class:     AppBundle\Service\Api\File\Place\PlaceService
-        arguments: ["@repository.file.place"]
+        arguments: ["@app.repository.file.place"]
 
-    service.api.file.country:
+    app.api.file.country:
         class:     AppBundle\Service\Api\File\Country\CountryService
-        arguments: ["@repository.file.country"]
+        arguments: ["@app.repository.file.country"]
 
-    service.api.user:
+    app.api.user:
         class:     AppBundle\Service\Api\User\UserService
-        arguments: ["@repository.user", "@security.context"]
+        arguments: ["@app.repository.user", "@security.context"]
         
-    service.api.search:
+    app.api.search:
         class:     AppBundle\Service\Api\Search\SearchService
-        arguments: ["@repository.search"]
+        arguments: ["@app.repository.search"]
+        
+    app.api.autocomplete:
+        class:     AppBundle\Service\Api\Autocomplete\AutocompleteService
+        arguments: ["@app.repository.autocomplete"]

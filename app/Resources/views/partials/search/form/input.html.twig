@@ -1,6 +1,9 @@
+{% set persons   = 'persons'|trans|lower %}
+{% set bathrooms = 'bathrooms'|trans|lower %}
+{% set bedrooms  = 'bedrooms'|trans|lower %}
 <input type="text" id="choose-destination" class="radius" placeholder="Waar wil je naar toe?">
 <select class="radius">
-    <option value="husker">Wanneer wil je gaan?</option>
+    <option value="husker">{{ 'select-when'|trans }}</option>
     <option value="1423868400">weekend 14 februari 2015</option>
     <option value="1424473200">weekend 21 februari 2015</option>
     <option value="1425078000">weekend 28 februari 2015</option>
@@ -15,24 +18,28 @@
     <option value="1430517600">weekend 2 mei 2015</option>
 </select>
 <select class="radius">
-    <option value="hoeveel">Met hoeveel personen ga je?</option>
-    <option value="1">1 persoon</option><option value="2">2 personen</option><option value="3">3 personen</option><option value="4">4 personen</option><option value="5">5 personen</option><option value="6">6 personen</option><option value="7">7 personen</option><option value="8">8 personen</option><option value="9">9 personen</option><option value="10">10 personen</option><option value="11">11 personen</option><option value="12">12 personen</option><option value="13">13 personen</option><option value="14">14 personen</option><option value="15">15 personen</option><option value="16">16 personen</option><option value="17">17 personen</option><option value="18">18 personen</option><option value="19">19 personen</option><option value="20">20 personen</option><option value="21">21 personen</option><option value="22">22 personen</option><option value="23">23 personen</option><option value="24">24 personen</option><option value="25">25 personen</option><option value="26">26 personen</option><option value="27">27 personen</option><option value="28">28 personen</option><option value="29">29 personen</option><option value="30">30 personen</option><option value="31">31 personen</option><option value="32">32 personen</option><option value="33">33 personen</option><option value="34">34 personen</option><option value="35">35 personen</option><option value="36">36 personen</option><option value="37">37 personen</option><option value="38">38 personen</option><option value="39">39 personen</option><option value="40">40 of meer personen</option>
+    <option value="hoeveel">{{ 'select-how-many'|trans }}</option>
+    <option value="1">1 {{ 'person'|trans }}</option>
+    {% for i in 2..39 %}
+    <option value="2">{{ i ~ ' ' ~ persons }}</option>
+    {% endfor %}
+    <option value="40">40 {{ 'or-more'|trans }} {{ persons }}</option>
 </select>
 <select class="radius">
-    <option value="husker">Aantal slaapkamers</option>
-    <option value="1423868400">1 slaapkamer</option>
-    <option value="1423868400">2 slaapkamers</option>
-    <option value="1423868400">3 slaapkamers</option>
-    <option value="1423868400">4 slaapkamers</option>
-    <option value="1423868400">5 slaapkamers</option>
-    <option value="1423868400">6 slaapkamers</option>
+    <option value="husker">{{ 'select-bedrooms'|trans }}</option>
+    <option value="1423868400">1 {{ 'bedroom'|trans }}</option>
+    <option value="1423868400">2 {{ bedrooms }}</option>
+    <option value="1423868400">3 {{ bedrooms }}</option>
+    <option value="1423868400">4 {{ bedrooms }}</option>
+    <option value="1423868400">5 {{ bedrooms }}</option>
+    <option value="1423868400">6 {{ bedrooms }}</option>
 </select>
 <select class="radius">
-    <option value="husker">Aantal badkamers</option>
-    <option value="1423868400">1 badkamer</option>
-    <option value="1423868400">2 badkamers</option>
-    <option value="1423868400">3 badkamers</option>
-    <option value="1423868400">4 badkamers</option>
-    <option value="1423868400">5 badkamers</option>
-    <option value="1423868400">6 badkamers</option>
+    <option value="husker">{{ 'select-bathrooms'|trans }}</option>
+    <option value="1423868400">1 {{ 'bathroom'|trans }}</option>
+    <option value="1423868400">2 {{ bathrooms }}</option>
+    <option value="1423868400">3 {{ bathrooms }}</option>
+    <option value="1423868400">4 {{ bathrooms }}</option>
+    <option value="1423868400">5 {{ bathrooms }}</option>
+    <option value="1423868400">6 {{ bathrooms }}</option>
 </select>

@@ -1,0 +1,9 @@
+services:
+    old.configuration:
+        class: AppBundle\Old\Configuration
+        arguments: ["@service_container"]
+    
+    old.feature:
+        class: kenmerken
+        calls: 
+            - [setConfiguration, [@old.configuration]]

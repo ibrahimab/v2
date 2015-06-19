@@ -35,6 +35,7 @@ assetic:
     debug:          "%kernel.debug%"
     use_controller: false
     bundles:        [ ]
+    write_to:       "%kernel.root_dir%/../web/static/"
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -54,8 +55,6 @@ doctrine:
         password: "%database_password%"
         charset:  UTF8
         types:
-            features_type: AppBundle\Doctrine\DBAL\Types\FeaturesTypeType
-            features_accommodation: AppBundle\Doctrine\DBAL\Types\FeaturesAccommodationType
             timestamp: AppBundle\Doctrine\DBAL\Types\TimestampType
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml

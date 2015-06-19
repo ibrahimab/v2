@@ -1,7 +1,13 @@
 # Twig
 services:
-    app.twig_app_extension:
+    twig.extension.app:
         class: AppBundle\Twig\AppExtension
+        tags:
+            - { name: twig.extension }
+        arguments: [@service_container, @router]
+        
+    twig.extension.pagination:
+        class: AppBundle\Twig\PaginationExtension
         tags:
             - { name: twig.extension }
         arguments: [@service_container, @router]

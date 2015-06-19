@@ -5,18 +5,6 @@ imports:
     - { resource: services/concerns.yml }
     - { resource: services/repositories.yml }
     - { resource: services/api.yml }
+    - { resource: services/old.yml }
     - { resource: services/twig.yml }
-
-# Other services
-services:
-
-    app.annotations.breadcrumbs:
-        class: AppBundle\Annotation\Parser\Breadcrumb
-        arguments: [@annotation_reader]
-
-    service.javascript:
-        class:      AppBundle\Service\Javascript\JavascriptService
-        arguments:  [[]]
-
-    service.utils:
-        class: AppBundle\Service\UtilsService
+    - { resource: services/app.yml }

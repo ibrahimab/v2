@@ -23,7 +23,7 @@ class AccommodationsTest extends \Codeception\TestCase\Test
     protected function _before()
     {
         $this->serviceContainer     = $this->getModule('Symfony2')->container;
-        $this->accommodationService = $this->serviceContainer->get('service.api.accommodation');
+        $this->accommodationService = $this->serviceContainer->get('app.api.accommodation');
         
         // clearing doctrine
         $this->serviceContainer->get('doctrine')->getManager()->clear();

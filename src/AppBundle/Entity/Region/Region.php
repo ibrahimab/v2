@@ -288,6 +288,13 @@ class Region implements RegionServiceEntityInterface
      * @ORM\Column(name="toon_op_homepage", type="boolean")
      */
     private $showOnHomepage;
+    
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="kenmerken", type="simple_array")
+     */
+    private $features;
 
     /**
      * @var \DateTime
@@ -1129,6 +1136,24 @@ class Region implements RegionServiceEntityInterface
     public function getShowOnHomepage()
     {
         return $this->showOnHomepage;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setFeatures($features)
+    {
+        $this->features = $features;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getFeatures()
+    {
+        return $this->features;
     }
 
     /**
