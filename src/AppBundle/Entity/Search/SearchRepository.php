@@ -217,7 +217,6 @@ class SearchRepository implements SearchServiceRepositoryInterface
             $this->distance($qb, $filters);
             $this->length($qb, $filters);
             $this->facilities($qb, $filters);
-            $this->bathroom($qb, $filters);
             $this->themes($qb, $filters);
         }
 
@@ -397,63 +396,6 @@ class SearchRepository implements SearchServiceRepositoryInterface
         }
 
         return $selector;
-    }
-
-    public function bathroom($qb, $filters)
-    {
-        if (true === $filters->has(FilterService::FILTER_BATHROOM)) {
-
-            $expr = $qb->expr();
-
-            switch (FilterService::FILTER_BATHROOM) {
-
-                case FilterService::FILTER_BATHROOM_MIN_2:
-                
-                    $bathroom = 2;
-                    break;
-
-                case FilterService::FILTER_BATHROOM_MIN_3:
-                
-                    $bathrooms = 3;
-                    break;
-
-                case FilterService::FILTER_BATHROOM_MIN_4:
-                
-                    $bathrooms = 4;
-                    break;
-
-                case FilterService::FILTER_BATHROOM_MIN_5:
-                
-                    $bathrooms = 5;
-                    break;
-
-                case FilterService::FILTER_BATHROOM_MIN_6:
-                
-                    $bathrooms = 6;
-                    break;
-
-                case FilterService::FILTER_BATHROOM_MIN_8:
-                
-                    $bathrooms = 8;
-                    break;
-
-                case FilterService::FILTER_BATHROOM_MIN_10:
-                
-                    $bathrooms = 10;
-                    break;
-
-                default:
-                    return $qb;
-            }
-
-            $bathrooms = 10;
-            $bathroom  = $expr->gte('t.bathrooms', ':bathrooms');
-
-            $qb->setParameter('bathrooms', $bathrooms);
-            $qb->andWhere($bathroom);
-        }
-
-        return $qb;
     }
 
     public function themes($qb, $filters)
