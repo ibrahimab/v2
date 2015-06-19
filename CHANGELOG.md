@@ -9,3 +9,7 @@ and small fixes to the design and UI
 ## Release 0.0.2
 This release includes search and book, not done yet but complete enough
 to release.
+
+## Release 0.0.3
+Forgot some references to bathroom filter, release 0.0.2 is therefore buggy.
+This hotfix fixes the issue.
