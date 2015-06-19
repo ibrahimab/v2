@@ -42,10 +42,6 @@ class FilterBuilder
             'multiple' => true,
         ],
         
-        FilterService::FILTER_BATHROOM => [
-            'multiple' => false,
-        ],
-        
         FilterService::FILTER_THEME    => [
             'multiple' => true,
         ],
@@ -154,7 +150,6 @@ class FilterBuilder
             case FilterService::FILTER_DISTANCE:
             case FilterService::FILTER_LENGTH:
             case FilterService::FILTER_FACILITY:
-            case FilterService::FILTER_BATHROOM:
             case FilterService::FILTER_THEME:
                 $value = (isset($this->filters[$filter]) ? $this->filters[$filter] : $default);
             break;

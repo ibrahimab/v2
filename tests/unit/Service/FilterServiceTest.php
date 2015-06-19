@@ -65,17 +65,6 @@ class FilterServiceTest extends \Codeception\TestCase\Test
         $this->assertEquals(FilterService::TOKEN_FACILITY_FIREPLACE,     $this->filterService->tokenize(FilterService::FILTER_FACILITY, FilterService::FILTER_FACILITY_FIREPLACE));
     }
     
-    public function testBathroomFilters()
-    {
-        $this->assertEquals(FilterService::TOKEN_BATHROOM_MIN_2,  $this->filterService->tokenize(FilterService::FILTER_BATHROOM, FilterService::FILTER_BATHROOM_MIN_2));
-        $this->assertEquals(FilterService::TOKEN_BATHROOM_MIN_3,  $this->filterService->tokenize(FilterService::FILTER_BATHROOM, FilterService::FILTER_BATHROOM_MIN_3));
-        $this->assertEquals(FilterService::TOKEN_BATHROOM_MIN_4,  $this->filterService->tokenize(FilterService::FILTER_BATHROOM, FilterService::FILTER_BATHROOM_MIN_4));
-        $this->assertEquals(FilterService::TOKEN_BATHROOM_MIN_5,  $this->filterService->tokenize(FilterService::FILTER_BATHROOM, FilterService::FILTER_BATHROOM_MIN_5));
-        $this->assertEquals(FilterService::TOKEN_BATHROOM_MIN_6,  $this->filterService->tokenize(FilterService::FILTER_BATHROOM, FilterService::FILTER_BATHROOM_MIN_6));
-        $this->assertEquals(FilterService::TOKEN_BATHROOM_MIN_8,  $this->filterService->tokenize(FilterService::FILTER_BATHROOM, FilterService::FILTER_BATHROOM_MIN_8));
-        $this->assertEquals(FilterService::TOKEN_BATHROOM_MIN_10, $this->filterService->tokenize(FilterService::FILTER_BATHROOM, FilterService::FILTER_BATHROOM_MIN_10));
-    }
-    
     public function testThemeFilters()
     {
         $this->assertEquals(FilterService::TOKEN_THEME_KIDS,               $this->filterService->tokenize(FilterService::FILTER_THEME, FilterService::FILTER_THEME_KIDS));

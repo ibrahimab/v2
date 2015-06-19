@@ -25,18 +25,7 @@
 {% set facility_private_sauna   = constant('FILTER_FACILITY_PRIVATE_SAUNA', filter_service) %}
 {% set facility_pets_allowed    = constant('FILTER_FACILITY_PETS_ALLOWED', filter_service) %}
 {% set facility_fireplace       = constant('FILTER_FACILITY_FIREPLACE', filter_service) %}
-    
-    
-{% set filter_bathroom          = constant('FILTER_BATHROOM', filter_service) %}
-{% set filter_bathroom_value    = filters[filter_bathroom]|default(null) %}
-{% set bathroom_min_2           = constant('FILTER_BATHROOM_MIN_2',  filter_service) %}
-{% set bathroom_min_3           = constant('FILTER_BATHROOM_MIN_3',  filter_service) %}
-{% set bathroom_min_4           = constant('FILTER_BATHROOM_MIN_4',  filter_service) %}
-{% set bathroom_min_5           = constant('FILTER_BATHROOM_MIN_5',  filter_service) %}
-{% set bathroom_min_6           = constant('FILTER_BATHROOM_MIN_6',  filter_service) %}
-{% set bathroom_min_8           = constant('FILTER_BATHROOM_MIN_8',  filter_service) %}
-{% set bathroom_min_10          = constant('FILTER_BATHROOM_MIN_10', filter_service) %}
-    
+
 
 {% set filter_theme             = constant('FILTER_THEME', filter_service) %}
 {% set filter_theme_value       = filters[filter_theme]|default(null) %}
@@ -141,46 +130,6 @@
             <div class="styled_label" data-role="change-filter" data-action="{{ facility_fireplace in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_fireplace }}" data-filter-multi="true">
                 <label class="label_check" for="checkbox-15">
                     <input id="checkbox-15" type="checkbox"{{ is_checked(filter_facility_value, facility_fireplace) }} />{{ 'filter-facility-fireplace'|trans }}<span>(748)</span>
-                </label>
-            </div>
-        </div>
-    </div>
-    <div id="search-filter-bathrooms" class="search-filter-default">
-        <h2 class="closed"><a href="" title="deze box in- of uitklappen">{{ 'total-bathrooms'|trans }}</a></h2>
-        <div class="fields">
-            <div class="styled_label" data-role="change-filter" data-action="{{ filter_bathroom_value == bathroom_min_2 ? 'remove' : 'add' }}" data-filter="{{ filter_bathroom }}" data-filter-value="{{ bathroom_min_2 }}">
-                <label class="label_check" for="checkbox-16">
-                    <input data-group="checkbox-3" id="checkbox-16" type="checkbox"{{ is_checked(filter_bathroom_value, bathroom_min_2) }} />{{ 'filter-bathroom-min-2'|trans }}<span>(1376)</span>
-                </label>
-            </div>
-            <div class="styled_label" data-role="change-filter" data-action="{{ filter_bathroom_value == bathroom_min_3 ? 'remove' : 'add' }}" data-filter="{{ filter_bathroom }}" data-filter-value="{{ bathroom_min_3 }}">
-                <label class="label_check" for="checkbox-17">
-                    <input data-group="checkbox-3" id="checkbox-17" type="checkbox"{{ is_checked(filter_bathroom_value, bathroom_min_3) }} />{{ 'filter-bathroom-min-3'|trans }}<span>(681)</span>
-                </label>
-            </div>
-            <div class="styled_label" data-role="change-filter" data-action="{{ filter_bathroom_value == bathroom_min_4 ? 'remove' : 'add' }}" data-filter="{{ filter_bathroom }}" data-filter-value="{{ bathroom_min_4 }}">
-                <label class="label_check" for="checkbox-18">
-                    <input data-group="checkbox-3" id="checkbox-18" type="checkbox"{{ is_checked(filter_bathroom_value, bathroom_min_4) }} />{{ 'filter-bathroom-min-4'|trans }}<span>(441)</span>
-                </label>
-            </div>
-            <div class="styled_label" data-role="change-filter" data-action="{{ filter_bathroom_value == bathroom_min_5 ? 'remove' : 'add' }}" data-filter="{{ filter_bathroom }}" data-filter-value="{{ bathroom_min_5 }}">
-                <label class="label_check" for="checkbox-19">
-                    <input data-group="checkbox-3" id="checkbox-19" type="checkbox"{{ is_checked(filter_bathroom_value, bathroom_min_5) }} />{{ 'filter-bathroom-min-5'|trans }}<span>(265)</span>
-                </label>
-            </div>
-            <div class="styled_label" data-role="change-filter" data-action="{{ filter_bathroom_value == bathroom_min_6 ? 'remove' : 'add' }}" data-filter="{{ filter_bathroom }}" data-filter-value="{{ bathroom_min_6 }}">
-                <label class="label_check" for="checkbox-20">
-                    <input data-group="checkbox-3" id="checkbox-20" type="checkbox"{{ is_checked(filter_bathroom_value, bathroom_min_6) }} />{{ 'filter-bathroom-min-6'|trans }}<span>(161)</span>
-                </label>
-            </div>
-            <div class="styled_label" data-role="change-filter" data-action="{{ filter_bathroom_value == bathroom_min_8 ? 'remove' : 'add' }}" data-filter="{{ filter_bathroom }}" data-filter-value="{{ bathroom_min_8 }}">
-                <label class="label_check" for="checkbox-21">
-                    <input data-group="checkbox-3" id="checkbox-21" type="checkbox"{{ is_checked(filter_bathroom_value, bathroom_min_8) }} />{{ 'filter-bathroom-min-8'|trans }}<span>(59)</span>
-                </label>
-            </div>
-            <div class="styled_label" data-role="change-filter" data-action="{{ filter_bathroom_value == bathroom_min_10 ? 'remove' : 'add' }}" data-filter="{{ filter_bathroom }}" data-filter-value="{{ bathroom_min_10 }}">
-                <label class="label_check" for="checkbox-22">
-                    <input data-group="checkbox-3" id="checkbox-22" type="checkbox"{{ is_checked(filter_bathroom_value, bathroom_min_10) }} />{{ 'filter-bathroom-min-10'|trans }}<span>(26)</span>
                 </label>
             </div>
         </div>

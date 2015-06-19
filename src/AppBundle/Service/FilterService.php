@@ -67,29 +67,6 @@ class FilterService
     
     
     /** @const int */
-    const FILTER_BATHROOM                 = 4;
-    
-    /** @const int */
-    const FILTER_BATHROOM_MIN_2           = 1,
-          FILTER_BATHROOM_MIN_3           = 2,
-          FILTER_BATHROOM_MIN_4           = 3,
-          FILTER_BATHROOM_MIN_5           = 4,
-          FILTER_BATHROOM_MIN_6           = 5,
-          FILTER_BATHROOM_MIN_8           = 6,
-          FILTER_BATHROOM_MIN_10          = 7;
-    
-    /** @const string */
-    const TOKEN_BATHROOM                  = 'filter-bathroom',
-          TOKEN_BATHROOM_MIN_2            = 'filter-bathroom-min-2',
-          TOKEN_BATHROOM_MIN_3            = 'filter-bathroom-min-3',
-          TOKEN_BATHROOM_MIN_4            = 'filter-bathroom-min-4',
-          TOKEN_BATHROOM_MIN_5            = 'filter-bathroom-min-5',
-          TOKEN_BATHROOM_MIN_6            = 'filter-bathroom-min-6',
-          TOKEN_BATHROOM_MIN_8            = 'filter-bathroom-min-8',
-          TOKEN_BATHROOM_MIN_10           = 'filter-bathroom-min-10';
-    
-    
-    /** @const int */
     const FILTER_THEME                    = 5;
     
     /** @const int */
@@ -138,10 +115,6 @@ class FilterService
                 $result = self::TOKEN_FACILITY;
                 break;
                 
-            case self::FILTER_BATHROOM:
-                $result = self::TOKEN_BATHROOM;
-                break;
-                
             case self::FILTER_THEME:
                 $result = self::TOKEN_THEME;
                 break;
@@ -172,10 +145,6 @@ class FilterService
             
             case FilterService::FILTER_FACILITY:
                 $result = $this->facility($value);
-                break;
-            
-            case FilterService::FILTER_BATHROOM:
-                $result = $this->bathroom($value);
                 break;
             
             case FilterService::FILTER_THEME:
@@ -285,49 +254,6 @@ class FilterService
                 
             case FilterService::FILTER_FACILITY_FIREPLACE:
                 $result = self::TOKEN_FACILITY_FIREPLACE;
-                break;
-                
-            default:
-                $result = null;
-        }
-        
-        return $result;
-    }
-    
-    /**
-     * @param int $value
-     * @return string
-     */
-    protected function bathroom($value)
-    {
-        switch ($value) {
-            
-            case FilterService::FILTER_BATHROOM_MIN_2:
-                $result = self::TOKEN_BATHROOM_MIN_2;
-                break;
-            
-            case FilterService::FILTER_BATHROOM_MIN_3:
-                $result = self::TOKEN_BATHROOM_MIN_3;
-                break;
-            
-            case FilterService::FILTER_BATHROOM_MIN_4:
-                $result = self::TOKEN_BATHROOM_MIN_4;
-                break;
-            
-            case FilterService::FILTER_BATHROOM_MIN_5:
-                $result = self::TOKEN_BATHROOM_MIN_5;
-                break;
-            
-            case FilterService::FILTER_BATHROOM_MIN_6:
-                $result = self::TOKEN_BATHROOM_MIN_6;
-                break;
-            
-            case FilterService::FILTER_BATHROOM_MIN_8:
-                $result = self::TOKEN_BATHROOM_MIN_8;
-                break;
-            
-            case FilterService::FILTER_BATHROOM_MIN_10:
-                $result = self::TOKEN_BATHROOM_MIN_10;
                 break;
                 
             default:
