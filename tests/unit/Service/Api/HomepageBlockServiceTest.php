@@ -12,7 +12,7 @@ class HomepageBlockServiceTest extends \Codeception\TestCase\Test
     protected function _before()
     {
         $this->serviceContainer     = $this->getModule('Symfony2')->container;
-        $this->homepageBlockService = $this->serviceContainer->get('service.api.homepageblock');
+        $this->homepageBlockService = $this->serviceContainer->get('app.api.homepageblock');
         
         // clearing doctrine
         $this->serviceContainer->get('doctrine')->getManager()->clear();

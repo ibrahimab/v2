@@ -24,7 +24,15 @@ interface TypeServiceRepositoryInterface
 	 * Getting all the images
 	 *
 	 * @param TypeServiceEntityInterface $type
-	 * @return FileServiceEntityInterface
+	 * @return FileServiceEntityInterface[]
 	 */
 	public function getImages(TypeServiceEntityInterface $type);
+
+	/**
+	 * Getting all the images
+	 *
+	 * @param TypeServiceEntityInterface[] $types
+	 * @return FileServiceEntityInterface[]
+	 */
+	public function getSearchImages($types);
 }

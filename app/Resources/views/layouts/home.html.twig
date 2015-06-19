@@ -21,13 +21,17 @@
                     {% set trans_austria            = 'austria'|trans            %}
                     {% set trans_switzerland        = 'switzerland'|trans        %}
                     {% set trans_italy              = 'italy'|trans              %}
-                    <h1 class="title-form">Kies uit <a href="" title="1.209 {{ trans_chalets_apartments }}">1.209 {{ trans_chalets_apartments }}</a> {{ trans_in }} 45 {{ trans_ski_areas }} {{ trans_in }} <a href="{{ locale_path('show_country', { countrySlug: trans_austria|seo }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_austria }}">{{ trans_austria }}</a>, <a href="{{ locale_path('show_country', { countrySlug: trans_switzerland|seo }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_switzerland }}">{{ trans_switzerland }}</a>, <a href="{{ locale_path('show_country', { countrySlug: trans_france|seo }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_france }}">{{ trans_france }}</a> {{ trans_and }} <a href="{{ locale_path('show_country', { countrySlug: trans_italy|seo }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_italy }}">{{ trans_italy }}</a></h1>
+                    <h1 class="title-form">Kies uit <a href="" title="1.209 {{ trans_chalets_apartments }}">1209 {{ trans_chalets_apartments }}</a> {{ trans_in }} 45 {{ trans_ski_areas|lower }} {{ trans_in }} <a href="{{ locale_path('show_country', { countrySlug: trans_austria|seo }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_austria }}">{{ trans_austria }}</a>, <a href="{{ locale_path('show_country', { countrySlug: trans_switzerland|seo }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_switzerland }}">{{ trans_switzerland }}</a>, <a href="{{ locale_path('show_country', { countrySlug: trans_france|seo }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_france }}">{{ trans_france }}</a> {{ trans_and }} <a href="{{ locale_path('show_country', { countrySlug: trans_italy|seo }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_italy }}">{{ trans_italy }}</a></h1>
                 </div>
             </div>
             <div class="row" id="header-form-fields">
                 <form>
                     <div class="large-3 medium-3 columns">
-                        <input type="text" id="choose-destination" class="radius" placeholder="Waar wil je naar toe?">
+                        <div class="autocomplete-container">
+                            <input type="text" name="query" data-role="autocomplete-query" id="choose-destination" class="radius" placeholder="Waar wil je naartoe?"  />
+                            <div class="results" data-role="autocomplete-results">
+                            </div>
+                        </div>
                     </div>
                     <div class="large-3 medium-3 columns">
                         <select class="radius">
@@ -53,8 +57,8 @@
                         </select>
                     </div>
                     <div class="large-3 medium-3 columns">
-                        <a href="zoekboek.html" class="button radius right" title="Toon resultaten op Chalet.nl"><i class="fi-magnifying-glass"></i>Toon <span>1.209</span> resultaten</a><br />
-                        <a href="zoekboek.html" class="link right" title="Uitgebreid zoeken op Chalet.nl">Uitgebreid zoeken</a>
+                        <a href="{{ locale_path('search') }}" class="button radius right" title="Toon resultaten op Chalet.nl"><i class="fi-magnifying-glass"></i>Toon <span>1.209</span> resultaten</a><br />
+                        <a href="{{ locale_path('search') }}" class="link right" title="Uitgebreid zoeken op Chalet.nl">Uitgebreid zoeken</a>
                     </div>
                 </form>
             </div>

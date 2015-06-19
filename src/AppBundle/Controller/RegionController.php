@@ -1,6 +1,5 @@
 <?php
 namespace AppBundle\Controller;
-
 use       AppBundle\Annotation\Breadcrumb;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -8,12 +7,13 @@ use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use       Doctrine\ORM\NoResultException;
 
 /**
- * CountriesController
+ * RegionController
  *
  * This controller handles all the country specific pages
  *
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
  * @package Chalet
+ * @version 0.0.2
  * @since   0.0.1
  *
  * @Breadcrumb(name="frontpage", title="frontpage", translate=true, path="home")
@@ -21,8 +21,8 @@ use       Doctrine\ORM\NoResultException;
 class RegionController extends Controller
 {
     /**
-     * @Route(path="/wintersport/skigebied/{regionSlug}", name="show_region_nl")
-     * @Route(path="/winter-sports/region/{regionSlug}",  name="show_region_en")
+     * @Route(path="/wintersport/skigebied/{regionSlug}", name="show_region_nl", options={"expose": true})
+     * @Route(path="/winter-sports/region/{regionSlug}",  name="show_region_en", options={"expose": true})
      * @Breadcrumb(name="countries", title="countries", translate=true, path="show_countries")
      * @Breadcrumb(name="show_country", title="{countryName}", path="show_country", pathParams={"countrySlug"})
      * @Breadcrumb(name="show_region", title="{regionName}", active=true)
@@ -30,9 +30,9 @@ class RegionController extends Controller
      */
     public function show($regionSlug)
     {
-        $regionService   = $this->get('service.api.region');
-        $typeService     = $this->get('service.api.type');
-        $surveyService   = $this->get('service.api.booking.survey');
+        $regionService   = $this->get('app.api.region');
+        $typeService     = $this->get('app.api.type');
+        $surveyService   = $this->get('app.api.booking.survey');
         
         $places          = [];
         $allPlaces       = $regionService->findByLocaleSeoName($regionSlug, $this->getRequest()->getLocale());

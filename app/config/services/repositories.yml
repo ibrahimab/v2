@@ -1,0 +1,104 @@
+# repositories
+services:
+    app.repository.orm:
+        abstract:        true
+        factory_service: doctrine.orm.entity_manager
+        factory_method:  getRepository
+        calls:
+            - [setSeason,  [@app.concern.season]]
+            - [setWebsite, [@app.concern.website]]
+
+    app.repository.odm:
+        abstract:        true
+        factory_service: doctrine.odm.mongodb.document_manager
+        factory_method:  getRepository
+
+    app.repository.accommodation:
+        class:     AppBundle\Entity\Accommodation\AccommodationRepository
+        arguments: [AppBundle\Entity\Accommodation\Accommodation]
+        parent:    app.repository.orm
+
+    app.repository.highlight:
+        class:     AppBundle\Entity\Highlight\HighlightRepository
+        arguments: [AppBundle\Entity\Highlight\Highlight]
+        parent:    app.repository.orm
+
+    app.repository.type:
+        class:     AppBundle\Entity\Type\TypeRepository
+        arguments: [AppBundle\Entity\Type\Type]
+        parent:    app.repository.orm
+
+    app.repository.place:
+        class:     AppBundle\Entity\Place\PlaceRepository
+        arguments: [AppBundle\Entity\Place\Place]
+        parent:    app.repository.orm
+
+    app.repository.region:
+        class:     AppBundle\Entity\Region\RegionRepository
+        arguments: [AppBundle\Entity\Region\Region]
+        parent:    app.repository.orm
+
+    app.repository.country:
+        class:     AppBundle\Entity\Country\CountryRepository
+        arguments: [AppBundle\Entity\Country\Country]
+        parent:    app.repository.orm
+
+    app.repository.booking:
+        class:     AppBundle\Entity\Booking\BookingRepository
+        arguments: [AppBundle\Entity\Booking\Booking]
+        parent:    app.repository.orm
+
+    app.repository.booking.survey:
+        class:     AppBundle\Entity\Boooking\Survey\SurveyRepository
+        arguments: [AppBundle\Entity\Booking\Survey\Survey]
+        parent:    app.repository.orm
+
+    app.repository.homepageblock:
+        class:     AppBundle\Entity\HomepageBlock\HomepageBlockRepository
+        arguments: [AppBundle\Entity\HomepageBlock\HomepageBlock]
+        parent:    app.repository.orm
+
+    app.repository.file.accommodation:
+        class:     AppBundle\Document\File\AccommodationRepository
+        arguments: [AppBundle\Document\File\Accommodation]
+        parent:    app.repository.odm
+
+    app.repository.file.type:
+        class:     AppBundle\Document\File\TypeRepository
+        arguments: [AppBundle\Document\File\Type]
+        parent:    app.repository.odm
+
+    app.repository.file.region:
+        class:     AppBundle\Document\File\RegionRepository
+        arguments: [AppBundle\Document\File\Region]
+        parent:    app.repository.odm
+
+    app.repository.file.place:
+        class:     AppBundle\Document\File\PlaceRepository
+        arguments: [AppBundle\Document\File\Place]
+        parent:    app.repository.odm
+
+    app.repository.file.country:
+        class:     AppBundle\Document\File\CountryRepository
+        arguments: [AppBundle\Document\File\Country]
+        parent:    app.repository.odm
+
+    app.repository.user:
+        class:     AppBundle\Document\User\UserRepository
+        arguments: [AppBundle\Document\User\User]
+        parent:    app.repository.odm
+        
+    app.repository.search:
+        class:     AppBundle\Entity\Search\SearchRepository
+        arguments: ["@doctrine.orm.entity_manager"]
+        calls:
+            - [setSeason,  [@app.concern.season]]
+            - [setWebsite, [@app.concern.website]]
+            
+    app.repository.autocomplete:
+        class:     AppBundle\Document\Autocomplete\AutocompleteRepository
+        arguments: [AppBundle\Document\Autocomplete\Autocomplete]
+        parent:    app.repository.odm
+        calls:
+            - [setSeason,  [@app.concern.season]]
+            - [setWebsite, [@app.concern.website]]

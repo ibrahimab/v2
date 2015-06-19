@@ -14,6 +14,13 @@
 .DS_Store
 .composer
 .htaccess
+.tm_properties
+.vimrc
+/logs/*
+
+# python settings
+subapps/python/import-autocomplete/settings.py
+*.pyc
 
 # Node modules, for less compile
 /node_modules/
@@ -27,3 +34,9 @@ tests/_output/*
 
 # cache
 /web/media/cache/
+
+# old classes
+/src/old-classes
+
+# assetic dumps
+/web/static

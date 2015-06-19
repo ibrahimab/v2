@@ -1,0 +1,36 @@
+"""
+This file contains settings for the import application.
+Please copy this dist file and change the settings when
+deploying it to a new server
+
+@author     Ibrahim Abdullah <ibrahim@chalet.nl>
+@package    Chalet
+@subpackage Import Autocomplete
+@version    0.0.2
+@since      0.0.2
+"""
+"""
+Connection dictionary
+"""
+from MySQLdb.cursors import DictCursor
+connection = {
+
+    '<env>': {
+        
+        'mysql': {
+
+            'host':        '<host>',
+            'user':        '<user>',
+            'passwd':      '<password>',
+            'db':          '<database>',
+            'cursorclass': DictCursor,
+            'charset':     'utf8'
+        },
+
+        'mongo': {
+
+            'uri': 'mongodb://<host>:<port>/',
+            'db':  'chalet_test'
+        }
+    }
+}

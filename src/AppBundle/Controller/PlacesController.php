@@ -22,8 +22,8 @@ use       Doctrine\ORM\NoResultException;
 class PlacesController extends Controller
 {
     /**
-     * @Route(path="/wintersport/plaats/{placeSlug}", name="show_place_nl")
-     * @Route(path="/wintersport/place/{placeSlug}",  name="show_place_en")
+     * @Route(path="/wintersport/plaats/{placeSlug}", name="show_place_nl", options={"expose": true})
+     * @Route(path="/wintersport/place/{placeSlug}",  name="show_place_en", options={"expose": true})
      * @Breadcrumb(name="show_country", title="{countryName}", path="show_country", pathParams={"countrySlug"})
      * @Breadcrumb(name="show_region", title="{regionName}", path="show_region", pathParams={"regionSlug"})
      * @Breadcrumb(name="show_place", title="{placeName}", active=true)
@@ -31,9 +31,9 @@ class PlacesController extends Controller
      */
     public function show($placeSlug)
     {
-        $placeService  = $this->get('service.api.place');
-        $typeService   = $this->get('service.api.type');
-        $surveyService = $this->get('service.api.booking.survey');
+        $placeService  = $this->get('app.api.place');
+        $typeService   = $this->get('app.api.type');
+        $surveyService = $this->get('app.api.booking.survey');
         
         try {
             

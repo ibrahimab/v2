@@ -1,0 +1,84 @@
+parameters:
+    app:
+        results_per_page: 5
+        default_locale:  nl
+        default_website: C
+        default_season:  1
+        minimalSurveyCount: 1
+        countries:
+            I: 5
+            K: 5
+        domain:
+            local.chalet.nl:
+                locale:  nl
+                website: C
+                season:  1
+                
+            local.chalet.eu:
+                locale:  en
+                website: E
+                season:  1
+                
+            local.chalettour.nl:
+                locale:  nl
+                website: T
+                season:  1
+                
+            local.chalet.be:
+                locale:  nl
+                website: B
+                season:  1
+                
+            local.chaletonline.de:
+                locale:  de
+                website: D
+                season:  1
+                
+            local.chaletsinvallandry.nl:
+                locale:  nl
+                website: V
+                season:  1
+                
+            local.chaletsinvallandry.com:
+                locale:  en
+                website: Q
+                season:  1
+                
+            local.venturasol.nl:
+                locale:  nl
+                website: X
+                season:  1
+                
+            local.venturasolvacances.nl:
+                locale:  nl
+                website: Y
+                season:  1
+                
+            local.zomerhuisje.nl:
+                locale:  nl
+                website: Z
+                season:  2
+                
+            local.italissima.nl:
+                locale:  nl
+                website: I
+                season:  2
+                
+            local.italissima.be:
+                locale:  nl
+                website: K
+                season:  2
+                
+            local.italyhomes.eu:
+                locale:  en
+                website: H
+                season:  2
+                
+            local.superski.nl:
+                locale:  nl
+                website: W
+                season:  1
+        service:
+            api:
+                highlight:
+                    limit: 6

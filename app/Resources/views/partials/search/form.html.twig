@@ -1,0 +1,167 @@
+{% set save_search_label        = 'save-search'|trans %}
+    
+{% set filter_distance          = constant('FILTER_DISTANCE', filter_service) %}
+{% set filter_distance_value    = filters[filter_distance]|default(null) %}
+{% set distance_by_slope        = constant('FILTER_DISTANCE_BY_SLOPE', filter_service) %}
+{% set distance_max_250         = constant('FILTER_DISTANCE_MAX_250', filter_service) %}
+{% set distance_max_500         = constant('FILTER_DISTANCE_MAX_500', filter_service) %}
+{% set distance_max_1000        = constant('FILTER_DISTANCE_MAX_1000', filter_service) %}
+
+
+{% set filter_length            = constant('FILTER_LENGTH', filter_service) %}
+{% set filter_length_value      = filters[filter_length]|default(null) %}
+{% set length_max_100           = constant('FILTER_LENGTH_MAX_100', filter_service) %}
+{% set length_min_100           = constant('FILTER_LENGTH_MIN_100', filter_service) %}
+{% set length_min_200           = constant('FILTER_LENGTH_MIN_200', filter_service) %}
+{% set length_min_400           = constant('FILTER_LENGTH_MIN_400', filter_service) %}
+    
+    
+{% set filter_facility          = constant('FILTER_FACILITY', filter_service) %}
+{% set filter_facility_value    = filters[filter_facility]|default(null) %}
+{% set facility_catering        = constant('FILTER_FACILITY_CATERING', filter_service) %}
+{% set facility_internet_wifi   = constant('FILTER_FACILITY_INTERNET_WIFI', filter_service) %}
+{% set facility_swimming_pool   = constant('FILTER_FACILITY_SWIMMING_POOL', filter_service) %}
+{% set facility_sauna           = constant('FILTER_FACILITY_SAUNA', filter_service) %}
+{% set facility_private_sauna   = constant('FILTER_FACILITY_PRIVATE_SAUNA', filter_service) %}
+{% set facility_pets_allowed    = constant('FILTER_FACILITY_PETS_ALLOWED', filter_service) %}
+{% set facility_fireplace       = constant('FILTER_FACILITY_FIREPLACE', filter_service) %}
+
+
+{% set filter_theme             = constant('FILTER_THEME', filter_service) %}
+{% set filter_theme_value       = filters[filter_theme]|default(null) %}
+{% set theme_kids               = constant('FILTER_THEME_KIDS', filter_service)%}
+{% set theme_charming_places    = constant('FILTER_THEME_CHARMING_PLACES', filter_service) %}
+{% set theme_10_for_apres_ski   = constant('FILTER_THEME_10_FOR_APRES_SKI', filter_service) %}
+{% set theme_super_ski_stations = constant('FILTER_THEME_SUPER_SKI_STATIONS', filter_service) %}
+{% set theme_winter_wellness    = constant('FILTER_THEME_WINTER_WELLNESS', filter_service) %}
+
+<div id="search-filter"  class="small-12 medium-4 large-3 columns">
+    <div id="search-filter-main">
+        <h2><a href="" title="deze box in- of uitklappen">{{ 'search-book'|trans }}</a></h2>
+        <div class="fields">
+            {% include 'partials/search/form/input.html.twig' %}
+            <a href="{{ locale_path('save_search', {f: app.request.query.get('f', {})}) }}" class="save" title="{{ save_search_label }}" data-role="save-search">{{ save_search_label }}<i class="sprite sprite-icon-plus "></i></a>
+        </div>
+    </div>
+    <h2 class="title">{{ 'filter-results'|trans }}</h2>
+    <div id="search-filter-piste-distance" class="search-filter-default">
+        <h2 class="closed"><a href="" title="deze box in- of uitklappen">{{ 'distance-to-slopes'|trans }}</a></h2>
+        <div class="fields">
+            <div class="styled_label" data-role="change-filter" data-action="{{ filter_distance_value == distance_by_slope ? 'remove' : 'add' }}" data-filter="{{ filter_distance }}" data-filter-value="{{ distance_by_slope }}">
+                <label class="label_check" for="checkbox-01">
+                    <input data-group="checkbox-1" id="checkbox-01" type="checkbox"{{ is_checked(filter_distance_value, distance_by_slope) }} />{{ 'filter-distance-by-slope'|trans }}<span>(848)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-action="{{ filter_distance_value == distance_max_250 ? 'remove' : 'add' }}" data-filter="{{ filter_distance }}" data-filter-value="{{ distance_max_250 }}">
+                <label class="label_check" for="checkbox-02">
+                    <input data-group="checkbox-1" id="checkbox-02" type="checkbox"{{ is_checked(filter_distance_value, distance_max_250) }} />{{ 'filter-distance-max-250'|trans }}<span>(1419)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-action="{{ filter_distance_value == distance_max_500 ? 'remove' : 'add' }}" data-filter="{{ filter_distance }}" data-filter-value="{{ distance_max_500 }}">
+                <label class="label_check" for="checkbox-03">
+                    <input data-group="checkbox-1" id="checkbox-03" type="checkbox"{{ is_checked(filter_distance_value, distance_max_500) }} />{{ 'filter-distance-max-500'|trans }}<span>(1729)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-action="{{ filter_distance_value == distance_max_1000 ? 'remove' : 'add' }}" data-filter="{{ filter_distance }}" data-filter-value="{{ distance_max_1000 }}">
+                <label class="label_check" for="checkbox-04">
+                    <input data-group="checkbox-1" id="checkbox-04" type="checkbox"{{ is_checked(filter_distance_value, distance_max_1000) }} />{{ 'filter-distance-max-1000'|trans }}<span>(1933)</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div id="search-filter-piste-length" class="search-filter-default">
+        <h2 class="closed"><a href="" title="deze box in- of uitklappen">{{ 'length-slopes'|trans }}</a></h2>
+        <div class="fields">
+            <div class="styled_label" data-role="change-filter" data-action="{{ filter_length_value == length_max_100 ? 'remove' : 'add' }}" data-filter="{{ filter_length }}" data-filter-value="{{ length_max_100 }}">
+                <label class="label_check" for="checkbox-05">
+                    <input data-group="checkbox-2" id="checkbox-05" type="checkbox"{{ is_checked(filter_length_value, length_max_100) }} />{{ 'filter-length-max-100'|trans }}<span>(114)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-action="{{ filter_length_value == length_min_100 ? 'remove' : 'add' }}" data-filter="{{ filter_length }}" data-filter-value="{{ length_min_100 }}">
+                <label class="label_check" for="checkbox-06">
+                    <input data-group="checkbox-2" id="checkbox-06" type="checkbox"{{ is_checked(filter_length_value, length_min_100) }} />{{ 'filter-length-min-100'|trans }}<span>(2140)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-action="{{ filter_length_value == length_min_200 ? 'remove' : 'add' }}" data-filter="{{ filter_length }}" data-filter-value="{{ length_min_200 }}">
+                <label class="label_check" for="checkbox-07">
+                    <input data-group="checkbox-2" id="checkbox-07" type="checkbox"{{ is_checked(filter_length_value, length_min_200) }} />{{ 'filter-length-min-200'|trans }}<span>(1748)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-action="{{ filter_length_value == length_min_400 ? 'remove' : 'add' }}" data-filter="{{ filter_length }}" data-filter-value="{{ length_min_400 }}">
+                <label class="label_check" for="checkbox-08">
+                    <input data-group="checkbox-2" id="checkbox-08" type="checkbox"{{ is_checked(filter_length_value, length_min_400) }} />{{ 'filter-length-min-400'|trans }}<span>(1212)</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div id="search-filter-facilities" class="search-filter-default">
+        <h2 class="closed"><a href="" title="deze box in- of uitklappen">{{ 'facilities'|trans }}</a></h2>
+        <div class="fields">
+            <div class="styled_label" data-role="change-filter" data-action="{{ facility_catering in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_catering }}" data-filter-multi="true">
+                <label class="label_check" for="checkbox-09">
+                    <input id="checkbox-09" type="checkbox"{{ is_checked(filter_facility_value, facility_catering) }} />{{ 'filter-facility-catering'|trans }}<span>(351)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-action="{{ facility_internet_wifi in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_internet_wifi }}" data-filter-multi="true">
+                <label class="label_check" for="checkbox-10">
+                    <input id="checkbox-10" type="checkbox"{{ is_checked(filter_facility_value, facility_internet_wifi) }} />{{ 'filter-facility-internet-wifi'|trans }}<span>(1743)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-action="{{ facility_swimming_pool in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_swimming_pool }}" data-filter-multi="true">
+                <label class="label_check" for="checkbox-11">
+                    <input id="checkbox-11" type="checkbox"{{ is_checked(filter_facility_value, facility_swimming_pool) }} />{{ 'filter-facility-swimming-pool'|trans }}<span>(565)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-action="{{ facility_sauna in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_sauna }}" data-filter-multi="true">
+                <label class="label_check" for="checkbox-12">
+                    <input id="checkbox-12" type="checkbox"{{ is_checked(filter_facility_value, facility_sauna) }} />{{ 'filter-facility-sauna'|trans }}<span>(1125)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-action="{{ facility_private_sauna in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_private_sauna }}" data-filter-multi="true">
+                <label class="label_check" for="checkbox-13">
+                    <input id="checkbox-13" type="checkbox"{{ is_checked(filter_facility_value, facility_private_sauna) }} />{{ 'filter-facility-private-sauna'|trans }}<span>(299)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-action="{{ facility_pets_allowed in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_pets_allowed }}" data-filter-multi="true">
+                <label class="label_check" for="checkbox-14">
+                    <input id="checkbox-14" type="checkbox"{{ is_checked(filter_facility_value, facility_pets_allowed) }} />{{ 'filter-facility-pets-allowed'|trans }}<span>(1344)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-action="{{ facility_fireplace in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_fireplace }}" data-filter-multi="true">
+                <label class="label_check" for="checkbox-15">
+                    <input id="checkbox-15" type="checkbox"{{ is_checked(filter_facility_value, facility_fireplace) }} />{{ 'filter-facility-fireplace'|trans }}<span>(748)</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div id="search-filter-themes" class="search-filter-default">
+        <h2 class="closed"><a href="" title="deze box in- of uitklappen">{{ 'themes'|trans }}</a></h2>
+        <div class="fields">
+            <div class="styled_label" data-role="change-filter" data-action="{{ theme_kids in filter_theme_value ? 'remove' : 'add' }}" data-filter="{{ filter_theme }}" data-filter-value="{{ theme_kids }}" data-filter-multi="true">
+                <label class="label_check" for="checkbox-23">
+                    <input id="checkbox-23" type="checkbox"{{ is_checked(filter_theme_value, theme_kids) }} />{{ 'filter-theme-kids'|trans }}<span>(604)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-action="{{ theme_charming_places in filter_theme_value ? 'remove' : 'add' }}" data-filter="{{ filter_theme }}" data-filter-value="{{ theme_charming_places }}" data-filter-multi="true">
+                <label class="label_check" for="checkbox-24">
+                    <input id="checkbox-24" type="checkbox"{{ is_checked(filter_theme_value, theme_charming_places) }} />{{ 'filter-theme-charming-places'|trans }}<span>(1032)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-action="{{ theme_10_for_apres_ski in filter_theme_value ? 'remove' : 'add' }}" data-filter="{{ filter_theme }}" data-filter-value="{{ theme_10_for_apres_ski }}" data-filter-multi="true">
+                <label class="label_check" for="checkbox-25">
+                    <input id="checkbox-25" type="checkbox"{{ is_checked(filter_theme_value, theme_10_for_apres_ski) }} />{{ 'filter-theme-10-for-apres-ski'|trans }}<span>(822)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-action="{{ theme_super_ski_stations in filter_theme_value ? 'remove' : 'add' }}" data-filter="{{ filter_theme }}" data-filter-value="{{ theme_super_ski_stations }}" data-filter-multi="true">
+                <label class="label_check" for="checkbox-26">
+                    <input id="checkbox-26" type="checkbox"{{ is_checked(filter_theme_value, theme_super_ski_stations) }} />{{ 'filter-theme-super-ski-stations'|trans }}<span>(1031)</span>
+                </label>
+            </div>
+            <div class="styled_label" data-role="change-filter" data-action="{{ theme_winter_wellness in filter_theme_value ? 'remove' : 'add' }}" data-filter="{{ filter_theme }}" data-filter-value="{{ theme_winter_wellness }}" data-filter-multi="true">
+                <label class="label_check" for="checkbox-27">
+                    <input id="checkbox-27" type="checkbox"{{ is_checked(filter_theme_value, theme_winter_wellness) }} />{{ 'filter-theme-winter-wellness'|trans }}<span>(792)</span>
+                </label>
+            </div>
+        </div>
+    </div> 
+</div>

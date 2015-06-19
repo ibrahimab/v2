@@ -1,7 +1,5 @@
 <?php
 namespace AppBundle\Service\Api\Type;
-
-use       AppBundle\Concern\FeatureConcern\FeatureConcernType;
 use       AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
 
 interface TypeServiceEntityInterface {
@@ -9,7 +7,7 @@ interface TypeServiceEntityInterface {
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId();
 
@@ -20,7 +18,7 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setAccommodationId($accommodationId);
-    
+
     /**
      * Get accommodationId
      *
@@ -148,10 +146,10 @@ interface TypeServiceEntityInterface {
      * @return string
      */
     public function getGermanShortDescription();
-    
+
     /**
      * Set Locale short descriptions
-     * 
+     *
      * @param array $localeShortDescriptions
      * @return TypeServiceEntityInterface
      */
@@ -164,7 +162,7 @@ interface TypeServiceEntityInterface {
      * @return string
      */
     public function getLocaleShortDescription($locale);
-    
+
     /**
      * Set description
      *
@@ -176,7 +174,7 @@ interface TypeServiceEntityInterface {
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription();
 
@@ -191,7 +189,7 @@ interface TypeServiceEntityInterface {
     /**
      * Get englishDescription
      *
-     * @return string 
+     * @return string
      */
     public function getEnglishDescription();
 
@@ -206,10 +204,10 @@ interface TypeServiceEntityInterface {
     /**
      * Get germanDescription
      *
-     * @return string 
+     * @return string
      */
     public function getGermanDescription();
-    
+
     /**
      * Set locale descriptions
      *
@@ -217,14 +215,14 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setLocaleDescriptions($localeDescriptions);
-    
+
     /**
      * Get locale description
      *
      * @return string
      */
     public function getLocaleDescription($locale);
-    
+
     /**
      * set layout
      *
@@ -232,14 +230,14 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setLayout($layout);
-    
+
     /**
      * Get layout
-     * 
+     *
      * @return string
      */
     public function getLayout();
-    
+
     /**
      * set englishLayout
      *
@@ -247,14 +245,14 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setEnglishLayout($englishLayout);
-    
+
     /**
      * Get layout
-     * 
+     *
      * @return string
      */
     public function getEnglishLayout();
-    
+
     /**
      * set germanLayout
      *
@@ -262,14 +260,14 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setGermanLayout($germanLayout);
-    
+
     /**
      * Get layout
-     * 
+     *
      * @return string
      */
     public function getGermanLayout();
-    
+
     /**
      * set germanLayout
      *
@@ -277,10 +275,10 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setLocaleLayouts($germanLayout);
-    
+
     /**
      * Get layout
-     * 
+     *
      * @return string
      */
     public function getLocaleLayout($locale);
@@ -346,9 +344,24 @@ interface TypeServiceEntityInterface {
     public function getDisplay();
 
     /**
+     * Set display search
+     *
+     * @param  boolean $displaySearch
+     * @return TypeServiceEntityInterface
+     */
+    public function setDisplaySearch($displaySearch);
+
+    /**
+     * Get display search
+     *
+     * @return boolean
+     */
+    public function getDisplaySearch();
+
+    /**
      * Set features
      *
-     * @param FeatureConcernType $features
+     * @param array $features
      * @return TypeServiceEntityInterface
      */
     public function setFeatures($features);
@@ -356,7 +369,7 @@ interface TypeServiceEntityInterface {
     /**
      * Get features
      *
-     * @return FeatureConcernType
+     * @return array
      */
     public function getFeatures();
 
@@ -389,7 +402,7 @@ interface TypeServiceEntityInterface {
      * @return string
      */
     public function getLongitude();
-    
+
     /**
      * Setting optimal residents
      *
@@ -397,12 +410,12 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setOptimalResidents($optimalResidents);
-    
+
     /**
      * @return integer
      */
     public function getOptimalResidents();
-    
+
     /**
      * Setting max residents
      *
@@ -410,12 +423,12 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setMaxResidents($maxResidents);
-    
+
     /**
      * @return integer
      */
     public function getMaxResidents();
-    
+
     /**
      * Set bedrooms
      *
@@ -423,14 +436,14 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setBedrooms($bedrooms);
-    
+
     /**
      * Get bedrooms
      *
      * @return integer
      */
     public function getBedrooms();
-    
+
     /**
      * Set bedroomsextra
      *
@@ -438,14 +451,14 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setBedroomsExtra($bedroomsExtra);
-    
+
     /**
      * Get bedroomsextra
      *
      * @return string
      */
     public function getBedroomsExtra();
-    
+
     /**
      * Set english bedroomsextra
      *
@@ -453,14 +466,14 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setEnglishBedroomsExtra($englishBedroomsExtra);
-    
+
     /**
      * Get english bedroomsextra
      *
      * @return string
      */
     public function getEnglishBedroomsExtra();
-    
+
     /**
      * Set german bedroomsextra
      *
@@ -468,14 +481,14 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setGermanBedroomsExtra($germanBedroomsExtra);
-    
+
     /**
      * Get german bedroomsextra
      *
      * @return string
      */
     public function getGermanBedroomsExtra();
-    
+
     /**
      * set all locale bedroomsextra fields
      *
@@ -483,14 +496,14 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setLocaleBedroomsExtras($localeBedroomsExtras);
-    
+
     /**
      * Get locale bedroomsextra
-     * 
+     *
      * @return string
      */
     public function getLocaleBedroomsExtra($locale);
-    
+
     /**
      * Set bathrooms
      *
@@ -498,14 +511,14 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setBathrooms($bathrooms);
-    
+
     /**
      * Get bedrooms
      *
      * @return integer
      */
     public function getBathrooms();
-    
+
     /**
      * Set bathroomsextra
      *
@@ -513,14 +526,14 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setBathroomsExtra($bathroomsExtra);
-    
+
     /**
      * Get bathroomsextra
      *
      * @return string
      */
     public function getBathroomsExtra();
-    
+
     /**
      * Set english bathroomsextra
      *
@@ -528,14 +541,14 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setEnglishBathroomsExtra($englishBathroomsExtra);
-    
+
     /**
      * Get english bedroomsextra
      *
      * @return string
      */
     public function getEnglishBathroomsExtra();
-    
+
     /**
      * Set german bathroomsextra
      *
@@ -543,14 +556,14 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setGermanBathroomsExtra($germanBathroomsExtra);
-    
+
     /**
      * Get german bathroomsextra
      *
      * @return string
      */
     public function getGermanBathroomsExtra();
-    
+
     /**
      * set all locale bathroomsextra fields
      *
@@ -558,24 +571,24 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setLocaleBathroomsExtras($localeBathroomsExtras);
-    
+
     /**
      * Get locale bathroomsextra
-     * 
+     *
      * @return string
      */
     public function getLocaleBathroomsExtra($locale);
-    
+
     /**
      * Set surface
      */
     public function setSurface($surface);
-    
+
     /**
      * Get surface
      */
     public function getSurface();
-    
+
     /**
      * Set surfaceExtra
      *
@@ -583,14 +596,14 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setSurfaceExtra($surfaceExtra);
-    
+
     /**
      * Get surfaceExtra
      *
      * @return string
      */
     public function getSurfaceExtra();
-    
+
     /**
      * Set english surfaceExtra
      *
@@ -598,14 +611,14 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setEnglishSurfaceExtra($englishSurfaceExtra);
-    
+
     /**
      * Get english surfaceextra
      *
      * @return string
      */
     public function getEnglishSurfaceExtra();
-    
+
     /**
      * Set german surfaceextra
      *
@@ -613,14 +626,14 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setGermanSurfaceExtra($germanSurfaceExtra);
-    
+
     /**
      * Get german surfaceextra
      *
      * @return string
      */
     public function getGermanSurfaceExtra();
-    
+
     /**
      * set all locale surfaceextra fields
      *
@@ -628,14 +641,14 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setLocaleSurfaceExtras($localeSurfaceExtras);
-    
+
     /**
      * Get locale surfaceextra
-     * 
+     *
      * @return string
      */
     public function getLocaleSurfaceExtra($locale);
-    
+
     /**
      * Setting quality
      *
@@ -643,14 +656,14 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setQuality($quality);
-    
+
     /**
      * Getting quality
      *
      * @return integer
      */
     public function getQuality();
-    
+
     /**
      * Set search order
      *
@@ -658,25 +671,25 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setSearchOrder($searchOrder);
-    
+
     /**
      * Get searchOrder
      *
      * @return integer
      */
     public function getSearchOrder();
-    
+
     /**
      * @param SurveyServiceEntityInterface[]
      * @return TypeServiceEntityInterface
      */
     public function setSurveys($surveys);
-    
+
     /**
      * @return SurveyServiceEntityInterface[]
      */
     public function getSurveys();
-    
+
     /**
      * Set Survey count
      *
@@ -684,14 +697,14 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setSurveyCount($surveyCount);
-    
+
     /**
      * Get Survey count
      *
      * @return integer
      */
     public function getSurveyCount();
-    
+
     /**
      * Set Survey average overall rating
      *
@@ -699,7 +712,7 @@ interface TypeServiceEntityInterface {
      * @return TypeServiceEntityInterface
      */
     public function setSurveyAverageOverallRating($surveyAverageOverallRating);
-    
+
     /**
      * Get Survey average overall rating
      *
@@ -736,7 +749,7 @@ interface TypeServiceEntityInterface {
      * @return \DateTime
      */
     public function getUpdatedAt();
-    
+
     /**
      * General locale field getter
      *

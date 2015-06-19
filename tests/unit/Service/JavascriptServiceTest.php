@@ -1,6 +1,5 @@
 <?php
 namespace AppBundle\Tests\Unit\Service;
-
 use       AppBundle\Service\Javascript\JavascriptService;
 
 class JavascriptServiceTest extends \Codeception\TestCase\Test

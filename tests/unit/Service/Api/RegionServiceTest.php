@@ -13,7 +13,7 @@ class RegionServiceTest extends \Codeception\TestCase\Test
     protected function _before()
     {
         $this->serviceContainer = $this->getModule('Symfony2')->container;
-        $this->regionService    = $this->serviceContainer->get('service.api.region');
+        $this->regionService    = $this->serviceContainer->get('app.api.region');
         
         // clearing doctrine
         $this->serviceContainer->get('doctrine')->getManager()->clear();
@@ -67,8 +67,8 @@ class RegionServiceTest extends \Codeception\TestCase\Test
     
     public function testGetHomepageRegions()
     {
-        $limit   = 3;
-        $regions = $this->regionService->findHomepageRegions(['limit' => 3]);
+        $limit   = 1;
+        $regions = $this->regionService->findHomepageRegions(['limit' => 1]);
         
         $this->assertCount($limit, $regions);
         $this->assertContainsOnlyInstancesOf('AppBundle\Service\Api\Region\RegionServiceEntityInterface', $regions);

@@ -33,7 +33,7 @@ class CountriesController extends Controller
      */
     public function index()
     {
-		$countryService = $this->get('service.api.country');
+		$countryService = $this->get('app.api.country');
 
         return [
         	'countries' => $countryService->findActive(),
@@ -49,9 +49,9 @@ class CountriesController extends Controller
      */
     public function show($countrySlug, $sort)
     {
-        $countryService = $this->get('service.api.country');
-        $typeService    = $this->get('service.api.type');
-        $surveyService  = $this->get('service.api.booking.survey');
+        $countryService = $this->get('app.api.country');
+        $typeService    = $this->get('app.api.type');
+        $surveyService  = $this->get('app.api.booking.survey');
 
         try {
 
@@ -115,9 +115,9 @@ class CountriesController extends Controller
      */
     public function destinations()
     {
-        $countryService    = $this->get('service.api.country');
-        $typeService       = $this->get('service.api.type');
-        $javascriptService = $this->get('service.javascript');
+        $countryService    = $this->get('app.api.country');
+        $typeService       = $this->get('app.api.type');
+        $javascriptService = $this->get('app.javascript');
         $websiteConcern    = $this->get('app.concern.website');
         $parameters        = $this->container->getParameter('app');
         $currentWebsite    = $websiteConcern->get();

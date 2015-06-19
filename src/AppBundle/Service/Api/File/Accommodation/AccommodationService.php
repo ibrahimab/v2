@@ -4,8 +4,9 @@ use		  AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
 
 class AccommodationService
 {
-	const MAIN_IMAGE  = 'hoofdfoto_accommodatie';
-	const BELOW_IMAGE = 'accommodaties_aanvullend_onderaan';
+	const MAIN_IMAGE   = 'hoofdfoto_accommodatie';
+	const BELOW_IMAGE  = 'accommodaties_aanvullend_onderaan';
+    const SEARCH_IMAGE = 'hoofdfoto_accommodatie';
 
 	private $accommodationServiceRepository;
 
@@ -22,5 +23,10 @@ class AccommodationService
 	public function getImages(AccommodationServiceEntityInterface $accommodation)
 	{
 		return $this->accommodationServiceRepository->getImages($accommodation);
+	}
+
+	public function getSearchImages($accommodations)
+	{
+		return $this->accommodationServiceRepository->getSearchImages($accommodations);
 	}
 }

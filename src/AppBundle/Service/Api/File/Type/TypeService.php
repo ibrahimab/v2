@@ -12,7 +12,8 @@ use		  AppBundle\Service\Api\File\FileServiceEntityInterface;
  */
 class TypeService
 {
-	const MAIN_IMAGE  = 'hoofdfoto_type';
+	const MAIN_IMAGE   = 'hoofdfoto_type';
+	const SEARCH_IMAGE = 'hoofdfoto_type';
 
 	/**
 	 * @var TypeServiceRepositoryInterface
@@ -49,5 +50,16 @@ class TypeService
 	public function getImages(TypeServiceEntityInterface $type)
 	{
 		return $this->typeServiceRepository->getImages($type);
+	}
+
+	/**
+	 * Getting all the images
+	 *
+	 * @param TypeServiceEntityInterface[] $types
+	 * @return FileServiceEntityInterface[]
+	 */
+	public function getSearchImages($types)
+	{
+		return $this->typeServiceRepository->getSearchImages($types);
 	}
 }
