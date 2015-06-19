@@ -5,7 +5,7 @@
     {{ render_paginator() }}
     <div class="row">
         <div class="small-12 medium-6 large-6 columns">
-            <div class="title">{{ count_paginator() }} resultaten</div>
+            <div class="title">{{ count_paginator() }} {{ 'results'|trans }}</div>
         </div>
         <div class="small-12 medium-6 large-6 columns">
             <form>
@@ -13,12 +13,12 @@
                     <div class="small-12 columns">
                         <div class="row">
                             <div class="small-3 columns">
-                                <label for="right-label" class="right inline">Sorteren</label>
+                                <label for="right-label" class="right inline">{{ 'sort'|trans }}</label>
                             </div>
                             <div class="small-9 columns">
                                 <select class="radius">
-                                    <option value="1423868400">op prijs (oplopend)</option>
-                                    <option value="1423868400">op prijs (aflopend)</option>
+                                    <option value="1423868400">{{ 'by-price-asc'|trans }}</option>
+                                    <option value="1423868400">{{ 'by-price-desc'|trans }}</option>
                                 </select>
                             </div>
                         </div>

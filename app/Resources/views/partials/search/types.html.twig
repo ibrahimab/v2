@@ -4,13 +4,13 @@
     <div class="tb">
 
         <div class="tb-h">
-            <div class="tb-c tb-h-1">Personen</div>
-            <div class="tb-c tb-h-2">Slaapkamers</div>
-            <div class="tb-c tb-h-3">Badkamers</div>
-            <div class="tb-c tb-h-4">Type</div>
-            <div class="tb-c tb-h-5">Beoordeling</div>
+            <div class="tb-c tb-h-1">{{ 'persons'|trans }}</div>
+            <div class="tb-c tb-h-2">{{ 'bedrooms'|trans }}</div>
+            <div class="tb-c tb-h-3">{{ 'bathrooms'|trans }}</div>
+            <div class="tb-c tb-h-4">{{ 'type'|trans }}</div>
+            <div class="tb-c tb-h-5">{{ 'rating'|trans }}</div>
             <div class="tb-c tb-h-6">&nbsp;</div>
-            <div class="tb-c tb-h-7">Prijs accommodatie</div>
+            <div class="tb-c tb-h-7">{{ 'price-accommodation'|trans }}</div>
         </div>
 
         {% for type in types %}
@@ -39,9 +39,9 @@
     </div>
     <div class="table-explain">
         <p>
-            <span>U kunt deze tabel horizontaal scrollen</span>
+            <span>{{ 'table-scrollable-horizontally'|trans }}</span>
             <i class="sprite sprite-cursor-explain"></i>
-            <a href="" class="button tiny radius">ik heb het begrepen</a>
+            <a href="" class="button tiny radius">{{ 'got-it'|trans }}</a>
         </p>
     </div>
     

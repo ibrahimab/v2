@@ -4,6 +4,7 @@ use       AppBundle\Service\Api\Search\SearchServiceRepositoryInterface;
 use       AppBundle\Service\Api\Search\SearchService;
 use       AppBundle\Service\Api\Search\SearchBuilder;
 use       AppBundle\Service\Api\Search\FilterBuilder;
+use       AppBundle\Service\FilterService;
 use       AppBundle\Concern\SeasonConcern;
 use       AppBundle\Concern\WebsiteConcern;
 use       AppBundle\Entity\BaseRepository;
@@ -25,12 +26,12 @@ class SearchRepository implements SearchServiceRepositoryInterface
     /**
      * @const string
      */
-    const SORT_BY_DEFAULT      = SearchBuilder::SORT_BY_ACCOMMODATION_NAME;
-
-    /**
-     * @const string
-     */
-    const SORT_ORDER_DEFAULT   = SearchBuilder::SORT_ORDER_ASC;
+    const SORT_BY_DEFAULT    = SearchBuilder::SORT_BY_ACCOMMODATION_NAME;
+                              
+    /**                       
+     * @const string          
+     */                       
+    const SORT_ORDER_DEFAULT = SearchBuilder::SORT_ORDER_ASC;
 
     /**
      * @var integer
@@ -118,16 +119,20 @@ class SearchRepository implements SearchServiceRepositoryInterface
 
     public function sortField($sort)
     {
-        $field = null;
         switch ($sort) {
 
             case SearchBuilder::SORT_BY_ACCOMMODATION_NAME:
+            
                 $field = 'a.name';
-            break;
+                break;
 
             case SearchBuilder::SORT_BY_TYPE_SEARCH_ORDER:
+            
                 $field = 't.searchOrder';
-            break;
+                break;
+                
+            default:
+                $field = null;
         }
 
         return $field;
@@ -221,26 +226,30 @@ class SearchRepository implements SearchServiceRepositoryInterface
 
     public function distance($qb, $filters)
     {
-        if (true === $filters->has(FilterBuilder::FILTER_DISTANCE)) {
+        if (true === $filters->has(FilterService::FILTER_DISTANCE)) {
 
             $expr = $qb->expr();
-            switch ($filters->filter(FilterBuilder::FILTER_DISTANCE)) {
+            switch ($filters->filter(FilterService::FILTER_DISTANCE)) {
 
-                case FilterBuilder::FILTER_DISTANCE_BY_SLOPE:
+                case FilterService::FILTER_DISTANCE_BY_SLOPE:
+                
                     $distance = $expr->lte('a.distanceSlope', FilterBuilder::VALUE_DISTANCE_BY_SLOPE);
-                break;
+                    break;
 
-                case FilterBuilder::FILTER_DISTANCE_MAX_250:
+                case FilterService::FILTER_DISTANCE_MAX_250:
+                
                     $distance = $expr->lte('a.distanceSlope', 250);
-                break;
+                    break;
 
-                case FilterBuilder::FILTER_DISTANCE_MAX_500:
+                case FilterService::FILTER_DISTANCE_MAX_500:
+                
                     $distance = $expr->lte('a.distanceSlope', 500);
-                break;
+                    break;
 
-                case FilterBuilder::FILTER_DISTANCE_MAX_1000:
+                case FilterService::FILTER_DISTANCE_MAX_1000:
+                
                     $distance = $expr->lte('a.distanceSlope', 1000);
-                break;
+                    break;
 
                 default:
                     return $qb;
@@ -254,26 +263,30 @@ class SearchRepository implements SearchServiceRepositoryInterface
 
     public function length($qb, $filters)
     {
-        if (true === $filters->has(FilterBuilder::FILTER_LENGTH)) {
+        if (true === $filters->has(FilterService::FILTER_LENGTH)) {
 
             $expr = $qb->expr();
-            switch ($filters->filter(FilterBuilder::FILTER_LENGTH)) {
+            switch ($filters->filter(FilterService::FILTER_LENGTH)) {
 
-                case FilterBuilder::FILTER_LENGTH_MAX_100:
+                case FilterService::FILTER_LENGTH_MAX_100:
+                
                     $length = $expr->lt('r.totalSlopesDistance', 100);
-                break;
+                    break;
 
-                case FilterBuilder::FILTER_LENGTH_MIN_100:
+                case FilterService::FILTER_LENGTH_MIN_100:
+                
                     $length = $expr->gte('r.totalSlopesDistance', 100);
-                break;
+                    break;
 
-                case FilterBuilder::FILTER_LENGTH_MIN_200:
+                case FilterService::FILTER_LENGTH_MIN_200:
+                
                     $length = $expr->gte('r.totalSlopesDistance', 200);
-                break;
+                    break;
 
-                case FilterBuilder::FILTER_LENGTH_MIN_400:
+                case FilterService::FILTER_LENGTH_MIN_400:
+                
                     $length = $expr->gte('r.totalSlopesDistance', 400);
-                break;
+                    break;
 
                 default:
                     return $qb;
@@ -287,11 +300,11 @@ class SearchRepository implements SearchServiceRepositoryInterface
 
     public function facilities($qb, $filters)
     {
-        if (true === $filters->has(FilterBuilder::FILTER_FACILITY)) {
+        if (true === $filters->has(FilterService::FILTER_FACILITY)) {
 
             $expr       = $qb->expr();
             $selectors  = [];
-            $facilities = $filters->filter(FilterBuilder::FILTER_FACILITY);
+            $facilities = $filters->filter(FilterService::FILTER_FACILITY);
 
             foreach ($facilities as $facility) {
 
@@ -316,68 +329,68 @@ class SearchRepository implements SearchServiceRepositoryInterface
         $expr = $qb->expr();
         switch (intval($facility)) {
 
-            case FilterBuilder::FILTER_FACILITY_CATERING:
+            case FilterService::FILTER_FACILITY_CATERING:
 
                 $selector = $expr->orX($expr->in('t.features', ':type_features_' . $facility), $expr->in('a.features', ':accommodation_features_' . $facility));
 
                 $qb->setParameter('type_features_' . $facility, 1);
                 $qb->setParameter('accommodation_features_' . $facility, 1);
 
-            break;
+                break;
 
-            case FilterBuilder::FILTER_FACILITY_INTERNET_WIFI:
+            case FilterService::FILTER_FACILITY_INTERNET_WIFI:
 
                 $selector = $expr->orX($expr->in('t.features', ':type_features_' . $facility), $expr->in('a.features', ':accommodation_features_' . $facility));
 
                 $qb->setParameter('type_features_' . $facility, 20);
                 $qb->setParameter('accommodation_features_' . $facility, 22);
 
-            break;
+                break;
 
-            case FilterBuilder::FILTER_FACILITY_SWIMMING_POOL:
+            case FilterService::FILTER_FACILITY_SWIMMING_POOL:
 
                 $selector = $expr->orX($expr->in('t.features', ':type_features_' . $facility), $expr->in('a.features', ':accommodation_features_' . $facility));
 
                 $qb->setParameter('type_features_' . $facility, 4);
                 $qb->setParameter('accommodation_features_' . $facility, [4, 11]);
 
-            break;
+                break;
 
-            case FilterBuilder::FILTER_FACILITY_SAUNA:
+            case FilterService::FILTER_FACILITY_SAUNA:
 
                 $selector = $expr->orX($expr->in('t.features', ':type_features_' . $facility), $expr->in('a.features', ':accommodation_features_' . $facility));
 
                 $qb->setParameter('type_features_' . $facility, 3);
                 $qb->setParameter('accommodation_features_' . $facility, [3, 10]);
 
-            break;
+                break;
 
-            case FilterBuilder::FILTER_FACILITY_PRIVATE_SAUNA:
+            case FilterService::FILTER_FACILITY_PRIVATE_SAUNA:
 
                 $selector = $expr->orX($expr->in('t.features', ':type_features_' . $facility), $expr->in('a.features', ':accommodation_features_' . $facility));
 
                 $qb->setParameter('type_features_' . $facility, 3);
                 $qb->setParameter('accommodation_features_' . $facility, 3);
 
-            break;
+                break;
 
-            case FilterBuilder::FILTER_FACILITY_PETS_ALLOWED:
+            case FilterService::FILTER_FACILITY_PETS_ALLOWED:
 
                 $selector = $expr->orX($expr->in('t.features', ':type_features_' . $facility), $expr->in('a.features', ':accommodation_features_' . $facility));
 
                 $qb->setParameter('type_features_' . $facility, 11);
                 $qb->setParameter('accommodation_features_' . $facility, 13);
 
-            break;
+                break;
 
-            case FilterBuilder::FILTER_FACILITY_FIREPLACE:
+            case FilterService::FILTER_FACILITY_FIREPLACE:
 
                 $selector = $expr->orX($expr->in('t.features', ':type_features_' . $facility), $expr->in('a.features', ':accommodation_features_' . $facility));
 
                 $qb->setParameter('type_features_' . $facility, 10);
                 $qb->setParameter('accommodation_features_' . $facility, 12);
 
-            break;
+                break;
 
             default:
                 $selector = null;
@@ -388,39 +401,46 @@ class SearchRepository implements SearchServiceRepositoryInterface
 
     public function bathroom($qb, $filters)
     {
-        if (true === $filters->has(FilterBuilder::FILTER_BATHROOM)) {
+        if (true === $filters->has(FilterService::FILTER_BATHROOM)) {
 
             $expr = $qb->expr();
 
-            switch (FilterBuilder::FILTER_BATHROOM) {
+            switch (FilterService::FILTER_BATHROOM) {
 
-                case FilterBuilder::FILTER_BATHROOM_MIN_2:
+                case FilterService::FILTER_BATHROOM_MIN_2:
+                
                     $bathroom = 2;
-                break;
+                    break;
 
-                case FilterBuilder::FILTER_BATHROOM_MIN_3:
+                case FilterService::FILTER_BATHROOM_MIN_3:
+                
                     $bathrooms = 3;
-                break;
+                    break;
 
-                case FilterBuilder::FILTER_BATHROOM_MIN_4:
+                case FilterService::FILTER_BATHROOM_MIN_4:
+                
                     $bathrooms = 4;
-                break;
+                    break;
 
-                case FilterBuilder::FILTER_BATHROOM_MIN_5:
+                case FilterService::FILTER_BATHROOM_MIN_5:
+                
                     $bathrooms = 5;
-                break;
+                    break;
 
-                case FilterBuilder::FILTER_BATHROOM_MIN_6:
+                case FilterService::FILTER_BATHROOM_MIN_6:
+                
                     $bathrooms = 6;
-                break;
+                    break;
 
-                case FilterBuilder::FILTER_BATHROOM_MIN_8:
+                case FilterService::FILTER_BATHROOM_MIN_8:
+                
                     $bathrooms = 8;
-                break;
+                    break;
 
-                case FilterBuilder::FILTER_BATHROOM_MIN_10:
+                case FilterService::FILTER_BATHROOM_MIN_10:
+                
                     $bathrooms = 10;
-                break;
+                    break;
 
                 default:
                     return $qb;
@@ -438,11 +458,11 @@ class SearchRepository implements SearchServiceRepositoryInterface
 
     public function themes($qb, $filters)
     {
-        if (true === $filters->has(FilterBuilder::FILTER_THEME)) {
+        if (true === $filters->has(FilterService::FILTER_THEME)) {
 
             $expr       = $qb->expr();
             $selectors  = [];
-            $themes     = $filters->filter(FilterBuilder::FILTER_THEME);
+            $themes     = $filters->filter(FilterService::FILTER_THEME);
 
             foreach ($themes as $theme) {
 
@@ -469,35 +489,38 @@ class SearchRepository implements SearchServiceRepositoryInterface
 
         switch ($theme) {
 
-            case FilterBuilder::FILTER_THEME_KIDS:
+            case FilterService::FILTER_THEME_KIDS:
 
                 $selector = $expr->orX($expr->in('t.features', ':type_features_theme_' . $theme), $expr->in('a.features', ':accommodation_features_theme_' . $theme));
 
                 $qb->setParameter(':type_features_theme_' . $theme, 5);
                 $qb->setParameter(':accommodation_features_theme_' . $theme, 5);
 
-            break;
+                break;
 
-            case FilterBuilder::FILTER_THEME_CHARMING_PLACES:
+            case FilterService::FILTER_THEME_CHARMING_PLACES:
+            
                 $qb->setParameter(':place_features_theme_' . $theme, 13);
-            break;
+                break;
 
-            case FilterBuilder::FILTER_THEME_WINTER_WELLNESS:
+            case FilterService::FILTER_THEME_WINTER_WELLNESS:
 
                 $selector = $expr->orX($expr->in('t.features', ':type_features_theme_' . $theme), $expr->in('a.features', ':accommodation_features_theme_' . $theme));
 
                 $qb->setParameter(':type_features_theme_' . $theme, 9);
                 $qb->setParameter(':accommodation_features_theme_' . $theme, 9);
 
-            break;
+                break;
 
-            case FilterBuilder::FILTER_THEME_SUPER_SKI_STATIONS:
+            case FilterService::FILTER_THEME_SUPER_SKI_STATIONS:
+            
                 $qb->setParameter(':place_features_theme_' . $theme, 14);
-            break;
+                break;
 
-            case FilterBuilder::FILTER_THEME_10_FOR_APRES_SKI:
+            case FilterService::FILTER_THEME_10_FOR_APRES_SKI:
+            
                 $qb->setParameter(':place_features_theme_' . $theme, 6);
-            break;
+                break;
 
             default:
             return null;
