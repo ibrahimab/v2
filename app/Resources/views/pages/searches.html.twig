@@ -1,0 +1,52 @@
+{% extends 'layouts/default.html.twig' %}
+
+{% block breadcrumbs %}
+    {{ breadcrumbs() }}
+{% endblock %}
+
+{% block body %}
+    
+    {{ parent() }}
+
+    <section id="search-filter-results">
+        <div class="row">
+            <div id="search-results">
+                <div id="search-filters-active">
+                    <table>
+                        <tr>
+                            <th>Zoekopdrachten</th>
+                            <th>Zoekresultaten</th>
+                        </tr>
+                        {% dump(saved_searches) %}
+                        {% for searches in saved_searches %}
+                        <tr>
+                            <td>
+                                {% for search in searches['search'] %}
+                                    
+                                    {% if search is iterable %}
+                                        
+                                        {% for term in search %}
+                                            
+                                            <div>{{ term }}</div>
+                                            
+                                        {% endfor %}
+                                        
+                                    {% else %}
+                                    
+                                        <div>{{ search }}</div>
+                                        
+                                    {% endif %}
+                                    
+                                {% endfor %}
+                            </td>
+                            <td><a href="#">test</a></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+{% endblock body %}
