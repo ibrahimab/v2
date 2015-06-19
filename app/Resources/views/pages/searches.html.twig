@@ -12,38 +12,44 @@
         <div class="row">
             <div id="search-results">
                 <div id="search-filters-active">
-                    <table>
-                        <tr>
-                            <th>Zoekopdrachten</th>
-                            <th>Zoekresultaten</th>
-                        </tr>
-                        {% dump(saved_searches) %}
-                        {% for searches in saved_searches %}
-                        <tr>
-                            <td>
-                                {% for search in searches['search'] %}
+                    <table class="no-striping">
+                        <thead>
+                            <tr>
+                                <th colspan="2">Zoekopdrachten</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for searches in saved_searches %}
+                            <tr>
+                                <td>
+                                    {% for filter, search in searches['search'] %}
                                     
-                                    {% if search is iterable %}
+                                        {% if search is iterable %}
                                         
-                                        {% for term in search %}
+                                            {% for term in search %}
                                             
-                                            <div>{{ term }}</div>
+                                                <div>{{ filter|tokenize|trans }}: {{ term|tokenize(filter)|trans }}</div>
                                             
-                                        {% endfor %}
+                                            {% endfor %}
                                         
-                                    {% else %}
+                                        {% else %}
                                     
-                                        <div>{{ search }}</div>
+                                            <div>{{ filter|tokenize|trans }}: {{ search|tokenize(filter)|trans }}</div>
                                         
-                                    {% endif %}
+                                        {% endif %}
                                     
-                                {% endfor %}
-                            </td>
-                            <td><a href="#">test</a></td>
-                        </tr>
-                        {% endfor %}
+                                    {% endfor %}
+                                    <div class="hide"></div>
+                                </td>
+                                <td class="valign-middle">
+                                    <a href="{{ locale_path('search', {'f': searches['search']}) }}" class="button blank small radius">
+                                        Zoekresultaten
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
                     </table>
-                    <div></div>
                 </div>
             </div>
         </div>

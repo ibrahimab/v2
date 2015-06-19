@@ -67,10 +67,6 @@
         <target>Home</target>
         <jms:reference-file line="2">views/partials/breadcrumbs.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="search-book">
-        <source>search-book</source>
-        <target>Zoek &amp; boek</target>
-      </trans-unit>
       <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="jacuzzi-bubbelbad">
         <source>jacuzzi-bubbelbad</source>
         <target>jacuzzi / bubbelbad</target>
@@ -298,6 +294,7 @@
       <trans-unit id="afe98dbc007c3de1865e43ccaddc96a93e62c3c5" resname="filter-theme-winter-wellness">
         <source>filter-theme-winter-wellness</source>
         <target>winter-wellness</target>
+      </trans-unit>
       <trans-unit id="75f5540a4254c10b1e0a5ab37182f52a6636b692" resname="search-book">
         <source>search-book</source>
         <target>Zoek &amp; boek</target>
@@ -305,6 +302,35 @@
       <trans-unit id="75f5540a4254c10b1e0a5ab37182f52a6636b692" resname="searches">
         <source>searches</source>
         <target>Opgeslagen zoekopdrachten</target>
+      </trans-unit>
+      <trans-unit id="daa50d742316e3cfc1bc4c9f271362e95f3ee975" resname="filter-distance">
+        <source>filter-distance</source>
+        <target>Afstand tot piste</target>
+        <jms:reference-file line="15">partials/search/tags.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="dd79b67da8740cca10f87ea0ba794c928c5ea23f" resname="filter-length">
+        <source>filter-length</source>
+        <target>Aantal km pistes</target>
+        <jms:reference-file line="25">partials/search/tags.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d78d95b54adefd76db895f3aed5940d63a2b5556" resname="filter-facility">
+        <source>filter-facility</source>
+        <target>Faciliteit</target>
+        <jms:reference-file line="37">partials/search/tags.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="cddbe496b82eec8b38eccf95aad342c12f91b61b" resname="filter-bathroom">
+        <source>filter-bathroom</source>
+        <target>Aantal badkamers</target>
+        <jms:reference-file line="49">partials/search/tags.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="dfce7b6feabcba2043fe203c92242683553c7898" resname="filter-theme">
+        <source>filter-theme</source>
+        <target>Thema</target>
+        <jms:reference-file line="61">partials/search/tags.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="dfce7b6feabcba2043fe203c92242683553c7898" resname="page-searches">
+        <source>page-searches</source>
+        <target>Zoekopdrachten</target>
       </trans-unit>
     </body>
   </file>

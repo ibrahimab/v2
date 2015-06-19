@@ -19,7 +19,8 @@ class FilterService
           FILTER_DISTANCE_MAX_1000        = 4;
     
     /** @const string */
-    const TOKEN_DISTANCE_BY_SLOPE         = 'filter-distance-by-slope',
+    const TOKEN_DISTANCE                  = 'filter-distance',
+          TOKEN_DISTANCE_BY_SLOPE         = 'filter-distance-by-slope',
           TOKEN_DISTANCE_MAX_250          = 'filter-distance-max-250',
           TOKEN_DISTANCE_MAX_500          = 'filter-distance-max-500',
           TOKEN_DISTANCE_MAX_1000         = 'filter-distance-max-1000';
@@ -35,7 +36,8 @@ class FilterService
           FILTER_LENGTH_MIN_400           = 4;
 
     /** @const string */
-    const TOKEN_LENGTH_MAX_100            = 'filter-length-max-100',
+    const TOKEN_LENGTH                    = 'filter-length',
+          TOKEN_LENGTH_MAX_100            = 'filter-length-max-100',
           TOKEN_LENGTH_MIN_100            = 'filter-length-min-100',
           TOKEN_LENGTH_MIN_200            = 'filter-length-min-200',
           TOKEN_LENGTH_MIN_400            = 'filter-length-min-400';
@@ -54,7 +56,8 @@ class FilterService
           FILTER_FACILITY_FIREPLACE       = 7;
           
     /** @const string */
-    const TOKEN_FACILITY_CATERING         = 'filter-facility-catering',
+    const TOKEN_FACILITY                  = 'filter-facility',
+          TOKEN_FACILITY_CATERING         = 'filter-facility-catering',
           TOKEN_FACILITY_INTERNET_WIFI    = 'filter-facility-internet-wifi',
           TOKEN_FACILITY_SWIMMING_POOL    = 'filter-facility-swimming-pool',
           TOKEN_FACILITY_SAUNA            = 'filter-facility-sauna',
@@ -76,7 +79,8 @@ class FilterService
           FILTER_BATHROOM_MIN_10          = 7;
     
     /** @const string */
-    const TOKEN_BATHROOM_MIN_2            = 'filter-bathroom-min-2',
+    const TOKEN_BATHROOM                  = 'filter-bathroom',
+          TOKEN_BATHROOM_MIN_2            = 'filter-bathroom-min-2',
           TOKEN_BATHROOM_MIN_3            = 'filter-bathroom-min-3',
           TOKEN_BATHROOM_MIN_4            = 'filter-bathroom-min-4',
           TOKEN_BATHROOM_MIN_5            = 'filter-bathroom-min-5',
@@ -96,7 +100,8 @@ class FilterService
           FILTER_THEME_WINTER_WELLNESS    = 5;
     
     /** @const string */
-    const TOKEN_THEME_KIDS                = 'filter-theme-kids',
+    const TOKEN_THEME                     = 'filter-theme',
+          TOKEN_THEME_KIDS                = 'filter-theme-kids',
           TOKEN_THEME_CHARMING_PLACES     = 'filter-theme-charming-places',
           TOKEN_THEME_10_FOR_APRES_SKI    = 'filter-theme-10-for-apres-ski',
           TOKEN_THEME_SUPER_SKI_STATIONS  = 'filter-theme-super-ski-stations',
@@ -108,7 +113,52 @@ class FilterService
      * @param int $value
      * @return string
      */
-    public function tokenize($filter, $value)
+    public function tokenize($filter, $value = null)
+    {
+        return null === $value ? $this->filter($filter) : $this->value($filter, $value);
+    }
+    
+    /**
+     * @param int $filter
+     * @return string
+     */
+    protected function filter($filter)
+    {
+        switch ($filter) {
+            
+            case FilterService::FILTER_DISTANCE:
+                $result = self::TOKEN_DISTANCE;
+                break;
+                
+            case self::FILTER_LENGTH:
+                $result = self::TOKEN_LENGTH;
+                break;
+                
+            case self::FILTER_FACILITY:
+                $result = self::TOKEN_FACILITY;
+                break;
+                
+            case self::FILTER_BATHROOM:
+                $result = self::TOKEN_BATHROOM;
+                break;
+                
+            case self::FILTER_THEME:
+                $result = self::TOKEN_THEME;
+                break;
+                
+            default:
+                $result = null;
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * @param int $filter
+     * @param int $value
+     * @return string
+     */
+    protected function value($filter, $value)
     {
         switch ($filter) {
             

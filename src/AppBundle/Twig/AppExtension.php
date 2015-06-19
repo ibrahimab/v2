@@ -1,6 +1,5 @@
 <?php
 namespace AppBundle\Twig;
-
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
@@ -15,6 +14,7 @@ use		  AppBundle\Document\File\Region as RegionFileDocument;
 use		  AppBundle\Document\File\Place as PlaceFileDocument;
 use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterface;
 use       AppBundle\Service\Api\User\UserServiceDocumentInterface;
+use       AppBundle\Service\FilterService;
 use       Symfony\Component\DependencyInjection\ContainerInterface;
 use       Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use       Symfony\Component\Finder\Finder;
@@ -56,16 +56,22 @@ class AppExtension extends \Twig_Extension
 	 * @var UserServiceDocumentInterface
 	 */
 	private $currentUser;
+    
+    /**
+     * @var FilterService
+     */
+    private $filterService;
 
     /**
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container, UrlGeneratorInterface $generator)
     {
-        $this->container   = $container;
-        $this->generator   = $generator;
-		$this->currentUser = null;
-        $this->locale      = $this->container->get('request')->getLocale();
+        $this->container     = $container;
+        $this->generator     = $generator;
+		$this->currentUser   = null;
+        $this->locale        = $this->container->get('request')->getLocale();
+        $this->filterService = $this->container->get('app.filter');
     }
 
     /**
@@ -643,9 +649,11 @@ class AppExtension extends \Twig_Extension
      * @param int $filter
      * @return string
      */
-    public function tokenize($value, $filter)
+    public function tokenize($value, $filter = null)
     {
-        return $this->container->get('app.filter')->tokenize($filter, $value);
+        // if second parameter is null, that means we want to tokenize a filter
+        // otherwise tokenize the value
+        return (null === $filter ? $this->filterService->tokenize($value) : $this->filterService->tokenize($filter, $value));
     }
 
     /**
