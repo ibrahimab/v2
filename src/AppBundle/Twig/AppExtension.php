@@ -645,7 +645,7 @@ class AppExtension extends \Twig_Extension
      */
     public function tokenize($value, $filter)
     {
-        return $this->container->get('service.filter')->tokenize($filter, $value);
+        return $this->container->get('app.filter')->tokenize($filter, $value);
     }
 
     /**
