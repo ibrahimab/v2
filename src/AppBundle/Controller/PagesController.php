@@ -168,7 +168,7 @@ class PagesController extends Controller
     public function searches()
     {
         return $this->render('pages/searches.html.twig', [
-            'searches' => $this->container->get('service.api.user')->user()->getSearches(),
+            'saved_searches' => $this->container->get('service.api.user')->user()->getSearches(),
         ]);
     }
 }

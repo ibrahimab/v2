@@ -17,13 +17,26 @@
                             <th>Zoekopdrachten</th>
                             <th>Zoekresultaten</th>
                         </tr>
-                        {% for terms in searches %}
+                        {% dump(saved_searches) %}
+                        {% for searches in saved_searches %}
                         <tr>
                             <td>
-                                {% for term in terms %}
-                                <div>
-                                    {{ term }}
-                                </div>
+                                {% for search in searches['search'] %}
+                                    
+                                    {% if search is iterable %}
+                                        
+                                        {% for term in search %}
+                                            
+                                            <div>{{ term }}</div>
+                                            
+                                        {% endfor %}
+                                        
+                                    {% else %}
+                                    
+                                        <div>{{ search }}</div>
+                                        
+                                    {% endif %}
+                                    
                                 {% endfor %}
                             </td>
                             <td><a href="#">test</a></td>
