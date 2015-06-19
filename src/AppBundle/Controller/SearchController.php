@@ -38,7 +38,7 @@ class SearchController extends Controller
             $v = intval($v);
         });
 
-        $searchService = $this->get('service.api.search');
+        $searchService = $this->get('app.api.search');
         $paginator     = $searchService->build()
                                        ->limit($per_page)
                                        ->offset($offset)
@@ -47,7 +47,7 @@ class SearchController extends Controller
                                        ->filter($filters)
                                        ->results();
 
-        $this->get('service.javascript')->set('app.tags', $filters);
+        $this->get('app.javascript')->set('app.tags', $filters);
 
         return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', [
 
@@ -69,7 +69,7 @@ class SearchController extends Controller
             return $this->redirectToRoute('search_' . $request->getLocale());
         }
 
-        $userService = $this->get('service.api.user');
+        $userService = $this->get('app.api.user');
         $user        = $userService->user();
         $filters     = $request->query->get('f', []);
         array_walk_recursive($filters, function(&$v) {

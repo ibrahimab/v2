@@ -22,11 +22,11 @@ class SurveyServiceTest extends \Codeception\TestCase\Test
     protected function _before()
     {
         $this->serviceContainer = $this->getModule('Symfony2')->container;
-        $this->surveyService    = $this->serviceContainer->get('service.api.booking.survey');
-        $this->typeService      = $this->serviceContainer->get('service.api.type');
-        $this->countryService   = $this->serviceContainer->get('service.api.country');
-        $this->regionService    = $this->serviceContainer->get('service.api.region');
-        $this->placeService     = $this->serviceContainer->get('service.api.place');
+        $this->surveyService    = $this->serviceContainer->get('app.api.booking.survey');
+        $this->typeService      = $this->serviceContainer->get('app.api.type');
+        $this->countryService   = $this->serviceContainer->get('app.api.country');
+        $this->regionService    = $this->serviceContainer->get('app.api.region');
+        $this->placeService     = $this->serviceContainer->get('app.api.place');
         
         // clearing doctrine
         $this->serviceContainer->get('doctrine')->getManager()->clear();

@@ -1,6 +1,13 @@
 <?php
 namespace AppBundle\Service\Api\Search;
+use       AppBundle\Service\FilterService;
 
+/**
+ * @author  Ibrahim Abdullah
+ * @package Chalet
+ * @version 0.0.2
+ * @since   0.0.2
+ */
 class FilterBuilder
 {
     /**
@@ -16,84 +23,30 @@ class FilterBuilder
     /**
      * @const int
      */
-    const FILTER_DISTANCE = 1;
-    
-    /**
-     * @const int
-     */
-    const FILTER_LENGTH   = 2;
-    
-    /**
-     * @const int
-     */
-    const FILTER_FACILITY = 3;
-    
-    /**
-     * @const int
-     */
-    const FILTER_BATHROOM = 4;
-    
-    /**
-     * @const int
-     */
-    const FILTER_THEME    = 5;
-
-    const VALUE_DISTANCE_BY_SLOPE         = 50;
-    
-    const FILTER_DISTANCE_BY_SLOPE        = 1;
-    const FILTER_DISTANCE_MAX_250         = 2;
-    const FILTER_DISTANCE_MAX_500         = 3;
-    const FILTER_DISTANCE_MAX_1000        = 4;
-                                          
-    const FILTER_LENGTH_MAX_100           = 1;
-    const FILTER_LENGTH_MIN_100           = 2;
-    const FILTER_LENGTH_MIN_200           = 3;
-    const FILTER_LENGTH_MIN_400           = 4;
-                                          
-    const FILTER_FACILITY_CATERING        = 1;
-    const FILTER_FACILITY_INTERNET_WIFI   = 2;
-    const FILTER_FACILITY_SWIMMING_POOL   = 3; 
-    const FILTER_FACILITY_SAUNA           = 4; 
-    const FILTER_FACILITY_PRIVATE_SAUNA   = 5; 
-    const FILTER_FACILITY_PETS_ALLOWED    = 6; 
-    const FILTER_FACILITY_FIREPLACE       = 7;
-                                          
-    const FILTER_BATHROOM_MIN_2           = 1;
-    const FILTER_BATHROOM_MIN_3           = 2;
-    const FILTER_BATHROOM_MIN_4           = 3;
-    const FILTER_BATHROOM_MIN_5           = 4;
-    const FILTER_BATHROOM_MIN_6           = 5;
-    const FILTER_BATHROOM_MIN_8           = 6;
-    const FILTER_BATHROOM_MIN_10          = 7;
-                                          
-    const FILTER_THEME_KIDS               = 1;
-    const FILTER_THEME_CHARMING_PLACES    = 2;
-    const FILTER_THEME_10_FOR_APRES_SKI   = 3;
-    const FILTER_THEME_SUPER_SKI_STATIONS = 4;
-    const FILTER_THEME_WINTER_WELLNESS    = 5;
+    const VALUE_DISTANCE_BY_SLOPE = 50;
 
     /**
-     * @const array
+     * @var array
      */
     private $options = [
         
-        self::FILTER_DISTANCE => [
+        FilterService::FILTER_DISTANCE => [
             'multiple' => false,
         ],
         
-        self::FILTER_LENGTH   => [
+        FilterService::FILTER_LENGTH   => [
             'multiple' => false,
         ],
         
-        self::FILTER_FACILITY => [
+        FilterService::FILTER_FACILITY => [
             'multiple' => true,
         ],
         
-        self::FILTER_BATHROOM => [
+        FilterService::FILTER_BATHROOM => [
             'multiple' => false,
         ],
         
-        self::FILTER_THEME    => [
+        FilterService::FILTER_THEME    => [
             'multiple' => true,
         ],
     ];
@@ -134,6 +87,11 @@ class FilterBuilder
         }
     }
     
+    /**
+     * @param int $filter
+     * @param int|array $values
+     * @return FilterBuilder
+     */
     public function add($filter, $values)
     {
         $this->filters[$filter] = $values;
@@ -141,6 +99,11 @@ class FilterBuilder
         return $this;
     }
     
+    /**
+     * @param int $filter
+     * @param int|null $currentValue
+     * @return FilterBuilder
+     */
     public function remove($filter, $currentValue = null)
     {
         if (isset($this->filters[$filter])) {
@@ -163,25 +126,36 @@ class FilterBuilder
         return $this;
     }
     
+    /**
+     * @return array
+     */
     public function raw()
     {
         return $this->raw;
     }
     
+    /**
+     * @return boolean
+     */
     public function has($filter)
     {
         return isset($this->filters[$filter]);
     }
     
+    /**
+     * @param int $filter
+     * @param int|null $default
+     * @return int|null
+     */
     public function filter($filter, $default = null)
     {
         switch ($filter) {
             
-            case self::FILTER_DISTANCE:
-            case self::FILTER_LENGTH:
-            case self::FILTER_FACILITY:
-            case self::FILTER_BATHROOM:
-            case self::FILTER_THEME:
+            case FilterService::FILTER_DISTANCE:
+            case FilterService::FILTER_LENGTH:
+            case FilterService::FILTER_FACILITY:
+            case FilterService::FILTER_BATHROOM:
+            case FilterService::FILTER_THEME:
                 $value = (isset($this->filters[$filter]) ? $this->filters[$filter] : $default);
             break;
             
@@ -192,6 +166,9 @@ class FilterBuilder
         return $value;
     }
     
+    /**
+     * @return array
+     */
     public function all()
     {
         return $this->filters;

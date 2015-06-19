@@ -28,12 +28,12 @@ class PagesController extends Controller
     public function home()
     {
         $config               = $this->container->getParameter('app');
-        $surveyService        = $this->get('service.api.booking.survey');
-        $highlightService     = $this->get('service.api.highlight');
-        $homepageBlockService = $this->get('service.api.homepageblock');
-        $regionService        = $this->get('service.api.region');
-        $placeService         = $this->get('service.api.place');
-        $typeService          = $this->get('service.api.type');
+        $surveyService        = $this->get('app.api.booking.survey');
+        $highlightService     = $this->get('app.api.highlight');
+        $homepageBlockService = $this->get('app.api.homepageblock');
+        $regionService        = $this->get('app.api.region');
+        $placeService         = $this->get('app.api.place');
+        $typeService          = $this->get('app.api.type');
 
         $regions              = $regionService->findHomepageRegions(['limit' => 1]);
         $places               = [];
@@ -157,6 +157,8 @@ class PagesController extends Controller
      */
     public function privacy()
     {
+        $filterService = $this->get('app.filter');
+        
         return [];
     }
 }

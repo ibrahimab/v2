@@ -33,8 +33,8 @@ class UserServiceTest extends \Codeception\TestCase\Test
     protected function _before()
     {
         $this->serviceContainer = $this->getModule('Symfony2')->container;
-        $this->userService      = $this->serviceContainer->get('service.api.user');
-		$this->typeService		= $this->serviceContainer->get('service.api.type');
+        $this->userService      = $this->serviceContainer->get('app.api.user');
+		$this->typeService		= $this->serviceContainer->get('app.api.type');
         $this->user             = $this->userService->get('test_user_' . rand(1, 500));
     }
 

@@ -31,9 +31,9 @@ class PlacesController extends Controller
      */
     public function show($placeSlug)
     {
-        $placeService  = $this->get('service.api.place');
-        $typeService   = $this->get('service.api.type');
-        $surveyService = $this->get('service.api.booking.survey');
+        $placeService  = $this->get('app.api.place');
+        $typeService   = $this->get('app.api.type');
+        $surveyService = $this->get('app.api.booking.survey');
         
         try {
             

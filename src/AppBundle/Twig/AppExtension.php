@@ -143,12 +143,12 @@ class AppExtension extends \Twig_Extension
      */
     public function getTypeImage(TypeServiceEntityInterface $type)
     {
-        $typeFileService = $this->container->get('service.api.file.type');
+        $typeFileService = $this->container->get('app.api.file.type');
 		$mainImage		 = $typeFileService->getMainImage($type);
 
 		if (null === $mainImage) {
 
-			$accommodationFileService = $this->container->get('service.api.file.accommodation');
+			$accommodationFileService = $this->container->get('app.api.file.accommodation');
 			$mainImage				  = $accommodationFileService->getMainImage($type->getAccommodation());
 
 			if (null === $mainImage) {
@@ -174,7 +174,7 @@ class AppExtension extends \Twig_Extension
      */
     public function getTypeImages(TypeServiceEntityInterface $type, $above_limit = 3, $below_limit = 2)
     {
-		$typeFileService = $this->container->get('service.api.file.type');
+		$typeFileService = $this->container->get('app.api.file.type');
 		$files	 		 = $typeFileService->getImages($type);
 		$images			 = ['above' => [], 'below' => [], 'rest' => []];
 		$above_done		 = 1;
@@ -199,7 +199,7 @@ class AppExtension extends \Twig_Extension
 
 		if (count($images['above']) === 0) {
 
-			$accommodationFileService = $this->container->get('service.api.file.accommodation');
+			$accommodationFileService = $this->container->get('app.api.file.accommodation');
 			$files					  = $accommodationFileService->getImages($type->getAccommodation());
 
 			foreach ($files as $file) {
@@ -242,7 +242,7 @@ class AppExtension extends \Twig_Extension
             }
         }
 
-        $typeFileService    = $this->container->get('service.api.file.type');
+        $typeFileService    = $this->container->get('app.api.file.type');
         $files              = $typeFileService->getSearchImages($types);
         $images             = [];
         $found              = [];
@@ -265,7 +265,7 @@ class AppExtension extends \Twig_Extension
 
         if (count($notFound) > 0) {
 
-            $accommodationFileService = $this->container->get('service.api.file.accommodation');
+            $accommodationFileService = $this->container->get('app.api.file.accommodation');
             $accommodationFiles       = $accommodationFileService->getSearchImages($notFound);
         }
 
@@ -306,7 +306,7 @@ class AppExtension extends \Twig_Extension
      */
     public function getRegionImage(RegionServiceEntityInterface $region)
     {
-        $regionFileService = $this->container->get('service.api.file.region');
+        $regionFileService = $this->container->get('app.api.file.region');
 		$regionImage       = $regionFileService->getImage($region);
 
 		if (null === $regionImage) {
@@ -329,7 +329,7 @@ class AppExtension extends \Twig_Extension
      */
     public function getRegionSkiRunMapImage(RegionServiceEntityInterface $region)
     {
-        $regionFileService = $this->container->get('service.api.file.region');
+        $regionFileService = $this->container->get('app.api.file.region');
 		$regionImage       = $regionFileService->getSkiRunsMapImage($region);
 
 		if (null === $regionImage) {
@@ -351,7 +351,7 @@ class AppExtension extends \Twig_Extension
      */
     public function getPlaceImage(PlaceServiceEntityInterface $place)
     {
-        $placeFileService = $this->container->get('service.api.file.place');
+        $placeFileService = $this->container->get('app.api.file.place');
 		$placeImage       = $placeFileService->getImage($place);
 
 		if (null === $placeImage) {
@@ -387,7 +387,7 @@ class AppExtension extends \Twig_Extension
 
 	public function getCountryImage($countryId)
 	{
-        $countryFileService = $this->container->get('service.api.file.country');
+        $countryFileService = $this->container->get('app.api.file.country');
 		$countryImage       = $countryFileService->getImage($countryId);
 
 		if (null === $countryImage) {
@@ -530,7 +530,7 @@ class AppExtension extends \Twig_Extension
      */
     public function getJavascriptObject()
     {
-        return $this->container->get('service.javascript')->toArray();
+        return $this->container->get('app.javascript')->toArray();
     }
 
     /**
@@ -541,7 +541,7 @@ class AppExtension extends \Twig_Extension
      */
     public function bbcode($text)
     {
-        return $this->container->get('service.utils')->bbcode($text);
+        return $this->container->get('app.utils')->bbcode($text);
     }
 
     public function sortByProperty($objects, $property)
@@ -559,7 +559,7 @@ class AppExtension extends \Twig_Extension
 	 */
 	public function seo($text)
 	{
-		return $this->container->get('service.utils')->seo($text);
+		return $this->container->get('app.utils')->seo($text);
 	}
 
 	/**
@@ -610,7 +610,7 @@ class AppExtension extends \Twig_Extension
     protected function getUser()
     {
         if (null === $this->currentUser) {
-            $this->currentUser = $this->container->get('service.api.user')->user();
+            $this->currentUser = $this->container->get('app.api.user')->user();
         }
 
         return $this->currentUser;
@@ -635,6 +635,11 @@ class AppExtension extends \Twig_Extension
     public function isChecked($data, $item)
     {
         return ((null !== $data ? (is_array($data) ? in_array($item, $data) : (int)$data === (int)$item) : false) ? ' checked="checked"' : '');
+    }
+    
+    public function getTags($tags)
+    {
+        return 0;
     }
 
     /**
