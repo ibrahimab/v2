@@ -99,9 +99,7 @@ class SearchRepository implements SearchServiceRepositoryInterface
             $qb->orderBy($sort_field, $sort_order);
         }
 
-        // $this->where($where, $qb);
-
-        // dump($qb->getQuery()->getSQL());exit;
+        $this->where($where, $qb);
 
         $paginator = new Paginator($qb, true);
         $paginator->page = [
@@ -479,8 +477,29 @@ class SearchRepository implements SearchServiceRepositoryInterface
             switch ($clause['field']) {
 
                 case SearchBuilder::WHERE_WEEKEND_SKI:
+                
                     $field = 'a.weekendSki';
-                break;
+                    break;
+                
+                case SearchBuilder::WHERE_ACCOMMODATION:
+                
+                    $field = 'a.id';
+                    break;
+                
+                case SearchBuilder::WHERE_COUNTRY:
+                
+                    $field = 'c.id';
+                    break;
+                
+                case SearchBuilder::WHERE_REGION:
+                
+                    $field = 'r.id';
+                    break;
+                
+                case SearchBuilder::WHERE_PLACE:
+                
+                    $field = 'p.id';
+                    break;
             }
 
             $qb->andWhere($expr->eq($field, $clause['value']));

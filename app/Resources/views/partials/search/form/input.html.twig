@@ -1,7 +1,12 @@
 {% set persons   = 'persons'|trans|lower %}
 {% set bathrooms = 'bathrooms'|trans|lower %}
 {% set bedrooms  = 'bedrooms'|trans|lower %}
-<input type="text" id="choose-destination" class="radius" placeholder="Waar wil je naar toe?">
+    
+<div class="autocomplete-container">
+    <input type="text" name="query" data-role="autocomplete-query" data-type="search-book" id="choose-destination" class="radius" placeholder="Waar wil je naartoe?"  />
+    <div class="results search-book" data-role="autocomplete-results">
+    </div>
+</div>
 <select class="radius">
     <option value="husker">{{ 'select-when'|trans }}</option>
     <option value="1423868400">weekend 14 februari 2015</option>

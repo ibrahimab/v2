@@ -44,19 +44,54 @@ class SearchController extends Controller
                                        ->offset($offset)
                                        ->sort(SearchBuilder::SORT_BY_TYPE_SEARCH_ORDER, SearchBuilder::SORT_ORDER_ASC)
                                        ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0)
-                                       ->filter($filters)
-                                       ->results();
+                                       ->filter($filters);
+
+        if ($request->query->has('a')) {
+            $paginator->where(SearchBuilder::WHERE_ACCOMMODATION, $request->query->get('a'));
+        }
+        
+        if ($request->query->has('c')) {
+            $paginator->where(SearchBuilder::WHERE_COUNTRY, $request->query->get('c'));
+        }
+        
+        if ($request->query->has('r')) {
+            $paginator->where(SearchBuilder::WHERE_REGION, $request->query->get('r'));
+        }
+        
+        if ($request->query->has('p')) {
+            $paginator->where(SearchBuilder::WHERE_PLACE, $request->query->get('p'));
+        }
+        
+        $results = $paginator->results();
 
         $this->get('app.javascript')->set('app.tags', $filters);
 
-        return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', [
+        $data = [
 
-            'paginator' => $paginator,
+            'paginator' => $results,
             'filters'   => $filters,
             'tags'      => $filters,
             // instance needed to get constants easier from within twig template: constant('const', instance)
             'filter_service' => $this->container->get('app.filter'),
-        ]);
+        ];
+        
+        if ($request->query->has('a')) {
+            $data['accommodation_filter'] = $results->getIterator()->current();
+        }
+        
+        if ($request->query->has('c')) {
+            $data['country_filter'] = $results->getIterator()->current()->getPlace()->getCountry();
+        }
+        
+        if ($request->query->has('r')) {
+            $data['region_filter'] = $results->getIterator()->current()->getPlace()->getRegion();
+        }
+        
+        if ($request->query->has('p')) {
+            $data['place_filter'] = $results->getIterator()->current()->getPlace();
+        }
+        
+        return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', $data);
     }
 
     /**

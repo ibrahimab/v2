@@ -3,28 +3,45 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
     
     ns.Autocomplete = {
         
+        types: {
+            
+            TYPE_HOME: 'home',
+            TYPE_SEARCH_BOOK: 'search-book'
+        },
+        
+        entities: {
+            
+            ENTITY_COUNTRY: 'country',
+            ENTITY_REGION: 'region',
+            ENTITY_PLACE: 'place',
+            ENTITY_ACCOMMODATION: 'accommodation'
+        },
+        
         input: null,
         limit: 5,
         results: [],
         resultsContainer: null,
         currentTerm: null,
         debounce: 250,
-        kinds: {
-            
-            KIND_COUNTRY: 'country',
-            KIND_REGION:  'region',
-            KIND_PLACE:   'place'
-        },
         
         url: function(term, limit) {
             return Routing.generate('autocomplete', {term: term, limit: limit});
         },
     
-        initialize: function(input, limit, resultsContainer) {
+        initialize: function(options) {
         
-            ns.Autocomplete.input            = jq(input);
-            ns.Autocomplete.limit            = limit;
-            ns.Autocomplete.resultsContainer = jq(resultsContainer);
+            options = jq.extend({
+                
+                input: ns.Autocomplete.input, 
+                limit: ns.Autocomplete.limit, 
+                resultsContainer: ns.Autocomplete.resultsContainer
+                
+            }, options);
+            
+            ns.Autocomplete.input            = jq(options.input);
+            ns.Autocomplete.limit            = options.limit;
+            ns.Autocomplete.resultsContainer = jq(options.resultsContainer);
+            ns.Autocomplete.type             = ns.Autocomplete.input.data('type');
             
             ns.Autocomplete.events.bind(); 
         },
@@ -34,6 +51,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
             bind: function() {
                 
                 ns.Autocomplete.events.change();
+                ns.Autocomplete.events.click();
                 ns.Autocomplete.events.clear();
             },
             
@@ -53,7 +71,94 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                 }, ns.Autocomplete.debounce));
             },
             
-            clear: function() {}
+            click: function() {
+                
+                jq('body').on('click', '[data-role="autocomplete-result"]', function(event) {
+                    
+                    event.preventDefault();
+                    
+                    var element = jq(this);
+                    var data    = {
+                        
+                        entity: element.data('entity'),
+                        id:     element.data('id'),
+                        label:  element.data('label')
+                    };
+                    
+                    console.log(element);
+                    
+                    switch (ns.Autocomplete.type) {
+                        
+                        case ns.Autocomplete.types.TYPE_HOME:
+                            ns.Autocomplete.actions.home.click(data);
+                            break;
+                            
+                        case ns.Autocomplete.types.TYPE_SEARCH_BOOK:
+                            ns.Autocomplete.actions.searchBook.click(data);
+                            break;
+                    }
+                });
+            },
+            
+            clear: function() {
+                
+                jq('body').on('focus', ns.Autocomplete.input.selector, function(event) {
+                    ns.Autocomplete.resultsContainer.show();
+                });
+                
+                jq('body').on('click', '*', function(event) {
+                    
+                    if (event.target.getAttribute('data-role') !== 'autocomplete-result' && event.target !== ns.Autocomplete.input.get(0)) {
+                        ns.Autocomplete.resultsContainer.hide();
+                    }
+                });
+            }
+        },
+        
+        actions: {
+            
+            home: {
+                
+                click: function(data) {
+                    
+                    console.log(data);
+                    var link = jq('[data-role="search-simple"]');
+                    var uri  = URI(link.attr('href'));
+                    uri.search('');
+                    
+                    switch (data.entity) {
+                        
+                        case ns.Autocomplete.entities.ENTITY_COUNTRY:
+                            
+                            uri.setQuery('c', data.id);
+                            break;
+                            
+                        case ns.Autocomplete.entities.ENTITY_REGION:
+                            
+                            uri.setQuery('r', data.id);
+                            break;
+                            
+                        case ns.Autocomplete.entities.ENTITY_PLACE:
+                            
+                            uri.setQuery('p', data.id);
+                            break;
+                            
+                        case ns.Autocomplete.entities.ENTITY_ACCOMMODATION:
+                            
+                            uri.setQuery('a', data.id);
+                            break;
+                    }
+                    
+
+                    link.attr('href', uri.toString());
+                    ns.Autocomplete.input.val(data.label);
+                    ns.Autocomplete.resultsContainer.hide();
+                }
+            },
+            
+            searchBook: function() {
+                console.log('search-book', data);
+            }
         },
         
         request: function(term, limit) {
@@ -97,67 +202,49 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
             result: function(result) {
                 
                 var li        = document.createElement('li');
-                var a         = document.createElement('a');
-                var span      = document.createElement('span');
-                
-                var kinds     = ns.Autocomplete.kinds;
-                var className = '';
+                var entities  = ns.Autocomplete.entities;
                 var locale    = ns.get('app')['locale'];
-                var name      = '';
-                
-                if (jq.type(result['name']) === 'string') {
-                    name = result['name'];
-                } else {
-                    name = result['name'][locale];
-                }
-                
+                var name      = (jq.type(result['name']) === 'string' ? result['name'] : result['name'][locale]);
+
                 switch (result.type) {
                     
-                    case kinds.KIND_COUNTRY:
-                        
-                        a.setAttribute('data-role', 'autocomplete-result');
-                        a.setAttribute('data-entity', 'country');
-                        a.setAttribute('data-id', name);
+                    case entities.ENTITY_COUNTRY:
                         
                         li.className = 'country';
+                        li.setAttribute('data-entity', entities.ENTITY_COUNTRY);
+                        li.setAttribute('data-id', name);
                         
                     break;
                     
-                    case kinds.KIND_REGION:
-                        
-                        a.setAttribute('data-role', 'autocomplete-result');
-                        a.setAttribute('data-entity', 'region');
-                        a.setAttribute('data-id', name);
+                    case entities.ENTITY_REGION:
                         
                         li.className = 'region';
+                        li.setAttribute('data-entity', entities.ENTITY_REGION);
+                        li.setAttribute('data-id', name);
                         
                     break;
                     
-                    case kinds.KIND_PLACE:
-                        
-                        a.setAttribute('data-role', 'autocomplete-result');
-                        a.setAttribute('data-entity', 'place');
-                        a.setAttribute('data-id', name);
+                    case entities.ENTITY_PLACE:
                         
                         li.className = 'place';
+                        li.setAttribute('data-entity', entities.ENTITY_PLACE);
+                        li.setAttribute('data-id', name);
                         
                     break;
                         
-                    case kinds.KIND_ACCOMMODATON:
+                    case entities.ENTITY_ACCOMMODATION:
                         
-                        a.setAttribute('data-role', 'autocomplete-result');
-                        a.setAttribute('data-entity', 'accommodation');
-                        a.setAttribute('data-id', result['id']);
-                        
+                        console.log('test');
                         li.className = 'accommodation';
+                        li.setAttribute('data-entity', entities.ENTITY_ACCOMMODATION);
+                        li.setAttribute('data-id', result['type_id']);
                         
                     break;
                 }
                 
-                // append all the nodes
-                span.textContent = name;
-                a.appendChild(span);
-                li.appendChild(a);
+                li.setAttribute('data-role', 'autocomplete-result');
+                li.setAttribute('data-label', name);
+                li.textContent = name;
                 
                 return li;
             }

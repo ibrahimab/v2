@@ -1,32 +1,68 @@
-{% if filters %}
-    <div data-role="filter-tags" id="search-filters-active">
-    
+{% set locale = get_locale() %}
+<div data-role="filter-tags" id="search-filters-active">
+
+    {% if filters %}
+        
         {% for filter, data in filters %}
 
             {% if data is iterable %}
-                
+            
                 {% for value in data %}
-                    
+                
                     <div data-role="filter-tag">
                         {{ filter|tokenize|trans }}:
                         {{ value|tokenize(filter)|trans }}
                         <a href="#" data-role="remove-filter" data-filter="{{ filter }}" data-filter-value="{{ value }}"><i class="fi-x"></i></a>
                     </div>
-                    
-                {% endfor %}
                 
-            {% else %}
+                {% endfor %}
             
+            {% else %}
+        
                 <div data-role="filter-tag">
                     {{ filter|tokenize|trans }}:
                     {{ data|tokenize(filter)|trans }}
                     <a href="#" data-role="remove-filter" data-filter="{{ filter }}" data-filter-value="{{ data }}"><i class="fi-x"></i></a>
                 </div>
-            
+        
             {% endif %}
-                
+            
         {% endfor %}
+
+    {% endif %}
     
-        <div><a href="#" data-role="remove-filters">Wis alle filters <i class="fi-trash"></i></a></div>
-    </div>
-{% endif %}
+    {% if accommodation_filter is defined %}
+        <div data-role="filter-tag">
+            Accommodatie: 
+            {{ accommodation_filter.getLocaleName(locale) }}
+            <a href="#" data-role="remove-accommodation-filter"><i class="fi-x"></i></a>
+        </div>
+    {% endif %}
+    
+    {% if country_filter is defined %}
+        <div data-role="filter-tag">
+            Land: 
+            {{ land_filter.getLocaleName(locale) }}
+            <a href="#" data-role="remove-country-filter"><i class="fi-x"></i></a>
+        </div>
+    {% endif %}
+    
+    {% if region_filter is defined %}
+        <div data-role="filter-tag">
+            Skigebied: 
+            {{ region_filter.getLocaleName(locale) }}
+            <a href="#" data-role="remove-region-filter"><i class="fi-x"></i></a>
+        </div>
+    {% endif %}
+    
+    {% if place_filter is defined %}
+        <div data-role="filter-tag">
+            Plaats: 
+            {{ place_filter.getLocaleName(locale) }}
+            <a href="#" data-role="remove-place-filter"><i class="fi-x"></i></a>
+        </div>
+    {% endif %}
+    
+    <div><a href="#" data-role="remove-filters">Wis alle filters <i class="fi-trash"></i></a></div>
+    
+</div>

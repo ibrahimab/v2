@@ -255,6 +255,7 @@ div.autocomplete-container {
 
     div.results {
 
+        z-index: 1000;
         position: relative;
 
         ul {
@@ -266,22 +267,18 @@ div.autocomplete-container {
             background-color: #fff;
             width: 100%;
             margin: 0;
+            margin-top: -1rem;
             max-height: 159px;
             z-index: 1000;
             overflow: scroll;
-
 
             li {
 
                 height: 2rem;
                 width: 100%;
                 overflow: hidden;
-
-                span {
-
-                    padding: 3px 12px;
-                    display: inline-block;
-                }
+                cursor: pointer;
+                padding: 3px 12px;
 
                 &:hover {
 
@@ -298,20 +295,14 @@ div.autocomplete-container {
 
                     font-weight: bold;
                     background-color: #003366;
-
-                    span {
-                        color: #fff;
-                    }
+                    color: #fff;
                 }
 
                 &.region {
 
                     font-weight: bold;
                     padding-left: 15px;
-
-                    span {
-                        color: #003366;
-                    }
+                    color: #003366;
                 }
 
                 &.place {
@@ -319,10 +310,6 @@ div.autocomplete-container {
                 }
             }
         }
-    }
-
-    input {
-        margin-bottom: -2px;
     }
 }
 
