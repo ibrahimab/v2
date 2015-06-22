@@ -37,6 +37,8 @@ class SearchController extends Controller
         $r        = $request->query->get('r',  []);
         $pl       = $request->query->get('pl', []);
         $a        = $request->query->get('a',  []);
+        $be       = $request->query->get('be', null);
+        $ba       = $request->query->get('ba', null);
         $page     = intval($request->query->get('p'));
         $page     = ($page === 0 ? $page : ($page - 1));
         $per_page = intval($this->container->getParameter('app')['results_per_page']);
@@ -47,6 +49,7 @@ class SearchController extends Controller
             $v = intval($v);
         });
 
+        $formFilters   = [];
         $searchService = $this->get('app.api.search');
         $paginator     = $searchService->build()
                                        ->limit($per_page)
@@ -56,37 +59,52 @@ class SearchController extends Controller
                                        ->filter($filters);
 
         if ($request->query->has('a')) {
-            $paginator->where(SearchBuilder::WHERE_ACCOMMODATION, $request->query->get('a'));
+            $paginator->where(SearchBuilder::WHERE_ACCOMMODATION, $a);
         }
 
         if ($request->query->has('c')) {            
-            $paginator->where(SearchBuilder::WHERE_COUNTRY, $request->query->get('c'));
+            $paginator->where(SearchBuilder::WHERE_COUNTRY, $c);
         }
         
         if ($request->query->has('r')) {
-            $paginator->where(SearchBuilder::WHERE_REGION, $request->query->get('r'));
+            $paginator->where(SearchBuilder::WHERE_REGION, $r);
         }
         
         if ($request->query->has('pl')) {
-            $paginator->where(SearchBuilder::WHERE_PLACE, $request->query->get('pl'));
+            $paginator->where(SearchBuilder::WHERE_PLACE, $pl);
+        }
+        
+        if ($request->query->has('be')) {
+            
+            $formFilters['bedrooms'] = $be;
+            $paginator->where(SearchBuilder::WHERE_BEDROOMS, $be);
+        }
+        
+        if ($request->query->has('ba')) {
+            
+            $formFilters['bathrooms'] = $ba;
+            $paginator->where(SearchBuilder::WHERE_BATHROOMS, $ba);
         }
         
         $results    = $paginator->results();
         $javascript = $this->get('app.javascript');
 
         $javascript->set('app.filters.normal',                $filters);
-        $javascript->set('app.filters.custom.countries',      $request->query->get('c',  []));
-        $javascript->set('app.filters.custom.regions',        $request->query->get('r',  []));
-        $javascript->set('app.filters.custom.places',         $request->query->get('pl', []));
-        $javascript->set('app.filters.custom.accommodations', $request->query->get('a',  []));
+        $javascript->set('app.filters.custom.countries',      $c);
+        $javascript->set('app.filters.custom.regions',        $r);
+        $javascript->set('app.filters.custom.places',         $pl);
+        $javascript->set('app.filters.custom.accommodations', $a);
+        $javascript->set('app.filters.form.bedrooms',         $be);
+        $javascript->set('app.filters.form.bathrooms',        $ba);
 
         $data = [
 
-            'paginator' => $results,
-            'filters'   => $filters,
+            'paginator'      => $results,
+            'filters'        => $filters,
             // instance needed to get constants easier from within twig template: constant('const', instance)
             'filter_service' => $this->container->get('app.filter'),
             'custom_filters' => ['countries' => [], 'regions' => [], 'places' => [], 'accommodations' => []],
+            'form_filters'   => $formFilters,
         ];
         
         $custom_filter_entities = $searchService->findOnlyNames($c, $r, $pl, $a);
@@ -118,21 +136,24 @@ class SearchController extends Controller
      */
     public function save(Request $request)
     {
-        if (count($search = $request->query->get('f', [])) === 0) {
-            return $this->redirectToRoute('search_' . $request->getLocale());
-        }
-
         $userService = $this->get('app.api.user');
         $user        = $userService->user();
-        $filters     = $request->query->get('f', []);
-        array_walk_recursive($filters, function(&$v) {
+        $f           = $request->query->get('f', []);
+        $be          = $request->query->get('be', null);
+        $ba          = $request->query->get('ba', null);
+        $c           = $request->query->get('c', []);
+        $r           = $request->query->get('r', []);
+        $pl          = $request->query->get('pl', []);
+        $a           = $request->query->get('a', []);
+        
+        array_walk_recursive($f, function(&$v) {
             $v = intval($v);
         });
 
         if (null !== $user) {
-            $userService->saveSearch($user, $filters);
+            $userService->saveSearch($user, ['f' => $f, 'be' => $be, 'ba' => $ba, 'c' => $c, 'r' => $r, 'pl' => $pl, 'a' => $a]);
         }
 
-        return $this->redirectToRoute('search_' .  $request->getLocale(), ['f' => $filters]);
+        return $this->redirectToRoute('search_' .  $request->getLocale(), ['f' => $f, 'be' => $be, 'ba' => $ba, 'c' => $c, 'r' => $r, 'pl' => $pl, 'a' => $a]);
     }
 }

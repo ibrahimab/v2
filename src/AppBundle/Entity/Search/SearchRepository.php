@@ -500,6 +500,16 @@ class SearchRepository implements SearchServiceRepositoryInterface
                 
                     $andX->add($expr->in('p.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
                     break;
+                    
+                case SearchBuilder::WHERE_BEDROOMS:
+                
+                    $andX->add($expr->gte('t.bedrooms', ':where_' . $clause['field']));
+                    break;
+                    
+                case SearchBuilder::WHERE_BATHROOMS:
+                
+                    $andX->add($expr->gte('t.bathrooms', ':where_' . $clause['field']));
+                    break;
             }
 
             $qb->setParameter('where_' . $clause['field'], $clause['value']);

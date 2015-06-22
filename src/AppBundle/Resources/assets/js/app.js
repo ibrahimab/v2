@@ -13,7 +13,8 @@
         });
 
         // search
-        Chalet.Search.initialize(jq.extend({}, Chalet.get('app')['filters']['normal']));
+        var filters = Chalet.get('app')['filters'];
+        Chalet.Search.initialize(jq.extend({}, filters === undefined ? {} : filters['normal']));
 
         // body element cache
         var body = jq('body');

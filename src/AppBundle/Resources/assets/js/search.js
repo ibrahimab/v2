@@ -11,10 +11,16 @@ window.Chalet = (function(ns, jq, _, undefined) {
             ns.Search.events.bind();
             ns.Search.setContainer();
             
-            ns.Search.filters.countries      = ns.get('app')['filters']['custom']['countries']      || [];
-            ns.Search.filters.regions        = ns.get('app')['filters']['custom']['regions']        || [];
-            ns.Search.filters.places         = ns.get('app')['filters']['custom']['places']         || [];
-            ns.Search.filters.accommodations = ns.get('app')['filters']['custom']['accommodations'] || [];
+            var custom = ns.get('app')['filters'] === undefined ? {} : ns.get('app')['filters']['custom'];
+            
+            ns.Search.filters.countries      = custom['countries']      || [];
+            ns.Search.filters.regions        = custom['regions']        || [];
+            ns.Search.filters.places         = custom['places']         || [];
+            ns.Search.filters.accommodations = custom['accommodations'] || [];
+            ns.Search.filters.bedrooms       = custom['bedrooms']       || null;
+            ns.Search.filters.bathrooms      = custom['bathrooms']      || null;
+            
+            ns.Search.actions.save();
         },
 
         setContainer: function() {
@@ -35,6 +41,9 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 body.on('click', '[data-role="remove-region-filter"]', ns.Search.events.removeCustom.region);
                 body.on('click', '[data-role="remove-place-filter"]', ns.Search.events.removeCustom.place);
                 body.on('click', '[data-role="remove-accommodation-filter"]', ns.Search.events.removeCustom.accommodation);
+                
+                body.on('change', '[data-role="change-bedrooms"]', ns.Search.events.formChanges.bedrooms);
+                body.on('change', '[data-role="change-bathrooms"]', ns.Search.events.formChanges.bathrooms);
             },
 
             change: function(event) {
@@ -103,6 +112,37 @@ window.Chalet = (function(ns, jq, _, undefined) {
                     ns.Search.filters.removeAccommodation(element.data('id'));
                     ns.Search.actions.search();
                 }
+            },
+            
+            formChanges: {
+                
+                bedrooms: function(event) {
+                    
+                    event.preventDefault();
+                    var val = parseInt(jq(this).val(), 10);
+                    
+                    if (val === 0) {
+                        ns.Search.filters.removeBedrooms();
+                    } else {
+                        ns.Search.filters.setBedrooms(val);
+                    }
+                    
+                    ns.Search.actions.search();
+                },
+                
+                bathrooms: function(event) {
+                    
+                    event.preventDefault();
+                    var val = parseInt(jq(this).val(), 10);
+                    
+                    if (val === 0) {
+                        ns.Search.filters.removeBathrooms();
+                    } else {
+                        ns.Search.filters.setBathrooms(val);
+                    }
+                    
+                    ns.Search.actions.search();
+                },
             },
 
             clear: function(event) {
@@ -189,6 +229,18 @@ window.Chalet = (function(ns, jq, _, undefined) {
                     uri.removeQuery('a[]');
                     uri.setQuery('a[]', ns.Search.filters.accommodations);
                 }
+                
+                if (null !== ns.Search.filters.bedrooms) {
+                    
+                    uri.removeQuery('be');
+                    uri.setQuery('be', ns.Search.filters.bedrooms);
+                }
+                
+                if (null !== ns.Search.filters.bathrooms) {
+                    
+                    uri.removeQuery('ba');
+                    uri.setQuery('ba', ns.Search.filters.bathrooms);
+                }
 
                 return uri;
             },
@@ -196,13 +248,19 @@ window.Chalet = (function(ns, jq, _, undefined) {
             loader: function() {
                 ns.Search.container.prepend('<div class="loading"></div>');
             },
+            
+            save: function() {
+                
+                var save = ns.Search.actions.url(Routing.generate('save_search_' + ns.get('app')['locale']));
+                jq('[data-role="save-search"]').attr('href', save.toString());
+            },
 
             search: function(page) {
 
                 ns.Search.actions.loader();
 
                 var url = ns.Search.actions.url(Routing.generate('search_' + ns.get('app')['locale']), page);
-                console.log(url.toString());
+                
                 jq.ajax({
 
                     url: url.toString(),
@@ -215,8 +273,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
                             window.history.pushState({path: url}, '', url);
                         }
 
-                        var save = ns.Search.actions.url(Routing.generate('save_search_' + ns.get('app')['locale']));
-                        jq('[data-role="save-search"]').attr('href', save.toString());
+                        ns.Search.actions.save();
                     }
                 });
             }
@@ -233,6 +290,10 @@ window.Chalet = (function(ns, jq, _, undefined) {
             places: [],
             
             accommodations: [],
+            
+            bedrooms: null,
+            
+            bathrooms: null,
 
             active: function() {
                 return ns.Search.filters.filters;
@@ -287,6 +348,8 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 ns.Search.filters.regions        = [];
                 ns.Search.filters.places         = [];
                 ns.Search.filters.accommodations = [];
+                ns.Search.filters.bedrooms       = null;
+                ns.Search.filters.bathrooms      = null;
             },
             
             addCountry: function(country) {
@@ -341,6 +404,26 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 
                 ns.Search.filters.accommodations = _.reject(ns.Search.filters.accommodations, function(item) { return parseInt(item, 10) === parseInt(accommodation, 10); });
                 return ns.Search.filters.accommodations;
+            },
+            
+            setBedrooms: function(bedrooms) {
+                
+                ns.Search.filters.bedrooms = bedrooms;
+                return ns.Search.filters.bedrooms;
+            },
+            
+            removeBedrooms: function() {
+                ns.Search.filters.bedrooms = null;
+            },
+            
+            setBathrooms: function(bathrooms) {
+                
+                ns.Search.filters.bathrooms = bathrooms;
+                return ns.Search.filters.bathrooms;
+            },
+            
+            removeBathrooms: function() {
+                ns.Search.filters.bathrooms = null;
             }
         },
     };
