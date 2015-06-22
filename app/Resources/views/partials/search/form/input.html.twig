@@ -1,7 +1,12 @@
 {% set persons   = 'persons'|trans|lower %}
 {% set bathrooms = 'bathrooms'|trans|lower %}
 {% set bedrooms  = 'bedrooms'|trans|lower %}
-<input type="text" id="choose-destination" class="radius" placeholder="Waar wil je naar toe?">
+    
+<div class="autocomplete-container">
+    <input type="text" name="query" data-role="autocomplete-query" data-type="search-book" id="choose-destination" class="radius" placeholder="Waar wil je naartoe?"  />
+    <div class="results search-book" data-role="autocomplete-results">
+    </div>
+</div>
 <select class="radius">
     <option value="husker">{{ 'select-when'|trans }}</option>
     <option value="1423868400">weekend 14 februari 2015</option>
@@ -21,25 +26,22 @@
     <option value="hoeveel">{{ 'select-how-many'|trans }}</option>
     <option value="1">1 {{ 'person'|trans }}</option>
     {% for i in 2..39 %}
-    <option value="2">{{ i ~ ' ' ~ persons }}</option>
+        <option value="{{ i }}">{{ i ~ ' ' ~ persons }}</option>
     {% endfor %}
     <option value="40">40 {{ 'or-more'|trans }} {{ persons }}</option>
 </select>
-<select class="radius">
-    <option value="husker">{{ 'select-bedrooms'|trans }}</option>
-    <option value="1423868400">1 {{ 'bedroom'|trans }}</option>
-    <option value="1423868400">2 {{ bedrooms }}</option>
-    <option value="1423868400">3 {{ bedrooms }}</option>
-    <option value="1423868400">4 {{ bedrooms }}</option>
-    <option value="1423868400">5 {{ bedrooms }}</option>
-    <option value="1423868400">6 {{ bedrooms }}</option>
+<select class="radius" data-role="change-bedrooms">
+    <option value="0">{{ 'select-bedrooms'|trans }}</option>
+    <option value="1"{{ form_filters['bedrooms'] is defined and 1 == form_filters['bedrooms'] ? ' selected="selected"' }}>1 {{ 'bedroom'|trans }}</option>
+    {% for i in 2..10 %}
+        <option value="{{ i }}"{{ form_filters['bedrooms'] is defined and i == form_filters['bedrooms'] ? ' selected="selected"' }}>{{ i }} {{ bedrooms }}</option>
+    {% endfor %}
 </select>
-<select class="radius">
-    <option value="husker">{{ 'select-bathrooms'|trans }}</option>
+<select class="radius" data-role="change-bathrooms">
+    <option value="0">{{ 'select-bathrooms'|trans }}</option>
     <option value="1423868400">1 {{ 'bathroom'|trans }}</option>
-    <option value="1423868400">2 {{ bathrooms }}</option>
-    <option value="1423868400">3 {{ bathrooms }}</option>
-    <option value="1423868400">4 {{ bathrooms }}</option>
-    <option value="1423868400">5 {{ bathrooms }}</option>
-    <option value="1423868400">6 {{ bathrooms }}</option>
+    <option value="1"{{ form_filters['bathrooms'] is defined and 1 == form_filters['bathrooms'] ? ' selected="selected"' }}>1 {{ 'bathroom'|trans }}</option>
+    {% for i in 2..10 %}
+        <option value="{{ i }}"{{ form_filters['bathrooms'] is defined and i == form_filters['bathrooms'] ? ' selected="selected"' }}>{{ i }} {{ bathrooms }}</option>
+    {% endfor %}
 </select>

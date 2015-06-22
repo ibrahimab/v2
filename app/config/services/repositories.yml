@@ -94,6 +94,7 @@ services:
         calls:
             - [setSeason,  [@app.concern.season]]
             - [setWebsite, [@app.concern.website]]
+            - [setLocale,  [@service_container]]
             
     app.repository.autocomplete:
         class:     AppBundle\Document\Autocomplete\AutocompleteRepository

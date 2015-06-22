@@ -1,6 +1,6 @@
 {{ set_paginator(paginator) }}
 <div class="search-results-container" data-role="search-results">
-    {% include 'partials/search/tags.html.twig' with {'tags': tags} %}
+    {% include 'partials/search/filters.html.twig' %}
     <hr />
     {{ render_paginator() }}
     <div class="row">

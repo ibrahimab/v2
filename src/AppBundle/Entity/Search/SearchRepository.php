@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Entity\Search;
+use       AppBundle\Entity\BaseRepositoryTrait;
 use       AppBundle\Service\Api\Search\SearchServiceRepositoryInterface;
 use       AppBundle\Service\Api\Search\SearchService;
 use       AppBundle\Service\Api\Search\SearchBuilder;
@@ -18,11 +19,12 @@ use       Doctrine\ORM\Tools\Pagination\Paginator;
  *
  * @author  Ibrahim Abdullah
  * @package Chalet
- * @version 0.0.2
+ * @version 0.0.4
  * @since   0.0.2
  */
 class SearchRepository implements SearchServiceRepositoryInterface
 {
+    use BaseRepositoryTrait;
     /**
      * @const string
      */
@@ -34,16 +36,6 @@ class SearchRepository implements SearchServiceRepositoryInterface
     const SORT_ORDER_DEFAULT = SearchBuilder::SORT_ORDER_ASC;
 
     /**
-     * @var integer
-     */
-    protected $season;
-
-    /**
-     * @var string
-     */
-    protected $website;
-
-    /**
      * Constructor, injecting the EntityManager
      *
      * @param EntityManager $entityManager
@@ -51,6 +43,66 @@ class SearchRepository implements SearchServiceRepositoryInterface
     public function __construct(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
+    }
+
+    /**
+     * @param array $ids
+     * @return array
+     */
+    public function findOnlyNames($countries, $regions, $places, $accommodations)
+    {
+        if (count(array_merge($countries, $regions, $places, $accommodations)) === 0) {
+            return [];
+        }
+        
+        $qb       = $this->getEntityManager()->createQueryBuilder();
+        $expr     = $qb->expr();
+                  
+        $where    = $expr->andX();
+        $select   = [];
+        $entities = [];
+        
+        if (count($countries) > 0) {
+            
+            $select[]   = 'partial c.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, startCode}';
+            $entities[] = 'AppBundle:Country\Country c';
+            
+            $where->add($expr->in('c.' . $this->getLocaleField('name'), ':country_names'));
+            $qb->setParameter('country_names', $countries);
+        }
+        
+        if (count($regions) > 0) {
+            
+            $select[]   = 'partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}';
+            $entities[] = 'AppBundle:Region\Region r';
+            
+            $where->add($expr->in('r.' . $this->getLocaleField('name'), ':region_names'));
+            $qb->setParameter('region_names', $regions);
+        }
+        
+        if (count($places) > 0) {
+            
+            $select[]   = 'partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}';
+            $entities[] = 'AppBundle:Place\Place p';
+            
+            $where->add($expr->in('p.' . $this->getLocaleField('name'), ':place_names'));
+            $qb->setParameter('place_names', $places);
+        }
+        
+        if (count($accommodations) > 0) {
+            
+            $select[]   = 'partial a.{id, name, shortDescription, englishShortDescription, germanShortDescription}';
+            $entities[] = 'AppBundle:Accommodation\Accommodation a';
+            
+            $where->add($expr->in('a.id', ':accommodation_ids'));
+            $qb->setParameter('accommodation_ids', $accommodations);
+        }
+        
+        $qb->select(implode(', ', $select))
+           ->add('from', implode(', ', $entities))
+           ->where($where);
+        
+        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -99,9 +151,7 @@ class SearchRepository implements SearchServiceRepositoryInterface
             $qb->orderBy($sort_field, $sort_order);
         }
 
-        // $this->where($where, $qb);
-
-        // dump($qb->getQuery()->getSQL());exit;
+        $this->where($where, $qb);
 
         $paginator = new Paginator($qb, true);
         $paginator->page = [
@@ -154,60 +204,6 @@ class SearchRepository implements SearchServiceRepositoryInterface
     public function getRepository($entity)
     {
         return $this->entityManager->getRepository($entity);
-    }
-
-    /**
-     * Setting season
-     *
-     * @param SeasonConcern $seasonConcern
-     * @return void
-     */
-    public function setSeason(SeasonConcern $seasonConcern)
-    {
-        $this->season = $seasonConcern->get();
-    }
-
-    /**
-     * Getting season
-     *
-     * @return integer
-     */
-    public function getSeason()
-    {
-        return $this->season;
-    }
-
-    /**
-     * Setting website
-     *
-     * @param WebsiteConcern $websiteConcern
-     */
-    public function setWebsite(WebsiteConcern $websiteConcern)
-    {
-        $this->website = $websiteConcern->get();
-    }
-
-    /**
-     * Getting website
-     *
-     * @return string
-     */
-    public function getWebsite()
-    {
-        return $this->website;
-    }
-
-    /**
-     * Getting either the option passed in or the default
-     *
-     * @param array $options
-     * @param string $key
-     * @param mixed $default
-     * @return mixed
-     */
-    public static function getOption($options, $key, $default = null)
-    {
-        return isset($options[$key]) ? $options[$key] : $default;
     }
 
     public function filters($qb, $filters)
@@ -474,16 +470,50 @@ class SearchRepository implements SearchServiceRepositoryInterface
     public function where($where, $qb)
     {
         $expr = $qb->expr();
+        $andX = $expr->andX();
+
         foreach ($where as $clause) {
 
             switch ($clause['field']) {
 
                 case SearchBuilder::WHERE_WEEKEND_SKI:
-                    $field = 'a.weekendSki';
-                break;
+                
+                    $andX->add($expr->eq('a.weekendSki', ':where_' . $clause['field']));
+                    break;
+                
+                case SearchBuilder::WHERE_ACCOMMODATION:
+                
+                    $andX->add($expr->in('a.id', ':where_' . $clause['field']));
+                    break;
+                
+                case SearchBuilder::WHERE_COUNTRY:
+                
+                    $andX->add($expr->in('c.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
+                    break;
+                
+                case SearchBuilder::WHERE_REGION:
+                
+                    $andX->add($expr->in('r.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
+                    break;
+                
+                case SearchBuilder::WHERE_PLACE:
+                
+                    $andX->add($expr->in('p.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
+                    break;
+                    
+                case SearchBuilder::WHERE_BEDROOMS:
+                
+                    $andX->add($expr->gte('t.bedrooms', ':where_' . $clause['field']));
+                    break;
+                    
+                case SearchBuilder::WHERE_BATHROOMS:
+                
+                    $andX->add($expr->gte('t.bathrooms', ':where_' . $clause['field']));
+                    break;
             }
 
-            $qb->andWhere($expr->eq($field, $clause['value']));
+            $qb->setParameter('where_' . $clause['field'], $clause['value']);
+            $qb->andWhere($andX);
         }
 
         return $qb;

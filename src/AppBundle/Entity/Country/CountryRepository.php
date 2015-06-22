@@ -14,6 +14,9 @@ use       Doctrine\ORM\EntityRepository;
  */
 class CountryRepository extends BaseRepository implements CountryServiceRepositoryInterface
 {
+    /**
+     * @return CountryServiceEntityInterface[]
+     */   
 	public function findActive()
 	{
 		$qb   = $this->createQueryBuilder('c');

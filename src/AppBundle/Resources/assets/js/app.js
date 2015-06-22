@@ -5,10 +5,16 @@
     jq(function() {
 
         // autocomplete
-        Chalet.Autocomplete.initialize('[data-role="autocomplete-query"]', 5, '[data-role="autocomplete-results"]');
+        Chalet.Autocomplete.initialize({
+            
+            input: '[data-role="autocomplete-query"]', 
+            limit: 5, 
+            resultsContainer: '[data-role="autocomplete-results"]'
+        });
 
         // search
-        Chalet.Search.initialize(jq.extend({}, Chalet.get('app')['tags']));
+        var filters = Chalet.get('app')['filters'];
+        Chalet.Search.initialize(jq.extend({}, filters === undefined ? {} : filters['normal']));
 
         // body element cache
         var body = jq('body');
