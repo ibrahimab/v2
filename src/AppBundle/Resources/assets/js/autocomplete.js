@@ -128,22 +128,22 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         
                         case ns.Autocomplete.entities.ENTITY_COUNTRY:
                             
-                            uri.setQuery('c', data.id);
+                            uri.setQuery('c[]', data.id);
                             break;
                             
                         case ns.Autocomplete.entities.ENTITY_REGION:
                             
-                            uri.setQuery('r', data.id);
+                            uri.setQuery('r[]', data.id);
                             break;
                             
                         case ns.Autocomplete.entities.ENTITY_PLACE:
                             
-                            uri.setQuery('pl', data.id);
+                            uri.setQuery('pl[]', data.id);
                             break;
                             
                         case ns.Autocomplete.entities.ENTITY_ACCOMMODATION:
                             
-                            uri.setQuery('a', data.id);
+                            uri.setQuery('a[]', data.id);
                             break;
                     }
                     
