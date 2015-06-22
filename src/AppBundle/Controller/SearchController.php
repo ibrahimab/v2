@@ -42,6 +42,7 @@ class SearchController extends Controller
         $per_page = intval($this->container->getParameter('app')['results_per_page']);
         $offset   = round($per_page * $page);
         $filters  = $request->query->get('f', []);
+        
         array_walk_recursive($filters, function(&$v) {
             $v = intval($v);
         });

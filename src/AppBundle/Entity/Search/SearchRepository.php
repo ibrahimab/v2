@@ -470,37 +470,40 @@ class SearchRepository implements SearchServiceRepositoryInterface
     public function where($where, $qb)
     {
         $expr = $qb->expr();
+        $andX = $expr->andX();
+
         foreach ($where as $clause) {
 
             switch ($clause['field']) {
 
                 case SearchBuilder::WHERE_WEEKEND_SKI:
                 
-                    $qb->andWhere($expr->eq('a.weekendSki', ':where_' . $clause['field']));
+                    $andX->add($expr->eq('a.weekendSki', ':where_' . $clause['field']));
                     break;
                 
                 case SearchBuilder::WHERE_ACCOMMODATION:
                 
-                    $qb->andWhere($expr->in('a.id', ':where_' . $clause['field']));
+                    $andX->add($expr->in('a.id', ':where_' . $clause['field']));
                     break;
                 
                 case SearchBuilder::WHERE_COUNTRY:
                 
-                    $qb->andWhere($expr->in('c.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
+                    $andX->add($expr->in('c.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
                     break;
                 
                 case SearchBuilder::WHERE_REGION:
                 
-                    $qb->andWhere($expr->in('r.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
+                    $andX->add($expr->in('r.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
                     break;
                 
                 case SearchBuilder::WHERE_PLACE:
                 
-                    $field = 'p.' . $this->getLocaleField('name');
+                    $andX->add($expr->in('p.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
                     break;
             }
 
             $qb->setParameter('where_' . $clause['field'], $clause['value']);
+            $qb->andWhere($andX);
         }
 
         return $qb;

@@ -34,24 +34,13 @@
 
     {% endif %}
     
-    {% if custom_filters['accommodations']|length > 0 %}
-        {% set filters_active = true %}
-        {% for accommodation in custom_filters['accommodations'] %}
-            <div data-role="filter-tag">
-                Accommodatie: 
-                {{ accommodation.getLocaleName(locale) }}
-                <a href="#" data-role="remove-accommodation-filter"><i class="fi-x"></i></a>
-            </div>
-        {% endfor %}
-    {% endif %}
-    
     {% if custom_filters['countries']|length > 0 %}
         {% set filters_active = true %}
         {% for country in custom_filters['countries'] %}
             <div data-role="filter-tag">
                 Land: 
                 {{ country.getLocaleName(locale) }}
-                <a href="#" data-role="remove-country-filter"><i class="fi-x"></i></a>
+                <a href="#" data-role="remove-country-filter" data-entity="country" data-id="{{ country.getLocaleName(locale) }}"><i class="fi-x"></i></a>
             </div>
         {% endfor %}
     {% endif %}
@@ -62,7 +51,7 @@
             <div data-role="filter-tag">
                 Skigebied: 
                 {{ region.getLocaleName(locale) }}
-                <a href="#" data-role="remove-region-filter"><i class="fi-x"></i></a>
+                <a href="#" data-role="remove-region-filter" data-entity="region" data-id="{{ region.getLocaleName(locale) }}"><i class="fi-x"></i></a>
             </div>
         {% endfor %}
     {% endif %}
@@ -73,7 +62,18 @@
             <div data-role="filter-tag">
                 Plaats: 
                 {{ place.getLocaleName(locale) }}
-                <a href="#" data-role="remove-place-filter"><i class="fi-x"></i></a>
+                <a href="#" data-role="remove-place-filter" data-entity="place" data-id="{{ place.getLocaleName(locale) }}"><i class="fi-x"></i></a>
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    {% if custom_filters['accommodations']|length > 0 %}
+        {% set filters_active = true %}
+        {% for accommodation in custom_filters['accommodations'] %}
+            <div data-role="filter-tag">
+                Accommodatie: 
+                {{ accommodation.getLocaleName(locale) }}
+                <a href="#" data-role="remove-accommodation-filter" data-entity="accommodation" data-id="{{ accommodation.getId() }}"><i class="fi-x"></i></a>
             </div>
         {% endfor %}
     {% endif %}

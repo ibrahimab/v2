@@ -26,10 +26,15 @@ window.Chalet = (function(ns, jq, _, undefined) {
             bind: function() {
 
                 var body = jq('body');
-                body.on('click', '[data-role="change-filter"]',   ns.Search.events.change);
-                body.on('click', '[data-role="remove-filter"]',   ns.Search.events.remove);
-                body.on('click', '[data-role="remove-filters"]',  ns.Search.events.clear);
-                body.on('click', '[data-role="paginate-search"]', ns.Search.events.paginate);
+                body.on('click', '[data-role="change-filter"]',        ns.Search.events.change);
+                body.on('click', '[data-role="remove-filter"]',        ns.Search.events.remove);
+                body.on('click', '[data-role="remove-filters"]',       ns.Search.events.clear);
+                body.on('click', '[data-role="paginate-search"]',      ns.Search.events.paginate);
+                
+                body.on('click', '[data-role="remove-country-filter"]', ns.Search.events.removeCustom.country);
+                body.on('click', '[data-role="remove-region-filter"]', ns.Search.events.removeCustom.region);
+                body.on('click', '[data-role="remove-place-filter"]', ns.Search.events.removeCustom.place);
+                body.on('click', '[data-role="remove-accommodation-filter"]', ns.Search.events.removeCustom.accommodation);
             },
 
             change: function(event) {
@@ -62,6 +67,42 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                 jq('[data-role="change-filter"][data-filter="' + element.data('filter') + '"][data-filter-value="' + element.data('filter-value') + '"][data-action="remove"]').trigger('click');
                 ns.Search.actions.search();
+            },
+            
+            removeCustom: {
+                
+                country: function(event) {
+                    
+                    event.preventDefault();
+                    var element = jq(this);
+                    
+                    ns.Search.filters.removeCountry(element.data('id'));
+                    ns.Search.actions.search();
+                },
+                region: function(event) {
+                    
+                    event.preventDefault();
+                    var element = jq(this);
+                    
+                    ns.Search.filters.removeRegion(element.data('id'));
+                    ns.Search.actions.search();
+                },
+                place: function(event) {
+                    
+                    event.preventDefault();
+                    var element = jq(this);
+                    
+                    ns.Search.filters.removePlace(element.data('id'));
+                    ns.Search.actions.search();
+                },
+                accommodation: function(event) {
+
+                    event.preventDefault();
+                    var element = jq(this);
+                    
+                    ns.Search.filters.removeAccommodation(element.data('id'));
+                    ns.Search.actions.search();
+                }
             },
 
             clear: function(event) {
@@ -240,7 +281,12 @@ window.Chalet = (function(ns, jq, _, undefined) {
             },
 
             clear: function() {
-                ns.Search.filters.filters = {};
+                
+                ns.Search.filters.filters        = {};
+                ns.Search.filters.countries      = [];
+                ns.Search.filters.regions        = [];
+                ns.Search.filters.places         = [];
+                ns.Search.filters.accommodations = [];
             },
             
             addCountry: function(country) {
@@ -293,7 +339,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
             
             removeAccommodation: function(accommodation) {
                 
-                ns.Search.filters.accommodations = _.reject(ns.Search.filters.accommodations, function(item) { return item === accommodation; });
+                ns.Search.filters.accommodations = _.reject(ns.Search.filters.accommodations, function(item) { return parseInt(item, 10) === parseInt(accommodation, 10); });
                 return ns.Search.filters.accommodations;
             }
         },
