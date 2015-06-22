@@ -13,3 +13,6 @@ to release.
 ## Release 0.0.3
 Forgot some references to bathroom filter, release 0.0.2 is therefore buggy.
 This hotfix fixes the issue.
+
+## Release 0.0.4
+Releasing first complete version of search-book feature
