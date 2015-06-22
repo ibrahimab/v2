@@ -1,0 +1,97 @@
+{% extends 'layouts/default.html.twig' %}
+
+{% block breadcrumbs %}
+    {{ breadcrumbs() }}
+{% endblock %}
+
+{% block body %}
+    
+    {{ parent() }}
+
+    <section id="search-filter-results">
+        <div class="row">
+            <div id="search-results">
+                <div id="search-filters-active">
+                    <table class="no-striping">
+                        <thead>
+                            <tr>
+                                <th colspan="2">Zoekopdrachten</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for searches in saved_searches %}
+                            <tr>
+                                <td>
+                                    {% for filter, search in searches['search']['f'] %}
+                                    
+                                        {% if search is iterable %}
+                                        
+                                            {% for term in search %}
+                                            
+                                                <div>{{ filter|tokenize|trans }}: {{ term|tokenize(filter)|trans }}</div>
+                                            
+                                            {% endfor %}
+                                        
+                                        {% else %}
+                                    
+                                            <div>{{ filter|tokenize|trans }}: {{ search|tokenize(filter)|trans }}</div>
+                                        
+                                        {% endif %}
+                                    
+                                    {% endfor %}
+                                    
+                                    {% if searches['search']['be'] is defined %}
+                                        <div>{{ 'bedrooms'|trans }}: minimaal {{ searches['search']['be'] }}</div>
+                                    {% endif %}
+                                    
+                                    {% if searches['search']['ba'] is defined %}
+                                        <div>{{ 'bathrooms'|trans }}: minimaal {{ searches['search']['ba'] }}</div>
+                                    {% endif %}
+                                    
+                                    {% if searches['search']['c'] is defined %}
+                                        
+                                        {% for id in searches['search']['c'] %}
+                                        
+                                            <div>{{ 'Land'|trans }}: {{ id }}</div>
+                                        
+                                        {% endfor %}
+                                        
+                                    {% endif %}
+                                    
+                                    {% if searches['search']['r'] is defined %}
+                                        
+                                        {% for id in searches['search']['r'] %}
+                                        
+                                            <div>{{ 'Skigebied'|trans }}: {{ id }}</div>
+                                        
+                                        {% endfor %}
+                                        
+                                    {% endif %}
+                                    
+                                    {% if searches['search']['pl'] is defined %}
+                                        
+                                        {% for id in searches['search']['pl'] %}
+                                        
+                                            <div>{{ 'Plaats'|trans }}: {{ id }}</div>
+                                        
+                                        {% endfor %}
+                                        
+                                    {% endif %}
+                                    
+                                    <div class="hide"></div>
+                                </td>
+                                <td class="valign-middle">
+                                    <a href="{{ locale_path('search', searches['search']) }}" class="button blank small radius">
+                                        Zoekresultaten
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+{% endblock body %}

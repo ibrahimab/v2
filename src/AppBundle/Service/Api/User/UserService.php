@@ -51,6 +51,17 @@ class UserService
         
         return $this->user;
     }
+    
+    /**
+     * Create a new user
+     *
+     * @param mixed $userId
+     * @return UserServiceDocumentInterface
+     */
+    public function create($userId)
+    {   
+        return $this->user = $this->userServiceRepository->create($userId);
+    }
 
     /**
      * Get user object from mongo
@@ -62,6 +73,18 @@ class UserService
      */
 	public function get($userId, $fields = [], $andWhere = [])
 	{
-		return $this->userServiceRepository->get($userId, $fields, $andWhere = []);
+		return $this->userServiceRepository->get($userId, $fields, $andWhere);
 	}
+    
+    /**
+     * Save search to mongo
+     *
+     * @param UserServiceDocumentInterface $user
+     * @param array $search
+     * @return UserServiceDocumentInterface
+     */
+    public function saveSearch(UserServiceDocumentInterface $user, $search)
+    {
+        return $this->userServiceRepository->saveSearch($user, $search);
+    }
 }

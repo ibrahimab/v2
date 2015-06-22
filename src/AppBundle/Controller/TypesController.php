@@ -37,35 +37,35 @@ class TypesController extends Controller
      */
     public function showAction($beginCode, $typeId)
     {
-        $typeService      = $this->get('service.api.type');
-        $surveyService    = $this->get('service.api.booking.survey');
-        $season           = $this->get('app.concern.season');
-        $featureService   = $this->get('old.feature');
-        
+        $typeService    = $this->get('app.api.type');
+        $surveyService  = $this->get('app.api.booking.survey');
+        $season         = $this->get('app.concern.season');
+        $featureService = $this->get('old.feature');
+
         try {
-            
+
             $type          = $typeService->findById($typeId);
             $surveyData    = $surveyService->allByType($type);
             $accommodation = $type->getAccommodation();
             $place         = $accommodation->getPlace();
             $region        = $place->getRegion();
             $data          = [
-            
+
                 'type'         => implode(',', $type->getFeatures()),
                 'accommodatie' => implode(',', $accommodation->getFeatures()),
                 'plaats'       => implode(',', $place->getFeatures()),
                 'skigebied'    => implode(',', $region->getFeatures()),
                 'toonper'      => $accommodation->getShow(),
             ];
-            
+
             $features = $featureService->get_kenmerken($type->getId(), $data);
-            
+
         } catch (\Exception $e) {
             throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found: (' . $e->getMessage() . ')');
         }
-        
+
         return [
-            
+
             'type'               => $type,
             'surveyData'         => $surveyData,
             'minimalSurveyCount' => $this->container->getParameter('app')['minimalSurveyCount'],

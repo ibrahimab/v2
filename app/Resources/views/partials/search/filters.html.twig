@@ -1,0 +1,103 @@
+{% set locale = get_locale() %}
+{% set filters_active = false %}
+<div data-role="filter-tags" id="search-filters-active">
+
+    {% if filters %}
+        
+        {% set filters_active = true %}
+        
+        {% for filter, data in filters %}
+
+            {% if data is iterable %}
+            
+                {% for value in data %}
+                
+                    <div data-role="filter-tag">
+                        {{ filter|tokenize|trans }}:
+                        {{ value|tokenize(filter)|trans }}
+                        <a href="#" data-role="remove-filter" data-filter="{{ filter }}" data-filter-value="{{ value }}"><i class="fi-x"></i></a>
+                    </div>
+                
+                {% endfor %}
+            
+            {% else %}
+        
+                <div data-role="filter-tag">
+                    {{ filter|tokenize|trans }}:
+                    {{ data|tokenize(filter)|trans }}
+                    <a href="#" data-role="remove-filter" data-filter="{{ filter }}" data-filter-value="{{ data }}"><i class="fi-x"></i></a>
+                </div>
+        
+            {% endif %}
+            
+        {% endfor %}
+
+    {% endif %}
+    
+    {% if custom_filters['countries']|length > 0 %}
+        {% set filters_active = true %}
+        {% for country in custom_filters['countries'] %}
+            <div data-role="filter-tag">
+                Land: 
+                {{ country.getLocaleName(locale) }}
+                <a href="#" data-role="remove-country-filter" data-id="{{ country.getLocaleName(locale) }}"><i class="fi-x"></i></a>
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    {% if custom_filters['regions']|length > 0 %}
+        {% set filters_active = true %}
+        {% for region in custom_filters['regions'] %}
+            <div data-role="filter-tag">
+                Skigebied: 
+                {{ region.getLocaleName(locale) }}
+                <a href="#" data-role="remove-region-filter" data-id="{{ region.getLocaleName(locale) }}"><i class="fi-x"></i></a>
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    {% if custom_filters['places']|length > 0 %}
+        {% set filters_active = true %}
+        {% for place in custom_filters['places'] %}
+            <div data-role="filter-tag">
+                Plaats: 
+                {{ place.getLocaleName(locale) }}
+                <a href="#" data-role="remove-place-filter" data-id="{{ place.getLocaleName(locale) }}"><i class="fi-x"></i></a>
+            </div>
+        {% endfor %}
+    {% endif %}
+     
+    {% if custom_filters['accommodations']|length > 0 %}
+        {% set filters_active = true %}
+        {% for accommodation in custom_filters['accommodations'] %}
+            <div data-role="filter-tag">
+                Accommodatie: 
+                {{ accommodation.getLocaleName(locale) }}
+                <a href="#" data-role="remove-accommodation-filter" data-id="{{ accommodation.getId() }}"><i class="fi-x"></i></a>
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    {% if form_filters['bedrooms'] is defined %}
+        {% set filters_active = true %}
+        <div data-role="filter-tag">
+            Slaapkamers: 
+            minimaal {{ form_filters['bedrooms'] }}
+            <a href="#" data-role="remove-bedrooms-filter"><i class="fi-x"></i></a>
+        </div>
+    {% endif %}
+    
+    {% if form_filters['bathrooms'] is defined %}
+        {% set filters_active = true %}
+        <div data-role="filter-tag">
+            Badkamers: 
+            minimaal {{ form_filters['bathrooms'] }}
+            <a href="#" data-role="remove-bedrooms-filter"><i class="fi-x"></i></a>
+        </div>
+    {% endif %}
+    
+    {% if filters_active == true %}
+        <div><a href="#" data-role="remove-filters">Wis alle filters <i class="fi-trash"></i></a></div>
+    {% endif %}
+    
+</div>

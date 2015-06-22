@@ -1,39 +1,48 @@
 {% set locale = get_locale() %}
 <div class="table-wrapper">
-    <table>
-        <thead>
-            <tr>
-                <th><span>Per</span>sonen</th>
-                <th><span>Slaap</span>kamers</th>
-                <th><span>Bad</span>kamers</th>
-                <th>Type</th>
-                <th>Beoordeling</th>
-                <th>&nbsp;</th>
-                <th><span>Prijs accom</span>modatie</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for type in types %}
-            <tr class="sale-type"><!-- notice this row is in discount -->
-                <td>
-                    <i class="sprite sprite-icon-torso"></i>
-                    {{ ( type.getOptimalResidents() == type.getMaxResidents() ? type.getOptimalResidents() : (type.getOptimalResidents() ~ ' - ' ~ type.getMaxResidents()) ) }}
-                </td>
-                <td><i class="sprite sprite-icon-sleep"></i>{{ type.getBedrooms() }}</td>
-                <td><i class="sprite sprite-icon-bath"></i>{{ type.getBathrooms() }}</td>
-                <td>{{ type.getLocaleName(locale) }}</td>
-                <td><span>8,5</span></td>
-                <td><i class="sprite sprite-icon-discount"></i></td>
-                <td>&euro; 295,-<i class="fi-info"></i></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    
+    <div class="tb">
+
+        <div class="tb-h">
+            <div class="tb-c tb-h-1">{{ 'persons'|trans }}</div>
+            <div class="tb-c tb-h-2">{{ 'bedrooms'|trans }}</div>
+            <div class="tb-c tb-h-3">{{ 'bathrooms'|trans }}</div>
+            <div class="tb-c tb-h-4">{{ 'type'|trans }}</div>
+            <div class="tb-c tb-h-5">{{ 'rating'|trans }}</div>
+            <div class="tb-c tb-h-6">&nbsp;</div>
+            <div class="tb-c tb-h-7">{{ 'price-accommodation'|trans }}</div>
+        </div>
+
+        {% for type in types %}
+        <a class="tb-r{{ loop.index % 2 ? ' sale-type' : '' }}" href="{{ locale_path('show_type', {'beginCode': type.getAccommodation().getPlace().getCountry().getStartCode(), 'typeId': type.getId()}) }}">
+            <div class="tb-c tb-c-1">
+                <i class="sprite sprite-icon-torso"></i>
+                {{ ( type.getOptimalResidents() == type.getMaxResidents() ? type.getOptimalResidents() : (type.getOptimalResidents() ~ ' - ' ~ type.getMaxResidents()) ) }}
+            </div>
+            <div class="tb-c">
+                <i class="sprite sprite-icon-sleep"></i>
+                {{ type.getBedrooms() }}
+            </div>
+            <div class="tb-c">
+                <i class="sprite sprite-icon-bath"></i>
+                {{ type.getBathrooms() }}
+            </div>
+            <div class="tb-c">
+                {{ type.getLocaleName(locale) }}
+            </div>
+            <div class="tb-c"><span>8,5</span></div>
+            <div class="tb-c tb-c-6">{% if loop.index % 2 %}<i class="sprite sprite-icon-discount"></i>{% endif %}</div>
+            <div class="tb-c tb-c-7">&euro; 295,-<i class="fi-info"></i></div>
+        </a>
+        {% endfor %}
+        
+    </div>
     <div class="table-explain">
         <p>
-            <span>U kunt deze tabel horizontaal scrollen</span>
+            <span>{{ 'table-scrollable-horizontally'|trans }}</span>
             <i class="sprite sprite-cursor-explain"></i>
-            <a href="" class="button tiny radius">ik heb het begrepen</a>
+            <a href="" class="button tiny radius">{{ 'got-it'|trans }}</a>
         </p>
     </div>
+    
 </div>

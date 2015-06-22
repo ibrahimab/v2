@@ -8,7 +8,7 @@ namespace AppBundle\Service\Api\User;
  * @since 0.0.2
  */
 interface UserServiceRepositoryInterface
-{
+{   
     /**
      * @param mixed $userId
      * @param array $fields
@@ -16,4 +16,19 @@ interface UserServiceRepositoryInterface
      * @return UserServiceDocumentInterface
      */
     public function get($userId, $fields = [], $andWhere = []);
+    
+    /**
+     * @param mixed $userId
+     * @return UserServiceDocumentInterface
+     */
+    public function create($userId);
+    
+    /**
+     * Save search to mongo
+     *
+     * @param mixed $userId
+     * @param array $search
+     * @return UserServiceDocumentInterface
+     */
+    public function saveSearch(UserServiceDocumentInterface $user, $search);
 }

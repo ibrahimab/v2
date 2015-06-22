@@ -5,8 +5,12 @@ framework:
     router:
         resource: "%kernel.root_dir%/config/stag/routing.yml"
 
-assetic:
-    use_controller: false
-
 doctrine_mongodb:
     default_database: chalet_stag
+
+assetic:
+    use_controller: true
+    filters:
+        cssrewrite: ~
+        lessphp:
+            apply_to: "\.less$"

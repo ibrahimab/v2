@@ -19,5 +19,9 @@ JMSTranslationBundle_ui:
     type:     annotation
     prefix:   /_trans
 
+_assetic:
+    resource: .
+    type:     assetic
+
 _main:
     resource: "../routing.yml"

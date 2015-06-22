@@ -25,7 +25,7 @@
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
 
-        <script type="text/javascript">Chalet.import({{ js_object()|json_encode()|raw }});</script>
+        <script type="text/javascript">Chalet.import({{ js_object()|serialize()|raw }});</script>
 
         {% block stylesheets %}{% endblock %}
 
@@ -52,12 +52,14 @@
                        'bundles/app/js/vendor/foundation/responsive-tables.js'
                        'bundles/app/js/vendor/slick.min.js'
 					   'bundles/app/js/vendor/lightbox.min.js'
+					   'bundles/app/js/vendor/uri.js'
                        'bundles/fosjsrouting/js/router.js'
                        'js/fos_js_routes.js'
                        'bundles/app/js/layout.js'
                        '@AppBundle/Resources/assets/js/app.js'
 					   '@AppBundle/Resources/assets/js/maps/italy.js'
-					   '@AppBundle/Resources/assets/js/autocomplete.js' %}
+					   '@AppBundle/Resources/assets/js/autocomplete.js'
+					   '@AppBundle/Resources/assets/js/search.js' %}
 
             <script type="text/javascript" src="{{ asset_url }}"></script>
 

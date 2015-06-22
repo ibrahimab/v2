@@ -1,6 +1,13 @@
 <?php
 namespace AppBundle\Service\Api\Search;
+use       AppBundle\Service\FilterService;
 
+/**
+ * @author  Ibrahim Abdullah
+ * @package Chalet
+ * @version 0.0.2
+ * @since   0.0.2
+ */
 class FilterBuilder
 {
     /**
@@ -8,32 +15,35 @@ class FilterBuilder
      */
     private $raw;
     
-    const FILTER_CATEGORY_DISTANCE = 1;
-    const FILTER_CATEGORY_LENGTH   = 2;
-    const FILTER_CATEGORY_FACILITY = 3;
-    const FILTER_CATEGORY_BATHROOM = 4;
-    const FILTER_CATEGORY_THEME    = 5;
+    /**
+     * @var array
+     */
+    private $filters;
     
-    private $categories = [
+    /**
+     * @const int
+     */
+    const VALUE_DISTANCE_BY_SLOPE = 50;
+
+    /**
+     * @var array
+     */
+    private $options = [
         
-        self::FILTER_CATEGORY_DISTANCE => [
+        FilterService::FILTER_DISTANCE => [
             'multiple' => false,
         ],
         
-        self::FILTER_CATEGORY_LENGTH   => [
+        FilterService::FILTER_LENGTH   => [
             'multiple' => false,
         ],
         
-        self::FILTER_CATEGORY_FACILITY => [
-            'multiple' => false,
+        FilterService::FILTER_FACILITY => [
+            'multiple' => true,
         ],
         
-        self::FILTER_CATEGORY_BATHROOM => [
-            'multiple' => false,
-        ],
-        
-        self::FILTER_CATEGORY_THEME    => [
-            'multiple' => false,
+        FilterService::FILTER_THEME    => [
+            'multiple' => true,
         ],
     ];
     
@@ -44,8 +54,8 @@ class FilterBuilder
      */
     public function __construct(Array $raw)
     {
-        $this->raw    = $raw;
-        $this->blocks = [];
+        $this->raw     = $raw;
+        $this->filters = [];
     }
     
     /**
@@ -57,43 +67,53 @@ class FilterBuilder
      */
     public function parse()
     {
-        foreach ($this->raw as $category => $values) {
+        foreach ($this->raw as $filter => $values) {
             
-            if (!array_key_exists($category, $this->categories)) {
+            if (!array_key_exists($filter, $this->options)) {
                 
-                unset($this->raw[$category]);
+                unset($this->raw[$filter]);
                 continue;
             }
             
-            if (is_array($values) && false === $this->categories[$category]['multiple']) {
-                $this->raw[$category] = (count($values) > 0 ? $values[0] : null);
+            if (is_array($values) && false === $this->options[$filter]['multiple']) {
+                $this->raw[$filter] = (count($values) > 0 ? $values[0] : null);
             }
             
-            $this->add($category, $values);
+            $this->add($filter, $this->raw[$filter]);
         }
     }
     
-    public function add($category, $values)
+    /**
+     * @param int $filter
+     * @param int|array $values
+     * @return FilterBuilder
+     */
+    public function add($filter, $values)
     {
-        $this->blocks[$category] = $values;
+        $this->filters[$filter] = $values;
         
         return $this;
     }
     
-    public function remove($category, $currentValue = null)
+    /**
+     * @param int $filter
+     * @param int|null $currentValue
+     * @return FilterBuilder
+     */
+    public function remove($filter, $currentValue = null)
     {
-        if (isset($this->blocks[$category])) {
+        if (isset($this->filters[$filter])) {
         
             if (null === $currentValue) {
                 
-                unset($this->blocks[$category]);
+                unset($this->filters[$filter]);
                 
             } else {
             
-                foreach ($this->blocks[$category] as $key => $value) {
+                foreach ($this->filters[$filter] as $key => $value) {
                     
                     if ($value === $currentValue) {
-                        unset($this->blocks[$category][$key]);
+                        unset($this->filters[$filter][$key]);
                     }
                 }
             }
@@ -102,8 +122,50 @@ class FilterBuilder
         return $this;
     }
     
-    public function data()
+    /**
+     * @return array
+     */
+    public function raw()
     {
-        return $this->data;
+        return $this->raw;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function has($filter)
+    {
+        return isset($this->filters[$filter]);
+    }
+    
+    /**
+     * @param int $filter
+     * @param int|null $default
+     * @return int|null
+     */
+    public function filter($filter, $default = null)
+    {
+        switch ($filter) {
+            
+            case FilterService::FILTER_DISTANCE:
+            case FilterService::FILTER_LENGTH:
+            case FilterService::FILTER_FACILITY:
+            case FilterService::FILTER_THEME:
+                $value = (isset($this->filters[$filter]) ? $this->filters[$filter] : $default);
+            break;
+            
+            default:
+                $value = $default;
+        }
+        
+        return $value;
+    }
+    
+    /**
+     * @return array
+     */
+    public function all()
+    {
+        return $this->filters;
     }
 }

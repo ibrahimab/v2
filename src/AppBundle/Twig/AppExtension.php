@@ -1,6 +1,5 @@
 <?php
 namespace AppBundle\Twig;
-
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
@@ -15,6 +14,7 @@ use		  AppBundle\Document\File\Region as RegionFileDocument;
 use		  AppBundle\Document\File\Place as PlaceFileDocument;
 use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterface;
 use       AppBundle\Service\Api\User\UserServiceDocumentInterface;
+use       AppBundle\Service\FilterService;
 use       Symfony\Component\DependencyInjection\ContainerInterface;
 use       Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use       Symfony\Component\Finder\Finder;
@@ -51,21 +51,27 @@ class AppExtension extends \Twig_Extension
      * @var string
      */
     private $oldImageRoot;
-	
+
 	/**
 	 * @var UserServiceDocumentInterface
 	 */
 	private $currentUser;
+    
+    /**
+     * @var FilterService
+     */
+    private $filterService;
 
     /**
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container, UrlGeneratorInterface $generator)
     {
-        $this->container   = $container;
-        $this->generator   = $generator;
-		$this->currentUser = null;
-        $this->locale      = $this->container->get('request')->getLocale();
+        $this->container     = $container;
+        $this->generator     = $generator;
+		$this->currentUser   = null;
+        $this->locale        = $this->container->get('request')->getLocale();
+        $this->filterService = $this->container->get('app.filter');
     }
 
     /**
@@ -76,7 +82,7 @@ class AppExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            
+
             new \Twig_SimpleFunction('locale_url', [$this, 'getUrl'], ['is_safe_callback' => [$this, 'isUrlGenerationSafe']]),
             new \Twig_SimpleFunction('locale_path', [$this, 'getPath'], ['is_safe_callback' => [$this, 'isUrlGenerationSafe']]),
             new \Twig_SimpleFunction('type_image', [$this, 'getTypeImage']),
@@ -93,6 +99,8 @@ class AppExtension extends \Twig_Extension
 			new \Twig_SimpleFunction('favorites_count', [$this, 'favoritesCount']),
 			new \Twig_SimpleFunction('viewed_count', [$this, 'viewedCount']),
             new \Twig_SimpleFunction('render_rate_table', [$this, 'renderRateTable']),
+            new \Twig_SimpleFunction('searches_count', [$this, 'searchesCount']),
+            new \Twig_SimpleFunction('is_checked', [$this, 'isChecked']),
         ];
     }
 
@@ -104,11 +112,12 @@ class AppExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            
+
             new \Twig_SimpleFilter('bbcode', [$this, 'bbcode'], array('pre_escape' => 'html', 'is_safe' => array('html'))),
             new \Twig_SimpleFilter('sortprop', [$this, 'sortByProperty']),
 			new \Twig_SimpleFilter('seo', [$this, 'seo']),
             new \Twig_SimpleFilter('replace', [$this, 'replace']),
+            new \Twig_SimpleFilter('tokenize', [$this, 'tokenize']),
         ];
     }
 
@@ -142,12 +151,12 @@ class AppExtension extends \Twig_Extension
      */
     public function getTypeImage(TypeServiceEntityInterface $type)
     {
-        $typeFileService = $this->container->get('service.api.file.type');
+        $typeFileService = $this->container->get('app.api.file.type');
 		$mainImage		 = $typeFileService->getMainImage($type);
 
 		if (null === $mainImage) {
 
-			$accommodationFileService = $this->container->get('service.api.file.accommodation');
+			$accommodationFileService = $this->container->get('app.api.file.accommodation');
 			$mainImage				  = $accommodationFileService->getMainImage($type->getAccommodation());
 
 			if (null === $mainImage) {
@@ -173,7 +182,7 @@ class AppExtension extends \Twig_Extension
      */
     public function getTypeImages(TypeServiceEntityInterface $type, $above_limit = 3, $below_limit = 2)
     {
-		$typeFileService = $this->container->get('service.api.file.type');
+		$typeFileService = $this->container->get('app.api.file.type');
 		$files	 		 = $typeFileService->getImages($type);
 		$images			 = ['above' => [], 'below' => [], 'rest' => []];
 		$above_done		 = 1;
@@ -198,7 +207,7 @@ class AppExtension extends \Twig_Extension
 
 		if (count($images['above']) === 0) {
 
-			$accommodationFileService = $this->container->get('service.api.file.accommodation');
+			$accommodationFileService = $this->container->get('app.api.file.accommodation');
 			$files					  = $accommodationFileService->getImages($type->getAccommodation());
 
 			foreach ($files as $file) {
@@ -221,7 +230,7 @@ class AppExtension extends \Twig_Extension
 
         return $images;
     }
-    
+
     /**
      * @param AccommodationServiceEntityInterface[] $accommodations
      * @return []
@@ -230,69 +239,70 @@ class AppExtension extends \Twig_Extension
     {
         $types = [];
         $accommodationEntities = [];
-        
+
         foreach ($accommodations as $accommodation) {
-            
+
             $accommodationTypes = $accommodation->getTypes();
             if (count($accommodationTypes) > 1) {
-                
+
                 $types[] = $accommodationTypes[0];
                 $accommodationEntities[$accommodationTypes[0]->getId()] = $accommodation;
             }
         }
 
-        $typeFileService = $this->container->get('service.api.file.type');
-        $files           = $typeFileService->getSearchImages($types);
-        $images          = [];
-        $found           = [];
-        $mapper          = [];
-        
+        $typeFileService    = $this->container->get('app.api.file.type');
+        $files              = $typeFileService->getSearchImages($types);
+        $images             = [];
+        $found              = [];
+        $mapper             = [];
+        $accommodationFiles = [];
+
         foreach ($files as $file) {
             $found[$file->getFileId()] = true;
         }
-        
+
         $notFound = [];
         foreach ($accommodationEntities as $typeId => $accommodation) {
-            
+
             if (!array_key_exists($typeId, $found)) {
-                
+
                 $notFound[] = $accommodation;
                 $mapper[$accommodation->getId()] = $typeId;
             }
         }
 
         if (count($notFound) > 0) {
-            
-            $accommodationFileService = $this->container->get('service.api.file.accommodation');
+
+            $accommodationFileService = $this->container->get('app.api.file.accommodation');
             $accommodationFiles       = $accommodationFileService->getSearchImages($notFound);
         }
 
         foreach ($files as $file) {
-            
+
             if (!isset($images[$file->getFileId()])) {
                 $images[$file->getFileId()] = [];
             }
-            
+
             $file->setUrlPrefix($this->getOldImageUrlPrefix());
             $images[$file->getFileId()][] = $file;
         }
-        
+
         foreach ($accommodationFiles as $file) {
-            
+
             if (!isset($mapper[$file->getFileId()])) {
                 continue;
             }
-                
+
             $typeId = $mapper[$file->getFileId()];
-            
+
             if (!isset($images[$typeId])) {
                 $images[$typeId] = [];
             }
-            
+
             $file->setUrlPrefix($this->getOldImageUrlPrefix());
             $images[$typeId][] = $file;
         }
-        
+
         return $images;
     }
 
@@ -304,7 +314,7 @@ class AppExtension extends \Twig_Extension
      */
     public function getRegionImage(RegionServiceEntityInterface $region)
     {
-        $regionFileService = $this->container->get('service.api.file.region');
+        $regionFileService = $this->container->get('app.api.file.region');
 		$regionImage       = $regionFileService->getImage($region);
 
 		if (null === $regionImage) {
@@ -327,7 +337,7 @@ class AppExtension extends \Twig_Extension
      */
     public function getRegionSkiRunMapImage(RegionServiceEntityInterface $region)
     {
-        $regionFileService = $this->container->get('service.api.file.region');
+        $regionFileService = $this->container->get('app.api.file.region');
 		$regionImage       = $regionFileService->getSkiRunsMapImage($region);
 
 		if (null === $regionImage) {
@@ -349,7 +359,7 @@ class AppExtension extends \Twig_Extension
      */
     public function getPlaceImage(PlaceServiceEntityInterface $place)
     {
-        $placeFileService = $this->container->get('service.api.file.place');
+        $placeFileService = $this->container->get('app.api.file.place');
 		$placeImage       = $placeFileService->getImage($place);
 
 		if (null === $placeImage) {
@@ -385,7 +395,7 @@ class AppExtension extends \Twig_Extension
 
 	public function getCountryImage($countryId)
 	{
-        $countryFileService = $this->container->get('service.api.file.country');
+        $countryFileService = $this->container->get('app.api.file.country');
 		$countryImage       = $countryFileService->getImage($countryId);
 
 		if (null === $countryImage) {
@@ -528,7 +538,7 @@ class AppExtension extends \Twig_Extension
      */
     public function getJavascriptObject()
     {
-        return $this->container->get('service.javascript')->toArray();
+        return $this->container->get('app.javascript')->toArray();
     }
 
     /**
@@ -539,7 +549,7 @@ class AppExtension extends \Twig_Extension
      */
     public function bbcode($text)
     {
-        return $this->container->get('service.utils')->bbcode($text);
+        return $this->container->get('app.utils')->bbcode($text);
     }
 
     public function sortByProperty($objects, $property)
@@ -557,9 +567,9 @@ class AppExtension extends \Twig_Extension
 	 */
 	public function seo($text)
 	{
-		return $this->container->get('service.utils')->seo($text);
+		return $this->container->get('app.utils')->seo($text);
 	}
-	
+
 	/**
 	 * Count favorites
 	 *
@@ -570,10 +580,10 @@ class AppExtension extends \Twig_Extension
         if (null !== ($user = $this->getUser())) {
             return $user->totalFavorites();
         }
-        
+
 		return 0;
 	}
-    
+
     /**
      * Count viewed
      *
@@ -584,22 +594,42 @@ class AppExtension extends \Twig_Extension
         if (null !== ($user = $this->getUser())) {
             return $user->totalViewed();
         }
-        
+
         return 0;
     }
-    
+
+    /**
+     * Count searches
+     *
+     * @return int
+     */
+    public function searchesCount()
+    {
+        if (null !== ($user = $this->getUser())) {
+            return $user->totalSearches();
+        }
+
+        return 0;
+    }
+
     /**
      * @return AnonymousToken
      */
     protected function getUser()
     {
         if (null === $this->currentUser) {
-            $this->currentUser = $this->container->get('service.api.user')->user();
+            $this->currentUser = $this->container->get('app.api.user')->user();
         }
-        
+
         return $this->currentUser;
     }
-    
+
+    /**
+     * @param array $data
+     * @param array $replacement
+     * @param boolean $recursive
+     * @return array
+     */
     public function replace($data, $replacement, $recursive = false)
     {
         return (true === $recursive ? array_replace_recursive($data, $replacement) : array_replace($data, $replacement));
@@ -615,6 +645,28 @@ class AppExtension extends \Twig_Extension
         $wrapper->setType($type);
         
         return $wrapper->render();
+    }
+
+    /**
+     * @param mixed $$data
+     * @param mixed $item
+     * @return string
+     */
+    public function isChecked($data, $item)
+    {
+        return ((null !== $data ? (is_array($data) ? in_array($item, $data) : (int)$data === (int)$item) : false) ? ' checked="checked"' : '');
+    }
+    
+    /**
+     * @param int $value
+     * @param int $filter
+     * @return string
+     */
+    public function tokenize($value, $filter = null)
+    {
+        // if second parameter is null, that means we want to tokenize a filter
+        // otherwise tokenize the value
+        return (null === $filter ? $this->filterService->tokenize($value) : $this->filterService->tokenize($filter, $value));
     }
 
     /**

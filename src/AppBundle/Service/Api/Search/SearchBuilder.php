@@ -11,78 +11,49 @@ namespace AppBundle\Service\Api\Search;
  */
 class SearchBuilder
 {   
-    /**
-     * @const int
-     */
-    const BLOCK_WHERE      = 1;
-                      
-    /**               
-     * @const int     
-     */               
-    const BLOCK_LIMIT      = 2;
-                      
-    /**               
-     * @const int     
-     */               
-    const BLOCK_OFFSET     = 3;
+    /** @const int */
+    const BLOCK_WHERE                    = 1,
+          BLOCK_LIMIT                    = 2,
+          BLOCK_OFFSET                   = 3,
+          BLOCK_SORT_BY                  = 4,
+          BLOCK_SORT_ORDER               = 5,
+          BLOCK_FILTER                   = 6;
+          
+    /** @const int */
+    const WHERE_WEEKEND_SKI              = 1,
+          WHERE_ACCOMMODATION            = 2,
+          WHERE_COUNTRY                  = 3,
+          WHERE_REGION                   = 4,
+          WHERE_PLACE                    = 5,
+          WHERE_BEDROOMS                 = 6,
+          WHERE_BATHROOMS                = 7;
     
-    /**
-     * @const int
-     */
-    const BLOCK_SORT_BY    = 4;
+    /** @const int */
+    const SORT_BY_ACCOMMODATION_NAME     = 1,
+          SORT_BY_TYPE_PRICE             = 2,
+          SORT_BY_TYPE_SEARCH_ORDER      = 3;
     
-    /**
-     * @const int
-     */
-    const BLOCK_SORT_ORDER = 5;
+    /** @const string */
+    const SORT_ORDER_ASC                 = 'asc',
+          SORT_ORDER_DESC                = 'desc';
     
-    /**
-     * @const int
-     */
-    const BLOCK_FILTER     = 6;
-    
-    /**
-     * @const int
-     */
-    const SORT_BY_ACCOMMODATION_NAME = 1;
-    
-    /**
-     * @const int
-     */
-    const SORT_BY_TYPE_PRICE         = 2;
-    
-    /**
-     * @const int
-     */
-    const SORT_BY_TYPE_SEARCH_ORDER  = 3;
-    
-    /**
-     * @const int
-     */
-    const SORT_ORDER_ASC             = 'asc';
-    
-    /**
-     * @const int
-     */
-    const SORT_ORDER_DESC            = 'desc';
-    
-    /**
-     * @var array
+    /** 
+     * @var array 
      */
     private static $DEFAULT_BLOCK_WHERE  = [];
     
-    /**
-     * @var int
+    /** 
+     * @var int 
      */
     private static $DEFAULT_BLOCK_LIMIT  = 10;
     
-    /**
-     * @var int
+    /** 
+     * @var int 
      */
     private static $DEFAULT_BLOCK_OFFSET = 0;
     
-    /**
-     * @var array
+    /** 
+     * @var array 
      */
     private $blocks;
     
