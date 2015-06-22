@@ -28,7 +28,7 @@
                 <form>
                     <div class="large-3 medium-3 columns">
                         <div class="autocomplete-container">
-                            <input type="text" name="query" data-role="autocomplete-query" id="choose-destination" class="radius" placeholder="Waar wil je naartoe?"  />
+                            <input type="text" name="query" data-role="autocomplete-query" data-type="home" id="choose-destination" class="radius home" placeholder="Waar wil je naartoe?"  />
                             <div class="results" data-role="autocomplete-results">
                             </div>
                         </div>
@@ -57,8 +57,8 @@
                         </select>
                     </div>
                     <div class="large-3 medium-3 columns">
-                        <a href="{{ locale_path('search') }}" class="button radius right" title="Toon resultaten op Chalet.nl"><i class="fi-magnifying-glass"></i>Toon <span>1.209</span> resultaten</a><br />
-                        <a href="{{ locale_path('search') }}" class="link right" title="Uitgebreid zoeken op Chalet.nl">Uitgebreid zoeken</a>
+                        <a href="{{ locale_path('search') }}" data-role="search-simple" class="button radius right" title="Toon resultaten op Chalet.nl"><i class="fi-magnifying-glass"></i>Toon <span>1.209</span> resultaten</a><br />
+                        <a href="{{ locale_path('search') }}" data-role="search-advanced" class="link right" title="Uitgebreid zoeken op Chalet.nl">Uitgebreid zoeken</a>
                     </div>
                 </form>
             </div>

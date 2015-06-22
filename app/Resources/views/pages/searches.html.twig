@@ -22,7 +22,7 @@
                             {% for searches in saved_searches %}
                             <tr>
                                 <td>
-                                    {% for filter, search in searches['search'] %}
+                                    {% for filter, search in searches['search']['f'] %}
                                     
                                         {% if search is iterable %}
                                         
@@ -39,10 +39,49 @@
                                         {% endif %}
                                     
                                     {% endfor %}
+                                    
+                                    {% if searches['search']['be'] is defined %}
+                                        <div>{{ 'bedrooms'|trans }}: minimaal {{ searches['search']['be'] }}</div>
+                                    {% endif %}
+                                    
+                                    {% if searches['search']['ba'] is defined %}
+                                        <div>{{ 'bathrooms'|trans }}: minimaal {{ searches['search']['ba'] }}</div>
+                                    {% endif %}
+                                    
+                                    {% if searches['search']['c'] is defined %}
+                                        
+                                        {% for id in searches['search']['c'] %}
+                                        
+                                            <div>{{ 'Land'|trans }}: {{ id }}</div>
+                                        
+                                        {% endfor %}
+                                        
+                                    {% endif %}
+                                    
+                                    {% if searches['search']['r'] is defined %}
+                                        
+                                        {% for id in searches['search']['r'] %}
+                                        
+                                            <div>{{ 'Skigebied'|trans }}: {{ id }}</div>
+                                        
+                                        {% endfor %}
+                                        
+                                    {% endif %}
+                                    
+                                    {% if searches['search']['pl'] is defined %}
+                                        
+                                        {% for id in searches['search']['pl'] %}
+                                        
+                                            <div>{{ 'Plaats'|trans }}: {{ id }}</div>
+                                        
+                                        {% endfor %}
+                                        
+                                    {% endif %}
+                                    
                                     <div class="hide"></div>
                                 </td>
                                 <td class="valign-middle">
-                                    <a href="{{ locale_path('search', {'f': searches['search']}) }}" class="button blank small radius">
+                                    <a href="{{ locale_path('search', searches['search']) }}" class="button blank small radius">
                                         Zoekresultaten
                                     </a>
                                 </td>
