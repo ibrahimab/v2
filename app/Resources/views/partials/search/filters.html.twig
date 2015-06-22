@@ -36,11 +36,13 @@
     
     {% if custom_filters['accommodations']|length > 0 %}
         {% set filters_active = true %}
-        <div data-role="filter-tag">
-            Accommodatie: 
-            {{ accommodation_filter.getLocaleName(locale) }}
-            <a href="#" data-role="remove-accommodation-filter"><i class="fi-x"></i></a>
-        </div>
+        {% for accommodation in custom_filters['accommodations'] %}
+            <div data-role="filter-tag">
+                Accommodatie: 
+                {{ accommodation.getLocaleName(locale) }}
+                <a href="#" data-role="remove-accommodation-filter"><i class="fi-x"></i></a>
+            </div>
+        {% endfor %}
     {% endif %}
     
     {% if custom_filters['countries']|length > 0 %}
@@ -65,15 +67,19 @@
         {% endfor %}
     {% endif %}
     
-    {% if place_filter is defined %}
+    {% if custom_filters['places']|length > 0 %}
         {% set filters_active = true %}
-        <div data-role="filter-tag">
-            Plaats: 
-            {{ place_filter.getLocaleName(locale) }}
-            <a href="#" data-role="remove-place-filter"><i class="fi-x"></i></a>
-        </div>
+        {% for place in custom_filters['places'] %}
+            <div data-role="filter-tag">
+                Plaats: 
+                {{ place.getLocaleName(locale) }}
+                <a href="#" data-role="remove-place-filter"><i class="fi-x"></i></a>
+            </div>
+        {% endfor %}
     {% endif %}
     
-    <div><a href="#" data-role="remove-filters">Wis alle filters <i class="fi-trash"></i></a></div>
+    {% if filters_active == true %}
+        <div><a href="#" data-role="remove-filters">Wis alle filters <i class="fi-trash"></i></a></div>
+    {% endif %}
     
 </div>

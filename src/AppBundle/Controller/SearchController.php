@@ -3,6 +3,10 @@ namespace AppBundle\Controller;
 use       AppBundle\Annotation\Breadcrumb;
 use       AppBundle\Service\Api\Search\SearchBuilder;
 use       AppBundle\Service\Api\Search\FilterBuilder;
+use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
+use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
+use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
+use       AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use       Symfony\Component\HttpFoundation\Request;
@@ -28,7 +32,11 @@ class SearchController extends Controller
      * @Route(path="/search-and-book.php",  name="search_en", options={"expose": true})
      */
     public function index(Request $request)
-    {
+    {   
+        $c        = $request->query->get('c',  []);
+        $r        = $request->query->get('r',  []);
+        $pl       = $request->query->get('pl', []);
+        $a        = $request->query->get('a',  []);
         $page     = intval($request->query->get('p'));
         $page     = ($page === 0 ? $page : ($page - 1));
         $per_page = intval($this->container->getParameter('app')['results_per_page']);
@@ -80,31 +88,24 @@ class SearchController extends Controller
             'custom_filters' => ['countries' => [], 'regions' => [], 'places' => [], 'accommodations' => []],
         ];
         
-        $countries = $searchService->findOnlyNames($request->query->get('c'));
-        dump($countries);
-
-        foreach ($it as $result) {
+        $custom_filter_entities = $searchService->findOnlyNames($c, $r, $pl, $a);
+        foreach ($custom_filter_entities as $entity) {
             
-            $place = $result->getPlace();
-            
-            if (null !== $place) {
-                
-                if ($request->query->has('c') && null !== ($country = $place->getCountry())) {
-                    $data['custom_filters']['countries'][$country->getId()] = $country;
-                }
-                
-                if ($request->query->has('r') && null !== ($region = $place->getRegion())) {
-                    $data['custom_filters']['regions'][$region->getId()] = $region;
-                }
+            if ($entity instanceof CountryServiceEntityInterface) {
+                $data['custom_filters']['countries'][$entity->getId()] = $entity;
             }
-        }
-        
-        if ($request->query->has('a')) {
-            $data['accommodation_filter'] = $results->getIterator()->current();
-        }
-        
-        if ($request->query->has('pl')) {
-            $data['place_filter'] = $results->getIterator()->current()->getPlace();
+            
+            if ($entity instanceof RegionServiceEntityInterface) {
+                $data['custom_filters']['regions'][$entity->getId()] = $entity;
+            }
+            
+            if ($entity instanceof PlaceServiceEntityInterface) {
+                $data['custom_filters']['places'][$entity->getId()] = $entity;
+            }
+            
+            if ($entity instanceof AccommodationServiceEntityInterface) {
+                $data['custom_filters']['accommodations'][$entity->getId()] = $entity;
+            }
         }
         
         return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', $data);

@@ -49,17 +49,58 @@ class SearchRepository implements SearchServiceRepositoryInterface
      * @param array $ids
      * @return array
      */
-    public function findOnlyNames($ids)
+    public function findOnlyNames($countries, $regions, $places, $accommodations)
     {
-        $qb   = $this->getEntityManager()->createQueryBuilder();
-        $expr = $qb->expr();
+        if (count(array_merge($countries, $regions, $places, $accommodations)) === 0) {
+            return [];
+        }
         
-        $qb->select('partial c.{id, name, englishName, germanName},
-                     partial r.{id, name, englishName, germanName}')
-           ->add('from', 'AppBundle:Country\Country c')
-           ->add('from', 'AppBundle:Region\Region r')
-           ->where($expr->in('c.' . $this->getLocaleField('name'), ':ids'))
-           ->setParameter('ids', $ids);
+        $qb       = $this->getEntityManager()->createQueryBuilder();
+        $expr     = $qb->expr();
+                  
+        $where    = $expr->andX();
+        $select   = [];
+        $entities = [];
+        
+        if (count($countries) > 0) {
+            
+            $select[]   = 'partial c.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, startCode}';
+            $entities[] = 'AppBundle:Country\Country c';
+            
+            $where->add($expr->in('c.' . $this->getLocaleField('name'), ':country_names'));
+            $qb->setParameter('country_names', $countries);
+        }
+        
+        if (count($regions) > 0) {
+            
+            $select[]   = 'partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}';
+            $entities[] = 'AppBundle:Region\Region r';
+            
+            $where->add($expr->in('r.' . $this->getLocaleField('name'), ':region_names'));
+            $qb->setParameter('region_names', $regions);
+        }
+        
+        if (count($places) > 0) {
+            
+            $select[]   = 'partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}';
+            $entities[] = 'AppBundle:Place\Place p';
+            
+            $where->add($expr->in('p.' . $this->getLocaleField('name'), ':place_names'));
+            $qb->setParameter('place_names', $places);
+        }
+        
+        if (count($accommodations) > 0) {
+            
+            $select[]   = 'partial a.{id, name, shortDescription, englishShortDescription, germanShortDescription}';
+            $entities[] = 'AppBundle:Accommodation\Accommodation a';
+            
+            $where->add($expr->in('a.id', ':accommodation_ids'));
+            $qb->setParameter('accommodation_ids', $accommodations);
+        }
+        
+        $qb->select(implode(', ', $select))
+           ->add('from', implode(', ', $entities))
+           ->where($where);
         
         return $qb->getQuery()->getResult();
     }
