@@ -1,7 +1,10 @@
 {% set locale = get_locale() %}
+{% set filters_active = false %}
 <div data-role="filter-tags" id="search-filters-active">
 
     {% if filters %}
+        
+        {% set filters_active = true %}
         
         {% for filter, data in filters %}
 
@@ -31,7 +34,8 @@
 
     {% endif %}
     
-    {% if accommodation_filter is defined %}
+    {% if custom_filters['accommodations']|length > 0 %}
+        {% set filters_active = true %}
         <div data-role="filter-tag">
             Accommodatie: 
             {{ accommodation_filter.getLocaleName(locale) }}
@@ -39,23 +43,30 @@
         </div>
     {% endif %}
     
-    {% if country_filter is defined %}
-        <div data-role="filter-tag">
-            Land: 
-            {{ land_filter.getLocaleName(locale) }}
-            <a href="#" data-role="remove-country-filter"><i class="fi-x"></i></a>
-        </div>
+    {% if custom_filters['countries']|length > 0 %}
+        {% set filters_active = true %}
+        {% for country in custom_filters['countries'] %}
+            <div data-role="filter-tag">
+                Land: 
+                {{ country.getLocaleName(locale) }}
+                <a href="#" data-role="remove-country-filter"><i class="fi-x"></i></a>
+            </div>
+        {% endfor %}
     {% endif %}
     
-    {% if region_filter is defined %}
-        <div data-role="filter-tag">
-            Skigebied: 
-            {{ region_filter.getLocaleName(locale) }}
-            <a href="#" data-role="remove-region-filter"><i class="fi-x"></i></a>
-        </div>
+    {% if custom_filters['regions']|length > 0 %}
+        {% set filters_active = true %}
+        {% for region in custom_filters['regions'] %}
+            <div data-role="filter-tag">
+                Skigebied: 
+                {{ region.getLocaleName(locale) }}
+                <a href="#" data-role="remove-region-filter"><i class="fi-x"></i></a>
+            </div>
+        {% endfor %}
     {% endif %}
     
     {% if place_filter is defined %}
+        {% set filters_active = true %}
         <div data-role="filter-tag">
             Plaats: 
             {{ place_filter.getLocaleName(locale) }}

@@ -49,8 +49,8 @@ class SearchController extends Controller
         if ($request->query->has('a')) {
             $paginator->where(SearchBuilder::WHERE_ACCOMMODATION, $request->query->get('a'));
         }
-        
-        if ($request->query->has('c')) {
+
+        if ($request->query->has('c')) {            
             $paginator->where(SearchBuilder::WHERE_COUNTRY, $request->query->get('c'));
         }
         
@@ -58,36 +58,52 @@ class SearchController extends Controller
             $paginator->where(SearchBuilder::WHERE_REGION, $request->query->get('r'));
         }
         
-        if ($request->query->has('p')) {
-            $paginator->where(SearchBuilder::WHERE_PLACE, $request->query->get('p'));
+        if ($request->query->has('pl')) {
+            $paginator->where(SearchBuilder::WHERE_PLACE, $request->query->get('pl'));
         }
         
-        $results = $paginator->results();
+        $results    = $paginator->results();
+        $javascript = $this->get('app.javascript');
 
-        $this->get('app.javascript')->set('app.tags', $filters);
+        $javascript->set('app.filters.normal',                $filters);
+        $javascript->set('app.filters.custom.countries',      $request->query->get('c',  []));
+        $javascript->set('app.filters.custom.regions',        $request->query->get('r',  []));
+        $javascript->set('app.filters.custom.places',         $request->query->get('pl', []));
+        $javascript->set('app.filters.custom.accommodations', $request->query->get('a',  []));
 
         $data = [
 
             'paginator' => $results,
             'filters'   => $filters,
-            'tags'      => $filters,
             // instance needed to get constants easier from within twig template: constant('const', instance)
             'filter_service' => $this->container->get('app.filter'),
+            'custom_filters' => ['countries' => [], 'regions' => [], 'places' => [], 'accommodations' => []],
         ];
+        
+        $countries = $searchService->findOnlyNames($request->query->get('c'));
+        dump($countries);
+
+        foreach ($it as $result) {
+            
+            $place = $result->getPlace();
+            
+            if (null !== $place) {
+                
+                if ($request->query->has('c') && null !== ($country = $place->getCountry())) {
+                    $data['custom_filters']['countries'][$country->getId()] = $country;
+                }
+                
+                if ($request->query->has('r') && null !== ($region = $place->getRegion())) {
+                    $data['custom_filters']['regions'][$region->getId()] = $region;
+                }
+            }
+        }
         
         if ($request->query->has('a')) {
             $data['accommodation_filter'] = $results->getIterator()->current();
         }
         
-        if ($request->query->has('c')) {
-            $data['country_filter'] = $results->getIterator()->current()->getPlace()->getCountry();
-        }
-        
-        if ($request->query->has('r')) {
-            $data['region_filter'] = $results->getIterator()->current()->getPlace()->getRegion();
-        }
-        
-        if ($request->query->has('p')) {
+        if ($request->query->has('pl')) {
             $data['place_filter'] = $results->getIterator()->current()->getPlace();
         }
         

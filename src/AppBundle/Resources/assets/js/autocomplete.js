@@ -85,8 +85,6 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         label:  element.data('label')
                     };
                     
-                    console.log(element);
-                    
                     switch (ns.Autocomplete.type) {
                         
                         case ns.Autocomplete.types.TYPE_HOME:
@@ -140,7 +138,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                             
                         case ns.Autocomplete.entities.ENTITY_PLACE:
                             
-                            uri.setQuery('p', data.id);
+                            uri.setQuery('pl', data.id);
                             break;
                             
                         case ns.Autocomplete.entities.ENTITY_ACCOMMODATION:
@@ -156,9 +154,38 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                 }
             },
             
-            searchBook: function() {
-                console.log('search-book', data);
-            }
+            searchBook: {
+                
+                click: function(data) {
+                    
+                    switch (data.entity) {
+                        
+                        case ns.Autocomplete.entities.ENTITY_COUNTRY:
+                            
+                            ns.Search.filters.addCountry(data.id);
+                            break;
+                            
+                        case ns.Autocomplete.entities.ENTITY_REGION:
+                            
+                            ns.Search.filters.addRegion(data.id);
+                            break;
+                            
+                        case ns.Autocomplete.entities.ENTITY_PLACE:
+                            
+                            ns.Search.filters.addPlace(data.id);
+                            break;
+                            
+                        case ns.Autocomplete.entities.ENTITY_ACCOMMODATION:
+                            
+                            ns.Search.filters.addAccommodation(data.id);
+                            break;
+                    }
+                    
+                    ns.Search.actions.search();
+                    ns.Autocomplete.input.val('');
+                    ns.Autocomplete.resultsContainer.empty();
+                }   
+            },
         },
         
         request: function(term, limit) {
@@ -234,7 +261,6 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         
                     case entities.ENTITY_ACCOMMODATION:
                         
-                        console.log('test');
                         li.className = 'accommodation';
                         li.setAttribute('data-entity', entities.ENTITY_ACCOMMODATION);
                         li.setAttribute('data-id', result['type_id']);
