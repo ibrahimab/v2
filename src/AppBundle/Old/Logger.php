@@ -1,8 +1,7 @@
 <?php
 namespace AppBundle\Old;
-use       \ChaletLoggerInterface as LoggerInterface;
 
-class Logger implements LoggerInterface
+class Logger implements \LoggerInterface
 {
     /**
      * @var string

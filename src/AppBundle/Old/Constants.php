@@ -17,14 +17,21 @@ class Constants
      */
     private $container;
     
+    /**
+     * Constructor
+     *
+     * @param ContainerInterface $container
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+        // var_dump('test2');exit;
     }
     
     public function setup()
     {
         $this->setupDatabase();
+        $this->setupRedis();
     }
     
     public function setupDatabase()
