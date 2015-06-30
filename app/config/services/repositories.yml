@@ -83,11 +83,16 @@ services:
         arguments: [AppBundle\Document\File\Country]
         parent:    app.repository.odm
 
+    app.repository.generalsettings:
+        class:     AppBundle\Entity\GeneralSettings\GeneralSettingsRepository
+        arguments: [AppBundle\Entity\GeneralSettings\GeneralSettings]
+        parent:    app.repository.orm
+
     app.repository.user:
         class:     AppBundle\Document\User\UserRepository
         arguments: [AppBundle\Document\User\User]
         parent:    app.repository.odm
-        
+
     app.repository.search:
         class:     AppBundle\Entity\Search\SearchRepository
         arguments: ["@doctrine.orm.entity_manager"]
@@ -95,7 +100,7 @@ services:
             - [setSeason,  [@app.concern.season]]
             - [setWebsite, [@app.concern.website]]
             - [setLocale,  [@service_container]]
-            
+
     app.repository.autocomplete:
         class:     AppBundle\Document\Autocomplete\AutocompleteRepository
         arguments: [AppBundle\Document\Autocomplete\Autocomplete]

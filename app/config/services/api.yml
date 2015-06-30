@@ -56,14 +56,18 @@ services:
         class:     AppBundle\Service\Api\File\Country\CountryService
         arguments: ["@app.repository.file.country"]
 
+    app.api.generalsettings:
+        class:     AppBundle\Service\Api\GeneralSettings\GeneralSettingsService
+        arguments: ["@app.repository.generalsettings"]
+
     app.api.user:
         class:     AppBundle\Service\Api\User\UserService
         arguments: ["@app.repository.user", "@security.context"]
-        
+
     app.api.search:
         class:     AppBundle\Service\Api\Search\SearchService
         arguments: ["@app.repository.search"]
-        
+
     app.api.autocomplete:
         class:     AppBundle\Service\Api\Autocomplete\AutocompleteService
         arguments: ["@app.repository.autocomplete"]

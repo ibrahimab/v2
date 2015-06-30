@@ -1,0 +1,39 @@
+{% extends 'layouts/default.html.twig' %}
+
+{% block breadcrumbs %}
+    {{ breadcrumbs() }}
+{% endblock %}
+
+{% block body %}
+
+    {{ parent() }}
+
+    <section class="landing place-page">
+    	<div class="row" id="area-specs"><!-- id="area-specs" -->
+    		<h2>Nieuwsbrief</h2>
+        </div>
+        <div class="row">
+			<div class="large-12 columns">
+
+				<p>
+					Schrijf jezelf hier in voor de nieuwsbrief van <strong>SITENAME</strong> en ontvang regelmatig aanbiedingen, nieuws en reistips.
+				</p>
+
+
+				<strong>Onlangs verstuurde nieuwsbrieven</strong>:
+				<ul>
+					{% for url, name in newsletters %}
+				        <li><a href="{{ url }}" target="_blank">{{ name }}</a></li>
+				    {% endfor %}
+
+				</ul>
+
+			</div>
+
+		</div>
+
+
+
+    </section>
+
+{% endblock %}
