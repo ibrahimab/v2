@@ -2,10 +2,9 @@
 namespace AppBundle\DataFixtures\ORM;
 use       AppBundle\Entity\Season\Season;
 use       Doctrine\Common\DataFixtures\AbstractFixture;
-use       Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use       Doctrine\Common\Persistence\ObjectManager;
 
-class LoadSeasonData extends AbstractFixture implements DependentFixtureInterface
+class LoadSeasonData extends AbstractFixture
 {
     public function load(ObjectManager $manager)
     {
@@ -37,10 +36,5 @@ class LoadSeasonData extends AbstractFixture implements DependentFixtureInterfac
                 $manager->clear();
             }
         }
-    }
-
-    public function getDependencies()
-    {
-        return ['AppBundle\DataFixtures\ORM\LoadAccommodationData'];
     }
 }

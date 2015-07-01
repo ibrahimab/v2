@@ -39,6 +39,6 @@ class OptionServiceTest extends \Codeception\TestCase\Test
         $description = $this->optionService->getTravelInsurancesDescription();
 
         $this->assertNotNull($description);
-        $this->assertContains('Description', $description);
+        $this->assertContains('Lorem', $description);
     }
 }
