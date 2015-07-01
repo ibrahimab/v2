@@ -1,9 +1,10 @@
 imports:
     - { resource: "../dev/app.yml" }
-    
+
 # App configuration
 parameters:
     app:
+        travel_insurance_possible: false
         results_per_page: 50
         default_locale:  nl
         default_website: C
@@ -13,67 +14,67 @@ parameters:
                 locale:  nl
                 website: C
                 season:  1
-                
+
             www.chalet.eu:
                 locale:  en
                 website: E
                 season:  1
-                
+
             www.chalettour.nl:
                 locale:  nl
                 website: T
                 season:  1
-                
+
             www.chalet.be:
                 locale:  nl
                 website: B
                 season:  1
-                
+
             www.chaletonline.de:
                 locale:  de
                 website: D
                 season:  1
-                
+
             www.chaletsinvallandry.nl:
                 locale:  nl
                 website: V
                 season:  1
-                
+
             www.chaletsinvallandry.com:
                 locale:  en
                 website: Q
                 season:  1
-                
+
             www.venturasol.nl:
                 locale:  nl
                 website: X
                 season:  1
-                
+
             www.venturasolvacances.nl:
                 locale:  nl
                 website: Y
                 season:  1
-                
+
             www.zomerhuisje.nl:
                 locale:  nl
                 website: Z
                 season:  2
-                
+
             www.italissima.nl:
                 locale:  nl
                 website: I
                 season:  2
-                
+
             www.italissima.be:
                 locale:  nl
                 website: K
                 season:  2
-                
+
             www.italyhomes.eu:
                 locale:  en
                 website: H
                 season:  2
-                
+
             www.superski.nl:
                 locale:  nl
                 website: W

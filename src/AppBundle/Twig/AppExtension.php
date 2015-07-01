@@ -102,6 +102,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('render_rate_table', [$this, 'renderRateTable']),
             new \Twig_SimpleFunction('searches_count', [$this, 'searchesCount']),
             new \Twig_SimpleFunction('is_checked', [$this, 'isChecked']),
+            new \Twig_SimpleFunction('pdf_link', [$this, 'pdfLink']),
         ];
     }
 
@@ -668,6 +669,15 @@ class AppExtension extends \Twig_Extension
         // if second parameter is null, that means we want to tokenize a filter
         // otherwise tokenize the value
         return (null === $filter ? $this->filterService->tokenize($value) : $this->filterService->tokenize($filter, $value));
+    }
+
+    /**
+     * @param string $link
+     * @return string
+     */
+    public function pdfLink($link)
+    {
+        return '/chalet/' . $link;
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 namespace AppBundle\Controller;
+use       AppBundle\Concern\SeasonConcern;
+use       AppBundle\Concern\WebsiteConcern;
 use       AppBundle\Annotation\Breadcrumb;
 use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
@@ -115,14 +117,23 @@ class PagesController extends Controller
      */
     public function insurances(Request $request)
     {
-        $seasonService = $this->get('app.api.season');
-        $locale        = $request->getLocale();
+        $seasonService   = $this->get('app.api.season');
+        $optionService   = $this->get('app.api.option');
+        $locale          = $request->getLocale();
+        $app             = $this->container->getParameter('app');
+        $seasonConcern   = $this->get('app.concern.season');
+        $websiteConcern  = $this->get('app.concern.website');
+        $travelInsurance = $optionService->getTravelInsurancesDescription();
 
         return $this->render('pages/insurances/' . $locale . '.html.twig', [
 
-            'costs'   => $seasonService->getInsurancesPolicyCosts(),
-            'locale'  => $locale,
-            'damages' => true,
+            'costs'                     => $seasonService->getInsurancesPolicyCosts(),
+            'locale'                    => $locale,
+            'damages'                   => true,
+            'travel_insurance_possible' => $app['travel_insurance_possible'],
+            'ten_days_insurance_price'  => ($seasonConcern->get() === SeasonConcern::SEASON_SUMMER ? $app['ten_days_insurance_price_summer'] : $app['ten_days_insurance_price_default']),
+            'travelInsurance'           => $travelInsurance,
+            'show_sunnycar'             => $websiteConcern->get() === WebsiteConcern::WEBSITE_ITALISSIMA_NL,
         ]);
     }
 

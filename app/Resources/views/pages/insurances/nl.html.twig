@@ -8,15 +8,67 @@
 
     {{ parent() }}
 
-    <h1>Verzekeringen</h1>
-    <p>Het is mogelijk om via ons onderstaande verzekeringen van Europeesche Verzekeringen af te sluiten. Wanneer je &eacute;&eacute;n of meerdere verzekering(en) via ons afsluit wordt er &eacute;&eacute;nmalig &euro; {{ costs }} poliskosten in rekening gebracht.</p>
+    <section class="landing landing-page insurance-page">
 
-    <hr />
+        <div class="row">
 
-    {% include 'partials/popups/insurances/cancellation/' ~ app.request.locale ~ '.html.twig' with {insurances: true} %}
+            <div class="large-8 medium-8 columns">
 
-    {% if damages %}
-        {% include 'partials/popups/insurances/damages/' ~ app.request.locale ~ '.html.twig' with {insurances: true} %}
-    {% endif %}
+                <h1>Verzekeringen</h1>
+                <p>Het is mogelijk om via ons onderstaande verzekeringen van Europeesche Verzekeringen af te sluiten. Wanneer je &eacute;&eacute;n of meerdere verzekering(en) via ons afsluit wordt er &eacute;&eacute;nmalig &euro; {{ costs }} poliskosten in rekening gebracht.</p>
+
+                <hr />
+
+                {% include 'partials/popups/insurances/cancellation/' ~ app.request.locale ~ '.html.twig' with {insurances: true} %}
+
+                {% if damages %}
+                    {% include 'partials/popups/insurances/damages/' ~ app.request.locale ~ '.html.twig' with {insurances: true} %}
+                {% endif %}
+
+                {% if travel_insurance_possible %}
+
+                    <h3>{{ 'travel-insurance'|trans }}</h3>
+                    <p>{{ travelInsurance|nl2br }}</p>
+                    <p>{{ '10-days-travel-insurance'|trans }}: &euro; {{ ten_days_insurance_price|number_format(2, ',') }}</p>
+                    <p>{{ 'child-until-4-year-free'|trans }}</p>
+
+                    <table>
+                        <tr>
+                            <td>
+                                <i class="icon icon-pdf"></i>
+                            </td>
+                            <td>
+                                <a href="{{ pdf_link('pdf/voorwaarden_europeesche_reisverz.pdf') }}" data-role="new-window">{{ 'pdf-conditions-travel-insurance'|trans }}</a>
+                            </td>
+                        </tr>
+                    </table>
+
+                {% endif %}
+
+                {% if show_sunnycar %}
+
+                    <hr />
+
+                    <strong>{{ 'car-rental'|trans }}</strong>
+                    <div class="row">
+                        <div class="small-2 columns">
+                            <img src="sunnycars_foto.jpg" />
+                        </div>
+                        <div class="small-8 columns">
+                            <strong>Ter plaatse een auto huren?</strong>
+                            <p>Boek dan direct bij <strong>Sunny Cars</strong>. Al 12 jaar op rij gekozen tot beste autoverhuurder door de Nederlandse Reisbureaus.</p>
+                        </div>
+                        <div class="small-2 columns">
+                            <img src="sunny_cars_logo.jpg" />
+                        </div>
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </section>
 
 {% endblock %}
