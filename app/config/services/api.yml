@@ -59,11 +59,19 @@ services:
     app.api.user:
         class:     AppBundle\Service\Api\User\UserService
         arguments: ["@app.repository.user", "@security.context"]
-        
+
     app.api.search:
         class:     AppBundle\Service\Api\Search\SearchService
         arguments: ["@app.repository.search"]
-        
+
     app.api.autocomplete:
         class:     AppBundle\Service\Api\Autocomplete\AutocompleteService
         arguments: ["@app.repository.autocomplete"]
+
+    app.api.season:
+        class:     AppBundle\Service\Api\Season\SeasonService
+        arguments: ["@app.repository.season"]
+
+    app.api.option:
+        class:     AppBundle\Service\Api\Option\OptionService
+        arguments: ["@app.repository.option"]

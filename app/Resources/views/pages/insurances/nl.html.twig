@@ -8,6 +8,15 @@
 
     {{ parent() }}
 
+    <h1>Verzekeringen</h1>
+    <p>Het is mogelijk om via ons onderstaande verzekeringen van Europeesche Verzekeringen af te sluiten. Wanneer je &eacute;&eacute;n of meerdere verzekering(en) via ons afsluit wordt er &eacute;&eacute;nmalig &euro; {{ costs }} poliskosten in rekening gebracht.</p>
 
+    <hr />
+
+    {% include 'partials/popups/insurances/cancellation/' ~ app.request.locale ~ '.html.twig' with {insurances: true} %}
+
+    {% if damages %}
+        {% include 'partials/popups/insurances/damages/' ~ app.request.locale ~ '.html.twig' with {insurances: true} %}
+    {% endif %}
 
 {% endblock %}

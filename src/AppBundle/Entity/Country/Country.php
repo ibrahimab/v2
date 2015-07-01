@@ -1,6 +1,5 @@
 <?php
 namespace AppBundle\Entity\Country;
-
 use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
 use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
 use       Doctrine\Common\Collections\ArrayCollection;

@@ -115,7 +115,15 @@ class PagesController extends Controller
      */
     public function insurances(Request $request)
     {
-        return $this->render('pages/insurances/' . $request->getLocale() . '.html.twig');
+        $seasonService = $this->get('app.api.season');
+        $locale        = $request->getLocale();
+
+        return $this->render('pages/insurances/' . $locale . '.html.twig', [
+
+            'costs'   => $seasonService->getInsurancesPolicyCosts(),
+            'locale'  => $locale,
+            'damages' => true,
+        ]);
     }
 
     /**
