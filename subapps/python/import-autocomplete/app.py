@@ -58,8 +58,5 @@ except mysql.Error, e:
     print 'Error'
     print e
 
-finally:
-
-    print 'Closing connections'
     mysql_connection.close()
     mongo_client.close()
