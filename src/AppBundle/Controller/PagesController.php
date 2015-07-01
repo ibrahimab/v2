@@ -8,6 +8,7 @@ use       AppBundle\Service\FilterService;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use       Symfony\Component\HttpFoundation\Request;
 
 /**
  * PagesController
@@ -21,7 +22,7 @@ use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
  * @Breadcrumb(name="frontpage", title="frontpage", translate=true, path="home")
  */
 class PagesController extends Controller
-{   
+{
     /**
      * @Route("/", name="home")
      * @Template(":pages:home.html.twig")
@@ -98,25 +99,23 @@ class PagesController extends Controller
     }
 
     /**
-     * @Route("/over-ons", name="page_about_nl")
-     * @Route("/about-us", name="page_about_en")
+     * @Route("/wie-zijn-wij.php", name="page_about_nl")
+     * @Route("/about-us.php", name="page_about_en")
      * @Breadcrumb(name="about", title="about", translate=true, active=true)
-     * @Template(":pages:about.html.twig")
      */
-    public function about()
+    public function about(Request $request)
     {
-        return [];
+        return $this->render('pages/about/' . $request->getLocale() . '.html.twig');
     }
 
     /**
-     * @Route("/verzekeringen", name="page_insurances_nl")
-     * @Route("/insurances", name="page_insurances_en")
+     * @Route("/verzekeringen.php", name="page_insurances_nl")
+     * @Route("/insurance.php", name="page_insurances_en")
      * @Breadcrumb(name="insurances", title="insurances", translate=true, active=true)
-     * @Template(":pages:insurances.html.twig")
      */
-    public function insurances()
+    public function insurances(Request $request)
     {
-        return [];
+        return $this->render('pages/insurances/' . $request->getLocale() . '.html.twig');
     }
 
     /**
@@ -159,8 +158,16 @@ class PagesController extends Controller
     public function privacy()
     {
         $filterService = $this->get('app.filter');
-        
+
         return [];
+    }
+
+    /**
+     * @Route("/werkenbij", name="page_working", requirements={"_locale": "nl"})
+     */
+    public function working()
+    {
+        return $this->render('pages/working.html.twig');
     }
 
     /**

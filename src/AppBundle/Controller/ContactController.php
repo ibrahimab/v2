@@ -5,17 +5,17 @@ use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use       Symfony\Component\HttpFoundation\Request;
 
 class ContactController extends Controller
 {
     /**
-     * @Route("/contact", name="contact")
-     * @Template(":contact:new.html.twig")
+     * @Route("/contact.php", name="contact")
      * @Method("GET")
      */
-    public function newAction()
+    public function newAction(Request $request)
     {
-        return [];
+        return $this->render('contact/new.' . $request->getLocale() . '.html.twig');
     }
 
     /**

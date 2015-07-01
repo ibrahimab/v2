@@ -1,0 +1,38 @@
+{% extends 'layouts/default.html.twig' %}
+
+{% block breadcrumbs %}
+    {{ breadcrumbs() }}
+{% endblock %}
+
+{% block body %}
+
+    {{ parent() }}
+
+    <section class="landing landing-page contact-page">
+
+        <div class="row">
+
+            <div class="large-8 medium-8 columns">
+
+                <h2>Wie zijn wij?</h2>
+                <p>Chalet.nl is een zelfstandige touroperator en specialist in de verhuur van vrijstaande chalets en luxe appartementen van 2 tot 50 personen in Frankrijk, Oostenrijk, Zwitserland en Itali&euml;. De organisatie is in 1999 als een eenmanszaak opgestart en uitgegroeid tot een volwaardige reisorganisatie met een team van twee&euml;ntwintig mensen. Wij zijn gevestigd in Woerden. Chalet.nl is lid van het SGR.</p>
+                <p>Reserveringen kunnen direct via de website of telefonisch gemaakt worden. Chalet.nl is eveneens eigenaar van de websites: <a href="{{ url('chalet_be') }}">Chalet.be</a>, <a href="{{ url('chalet_eu') }}">Chalet.eu</a>, <a href="{{ url('chalettour_nl') }}">Chalettour.nl</a>, <a href="{{ url('zomerhuisje_nl') }}">Zomerhuisje.nl</a> en <a href="{{ url('italissima_nl') }}">Italissima</a>.</p>
+
+                <h3>Specialisme is het sleutelwoord</h3>
+                <p>Chalet.nl kiest voor specialisme. Wintersportliefhebbers kunnen bij ons terecht voor een wintersportvakantie in een chalet of luxe appartement in &eacute;&eacute;n van de Alpenlanden, desgewenst inclusief skipassen, skimateriaal, catering en andere opties. Ons verkoopteam beschikt over een uitgebreide kennis van de diverse bestemmingen. Dit geldt ook voor de accommodaties. Wij streven er altijd naar om de accommodaties persoonlijk te bezoeken.</p>
+
+                <h4>Hoge servicekwaliteit</h4>
+                <p>De kwaliteit van de service staat hoog in het vaandel bij Chalet.nl. Indien je de wensen aan ons doorgeeft, kunnen wij een aantal passende accommodaties op maat voor je uitzoeken. Is de accommodatie al volgeboekt? Dan bieden wij de mogelijke alternatieven. Heb je vervolgens nog wijzigingen of extra informatie nodig dan verzorgen wij dit kosteloos, tot tenminste 6 weken voor vertrek.</p>
+
+                <h5>Werken bij Chalet.nl</h5>
+                <p>Interesse in een functie binnen ons bedrijf of op zoek naar een stageplaats? Stuur je cv en motivatiebrief naar <a href="mailto:jetske@chalet.nl">jetske@chalet.nl</a> of neem contact op met Jetske Stols, tel: 0348-434649.</p>
+
+                <a href="{{ path('page_working') }}" class="button small radius">Bekijk onze actuele vacatures &raquo;</a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+{% endblock %}
