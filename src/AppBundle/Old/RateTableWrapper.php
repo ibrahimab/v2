@@ -200,9 +200,33 @@ class RateTableWrapper
     {
         if (null === $this->html) {
 
+            $constants = $this->container->get('old.constants');
+            $constants->setup();
+
+            $path = (dirname(dirname(__DIR__))) . '/old-classes';
+            $path = readlink($path);
+            $path = dirname(dirname($path));
+
+            $GLOBALS['taal'] = $this->getLocale();
+            $GLOBALS['websitetype'] = $this->getWebsite()->type();
+            $GLOBALS['website'] = $this->getWebsite()->get();
+            $GLOBALS['websiteland'] = $this->getWebsite()->country();
+            $GLOBALS['mysqlsettings']['name'] = ['remote' => $constants->getDatabaseName()];
+
+        	include_once $path . '/content/_teksten.php';
+            include_once $path . '/content/_teksten_intern.php';
+
+            $GLOBALS['txt']  = $txt;
+            $GLOBALS['txta'] = $txta;
+
+            include_once dirname(dirname(dirname(__DIR__))) . '/app/bc_functions.php';
+
             $seasonRates                   = $this->getSeasonRates();
+            $seasonRates                   = (count($seasonRates) > 0 ? $seasonRates[0] : []);
             $table                         = $this->container->get('old.rate.table');
+            $translator                    = $this->container->get('translator');
             $table->type_id                = $this->getType()->getId();
+            $table->setRedis(new \wt_redis(new Logger()));
             $table->show_afwijkend_legenda = true;
             $table->seizoen_id             = '0' . (isset($seasonRates['seizoen_id']) ? (',' . $seasonRates['seizoen_id']) : '');
 
@@ -211,6 +235,16 @@ class RateTableWrapper
                 $table->meerdere_valuta = true;
                 $table->actieve_valuta  = self::VALUTA_EURO;
             }
+
+            // $tabel = $this->container->get('old.rate.table');
+            // $tabel->toon_interne_informatie = true;
+            // $tabel->toon_beschikbaarheid = true;
+            // $tabel->toon_commissie = true;
+            // $tabel->meerdere_valuta = true;
+            // $tabel->setRedis(new \wt_redis(new Logger()));
+            // $tabel->actieve_valuta = "euro";
+            // $tabel->seizoen_id=27;
+            // $tabel->type_id=5940;
 
             $this->html = $table->toontabel();
         }

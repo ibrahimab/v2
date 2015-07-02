@@ -1,6 +1,6 @@
 <?php
-use AppBundle\Old;
-use Symfony\Component\DependencyInject\ContainerInterface;
+namespace AppBundle\Old;
+use       Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Define constants needed by old website
@@ -16,7 +16,7 @@ class Constants
      * @var ContainerInterface
      */
     private $container;
-    
+
     /**
      * Constructor
      *
@@ -25,18 +25,20 @@ class Constants
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        // var_dump('test2');exit;
     }
-    
+
     public function setup()
     {
         $this->setupDatabase();
         $this->setupRedis();
     }
-    
+
     public function setupDatabase()
     {
+        $container = $this->container;
+
         if (!defined('wt_db_host')) {
+            dump('test');
             define('wt_db_host', $container->getParameter('database_host'));
         }
 
@@ -48,7 +50,12 @@ class Constants
             define('wt_db_password', $container->getParameter('database_password'));
         }
     }
-    
+
+    public function getDatabaseName()
+    {
+        return $this->container->getParameter('database_name');
+    }
+
     public function setupRedis()
     {
         if (!defined('wt_redis_host')) {

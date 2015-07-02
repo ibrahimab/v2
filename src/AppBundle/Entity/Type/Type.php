@@ -1,6 +1,5 @@
 <?php
 namespace AppBundle\Entity\Type;
-
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       Doctrine\ORM\Mapping as ORM;
 use       Doctrine\Common\Collections\ArrayCollection;
@@ -10,6 +9,12 @@ use       Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="type")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Type\TypeRepository")
+ */
+/**
+ * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
+ * @package Chalet
+ * @version 0.0.5
+ * @since   0.0.1
  */
 class Type implements TypeServiceEntityInterface
 {

@@ -49,7 +49,7 @@
 {% block body %}
 
     {{ parent() }}
-    
+
     <section id="accom" class="discount type-section">
         <div class="row">
             <div id="accom-left" class="small-12 medium-8 large-9 columns">
@@ -112,66 +112,10 @@
                     </div>
 
                     <div id="price-availability">
-                        <h3>Prijs &amp; beschikbaarheid</h3>
-                        <div class="row">
-                            <div class="small-12 medium-6 large-6 columns">
-                                <p>In euro’s, per accomodatie, inclusief skipas</p>
-                            </div>
-                            <div class="small-6 medium-3 large-3 columns">
-                                <i class="sprite sprite-icon-data-not-available">Niet beschikbaar</i>
-                            </div>
-                            <div class="small-6 medium-3 large-3 columns">
-                                <i class="sprite sprite-icon-data-discount-type">Aanbiedingsprijs</i>
-                            </div>
-                        </div>
-                        <div id="types-nav">
-                            <a href="#next" class="next"></a>
-                            <a href="#prev" class="prev"></a>
-                        </div>
-                        {{ render_rate_table(type) }}
-                        <div class="row">
-                            <div class="small-12 medium-12 large-12 columns">
-                                <a href="" class="button small orange radius right" title="Boek nu">Boek nu</a>
-                                <a href="" class="button small radius right" title="Optie aanvragen">Optie aanvragen</a>
-                            </div>
-                        </div>
-                        <div id="types-inex" class="row">
-                            <div class="large-6 columns">
-                                <p>Inclusief</p>
-                                <ul>
-                                    <li>6-daagse skipas Alpe d'Huez / Grand Domaine (250 km piste)</li>
-                                    <li>Water en elektra.</li>
-                                    <li>Eén kinderbed en kinderstoel aanwezig.</li>
-                                </ul>
-                                <p>Verplicht te voldoen</p>
-                                <ul>
-                                    <li>Borg (&euro; 400,- contant te voldoen) en toeristenbelasting.</li>
-                                    <li>Bedlinnen (zelf te verzorgen of te huur: &euro; 14,- p.p., opgeven bij reservering).</li>
-                                    <li>Handdoeken (zelf te verzorgen of te huur: &euro; 8,- per set, opgeven bij reservering).</li>
-                                    <li>Keukenlinnen (zelf te verzorgen). Huisdieren zijn op aanvraag toegestaan (&euro; 35,- per dier per verblijf).</li>
-                                    <li>Eindschoonmaak: &euro; 150,- verplicht ter plaatse te voldoen.</li>
-                                    <li>Reserveringskosten (&euro; 20,- per boeking).</li>
-                                </ul>
-                            </div>
-                            <div class="large-6 columns">
-                                <p>Optioneel</p>
-                                <ul>
-                                    <li>Gebruik fitness (tegen betaling)</li>
-                                    <li>Gebruik wellness (tegen betaling)</li>
-                                    <li>Bekijk ook onze extra opties</li>
-                                </ul>
-                                <p>Diversen</p>
-                                <ul>
-                                    <li>Ontvangst ter plaatse</li>
-                                    <li>Ligging van de accommodatie</li>
-                                    <li>Comfort / inrichting</li>
-                                    <li>Hygiene / schoonmaak</li>
-                                    <li>Faciliteiten in en rondom de accommodatie</li>
-                                    <li>Prijs / kwaliteitverhouding</li>
-                                </ul>
-                            </div>
-                        </div>
+                        {{ render_rate_table(type)|raw }}
                     </div>
+
+                    <p>&nbsp;</p>
 
                     <div id="extras" class="extras">
                         <div class="small-12 medium-8 large-9 columns">

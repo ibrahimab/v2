@@ -7,7 +7,7 @@ class Logger implements \LoggerInterface
      * @var string
      */
     private $collector;
-    
+
     /**
      * @param string $collector
      */
@@ -15,7 +15,7 @@ class Logger implements \LoggerInterface
     {
         $this->setCollector($collector);
     }
-    
+
     /**
      * @param string $collector
      * @return LoggerInterface
@@ -23,10 +23,10 @@ class Logger implements \LoggerInterface
     public function setCollector($collector)
     {
         $this->logger = $collector;
-        
+
         return $this;
     }
-    
+
     /**
      * @param string $message
      * @return LoggerInterface
@@ -35,7 +35,7 @@ class Logger implements \LoggerInterface
     {
         return $this->log($message, 'error');
     }
-    
+
     /**
      * @param string $message
      * @param string $label
@@ -43,7 +43,6 @@ class Logger implements \LoggerInterface
      */
     public function log($message, $label = 'default')
     {
-        dump($label, $message);
         return $this;
     }
 }
