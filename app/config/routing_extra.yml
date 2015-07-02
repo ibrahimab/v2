@@ -1,0 +1,24 @@
+chalet_be:
+    path: /
+    host: www.chalet.be
+    schemes: [https]
+
+chalet_eu:
+    path: /
+    host: www.chalet.eu
+    schemes: [https]
+
+chalettour_nl:
+    path: /
+    host: www.chalettour.nl
+    schemes: [https]
+
+zomerhuisje_nl:
+    path: /
+    host: www.zomerhuisje.nl
+    schemes: [https]
+
+italissima_nl:
+    path: /
+    host: www.italissima.nl
+    schemes: [https]

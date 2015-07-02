@@ -38,7 +38,7 @@ class AppKernel extends Kernel
         if ($this->getEnvironment() === 'test') {
             $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
         }
-        
+
         $this->registerOldNamespace();
 
         return $bundles;
@@ -49,9 +49,19 @@ class AppKernel extends Kernel
         $loader->load(__DIR__.'/config/' . $this->getEnvironment() . '/config.yml');
         $loader->load(__DIR__.'/config/' . $this->getEnvironment() . '/app.yml');
     }
-    
+
     public function registerOldNamespace()
     {
+        if (is_link($path = __DIR__ . '/../src/old-classes')) {
+
+            // getting real path from symlink
+            $path = readlink($path);
+            $path = dirname($path);
+
+            // backwards compatibility
+            require_once $path . '/class.mysql.php';
+        }
+
         spl_autoload_register(function($class) {
 
             if (file_exists($path = __DIR__ . '/../src/old-classes/siteclass.' . $class . '.php')) {
@@ -59,21 +69,21 @@ class AppKernel extends Kernel
             }
         });
     }
-    
+
     public function initializeContainer()
     {
         parent::initializeContainer();
-        
+
         if (PHP_SAPI === 'cli') {
-            
+
             // cli is being used, lets create a mock request
             // @TODO: remove this when symfony2 fixes this problem
-            // when using cli commands, all classes that use the request service 
+            // when using cli commands, all classes that use the request service
             // creates this error:  You cannot create a service ("request") of an inactive scope ("request").
             // DATE: 2015-06-10 11:44
             $request = new Request();
             $request->create('/');
-            
+
             $this->getContainer()->enterScope('request');
             $this->getContainer()->set('request', $request, 'request');
         }

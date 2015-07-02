@@ -2,8 +2,14 @@
 namespace AppBundle\Service\Api\Type;
 use       AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
 
-interface TypeServiceEntityInterface {
-
+/**
+ * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
+ * @package Chalet
+ * @version 0.0.5
+ * @since   0.0.5
+ */
+interface TypeServiceEntityInterface
+{
     /**
      * Get id
      *

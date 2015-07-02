@@ -2,8 +2,21 @@ services:
     old.configuration:
         class: AppBundle\Old\Configuration
         arguments: ["@service_container"]
-    
+
     old.feature:
         class: kenmerken
-        calls: 
+        calls:
             - [setConfiguration, [@old.configuration]]
+
+    old.rate.table:
+        class: tarieventabel
+        calls:
+            - [setConfiguration, [@old.configuration]]
+
+    old.rate.table.wrapper:
+        class: AppBundle\Old\RateTableWrapper
+        arguments: [@service_container]
+
+    old.constants:
+        class: AppBundle\Old\Constants
+        arguments: [@service_container]

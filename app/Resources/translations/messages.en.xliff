@@ -1,11 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2015-06-19T10:52:17Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
+  <file date="2015-07-02T12:40:29Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
+      <trans-unit id="67fa77701998ef4b18d0da6bf032e7177b932199" resname="10-days-travel-insurance">
+        <source>10-days-travel-insurance</source>
+        <target>10-day travel insurance Europeesche Optimaal + Wintersport</target>
+        <jms:reference-file line="32">pages/insurances/nl.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d9df90d8002f6aa1b3d7d2501de9221ce5a84207" resname="Land">
+        <source>Land</source>
+        <target>Land</target>
+        <jms:reference-file line="55">views/pages/searches.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="db22d23e1b18211ab8cadfebb9f88c9671875528" resname="Plaats">
+        <source>Plaats</source>
+        <target>Plaats</target>
+        <jms:reference-file line="75">views/pages/searches.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="2f2f652c069ea257f6452b21610855d8f436aea6" resname="Skigebied">
+        <source>Skigebied</source>
+        <target>Skigebied</target>
+        <jms:reference-file line="65">views/pages/searches.html.twig</jms:reference-file>
+      </trans-unit>
       <trans-unit id="b95e380b7d837c6e0ed679c3d5ef3af45410bedb" resname="Wintersport">
         <source>Wintersport</source>
         <target>Wintersport</target>
@@ -22,6 +42,11 @@
         <source>additional-info</source>
         <target>Additional information</target>
         <jms:reference-file line="41">views/region/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="7eb0aeee6b88d54f8e4929cb1b2a30ac93308bf4" resname="address-title">
+        <source>address-title</source>
+        <target>Address</target>
+        <jms:reference-file line="33">views/contact/new.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="e4c1a71b066bed67f705260636e0539ee05bec6c" resname="altitude">
         <source>altitude</source>
@@ -55,22 +80,25 @@
       <trans-unit id="72bfb05496f963647e4d2c8b9a3ba6c0265800b6" resname="bathroom">
         <source>bathroom</source>
         <target>bathroom</target>
-        <jms:reference-file line="39">search/form/input.html.twig</jms:reference-file>
+        <jms:reference-file line="42">search/form/input.html.twig</jms:reference-file>
+        <jms:reference-file line="43">search/form/input.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="7ecf7f9e0dce226235a7b6ab410a3c8d3bd3683d" resname="bathrooms">
         <source>bathrooms</source>
         <target>Bathrooms</target>
+        <jms:reference-file line="48">views/pages/searches.html.twig</jms:reference-file>
         <jms:reference-file line="2">search/form/input.html.twig</jms:reference-file>
         <jms:reference-file line="9">partials/search/types.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="009e058c883c683e1330228851ecafe3265c8f51" resname="bedroom">
         <source>bedroom</source>
         <target>bedroom</target>
-        <jms:reference-file line="30">search/form/input.html.twig</jms:reference-file>
+        <jms:reference-file line="35">search/form/input.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="935296d9eea533f89ab28d7ea89b30e1f61b477a" resname="bedrooms">
         <source>bedrooms</source>
         <target>Bedrooms</target>
+        <jms:reference-file line="44">views/pages/searches.html.twig</jms:reference-file>
         <jms:reference-file line="3">search/form/input.html.twig</jms:reference-file>
         <jms:reference-file line="8">partials/search/types.html.twig</jms:reference-file>
       </trans-unit>
@@ -89,6 +117,11 @@
         <target>by price (descending)</target>
         <jms:reference-file line="21">views/search/results.html.twig</jms:reference-file>
       </trans-unit>
+      <trans-unit id="d03c556c6ef07e9a840e96a7500cb85bf939e079" resname="car-rental">
+        <source>car-rental</source>
+        <target>Car rental</target>
+        <jms:reference-file line="52">pages/insurances/nl.html.twig</jms:reference-file>
+      </trans-unit>
       <trans-unit id="8d26e007d15031b026751b3ae040951e69ed1dd4" resname="chalet-or-apartment">
         <source>chalet-or-apartment</source>
         <target>chalet or apartment</target>
@@ -104,10 +137,45 @@
         <jms:reference-file line="36">views/places/show.html.twig</jms:reference-file>
         <jms:reference-file line="131">views/region/show.html.twig</jms:reference-file>
       </trans-unit>
+      <trans-unit id="7657008acfd9e0aa8ce065cb4a066a7220b23919" resname="child-until-4-year-free">
+        <source>child-until-4-year-free</source>
+        <target>Children up to 4 years old included on the policy for free (max. 1 child per adult)</target>
+        <jms:reference-file line="33">pages/insurances/nl.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ea88fbaa99b73225752e2ef67593f775848160ad" resname="closed">
+        <source>closed</source>
+        <target>Closed</target>
+        <jms:reference-file line="85">views/contact/new.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="eae47c4081a2ace6ed6c152306e7b8e8efbde5f7" resname="coc-id">
+        <source>coc-id</source>
+        <target>CoC</target>
+        <jms:reference-file line="64">views/contact/new.html.twig</jms:reference-file>
+      </trans-unit>
       <trans-unit id="1a73af9e7ae00182733b2292511b814be66f065f" resname="contact">
         <source>contact</source>
         <target>Contact</target>
         <jms:reference-file line="24">views/partials/footer.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="6ccc3048fe2a5f6c2fe232e03381461edc9441ab" resname="contact-form-title">
+        <source>contact-form-title</source>
+        <target>Contact Form</target>
+        <jms:reference-file line="89">views/contact/new.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4b0d9abf9f4278ab6391a5f909731dce65d6af96" resname="contact-info">
+        <source>contact-info</source>
+        <target>Contact information</target>
+        <jms:reference-file line="29">views/contact/new.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="048d9344be31092963caac47e685115ad5e2e110" resname="contact-introduction-chalettour">
+        <source>contact-introduction-chalettour</source>
+        <target>contact-introduction-chalettour</target>
+        <jms:reference-file line="23">views/contact/new.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="705d79138117717a54c5489f6e7766ddcf4cba79" resname="contact-title">
+        <source>contact-title</source>
+        <target>Contact</target>
+        <jms:reference-file line="16">views/contact/new.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="773a3b986de107fa4ced8b34c67840ada92df874" resname="destinations">
         <source>destinations</source>
@@ -123,22 +191,33 @@
       <trans-unit id="1a33cf6d0e44ab72aec6ac74cc8fb7797ea8ca16" resname="distance-to-slopes">
         <source>distance-to-slopes</source>
         <target>Distance to the slopes</target>
-        <jms:reference-file line="59">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="48">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="9bac056d3d90ef2fe4df10504e6c0f8152d64da9" resname="distance-to-utrecht">
         <source>distance-to-utrecht</source>
         <target>Distance to Utrecht</target>
         <jms:reference-file line="133">views/region/show.html.twig</jms:reference-file>
       </trans-unit>
+      <trans-unit id="a88b7dcd1a9e3e17770bbaa6d7515b31a2d7e85d" resname="email">
+        <source>email</source>
+        <target>E-mail</target>
+        <jms:reference-file line="48">views/contact/new.html.twig</jms:reference-file>
+      </trans-unit>
       <trans-unit id="f2115eded7c0557558b0fd5ca53ab7dd6508ac6c" resname="facilities">
         <source>facilities</source>
         <target>Facilities</target>
-        <jms:reference-file line="109">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="98">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="e75bc04532a5639ed1e96d1a467f9ce694094864" resname="faq">
         <source>faq</source>
         <target>Frequently asked questions</target>
+        <jms:reference-file line="20">views/contact/new.html.twig</jms:reference-file>
         <jms:reference-file line="25">views/partials/footer.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="da41abc0db70b4ef01e4adf72e693cdb70113fd6" resname="fax">
+        <source>fax</source>
+        <target>Fax</target>
+        <jms:reference-file line="44">views/contact/new.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="4f944542e06cd6f28fa72685120ec1c9e2b84a27" resname="features">
         <source>features</source>
@@ -147,145 +226,155 @@
         <jms:reference-file line="34">views/places/show.html.twig</jms:reference-file>
         <jms:reference-file line="31">views/region/show.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="2e8a543127cd32f48ddf1fb87f3e613028ca6f80" resname="filter-bathroom-min-10">
-        <source>filter-bathroom-min-10</source>
-        <target>minimum 10</target>
-        <jms:reference-file line="183">partials/search/form.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="7ad4e34f967f7c0ba40d3dd7dde2fc91ad329ef0" resname="filter-bathroom-min-2">
-        <source>filter-bathroom-min-2</source>
-        <target>minimum 2</target>
-        <jms:reference-file line="153">partials/search/form.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="4e61736995b4ac6ac595ab9c178061bf5aef0a92" resname="filter-bathroom-min-3">
-        <source>filter-bathroom-min-3</source>
-        <target>minimum 3</target>
-        <jms:reference-file line="158">partials/search/form.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="6d72fe3d658a1c81b23bbb52df8703f3e38a4e25" resname="filter-bathroom-min-4">
-        <source>filter-bathroom-min-4</source>
-        <target>minimum 4</target>
-        <jms:reference-file line="163">partials/search/form.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="6ca6676b070feddd1bebe44cfd80ae3e83dc66a2" resname="filter-bathroom-min-5">
-        <source>filter-bathroom-min-5</source>
-        <target>minimum 5</target>
-        <jms:reference-file line="168">partials/search/form.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="bd4592c657fe1f10234b1e22ae75d3f693af70ad" resname="filter-bathroom-min-6">
-        <source>filter-bathroom-min-6</source>
-        <target>minimum 6</target>
-        <jms:reference-file line="173">partials/search/form.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="a73827a7cf2a8562626140b61ace4b06d55480c2" resname="filter-bathroom-min-8">
-        <source>filter-bathroom-min-8</source>
-        <target>minimum 8</target>
-        <jms:reference-file line="178">partials/search/form.html.twig</jms:reference-file>
-      </trans-unit>
       <trans-unit id="8ec5cf88f7462b984bf95daa5b382d6e14a894b9" resname="filter-distance-by-slope">
         <source>filter-distance-by-slope</source>
         <target>on the slopes</target>
-        <jms:reference-file line="63">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="52">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="92c8b933c3077ffe968940ee0f25f49bd94f1764" resname="filter-distance-max-1000">
         <source>filter-distance-max-1000</source>
         <target>max. 100 meters</target>
-        <jms:reference-file line="78">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="67">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="1f2acb4a0adb2ddb083edca3a24afdd7e36600aa" resname="filter-distance-max-250">
         <source>filter-distance-max-250</source>
         <target>max. 250 meters</target>
-        <jms:reference-file line="68">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="57">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="ee8a94c789940228f74f61f785e6a0ba24e82715" resname="filter-distance-max-500">
         <source>filter-distance-max-500</source>
         <target>max. 500 meters</target>
-        <jms:reference-file line="73">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="62">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="e6150588b1a6fd7bc875af75c7b0b1dcd6342bc8" resname="filter-facility-catering">
         <source>filter-facility-catering</source>
         <target>catering possible</target>
-        <jms:reference-file line="113">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="102">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="ef06db7a74e0ef0ceff5d0127d410e42247dfff9" resname="filter-facility-fireplace">
         <source>filter-facility-fireplace</source>
         <target>fire place / wood stove</target>
-        <jms:reference-file line="143">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="132">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="2f94487a7a0e5d3450cb002944b9f526a379054e" resname="filter-facility-internet-wifi">
         <source>filter-facility-internet-wifi</source>
         <target>internet / Wi-Fi</target>
-        <jms:reference-file line="118">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="107">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="099714ecad75e3c761beab64a5f81a6d4ad2bbdc" resname="filter-facility-pets-allowed">
         <source>filter-facility-pets-allowed</source>
         <target>pets allowed</target>
-        <jms:reference-file line="138">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="127">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="cef92badace06128bb9f542e8b2a4b643e4c2e43" resname="filter-facility-private-sauna">
         <source>filter-facility-private-sauna</source>
         <target>private sauna</target>
-        <jms:reference-file line="133">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="122">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="45a783f1a29de981fb83cde4c34cb766521c75cd" resname="filter-facility-sauna">
         <source>filter-facility-sauna</source>
         <target>sauna</target>
-        <jms:reference-file line="128">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="117">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="f3c05adff0cc816d5d9015672d8c14cd2d49f695" resname="filter-facility-swimming-pool">
         <source>filter-facility-swimming-pool</source>
         <target>swimming pool</target>
-        <jms:reference-file line="123">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="112">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="801fcb1db62a07790f165027ca5d009431a485ae" resname="filter-length-max-100">
         <source>filter-length-max-100</source>
         <target>up to 100 km</target>
-        <jms:reference-file line="88">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="77">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="18ea6296fe4a726c520cd885eae78fbf0a963275" resname="filter-length-min-100">
         <source>filter-length-min-100</source>
         <target>over 100 km</target>
-        <jms:reference-file line="93">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="82">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="1063f57c2ae7a6a746d9412a52f1127ebe691104" resname="filter-length-min-200">
         <source>filter-length-min-200</source>
         <target>over 200 km</target>
-        <jms:reference-file line="98">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="87">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="3490d83c2596433995650880bb127144128a97dc" resname="filter-length-min-400">
         <source>filter-length-min-400</source>
         <target>over 400 km</target>
-        <jms:reference-file line="103">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="92">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="757319ef22a05e9494d5501390ae5ac687dc90a8" resname="filter-results">
         <source>filter-results</source>
         <target>Filter results</target>
-        <jms:reference-file line="57">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="46">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="76d85e735e301854a0b880933b0291e3808471bc" resname="filter-theme-10-for-apres-ski">
         <source>filter-theme-10-for-apres-ski</source>
         <target>grading A for après-ski</target>
-        <jms:reference-file line="203">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="152">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="bf873eff5b97c1e6e9e84c5634ff0313f9c7e93a" resname="filter-theme-charming-places">
         <source>filter-theme-charming-places</source>
         <target>charming ski villages</target>
-        <jms:reference-file line="198">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="147">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="0f44092354089226f7b60ca311f69ec1b89b75f0" resname="filter-theme-kids">
         <source>filter-theme-kids</source>
         <target>good for kids</target>
-        <jms:reference-file line="193">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="142">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="911337efee297cd11214d98df8a15bdf17348685" resname="filter-theme-super-ski-stations">
         <source>filter-theme-super-ski-stations</source>
         <target>super ski stations</target>
-        <jms:reference-file line="208">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="157">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="46bfcefd0a441106202a0d7c359dea0b7ca65e20" resname="filter-theme-winter-wellness">
         <source>filter-theme-winter-wellness</source>
         <target>winter wellness</target>
-        <jms:reference-file line="213">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="162">partials/search/form.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="8fdf2fc29fca3d0ab3e6d0146402277e917232ff" resname="form-contact-email">
+        <source>form-contact-email</source>
+        <target>Email address</target>
+        <jms:reference-file line="103">views/contact/new.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c5977282f8dfd1c055ce460f5df944e13a531238" resname="form-contact-errors-email-phonenumber">
+        <source>form-contact-errors-email-phonenumber</source>
+        <target>To contact you we need either a telephone number or an email address.</target>
+        <jms:reference-file line="114">views/contact/new.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="dae44f854f22187d9359e0d5a7bf4617702bdabc" resname="form-contact-errors-message">
+        <source>form-contact-errors-message</source>
+        <target>Please fill in a message</target>
+        <jms:reference-file line="124">views/contact/new.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4147392a51553394f39000c40455f3d2a3fd4112" resname="form-contact-errors-name">
+        <source>form-contact-errors-name</source>
+        <target>Please fill in your name</target>
+        <jms:reference-file line="97">views/contact/new.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c41f68f6c1367d357a6f2f1eb16b2511be94978c" resname="form-contact-message">
+        <source>form-contact-message</source>
+        <target>Questions or comments*</target>
+        <jms:reference-file line="120">views/contact/new.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3a3054d8a67c06ad414c054dfd8212546156e723" resname="form-contact-name">
+        <source>form-contact-name</source>
+        <target>Name*</target>
+        <jms:reference-file line="93">views/contact/new.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4569edcdbcbb289f99033a596e0c19e3187f08cb" resname="form-contact-phonenumber">
+        <source>form-contact-phonenumber</source>
+        <target>Telephone number</target>
+        <jms:reference-file line="110">views/contact/new.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="bf4483271bf42b16d4963752174367a5afe73847" resname="form-contact-subject">
+        <source>form-contact-subject</source>
+        <target>Ingevuld contactformulier</target>
+        <jms:reference-file line="57">AppBundle/Controller/ContactController.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="9bff747b6e4c19997437253c6fa15cee19902e79" resname="form-contact-submit">
+        <source>form-contact-submit</source>
+        <target>Send</target>
+        <jms:reference-file line="135">views/contact/new.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="23e591e8c36dda987970603ad0fdd031b7dff9f9" resname="france">
         <source>france</source>
@@ -395,7 +484,7 @@
       <trans-unit id="0e8f5f6eb19bb5142b51cedc3d523fc101a3b892" resname="length-slopes">
         <source>length-slopes</source>
         <target>km of slopes</target>
-        <jms:reference-file line="84">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="73">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="8bbfdba1224b919603b3355e9bfe95326167ec0a" resname="length-trails">
         <source>length-trails</source>
@@ -407,21 +496,46 @@
         <target>Links</target>
         <jms:reference-file line="101">views/region/show.html.twig</jms:reference-file>
       </trans-unit>
+      <trans-unit id="ecfc99bb1fbf0486112960bdd15a778249f4c0ac" resname="monday-friday">
+        <source>monday-friday</source>
+        <target>From Monday to Friday</target>
+        <jms:reference-file line="76">views/contact/new.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="59214f702ffc81c6690b1ca58ad96be6383d2b20" resname="opening-times-week">
+        <source>opening-times-week</source>
+        <target>From 9 am to 5:30 pm</target>
+        <jms:reference-file line="77">views/contact/new.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="aaf77dec282148d90783e4947e127649f313d434" resname="opening-times-weekend">
+        <source>opening-times-weekend</source>
+        <target>From 10 am to 5:30 pm</target>
+        <jms:reference-file line="81">views/contact/new.html.twig</jms:reference-file>
+      </trans-unit>
       <trans-unit id="7a78df7c9d69a07d0bca3c66cb46c62a9b7ec60a" resname="or-more">
         <source>or-more</source>
         <target>or more</target>
-        <jms:reference-file line="26">search/form/input.html.twig</jms:reference-file>
+        <jms:reference-file line="31">search/form/input.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="658629914104487ea8f6b95c3f41cdd0f5a39b2f" resname="pdf-conditions-travel-insurance">
+        <source>pdf-conditions-travel-insurance</source>
+        <target>Terms and conditions Europeesche Verzekeringen one-trip travel insurance</target>
+        <jms:reference-file line="41">pages/insurances/nl.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="d39a47507bbe27c2a7948861847f3607eda8e1be" resname="person">
         <source>person</source>
         <target>person</target>
-        <jms:reference-file line="22">search/form/input.html.twig</jms:reference-file>
+        <jms:reference-file line="27">search/form/input.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="123349a8c97443b33169a4de5e7eb0e2005c7f80" resname="persons">
         <source>persons</source>
         <target>Persons</target>
         <jms:reference-file line="1">search/form/input.html.twig</jms:reference-file>
         <jms:reference-file line="7">partials/search/types.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c7956d3166e20ad1149f47485686a1a5a338c51f" resname="phonenumber">
+        <source>phonenumber</source>
+        <target>Telefoonnummer</target>
+        <jms:reference-file line="40">views/contact/new.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="324d2c4f8c42abc418bde82c7fea830b4d70309c" resname="places">
         <source>places</source>
@@ -450,10 +564,30 @@
         <jms:reference-file line="10">partials/highlight/highlight.html.twig</jms:reference-file>
         <jms:reference-file line="38">views/places/show.html.twig</jms:reference-file>
       </trans-unit>
+      <trans-unit id="da09028e937f851d7be51f3576cb6b60c131d89a" resname="react-subject">
+        <source>react-subject</source>
+        <target>Answer to your question</target>
+        <jms:reference-file line="4">views/mail/contact.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="24cfc6c2b1bac972e2f2c0c62eb1179c9a89d472" resname="remaining-data">
+        <source>remaining-data</source>
+        <target>Other information</target>
+        <jms:reference-file line="56">views/contact/new.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="fe846d935b8f65f5fca91cbdbbbecfbec6136da4" resname="required-field-asterisk">
+        <source>required-field-asterisk</source>
+        <target>Mandatory field</target>
+        <jms:reference-file line="130">views/contact/new.html.twig</jms:reference-file>
+      </trans-unit>
       <trans-unit id="cdf7e925f5746741c316f5fbcf39ad0dfca90775" resname="results">
         <source>results</source>
         <target>results</target>
         <jms:reference-file line="8">views/search/results.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="9155ef5fde64a89f06048015eb7c1b09f8db67ed" resname="saturday">
+        <source>saturday</source>
+        <target>Saturday</target>
+        <jms:reference-file line="80">views/contact/new.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="d01112c59007c133a24d7f53a134921318fc8acf" resname="save-search">
         <source>save-search</source>
@@ -463,27 +597,32 @@
       <trans-unit id="70def0c118d00f5f6ee301bfd4d50fd4d7ba7bfd" resname="search-book">
         <source>search-book</source>
         <target><![CDATA[Search & book]]></target>
-        <jms:reference-file line="51">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="40">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="f4a301e0b0591f9929a3ead5be56e52074404538" resname="select-bathrooms">
         <source>select-bathrooms</source>
         <target>Number of bathrooms</target>
-        <jms:reference-file line="38">search/form/input.html.twig</jms:reference-file>
+        <jms:reference-file line="41">search/form/input.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="64ca9cc349180e21a6c609b742345f0d8307c1bf" resname="select-bedrooms">
         <source>select-bedrooms</source>
         <target>Number of bedrooms</target>
-        <jms:reference-file line="29">search/form/input.html.twig</jms:reference-file>
+        <jms:reference-file line="34">search/form/input.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="53d2a8a2edcca1afc5922bb236e4efe42d5354d3" resname="select-how-many">
         <source>select-how-many</source>
         <target>Number of persons</target>
-        <jms:reference-file line="21">search/form/input.html.twig</jms:reference-file>
+        <jms:reference-file line="26">search/form/input.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="d35431731e54ec6a92f11df8d83008b0f16508a8" resname="select-when">
         <source>select-when</source>
         <target>Date of arrival</target>
-        <jms:reference-file line="6">search/form/input.html.twig</jms:reference-file>
+        <jms:reference-file line="11">search/form/input.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ff3af65b5c67485e19be4eae50079d4a4c904352" resname="sgr-id">
+        <source>sgr-id</source>
+        <target>SGR</target>
+        <jms:reference-file line="68">views/contact/new.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="f062ef59202249cde5de26ada9e2b02fcf9ccecd" resname="sitemap">
         <source>sitemap</source>
@@ -507,6 +646,11 @@
         <target>Sort by</target>
         <jms:reference-file line="16">views/search/results.html.twig</jms:reference-file>
       </trans-unit>
+      <trans-unit id="1390470c09daf4c6179c197e6aebe9821c9ca92d" resname="sunday">
+        <source>sunday</source>
+        <target>Sunday</target>
+        <jms:reference-file line="84">views/contact/new.html.twig</jms:reference-file>
+      </trans-unit>
       <trans-unit id="bbe956747bd1d5990a3bd561eb86cbbcf6642915" resname="switzerland">
         <source>switzerland</source>
         <target>Switzerland</target>
@@ -519,6 +663,16 @@
         <target>This table is scrollable horizontally</target>
         <jms:reference-file line="42">partials/search/types.html.twig</jms:reference-file>
       </trans-unit>
+      <trans-unit id="f37632fb1c633f4575ee6bfc314f8d2e2935ed1f" resname="tax-id">
+        <source>tax-id</source>
+        <target>VAT</target>
+        <jms:reference-file line="60">views/contact/new.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="6bcbaebfa10400a2738a5157426974b1cc9359a0" resname="telephone-availability">
+        <source>telephone-availability</source>
+        <target>Reach us by telephone (local time)</target>
+        <jms:reference-file line="72">views/contact/new.html.twig</jms:reference-file>
+      </trans-unit>
       <trans-unit id="ce620d6749880d79c700eb0ae2a56646f3a59bc5" resname="terms">
         <source>terms</source>
         <target>Terms</target>
@@ -527,12 +681,7 @@
       <trans-unit id="615a8e40b12e40188b3ebcab753c3f02db8a216b" resname="themes">
         <source>themes</source>
         <target>Themes</target>
-        <jms:reference-file line="189">partials/search/form.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="6c31e07271909d26dfbc7b2bfbfd58f368342008" resname="total-bathrooms">
-        <source>total-bathrooms</source>
-        <target>Number of bathrooms</target>
-        <jms:reference-file line="149">partials/search/form.html.twig</jms:reference-file>
+        <jms:reference-file line="138">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="64ffde76c5720f116fc4182a411d38173d6a2790" resname="total-cabine-lifts">
         <source>total-cabine-lifts</source>
@@ -553,6 +702,11 @@
         <source>total-ski-tows-lifts</source>
         <target>Total ski tows lifts</target>
         <jms:reference-file line="57">views/region/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d7cd84f1302f992cd98e859dc6778f84028548c8" resname="travel-insurance">
+        <source>travel-insurance</source>
+        <target>Travel insurance</target>
+        <jms:reference-file line="30">pages/insurances/nl.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="d0a3e7f81a9885e99049d1cae0336d269d5e47a9" resname="type">
         <source>type</source>

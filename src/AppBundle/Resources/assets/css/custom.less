@@ -347,12 +347,12 @@ div.tb {
     display: table;
     width: 100%;
     margin-bottom: 1.25rem;
-    
-    
+
+
     div.tb-c {
         display: table-cell;
     }
-    
+
     div.tb-h {
 
         display: table-row;
@@ -414,17 +414,17 @@ div.tb {
                 padding: 0.2rem;
             }
         }
-        
+
         &:nth-child(odd) {
             background: #F9F9F9;
         }
-        
+
         &:hover {
-            
+
             background-color: #e9edf8;
             div.tb-c span { background-color: white; }
         }
-        
+
         &.sale-type {
             div.tb-c.tb-c-7 { color: #d4213b; }
         }
@@ -432,9 +432,48 @@ div.tb {
 }
 
 table.no-striping {
-    
+
     tr:nth-of-type(even) { background-color: transparent !important; }
     tr:hover { background-color: transparent !important; }
 }
 
 .valign-middle { vertical-align: middle; }
+
+.center { text-align: center !important; }
+
+.anchorfix { display: block; height: 65px; margin-top: -65px; visibility: hidden; }
+
+.contact-page {
+
+    h1 { margin-left: 0; }
+
+    h2, h3, h4, h5 {
+
+        font-size: 1.3rem;
+        margin-top: 0;
+        text-align: left;
+    }
+
+}
+.icon {
+
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: baseline;
+    width: 18px;
+    height: 18px;
+
+    &.icon-pdf {
+        background-image: url(/bundles/app/icons/icon-pdf.gif);
+    }
+}
+
+table.address-block tr td:last-child {
+
+    color: #818181;
+    font-weight: normal;
+}
+
+textarea {
+    height: auto;
+}
