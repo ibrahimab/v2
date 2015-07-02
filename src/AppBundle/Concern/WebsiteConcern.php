@@ -30,11 +30,6 @@ class WebsiteConcern
     const WEBSITE_TYPE_SUPER_SKI                  = 8;
     const WEBSITE_TYPE_VENTURASOL                 = 9;
 
-    const WEBSITE_COUNTRY_NL                      = 'nl';
-    const WEBSITE_COUNTRY_BE                      = 'be';
-    const WEBSITE_COUNTRY_EN                      = 'en';
-    const WEBSITE_COUNTRY_DE                      = 'de';
-
     /**
      * @var string
      */
@@ -46,9 +41,14 @@ class WebsiteConcern
     private $type;
 
     /**
-     * @var int
+     * @var string
      */
     private $country;
+
+    /**
+     * @var string
+     */
+    private $name;
 
     /**
      * @var array
@@ -110,6 +110,7 @@ class WebsiteConcern
 
             $this->website = $this->websites[$website]['website'];
             $this->country = $this->websites[$website]['country'];
+            $this->name    = $this->websites[$website]['name'];
             $this->setType();
         }
     }
@@ -139,5 +140,10 @@ class WebsiteConcern
     public function country()
     {
         return $this->country;
+    }
+
+    public function name()
+    {
+        return $this->name;
     }
 }
