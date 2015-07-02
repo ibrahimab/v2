@@ -6,6 +6,12 @@ use       Doctrine\Common\Collections\ArrayCollection;
 use       Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
+ * @package Chalet
+ * @version 0.0.5
+ * @since   0.0.1
+ */
+/**
  * Place Entity
  *
  * @ORM\Table(name="plaats")
@@ -234,7 +240,7 @@ class Place implements PlaceServiceEntityInterface
      * @ORM\Column(name="toon_op_homepage", type="boolean")
      */
     private $showOnHomepage;
-    
+
     /**
      * @var array
      *

@@ -7,7 +7,7 @@ use       Doctrine\ORM\Mapping as ORM;
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
  * @package Chalet
  * @version 0.0.5
- * @since   0.0.1
+ * @since   0.0.5
  */
 /**
  * FAQ

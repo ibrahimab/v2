@@ -83,3 +83,7 @@ services:
     app.api.faq:
         class:      AppBundle\Service\Api\Faq\FaqService
         arguments: ["@app.repository.faq"]
+
+    app.api.theme:
+        class:      AppBundle\Service\Api\Theme\ThemeService
+        arguments: ["@app.repository.theme"]
