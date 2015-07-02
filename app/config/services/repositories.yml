@@ -79,6 +79,13 @@ services:
         calls:
             - [setWebsite, [@app.concern.website]]
 
+    app.repository.theme:
+        class:     AppBundle\Entity\Theme\ThemeRepository
+        arguments: [AppBundle\Entity\Theme\Theme]
+        parent:    app.repository.orm
+        calls:
+            - [setSeason, [@app.concern.season]]
+
     app.repository.file.accommodation:
         class:     AppBundle\Document\File\AccommodationRepository
         arguments: [AppBundle\Document\File\Accommodation]

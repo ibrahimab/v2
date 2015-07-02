@@ -1,6 +1,5 @@
 <?php
 namespace AppBundle\Controller;
-
 use       AppBundle\Annotation\Breadcrumb;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -14,6 +13,7 @@ use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
  *
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
  * @package Chalet
+ * @version 0.0.5
  * @since   0.0.1
  *
  * @Breadcrumb(name="frontpage", title="frontpage", translate=true, path="home")
