@@ -14,3 +14,9 @@ assetic:
         cssrewrite: ~
         lessphp:
             apply_to: "\.less$"
+
+doctrine_mongodb:
+    connections:
+        default:
+            options:
+                replicaSet: 'rs1'
