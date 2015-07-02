@@ -157,7 +157,7 @@ class PagesController extends Controller
      * @Route("/terms", name="page_terms_en")
      * @Breadcrumb(name="terms", title="terms", translate=true, active=true)
      */
-    public function terms(Request $request)
+    public function conditions(Request $request)
     {
         return $this->render('pages/conditions/' . $request->getLocale() . '.html.twig', [
             'website' => $this->get('app.concern.website')
@@ -165,13 +165,15 @@ class PagesController extends Controller
     }
 
     /**
-     * @Route("/disclaimer", name="page_disclaimer")
+     * @Route("/disclaimer.php", name="page_disclaimer_nl")
+     * @Route("/disclaimer.php", name="page_disclaimer_en")
      * @Breadcrumb(name="disclaimer", title="disclaimer", translate=true, active=true)
-     * @Template(":pages:disclaimer.html.twig")
      */
-    public function disclaimer()
+    public function disclaimer(Request $request)
     {
-        return [];
+        return $this->render('pages/disclaimer/' . $request->getLocale() . '.html.twig', [
+            'website' => $this->get('app.concern.website'),
+        ]);
     }
 
     /**
