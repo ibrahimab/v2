@@ -30,6 +30,11 @@ class WebsiteConcern
     const WEBSITE_TYPE_SUPER_SKI                  = 8;
     const WEBSITE_TYPE_VENTURASOL                 = 9;
 
+    const WEBSITE_COUNTRY_NL                      = 'nl';
+    const WEBSITE_COUNTRY_BE                      = 'be';
+    const WEBSITE_COUNTRY_EN                      = 'en';
+    const WEBSITE_COUNTRY_DE                      = 'de';
+
     /**
      * @var string
      */
