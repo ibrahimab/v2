@@ -6,9 +6,9 @@
 
         // autocomplete
         Chalet.Autocomplete.initialize({
-            
-            input: '[data-role="autocomplete-query"]', 
-            limit: 5, 
+
+            input: '[data-role="autocomplete-query"]',
+            limit: 5,
             resultsContainer: '[data-role="autocomplete-results"]'
         });
 
@@ -71,6 +71,40 @@
             var height  = element.data('popup-height') || 200;
 
             return window.open(url, 'new-popup', 'height=' + height + ',width=' + width + ',resizable=yes,menubar=no,location=yes', false);
+        });
+
+        /**
+         * FAQ events
+         */
+        body.on('click', '[data-role="faq-question"]', function(event) {
+
+            event.preventDefault();
+            var element = jq(this);
+            var toggle  = jq('[data-role="faq-toggle"]');
+
+            jq('[data-role="faq-question"]').not(element).siblings('[data-role="faq-answer"]:visible').slideUp();
+            element.siblings('[data-role="faq-answer"]:hidden').slideDown();
+
+
+            toggle.data('toggle', 'open').text(toggle.data('toggle-label-open'));
+        });
+
+        body.on('click', '[data-role="faq-toggle"]', function(event) {
+
+            event.preventDefault();
+
+            var element = jq(this);
+
+            if (element.data('toggle') === 'open') {
+
+                jq('[data-role="faq-answer"]').slideDown();
+                element.data('toggle', 'close').text(element.data('toggle-label-close'));
+
+            } else {
+
+                jq('[data-role="faq-answer"]').slideUp();
+                element.data('toggle', 'open').text(element.data('toggle-label-open'));
+            }
         });
 
         /**

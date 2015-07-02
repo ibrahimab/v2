@@ -72,6 +72,13 @@ services:
             - [setSeason,  [@app.concern.season]]
             - [setWebsite, [@app.concern.website]]
 
+    app.repository.faq:
+        class:     AppBundle\Entity\Faq\FaqRepository
+        arguments: [AppBundle\Entity\Faq\Faq]
+        parent:    app.repository.orm
+        calls:
+            - [setWebsite, [@app.concern.website]]
+
     app.repository.file.accommodation:
         class:     AppBundle\Document\File\AccommodationRepository
         arguments: [AppBundle\Document\File\Accommodation]
