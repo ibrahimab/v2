@@ -153,14 +153,15 @@ class PagesController extends Controller
     }
 
     /**
-     * @Route("/algemene-voorwaarden", name="page_terms_nl")
+     * @Route("/algemenevoorwaarden.php", name="page_terms_nl")
      * @Route("/terms", name="page_terms_en")
      * @Breadcrumb(name="terms", title="terms", translate=true, active=true)
-     * @Template(":pages:terms.html.twig")
      */
-    public function terms()
+    public function terms(Request $request)
     {
-        return [];
+        return $this->render('pages/conditions/' . $request->getLocale() . '.html.twig', [
+            'website' => $this->get('app.concern.website')
+        ]);
     }
 
     /**

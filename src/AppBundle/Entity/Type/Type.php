@@ -5,16 +5,16 @@ use       Doctrine\ORM\Mapping as ORM;
 use       Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Type
- *
- * @ORM\Table(name="type")
- * @ORM\Entity(repositoryClass="AppBundle\Entity\Type\TypeRepository")
- */
-/**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
  * @package Chalet
  * @version 0.0.5
  * @since   0.0.1
+ */
+/**
+ * Type
+ *
+ * @ORM\Table(name="type")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Type\TypeRepository")
  */
 class Type implements TypeServiceEntityInterface
 {
