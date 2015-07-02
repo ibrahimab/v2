@@ -1,10 +1,95 @@
 {% extends 'layouts/default.html.twig' %}
 
+{% block breadcrumbs %}
+    {{ breadcrumbs() }}
+{% endblock %}
+
 {% block body %}
-    
+
     {{ parent() }}
 
-    <h2>Contact#new</h2>
-    <p>This is a template for the Contact#new action</p>
-    
+    <section class="landing landing-page contact-page">
+
+        <div class="row">
+            <div class="medium-8 large-8 columns">
+
+                <h1>{{ 'contact-title'|trans }}</h1>
+
+                {% if website_concern.type() == constant('WEBSITE_TYPE_CHALET_TOUR', website_concern) %}
+
+                    {% set faq_title = 'faq'|trans|lower %}
+                    {% set faq_link = '<a href="' ~ locale_path('page_faq') ~ '">' ~ faq_title ~ '</a>' %}
+
+                    <p>{{ 'contact-introduction-chalettour'|trans|replace({'%faq_link%': faq_link})|raw }}</p>
+
+                {% endif %}
+
+                <table class="address-block">
+                    <tr>
+                        <td><strong>{{ 'contact-info'|trans }}</strong></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'address-title'|trans }}:</td>
+                        <td>
+                            Wipmolenlaan 3 <br />
+                            3447 GJ Woerden
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'phonenumber'|trans }}:</td>
+                        <td>0348 - 43 46 49</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'fax'|trans }}:</td>
+                        <td>0348 - 69 07 52</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'email'|trans }}:</td>
+                        <td><a href="mailto:info@chalet.nl">info@chalet.nl</a></td>
+                    </tr>
+                    <tr>
+                        <td>Chat:</td>
+                        <td><img src="#" /></td>
+                    </tr>
+                    <tr>
+                        <td><strong>{{ 'remaining-data'|trans }}</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'tax-id'|trans }}:</td>
+                        <td>NL-8169.23.462.B.01</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'coc-id'|trans }}:</td>
+                        <td>30209634</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'sgr-id'|trans }}:</td>
+                        <td>3199</td>
+                    </tr>
+                    <tr>
+                        <td><strong>{{ 'telephone-availability'|trans }}</strong></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'monday-friday'|trans }}:</td>
+                        <td>{{ 'opening-times-week'|trans }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'saturday'|trans }}:</td>
+                        <td>{{ 'opening-times-weekend'|trans }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'sunday'|trans }}:</td>
+                        <td>{{ 'closed'|trans }}</td>
+                    </tr>
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
 {% endblock %}

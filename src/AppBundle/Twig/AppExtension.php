@@ -118,7 +118,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFilter('bbcode', [$this, 'bbcode'], array('pre_escape' => 'html', 'is_safe' => array('html'))),
             new \Twig_SimpleFilter('sortprop', [$this, 'sortByProperty']),
             new \Twig_SimpleFilter('seo', [$this, 'seo']),
-            new \Twig_SimpleFilter('replace', [$this, 'replace']),
+            new \Twig_SimpleFilter('array_replace', [$this, 'replace']),
             new \Twig_SimpleFilter('tokenize', [$this, 'tokenize']),
         ];
     }
