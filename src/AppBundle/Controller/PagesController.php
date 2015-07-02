@@ -154,7 +154,7 @@ class PagesController extends Controller
 
     /**
      * @Route("/algemenevoorwaarden.php", name="page_terms_nl")
-     * @Route("/terms", name="page_terms_en")
+     * @Route("/conditions.php", name="page_terms_en")
      * @Breadcrumb(name="terms", title="terms", translate=true, active=true)
      */
     public function conditions(Request $request)
@@ -177,15 +177,15 @@ class PagesController extends Controller
     }
 
     /**
-     * @Route("/privacy", name="page_privacy")
+     * @Route("/privacy-statement.php", name="page_privacy_nl")
+     * @Route("/privacy-statement.php", name="page_privacy_en")
      * @Breadcrumb(name="privacy", title="privacy", translate=true, active=true)
-     * @Template(":pages:privacy.html.twig")
      */
-    public function privacy()
+    public function privacy(Request $request)
     {
-        $filterService = $this->get('app.filter');
-
-        return [];
+        return $this->render('pages/privacy/' . $request->getLocale() . '.html.twig', [
+            'website' => $this->get('app.concern.website'),
+        ]);
     }
 
     /**
