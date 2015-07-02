@@ -102,6 +102,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('render_rate_table', [$this, 'renderRateTable']),
             new \Twig_SimpleFunction('searches_count', [$this, 'searchesCount']),
             new \Twig_SimpleFunction('is_checked', [$this, 'isChecked']),
+            new \Twig_SimpleFunction('pdf_link', [$this, 'pdfLink']),
         ];
     }
 
@@ -117,7 +118,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFilter('bbcode', [$this, 'bbcode'], array('pre_escape' => 'html', 'is_safe' => array('html'))),
             new \Twig_SimpleFilter('sortprop', [$this, 'sortByProperty']),
             new \Twig_SimpleFilter('seo', [$this, 'seo']),
-            new \Twig_SimpleFilter('replace', [$this, 'replace']),
+            new \Twig_SimpleFilter('array_replace', [$this, 'replace']),
             new \Twig_SimpleFilter('tokenize', [$this, 'tokenize']),
         ];
     }
@@ -668,6 +669,15 @@ class AppExtension extends \Twig_Extension
         // if second parameter is null, that means we want to tokenize a filter
         // otherwise tokenize the value
         return (null === $filter ? $this->filterService->tokenize($value) : $this->filterService->tokenize($filter, $value));
+    }
+
+    /**
+     * @param string $link
+     * @return string
+     */
+    public function pdfLink($link)
+    {
+        return '/chalet/' . $link;
     }
 
     /**

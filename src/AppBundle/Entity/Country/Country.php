@@ -1,11 +1,16 @@
 <?php
 namespace AppBundle\Entity\Country;
-
 use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
 use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
 use       Doctrine\Common\Collections\ArrayCollection;
 use       Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
+ * @package Chalet
+ * @version 0.0.5
+ * @since   0.0.5
+ */
 /**
  * Country
  *

@@ -68,7 +68,9 @@ doctrine:
         auto_mapping: true
         dql:
             numeric_functions:
-                Rand: AppBundle\Doctrine\DQL\RandFunction
+                Rand: AppBundle\Doctrine\DQL\Functions\Rand
+            datetime_functions:
+                UNIX_TIMESTAMP: AppBundle\Doctrine\DQL\Functions\UnixTimestamp
 
 doctrine_mongodb:
     connections:
