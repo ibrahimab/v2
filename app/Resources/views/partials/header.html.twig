@@ -8,8 +8,12 @@
                 <div>
                     <p>
                         <span class="small-up">
-                            <a href="#" id="contact-chat"><i class="fi-comments"></i>Chat</a>
-                            <span class="medium-up">{{ "general.or"|trans }}</span>
+                            {% set chat = website().chat() %}
+                            {% if chat != false %}
+                                {% set chat = chat|split('-')[1] %}
+                                <a href="#" data-role="chat-button" data-id="{{ chat }}" id="contact-chat"><i class="fi-comments"></i>Chat</a>
+                                <span class="medium-up">{{ "general.or"|trans }}</span>
+                            {% endif %}
                             <span class="show-for-small"></span>
                             <a href="tel:+31-348-434649"><i class="fi-telephone"></i>0348 - 43 46 49</a>
                         </span>

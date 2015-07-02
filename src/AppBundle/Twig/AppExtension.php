@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Twig;
+use       AppBundle\Concern\WebsiteConcern;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
@@ -64,6 +65,11 @@ class AppExtension extends \Twig_Extension
     private $filterService;
 
     /**
+     * @var WebsiteConcern
+     */
+    private $websiteConcern;
+
+    /**
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container, UrlGeneratorInterface $generator)
@@ -73,6 +79,7 @@ class AppExtension extends \Twig_Extension
         $this->currentUser    = null;
         $this->locale         = $this->container->get('request')->getLocale();
         $this->filterService  = $this->container->get('app.filter');
+        $this->websiteConcern = $this->container->get('app.concern.website');
     }
 
     /**
@@ -103,6 +110,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('searches_count', [$this, 'searchesCount']),
             new \Twig_SimpleFunction('is_checked', [$this, 'isChecked']),
             new \Twig_SimpleFunction('pdf_link', [$this, 'pdfLink']),
+            new \Twig_SimpleFunction('website', [$this, 'website']),
         ];
     }
 
@@ -678,6 +686,14 @@ class AppExtension extends \Twig_Extension
     public function pdfLink($link)
     {
         return '/chalet/' . $link;
+    }
+
+    /**
+     * @return WebsiteConcern
+     */
+    public function website()
+    {
+        return $this->websiteConcern;
     }
 
     /**

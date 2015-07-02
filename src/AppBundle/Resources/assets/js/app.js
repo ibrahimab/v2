@@ -108,6 +108,14 @@
         });
 
         /**
+         * Chat button
+         */
+        body.on('click', '[data-role="chat-button"]', function(event) {
+
+
+        });
+
+        /**
          * This listener allows for collapsable lists
          */
         var slideDown = function(element) {
