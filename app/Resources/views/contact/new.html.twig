@@ -86,6 +86,57 @@
                     </tr>
                 </table>
 
+                <strong>{{ 'contact-form-title'|trans }}</strong>
+                <form name="form-contact" method="post" action="{{ path('create_contact') }}">
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="name"{{ 'name' in form['errors'] ? ' class="error"' : '' }}>{{ 'form-contact-name'|trans }}
+                                <input type="text" id="name" name="contact[name]" value="{{ form['contact']['name'] }}" />
+                            </label>
+                            {% if 'name' in form['errors'] %}
+                                <small class="error">{{ 'form-contact-errors-name'|trans }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="email"{{ 'email' in form['errors'] ? ' class="error"' : '' }}>{{ 'form-contact-email'|trans }}
+                                <input type="email" id="email" name="contact[email]" value="{{ form['contact']['email'] }}" />
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="phonenumber"{{ 'phonenumber' in form['errors'] ? ' class="error"' : '' }}>{{ 'form-contact-phonenumber'|trans }}
+                                <input type="tel" id="phonenumber" name="contact[phonenumber]" value="{{ form['contact']['phonenumber'] }}" />
+                            </label>
+                            {% if 'email' in form['errors'] or 'phonenumber' in form['errors'] %}
+                                <small class="error">{{ 'form-contact-errors-email-phonenumber'|trans }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="message"{{ 'message' in form['errors'] ? ' class="error"' : '' }}>{{ 'form-contact-message'|trans }}
+                                <textarea name="contact[message]" rows="10">{{ form['contact']['message'] }}</textarea>
+                            </label>
+                            {% if 'message' in form['errors'] %}
+                                <small class="error">{{ 'form-contact-errors-message'|trans }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            * = {{ 'required-field-asterisk'|trans }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-4 large-centered columns">
+                            <input type="submit" class="button" name="submit" value="{{ 'form-contact-submit'|trans }}" />
+                        </div>
+                    </div>
+                </form>
+
             </div>
 
         </div>

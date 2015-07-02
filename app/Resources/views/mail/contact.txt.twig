@@ -1,0 +1,21 @@
+{% if email is not empty %}
+
+    {% set message = message|replace('&', '%26')|replace('"', '%22')|replace("'", '%27') %}
+    Reageren op deze mail: {{ email }}
+
+{% else %}
+
+    Reageer op deze mail per telefoon.
+
+{% endif %}
+
+{{ name }}
+{% if phonenumber is not empty %}
+    {{ phonenumber }}
+{% endif %}
+
+{% if email is not empty %}
+    {{ email }}
+{% endif %}
+
+{{ message }}

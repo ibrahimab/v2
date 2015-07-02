@@ -1,4 +1,7 @@
 parameters:
+    mailer_user: abdul.ibrahim16@gmail.com
+    mailer_password: ibietje24!
+    mailer_to: abdul.ibrahim16@gmail.com
     app:
         travel_insurance_possible: true
         ten_days_insurance_price_summer: 26.20
