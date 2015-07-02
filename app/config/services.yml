@@ -8,3 +8,4 @@ imports:
     - { resource: services/old.yml }
     - { resource: services/twig.yml }
     - { resource: services/app.yml }
+    - { resource: services/mailers.yml }
