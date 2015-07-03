@@ -105,7 +105,23 @@ class SearchController extends Controller
             'filter_service' => $this->container->get('app.filter'),
             'custom_filters' => ['countries' => [], 'regions' => [], 'places' => [], 'accommodations' => []],
             'form_filters'   => $formFilters,
+            'prices'         => [],
         ];
+        
+        $typeIds = [];
+        foreach ($results as $result) {
+            
+            $types = $result->getTypes();
+            foreach ($types as $type) {
+                $typeIds[] = $type->getId();
+            }
+        }
+        
+        if (count($typeIds) > 0) {
+            
+            $pricesService  = $this->get('old.prices.wrapper');
+            $data['prices'] = $pricesService->get($typeIds);
+        }
         
         $custom_filter_entities = $searchService->findOnlyNames($c, $r, $pl, $a);
         foreach ($custom_filter_entities as $entity) {

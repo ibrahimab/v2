@@ -41,9 +41,11 @@
                             </div>
                         </div>
                         <div class="small-12 medium-5 large-4 columns price-details">
-                            <span class="price-info">Prijs per persoon per week, vanaf</span>
-                            <span class="price has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide prijsinformatie bij dit zoekresultaat]">&euro; 265,-<i class="fi-info"></i></span>
-                            <span class="price-inc"><i class="sprite sprite-icon-skipass"></i>Inclusief skipas</span>
+                            {% if prices[type.getId()] is defined and prices[type.getId()] > 0 %}
+                                <span class="price-info">Prijs per persoon per week, vanaf</span>
+                                <span class="price has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide prijsinformatie bij dit zoekresultaat]">&euro; {{ prices[type.getId()]|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
+                                <span class="price-inc"><i class="sprite sprite-icon-skipass"></i>Inclusief skipas</span>
+                            {% endif %}
                         </div>
                     </div>
                     {% set short_description = type.getLocaleShortDescription(locale) %}
@@ -56,5 +58,5 @@
             </div>
         </div>
     </a>
-    {% include 'partials/search/types.html.twig' with {'types': types|slice(1)} only %}
+    {% include 'partials/search/types.html.twig' with {'types': types|slice(1), prices: prices} only %}
 </article>

@@ -26,6 +26,11 @@ class Type implements TypeServiceEntityInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+    
+    /**
+     * @var float
+     */
+    private $price;
 
     /**
      * @var integer
@@ -340,6 +345,24 @@ class Type implements TypeServiceEntityInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+        
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getPrice()
+    {
+        return $this->price;
     }
 
     /**

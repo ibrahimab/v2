@@ -16,6 +16,21 @@ interface TypeServiceEntityInterface
      * @return integer
      */
     public function getId();
+    
+    /**
+     * Set price
+     *
+     * @param float
+     * @return TypeServiceEntityInterface
+     */
+    public function setPrice($price);
+    
+    /**
+     * Get price
+     *
+     * @return TypeServiceEntityInterface
+     */
+    public function getPrice();
 
     /**
      * Set accommodationId
