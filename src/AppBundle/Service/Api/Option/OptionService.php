@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Service\Api\Option;
+use       Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
@@ -19,9 +20,10 @@ class OptionService
      *
      * @param OptionServiceRepositoryInterface $optionServiceRepository
      */
-    public function __construct(OptionServiceRepositoryInterface $optionServiceRepository)
+    public function __construct(ContainerInterface $container)
     {
-        $this->optionServiceRepository = $optionServiceRepository;
+        $this->container               = $container;
+        $this->optionServiceRepository = $this->container->get('app.repository.option');
     }
 
     /**
@@ -30,5 +32,19 @@ class OptionService
     public function getTravelInsurancesDescription()
     {
         return $this->optionServiceRepository->getTravelInsurancesDescription();
+    }
+    
+    public function options($type)
+    {
+        $wrapper = $this->container->get('old.rate.table.wrapper');
+        $wrapper->setType($type);
+        
+        $seasons       = $wrapper->getSeasonRates();
+        $accommodation = $this->accommodation($type->getAccommodation());
+    }
+    
+    public function accommodation($accommodation)
+    {
+        return $this->optionServiceRepository->accommodation($accommodation);
     }
 }

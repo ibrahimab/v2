@@ -6,6 +6,7 @@ use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use       Doctrine\ORM\NoResultException;
+use       Symfony\Component\HttpFoundation\Response;
 
 /**
  * CountriesController
@@ -85,5 +86,19 @@ class TypesController extends Controller
             'prices'             => $prices,
             'offers'             => $offers,
         ];
+    }
+    
+    /**
+     * @Route("/options")
+     */
+    public function options()
+    {
+        $typeService   = $this->get('app.api.type');
+        $optionService = $this->get('app.api.option');
+        
+        $type          = $typeService->find(['id' => 240]);
+        $options       = $optionService->options($type);
+        
+        return new Response();
     }
 }

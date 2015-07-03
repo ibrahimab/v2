@@ -35,6 +35,13 @@ class Group implements GroupEntityInterface
     private $kind;
 
     /**
+     * @var KindEntityInterface
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Option\Section", mappedBy="group")
+     */
+    private $sections;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="naam", type="string", length=50)
