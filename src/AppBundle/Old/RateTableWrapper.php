@@ -212,8 +212,12 @@ class RateTableWrapper
             $GLOBALS['website'] = $this->getWebsite()->get();
             $GLOBALS['websiteland'] = $this->getWebsite()->country();
             $GLOBALS['mysqlsettings']['name'] = ['remote' => $constants->getDatabaseName()];
-
-        	include_once $path . '/content/_teksten.php';
+            $GLOBALS['mysqlsettings']['charset'] = false;
+            $GLOBALS['website'] = ['type' => $this->getwebsite()->type(), 'website' => $this->getWebsite()->get(), 'country' => $this->getWebsite()->country()];
+            
+            $vars = ['websitetype' => $this->getWebsite()->type(), 'websitenaam' => $this->getWebsite()->name(), 'ttv' => ($this->getLocale() === 'nl' ? '' : '_' . $this->getLocale())];
+            
+        	include $path . '/content/_teksten.php';
             include_once $path . '/content/_teksten_intern.php';
 
             $GLOBALS['txt']  = $txt;

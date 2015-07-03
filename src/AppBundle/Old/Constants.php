@@ -61,5 +61,13 @@ class Constants
         if (!defined('wt_redis_host')) {
             define('wt_redis_host', $container->getParameter('redis_server'));
         }
+        
+        $env = $this->container->getParameter('kernel.environment');
+        if ('stag' === $env) {
+            
+            if (!defined('wt_test')) {
+                define('wt_test', true);
+            }
+        }
     }
 }

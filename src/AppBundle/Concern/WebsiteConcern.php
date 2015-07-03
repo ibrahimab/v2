@@ -35,6 +35,19 @@ class WebsiteConcern
     const WEBSITE_COUNTRY_EN                      = 'en';
     const WEBSITE_COUNTRY_DE                      = 'de';
 
+    const WEBSITE_CONFIG_LOCALE                   = 'locale';
+    const WEBSITE_CONFIG_RESALE                   = 'resale';
+    const WEBSITE_CONFIG_CHAT                     = 'chat';
+    const WEBSITE_CONFIG_TRUSTPILOT               = 'trustpilot';
+    const WEBSITE_CONFIG_FACEBOOK                 = 'facebook';
+    const WEBSITE_CONFIG_TWITTER                  = 'twitter';
+    const WEBSITE_CONFIG_GA                       = 'ga';
+    const WEBSITE_CONFIG_CANCEL_INSURANCE         = 'cancel_insurance';
+    const WEBSITE_CONFIG_TRAVEL_INSURANCE         = 'travel_insurance';
+    const WEBSITE_CONFIG_DAMAGE_INSURANCE         = 'damage_insurance';
+    const WEBSITE_CONFIG_NEWSLETTER               = 'newsletter';
+    const WEBSITE_CONFIG_NEWSLETTER_CANCEL        = 'newsletter_cancel';
+
     /**
      * @var string
      */
@@ -54,26 +67,11 @@ class WebsiteConcern
      * @var string
      */
     private $name;
-
+    
     /**
-     * @var string
+     * @var config
      */
-    private $chat;
-
-    /**
-     * @var string
-     */
-    private $trustpilot;
-
-    /**
-     * @var string
-     */
-    private $ga;
-
-    /**
-     * @var string
-     */
-    private $facebook;
+    private $config;
 
     /**
      * @var array
@@ -115,6 +113,11 @@ class WebsiteConcern
      * @var array
      */
     private $websites;
+    
+    /**
+     * @var string
+     */
+    private $domain;
 
     /**
      * @param array $parameters
@@ -133,13 +136,11 @@ class WebsiteConcern
     {
         if (array_key_exists($website, $this->websites)) {
 
+            $this->domain     = $website;
             $this->website    = $this->websites[$website]['website'];
             $this->country    = $this->websites[$website]['country'];
             $this->name       = $this->websites[$website]['name'];
-            $this->chat       = $this->websites[$website]['chat'];
-            $this->trustpilot = $this->websites[$website]['trustpilot'];
-            $this->ga         = $this->websites[$website]['ga'];
-            $this->facebook   = $this->websites[$website]['facebook'];
+            $this->config     = $this->websites[$website];
 
             $this->setType();
         }
@@ -176,24 +177,24 @@ class WebsiteConcern
     {
         return $this->name;
     }
-
-    public function chat()
+    
+    public function domain()
     {
-        return $this->chat;
+        return $this->domain;
     }
-
-    public function trustpilot()
+    
+    public function getConfig($identifier)
     {
-        return $this->trustpilot;
+        if (!isset($this->config[$identifier])) {
+            throw new \Exception(sprintf('Could not find WebsiteConcern config with identifier %s', $identifier));
+        }
+        
+        return $this->config[$identifier];
     }
-
-    public function ga()
+    
+    public function getLanguageField()
     {
-        return $this->ga;
-    }
-
-    public function facebook()
-    {
-        return $this->facebook;
+        $locale = $this->getConfig(self::WEBSITE_CONFIG_LOCALE);
+        return ($locale === 'nl' ? '' : '_' . $locale);
     }
 }

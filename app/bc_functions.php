@@ -5,6 +5,9 @@ function txt($id,$page="",$settings=array(""),$html=false) {
     $taal = $GLOBALS['taal'];
     $txt  = $GLOBALS['txt'];
     $txta = $GLOBALS['txta'];
+    $websitetype = $GLOBALS['website']['type'];
+    $website = $GLOBALS['website']['website'];
+    $websiteland = $GLOBALS['website']['country'];
 
 	if($page) {
 		if(!isset($txt["nl"][$page][$id])) {

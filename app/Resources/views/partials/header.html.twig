@@ -8,7 +8,8 @@
                 <div>
                     <p>
                         <span class="small-up">
-                            {% set chat = website().chat() %}
+                            {% set website_concern = website() %}
+                            {% set chat            = website_concern.getConfig(constant('WEBSITE_CONFIG_CHAT', website_concern)) %}
                             {% if chat != false %}
                                 {% set chat = chat|split('-')[1] %}
                                 <a href="#" data-role="chat-button" data-id="{{ chat }}" id="contact-chat"><i class="fi-comments"></i>Chat</a>
