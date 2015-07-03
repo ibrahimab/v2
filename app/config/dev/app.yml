@@ -21,6 +21,10 @@ parameters:
                 season:  1
                 country: nl
                 name: Chalet.nl
+                chat: 2-PTFmcHUgtM
+                trustpilot: bd82d1c7@trustpilotservice.com
+                ga: UA-2078202-1
+                facebook: 156825034385110
 
             local.chalet.eu:
                 locale:  en
@@ -28,6 +32,10 @@ parameters:
                 season:  1
                 country: en
                 name: Chalet.eu
+                chat: false
+                trustpilot: 5aa723efa5@trustpilotservice.com
+                ga: UA-2078202-6
+                facebook: false
 
             local.chalettour.nl:
                 locale:  nl
@@ -35,6 +43,10 @@ parameters:
                 season:  1
                 country: nl
                 name: Chalettour.nl
+                chat: false
+                trustpilot: false
+                ga: UA-2078202-7
+                facebook: false
 
             local.chalet.be:
                 locale:  nl
@@ -42,6 +54,10 @@ parameters:
                 season:  1
                 country: be
                 name: Chalet.be
+                chat: 3-eex4-wCgtM
+                trustpilot: 959caf69@trustpilotservice.com
+                ga: UA-2078202-3
+                facebook: false
 
             local.chaletonline.de:
                 locale:  de
@@ -49,6 +65,10 @@ parameters:
                 season:  1
                 country: de
                 name: Chaletonline.de
+                chat: false
+                trustpilot: false
+                ga: UA-2078202-20
+                facebook: false
 
             local.chaletsinvallandry.nl:
                 locale:  nl
@@ -56,6 +76,10 @@ parameters:
                 season:  1
                 country: nl
                 name: Chalets in Vallandry
+                chat: false
+                trustpilot: false
+                ga: UA-2078202-10
+                facebook: false
 
             local.chaletsinvallandry.com:
                 locale:  en
@@ -63,6 +87,10 @@ parameters:
                 season:  1
                 country: en
                 name: Chalets in Vallandry
+                chat: false
+                trustpilot: false
+                ga: UA-2078202-9
+                facebook: false
 
             local.venturasol.nl:
                 locale:  nl
@@ -70,6 +98,10 @@ parameters:
                 season:  1
                 country: nl
                 name: Venturasol Wintersport
+                chat: false
+                trustpilot: false
+                ga: UA-2078202-15
+                facebook: 162914327091136
 
             local.venturasolvacances.nl:
                 locale:  nl
@@ -77,6 +109,10 @@ parameters:
                 season:  1
                 country: nl
                 name: Venturasol Vacances
+                chat: false
+                trustpilot: false
+                ga: UA-2078202-16
+                facebook: false
 
             local.zomerhuisje.nl:
                 locale:  nl
@@ -84,6 +120,10 @@ parameters:
                 season:  2
                 country: nl
                 name: Zomerhuisje.nl
+                chat: false
+                trustpilot: 47c47023@trustpilotservice.com
+                ga: UA-2078202-5
+                facebook: false
 
             local.italissima.nl:
                 locale:  nl
@@ -91,6 +131,10 @@ parameters:
                 season:  2
                 country: nl
                 name: Italissima
+                chat: 1-ePbASwCpnf
+                trustpilot: b69417c8@trustpilotservice.com
+                ga: UA-2078202-11
+                facebook: 272671556122756
 
             local.italissima.be:
                 locale:  nl
@@ -98,6 +142,10 @@ parameters:
                 season:  2
                 country: be
                 name: Italissima
+                chat: 1-ePbASwCpnf
+                trustpilot: eaacc6b4@trustpilotservice.com
+                ga: UA-2078202-14
+                facebook: false
 
             local.italyhomes.eu:
                 locale:  en
@@ -105,6 +153,10 @@ parameters:
                 season:  2
                 country: en
                 name: Italyhomes
+                chat: false
+                trustpilot: false
+                ga: UA-2078202-17
+                facebook: false
 
             local.superski.nl:
                 locale:  nl
@@ -112,6 +164,10 @@ parameters:
                 season:  1
                 country: nl
                 name: SuperSki
+                chat: false
+                trustpilot: false
+                ga: UA-2078202-13
+                facebook: 290286354404681
         service:
             api:
                 highlight:

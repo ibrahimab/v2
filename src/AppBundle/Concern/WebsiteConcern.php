@@ -56,6 +56,26 @@ class WebsiteConcern
     private $name;
 
     /**
+     * @var string
+     */
+    private $chat;
+
+    /**
+     * @var string
+     */
+    private $trustpilot;
+
+    /**
+     * @var string
+     */
+    private $ga;
+
+    /**
+     * @var string
+     */
+    private $facebook;
+
+    /**
      * @var array
      */
     private $types = [
@@ -113,9 +133,14 @@ class WebsiteConcern
     {
         if (array_key_exists($website, $this->websites)) {
 
-            $this->website = $this->websites[$website]['website'];
-            $this->country = $this->websites[$website]['country'];
-            $this->name    = $this->websites[$website]['name'];
+            $this->website    = $this->websites[$website]['website'];
+            $this->country    = $this->websites[$website]['country'];
+            $this->name       = $this->websites[$website]['name'];
+            $this->chat       = $this->websites[$website]['chat'];
+            $this->trustpilot = $this->websites[$website]['trustpilot'];
+            $this->ga         = $this->websites[$website]['ga'];
+            $this->facebook   = $this->websites[$website]['facebook'];
+
             $this->setType();
         }
     }
@@ -150,5 +175,25 @@ class WebsiteConcern
     public function name()
     {
         return $this->name;
+    }
+
+    public function chat()
+    {
+        return $this->chat;
+    }
+
+    public function trustpilot()
+    {
+        return $this->trustpilot;
+    }
+
+    public function ga()
+    {
+        return $this->ga;
+    }
+
+    public function facebook()
+    {
+        return $this->facebook;
     }
 }
