@@ -19,13 +19,6 @@ class NewsletterController extends Controller
      */
     public function show()
     {
-
-        // $countryService = $this->get('app.api.country');
-        // $country = $countryService->find(['id' => 1]);
-
-        // $homepageBlockService = $this->get('app.api.homepageblock');
-        // $homepageBlocks       = $homepageBlockService->published();
-
         $generalSettings = $this->get('app.api.generalsettings');
 
         return [

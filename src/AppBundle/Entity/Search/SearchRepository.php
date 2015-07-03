@@ -124,7 +124,7 @@ class SearchRepository implements SearchServiceRepositoryInterface
         $expr = $qb->expr();
 
         $qb->add('select', 't,
-                            partial a.{id, name, shortDescription, englishShortDescription, germanShortDescription},
+                            partial a.{id, name, shortDescription, englishShortDescription, germanShortDescription, quality},
                             partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName},
                             partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName},
                             partial c.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, startCode}')

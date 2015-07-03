@@ -15,7 +15,7 @@
         <div class="row">
             <div class="title-ipad title medium-12 columns">
                 {{ result.getName() }} {{ type.getLocaleName(locale) }}
-                <span>{% include 'partials/quality_stars.html.twig' with {'quality': 1} %}</span>
+                <span>{% include 'partials/quality_stars.html.twig' with {'quality': (type.getQuality() > 0 ? type.getQuality() : result.getQuality())} %}</span>
             </div>
             <div class="small-12 medium-5 large-5 columns">
                 <div class="accom-img">
@@ -39,7 +39,7 @@
                             </div>
                             <div class="title">
                                 {{ result.getName() }} {{ type.getLocaleName(locale) }}
-                                <span><span>{% include 'partials/quality_stars.html.twig' with {'quality': 1} %}</span></span>
+                                <span><span>{% include 'partials/quality_stars.html.twig' with {'quality': (type.getQuality() > 0 ? type.getQuality() : result.getQuality())} %}</span></span>
                             </div>
                         </div>
                         <div class="small-12 medium-5 large-4 columns price-details">
