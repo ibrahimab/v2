@@ -89,7 +89,9 @@
                                         </div>
                                 {% endif %}
                             </div>
-                            <div class="circle"><span>Aan-</span><span>bieding</span></div>
+                            {% if offers[type.getId()] is defined %}
+                                <div class="circle"><span>Aan-</span><span>bieding</span></div>
+                            {% endif %}
                             <a href="#images" class="button goto blank small radius" title="Bekijk alle foto's"><i class="fi-photo"></i>Bekijk alle foto's</a><!--class goto-->
                             <div id="details-for-mobile" class="show-for-small-99">
                             </div>
