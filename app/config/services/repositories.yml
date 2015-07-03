@@ -86,6 +86,11 @@ services:
         calls:
             - [setSeason, [@app.concern.season]]
 
+    app.repository.price:
+        class:     AppBundle\Entity\Price\PriceRepository
+        arguments: [AppBundle\Entity\Price\Price]
+        parent:    app.repository.orm
+
     app.repository.file.accommodation:
         class:     AppBundle\Document\File\AccommodationRepository
         arguments: [AppBundle\Document\File\Accommodation]

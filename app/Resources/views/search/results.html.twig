@@ -2,7 +2,6 @@
 <div class="search-results-container" data-role="search-results">
     {% include 'partials/search/filters.html.twig' %}
     <hr />
-    {{ render_paginator() }}
     <div class="row">
         <div class="small-12 medium-6 large-6 columns">
             <div class="title">{{ count_paginator() }} {{ 'results'|trans }}</div>
