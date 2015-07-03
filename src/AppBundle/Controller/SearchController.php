@@ -126,7 +126,6 @@ class SearchController extends Controller
         
             $priceService   = $this->get('app.api.price');
             $data['offers'] = $priceService->offers($typeIds);
-            dump($data['offers']);
         }
         
         $custom_filter_entities = $searchService->findOnlyNames($c, $r, $pl, $a);
