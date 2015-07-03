@@ -24,7 +24,7 @@ require_once __DIR__.'/../app/AppKernel.php';
 
 $kernel = new AppKernel('dev', true);
 $kernel->loadClassCache();
-// error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL ^ E_NOTICE);
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();

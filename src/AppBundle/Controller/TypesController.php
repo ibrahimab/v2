@@ -63,6 +63,18 @@ class TypesController extends Controller
         } catch (\Exception $e) {
             throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found: (' . $e->getMessage() . ')');
         }
+        
+        $accommodationTypes = $accommodation->getTypes();
+        $typeIds            = [];
+        foreach ($accommodationTypes as $accommodationType) {
+            $typeIds[] = $accommodationType->getId();
+        }
+        
+        $pricesService = $this->get('old.prices.wrapper');
+        $prices        = $pricesService->get($typeIds);
+    
+        $priceService  = $this->get('app.api.price');
+        $offers        = $priceService->offers($typeIds);
 
         return [
 
@@ -70,6 +82,8 @@ class TypesController extends Controller
             'surveyData'         => $surveyData,
             'minimalSurveyCount' => $this->container->getParameter('app')['minimalSurveyCount'],
             'features'           => array_keys($features),
+            'prices'             => $prices,
+            'offers'             => $offers,
         ];
     }
 }
