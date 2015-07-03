@@ -38,7 +38,6 @@ class Constants
         $container = $this->container;
 
         if (!defined('wt_db_host')) {
-            dump('test');
             define('wt_db_host', $container->getParameter('database_host'));
         }
 
@@ -49,6 +48,9 @@ class Constants
         if (!defined('wt_db_password')) {
             define('wt_db_password', $container->getParameter('database_password'));
         }
+        
+        $GLOBALS['mysqlsettings']['name']    = ['remote' => $this->getDatabaseName()];
+        $GLOBALS['mysqlsettings']['charset'] = false;
     }
 
     public function getDatabaseName()

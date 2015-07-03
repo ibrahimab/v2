@@ -20,3 +20,12 @@ services:
     old.constants:
         class: AppBundle\Old\Constants
         arguments: [@service_container]
+        
+    old.prices:
+        class: vanafprijs
+        calls:
+            - [setConfiguration, [@old.configuration]]
+
+    old.prices.wrapper:
+        class: AppBundle\Old\PricesWrapper
+        arguments: [@service_container]
