@@ -87,3 +87,7 @@ services:
     app.api.theme:
         class:      AppBundle\Service\Api\Theme\ThemeService
         arguments: ["@app.repository.theme"]
+
+    app.api.price:
+        class:      AppBundle\Service\Api\Price\PriceService
+        arguments: ["@app.repository.price"]

@@ -10,7 +10,7 @@
     {% set images = all_images[type.getId()] %}
 {% endif %}
 
-<article class="overview sale" id="F242">
+<article class="overview{% if offers[type.getId()] is defined %} sale{% endif %}" id="F242">
     <a href="{{ locale_path('show_type', {beginCode: country.getStartCode(), typeId: type.getId()}) }}">
         <div class="row">
             <div class="title-ipad title medium-12 columns">
@@ -24,7 +24,9 @@
                         <div><img data-lazy="{{ image.getLocation() }}" alt="{{ result.getName() }} {{ type.getLocaleName(locale) }}" /></div>
                         {% endfor %}
                     </div>
-                    <div class="circle"><span>Aan-</span><span>bieding</span></div>
+                    {% if offers[type.getId()] is defined %}
+                        <div class="circle"><span>Aan-</span><span>bieding</span></div>
+                    {% endif %}
                     <div class="heart"><span><i class="fi-heart"></i></span></div>
                 </div>
             </div>
@@ -58,5 +60,5 @@
             </div>
         </div>
     </a>
-    {% include 'partials/search/types.html.twig' with {'types': types|slice(1), prices: prices} only %}
+    {% include 'partials/search/types.html.twig' with {'types': types|slice(1), 'prices': prices, 'offers': offers} only %}
 </article>

@@ -11,6 +11,7 @@ use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use       Symfony\Component\HttpFoundation\Request;
 use       Symfony\Component\HttpFoundation\JsonResponse;
+use       Symfony\Component\HttpFoundation\Response;
 
 /**
  * SearchController
@@ -106,6 +107,7 @@ class SearchController extends Controller
             'custom_filters' => ['countries' => [], 'regions' => [], 'places' => [], 'accommodations' => []],
             'form_filters'   => $formFilters,
             'prices'         => [],
+            'offers'         => [],
         ];
         
         $typeIds = [];
@@ -121,6 +123,10 @@ class SearchController extends Controller
             
             $pricesService  = $this->get('old.prices.wrapper');
             $data['prices'] = $pricesService->get($typeIds);
+        
+            $priceService   = $this->get('app.api.price');
+            $data['offers'] = $priceService->offers($typeIds);
+            dump($data['offers']);
         }
         
         $custom_filter_entities = $searchService->findOnlyNames($c, $r, $pl, $a);
