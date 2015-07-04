@@ -1,15 +1,15 @@
 {% extends 'layouts/home.html.twig' %}
 
 {% block body %}
-    
+
     {{ parent() }}
-    
-    {% include 'partials/highlights.html.twig'       with {'highlights':     highlights } only %}
-    
+
+    {% include 'partials/highlights.html.twig'       with {'highlights':     highlights, offers: offers } only %}
+
     {% include 'partials/homepage_blocks.html.twig'  with {'homepageBlocks': homepageBlocks } only %}
-    
+
     {% if region and places|length > 0 %}
         {% include 'partials/homepage_regions.html.twig' with {'region': region, 'places': places } only %}
     {% endif %}
-    
+
 {% endblock %}

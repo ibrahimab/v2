@@ -38,10 +38,12 @@ class PagesController extends Controller
         $regionService        = $this->get('app.api.region');
         $placeService         = $this->get('app.api.place');
         $typeService          = $this->get('app.api.type');
+        $priceService         = $this->get('app.api.price');
 
         $regions              = $regionService->findHomepageRegions(['limit' => 1]);
         $places               = [];
         $region               = null;
+        $offers               = [];
 
         if (count($regions) > 0) {
 
@@ -77,6 +79,8 @@ class PagesController extends Controller
                 $types[$surveyStat['typeId']]->setSurveyCount($surveyStat['surveyCount']);
                 $types[$surveyStat['typeId']]->setSurveyAverageOverallRating($surveyStat['surveyAverageOverallRating']);
             }
+
+            $offers = $priceService->offers(array_keys($types));
         }
 
         $groupedHomepageBlocks = ['left' => [], 'right' => []];
@@ -97,6 +101,7 @@ class PagesController extends Controller
             'places'         => $places,
             'highlights'     => $highlights,
             'homepageBlocks' => $groupedHomepageBlocks,
+            'offers'         => $offers,
         ];
     }
 
@@ -215,16 +220,23 @@ class PagesController extends Controller
      */
     public function viewed()
     {
-        $typeIds     = $this->container->get('app.api.user')->user()->getViewed();
-        $typeService = $this->container->get('app.api.type');
-        $types       = [];
+        $typeIds      = $this->get('app.api.user')->user()->getViewed();
+        $typeService  = $this->get('app.api.type');
+        $priceService = $this->get('app.api.price');
+
+        $offers       = [];
+        $types        = [];
 
         if (count($typeIds) > 0) {
-            $types = $typeService->findById($typeIds);
+
+            $types  = $typeService->findById($typeIds);
+            $offers = $priceService->offers($typeIds);
         }
 
         return $this->render('pages/viewed.html.twig', [
-            'types' => $types,
+
+            'types'  => $types,
+            'offers' => $offers,
         ]);
     }
 
@@ -235,5 +247,23 @@ class PagesController extends Controller
      */
     public function saved()
     {
+        $typeIds      = $this->get('app.api.user')->user()->getFavorites();
+        $typeService  = $this->get('app.api.type');
+        $priceService = $this->get('app.api.price');
+
+        $offers       = [];
+        $types        = [];
+
+        if (count($typeIds) > 0) {
+
+            $types  = $typeService->findById($typeIds);
+            $offers = $priceService->offers($typeIds);
+        }
+
+        return $this->render('pages/saved.html.twig', [
+
+            'types'  => $types,
+            'offers' => $offers,
+        ]);
     }
 }

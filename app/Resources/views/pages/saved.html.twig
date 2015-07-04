@@ -1,0 +1,30 @@
+{% extends 'layouts/default.html.twig' %}
+
+{% block breadcrumbs %}
+    {{
+        breadcrumbs()
+    }}
+{% endblock %}
+
+{% block body %}
+
+    {{ parent() }}
+
+    <!-- content -->
+    <section id="area-selected" class="place-page">
+
+        <div class="row">
+
+            <h1>{{ 'saved-title'|trans }}</h1>
+
+            {% for type in types %}
+
+                {% include 'partials/highlight/highlight.html.twig' with { 'highlight': { 'type': type }, place: type.getAccommodation().getPlace(), 'end': ( ((loop.index % 3) is same as(0)) or loop.last ), offers: offers } only %}
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+{% endblock %}
