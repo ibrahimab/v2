@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Entity\Type;
+use       AppBundle\Entity\Video;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       Doctrine\ORM\Mapping as ORM;
 use       Doctrine\Common\Collections\ArrayCollection;
@@ -26,7 +27,7 @@ class Type implements TypeServiceEntityInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
      * @var float
      */
@@ -44,6 +45,25 @@ class Type implements TypeServiceEntityInterface
      * @ORM\JoinColumn(name="accommodatie_id", referencedColumnName="accommodatie_id")
      */
     private $accommodation;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="video", type="boolean")
+     */
+    private $hasVideo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="video_url", type="string")
+     */
+    private $videoUrl;
+
+    /**
+     * @var Video
+     */
+    private $video;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Booking\Booking", mappedBy="type")
@@ -353,7 +373,7 @@ class Type implements TypeServiceEntityInterface
     public function setPrice($price)
     {
         $this->price = $price;
-        
+
         return $this;
     }
 
@@ -399,6 +419,54 @@ class Type implements TypeServiceEntityInterface
         $this->accommodation = $accommodation;
 
         return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setHasVideo($hasVideo)
+    {
+        $this->hasVideo = $hasVideo;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function hasVideo()
+    {
+        return $this->hasVideo;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setVideoUrl($videoUrl)
+    {
+        $this->videoUrl = $videoUrl;
+
+        return $this->videoUrl;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getVideoUrl()
+    {
+        return $this->videoUrl;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getVideo()
+    {
+        if (null === $this->video && true === $this->hasVideo()) {
+            $this->video = new Video($this->getVideoUrl());
+        }
+
+        return $this->video;
     }
 
     /**
