@@ -14,8 +14,9 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 url: Routing.generate('save_favorite', {'typeId': element.data('id')}),
                 success: function(data) {
 
-                    element.data('disable', false);
+                    element.data('disable', false).attr('data-role', 'remove-favorite');
                     Chalet.Favorite.increment();
+                    console.log('test');
                 }
             });
         },
@@ -31,7 +32,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 url: Routing.generate('remove_favorite', {'typeId': element.data('id')}),
                 success: function(data) {
 
-                    element.data('disable', false);
+                    element.data('disable', false).attr('data-role', 'add-favorite');
                     Chalet.Favorite.decrement();
                 }
             });
