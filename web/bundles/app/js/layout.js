@@ -46,15 +46,15 @@ $('.table-explain .button').click(function() {
     return false;
 });
 //like heart
-$('.heart a').click(function() {
-    $('#nav-main #dropdown-saved ').animate({color: '#d50d3b', borderColor: '#d50d3b' }, 500).delay( 1000 ).animate({color: '#1a3761', borderColor: '#d9d9d9' }, 500);
-    $('#nav-main #dropdown-container').addClass('active');
-    $(this).toggleClass('active');
-    $(this).toggleClass('added');
-    $('#nav-main #link-saved a').animate({color: '#d50d3b', borderColor: '#d50d3b'}, 500).delay( 1000 ).animate({color: '#1a3761', borderColor: '#d9d9d9'}, 500);
-    $('#nav-main #link-saved a').addClass('active');
-    return false;
-});
+// $('.heart a').click(function() {
+//     $('#nav-main #dropdown-saved ').animate({color: '#d50d3b', borderColor: '#d50d3b' }, 500).delay( 1000 ).animate({color: '#1a3761', borderColor: '#d9d9d9' }, 500);
+//     $('#nav-main #dropdown-container').addClass('active');
+//     $(this).toggleClass('active');
+//     $(this).toggleClass('added');
+//     $('#nav-main #link-saved a').animate({color: '#d50d3b', borderColor: '#d50d3b'}, 500).delay( 1000 ).animate({color: '#1a3761', borderColor: '#d9d9d9'}, 500);
+//     $('#nav-main #link-saved a').addClass('active');
+//     return false;
+// });
 //open close divs
 $('#search-filter-results h2 a').click(function() {//close ONE filter
     $(this).closest('h2').toggleClass('closed');

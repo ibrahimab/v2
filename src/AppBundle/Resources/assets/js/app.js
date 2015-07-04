@@ -116,6 +116,30 @@
         });
 
         /**
+         * Save favorite
+         */
+
+        body.on('click', '[data-role="add-favorite"]', function(event) {
+
+            event.preventDefault();
+            var element = jq(this);
+
+            if (true !== element.data('disable')) {
+                Chalet.Favorite.add(element);
+            }
+        });
+
+        body.on('click', '[data-role="remove-favorite"]', function(event) {
+
+            event.preventDefault();
+            var element = jq(this);
+
+            if (true !== element.data('disable')) {
+                Chalet.Favorite.remove(element);
+            }
+        });
+
+        /**
          * This listener allows for collapsable lists
          */
         var slideDown = function(element) {

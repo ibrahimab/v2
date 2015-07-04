@@ -38,10 +38,12 @@ class PagesController extends Controller
         $regionService        = $this->get('app.api.region');
         $placeService         = $this->get('app.api.place');
         $typeService          = $this->get('app.api.type');
+        $priceService         = $this->get('app.api.price');
 
         $regions              = $regionService->findHomepageRegions(['limit' => 1]);
         $places               = [];
         $region               = null;
+        $offers               = [];
 
         if (count($regions) > 0) {
 
@@ -77,6 +79,8 @@ class PagesController extends Controller
                 $types[$surveyStat['typeId']]->setSurveyCount($surveyStat['surveyCount']);
                 $types[$surveyStat['typeId']]->setSurveyAverageOverallRating($surveyStat['surveyAverageOverallRating']);
             }
+
+            $offers = $priceService->offers(array_keys($types));
         }
 
         $groupedHomepageBlocks = ['left' => [], 'right' => []];
@@ -97,6 +101,7 @@ class PagesController extends Controller
             'places'         => $places,
             'highlights'     => $highlights,
             'homepageBlocks' => $groupedHomepageBlocks,
+            'offers'         => $offers,
         ];
     }
 
@@ -203,9 +208,62 @@ class PagesController extends Controller
      */
     public function searches()
     {
-        dump($this->container->get('app.api.user')->user()->getSearches());
         return $this->render('pages/searches.html.twig', [
             'saved_searches' => $this->container->get('app.api.user')->user()->getSearches(),
+        ]);
+    }
+
+    /**
+     * @Route("/bekeken-accommodaties", name="page_viewed_nl")
+     * @Route("/viewed-accommodations", name="page_viewed_en")
+     * @Breadcrumb(name="viewed", title="page-viewed", translate=true, active=true)
+     */
+    public function viewed()
+    {
+        $typeIds      = $this->get('app.api.user')->user()->getViewed();
+        $typeService  = $this->get('app.api.type');
+        $priceService = $this->get('app.api.price');
+
+        $offers       = [];
+        $types        = [];
+
+        if (count($typeIds) > 0) {
+
+            $types  = $typeService->findById($typeIds);
+            $offers = $priceService->offers($typeIds);
+        }
+
+        return $this->render('pages/viewed.html.twig', [
+
+            'types'  => $types,
+            'offers' => $offers,
+        ]);
+    }
+
+    /**
+     * @Route("/opgeslagen-accommodatie", name="page_saved_nl")
+     * @Route("/saved-accommodation", name="page_saved_en")
+     * @Breadcrumb(name="saved", title="page-saved", translate=true, active=true)
+     */
+    public function saved()
+    {
+        $typeIds      = $this->get('app.api.user')->user()->getFavorites();
+        $typeService  = $this->get('app.api.type');
+        $priceService = $this->get('app.api.price');
+
+        $offers       = [];
+        $types        = [];
+
+        if (count($typeIds) > 0) {
+
+            $types  = $typeService->findById($typeIds);
+            $offers = $priceService->offers($typeIds);
+        }
+
+        return $this->render('pages/saved.html.twig', [
+
+            'types'  => $types,
+            'offers' => $offers,
         ]);
     }
 }

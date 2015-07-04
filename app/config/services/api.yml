@@ -78,7 +78,7 @@ services:
 
     app.api.option:
         class:     AppBundle\Service\Api\Option\OptionService
-        arguments: ["@app.repository.option"]
+        arguments: [@service_container]
 
     app.api.faq:
         class:      AppBundle\Service\Api\Faq\FaqService

@@ -332,6 +332,14 @@
         <source>page-searches</source>
         <target>Zoekopdrachten</target>
       </trans-unit>
+      <trans-unit id="dfce7b6feabcba2043fe203c92242683553c7898" resname="page-viewed">
+        <source>page-viewed</source>
+        <target>Laatst bekeken accommodaties</target>
+      </trans-unit>
+      <trans-unit id="dfce7b6feabcba2043fe203c92242683553c7898" resname="page-saved">
+        <source>page-saved</source>
+        <target>Opgeslagen accommodaties</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -33,7 +33,7 @@ class SearchController extends Controller
      * @Route(path="/search-and-book.php",  name="search_en", options={"expose": true})
      */
     public function index(Request $request)
-    {   
+    {
         $c        = $request->query->get('c',  []);
         $r        = $request->query->get('r',  []);
         $pl       = $request->query->get('pl', []);
@@ -45,7 +45,7 @@ class SearchController extends Controller
         $per_page = intval($this->container->getParameter('app')['results_per_page']);
         $offset   = round($per_page * $page);
         $filters  = $request->query->get('f', []);
-        
+
         array_walk_recursive($filters, function(&$v) {
             $v = intval($v);
         });
@@ -63,30 +63,30 @@ class SearchController extends Controller
             $paginator->where(SearchBuilder::WHERE_ACCOMMODATION, $a);
         }
 
-        if ($request->query->has('c')) {            
+        if ($request->query->has('c')) {
             $paginator->where(SearchBuilder::WHERE_COUNTRY, $c);
         }
-        
+
         if ($request->query->has('r')) {
             $paginator->where(SearchBuilder::WHERE_REGION, $r);
         }
-        
+
         if ($request->query->has('pl')) {
             $paginator->where(SearchBuilder::WHERE_PLACE, $pl);
         }
-        
+
         if ($request->query->has('be')) {
-            
+
             $formFilters['bedrooms'] = $be;
             $paginator->where(SearchBuilder::WHERE_BEDROOMS, $be);
         }
-        
+
         if ($request->query->has('ba')) {
-            
+
             $formFilters['bathrooms'] = $ba;
             $paginator->where(SearchBuilder::WHERE_BATHROOMS, $ba);
         }
-        
+
         $results    = $paginator->results();
         $javascript = $this->get('app.javascript');
 
@@ -109,51 +109,50 @@ class SearchController extends Controller
             'prices'         => [],
             'offers'         => [],
         ];
-        
+
         $typeIds = [];
         foreach ($results as $result) {
-            
+
             $types = $result->getTypes();
             foreach ($types as $type) {
                 $typeIds[] = $type->getId();
             }
         }
-        
+
         if (count($typeIds) > 0) {
-            
+
             $pricesService  = $this->get('old.prices.wrapper');
             $data['prices'] = $pricesService->get($typeIds);
-        
+
             $priceService   = $this->get('app.api.price');
             $data['offers'] = $priceService->offers($typeIds);
         }
-        
+
         $custom_filter_entities = $searchService->findOnlyNames($c, $r, $pl, $a);
         foreach ($custom_filter_entities as $entity) {
-            
+
             if ($entity instanceof CountryServiceEntityInterface) {
                 $data['custom_filters']['countries'][$entity->getId()] = $entity;
             }
-            
+
             if ($entity instanceof RegionServiceEntityInterface) {
                 $data['custom_filters']['regions'][$entity->getId()] = $entity;
             }
-            
+
             if ($entity instanceof PlaceServiceEntityInterface) {
                 $data['custom_filters']['places'][$entity->getId()] = $entity;
             }
-            
+
             if ($entity instanceof AccommodationServiceEntityInterface) {
                 $data['custom_filters']['accommodations'][$entity->getId()] = $entity;
             }
         }
-        
+
         return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', $data);
     }
 
     /**
-     * @Route(path="/zoek-en-boek/opslaan", name="save_search_nl", options={"expose": true})
-     * @Route(path="/search-and-book/save", name="save_search_en", options={"expose": true})
+     * @Route(path="/search/save", name="save_search", options={"expose": true})
      */
     public function save(Request $request)
     {
@@ -166,15 +165,19 @@ class SearchController extends Controller
         $r           = $request->query->get('r', []);
         $pl          = $request->query->get('pl', []);
         $a           = $request->query->get('a', []);
-        
+
         array_walk_recursive($f, function(&$v) {
             $v = intval($v);
         });
 
         if (null !== $user) {
-            $userService->saveSearch($user, ['f' => $f, 'be' => $be, 'ba' => $ba, 'c' => $c, 'r' => $r, 'pl' => $pl, 'a' => $a]);
+            $userService->saveSearch(['f' => $f, 'be' => $be, 'ba' => $ba, 'c' => $c, 'r' => $r, 'pl' => $pl, 'a' => $a]);
         }
 
-        return $this->redirectToRoute('search_' .  $request->getLocale(), ['f' => $f, 'be' => $be, 'ba' => $ba, 'c' => $c, 'r' => $r, 'pl' => $pl, 'a' => $a]);
+        return new JsonResponse([
+
+            'type'    => 'success',
+            'message' => 'Your search was successfully saved',
+        ]);
     }
 }
