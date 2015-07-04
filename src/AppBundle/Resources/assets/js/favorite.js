@@ -52,7 +52,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
         animate: function(element, action) {
 
-            var saved = jq('[data-role="favorite-saved"]');
+            var saved = jq('[data-role="saved-item"]');
 
             saved.animate({color: '#d50d3b', borderColor: '#d50d3b' }, 500)
                  .delay(1000)

@@ -152,8 +152,7 @@ class SearchController extends Controller
     }
 
     /**
-     * @Route(path="/zoek-en-boek/opslaan", name="save_search_nl", options={"expose": true})
-     * @Route(path="/search-and-book/save", name="save_search_en", options={"expose": true})
+     * @Route(path="/search/save", name="save_search", options={"expose": true})
      */
     public function save(Request $request)
     {
@@ -175,6 +174,10 @@ class SearchController extends Controller
             $userService->saveSearch(['f' => $f, 'be' => $be, 'ba' => $ba, 'c' => $c, 'r' => $r, 'pl' => $pl, 'a' => $a]);
         }
 
-        return $this->redirectToRoute('search_' .  $request->getLocale(), ['f' => $f, 'be' => $be, 'ba' => $ba, 'c' => $c, 'r' => $r, 'pl' => $pl, 'a' => $a]);
+        return new JsonResponse([
+
+            'type'    => 'success',
+            'message' => 'Your search was successfully saved',
+        ]);
     }
 }

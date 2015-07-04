@@ -27,7 +27,7 @@
                     {% if offers[type.getId()] is defined %}
                         <div class="circle"><span>Aan-</span><span>bieding</span></div>
                     {% endif %}
-                    <div class="heart"><a href="#"{% if is_favorite(type) %} data-role="remove-favorite" class="active"{% else %} data-role="add-favorite"{% endif %} data-id="{{ type.getId() }}" title="Dit resultaat opslaan in mijn favorieten"><i class="fi-heart"></i></a></div>
+                    <div class="heart"><a href="#"{% if is_favorite(type) %} data-role="remove-favorite" class="active added"{% else %} data-role="add-favorite"{% endif %} data-id="{{ type.getId() }}" title="Dit resultaat opslaan in mijn favorieten"><i class="fi-heart"></i></a></div>
                 </div>
             </div>
             <div class="small-12 medium-7 large-7 columns">
