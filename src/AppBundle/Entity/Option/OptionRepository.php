@@ -65,33 +65,55 @@ class OptionRepository implements OptionServiceRepositoryInterface
 
         return $description;
     }
-    
+
     public function accommodation($accommodation)
     {
         $qb     = $this->entityManager->createQueryBuilder();
         $expr   = $qb->expr();
-        
+
         $resale = (true === $this->getWebsiteConcern()->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE) ? 'ok.availableResale' : 'ok.availableDirectClients');
-        
-        $qb->select('partial oa.{id}, partial ok.{id, name, englishName, germanName, description, englishDescription, germanDescription}, partial og.{id, description, englishDescription, germanDescription, kind}, partial os.{id, name, englishName, germanName}, partial okk.{id, name}')
+
+        $qb->select('partial oa.{id}, partial ok.{id, name, englishName, germanName, description, englishDescription, germanDescription}, og.{id}')
            ->from('AppBundle\Entity\Option\Accommodation', 'oa')
            ->join('oa.kinds', 'ok')
            ->join('oa.group', 'og')
-           ->join('og.kind', 'okk')
-           ->join('og.sections', 'os')
            ->where($expr->eq('oa', ':accommodation'))
            ->andWhere($expr->eq($resale, ':resale'))
-           ->andWhere($expr->eq('os.active', ':active'))
            ->andWhere($expr->neq('ok.' . $this->getLocaleField('name'), ':name'))
            ->orderBy('ok.order, ok.' . $this->getLocaleField('name'))
            ->setParameters([
-               
-               'accommodation' => $accommodation,
-               'resale'        => true,
-               'name'          => '',
-               'active'        => true,
+
+               'accommodation'           => $accommodation,
+               'resale'                  => true,
+               'name'                    => '',
+           ]);
+
+        $kinds   = $qb->getQuery()->getSingleResult(Query::HYDRATE_ARRAY);
+        $kindIds = array_map(function($kind) {
+            return $kind['id'];
+        }, $kinds);
+
+        dump($kindIds);
+        $kindIds = [7];
+
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->select('partial os.{id, name, englishName, germanName}')
+           ->from('AppBundle\Entity\Option\Section', 'os')
+           ->join('os.group', 'og')
+           ->where($expr->in('og.kind', ':kind'))
+           ->andWhere($expr->eq('os.showOnAccommodationPage', ':showOnAccommodationPage'))
+           ->andWhere($expr->eq('os.active', ':active'))
+           ->andWhere($expr->neq('os.' . $this->getLocaleField('name'), ':name'))
+           ->orderBy('os.order, os.' . $this->getLocaleField('name'))
+           ->setParameters([
+
+               'showOnAccommodationPage' => true,
+               'active'                  => true,
+               'kind'                    => $kindIds,
+               'name'                    => '',
            ]);
            dump($qb->getQuery()->getSQL());
-        dump($qb->getQuery()->getResult(Query::HYDRATE_ARRAY));exit;
+           dump($qb->getQuery()->getResult(Query::HYDRATE_ARRAY));exit;
+        // dump($qb->getQuery()->getResult(Query::HYDRATE_ARRAY));exit;
     }
 }

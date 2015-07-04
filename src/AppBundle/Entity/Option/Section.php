@@ -24,14 +24,28 @@ class Section
      * @ORM\Column(name="optie_onderdeel_id", type="integer")
      */
     private $id;
-    
+
     /**
      * @var boolean
      *
      * @ORM\Column(name="actief", type="boolean")
      */
     private $active;
-    
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="volgorde", type="smallint")
+     */
+    private $order;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="tonen_accpagina", type="boolean")
+     */
+    private $showOnAccommodationPage;
+
     /**
      * @var int
      *
