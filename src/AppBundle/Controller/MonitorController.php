@@ -27,14 +27,66 @@ class MonitorController extends Controller
         return new JsonResponse([
 
             'server'    => '--to-be-implemented--',
-            'timestamp' => (new \DateTime())->getTimestamp(),
+            'timestamp' => time(),
             'services'  => [
 
-                'httpd'    => true,
+                'httpd'    => $monitorService->httpd(),
                 'database' => $monitorService->database(),
                 'redis'    => $monitorService->redis(),
                 'mongo'    => $monitorService->mongo(),
             ],
+        ]);
+    }
+
+    /**
+     * @Route("/monitor/httpd", name="monitor_httpd")
+     */
+    public function httpd()
+    {
+        return new JsonResponse([
+
+            'server'    => '--to-be-implemented--',
+            'timestamp' => time(),
+            'status'    => $this->get('app.monitor')->httpd(),
+        ]);
+    }
+
+    /**
+     * @Route("/monitor/database", name="monitor_database")
+     */
+    public function database()
+    {
+        return new JsonResponse([
+
+            'server'    => '--to-be-implemented--',
+            'timestamp' => time(),
+            'status'    => $this->get('app.monitor')->database(),
+        ]);
+    }
+
+    /**
+     * @Route("/monitor/redis", name="monitor_redis")
+     */
+    public function redis()
+    {
+        return new JsonResponse([
+
+            'server'    => '--to-be-implemented--',
+            'timestamp' => time(),
+            'status'    => $this->get('app.monitor')->redis(),
+        ]);
+    }
+
+    /**
+     * @Route("/monitor/mongo", name="monitor_mongo")
+     */
+    public function mongo()
+    {
+        return new JsonResponse([
+
+            'server'    => '--to-be-implemented--',
+            'timestamp' => time(),
+            'status'    => $this->get('app.monitor')->mongo(),
         ]);
     }
 }

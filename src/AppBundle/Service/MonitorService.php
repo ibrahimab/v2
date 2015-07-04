@@ -29,6 +29,16 @@ class MonitorService
     }
 
     /**
+     * Httpd check
+     *
+     * @return boolean
+     */
+    public function httpd()
+    {
+        return true;
+    }
+
+    /**
      * Database check
      *
      * @return boolean
