@@ -38,4 +38,13 @@ class GeneralSettingsService
         return $this->generalSettingsServiceRepository->getNewsletters();
     }
 
+    /**
+     * Updating and selecting something from the database to see if it responds
+     *
+     * @return boolean
+     */
+    public function monitorDatabase()
+    {
+        return $this->generalSettingsServiceRepository->monitorDatabase();
+    }
 }

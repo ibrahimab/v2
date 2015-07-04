@@ -2,13 +2,17 @@ services:
     old.configuration:
         class: AppBundle\Old\Configuration
         arguments: ["@service_container"]
-    
+
     old.logger:
         class: AppBundle\Old\Logger
-        
+
     old.redis:
         class: wt_redis
         arguments: [@old.logger]
+
+    old.redis.wrapper:
+        class: AppBundle\Old\RedisWrapper
+        arguments: [@service_container]
 
     old.feature:
         class: kenmerken
@@ -27,7 +31,7 @@ services:
     old.constants:
         class: AppBundle\Old\Constants
         arguments: [@service_container]
-        
+
     old.prices:
         class: vanafprijs
         arguments: [@old.redis]

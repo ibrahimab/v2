@@ -1,9 +1,15 @@
 <?php
 namespace AppBundle\Entity\GeneralSettings;
-
 use       AppBundle\Service\Api\GeneralSettings\GeneralSettingsServiceEntityInterface;
 use       Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @author  Jeroen Boschman <jeroen@webtastic.nl>
+ * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
+ * @package Chalet
+ * @version 0.0.5
+ * @since   0.0.5
+ */
 /**
  * GeneralSettings
  *
@@ -49,11 +55,16 @@ class GeneralSettings implements GeneralSettingsServiceEntityInterface
      */
     private $summerNewslettersBelgium;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="monitor_mysql", type="string", length=52)
+     */
+    private $monitorMySQL;
+
 
     /**
-     * Get id
-     *
-     * @return integer
+     * {@InheritDoc}
      */
     public function getId()
     {
@@ -61,10 +72,7 @@ class GeneralSettings implements GeneralSettingsServiceEntityInterface
     }
 
     /**
-     * Set winterNewsletters
-     *
-     * @param string $winterNewsletters
-     * @return GeneralSettings
+     * {@InheritDoc}
      */
     public function setWinterNewsletters($winterNewsletters)
     {
@@ -74,9 +82,7 @@ class GeneralSettings implements GeneralSettingsServiceEntityInterface
     }
 
     /**
-     * Get winterNewsletters
-     *
-     * @return string
+     * {@InheritDoc}
      */
     public function getWinterNewsletters()
     {
@@ -84,10 +90,7 @@ class GeneralSettings implements GeneralSettingsServiceEntityInterface
     }
 
     /**
-     * Set winterNewslettersBelgium
-     *
-     * @param string $winterNewslettersBelgium
-     * @return GeneralSettings
+     * {@InheritDoc}
      */
     public function setWinterNewslettersBelgium($winterNewslettersBelgium)
     {
@@ -97,9 +100,7 @@ class GeneralSettings implements GeneralSettingsServiceEntityInterface
     }
 
     /**
-     * Get winterNewslettersBelgium
-     *
-     * @return string
+     * {@InheritDoc}
      */
     public function getWinterNewslettersBelgium()
     {
@@ -107,10 +108,7 @@ class GeneralSettings implements GeneralSettingsServiceEntityInterface
     }
 
     /**
-     * Set summerNewsletters
-     *
-     * @param string $summerNewsletters
-     * @return GeneralSettings
+     * {@InheritDoc}
      */
     public function setSummerNewsletters($summerNewsletters)
     {
@@ -120,9 +118,7 @@ class GeneralSettings implements GeneralSettingsServiceEntityInterface
     }
 
     /**
-     * Get summerNewsletters
-     *
-     * @return string
+     * {@InheritDoc}
      */
     public function getSummerNewsletters()
     {
@@ -130,10 +126,7 @@ class GeneralSettings implements GeneralSettingsServiceEntityInterface
     }
 
     /**
-     * Set summerNewslettersBelgium
-     *
-     * @param string $summerNewslettersBelgium
-     * @return GeneralSettings
+     * {@InheritDoc}
      */
     public function setSummerNewslettersBelgium($summerNewslettersBelgium)
     {
@@ -143,12 +136,28 @@ class GeneralSettings implements GeneralSettingsServiceEntityInterface
     }
 
     /**
-     * Get summerNewslettersBelgium
-     *
-     * @return string
+     * {@InheritDoc}
      */
     public function getSummerNewslettersBelgium()
     {
         return $this->summerNewslettersBelgium;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setMonitorMySQL($monitorMySQL)
+    {
+        $this->monitorMySQL = $monitorMySQL;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getMonitorMySQL()
+    {
+        return $this->monitorMySQL;
     }
 }

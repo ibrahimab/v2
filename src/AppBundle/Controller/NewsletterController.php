@@ -19,7 +19,7 @@ class NewsletterController extends Controller
      */
     public function show()
     {
-        $generalSettings = $this->get('app.api.generalsettings');
+        $generalSettings = $this->get('app.api.general.settings');
 
         return [
             'newsletters' => $generalSettings->getNewsletters(),

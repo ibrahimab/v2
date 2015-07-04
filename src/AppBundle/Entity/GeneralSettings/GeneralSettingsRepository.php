@@ -14,6 +14,11 @@ use       AppBundle\Service\Api\GeneralSettings\GeneralSettingsServiceRepository
 class GeneralSettingsRepository extends BaseRepository implements GeneralSettingsServiceRepositoryInterface
 {
     /**
+     * @const integer
+     */
+    const MONITOR_DATABASE_ID = 1;
+
+    /**
      * Finding all previously sent newsletters
      *
      * @param array $options
@@ -39,5 +44,26 @@ class GeneralSettingsRepository extends BaseRepository implements GeneralSetting
         }
 
        return $newslettersResults;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function monitorDatabase()
+    {
+        $record = $this->find(['id' => self::MONITOR_DATABASE_ID]);
+        $hash   = time() . '-' . md5('monitor-database-' . rand(1, 1000));
+
+        $record->setMonitorMySQL($hash);
+
+        $em = $this->getEntityManager();
+        $em->persist($record);
+        $em->flush();
+        $em->clear();
+
+        $record         = $this->find(['id' => self::MONITOR_DATABASE_ID]);
+        $comparisonHash = $record->getMonitorMySQL();
+
+        return $hash === $comparisonHash;
     }
 }

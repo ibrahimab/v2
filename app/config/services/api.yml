@@ -56,9 +56,9 @@ services:
         class:     AppBundle\Service\Api\File\Country\CountryService
         arguments: ["@app.repository.file.country"]
 
-    app.api.generalsettings:
+    app.api.general.settings:
         class:     AppBundle\Service\Api\GeneralSettings\GeneralSettingsService
-        arguments: ["@app.repository.generalsettings"]
+        arguments: ["@app.repository.general.settings"]
 
     app.api.user:
         class:     AppBundle\Service\Api\User\UserService

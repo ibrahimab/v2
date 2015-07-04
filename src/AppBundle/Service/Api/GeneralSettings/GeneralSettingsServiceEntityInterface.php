@@ -1,9 +1,15 @@
 <?php
 namespace AppBundle\Service\Api\GeneralSettings;
 
+/**
+ * @author  Jeroen Boschman <jeroen@webtastic.nl>
+ * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
+ * @package Chalet
+ * @version 0.0.5
+ * @since   0.0.5
+ */
 interface GeneralSettingsServiceEntityInterface
 {
-
     /**
      * Get id
      *
@@ -15,7 +21,7 @@ interface GeneralSettingsServiceEntityInterface
      * Set winterNewsletters
      *
      * @param string $winterNewsletters
-     * @return GeneralSettings
+     * @return GeneralSettingsServiceEntityInterface
      */
     public function setWinterNewsletters($winterNewsletters);
 
@@ -30,7 +36,7 @@ interface GeneralSettingsServiceEntityInterface
      * Set winterNewslettersBelgium
      *
      * @param string $winterNewslettersBelgium
-     * @return GeneralSettings
+     * @return GeneralSettingsServiceEntityInterface
      */
     public function setWinterNewslettersBelgium($winterNewslettersBelgium);
 
@@ -45,7 +51,7 @@ interface GeneralSettingsServiceEntityInterface
      * Set summerNewsletters
      *
      * @param string $summerNewsletters
-     * @return GeneralSettings
+     * @return GeneralSettingsServiceEntityInterface
      */
     public function setSummerNewsletters($summerNewsletters);
 
@@ -60,7 +66,7 @@ interface GeneralSettingsServiceEntityInterface
      * Set summerNewslettersBelgium
      *
      * @param string $summerNewslettersBelgium
-     * @return GeneralSettings
+     * @return GeneralSettingsServiceEntityInterface
      */
     public function setSummerNewslettersBelgium($summerNewslettersBelgium);
 
@@ -71,4 +77,18 @@ interface GeneralSettingsServiceEntityInterface
      */
     public function getSummerNewslettersBelgium();
 
+    /**
+     * Set Monitor MySQL value
+     *
+     * @param string $monitorMySQL
+     * @return GeneralSettingsServiceEntityInterface
+     */
+    public function setMonitorMySQL($monitorMySQL);
+
+    /**
+     * Get monitorMySQL value
+     *
+     * @return string
+     */
+    public function getMonitorMySQL();
 }
