@@ -20,5 +20,10 @@ interface GeneralSettingsServiceRepositoryInterface
      */
     public function getNewsletters();
 
-
+    /**
+     * Monitoring database
+     *
+     * @return boolean
+     */
+    public function monitorDatabase();
 }

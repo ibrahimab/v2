@@ -116,7 +116,7 @@ services:
         arguments: [AppBundle\Document\File\Country]
         parent:    app.repository.odm
 
-    app.repository.generalsettings:
+    app.repository.general.settings:
         class:     AppBundle\Entity\GeneralSettings\GeneralSettingsRepository
         arguments: [AppBundle\Entity\GeneralSettings\GeneralSettings]
         parent:    app.repository.orm
