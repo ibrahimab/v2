@@ -203,9 +203,37 @@ class PagesController extends Controller
      */
     public function searches()
     {
-        dump($this->container->get('app.api.user')->user()->getSearches());
         return $this->render('pages/searches.html.twig', [
             'saved_searches' => $this->container->get('app.api.user')->user()->getSearches(),
         ]);
+    }
+
+    /**
+     * @Route("/bekeken-accommodaties", name="page_viewed_nl")
+     * @Route("/viewed-accommodations", name="page_viewed_en")
+     * @Breadcrumb(name="viewed", title="page-viewed", translate=true, active=true)
+     */
+    public function viewed()
+    {
+        $typeIds     = $this->container->get('app.api.user')->user()->getViewed();
+        $typeService = $this->container->get('app.api.type');
+        $types       = [];
+
+        if (count($typeIds) > 0) {
+            $types = $typeService->findById($typeIds);
+        }
+
+        return $this->render('pages/viewed.html.twig', [
+            'types' => $types,
+        ]);
+    }
+
+    /**
+     * @Route("/opgeslagen-accommodatie", name="page_saved_nl")
+     * @Route("/saved-accommodation", name="page_saved_en")
+     * @Breadcrumb(name="saved", title="page-saved", translate=true, active=true)
+     */
+    public function saved()
+    {
     }
 }

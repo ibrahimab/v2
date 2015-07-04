@@ -111,6 +111,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('is_checked', [$this, 'isChecked']),
             new \Twig_SimpleFunction('pdf_link', [$this, 'pdfLink']),
             new \Twig_SimpleFunction('website', [$this, 'website']),
+            new \Twig_SimpleFunction('is_favorite', [$this, 'isFavorite']),
         ];
     }
 
@@ -592,6 +593,15 @@ class AppExtension extends \Twig_Extension
         }
 
         return 0;
+    }
+
+    public function isFavorite(TypeServiceEntityInterface $type)
+    {
+        if (null !== ($user = $this->getUser())) {
+            return in_array($type->getId(), $user->getFavorites());
+        }
+
+        return false;
     }
 
     /**

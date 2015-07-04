@@ -20,7 +20,7 @@
                         </span>
                         <span class="medium-up"><br /><i class="fi-clock"></i>{{ "header.bar.open-now"|trans }}</span><span class="medium-up"> <a href="#" id="opening-hours-contact">{{ "header.bar.opening-hours-contact"|trans }}</a></span>
                     </p>
-                    <p class="show-for-small" id="link-saved"><a href="smartphone-mylist.html"><i class="fi-heart"></i>{{ "header.bar.seen-and-saved"|trans }}</a></p><!-- smartphones -->
+                    <p class="show-for-small" id="link-saved"><a href="smartphone-mylist.html" data-role="favorite-saved"><i class="fi-heart"></i>{{ "header.bar.seen-and-saved"|trans }}</a></p><!-- smartphones -->
                 </div>
             </div>
             <div class="large-4 medium-4 hide-for-small columns" id="column-dropdown">
@@ -28,16 +28,16 @@
                     <span>{{ "header.bar.sgr-member"|trans }}</span>
                     {% image 'bundles/app/img/logos/logo-sgr.jpg' %}<img src="{{ asset_url }}" height="28" width="30" alt="SGR-Garantiefonds" />{% endimage %}
                 </div>
-                <div id="dropdown-container">
+                <div id="dropdown-container" data-role="favorite-saved">
                     <!-- this button gets class="active" after: 1. first visit / 2. click on heart-icon -->
-                    <button id="dropdown-saved" class="button dropdown radius right" href="#" data-dropdown="dropdown-saved-list" aria-controls="dropdown-saved-list" aria-expanded="false">
+                    <button id="dropdown-saved" data-role="favorite-saved" class="button dropdown radius right" href="#" data-dropdown="dropdown-saved-list" aria-controls="dropdown-saved-list" aria-expanded="false">
                         <i class="fi-heart"></i>{{ "header.bar.seen-and-saved"|trans }}<i class="fi-play"></i>
                     </button>
                     <br />
                     <ul id="dropdown-saved-list" data-dropdown-content class="f-dropdown" aria-hidden="true" tabindex="-1">
-                        <li><a href="zoekboek.html">Bekeken vakanties (<span>{{ viewed_count() }}</span>)</a></li>
-                        <li><a href="{{ locale_path('page_searches') }}">Zoekopdrachten (<span>{{ searches_count() }}</span>)</a></li>
-                        <li><a href="zoekboek.html">Bewaarde vakanties (<span>{{ favorites_count() }}</span>)</a></li>
+                        <li><a href="{{ locale_path('page_viewed') }}">Bekeken vakanties (<span data-role="viewed-count">{{ viewed_count() }}</span>)</a></li>
+                        <li><a href="{{ locale_path('page_searches') }}">Zoekopdrachten (<span data-role="searches-count">{{ searches_count() }}</span>)</a></li>
+                        <li><a href="{{ locale_path('page_saved') }}">Bewaarde vakanties (<span data-role="favorites-count">{{ favorites_count() }}</span>)</a></li>
                         <li><a href="zoekboek.html">Mijn boekingen</a></li>
                     </ul>
                 </div>

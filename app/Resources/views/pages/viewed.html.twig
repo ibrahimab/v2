@@ -1,0 +1,34 @@
+{% extends 'layouts/default.html.twig' %}
+
+{% block breadcrumbs %}
+    {{
+        breadcrumbs()
+    }}
+{% endblock %}
+
+{% block body %}
+
+    {{ parent() }}
+
+    <!-- content -->
+    <section class="landing place-page">
+
+        <div class="row" id="area-specs">
+
+            <h1>{{ 'viewed-title'|trans }}</h1>
+
+            <div class="large-8 medium-8 columns">
+
+                {% for type in types %}
+
+                    {% include 'partials/highlight/highlight.html.twig' with { 'highlight': { 'type': type }, place: type.getAccommodation().getPlace(), 'end': ( ((loop.index % 3) is same as(0)) or loop.last ) } only %}
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+{% endblock %}

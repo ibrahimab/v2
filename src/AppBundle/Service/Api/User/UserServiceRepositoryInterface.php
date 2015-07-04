@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Service\Api\User;
+use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 
 /**
  * @author Ibrahim Abdullah <ibrahim@chalet.nl>
@@ -8,7 +9,7 @@ namespace AppBundle\Service\Api\User;
  * @since 0.0.2
  */
 interface UserServiceRepositoryInterface
-{   
+{
     /**
      * @param mixed $userId
      * @param array $fields
@@ -16,13 +17,13 @@ interface UserServiceRepositoryInterface
      * @return UserServiceDocumentInterface
      */
     public function get($userId, $fields = [], $andWhere = []);
-    
+
     /**
      * @param mixed $userId
      * @return UserServiceDocumentInterface
      */
     public function create($userId);
-    
+
     /**
      * Save search to mongo
      *
@@ -31,4 +32,31 @@ interface UserServiceRepositoryInterface
      * @return UserServiceDocumentInterface
      */
     public function saveSearch(UserServiceDocumentInterface $user, $search);
+
+    /**
+     * Save viewed accommodation
+     *
+     * @param UserServiceDocumentInterface $user
+     * @param TypeServiceEntityInterface $type
+     * @return UserServiceDocumentInterface
+     */
+    public function addViewedAccommodation(UserServiceDocumentInterface $user, TypeServiceEntityInterface $type);
+
+    /**
+     * Save accommodation
+     *
+     * @param UserServiceDocumentInterface $user
+     * @param TypeServiceEntityInterface $type
+     * @return UserServiceDocumentInterface
+     */
+    public function addFavoriteAccommodation(UserServiceDocumentInterface $user, TypeServiceEntityInterface $type);
+
+    /**
+     * Remove accommodation
+     *
+     * @param UserServiceDocumentInterface $user
+     * @param TypeServiceEntityInterface $type
+     * @return UserServiceDocumentInterface
+     */
+    public function removeFavoriteAccommodation(UserServiceDocumentInterface $user, TypeServiceEntityInterface $type);
 }

@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Service\Api\User;
+use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 
 /**
  * UserServiceDocumentInterface
@@ -50,6 +51,18 @@ interface UserServiceDocumentInterface
     public function getPassword();
 
     /**
+     * @param TypeServiceEntityInterface $type
+     * @return UserServiceDocumentInterface
+     */
+    public function addFavorite(TypeServiceEntityInterface $type);
+
+    /**
+     * @param TypeServiceEntityInterface $type
+     * @return UserServiceDocumentInterface
+     */
+    public function removeFavorite(TypeServiceEntityInterface $type);
+
+    /**
      * @param array
      * @return UserServiceDocumentInterface
      */
@@ -64,6 +77,14 @@ interface UserServiceDocumentInterface
      * @return int
      */
     public function totalFavorites();
+
+    /**
+     * Add type
+     *
+     * @param TypeServiceEntityInterface $type
+     * @return UserServiceDocumentInterface
+     */
+    public function addViewed(TypeServiceEntityInterface $type);
 
     /**
      * @param array $viewed

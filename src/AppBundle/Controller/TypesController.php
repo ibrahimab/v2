@@ -7,6 +7,7 @@ use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use       Doctrine\ORM\NoResultException;
 use       Symfony\Component\HttpFoundation\Response;
+use       Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * CountriesController
@@ -64,18 +65,21 @@ class TypesController extends Controller
         } catch (\Exception $e) {
             throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found: (' . $e->getMessage() . ')');
         }
-        
+
         $accommodationTypes = $accommodation->getTypes();
         $typeIds            = [];
         foreach ($accommodationTypes as $accommodationType) {
             $typeIds[] = $accommodationType->getId();
         }
-        
+
         $pricesService = $this->get('old.prices.wrapper');
         $prices        = $pricesService->get($typeIds);
-    
+
         $priceService  = $this->get('app.api.price');
         $offers        = $priceService->offers($typeIds);
+
+        $userService   = $this->get('app.api.user');
+        $userService->addViewedAccommodation($type);
 
         return [
 
@@ -87,7 +91,65 @@ class TypesController extends Controller
             'offers'             => $offers,
         ];
     }
-    
+
+    /**
+     * @Route("/types/save/{typeId}", name="save_favorite", options={"expose": true})
+     */
+    public function save($typeId)
+    {
+        try {
+
+            $typeService = $this->get('app.api.type');
+            $userService = $this->get('app.api.user');
+            $type        = $typeService->findById($typeId);
+
+            $userService->addFavoriteAccommodation($type);
+
+            return new JsonResponse([
+
+                'type'    => 'success',
+                'message' => 'Saved type',
+            ]);
+
+        } catch (NoResultException $exception) {
+
+            return new JsonResponse([
+
+                'type'    => 'error',
+                'message' => 'Could not save type',
+            ]);
+        }
+    }
+
+    /**
+     * @Route("/types/remove/{typeId}", name="remove_favorite", options={"expose": true})
+     */
+    public function remove($typeId)
+    {
+        try {
+
+            $typeService = $this->get('app.api.type');
+            $userService = $this->get('app.api.user');
+            $type        = $typeService->findById($typeId);
+
+            $userService->removeFavoriteAccommodation($type);
+
+            return new JsonResponse([
+
+                'type'    => 'success',
+                'message' => 'Removed type',
+            ]);
+
+        } catch (NoResultException $exception) {
+
+            return new JsonResponse([
+
+                'type'    => 'error',
+                'message' => 'Could not remove type',
+            ]);
+        }
+    }
+
     /**
      * @Route("/options")
      */
@@ -95,10 +157,10 @@ class TypesController extends Controller
     {
         $typeService   = $this->get('app.api.type');
         $optionService = $this->get('app.api.option');
-        
+
         $type          = $typeService->find(['id' => 240]);
         $options       = $optionService->options($type);
-        
+
         return new Response();
     }
 }
