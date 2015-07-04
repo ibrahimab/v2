@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Service\Api\Type;
+use       AppBundle\Entity\Video;
 use       AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
 
 /**
@@ -16,7 +17,7 @@ interface TypeServiceEntityInterface
      * @return integer
      */
     public function getId();
-    
+
     /**
      * Set price
      *
@@ -24,7 +25,7 @@ interface TypeServiceEntityInterface
      * @return TypeServiceEntityInterface
      */
     public function setPrice($price);
-    
+
     /**
      * Get price
      *
@@ -61,6 +62,43 @@ interface TypeServiceEntityInterface
      * @return AccommodationServiceEntityInterface
      */
     public function getAccommodation();
+
+    /**
+     * Set has video flag
+     *
+     * @param  boolean $hasVideo
+     * @return TypeServiceEntityInterface
+     */
+    public function setHasVideo($hasVideo);
+
+    /**
+     * Check if it has a video
+     *
+     * @return boolean
+     */
+    public function hasVideo();
+
+    /**
+     * Set Video url
+     *
+     * @param  string $videoUrl
+     * @return TypeServiceEntityInterface
+     */
+    public function setVideoUrl($videoUrl);
+
+    /**
+     * Get Video url
+     *
+     * @return string
+     */
+    public function getVideoUrl();
+
+    /**
+     * Get Video
+     *
+     * @return Video
+     */
+    public function getVideo();
 
     /**
      * Set name

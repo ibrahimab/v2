@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Service\Api\Accommodation;
+use       AppBundle\Entity\Video;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 
@@ -96,6 +97,43 @@ interface AccommodationServiceEntityInterface
      * @return string
      */
     public function getLocaleName($locale);
+
+    /**
+     * Set has video flag
+     *
+     * @param  boolean $hasVideo
+     * @return AccommodationServiceEntityInterface
+     */
+    public function setHasVideo($hasVideo);
+
+    /**
+     * Check if it has a video
+     *
+     * @return boolean
+     */
+    public function hasVideo();
+
+    /**
+     * Set Video url
+     *
+     * @param  string $videoUrl
+     * @return AccommodationServiceEntityInterface
+     */
+    public function setVideoUrl($videoUrl);
+
+    /**
+     * Get Video url
+     *
+     * @return string
+     */
+    public function getVideoUrl();
+
+    /**
+     * Get Video
+     *
+     * @return Video
+     */
+    public function getVideo();
 
     /**
      * Set shortDescription

@@ -140,6 +140,15 @@
         });
 
         /**
+         * Fancybox
+         */
+        jq('[data-role="fancybox"]').fancybox({
+            helpers : {
+                media: true
+            }
+        });
+
+        /**
          * This listener allows for collapsable lists
          */
         var slideDown = function(element) {
