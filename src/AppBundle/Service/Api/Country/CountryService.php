@@ -14,7 +14,7 @@ class CountryService
      * @var CountryServiceRepositoryInterface
      */
     private $countryServiceRepository;
-    
+
     /**
      * Constructor
      *
@@ -24,7 +24,7 @@ class CountryService
     {
         $this->countryServiceRepository = $countryServiceRepository;
     }
-    
+
     /**
      * Fetch active countries
      *
@@ -35,7 +35,7 @@ class CountryService
     {
         return $this->countryServiceRepository->findActive();
     }
-    
+
     /**
      * Fetch all the countries
      *
@@ -48,7 +48,7 @@ class CountryService
     {
         return $this->countryServiceRepository->all($options);
     }
-    
+
     /**
      * Finding a single country, based on criteria passed in
      *
@@ -59,7 +59,7 @@ class CountryService
     {
         return $this->countryServiceRepository->find($by);
     }
-    
+
     /**
      * Finding a single country by name, locale included
      *
@@ -72,12 +72,20 @@ class CountryService
     {
         return $this->countryServiceRepository->findByLocaleName($name, $locale, $sort);
     }
-    
+
     /**
      * Finding regions by country
      */
     public function findRegions(CountryServiceEntityInterface $country)
     {
         return $this->countryServiceRepository->findRegions($country);
+    }
+
+    /**
+     * Finding countries, places and regions
+     */
+    public function countries()
+    {
+        return $this->countryServiceRepository->countries();
     }
 }

@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Service\Api\Region;
+use       Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * This is the RegionService, with this service you can manipulate regions
@@ -14,7 +15,7 @@ class RegionService
      * @var RegionServiceRepositoryInterface
      */
     private $regionServiceRepository;
-    
+
     /**
      * Constructor
      *
@@ -24,7 +25,7 @@ class RegionService
     {
         $this->regionServiceRepository = $regionServiceRepository;
     }
-    
+
     /**
      * Fetch all the regions
      *
@@ -37,7 +38,7 @@ class RegionService
     {
         return $this->regionServiceRepository->all($options);
     }
-    
+
     /**
      * Finding a single region, based on criteria passed in
      *
@@ -48,12 +49,12 @@ class RegionService
     {
         return $this->regionServiceRepository->find($by);
     }
-    
+
     /**
      * This method fetches a region based on a locale field,
      * Because of certain schema design decisions of the old website
-     * regions do 
-     * 
+     * regions do
+     *
      *
      * @param string $field
      * @param string $value
@@ -64,7 +65,7 @@ class RegionService
     {
         return $this->regionServiceRepository->findByLocaleName($name, $locale);
     }
-    
+
     /**
      * Find region by its seo name, with locale in mind
      *
@@ -76,7 +77,7 @@ class RegionService
     {
         return $this->regionServiceRepository->findByLocaleSeoName($seoName, $locale);
     }
-    
+
     /**
      * Find random regions with the homepage flag on
      *
@@ -86,5 +87,50 @@ class RegionService
     public function findHomepageRegions($options = [])
     {
         return $this->regionServiceRepository->findHomepageRegions($options);
+    }
+
+    /**
+     * Get all the regions per country
+     */
+    public function regions(ContainerInterface $container)
+    {
+        $countryService = $container->get('app.api.country');
+        $typeService    = $container->get('app.api.type');
+        $countries      = $countryService->countries();
+        $regions        = [];
+        $typesCount     = [];
+        $result         = [];
+        $typesCount     = [];
+
+        foreach ($countries as $country) {
+
+            $places         = $country->getPlaces();
+            $countryRegions = $places->map(function($place) { return $place->getRegion(); })->toArray();
+            $regions        = array_merge($regions, $countryRegions);
+        }
+
+        $typesCount = $typeService->countByRegions($regions);
+
+        foreach ($countries as $country) {
+
+            $regions = [];
+            $places  = $country->getPlaces();
+
+            foreach ($places as &$place) {
+
+                $region = $place->getRegion();
+                if (isset($typesCount[$region->getId()])) {
+                    $regions[] = $region->setTypesCount($typesCount[$region->getId()]);
+                }
+            }
+
+            $result[] = [
+
+                'country' => $country,
+                'regions' => $regions,
+            ];
+        }
+
+        return $result;
     }
 }

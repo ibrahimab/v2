@@ -2,7 +2,7 @@
 
 {% block bodyClass %}landing-page{% endblock %}
 {% block body %}
-    
+
     <!-- header -->
     <header>
         <div id="header-container">
@@ -14,19 +14,19 @@
                     <dl class="sub-nav">
                         <dd class="sub-home{% if route == 'frontpage' %} active{% endif %}"><a href="{{ path('home') }}"><i class="fi-home"></i></a></dd>
                         <dd class="sub-search{% if route in ['search_nl', 'search_en'] %} active{% endif %}"><a href="{{ locale_path('search') }}">Zoek en boek</a></dd>
-                        <dd class="sub-skiareas{% if route in ['all_regions_nl', 'all_regions_en'] %} active{% endif %}"><a href="{{ locale_path('show_countries') }}">Skigebieden</a></dd>
+                        <dd class="sub-skiareas{% if route in ['all_regions_nl', 'all_regions_en'] %} active{% endif %}"><a href="{{ locale_path('all_regions') }}">Skigebieden</a></dd>
                         <dd class="sub-discount"><a href="">Aanbiedingen</a></dd>
-                    </dl>                    
+                    </dl>
                 </div>
             </div>
         </div>
     </header>
-    
+
     <!--breadcrumbs -->
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
             {% block breadcrumbs %}{% endblock breadcrumbs %}
         </div>
     </div>
-    
+
 {% endblock %}

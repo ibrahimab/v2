@@ -340,6 +340,10 @@
         <source>page-saved</source>
         <target>Opgeslagen accommodaties</target>
       </trans-unit>
+      <trans-unit id="dfce7b6feabcba2043fe203c92242683553c7898" resname="regions">
+        <source>regions</source>
+        <target>Skigebieden</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

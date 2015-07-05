@@ -16,49 +16,49 @@ class CountryRepository extends BaseRepository implements CountryServiceReposito
 {
     /**
      * @return CountryServiceEntityInterface[]
-     */   
+     */
 	public function findActive()
 	{
 		$qb   = $this->createQueryBuilder('c');
 		$expr = $qb->expr();
-		
+
 		$qb->select('partial c.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, startCode}')
 		   ->where($expr->eq('c.' . ($this->getSeason() === SeasonConcern::SEASON_WINTER ? 'd' : 'summerD') . 'isplay', ':display'))
 		   ->setParameter('display',true);
-		
+
 		return $qb->getQuery()->getResult();
 	}
-	
+
     /**
      * {@InheritDoc}
      */
     public function findByLocaleName($name, $locale, $sort = 'alpha')
     {
         switch ($sort) {
-                
+
             case 'slopes':
                 $sortField = 'r.totalSlopesDistance';
                 $sortOrder = 'DESC';
                 break;
-                
+
             case 'altitude':
                 $sortField = 'r.maximumAltitude';
                 $sortOrder = 'DESC';
                 break;
-                
+
             case 'alpha':
             default:
                 $sortField = 'r.name';
                 $sortOrder = 'ASC';
                 break;
         }
-        
+
         $field     = $this->getLocaleField('name', $locale);
         $qb        = $this->createQueryBuilder('c');
         $expr      = $qb->expr();
-        
-        $qb->select('partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, minimumAltitude, maximumAltitude, totalSlopesDistance}, partial c.{id, name, englishName, germanName, title, englishTitle, 
-                     germanTitle, startCode, shortDescription, englishShortDescription, germanShortDescription, description, englishDescription, germanDescription, descriptionTag, englishDescriptionTag, germanDescriptionTag, additionalDescription, englishAdditionalDescription, germanAdditionalDescription}, 
+
+        $qb->select('partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, minimumAltitude, maximumAltitude, totalSlopesDistance}, partial c.{id, name, englishName, germanName, title, englishTitle,
+                     germanTitle, startCode, shortDescription, englishShortDescription, germanShortDescription, description, englishDescription, germanDescription, descriptionTag, englishDescriptionTag, germanDescriptionTag, additionalDescription, englishAdditionalDescription, germanAdditionalDescription},
                      partial p.{id}')
            ->leftJoin('c.places', 'p')
            ->leftJoin('p.region', 'r')
@@ -69,20 +69,20 @@ class CountryRepository extends BaseRepository implements CountryServiceReposito
            ->groupBy('r.id')
            ->orderBy($sortField, $sortOrder)
            ->setParameters([
-               
+
                'name'    => $name,
                'season'  => $this->getSeason(),
                'website' => '%' . $this->getWebsite() . '%',
            ]);
- 
+
         return $qb->getQuery()->getSingleResult();
     }
-    
+
     public function findRegions(CountryServiceEntityInterface $country)
     {
         $qb   = $this->createQueryBuilder('c');
         $expr = $qb->expr();
-        
+
         $qb->select('partial p.{id}, partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}, partial c.{id, name, englishName, germanName}')
            ->leftJoin('c.places', 'p')
            ->leftJoin('p.region', 'r')
@@ -91,11 +91,37 @@ class CountryRepository extends BaseRepository implements CountryServiceReposito
            ->groupBy('r.id')
            ->orderBy('r.name', 'ASC')
            ->setParameters([
-               
+
                'countryId' => $country->getId(),
                'season'    => $this->getSeason(),
            ]);
-           
+
         return $qb->getQuery()->getSingleResult();
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function countries()
+    {
+        $qb   = $this->createQueryBuilder('c');
+        $expr = $qb->expr();
+
+        $qb->select('partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, minimumAltitude, maximumAltitude, totalSlopesDistance}, partial c.{id, name, englishName, germanName, title, englishTitle,
+                     germanTitle, startCode, shortDescription, englishShortDescription, germanShortDescription, description, englishDescription, germanDescription, descriptionTag, englishDescriptionTag, germanDescriptionTag, additionalDescription, englishAdditionalDescription, germanAdditionalDescription},
+                     partial p.{id}')
+           ->leftJoin('c.places', 'p')
+           ->leftJoin('p.region', 'r')
+           ->where($expr->in('c.id', ':countries'))
+           ->andWhere($expr->eq('r.season', ':season'))
+           ->groupBy('r.id')
+           ->orderBy('r.name', 'ASC')
+           ->setParameters([
+
+               'countries' => [1, 2, 3, 5],
+               'season'    => $this->getSeason(),
+           ]);
+
+        return $qb->getQuery()->getResult();
     }
 }
