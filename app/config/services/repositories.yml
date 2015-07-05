@@ -116,6 +116,11 @@ services:
         arguments: [AppBundle\Document\File\Country]
         parent:    app.repository.odm
 
+    app.repository.file.theme:
+        class:     AppBundle\Document\File\ThemeRepository
+        arguments: [AppBundle\Document\File\Theme]
+        parent:    app.repository.odm
+
     app.repository.general.settings:
         class:     AppBundle\Entity\GeneralSettings\GeneralSettingsRepository
         arguments: [AppBundle\Entity\GeneralSettings\GeneralSettings]

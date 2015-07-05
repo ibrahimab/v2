@@ -82,6 +82,27 @@ class Theme implements ThemeServiceEntityInterface
      */
     private $germanUrl;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="externeurl", type="string", length=100)
+     */
+    private $externalUrl;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="externeurl_en", type="string", length=100)
+     */
+    private $englishExternalUrl;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="externeurl_de", type="string", length=100)
+     */
+    private $germanExternalUrl;
+
 
     /**
      * {@InheritDoc}
@@ -279,6 +300,83 @@ class Theme implements ThemeServiceEntityInterface
     public function getLocaleUrl($locale)
     {
         return $this->getLocaleField('url', $locale, ['nl', 'en', 'de']);
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setExternalUrl($externalUrl)
+    {
+        $this->externalUrl = $externalUrl;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getExternalUrl()
+    {
+        return $this->externalUrl;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setEnglishExternalUrl($englishExternalUrl)
+    {
+        $this->englishExternalUrl = $englishExternalUrl;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getEnglishExternalUrl()
+    {
+        return $this->englishExternalUrl;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setGermanExternalUrl($germanExternalUrl)
+    {
+        $this->germanExternalUrl = $germanExternalUrl;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getGermanExternalUrl()
+    {
+        return $this->germanExternalUrl;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setLocaleExternalUrls($localeExternalUrls)
+    {
+        // normalize locales
+        $localeExternalUrls = array_change_key_case($localeExternalUrls);
+
+        $this->setExternalUrl(isset($localeExternalUrls['nl']) ? $localeExternalUrls['nl'] : '');
+        $this->setEnglishExternalUrl(isset($localeExternalUrls['en']) ? $localeExternalUrls['en'] : '');
+        $this->setGermanExternalUrl(isset($localeExternalUrls['de']) ? $localeExternalUrls['de'] : '');
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getLocaleExternalUrl($locale)
+    {
+        return $this->getLocaleField('externalUrl', $locale, ['nl', 'en', 'de']);
     }
 
     /**

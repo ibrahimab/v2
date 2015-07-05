@@ -56,6 +56,10 @@ services:
         class:     AppBundle\Service\Api\File\Country\CountryService
         arguments: ["@app.repository.file.country"]
 
+    app.api.file.theme:
+        class:     AppBundle\Service\Api\File\Theme\ThemeService
+        arguments: ["@app.repository.file.theme"]
+
     app.api.general.settings:
         class:     AppBundle\Service\Api\GeneralSettings\GeneralSettingsService
         arguments: ["@app.repository.general.settings"]

@@ -1,0 +1,50 @@
+{% extends 'layouts/default.html.twig' %}
+{% set locale = get_locale() %}
+
+{% block breadcrumbs %}
+    {{ breadcrumbs() }}
+{% endblock %}
+
+{% block body %}
+
+    {{ parent() }}
+
+    <div class="row">
+        <div class="large-8 medium-8 columns">
+            <h1>{{ 'themes-title'|trans }}</h1>
+        </div>
+    </div>
+
+    <section id="area-selected" class="region-page">
+
+        <div class="row" data-equalizer>
+
+            {% for theme in themes %}
+
+                <div class="small-12 medium-3 large-3 columns{{ (( ((loop.index % 4) is same as(0)) or loop.last) ? ' end' : '') }}">
+                    {% if theme.getLocaleExternalUrl(locale) is not empty %}
+                        <a href="{{ theme.getLocaleExternalUrl(locale) }}">
+                    {% else %}
+                        <a href="{{ locale_path('show_theme', {url: theme.getLocaleUrl(locale)}) }}">
+                    {% endif %}
+                        <article class="overview" data-equalizer-watch>
+                            <div class="accom-img">
+                                <img src="{{ theme_image(theme).getLocation() }}" alt="{{ theme.getLocaleName(locale) }}" />
+                            </div>
+                            <div class="accom-desc">
+                                <div class="title">{{ theme.getLocaleName(locale) }}</div>
+                            </div>
+                        </article>
+                    </a>
+                </div>
+                {% if (loop.index % 4) is same as(0) %}
+                    </div><div class="row" data-equalizer>
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+{% endblock body %}

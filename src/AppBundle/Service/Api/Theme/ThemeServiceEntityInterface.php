@@ -168,6 +168,66 @@ interface ThemeServiceEntityInterface
     public function getLocaleUrl($locale);
 
     /**
+     * Set External Url
+     *
+     * @param string $externalUrl
+     * @return ThemeServiceEntityInterface
+     */
+    public function setExternalUrl($externalUrl);
+
+    /**
+     * Get External url
+     *
+     * @return string
+     */
+    public function getExternalUrl();
+
+    /**
+     * Set English External url
+     *
+     * @param string $englishExternalUrl
+     * @return ThemeServiceEntityInterface
+     */
+    public function setEnglishExternalUrl($englishExternalUrl);
+
+    /**
+     * Get english External url
+     *
+     * @return string
+     */
+    public function getEnglishExternalUrl();
+
+    /**
+     * Set German External Url
+     *
+     * @param string $germanExternalUrl
+     * @return ThemeServiceEntityInterface
+     */
+    public function setGermanExternalUrl($germanExternalUrl);
+
+    /**
+     * Get german url
+     *
+     * @return string
+     */
+    public function getGermanExternalUrl();
+
+    /**
+     * Set Locale External Urls
+     *
+     * @param string $localeExternalUrls
+     * @return ThemeServiceEntityInterface
+     */
+    public function setLocaleExternalUrls($localeExternalUrls);
+
+    /**
+     * Get locale External url
+     *
+     * @return string
+     */
+    public function getLocaleExternalUrl($locale);
+
+    /**
      * General locale field getter
      *
      * @param string $field
