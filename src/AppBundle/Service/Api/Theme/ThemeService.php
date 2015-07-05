@@ -35,4 +35,14 @@ class ThemeService
     {
         return $this->themeServiceRepository->themes();
     }
+
+    /**
+     * Get theme
+     *
+     * @return ThemeServiceEntityInterface
+     */
+    public function theme($url)
+    {
+        return $this->themeServiceRepository->theme($url);
+    }
 }

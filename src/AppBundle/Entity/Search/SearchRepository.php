@@ -29,10 +29,10 @@ class SearchRepository implements SearchServiceRepositoryInterface
      * @const string
      */
     const SORT_BY_DEFAULT    = SearchBuilder::SORT_BY_ACCOMMODATION_NAME;
-                              
-    /**                       
-     * @const string          
-     */                       
+
+    /**
+     * @const string
+     */
     const SORT_ORDER_DEFAULT = SearchBuilder::SORT_ORDER_ASC;
 
     /**
@@ -54,54 +54,54 @@ class SearchRepository implements SearchServiceRepositoryInterface
         if (count(array_merge($countries, $regions, $places, $accommodations)) === 0) {
             return [];
         }
-        
+
         $qb       = $this->getEntityManager()->createQueryBuilder();
         $expr     = $qb->expr();
-                  
+
         $where    = $expr->andX();
         $select   = [];
         $entities = [];
-        
+
         if (count($countries) > 0) {
-            
+
             $select[]   = 'partial c.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, startCode}';
             $entities[] = 'AppBundle:Country\Country c';
-            
+
             $where->add($expr->in('c.' . $this->getLocaleField('name'), ':country_names'));
             $qb->setParameter('country_names', $countries);
         }
-        
+
         if (count($regions) > 0) {
-            
+
             $select[]   = 'partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}';
             $entities[] = 'AppBundle:Region\Region r';
-            
+
             $where->add($expr->in('r.' . $this->getLocaleField('name'), ':region_names'));
             $qb->setParameter('region_names', $regions);
         }
-        
+
         if (count($places) > 0) {
-            
+
             $select[]   = 'partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}';
             $entities[] = 'AppBundle:Place\Place p';
-            
+
             $where->add($expr->in('p.' . $this->getLocaleField('name'), ':place_names'));
             $qb->setParameter('place_names', $places);
         }
-        
+
         if (count($accommodations) > 0) {
-            
+
             $select[]   = 'partial a.{id, name, shortDescription, englishShortDescription, germanShortDescription}';
             $entities[] = 'AppBundle:Accommodation\Accommodation a';
-            
+
             $where->add($expr->in('a.id', ':accommodation_ids'));
             $qb->setParameter('accommodation_ids', $accommodations);
         }
-        
+
         $qb->select(implode(', ', $select))
            ->add('from', implode(', ', $entities))
            ->where($where);
-        
+
         return $qb->getQuery()->getResult();
     }
 
@@ -156,8 +156,8 @@ class SearchRepository implements SearchServiceRepositoryInterface
         $paginator = new Paginator($qb, true);
         $paginator->page = [
 
-            'current' => (round($offset / $limit) + 1),
-            'last'    => round(count($paginator) / $limit),
+            'current' => ($limit > 0 ? (round($offset / $limit) + 1) : 1),
+            'last'    => ($limit > 0 ? (round(count($paginator) / $limit)) : 1),
         ];
 
         if ((int)$paginator->page['last'] === 0) {
@@ -172,15 +172,15 @@ class SearchRepository implements SearchServiceRepositoryInterface
         switch ($sort) {
 
             case SearchBuilder::SORT_BY_ACCOMMODATION_NAME:
-            
+
                 $field = 'a.name';
                 break;
 
             case SearchBuilder::SORT_BY_TYPE_SEARCH_ORDER:
-            
+
                 $field = 't.searchOrder';
                 break;
-                
+
             default:
                 $field = null;
         }
@@ -227,22 +227,22 @@ class SearchRepository implements SearchServiceRepositoryInterface
             switch ($filters->filter(FilterService::FILTER_DISTANCE)) {
 
                 case FilterService::FILTER_DISTANCE_BY_SLOPE:
-                
+
                     $distance = $expr->lte('a.distanceSlope', FilterBuilder::VALUE_DISTANCE_BY_SLOPE);
                     break;
 
                 case FilterService::FILTER_DISTANCE_MAX_250:
-                
+
                     $distance = $expr->lte('a.distanceSlope', 250);
                     break;
 
                 case FilterService::FILTER_DISTANCE_MAX_500:
-                
+
                     $distance = $expr->lte('a.distanceSlope', 500);
                     break;
 
                 case FilterService::FILTER_DISTANCE_MAX_1000:
-                
+
                     $distance = $expr->lte('a.distanceSlope', 1000);
                     break;
 
@@ -264,22 +264,22 @@ class SearchRepository implements SearchServiceRepositoryInterface
             switch ($filters->filter(FilterService::FILTER_LENGTH)) {
 
                 case FilterService::FILTER_LENGTH_MAX_100:
-                
+
                     $length = $expr->lt('r.totalSlopesDistance', 100);
                     break;
 
                 case FilterService::FILTER_LENGTH_MIN_100:
-                
+
                     $length = $expr->gte('r.totalSlopesDistance', 100);
                     break;
 
                 case FilterService::FILTER_LENGTH_MIN_200:
-                
+
                     $length = $expr->gte('r.totalSlopesDistance', 200);
                     break;
 
                 case FilterService::FILTER_LENGTH_MIN_400:
-                
+
                     $length = $expr->gte('r.totalSlopesDistance', 400);
                     break;
 
@@ -437,7 +437,7 @@ class SearchRepository implements SearchServiceRepositoryInterface
                 break;
 
             case FilterService::FILTER_THEME_CHARMING_PLACES:
-            
+
                 $qb->setParameter(':place_features_theme_' . $theme, 13);
                 break;
 
@@ -451,12 +451,12 @@ class SearchRepository implements SearchServiceRepositoryInterface
                 break;
 
             case FilterService::FILTER_THEME_SUPER_SKI_STATIONS:
-            
+
                 $qb->setParameter(':place_features_theme_' . $theme, 14);
                 break;
 
             case FilterService::FILTER_THEME_10_FOR_APRES_SKI:
-            
+
                 $qb->setParameter(':place_features_theme_' . $theme, 6);
                 break;
 
@@ -477,37 +477,37 @@ class SearchRepository implements SearchServiceRepositoryInterface
             switch ($clause['field']) {
 
                 case SearchBuilder::WHERE_WEEKEND_SKI:
-                
+
                     $andX->add($expr->eq('a.weekendSki', ':where_' . $clause['field']));
                     break;
-                
+
                 case SearchBuilder::WHERE_ACCOMMODATION:
-                
+
                     $andX->add($expr->in('a.id', ':where_' . $clause['field']));
                     break;
-                
+
                 case SearchBuilder::WHERE_COUNTRY:
-                
+
                     $andX->add($expr->in('c.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
                     break;
-                
+
                 case SearchBuilder::WHERE_REGION:
-                
+
                     $andX->add($expr->in('r.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
                     break;
-                
+
                 case SearchBuilder::WHERE_PLACE:
-                
+
                     $andX->add($expr->in('p.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
                     break;
-                    
+
                 case SearchBuilder::WHERE_BEDROOMS:
-                
+
                     $andX->add($expr->gte('t.bedrooms', ':where_' . $clause['field']));
                     break;
-                    
+
                 case SearchBuilder::WHERE_BATHROOMS:
-                
+
                     $andX->add($expr->gte('t.bathrooms', ':where_' . $clause['field']));
                     break;
             }

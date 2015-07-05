@@ -41,6 +41,13 @@ class Theme implements ThemeServiceEntityInterface
     private $active;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="accommodatiekenmerk", type="smallint")
+     */
+    private $accommodationFeature;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="naam", type="string", length=100)
@@ -146,6 +153,24 @@ class Theme implements ThemeServiceEntityInterface
     public function getActive()
     {
         return $this->active;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setAccommodationFeature($accommodationFeature)
+    {
+        $this->accommodationFeature = $accommodationFeature;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getAccommodationFeature()
+    {
+        return $this->accommodationFeature;
     }
 
     /**

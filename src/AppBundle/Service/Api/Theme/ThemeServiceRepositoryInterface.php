@@ -65,4 +65,11 @@ interface ThemeServiceRepositoryInterface
      * @return ThemeServiceEntityInterface[]
      */
     public function themes();
+
+    /**
+     * Select theme
+     *
+     * @return ThemeServiceEntityInterface
+     */
+    public function theme($url);
 }

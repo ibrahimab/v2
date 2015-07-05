@@ -48,6 +48,21 @@ interface ThemeServiceEntityInterface
     public function getActive();
 
     /**
+     * Set accommodation feature
+     *
+     * @param  int $accommodationFeature
+     * @return ThemeServiceEntityInterface
+     */
+    public function setAccommodationFeature($accommodationFeature);
+
+    /**
+     * Get accommodation Feature
+     *
+     * @return int
+     */
+    public function getAccommodationFeature();
+
+    /**
      * Set Name
      *
      * @param string $name

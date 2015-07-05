@@ -2,8 +2,11 @@
 namespace AppBundle\Controller;
 use       AppBundle\Concern\WebsiteConcern;
 use       AppBundle\Annotation\Breadcrumb;
+use       AppBundle\Service\Api\Search\SearchBuilder;
+use       AppBundle\Service\Api\Search\FilterBuilder;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use       Doctrine\ORM\NoResultException;
 
 /**
  * ThemeController
@@ -45,8 +48,33 @@ class ThemeController extends Controller
      * @Route("/winter-sports/theme/{url}/", name="show_theme_en")
      * @Breadcrumb(name="theme", title="theme", translate=true, active=true)
      */
-    public function show()
+    public function show($url)
     {
+        dump($url);
+        $themeService  = $this->get('app.api.theme');
+        $searchService = $this->get('app.api.search');
+
+        try {
+
+            $theme = $themeService->theme($url);
+
+        } catch(NoResultException $exception) {
+            throw $this->createNotFoundException('Theme page does not exist (anymore)');
+        }
+
+        $filters       = ['th' => [
+            'a' => $theme->getAccommodationFeature(),
+        ]];
+
+        $paginator     = $searchService->build()
+                                       ->limit($per_page)
+                                       ->offset($offset)
+                                       ->sort(SearchBuilder::SORT_BY_TYPE_SEARCH_ORDER, SearchBuilder::SORT_ORDER_ASC)
+                                       ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0)
+                                       ->filter($filters);
+
+        dump($paginator->results());exit;
+
         return $this->render('themes/show.html.twig');
     }
 }
