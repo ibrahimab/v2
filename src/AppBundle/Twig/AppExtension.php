@@ -5,6 +5,7 @@ use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
 use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
+use       AppBundle\Service\Api\Theme\ThemeServiceEntityInterface;
 use       AppBundle\Document\File\Country\CountryFileDocument;
 use       AppBundle\Service\Api\File\Type\TypeService as TypeFileService;
 use       AppBundle\Document\File\Type as TypeFileDocument;
@@ -13,6 +14,8 @@ use       AppBundle\Document\File\Accommodation as AccommodationFileDocument;
 use       AppBundle\Service\Api\File\Region\RegionService as RegionFileService;
 use       AppBundle\Document\File\Region as RegionFileDocument;
 use       AppBundle\Document\File\Place as PlaceFileDocument;
+use       AppBundle\Service\Api\File\Theme\ThemeService as ThemeFileService;
+use       AppBundle\Document\File\Theme as ThemeFileDocument;
 use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterface;
 use       AppBundle\Service\Api\User\UserServiceDocumentInterface;
 use       AppBundle\Service\FilterService;
@@ -99,6 +102,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('region_image', [$this, 'getRegionImage']),
             new \Twig_SimpleFunction('country_image', [$this, 'getCountryImage']),
             new \Twig_SimpleFunction('place_image', [$this, 'getPlaceImage']),
+            new \Twig_SimpleFunction('theme_image', [$this, 'getThemeImage']),
             new \Twig_SimpleFunction('homepage_block_image', [$this, 'getHomepageBlockImage']),
             new \Twig_SimpleFunction('breadcrumbs', [$this, 'breadcrumbs'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new \Twig_SimpleFunction('get_locale', [$this, 'getLocale']),
@@ -383,6 +387,29 @@ class AppExtension extends \Twig_Extension
         $placeImage->setUrlPrefix($this->getOldImageUrlPrefix());
 
         return $placeImage;
+    }
+
+    /**
+     * Getting Theme image
+     *
+     * @param ThemeServiceEntityInterface $theme
+     * @return string
+     */
+    public function getThemeImage(ThemeServiceEntityInterface $theme)
+    {
+        $themeFileService = $this->container->get('app.api.file.theme');
+        $themeImage       = $themeFileService->getImage($theme);
+
+        if (null === $themeImage) {
+
+            $themeImage = new ThemeFileDocument();
+            $themeImage->setDirectory('accommodaties');
+            $themeImage->setFilename('0.jpg');
+        }
+
+        $themeImage->setUrlPrefix($this->getOldImageUrlPrefix());
+
+        return $themeImage;
     }
 
     /**

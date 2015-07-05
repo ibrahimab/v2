@@ -58,4 +58,18 @@ interface ThemeServiceRepositoryInterface
      * @return ThemeServiceEntityInterface|null
      */
     public function find($by = []);
+
+    /**
+     * Select all active themes
+     *
+     * @return ThemeServiceEntityInterface[]
+     */
+    public function themes();
+
+    /**
+     * Select theme
+     *
+     * @return ThemeServiceEntityInterface
+     */
+    public function theme($url);
 }
