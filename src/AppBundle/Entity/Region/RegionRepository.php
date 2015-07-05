@@ -1,6 +1,6 @@
 <?php
 namespace AppBundle\Entity\Region;
-
+use       AppBundle\Concern\SeasonConcern;
 use       AppBundle\Entity\BaseRepository;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceRepositoryInterface;
