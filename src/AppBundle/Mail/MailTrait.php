@@ -18,7 +18,12 @@ trait MailTrait
     /**
      * @var string
      */
-    private $from;
+    private $from_email;
+
+    /**
+     * @var string
+     */
+    private $from_name;
 
     /**
      * @var string
@@ -69,9 +74,10 @@ trait MailTrait
      * @param string $from
      * @return Contact
      */
-    public function setFrom($from)
+    public function setFrom($from_email, $name = '')
     {
-        $this->from = $from;
+        $this->from_email = $from_email;
+        $this->from_name  = $from_name;
 
         return $this;
     }
@@ -107,7 +113,7 @@ trait MailTrait
     {
         $message = \Swift_Message::newInstance();
         $message->setSubject($this->subject)
-                ->setFrom($this->from)
+                ->setFrom($this->from_email, $this->from_name)
                 ->setTo($this->to);
 
         foreach ($this->templates as $multipart => $template) {

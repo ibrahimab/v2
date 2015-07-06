@@ -71,9 +71,9 @@ class MailAFriend
     {
         return [
 
-            'name'        => $this->getName(),
-            'email'       => $this->getEmail(),
-            'phonenumber' => $this->getPhonenumber(),
+            'from_name'   => $this->getFromName(),
+            'from_email'  => $this->getFromEmail(),
+            'to_email'    => $this->getToEmail(),
             'message'     => $this->getMessage(),
         ];
     }

@@ -41,9 +41,6 @@ class MailAFriendController extends Controller
         } catch (NoResultException $exception) {
             throw $this->createNotFoundException(sprintf('Type with ID=%d could not be found', $typeId));
         }
-        
-        $pricesService = $this->get('old.prices.wrapper');
-        $prices        = $pricesService->get($typeIds);
 
         $priceService  = $this->get('app.api.price');
         $offers        = $priceService->offers($typeIds);
@@ -76,8 +73,56 @@ class MailAFriendController extends Controller
      * })
      * @Method("POST")
      */
-    public function create(Request $request)
+    public function create($beginCode, $typeId, Request $request)
     {
+        try {
+            
+            $typeService = $this->get('app.api.type');
+            $type        = $typeService->findById($typeId);
+            
+        } catch (NoResultException $exception) {
+            throw $this->createNotFoundException(sprintf('Type with ID=%d could not be found', $typeId));
+        }
         
+        $mailAFriend = new MailAFriend($request->get('mail_a_friend'));
+        $mailAFriend->validate();
+
+        if ($mailAFriend->isValid()) {
+
+            $data         = $mailAFriend->getData();
+            $data['type'] = $type;
+            $mailer       = $this->get('app.mailer.mail.a.friend');
+            $result       = $mailer->setSubject($this->get('translator')->trans('form-mail-a-friend-subject'))
+                                   ->setFrom($mailAFriend->getFromEmail(), $mailAFriend->getFromName())
+                                   ->setTo($mailAFriend->getToEmail())
+                                   ->setTemplate('mail/mail-a-friend.html.twig', 'text/html')
+                                   ->setTemplate('mail/mail-a-friend.txt.twig', 'text/plain')
+                                   ->send($data);
+
+            return $this->redirectToRoute('mail_a_friend_' . $request->getLocale(), ['beginCode' => $beginCode, 'typeId' => $typeId]);
+        }
+
+        $priceService  = $this->get('app.api.price');
+        $offers        = $priceService->offers($typeIds);
+
+        return $this->render('mail-a-friend/new.html.twig', [
+
+            'beginCode' => $beginCode,
+            'typeId'    => $typeId,
+            'type'      => $type,
+            'prices'    => $prices,
+            'offers'    => $offers,
+            'form'      => [
+
+                'errors'  => $mailAFriend->getErrors(),
+                'mail_a_friend' => [
+
+                    'from_name'  => $mailAFriend->getFromName(),
+                    'from_email' => $mailAFriend->getFromEmail(),
+                    'to_email'   => $mailAFriend->getToEmail(),
+                    'message'    => $mailAFriend->getMessage(),
+                ],
+            ],
+        ]);
     }
 }
