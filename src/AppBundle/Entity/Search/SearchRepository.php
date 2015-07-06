@@ -6,11 +6,11 @@ use       AppBundle\Service\Api\Search\SearchService;
 use       AppBundle\Service\Api\Search\SearchBuilder;
 use       AppBundle\Service\Api\Search\FilterBuilder;
 use       AppBundle\Service\FilterService;
+use       AppBundle\Service\Paginator\PaginatorService;
 use       AppBundle\Concern\SeasonConcern;
 use       AppBundle\Concern\WebsiteConcern;
 use       AppBundle\Entity\BaseRepository;
 use       Doctrine\ORM\EntityManager;
-use       Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * Search repository
@@ -113,8 +113,35 @@ class SearchRepository implements SearchServiceRepositoryInterface
      */
     public function search(SearchBuilder $searchBuilder)
     {
-        $limit       = $searchBuilder->block(SearchBuilder::BLOCK_LIMIT);
-        $offset      = $searchBuilder->block(SearchBuilder::BLOCK_OFFSET);
+        $limit = $searchBuilder->block(SearchBuilder::BLOCK_LIMIT);
+        $page  = $searchBuilder->block(SearchBuilder::BLOCK_PAGE);
+        $qb    = $this->query($searchBuilder)
+                      ->add('select', 't,
+                                       partial a.{id, name, shortDescription, englishShortDescription, germanShortDescription, features, quality},
+                                       partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName},
+                                       partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName},
+                                       partial c.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, startCode}');
+        
+        $paginator = new PaginatorService($qb);
+        $paginator->setLimit($limit);
+        $paginator->setCurrentPage($page);
+        
+        return $paginator;
+    }
+    
+    public function facets(SearchBuilder $searchBuilder, $filters)
+    {
+        foreach ($filters as $filter) {
+            
+            foreach ($filter as $values) {
+                
+                
+            }
+        }
+    }
+    
+    public function query(SearchBuilder $searchBuilder)
+    {
         $sort_by     = $searchBuilder->block(SearchBuilder::BLOCK_SORT_BY, self::SORT_BY_DEFAULT);
         $sort_order  = $searchBuilder->block(SearchBuilder::BLOCK_SORT_ORDER, self::SORT_ORDER_DEFAULT);
         $filters     = $searchBuilder->block(SearchBuilder::BLOCK_FILTER);
@@ -123,25 +150,22 @@ class SearchRepository implements SearchServiceRepositoryInterface
         $qb   = $this->getEntityManager()->createQueryBuilder();
         $expr = $qb->expr();
 
-        $qb->add('select', 't,
-                            partial a.{id, name, shortDescription, englishShortDescription, germanShortDescription, quality},
-                            partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName},
-                            partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName},
-                            partial c.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, startCode}')
-           ->add('from', 'AppBundle:Accommodation\Accommodation a')
-           ->innerJoin('a.types', 't')
-           ->innerJoin('a.place',  'p')
-           ->innerJoin('p.region', 'r')
-           ->innerJoin('p.country', 'c')
-           ->where($expr->eq('t.display', ':display'))
+        $qb->add('from', 'AppBundle:Accommodation\Accommodation a')
+           ->leftJoin('a.types', 't')
+           ->leftJoin('t.supplier', 's')
+           ->leftJoin('a.place',  'p')
+           ->leftJoin('p.region', 'r')
+           ->leftJoin('p.country', 'c')
+           ->where($expr->like('t.websites', ':website'))
+           ->andWhere($expr->eq('a.display', ':display'))
+           ->andWhere($expr->eq('a.displaySearch', ':displaySearch'))
+           ->andWhere($expr->eq('t.display', ':display'))
            ->andWhere($expr->eq('t.displaySearch', ':displaySearch'))
-           ->setMaxResults($limit)
-           ->setFirstResult($offset)
-           ->having($expr->gt('SIZE(a.types)', 1))
            ->setParameters([
 
                'display'       => true,
                'displaySearch' => true,
+               'website'       => '%' . $this->getWebsite() . '%',
            ]);
 
         // apply filters
@@ -152,19 +176,8 @@ class SearchRepository implements SearchServiceRepositoryInterface
         }
 
         $this->where($where, $qb);
-
-        $paginator = new Paginator($qb, true);
-        $paginator->page = [
-
-            'current' => ($limit > 0 ? (round($offset / $limit) + 1) : 1),
-            'last'    => ($limit > 0 ? (round(count($paginator) / $limit)) : 1),
-        ];
-
-        if ((int)$paginator->page['last'] === 0) {
-            $paginator->page['last'] = 1;
-        }
-
-        return $paginator;
+        
+        return $qb;
     }
 
     public function sortField($sort)
@@ -326,64 +339,81 @@ class SearchRepository implements SearchServiceRepositoryInterface
 
             case FilterService::FILTER_FACILITY_CATERING:
 
-                $selector = $expr->orX($expr->in('t.features', ':type_features_' . $facility), $expr->in('a.features', ':accommodation_features_' . $facility));
+                $selector = $expr->orX()
+                                 ->add($expr->like('t.features', ':type_features_' . $facility))
+                                 ->add($expr->like('a.features', ':accommodation_features_' . $facility));
 
-                $qb->setParameter('type_features_' . $facility, 1);
-                $qb->setParameter('accommodation_features_' . $facility, 1);
+                $qb->setParameter('type_features_' . $facility, '%1%')
+                   ->setParameter('accommodation_features_' . $facility, '%1%');
 
                 break;
 
             case FilterService::FILTER_FACILITY_INTERNET_WIFI:
 
-                $selector = $expr->orX($expr->in('t.features', ':type_features_' . $facility), $expr->in('a.features', ':accommodation_features_' . $facility));
+                $selector = $expr->orX()
+                                 ->add($expr->like('t.features', ':type_features_' . $facility))
+                                 ->add($expr->like('a.features', ':accommodation_features_' . $facility));
 
-                $qb->setParameter('type_features_' . $facility, 20);
-                $qb->setParameter('accommodation_features_' . $facility, 22);
+                $qb->setParameter('type_features_' . $facility, '%20%')
+                   ->setParameter('accommodation_features_' . $facility, '%22%');
 
                 break;
 
             case FilterService::FILTER_FACILITY_SWIMMING_POOL:
 
-                $selector = $expr->orX($expr->in('t.features', ':type_features_' . $facility), $expr->in('a.features', ':accommodation_features_' . $facility));
+                $selector = $expr->orX()->add($expr->like('t.features', ':type_features_' . $facility))
+                                        ->add($expr->like('a.features', ':accommodation_features_1_' . $facility))
+                                        ->add($expr->like('a.features', ':accommodation_features_2_' . $facility));
 
-                $qb->setParameter('type_features_' . $facility, 4);
-                $qb->setParameter('accommodation_features_' . $facility, [4, 11]);
+                $qb->setParameter('type_features_' . $facility, '%4%')
+                   ->setParameter('accommodation_features_1_' . $facility, '%4%')
+                   ->setParameter('accommodation_features_2_' . $facility, '%11%');
 
                 break;
 
             case FilterService::FILTER_FACILITY_SAUNA:
 
-                $selector = $expr->orX($expr->in('t.features', ':type_features_' . $facility), $expr->in('a.features', ':accommodation_features_' . $facility));
+                $selector = $expr->orX()
+                                 ->add($expr->like('t.features', ':type_features_' . $facility))
+                                 ->add($expr->like('a.features', ':accommodation_features_1_' . $facility))
+                                 ->add($expr->like('a.features', ':accommodation_features_2_' . $facility));
 
-                $qb->setParameter('type_features_' . $facility, 3);
-                $qb->setParameter('accommodation_features_' . $facility, [3, 10]);
+                $qb->setParameter('type_features_' . $facility, '%3%')
+                   ->setParameter('accommodation_features_1_' . $facility, '%3%')
+                   ->setParameter('accommodation_features_2_' . $facility, '%10%');
 
                 break;
 
             case FilterService::FILTER_FACILITY_PRIVATE_SAUNA:
 
-                $selector = $expr->orX($expr->in('t.features', ':type_features_' . $facility), $expr->in('a.features', ':accommodation_features_' . $facility));
+                $selector = $expr->orX()
+                                 ->add($expr->like('t.features', ':type_features_' . $facility))
+                                 ->add($expr->like('a.features', ':accommodation_features_' . $facility));
 
-                $qb->setParameter('type_features_' . $facility, 3);
-                $qb->setParameter('accommodation_features_' . $facility, 3);
+                $qb->setParameter('type_features_' . $facility, '%3%')
+                   ->setParameter('accommodation_features_' . $facility, '%3%');
 
                 break;
 
             case FilterService::FILTER_FACILITY_PETS_ALLOWED:
 
-                $selector = $expr->orX($expr->in('t.features', ':type_features_' . $facility), $expr->in('a.features', ':accommodation_features_' . $facility));
+                $selector = $expr->orX()
+                                 ->add($expr->like('t.features', ':type_features_' . $facility))
+                                 ->add($expr->like('a.features', ':accommodation_features_' . $facility));
 
-                $qb->setParameter('type_features_' . $facility, 11);
-                $qb->setParameter('accommodation_features_' . $facility, 13);
+                $qb->setParameter('type_features_' . $facility, '%11%')
+                   ->setParameter('accommodation_features_' . $facility, '%13%');
 
                 break;
 
             case FilterService::FILTER_FACILITY_FIREPLACE:
 
-                $selector = $expr->orX($expr->in('t.features', ':type_features_' . $facility), $expr->in('a.features', ':accommodation_features_' . $facility));
+                $selector = $expr->orX()
+                                 ->add($expr->like('t.features', ':type_features_' . $facility))
+                                 ->add($expr->like('a.features', ':accommodation_features_' . $facility));
 
-                $qb->setParameter('type_features_' . $facility, 10);
-                $qb->setParameter('accommodation_features_' . $facility, 12);
+                $qb->setParameter('type_features_' . $facility, '%10%')
+                   ->setParameter('accommodation_features_' . $facility, '%12%');
 
                 break;
 
@@ -423,41 +453,45 @@ class SearchRepository implements SearchServiceRepositoryInterface
     public function theme($qb, $theme)
     {
         $expr     = $qb->expr();
-        $selector = $expr->in('p.features', ':place_features_theme_' . $theme);
+        $selector = $expr->like('p.features', ':place_features_theme_' . $theme);
 
         switch ($theme) {
 
             case FilterService::FILTER_THEME_KIDS:
 
-                $selector = $expr->orX($expr->in('t.features', ':type_features_theme_' . $theme), $expr->in('a.features', ':accommodation_features_theme_' . $theme));
+                $selector = $expr->orX()
+                                 ->add($expr->like('t.features', ':type_features_theme_' . $theme))
+                                 ->add($expr->like('a.features', ':accommodation_features_theme_' . $theme));
 
-                $qb->setParameter(':type_features_theme_' . $theme, 5);
-                $qb->setParameter(':accommodation_features_theme_' . $theme, 5);
+                $qb->setParameter(':type_features_theme_' . $theme, '%5%')
+                   ->setParameter(':accommodation_features_theme_' . $theme, '%5%');
 
                 break;
 
             case FilterService::FILTER_THEME_CHARMING_PLACES:
 
-                $qb->setParameter(':place_features_theme_' . $theme, 13);
+                $qb->setParameter(':place_features_theme_' . $theme, '%13%');
                 break;
 
             case FilterService::FILTER_THEME_WINTER_WELLNESS:
 
-                $selector = $expr->orX($expr->in('t.features', ':type_features_theme_' . $theme), $expr->in('a.features', ':accommodation_features_theme_' . $theme));
+                $selector = $expr->orX()
+                                 ->add($expr->like('t.features', ':type_features_theme_' . $theme))
+                                 ->add($expr->like('a.features', ':accommodation_features_theme_' . $theme));
 
-                $qb->setParameter(':type_features_theme_' . $theme, 9);
-                $qb->setParameter(':accommodation_features_theme_' . $theme, 9);
+                $qb->setParameter(':type_features_theme_' . $theme, '%9%');
+                $qb->setParameter(':accommodation_features_theme_' . $theme, '%9%');
 
                 break;
 
             case FilterService::FILTER_THEME_SUPER_SKI_STATIONS:
 
-                $qb->setParameter(':place_features_theme_' . $theme, 14);
+                $qb->setParameter(':place_features_theme_' . $theme, '%14%');
                 break;
 
             case FilterService::FILTER_THEME_10_FOR_APRES_SKI:
 
-                $qb->setParameter(':place_features_theme_' . $theme, 6);
+                $qb->setParameter(':place_features_theme_' . $theme, '%6%');
                 break;
 
             default:

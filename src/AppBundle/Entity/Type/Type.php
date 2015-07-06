@@ -47,6 +47,12 @@ class Type implements TypeServiceEntityInterface
     private $accommodation;
 
     /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Supplier\Supplier")
+     * @ORM\JoinColumn(name="leverancier_id", referencedColumnName="leverancier_id")
+     */
+    private $supplier;
+
+    /**
      * @var boolean
      *
      * @ORM\Column(name="video", type="boolean")
@@ -878,7 +884,7 @@ class Type implements TypeServiceEntityInterface
      */
     public function getFeatures()
     {
-        return $this->features;
+        return (null === $this->features ? [] : $this->features);
     }
 
     /**

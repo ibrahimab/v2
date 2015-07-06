@@ -90,7 +90,17 @@ class FilterBuilder
      */
     public function add($filter, $values)
     {
-        $this->filters[$filter] = $values;
+        if (true === $this->options[$filter]['multiple'] && false === is_array($values)) {
+            
+            if (!isset($this->filters[$filter])) {
+                $this->filters[$filter] = [];
+            }
+            
+            $this->filters[$filter][] = $values;
+            
+        } else {
+            $this->filters[$filter] = $values;
+        }
         
         return $this;
     }
