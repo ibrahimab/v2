@@ -39,7 +39,7 @@
     <div id="search-filter-main">
         <h2><a href="" title="deze box in- of uitklappen">{{ 'search-book'|trans }}</a></h2>
         <div class="fields">
-            {% include 'partials/search/form/input.html.twig' %}
+            {% include 'partials/search/form/input.html.twig' with {'destination': destination} %}
             <a href="{{ path('save_search', {f: app.request.query.get('f', {})}) }}" class="save" title="{{ save_search_label }}" data-role="save-search">{{ save_search_label }}<i class="sprite sprite-icon-plus "></i></a>
         </div>
     </div>

@@ -59,20 +59,30 @@ class SearchController extends Controller
                                        ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0)
                                        ->filter($filters);
 
+        $destination = false;
+        
         if ($request->query->has('a')) {
+            
             $paginator->where(SearchBuilder::WHERE_ACCOMMODATION, $a);
+            $destination = true;
         }
 
         if ($request->query->has('c')) {
+            
             $paginator->where(SearchBuilder::WHERE_COUNTRY, $c);
+            $destination = true;
         }
 
         if ($request->query->has('r')) {
+            
             $paginator->where(SearchBuilder::WHERE_REGION, $r);
+            $destination = true;
         }
 
         if ($request->query->has('pl')) {
+            
             $paginator->where(SearchBuilder::WHERE_PLACE, $pl);
+            $destination = true;
         }
 
         if ($request->query->has('be')) {
@@ -108,6 +118,7 @@ class SearchController extends Controller
             'form_filters'   => $formFilters,
             'prices'         => [],
             'offers'         => [],
+            'destination'    => $destination,
         ];
 
         $typeIds = [];

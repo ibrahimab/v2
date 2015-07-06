@@ -182,7 +182,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     }
                     
                     ns.Search.actions.search();
-                    ns.Autocomplete.input.val('');
+                    ns.Autocomplete.input.val('').attr('placeholder', 'Voeg nog een bestemming toe');
                     ns.Autocomplete.resultsContainer.empty();
                 }   
             },
