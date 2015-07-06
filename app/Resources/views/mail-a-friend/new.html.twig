@@ -1,0 +1,77 @@
+{% extends 'layouts/default.html.twig' %}
+
+{% block breadcrumbs %}
+    {{ breadcrumbs() }}
+{% endblock %}
+
+{% block body %}
+
+    {{ parent() }}
+
+    <section class="place-page">
+
+        <form name="form-contact" method="post" action="{{ path('process_mail_a_friend', {'beginCode': beginCode, 'typeId': typeId}) }}">
+            <div class="row">
+                <div class="medium-8 large-8 columns">
+
+                    <h1>{{ 'mail-a-friend-title'|trans }}</h1>
+                
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="from_name"{{ 'from_name' in form['errors'] ? ' class="error"' : '' }}>{{ 'form-mail-a-friend-from_name'|trans }}
+                                <input type="text" id="from_name" name="mail_a_friend[from_name]" value="{{ form['mail_a_friend']['from_name'] }}" />
+                            </label>
+                            {% if 'from_name' in form['errors'] %}
+                                <small class="error">{{ 'form-mail-a-friend-errors-from_name'|trans }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="from_email"{{ 'from_email' in form['errors'] ? ' class="error"' : '' }}>{{ 'form-mail-a-friend-from_email'|trans }}
+                                <input type="email" id="from_email" name="mail_a_friend[from_email]" value="{{ form['mail_a_friend']['from_email'] }}" />
+                            </label>
+                            {% if 'from_email' in form['errors'] %}
+                                <small class="error">{{ 'form-mail-a-friend-errors-from_email'|trans }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="to_email"{{ 'to_email' in form['errors'] ? ' class="error"' : '' }}>{{ 'form-mail-a-friend-to_email'|trans }}
+                                <input type="email" id="to_email" name="mail_a_friend[to_email]" value="{{ form['mail_a_friend']['to_email'] }}" />
+                            </label>
+                            {% if 'to_email' in form['errors'] %}
+                                <small class="error">{{ 'form-mail-a-friend-errors-to_email'|trans }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="message"{{ 'message' in form['errors'] ? ' class="error"' : '' }}>{{ 'form-mail-a-friend-message'|trans }}
+                                <textarea name="mail_a_friend[message]" rows="10">{{ form['mail_a_friend']['message'] }}</textarea>
+                            </label>
+                            {% if 'message' in form['errors'] %}
+                                <small class="error">{{ 'form-mail-a-friend-errors-message'|trans }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-4 large-centered columns">
+                            <input type="submit" class="button" name="submit" value="{{ 'form-mail-a-friend-submit'|trans }}" />
+                        </div>
+                    </div>
+                
+                </div>
+            
+            </div>
+
+            <div class="row">
+                <p>&nbsp;{# spacer #}</p>
+                {% include 'partials/highlight/highlight.html.twig' with {'highlight': {'type': type}, 'place': type.getAccommodation().getPlace(), 'offers': offers, 'end': true} only %}
+            </div>
+        </form>
+
+    </section>
+
+{% endblock %}

@@ -7,7 +7,7 @@ namespace AppBundle\Mail;
  * @version 0.0.5
  * @since   0.0.5
  */
-class Contact
+class MailAFriend
 {
     use MailTrait;
 }
