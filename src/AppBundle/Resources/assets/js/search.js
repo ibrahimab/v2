@@ -30,10 +30,10 @@ window.Chalet = (function(ns, jq, _, undefined) {
             bind: function() {
 
                 var body = jq('body');
-                body.on('click', '[data-role="change-filter"]',        ns.Search.events.change);
-                body.on('click', '[data-role="remove-filter"]',        ns.Search.events.remove);
-                body.on('click', '[data-role="remove-filters"]',       ns.Search.events.clear);
-                body.on('click', '[data-role="paginate-search"]',      ns.Search.events.paginate);
+                body.on('click', '[data-role="change-filter"]',   ns.Search.events.change);
+                body.on('click', '[data-role="remove-filter"]',   ns.Search.events.remove);
+                body.on('click', '[data-role="remove-filters"]',  ns.Search.events.clear);
+                body.on('click', '[data-role="paginate-search"]', ns.Search.events.paginate);
 
                 body.on('click', '[data-role="remove-country-filter"]', ns.Search.events.removeCustom.country);
                 body.on('click', '[data-role="remove-region-filter"]', ns.Search.events.removeCustom.region);

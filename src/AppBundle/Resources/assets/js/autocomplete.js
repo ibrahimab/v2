@@ -232,6 +232,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                 var entities  = ns.Autocomplete.entities;
                 var locale    = ns.get('app')['locale'];
                 var name      = (jq.type(result['name']) === 'string' ? result['name'] : result['name'][locale]);
+                var tag       = '';
 
                 switch (result.type) {
                     
@@ -241,6 +242,8 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         li.setAttribute('data-entity', entities.ENTITY_COUNTRY);
                         li.setAttribute('data-id', name);
                         
+                        tag += '<i class="fi-flag"></i> ';
+                        
                     break;
                     
                     case entities.ENTITY_REGION:
@@ -248,6 +251,8 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         li.className = 'region';
                         li.setAttribute('data-entity', entities.ENTITY_REGION);
                         li.setAttribute('data-id', name);
+                        
+                        tag += '<i class="sprite sprite-icon-pistes chalets-icon-box"></i> ';
                         
                     break;
                     
@@ -257,6 +262,8 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         li.setAttribute('data-entity', entities.ENTITY_PLACE);
                         li.setAttribute('data-id', name);
                         
+                        tag += '<i class="fi-marker"></i> ';
+                        
                     break;
                         
                     case entities.ENTITY_ACCOMMODATION:
@@ -265,12 +272,14 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         li.setAttribute('data-entity', entities.ENTITY_ACCOMMODATION);
                         li.setAttribute('data-id', result['type_id']);
                         
+                        tag += '<i class="fi-home"></i> ';
+                        
                     break;
                 }
                 
                 li.setAttribute('data-role', 'autocomplete-result');
                 li.setAttribute('data-label', name);
-                li.textContent = name;
+                li.innerHTML = tag + name;
                 
                 return li;
             }
