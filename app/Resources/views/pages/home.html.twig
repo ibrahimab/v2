@@ -4,7 +4,7 @@
 
     {{ parent() }}
 
-    {% include 'partials/highlights.html.twig'       with {'highlights':     highlights, offers: offers } only %}
+    {% include 'partials/highlights.html.twig'       with {'highlights':     highlights, offers: offers, fix_blocks: true } only %}
 
     {% include 'partials/homepage_blocks.html.twig'  with {'homepageBlocks': homepageBlocks } only %}
 

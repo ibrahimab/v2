@@ -250,6 +250,9 @@
         if (Chalet.get()['app']['controller'] === 'countries::destinations') {
             var italyMaps = Chalet.Maps.Italy.initialize('[data-role="italy-maps"]');
         }
+        
+        // display hide-on-load blocks
+        jq('.hide-on-load').removeClass('hide-on-load');
     });
 
 })(jQuery, Routing, window.Chalet = window.Chalet || {});
