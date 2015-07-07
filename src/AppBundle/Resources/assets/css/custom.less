@@ -254,6 +254,15 @@ div.google-maps {
 div.autocomplete-container {
 
     input {
+        
+        height: 3rem;
+        
+        @media only screen and (max-width: 40em) {
+            
+            & {
+                font-size: 1rem;
+            }
+        }
 
         &::-webkit-input-placeholder {
             color: rgba(0, 0, 0, 0.75);
