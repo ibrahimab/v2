@@ -228,6 +228,9 @@
 
                     <div id="images" class="images">
                         <h3>Foto's</h3>
+                        {% if type.getVirtualTourLink() %}
+                            <a href="{{ type.getVirtualTourLink() }}" data-role="new-window">{{ 'checkout-virtual-tour'|trans }}</a>
+                        {% endif %}
                         <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-2">
                             {% set has_video = false %}
                             {% if type.hasVideo() or accommodation.hasVideo() %}

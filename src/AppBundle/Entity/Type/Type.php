@@ -59,6 +59,13 @@ class Type implements TypeServiceEntityInterface
      * @ORM\Column(name="video_url", type="string")
      */
     private $videoUrl;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="url_virtuele_rondgang", type="string", length=255)
+     */
+    private $virtualTourLink;
 
     /**
      * @var Video
@@ -467,6 +474,18 @@ class Type implements TypeServiceEntityInterface
         }
 
         return $this->video;
+    }
+    
+    public function setVirtualTourLink($virtualTourLink)
+    {
+        $this->virtualTourLink = $virtualTourLink;
+        
+        return $this;
+    }
+    
+    public function getVirtualTourLink()
+    {
+        return $this->virtualTourLink;
     }
 
     /**

@@ -99,6 +99,21 @@ interface TypeServiceEntityInterface
      * @return Video
      */
     public function getVideo();
+    
+    /**
+     * Set virtual tour link
+     *
+     * @param string $virtualTourLink
+     * @return TypeServiceEntityInterface
+     */
+    public function setVirtualTourLink($virtualTourLink);
+    
+    /**
+     * Get virtual tour link
+     *
+     * @return TypeServiceEntityInterface
+     */
+    public function getVirtualTourLink();
 
     /**
      * Set name
