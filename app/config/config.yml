@@ -29,6 +29,8 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    globals:
+        chat_license: "%chat_license%"
 
 # Assetic Configuration
 assetic:
