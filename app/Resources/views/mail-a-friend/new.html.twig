@@ -8,11 +8,11 @@
 
     {{ parent() }}
 
-    <section class="place-page">
+    <section class="place-page mail-a-friend-page">
 
         <form name="form-contact" method="post" action="{{ path('process_mail_a_friend', {'beginCode': beginCode, 'typeId': typeId}) }}">
             <div class="row">
-                <div class="medium-8 large-8 columns">
+                <div class="small-12 medium-8 large-8 columns">
 
                     <h1>{{ 'mail-a-friend-title'|trans }}</h1>
                 
@@ -49,7 +49,7 @@
                     <div class="row">
                         <div class="large-12 columns">
                             <label for="message"{{ 'message' in form['errors'] ? ' class="error"' : '' }}>{{ 'form-mail-a-friend-message'|trans }}
-                                <textarea name="mail_a_friend[message]" rows="10">{{ form['mail_a_friend']['message'] }}</textarea>
+                                <textarea name="mail_a_friend[message]">{{ form['mail_a_friend']['message'] }}</textarea>
                             </label>
                             {% if 'message' in form['errors'] %}
                                 <small class="error">{{ 'form-mail-a-friend-errors-message'|trans }}</small>
@@ -63,13 +63,11 @@
                     </div>
                 
                 </div>
-            
-            </div>
 
-            <div class="row">
-                <p>&nbsp;{# spacer #}</p>
-                {% include 'partials/highlight/highlight.html.twig' with {'highlight': {'type': type}, 'place': type.getAccommodation().getPlace(), 'offers': offers, 'end': true} only %}
+                {% include 'partials/highlight/highlight.html.twig' with {'highlight': {'type': type}, 'place': type.getAccommodation().getPlace(), 'offers': offers, 'end': true, small_size: 12, medium_size: 4, large_size: 4} only %}
+                
             </div>
+            
         </form>
 
     </section>

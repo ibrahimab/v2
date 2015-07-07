@@ -60,7 +60,7 @@ class MailAFriendController extends Controller
                     'from_name'  => '',
                     'from_email' => '',
                     'to_email'   => '',
-                    'message'    => '',
+                    'message'    => $this->get('translator')->trans('form-mail-a-friend-message-placeholder', ['%website_name%' => $this->get('app.concern.website')->name()]),
                 ],
             ],
         ]);
@@ -91,10 +91,12 @@ class MailAFriendController extends Controller
 
             $data         = $mailAFriend->getData();
             $data['type'] = $type;
+            $locale       = $request->getLocale();
+            $to           = $mailAFriend->getToEmail();
             $mailer       = $this->get('app.mailer.mail.a.friend');
-            $result       = $mailer->setSubject($this->get('translator')->trans('form-mail-a-friend-subject'))
+            $result       = $mailer->setSubject($type->getAccommodation()->getLocaleName($locale) . ' ' . $type->getLocaleName($locale))
                                    ->setFrom($mailAFriend->getFromEmail(), $mailAFriend->getFromName())
-                                   ->setTo($mailAFriend->getToEmail())
+                                   ->setTo(explode(',', $to))
                                    ->setTemplate('mail/mail-a-friend.html.twig', 'text/html')
                                    ->setTemplate('mail/mail-a-friend.txt.twig', 'text/plain')
                                    ->send($data);
