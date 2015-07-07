@@ -162,7 +162,11 @@ jQuery(document).ready(function() {
     })
 });
 
-jQuery(document).foundation();
+jQuery(document).foundation({
+    equalizer: {
+        equalize_on_stack: true
+    }
+});
 jQuery(function() {
 
     $('input').placeholder({customClass:'my-placeholder'});
