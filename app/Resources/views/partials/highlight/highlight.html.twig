@@ -15,7 +15,7 @@
         </div>
         <div class="accom-desc">
             <div class="title">
-                <a href="{{ locale_path('show_type', { beginCode: place.getCountry().getStartCode(), typeId: highlight.type.id }) }}">{{ ('type.kind.' ~ highlight.type.accommodation.kindIdentifier)|trans ~ ' ' ~ highlight.type.accommodation.getLocaleName(locale) ~ ' ' ~ highlight.type.getLocaleName(locale) }}</a>
+                <a href="{{ locale_path('show_type', { beginCode: place.getCountry().getStartCode(), typeId: highlight.type.id }) }}">{{ ('type.kind.' ~ highlight.type.accommodation.kindIdentifier)|trans|capitalize ~ ' ' ~ highlight.type.accommodation.getLocaleName(locale) ~ ' ' ~ highlight.type.getLocaleName(locale) }}</a>
                 <span>
                     {% set quality = (highlight.type.getQuality() > 0 ? highlight.type.getQuality() : highlight.type.accommodation.getQuality()) %}
                     {% include 'partials/quality_stars.html.twig' with {quality: quality} only %}

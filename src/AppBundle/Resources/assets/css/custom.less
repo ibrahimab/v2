@@ -253,6 +253,31 @@ div.google-maps {
 
 div.autocomplete-container {
 
+    input {
+
+        &::-webkit-input-placeholder {
+            color: rgba(0, 0, 0, 0.75);
+        }
+
+        &:-moz-placeholder {
+
+            color: #000000;
+            opacity: 0.75;
+        }
+
+        &::-moz-placeholder {
+
+            color: #000000;
+            opacity: 0.75;
+        }
+
+        &:-ms-input-placeholder {
+
+            color: #000000;
+            filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=75);
+        }
+    }
+
     div.results {
 
         z-index: 1000;
@@ -301,12 +326,14 @@ div.autocomplete-container {
                 &.region {
 
                     font-weight: bold;
-                    padding-left: 15px;
+                    // padding-left: 15px;
                     color: #003366;
+                    
+                    i { color: #000; }
                 }
 
                 &.place {
-                    padding-left: 30px;
+                    // padding-left: 30px;
                 }
             }
         }
