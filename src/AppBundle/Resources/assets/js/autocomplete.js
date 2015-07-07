@@ -62,6 +62,13 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     var term = event.target.value;
                     
                     if (ns.Autocomplete.currentTerm === term || term === '') {
+                        
+                        if (term === '') {
+                            
+                            ns.Autocomplete.currentTerm = '';
+                            ns.Autocomplete.resultsContainer.empty();
+                        }
+                        
                         return;
                     }
                     
@@ -119,7 +126,6 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                 
                 click: function(data) {
                     
-                    console.log(data);
                     var link = jq('[data-role="search-simple"]');
                     var uri  = URI(link.attr('href'));
                     uri.search('');
@@ -213,6 +219,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                 
                 if (total === 0) {
                     
+                    ns.Autocomplete.currentTerm = '';
                     ns.Autocomplete.resultsContainer.html('');
                     return;
                 }
