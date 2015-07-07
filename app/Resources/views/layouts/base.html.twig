@@ -69,7 +69,25 @@
 
         {% endjavascripts %}
 
-        <script async type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"></script>
+        {% set website_concern = website() %}
+        {% set chat            = website_concern.getConfig(constant('WEBSITE_CONFIG_CHAT',       website_concern)) %}
+        {% set trustpilot      = website_concern.getConfig(constant('WEBSITE_CONFIG_TRUSTPILOT', website_concern)) %}
+            
+        {% if trustpilot != false %}
+            <script async type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"></script>
+        {% endif %}
+            
+        {% if chat != false %}
+            <script type="text/javascript">
+            window.LC_API = window.LC_API || {};
+            window.__lc = {
+                
+                license: {{ chat_license }},
+                group:   '{{ chat|split('-')|last }}'
+            };
+            </script>
+            <script async type="text/javavscript" src="//cdn.livechatinc.com/tracking.js"></script>
+        {% endif %}
 
         {% block javascripts %}{% endblock %}
     </body>

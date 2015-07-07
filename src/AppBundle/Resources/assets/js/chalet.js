@@ -35,6 +35,10 @@ window.Chalet = (function(ns, undefined) {
         return ns.attributes[attribute];
     };
     
+    ns.set = function(attribute, value) {
+        ns.attributes[attribute] = value;
+    };
+    
     return ns;
 
 }(window.Chalet || {}));

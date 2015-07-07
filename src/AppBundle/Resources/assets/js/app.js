@@ -1,4 +1,4 @@
-(function(jq, Routing, Chalet, undefined) {
+(function(jq, Routing, Chalet, lc, undefined) {
     'use strict';
 
     // setting up scroll button for long pages
@@ -111,8 +111,10 @@
          * Chat button
          */
         body.on('click', '[data-role="chat-button"]', function(event) {
-
-
+            
+            if (undefined !== __lc) {
+                LC_API.open_chat_window();
+            }
         });
 
         /**
