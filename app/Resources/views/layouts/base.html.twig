@@ -79,14 +79,18 @@
             
         {% if chat != false %}
             <script type="text/javascript">
-            window.LC_API = window.LC_API || {};
-            window.__lc = {
-                
+            var __lc = {
                 license: {{ chat_license }},
-                group:   '{{ chat|split('-')|last }}'
+                group: {{ chat|split('-')|first }}
             };
+
+            (function() {
+            	var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
+            	lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
+            	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
+            })();
             </script>
-            <script async type="text/javavscript" src="//cdn.livechatinc.com/tracking.js"></script>
+            
         {% endif %}
 
         {% block javascripts %}{% endblock %}

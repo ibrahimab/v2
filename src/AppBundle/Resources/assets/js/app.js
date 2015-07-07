@@ -112,7 +112,9 @@
          */
         body.on('click', '[data-role="chat-button"]', function(event) {
             
-            if (undefined !== __lc) {
+            event.preventDefault();
+            
+            if (undefined !== LC_API) {
                 LC_API.open_chat_window();
             }
         });
