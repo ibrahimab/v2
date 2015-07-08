@@ -11,6 +11,7 @@ that are searchable and imports it into autocomplete collection in MongoDB.
 @since      0.0.2
 """
 from base import Base
+import sys
 class Accommodation(Base):
     """
     @var  AUTOCOMPLETE_TYPE: Autocomplete type to be used when inserting autocomplete data
@@ -24,11 +25,15 @@ class Accommodation(Base):
     """
     def fetch(self):
 
-        sql = 'SELECT `accommodatie_id` AS `id`, `naam` AS `name`, `websites`, `wzt` AS `season`, ' \
-              '`plaats_id`   AS `place_id`, `zoekvolgorde` AS `order` '                             \
-              'FROM   `accommodatie` '                                                              \
-              'WHERE  `tonen` = 1 '                                                                 \
-              'AND    `tonenzoekformulier` = 1'
+        sql = 'SELECT DISTINCT `a`.`accommodatie_id` AS `id`, `a`.`naam` AS `name`, `a`.`websites`, `a`.`wzt` AS `season`, ' \
+              '`a`.`plaats_id` AS `place_id`, `zoekvolgorde` AS `order`, `l`.`begincode` AS `code` '                         \
+              'FROM   `accommodatie` a '                                                                                     \
+              'INNER JOIN   `plaats` p '                                                                                     \
+              'ON (a.plaats_id = p.plaats_id) '                                                                              \
+              'INNER JOIN `land` l '                                                                                         \
+              'ON (p.land_id = l.land_id) '                                                                                  \
+              'WHERE  `a`.`tonen` = 1 '                                                                                      \
+              'AND    `a`.`tonenzoekformulier` = 1'
 
         self.adapter('mysql').execute(sql)
         self.data = self.adapter('mysql').fetchall()
@@ -56,6 +61,7 @@ class Accommodation(Base):
                 'type_id':  row['id'],
                 'locales':  None,
                 'name':     row['name'],
+                'code':     row['code'] + str(row['id']),
                 'websites': row['websites'].split(','),
                 'season':   row['season'],
                 'place_id': row['place_id'],
