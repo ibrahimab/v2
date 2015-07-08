@@ -266,4 +266,12 @@ class PagesController extends Controller
             'offers' => $offers,
         ]);
     }
+
+    /**
+     * @Route("/header", name="page_header")
+     */
+    public function header()
+    {
+        return $this->render('pages/header.html.twig');
+    }
 }
