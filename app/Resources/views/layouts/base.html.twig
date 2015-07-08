@@ -59,6 +59,7 @@
 					   'bundles/app/js/vendor/uri.js'
                        'bundles/fosjsrouting/js/router.js'
                        'js/fos_js_routes.js'
+                       'bundles/app/js/layout.js'
                        '@AppBundle/Resources/assets/js/app.js'
 					   '@AppBundle/Resources/assets/js/maps/italy.js'
 					   '@AppBundle/Resources/assets/js/autocomplete.js'
@@ -72,11 +73,11 @@
         {% set website_concern = website() %}
         {% set chat            = website_concern.getConfig(constant('WEBSITE_CONFIG_CHAT',       website_concern)) %}
         {% set trustpilot      = website_concern.getConfig(constant('WEBSITE_CONFIG_TRUSTPILOT', website_concern)) %}
-            
+
         {% if trustpilot != false %}
             <script async type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"></script>
         {% endif %}
-            
+
         {% if chat != false %}
             <script type="text/javascript">
             var __lc = {
@@ -90,7 +91,7 @@
             	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
             })();
             </script>
-            
+
         {% endif %}
 
         {% block javascripts %}{% endblock %}
