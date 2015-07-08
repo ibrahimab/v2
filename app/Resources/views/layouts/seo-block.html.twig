@@ -1,13 +1,28 @@
+{% set website_concern = website() %}
+
 <meta name="description" content="{{ meta_description }}" />
 <meta property="og:title" content="{{ meta_title }}" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="{{ app.request.uri }}" />
-<meta property="og:site_name" content="Chalet.nl" />
-<meta property="fb:admins" content="100002331327337" />
-<meta property="fb:page_id" content="156825034385110" />
+<meta property="og:site_name" content="{{ website_concern.name() }}" />
+
+{% set facebook = website_concern.getConfig(constant('WEBSITE_CONFIG_FACEBOOK', website_concern)) %}
+{% if facebook != false %}
+    <meta property="fb:admins" content="{{ facebook }}" />
+    <meta property="fb:page_id" content="{{ facebook }}" />
+{% endif %}
+
 <meta property="og:image" content="https://www.chalet.nl/pic/logo_chalet.gif" />
 <meta property="og:description" content="{{ meta_description }}" />
-<meta property="twitter:card" content="summary" />
-<meta property="twitter:description" content="{{ meta_description }}" />
-<meta property="twitter:site" content="@ChaletNL" />
-<link href="https://plus.google.com/+ChaletNlWintersport" rel="publisher" />
+
+{% set twitter = website_concern.getConfig(constant('WEBSITE_CONFIG_TWITTER', website_concern)) %}
+{% if twitter != false %}
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter:description" content="{{ meta_description }}" />
+    <meta property="twitter:site" content="{{ twitter }}" />
+{% endif %}
+
+{% set google = website_concern.getConfig(constant('WEBSITE_CONFIG_GOOGLE', website_concern)) %}
+{% if google != false %}
+    <link href="https://plus.google.com/{{ google }}" rel="publisher" />
+{% endif %}

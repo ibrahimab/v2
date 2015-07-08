@@ -2,7 +2,7 @@
 
 {% block bodyId %}home{% endblock %}
 {% block body %}
-    
+
     {% set search_path = locale_path('search') %}
     <!-- header -->
     <header>
@@ -30,7 +30,7 @@
                     <form>
                         <div class="large-3 medium-3 columns">
                             <div class="autocomplete-container">
-                                <input type="text" name="query" data-role="autocomplete-query" data-type="home" id="choose-destination" class="radius home" placeholder="Waar wil je naartoe?" autocomplete="off" />
+                                <input type="text" name="query" data-role="autocomplete-query" data-type="home" id="choose-destination" class="radius home" data-focus-text="bijv. bestemming of accommodatie" data-default-placeholder="Waar wil je naartoe?" placeholder="Waar wil je naartoe?" autocomplete="off" />
                                 <div class="results" data-role="autocomplete-results">
                                 </div>
                             </div>
@@ -61,7 +61,7 @@
                                 {% endfor %}
                                 <option value="40">40 of meer</option>
                             </select>
-                            
+
                             <select class="radius show-for-medium">
                                 <option value="hoeveel">Hoeveel personen?</option>
                                 {% for i in 1..39 %}
@@ -79,5 +79,5 @@
             </div>
         </div>
     </header>
-    
+
 {% endblock %}

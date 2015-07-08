@@ -41,6 +41,7 @@ class WebsiteConcern
     const WEBSITE_CONFIG_TRUSTPILOT               = 'trustpilot';
     const WEBSITE_CONFIG_FACEBOOK                 = 'facebook';
     const WEBSITE_CONFIG_TWITTER                  = 'twitter';
+    const WEBSITE_CONFIG_GOOGLE                   = 'google';
     const WEBSITE_CONFIG_GA                       = 'ga';
     const WEBSITE_CONFIG_CANCEL_INSURANCE         = 'cancel_insurance';
     const WEBSITE_CONFIG_TRAVEL_INSURANCE         = 'travel_insurance';
@@ -67,7 +68,7 @@ class WebsiteConcern
      * @var string
      */
     private $name;
-    
+
     /**
      * @var config
      */
@@ -113,7 +114,7 @@ class WebsiteConcern
      * @var array
      */
     private $websites;
-    
+
     /**
      * @var string
      */
@@ -177,21 +178,21 @@ class WebsiteConcern
     {
         return $this->name;
     }
-    
+
     public function domain()
     {
         return $this->domain;
     }
-    
+
     public function getConfig($identifier)
     {
         if (!isset($this->config[$identifier])) {
             throw new \Exception(sprintf('Could not find WebsiteConcern config with identifier %s', $identifier));
         }
-        
+
         return $this->config[$identifier];
     }
-    
+
     public function getLanguageField()
     {
         $locale = $this->getConfig(self::WEBSITE_CONFIG_LOCALE);

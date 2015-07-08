@@ -1,6 +1,6 @@
 imports:
     - { resource: "../dev/app.yml" }
-    
+
 parameters:
     app:
         travel_insurance_possible: true
@@ -26,6 +26,7 @@ parameters:
                 ga: UA-2078202-1
                 facebook: 156825034385110
                 twitter: ChaletNL
+                google: false
                 resale: false
                 cancel_insurance: 1
                 travel_insurance: 1
@@ -44,6 +45,7 @@ parameters:
                 ga: UA-2078202-6
                 facebook: false
                 twitter: false
+                google: false
                 resale: true
                 cancel_insurance: 1
                 travel_insurance: 0
@@ -62,6 +64,7 @@ parameters:
                 ga: UA-2078202-7
                 facebook: false
                 twitter: false
+                google: false
                 resale: true
                 cancel_insurance: 1
                 travel_insurance: 1
@@ -80,6 +83,7 @@ parameters:
                 ga: UA-2078202-3
                 facebook: false
                 twitter: false
+                google: false
                 resale: false
                 cancel_insurance: 1
                 travel_insurance: 0
@@ -98,6 +102,7 @@ parameters:
                 ga: UA-2078202-20
                 facebook: false
                 twitter: false
+                google: false
                 resale: false
                 cancel_insurance: 1
                 travel_insurance: 0
@@ -116,6 +121,7 @@ parameters:
                 ga: UA-2078202-10
                 facebook: false
                 twitter: false
+                google: false
                 resale: true
                 cancel_insurance: 1
                 travel_insurance: 1
@@ -134,6 +140,7 @@ parameters:
                 ga: UA-2078202-9
                 facebook: false
                 twitter: false
+                google: false
                 resale: true
                 cancel_insurance: 1
                 travel_insurance: 0
@@ -152,6 +159,7 @@ parameters:
                 ga: UA-2078202-15
                 facebook: 162914327091136
                 twitter: Venturasol_nl
+                google: false
                 resale: false
                 cancel_insurance: 1
                 travel_insurance: 1
@@ -170,6 +178,7 @@ parameters:
                 ga: UA-2078202-16
                 facebook: false
                 twitter: false
+                google: false
                 resale: true
                 cancel_insurance: 1
                 travel_insurance: 1
@@ -188,6 +197,7 @@ parameters:
                 ga: UA-2078202-5
                 facebook: 168449903215909
                 twitter: Zomerhuisje
+                google: false
                 resale: true
                 cancel_insurance: 1
                 travel_insurance: 1
@@ -206,6 +216,7 @@ parameters:
                 ga: UA-2078202-11
                 facebook: 272671556122756
                 twitter: Italissima
+                google: false
                 resale: true
                 cancel_insurance: 1
                 travel_insurance: 1
@@ -224,6 +235,7 @@ parameters:
                 ga: UA-2078202-14
                 facebook: false
                 twitter: false
+                google: false
                 resale: false
                 cancel_insurance: 1
                 travel_insurance: 0
@@ -242,6 +254,7 @@ parameters:
                 ga: UA-2078202-17
                 facebook: false
                 twitter: false
+                google: false
                 resale: true
                 cancel_insurance: 1
                 travel_insurance: 0
@@ -260,6 +273,7 @@ parameters:
                 ga: UA-2078202-13
                 facebook: 290286354404681
                 twitter: false
+                google: false
                 resale: false
                 cancel_insurance: 1
                 travel_insurance: 1
