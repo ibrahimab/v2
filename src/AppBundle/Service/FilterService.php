@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Service;
+use       AppBundle\Service\Api\Theme\ThemeServiceEntityInterface;
 
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
@@ -84,6 +85,116 @@ class FilterService
           TOKEN_THEME_SUPER_SKI_STATIONS  = 'filter-theme-super-ski-stations',
           TOKEN_THEME_WINTER_WELLNESS     = 'filter-theme-winter-wellness';
     
+          
+    /**
+     * This map converts the old parameters to the new search builder system
+     *
+     * @var array
+     */
+    private $convertMap = [
+        
+        'vf_kenm' => [
+            
+            2 => [
+                
+                'filter' => self::FILTER_FACILITY,
+                'value'  => self::FILTER_FACILITY_CATERING,
+            ],
+            
+            3 => [
+                
+                'filter' => self::FILTER_FACILITY,
+                'value'  => self::FILTER_FACILITY_SWIMMING_POOL,
+            ],
+            
+            4 => [
+                
+                'filter' => self::FILTER_FACILITY,
+                'value'  => self::FILTER_FACILITY_SAUNA,
+            ],
+            
+            5 => [
+                
+                'filter' => self::FILTER_FACILITY,
+                'value'  => self::FILTER_FACILITY_PRIVATE_SAUNA,
+            ],
+            
+            6 => [
+                
+                'filter' => self::FILTER_FACILITY,
+                'value'  => self::FILTER_FACILITY_PETS_ALLOWED,
+            ],
+            
+            7 => [
+                
+                'filter' => self::FILTER_FACILITY,
+                'value'  => self::FILTER_FACILITY_FIREPLACE,
+            ],
+            
+            43 => [
+                
+                'filter' => self::FILTER_THEME,
+                'value'  => self::FILTER_THEME_KIDS,
+            ],
+            
+            44 => [
+                
+                'filter' => self::FILTER_THEME,
+                'value'  => self::FILTER_THEME_CHARMING_PLACES,
+            ],
+            
+            45 => [
+                
+                'filter' => self::FILTER_THEME,
+                'value'  => self::FILTER_THEME_10_FOR_APRES_SKI,
+            ],
+            
+            46 => [
+                
+                'filter' => self::FILTER_THEME,
+                'value'  => self::FILTER_THEME_WINTER_WELLNESS,
+            ],
+            
+            47 => [
+                
+                'filter' => self::FILTER_THEME,
+                'value'  => self::FILTER_THEME_SUPER_SKI_STATIONS,
+            ],
+            
+            50 => [
+                
+                'filter' => self::FILTER_FACILITY,
+                'value'  => self::FILTER_FACILITY_INTERNET_WIFI,
+            ],
+        ],
+        
+        'vf_piste' => [
+            
+            1 => [
+                
+                'filter' => self::FILTER_DISTANCE,
+                'value'  => self::FILTER_DISTANCE_BY_SLOPE,
+            ],
+            
+            2 => [
+                
+                'filter' => self::FILTER_DISTANCE,
+                'value'  => self::FILTER_DISTANCE_MAX_250,
+            ],
+            
+            3 => [
+                
+                'filter' => self::FILTER_DISTANCE,
+                'value'  => self::FILTER_DISTANCE_MAX_500,
+            ],
+            
+            4 => [
+                
+                'filter' => self::FILTER_DISTANCE,
+                'value'  => self::FILTER_DISTANCE_MAX_1000,
+            ],
+        ],
+    ];
     
     /**
      * @param int $filter
@@ -296,5 +407,40 @@ class FilterService
         }
         
         return $result;
+    }
+    
+    /**
+     * @param ThemeServiceEntityInterface $theme
+     * @return array
+     */
+    public function parseThemeFilters(ThemeServiceEntityInterface $theme)
+    {
+        $filters = $theme->getFilters();
+        $parts   = explode('&', $filters);
+        $results = [];
+        
+        foreach ($parts as $part) {
+            
+            $hasMatch = preg_match('/^(?<kind>.+?)(?<filter>[0-9]+)=1$/', $part, $match);
+            if (1 === $hasMatch) {
+                
+                $converted = $this->convertThemeFilter($match['kind'], $match['filter']);
+                if (null !== $converted) {
+                    $results[(int)$converted['filter']] = (int)$converted['value'];
+                }
+            }
+        }
+        
+        return $results;
+    }
+    
+    /**
+     * @param string $kind
+     * @param integer $filter
+     * @return integer|null
+     */
+    public function convertThemeFilter($kind, $filter)
+    {
+        return (isset($this->convertMap[$kind]) && isset($this->convertMap[$kind][$filter]) ? $this->convertMap[$kind][$filter] : null);
     }
 }

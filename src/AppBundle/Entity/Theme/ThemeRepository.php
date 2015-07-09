@@ -42,7 +42,7 @@ class ThemeRepository extends BaseRepository implements ThemeServiceRepositoryIn
         $qb   = $this->createQueryBuilder('th');
         $expr = $qb->expr();
 
-        $qb->select('partial th.{id, name, englishName, germanName}')
+        $qb->select('partial th.{id, name, englishName, germanName, filters, description, englishDescription, germanDescription}')
             ->where($expr->eq('th.season', ':season'))
             ->andWhere($expr->eq('th.active', ':active'))
             ->andWhere($expr->neq('th.' . $this->getLocaleField('name'), ':name'))
