@@ -344,6 +344,10 @@
         <source>regions</source>
         <target>Skigebieden</target>
       </trans-unit>
+      <trans-unit id="dfce7b6feabcba2043fe203c92242683553c7898" resname="new-option">
+        <source>new-option</source>
+        <target>Optie aanvragen</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
