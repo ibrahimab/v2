@@ -6,6 +6,7 @@ use       AppBundle\Service\Api\Search\SearchBuilder;
 use       AppBundle\Service\Api\Search\FilterBuilder;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use       Symfony\Component\HttpFoundation\Request;
 use       Doctrine\ORM\NoResultException;
 
 /**
@@ -49,7 +50,7 @@ class ThemeController extends Controller
      * @Breadcrumb(name="themes", title="themes", translate=true, path="themes")
      * @Breadcrumb(name="theme", title="{theme}", translate=true, active=true)
      */
-    public function show($url)
+    public function show($url, Request $request)
     {
         $themeService  = $this->get('app.api.theme');
         $filterService = $this->get('app.filter');
@@ -63,19 +64,46 @@ class ThemeController extends Controller
             throw $this->createNotFoundException('Theme page does not exist (anymore)');
         }
 
-        $filters = $filterService->parseThemeFilters($theme);
+        $filters  = $filterService->parseThemeFilters($theme);
+        $per_page = intval($this->container->getParameter('app')['results_per_page']);
+        $page     = intval($request->query->get('p'));
+        $page     = ($page === 0 ? $page : ($page - 1));
 
         $paginator = $searchService->build()
                                    ->limit($per_page)
-                                   ->offset($offset)
+                                   ->page($page)
                                    ->sort(SearchBuilder::SORT_BY_TYPE_SEARCH_ORDER, SearchBuilder::SORT_ORDER_ASC)
                                    ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0)
-                                   ->filter($filters);
+                                   ->filter($filters)
+                                   ->search();
+
+        $typeIds = [];
+        $prices  = [];
+        $offers  = [];
+        
+        foreach ($paginator as $accommodation) {
+
+            $types = $accommodation->getTypes();
+            foreach ($types as $type) {                
+                $typeIds[] = $type->getId();
+            }
+        }
+
+        if (count($typeIds) > 0) {
+
+            $pricesService = $this->get('old.prices.wrapper');
+            $prices        = $pricesService->get($typeIds);
+
+            $priceService  = $this->get('app.api.price');
+            $offers        = $priceService->offers($typeIds);
+        }
 
         return $this->render('themes/show.html.twig', [
             
-            'theme' => $theme,
-            'types' => $paginator,
+            'theme'          => $theme,
+            'accommodations' => $paginator,
+            'prices'         => $prices,
+            'offers'         => $offers,
         ]);
     }
 }
