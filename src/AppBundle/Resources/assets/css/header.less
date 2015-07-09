@@ -112,9 +112,19 @@ div.home-menu {
         div.column-contact { padding-top: 2rem; }
     }
     
-    div.home-menu { display: none; }
-    
     #dropdown-container { padding-top: 0.8rem; }
+    
+    div.home-menu { 
+        
+        padding-top: 2px; 
+    
+        ul li { 
+            
+            font-size: 1rem; 
+            padding-top: 4px; 
+            &.home { padding-top: 2px; } 
+        }
+    }
 }
 
 @media all and (max-width: 40em) {
@@ -125,6 +135,8 @@ div.home-menu {
         div.column-logo img { height: 90px; } 
         div.column-contact { padding-top: 1rem; }
     }
+    
+    div.home-menu { display: none; }
 }
 
 body.smaller {
