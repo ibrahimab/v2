@@ -4,6 +4,24 @@
     // setting up scroll button for long pages
     jq(function() {
 
+        /**
+         * fixed header scroll effects
+         */
+        var stickyHeader = function() {
+            
+            var distanceY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+            var body      = jq('body');
+            
+            if (distanceY > 10) {
+                body.addClass('smaller');
+            } else {
+                body.removeClass('smaller');
+            }
+        };
+        
+        jq(window).on('scroll', stickyHeader);
+        stickyHeader();
+
         // autocomplete
         Chalet.Autocomplete.initialize({
 
