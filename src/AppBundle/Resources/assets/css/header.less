@@ -37,6 +37,14 @@ div.header-container {
         padding-top: 2.7rem;
         
         i.fi-clock { color: #193761; }
+        
+        #link-saved a {
+            
+            border: thin solid #818181;
+            color: #818181;
+            border-radius: 3px;
+            padding: 0.2rem 0.4rem;
+        }
     }
     
     div.column-lists {
@@ -93,6 +101,29 @@ div.home-menu {
             &:hover, &.active { border-bottom: 3px solid #193761; }
             a, a:active, a:hover, a:visited { text-decoration: none; color: #193761; }
         }
+    }
+}
+
+@media all and (max-width: 64em) {
+    
+    div.header-container {
+        
+        div.column-logo img { height: 152px; width: 206px; }
+        div.column-contact { padding-top: 2rem; }
+    }
+    
+    div.home-menu { display: none; }
+    
+    #dropdown-container { padding-top: 0.8rem; }
+}
+
+@media all and (max-width: 40em) {
+    
+    div.header-container {
+        
+        position: inherit;
+        div.column-logo img { height: 90px; } 
+        div.column-contact { padding-top: 1rem; }
     }
 }
 

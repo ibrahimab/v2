@@ -1,26 +1,30 @@
         
         <div class="header-container hide-on-load">
             <div class="row header">
-                <div class="small-3 columns column-logo">
+                <div class="large-3 medium-3 small-6 columns column-logo">
                     <a href="#">
                         {% image 'bundles/app/img/logos/chalet.svg' %}<img id="logo" src="{{ asset_url }}" alt="Chalet home" />{% endimage %}
                     </a>
                 </div>
-                <div class="small-5 columns column-contact">
-                    <span class="small-up">
-                        {% set website_concern = website() %}
-                        {% set chat            = website_concern.getConfig(constant('WEBSITE_CONFIG_CHAT', website_concern)) %}
-                        {% if chat != false %}
-                            {% set chat = chat|split('-')[1] %}
-                            <a href="#" data-role="chat-button" data-id="{{ chat }}" id="contact-chat"><i class="fi-comments"></i>Chat</a>
-                            <span class="medium-up">{{ "general.or"|trans }}</span>
-                        {% endif %}
-                        <span class="show-for-small"></span>
-                        <a href="tel:+31-348-434649"><i class="fi-telephone"></i>0348 - 43 46 49</a>
-                    </span>
-                    <span class="medium-up"><br /><i class="fi-clock"></i>{{ "header.bar.open-now"|trans }}</span><span class="medium-up"> <a href="{{ locale_path('contact') }}" id="opening-hours-contact">{{ "header.bar.opening-hours-contact"|trans }}</a></span>
+                <div class="large-5 medium-5 small-6 columns column-contact">
+                    <div>
+                        <span class="small-up">
+                            {% set website_concern = website() %}
+                            {% set chat            = website_concern.getConfig(constant('WEBSITE_CONFIG_CHAT', website_concern)) %}
+                            {% if chat != false %}
+                                {% set chat = chat|split('-')[1] %}
+                                <a href="#" data-role="chat-button" data-id="{{ chat }}" id="contact-chat"><i class="fi-comments"></i>Chat</a>
+                                <span class="show-for-medium-up">{{ "general.or"|trans }}</span>
+                            {% endif %}
+                            <a href="tel:+31-348-434649"><br class="show-for-small" /><i class="fi-telephone"></i>0348 - 43 46 49</a>
+                        </span>
+                        <span class="show-for-medium-up"><i class="fi-clock"></i> <a href="{{ locale_path('contact') }}" id="opening-hours-contact">{{ "header.bar.opening-hours-contact"|trans }}</a></span>
+                    </div>
+                    <div class="show-for-small" id="link-saved">
+                        <a href="#" data-role="saved-item"><i class="fi-heart"></i>{{ 'header.bar.seen-and-saved'|trans }}</a>
+                    </div>
                 </div>
-                <div class="small-4 columns column-lists">
+                <div class="large-4 medium-4 hide-for-small columns column-lists">
                     
                     <div class="right">
                         

@@ -9,6 +9,13 @@
          */
         var stickyHeader = function() {
             
+            if (window.innerWidth <= 641) {
+                
+                // mobile does not have sticky header!
+                jq('body').removeClass('smaller');
+                return;
+            }
+            
             var distanceY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
             var body      = jq('body');
             
