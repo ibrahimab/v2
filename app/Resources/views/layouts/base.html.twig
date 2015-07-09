@@ -15,6 +15,7 @@
 					   'bundles/app/css/jquery.fancybox.css'
                        '@AppBundle/Resources/assets/css/faq.less'
                        '@AppBundle/Resources/assets/css/rate-table.less'
+                       '@AppBundle/Resources/assets/css/header.less'
                        '@AppBundle/Resources/assets/css/custom.less' filter='cssrewrite' %}
             <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
@@ -38,7 +39,7 @@
     {% set _body_class = block('bodyClass') %}
     <body{% if _body_id is not empty %} id="{{ _body_id }}"{% endif %}{% if _body_class is not empty %} class="{{ _body_class }}"{%endif %}>
 
-        {% include 'partials/header.html.twig' %}
+        {% include 'layouts/header.html.twig' %}
         {% block body %}{% endblock %}
         {% include 'partials/footer.html.twig' %}
 

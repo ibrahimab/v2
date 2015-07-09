@@ -6,6 +6,18 @@
     {% set search_path = locale_path('search') %}
     <!-- header -->
     <header>
+        <div class="home-menu">
+            <div class="row">
+                <div class="small-9 small-offset-3">
+                    <ul>
+                        <li class="home active"><a href="#"><i class="fi-home"></i></a></li>
+                        <li><a href="{{ locale_path('search') }}">zoek en boek</a></li>
+                        <li><a href="{{ locale_path('all_regions') }}">skigebieden</a></li>
+                        <li><a href="#">aanbiedingen</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
         <div id="header-container">
             <div id="header-usp">
                 <div class="large-12 columns">
