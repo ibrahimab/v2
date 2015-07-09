@@ -39,7 +39,7 @@
     {% set _body_class = block('bodyClass') %}
     <body{% if _body_id is not empty %} id="{{ _body_id }}"{% endif %}{% if _body_class is not empty %} class="{{ _body_class }}"{%endif %}>
 
-        {% include 'layouts/header.html.twig' %}
+        {% include 'partials/header.html.twig' %}
         {% block body %}{% endblock %}
         {% include 'partials/footer.html.twig' %}
 
