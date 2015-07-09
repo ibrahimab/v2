@@ -20,6 +20,7 @@ use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterfac
 use       AppBundle\Service\Api\User\UserServiceDocumentInterface;
 use       AppBundle\Service\FilterService;
 use       AppBundle\Old\Service\PageService;
+use       AppBundle\Service\Api\GeneralSettings\GeneralSettingsService;
 use       Symfony\Component\DependencyInjection\ContainerInterface;
 use       Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use       Symfony\Component\Finder\Finder;
@@ -71,6 +72,11 @@ class AppExtension extends \Twig_Extension
      * @var WebsiteConcern
      */
     private $websiteConcern;
+    
+    /**
+     * @var GeneralSettingsService
+     */
+    private $generalSettingsService;
 
     /**
      * @param ContainerInterface $container
@@ -116,6 +122,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('pdf_link', [$this, 'pdfLink']),
             new \Twig_SimpleFunction('website', [$this, 'website']),
             new \Twig_SimpleFunction('is_favorite', [$this, 'isFavorite']),
+            new \Twig_SimpleFunction('opened', [$this, 'opened']),
         ];
     }
 
@@ -731,6 +738,18 @@ class AppExtension extends \Twig_Extension
     public function website()
     {
         return $this->websiteConcern;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function opened()
+    {
+        if (null === $this->generalSettingsService) {
+            $this->generalSettingsService = $this->container->get('app.api.general.settings');
+        }
+        
+        return $this->generalSettingsService->opened();
     }
 
     /**
