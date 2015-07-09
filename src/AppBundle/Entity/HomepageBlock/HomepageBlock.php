@@ -316,7 +316,7 @@ class HomepageBlock implements HomepageBlockServiceEntityInterface
         }
         
         // $html = false means disable format completely
-        return (false === $html ? $localeTitle : (preg_replace('/\[font\](.+)\[\/font\]/i', '<' . $tag . (false !== $attribute ? (' ' . $attribute . '="' . $value . '"') : '') . '>$1</' . $tag .'>', $localeTitle)));
+        return (false === $html ? preg_replace('/\[font\](.+)\[\/font\]/', '', $localeTitle) : (preg_replace('/\[font\](.+)\[\/font\]/i', '<' . $tag . (false !== $attribute ? (' ' . $attribute . '="' . $value . '"') : '') . '>$1</' . $tag .'>', $localeTitle)));
     }
 
     /**
