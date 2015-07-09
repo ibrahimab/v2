@@ -545,6 +545,19 @@ footer ul.checked i { margin-top: 0.7rem; }
 
 #home .overview {
     
+    img { 
+    
+        -webkit-transition: all 0.2s linear;
+        -moz-transition: all 0.2s linear;
+        -ms-transition: all 0.2s linear;
+        -o-transition: all 0.2s linear;
+        
+        &:hover {
+            
+            -moz-backface-visibility: hidden;
+            -moz-transform: translateZ(0) scale(0.98, 0.98);
+        }
+    }
+    
     a { text-decoration: none; }
-    &:hover { outline: 1px solid #cdcdcd; }
 }
