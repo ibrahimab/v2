@@ -46,12 +46,13 @@ class ThemeController extends Controller
     /**
      * @Route("/wintersport/thema/{url}/", name="show_theme_nl")
      * @Route("/winter-sports/theme/{url}/", name="show_theme_en")
-     * @Breadcrumb(name="theme", title="theme", translate=true, active=true)
+     * @Breadcrumb(name="themes", title="themes", translate=true, path="themes")
+     * @Breadcrumb(name="theme", title="{theme}", translate=true, active=true)
      */
     public function show($url)
     {
-        dump($url);
         $themeService  = $this->get('app.api.theme');
+        $filterService = $this->get('app.filter');
         $searchService = $this->get('app.api.search');
 
         try {
@@ -62,19 +63,19 @@ class ThemeController extends Controller
             throw $this->createNotFoundException('Theme page does not exist (anymore)');
         }
 
-        $filters       = ['th' => [
-            'a' => $theme->getAccommodationFeature(),
-        ]];
+        $filters = $filterService->parseThemeFilters($theme);
 
-        $paginator     = $searchService->build()
-                                       ->limit($per_page)
-                                       ->offset($offset)
-                                       ->sort(SearchBuilder::SORT_BY_TYPE_SEARCH_ORDER, SearchBuilder::SORT_ORDER_ASC)
-                                       ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0)
-                                       ->filter($filters);
+        $paginator = $searchService->build()
+                                   ->limit($per_page)
+                                   ->offset($offset)
+                                   ->sort(SearchBuilder::SORT_BY_TYPE_SEARCH_ORDER, SearchBuilder::SORT_ORDER_ASC)
+                                   ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0)
+                                   ->filter($filters);
 
-        dump($paginator->results());exit;
-
-        return $this->render('themes/show.html.twig');
+        return $this->render('themes/show.html.twig', [
+            
+            'theme' => $theme,
+            'types' => $paginator,
+        ]);
     }
 }

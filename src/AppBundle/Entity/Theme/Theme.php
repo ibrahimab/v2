@@ -41,11 +41,11 @@ class Theme implements ThemeServiceEntityInterface
     private $active;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="accommodatiekenmerk", type="smallint")
+     * @ORM\Column(name="uitgebreidzoeken_url", type="string", length=30)
      */
-    private $accommodationFeature;
+    private $filters;
 
     /**
      * @var string
@@ -67,6 +67,27 @@ class Theme implements ThemeServiceEntityInterface
      * @ORM\Column(name="naam_de", type="string", length=100)
      */
     private $germanName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="toelichting", type="text")
+     */
+    private $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="toelichting_en", type="text")
+     */
+    private $englishDescription;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="toelichting_de", type="text")
+     */
+    private $germanDescription;
 
     /**
      * @var string
@@ -158,9 +179,9 @@ class Theme implements ThemeServiceEntityInterface
     /**
      * {@InheritDoc}
      */
-    public function setAccommodationFeature($accommodationFeature)
+    public function setFilters($filters)
     {
-        $this->accommodationFeature = $accommodationFeature;
+        $this->filters = $filters;
 
         return $this;
     }
@@ -168,9 +189,9 @@ class Theme implements ThemeServiceEntityInterface
     /**
      * {@InheritDoc}
      */
-    public function getAccommodationFeature()
+    public function getFilters()
     {
-        return $this->accommodationFeature;
+        return $this->filters;
     }
 
     /**
@@ -248,6 +269,81 @@ class Theme implements ThemeServiceEntityInterface
     public function getLocaleName($locale)
     {
         return $this->getLocaleField('name', $locale, ['nl', 'en', 'de']);
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setEnglishDescription($englishDescription)
+    {
+        $this->englishDescription = $englishDescription;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getEnglishDescription()
+    {
+        return $this->englishDescription;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setGermanDescription($germanDescription)
+    {
+        $this->germanDescription = $germanDescription;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getGermanDescription()
+    {
+        return $this->germanDescription;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setLocaleDescriptions($localeDescriptions)
+    {
+        // normalize locales
+        $localeDescriptions = array_change_key_case($localeDescriptions);
+
+        $this->setDescription(isset($localeDescriptions['nl']) ? $localeDescriptions['nl'] : '');
+        $this->setEnglishDescription(isset($localeDescriptions['en']) ? $localeDescriptions['en'] : '');
+        $this->setGermanDescription(isset($localeDescriptions['de']) ? $localeDescriptions['de'] : '');
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getLocaleDescription($locale)
+    {
+        return $this->getLocaleField('description', $locale, ['nl', 'en', 'de']);
     }
 
     /**

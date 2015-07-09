@@ -1,22 +1,30 @@
 {% extends 'layouts/default.html.twig' %}
 
+{% set locale = get_locale() %}
+
 {% block breadcrumbs %}
-    {{
-        breadcrumbs()
-    }}
+    {{ breadcrumbs({theme: theme.getLocaleName(locale)}) }}
 {% endblock %}
 
 {% block body %}
 
     {{ parent() }}
 
-    <!-- content -->
-    <section id="area-selected" class="place-page">
+    <section class="landing landing-page contact-page">
 
         <div class="row">
-
-            <h1>{{ 'saved-title'|trans }}</h1>
-
+            
+            <div class="medium-8 large-8 columns">
+                
+                <h1>{{ 'saved-title'|trans }}</h1>
+                <p>{{ theme.getLocaleDescription(locale)|nl2br }}</p>
+                
+            </div>
+            
+        </div>
+        
+        <div class="row">    
+            
             {% for type in types %}
 
                 {% include 'partials/highlight/highlight.html.twig' with { 'highlight': { 'type': type }, place: type.getAccommodation().getPlace(), 'end': ( ((loop.index % 3) is same as(0)) or loop.last ), offers: offers } only %}
