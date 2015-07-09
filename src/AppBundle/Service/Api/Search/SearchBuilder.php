@@ -14,7 +14,7 @@ class SearchBuilder
     /** @const int */
     const BLOCK_WHERE                    = 1,
           BLOCK_LIMIT                    = 2,
-          BLOCK_OFFSET                   = 3,
+          BLOCK_PAGE                     = 3,
           BLOCK_SORT_BY                  = 4,
           BLOCK_SORT_ORDER               = 5,
           BLOCK_FILTER                   = 6;
@@ -50,7 +50,7 @@ class SearchBuilder
     /** 
      * @var int 
      */
-    private static $DEFAULT_BLOCK_OFFSET = 0;
+    private static $DEFAULT_BLOCK_PAGE   = 0;
     
     /** 
      * @var array 
@@ -67,9 +67,9 @@ class SearchBuilder
         $this->searchService = $searchService;
         $this->blocks        = [
             
-            self::BLOCK_WHERE  => self::$DEFAULT_BLOCK_WHERE,
-            self::BLOCK_LIMIT  => self::$DEFAULT_BLOCK_LIMIT,
-            self::BLOCK_OFFSET => self::$DEFAULT_BLOCK_OFFSET,
+            self::BLOCK_WHERE => self::$DEFAULT_BLOCK_WHERE,
+            self::BLOCK_LIMIT => self::$DEFAULT_BLOCK_LIMIT,
+            self::BLOCK_PAGE  => self::$DEFAULT_BLOCK_PAGE,
         ];
     }
     
@@ -87,14 +87,14 @@ class SearchBuilder
     }
     
     /**
-     * Setting offset
+     * Setting page
      *
-     * @param int $offset
+     * @param int $page
      * @return SearchBuilder
      */
-    public function offset($offset)
+    public function page($page)
     {
-        $this->blocks[self::BLOCK_OFFSET] = intval($offset);
+        $this->blocks[self::BLOCK_PAGE] = intval($page);
         
         return $this;
     }
@@ -140,7 +140,7 @@ class SearchBuilder
             
             case self::BLOCK_WHERE:
             case self::BLOCK_LIMIT:
-            case self::BLOCK_OFFSET:
+            case self::BLOCK_PAGE:
             case self::BLOCK_SORT_BY:
             case self::BLOCK_SORT_ORDER:
             case self::BLOCK_FILTER:
@@ -184,8 +184,8 @@ class SearchBuilder
      *
      * @return array
      */
-    public function results()
+    public function search()
     {
-        return $this->searchService->results();
+        return $this->searchService->search();
     }
 }

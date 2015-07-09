@@ -6,7 +6,7 @@ parameters:
         travel_insurance_possible: true
         ten_days_insurance_price_summer: 26.20
         ten_days_insurance_price_default: 36.20
-        results_per_page: 5
+        results_per_page: 50
         default_locale:  nl
         default_website: C
         default_season:  1

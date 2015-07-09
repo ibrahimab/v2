@@ -24,27 +24,12 @@
                     <h2 class="title-usp">{{ "homepage.big-title"|trans }}<span>{{ "homepage.sub-title"|trans }}</span></h2>
                 </div>
             </div>
-            <div id="header-form">
-                <div class="row" id="header-form-title">
-                    <div class="large-12 columns">
-                        {% set trans_chalets_apartments = 'chalets-apartments'|trans %}
-                        {% set trans_in                 = 'in'|trans                 %}
-                        {% set trans_and                = 'and'|trans                %}
-                        {% set trans_ski_areas          = 'ski-areas'|trans          %}
-                        {% set trans_france             = 'france'|trans             %}
-                        {% set trans_austria            = 'austria'|trans            %}
-                        {% set trans_switzerland        = 'switzerland'|trans        %}
-                        {% set trans_italy              = 'italy'|trans              %}
-                        <h1 class="title-form">Kies uit <a href="{{ search_path }}" title="1.209 {{ trans_chalets_apartments }}">1209 {{ trans_chalets_apartments }}</a> {{ trans_in }} 45 {{ trans_ski_areas|lower }} {{ trans_in }} <a href="{{ locale_path('show_country', { countrySlug: trans_austria|seo }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_austria }}">{{ trans_austria }}</a>, <a href="{{ locale_path('show_country', { countrySlug: trans_switzerland|seo }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_switzerland }}">{{ trans_switzerland }}</a>, <a href="{{ locale_path('show_country', { countrySlug: trans_france|seo }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_france }}">{{ trans_france }}</a> {{ trans_and }} <a href="{{ locale_path('show_country', { countrySlug: trans_italy|seo }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_italy }}">{{ trans_italy }}</a></h1>
-                    </div>
-                </div>
-                <div class="row" id="header-form-fields">
-                    <form>
-                        <div class="large-3 medium-3 columns">
-                            <div class="autocomplete-container">
-                                <input type="text" name="query" data-role="autocomplete-query" data-type="home" id="choose-destination" class="radius home" data-focus-text="bijv. bestemming of accommodatie" data-default-placeholder="Waar wil je naartoe?" placeholder="Waar wil je naartoe?" autocomplete="off" />
-                                <div class="results" data-role="autocomplete-results">
-                                </div>
+            <div class="row" id="header-form-fields">
+                <form>
+                    <div class="large-3 medium-3 columns">
+                        <div class="autocomplete-container">
+                            <input type="text" name="query" data-role="autocomplete-query" data-type="home" id="choose-destination" class="radius home" placeholder="Waar wil je naar toe?"  />
+                            <div class="results" data-role="autocomplete-results">
                             </div>
                         </div>
                         <div class="large-3 medium-3 columns">

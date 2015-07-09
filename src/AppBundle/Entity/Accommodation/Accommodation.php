@@ -709,7 +709,7 @@ class Accommodation implements AccommodationServiceEntityInterface
      */
     public function getFeatures()
     {
-        return $this->features;
+        return (null === $this->features ? [] : $this->features);
     }
 
     /**

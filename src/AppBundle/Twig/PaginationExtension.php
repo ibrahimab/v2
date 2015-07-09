@@ -1,9 +1,9 @@
 <?php
 namespace AppBundle\Twig;
+use       AppBundle\Service\Paginator\PaginatorService;
 use       Symfony\Component\DependencyInjection\ContainerInterface;
 use       Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use       Symfony\Component\HttpFoundation\Request;
-use       Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * PaginationExtension
@@ -86,10 +86,10 @@ class PaginationExtension extends \Twig_Extension
     /**
      * Setting paginator instance
      *
-     * @param  $paginator
+     * @param  PaginatorService $paginator
      * @return
      */
-    public function set(Paginator $paginator)
+    public function set(PaginatorService $paginator)
     {
         $this->paginator = $paginator;
     }
@@ -128,8 +128,8 @@ class PaginationExtension extends \Twig_Extension
 
         return $this->html = $environment->render('partials/pagination.html.twig', [
 
-            'last'    => $this->paginator->page['last'],
-            'current' => $this->paginator->page['current'],
+            'last'    => ($this->paginator->getTotalPages() + 1),
+            'current' => ($this->paginator->getCurrentPage() + 1),
         ]);
     }
 
@@ -157,7 +157,7 @@ class PaginationExtension extends \Twig_Extension
      */
     public function active($page)
     {
-        return ((int)$this->paginator->page['current'] === (int)$page ? ' class="current"' : '');
+        return (($this->paginator->getCurrentPage() + 1) === (int)$page ? ' class="current"' : '');
     }
 
     /**
