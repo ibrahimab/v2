@@ -58,9 +58,9 @@
             <div id="footer-newsletter">
                 <h4>Nieuwsbrief</h4>
                 <p>Mis geen aanbiedingen, nieuws en reistips.</p>
-                <form>
+                <form name="newsletter-form" action="{{ path('newsletter') }}" method="get">
                     <div class="email-field">
-                        <input type="email" placeholder="e-mailadres" required>
+                        <input name="email" type="email" placeholder="e-mailadres" required />
                     </div>
                     <button type="submit" class="button radius tiny">Inschrijven</button>
                 </form>
