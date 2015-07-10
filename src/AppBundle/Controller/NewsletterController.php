@@ -35,14 +35,11 @@ class NewsletterController extends Controller
 
         $formFieldNames = $this->get('app.newsletter');
 
+        // use post-value from homepage newsletter-form
         $postEmail = $request->get('email');
 
         // after succesful subscribe
-        if($request->get('ok')==1) {
-            $subscribeSucces = true;
-        } else {
-            $subscribeSucces = false;
-        }
+        $subscribeSucces = ((int)$request->get('ok', 0) === 1);
 
         return [
             'newsletters' => $generalSettings->getNewsletters(),

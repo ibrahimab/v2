@@ -2,7 +2,7 @@
 namespace AppBundle\Service\Newsletter;
 
 use       AppBundle\Concern\WebsiteConcern;
-use       AppBundle\Service\Javascript\Exception\NotFoundException;
+use       AppBundle\Service\Newsletter\Exception\NotFoundException;
 
 /**
  * Service to provide the fieldnames for the Blinker Newsletter forms
