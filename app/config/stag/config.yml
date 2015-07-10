@@ -11,6 +11,7 @@ doctrine_mongodb:
 doctrine_mongodb:
     connections:
         default:
+            server: "%mongodb_server%"
             options:
                 connect: true
                 replicaSet: 'rs1'
