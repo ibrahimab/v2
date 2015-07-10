@@ -51,53 +51,53 @@ class SearchController extends Controller
         });
 
         $formFilters   = [];
-        $searchService = $this->get('app.api.search')
-                              ->build()
-                              ->limit($per_page)
-                              ->page($page)
-                              ->sort(SearchBuilder::SORT_BY_TYPE_SEARCH_ORDER, SearchBuilder::SORT_ORDER_ASC)
-                              ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0)
-                              ->filter($filters);
+        $searchService = $this->get('app.api.search');
+        $searchBuilder = $searchService->build()
+                                       ->limit($per_page)
+                                       ->page($page)
+                                       ->sort(SearchBuilder::SORT_BY_TYPE_SEARCH_ORDER, SearchBuilder::SORT_ORDER_ASC)
+                                       ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0)
+                                       ->filter($filters);
         
         $destination = false;
         
         if ($request->query->has('a')) {
             
-            $searchService->where(SearchBuilder::WHERE_ACCOMMODATION, $a);
+            $searchBuilder->where(SearchBuilder::WHERE_ACCOMMODATION, $a);
             $destination = true;
         }
 
         if ($request->query->has('c')) {
             
-            $searchService->where(SearchBuilder::WHERE_COUNTRY, $c);
+            $searchBuilder->where(SearchBuilder::WHERE_COUNTRY, $c);
             $destination = true;
         }
 
         if ($request->query->has('r')) {
             
-            $searchService->where(SearchBuilder::WHERE_REGION, $r);
+            $searchBuilder->where(SearchBuilder::WHERE_REGION, $r);
             $destination = true;
         }
 
         if ($request->query->has('pl')) {
             
-            $searchService->where(SearchBuilder::WHERE_PLACE, $pl);
+            $searchBuilder->where(SearchBuilder::WHERE_PLACE, $pl);
             $destination = true;
         }
 
         if ($request->query->has('be')) {
 
             $formFilters['bedrooms'] = $be;
-            $searchService->where(SearchBuilder::WHERE_BEDROOMS, $be);
+            $searchBuilder->where(SearchBuilder::WHERE_BEDROOMS, $be);
         }
 
         if ($request->query->has('ba')) {
 
             $formFilters['bathrooms'] = $ba;
-            $searchService->where(SearchBuilder::WHERE_BATHROOMS, $ba);
+            $searchBuilder->where(SearchBuilder::WHERE_BATHROOMS, $ba);
         }
 
-        $paginator  = $searchService->search();
+        $paginator  = $searchBuilder->search();
         $javascript = $this->get('app.javascript');
 
         $javascript->set('app.filters.normal',                $filters);
@@ -159,15 +159,13 @@ class SearchController extends Controller
             }
         }
         
-        $facets = $searchService->facets($paginator, [
-            
-            FilterService::FILTER_DISTANCE => [FilterService::FILTER_DISTANCE_BY_SLOPE, FilterService::FILTER_DISTANCE_MAX_250, FilterService::FILTER_DISTANCE_MAX_500, FilterService::FILTER_DISTANCE_MAX_1000],
-            FilterService::FILTER_LENGTH   => [FilterService::FILTER_LENGTH_MAX_100, FilterService::FILTER_LENGTH_MIN_100, FilterService::FILTER_LENGTH_MIN_200, FilterService::FILTER_LENGTH_MIN_400],
-            FilterService::FILTER_FACILITY => [FilterService::FILTER_FACILITY_CATERING, FilterService::FILTER_FACILITY_INTERNET_WIFI, FilterService::FILTER_FACILITY_SWIMMING_POOL, FilterService::FILTER_FACILITY_SAUNA, FilterService::FILTER_FACILITY_PRIVATE_SAUNA, FilterService::FILTER_FACILITY_PETS_ALLOWED, FilterService::FILTER_FACILITY_FIREPLACE],
-            FilterService::FILTER_THEME    => [FilterService::FILTER_THEME_KIDS, FilterService::FILTER_THEME_CHARMING_PLACES, FilterService::FILTER_THEME_10_FOR_APRES_SKI, FilterService::FILTER_THEME_SUPER_SKI_STATIONS, FilterService::FILTER_THEME_WINTER_WELLNESS],
-        ]);
-        
-        dump($facets);
+        // $facets = $searchService->facets($paginator, [
+        //
+        //     FilterService::FILTER_DISTANCE => [FilterService::FILTER_DISTANCE_BY_SLOPE, FilterService::FILTER_DISTANCE_MAX_250, FilterService::FILTER_DISTANCE_MAX_500, FilterService::FILTER_DISTANCE_MAX_1000],
+        //     FilterService::FILTER_LENGTH   => [FilterService::FILTER_LENGTH_MAX_100, FilterService::FILTER_LENGTH_MIN_100, FilterService::FILTER_LENGTH_MIN_200, FilterService::FILTER_LENGTH_MIN_400],
+        //     FilterService::FILTER_FACILITY => [FilterService::FILTER_FACILITY_CATERING, FilterService::FILTER_FACILITY_INTERNET_WIFI, FilterService::FILTER_FACILITY_SWIMMING_POOL, FilterService::FILTER_FACILITY_SAUNA, FilterService::FILTER_FACILITY_PRIVATE_SAUNA, FilterService::FILTER_FACILITY_PETS_ALLOWED, FilterService::FILTER_FACILITY_FIREPLACE],
+        //     FilterService::FILTER_THEME    => [FilterService::FILTER_THEME_KIDS, FilterService::FILTER_THEME_CHARMING_PLACES, FilterService::FILTER_THEME_10_FOR_APRES_SKI, FilterService::FILTER_THEME_SUPER_SKI_STATIONS, FilterService::FILTER_THEME_WINTER_WELLNESS],
+        // ]);
 
         return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', $data);
     }
