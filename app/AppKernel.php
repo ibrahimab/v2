@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new AppBundle\AppBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
+            new JMS\TranslationBundle\JMSTranslationBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
@@ -32,7 +33,6 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
             $bundles[] = new JMS\DiExtraBundle\JMSDiExtraBundle($this);
             $bundles[] = new JMS\AopBundle\JMSAopBundle();
-            $bundles[] = new JMS\TranslationBundle\JMSTranslationBundle();
         }
 
         if ($this->getEnvironment() === 'test') {
