@@ -21,4 +21,7 @@ services:
 
     app.monitor:
         class: AppBundle\Service\MonitorService
-        arguments: [@service_container]
+
+    app.newsletter:
+        class: AppBundle\Service\Newsletter\NewsletterService
+        arguments: [@app.concern.website]
