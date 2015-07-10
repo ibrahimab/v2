@@ -2,6 +2,7 @@
 namespace AppBundle\Service\Newsletter;
 
 use       AppBundle\Concern\WebsiteConcern;
+use       AppBundle\Service\Javascript\Exception\NotFoundException;
 
 /**
  * Service to provide the fieldnames for the Blinker Newsletter forms
@@ -88,6 +89,9 @@ class NewsletterService
     {
         if (isset($this->blinkerFieldNames[$this->websiteConcern->get()][$identifier])) {
             return $this->blinkerFieldNames[$this->websiteConcern->get()][$identifier];
+        } else {
+            throw new NotFoundException(vsprintf('%s could not be found', [$identifier]));
         }
+
     }
 }

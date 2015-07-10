@@ -6,6 +6,7 @@ use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use       Symfony\Component\HttpFoundation\Request;
 
 /**
  * NewsletterController
@@ -25,7 +26,7 @@ class NewsletterController extends Controller
      * @Template(":pages:newsletter.html.twig")
      * @Method("GET")
      */
-    public function show()
+    public function show(Request $request)
     {
 
         $generalSettings = $this->get('app.api.general.settings');
@@ -34,10 +35,10 @@ class NewsletterController extends Controller
 
         $formFieldNames = $this->get('app.newsletter');
 
-        $postEmail = $_POST["email"];
+        $postEmail = $request->get('email');
 
         // after succesful subscribe
-        if($_GET["ok"]) {
+        if($request->get('ok')==1) {
             $subscribeSucces = true;
         } else {
             $subscribeSucces = false;
