@@ -16,3 +16,6 @@ This hotfix fixes the issue.
 
 ## Release 0.0.4
 Releasing first complete version of search-book feature
+
+## Release 0.0.5
+Homepage changes RES-39 + added more pages + upgraded symfony2 from 2.6.9 to 2.7.1

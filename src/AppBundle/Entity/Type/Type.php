@@ -1,10 +1,16 @@
 <?php
 namespace AppBundle\Entity\Type;
-
+use       AppBundle\Entity\Video;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       Doctrine\ORM\Mapping as ORM;
 use       Doctrine\Common\Collections\ArrayCollection;
 
+/**
+ * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
+ * @package Chalet
+ * @version 0.0.5
+ * @since   0.0.1
+ */
 /**
  * Type
  *
@@ -23,6 +29,11 @@ class Type implements TypeServiceEntityInterface
     private $id;
 
     /**
+     * @var float
+     */
+    private $price;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="accommodatie_id", type="integer")
@@ -34,6 +45,38 @@ class Type implements TypeServiceEntityInterface
      * @ORM\JoinColumn(name="accommodatie_id", referencedColumnName="accommodatie_id")
      */
     private $accommodation;
+
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Supplier\Supplier")
+     * @ORM\JoinColumn(name="leverancier_id", referencedColumnName="leverancier_id")
+     */
+    private $supplier;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="video", type="boolean")
+     */
+    private $hasVideo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="video_url", type="string")
+     */
+    private $videoUrl;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="url_virtuele_rondgang", type="string", length=255)
+     */
+    private $virtualTourLink;
+
+    /**
+     * @var Video
+     */
+    private $video;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Booking\Booking", mappedBy="type")
@@ -340,6 +383,24 @@ class Type implements TypeServiceEntityInterface
     /**
      * {@InheritDoc}
      */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
     public function setAccommodationId($accommodationId)
     {
         $this->accommodationId = $accommodationId;
@@ -371,6 +432,66 @@ class Type implements TypeServiceEntityInterface
         $this->accommodation = $accommodation;
 
         return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setHasVideo($hasVideo)
+    {
+        $this->hasVideo = $hasVideo;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function hasVideo()
+    {
+        return $this->hasVideo;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setVideoUrl($videoUrl)
+    {
+        $this->videoUrl = $videoUrl;
+
+        return $this->videoUrl;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getVideoUrl()
+    {
+        return $this->videoUrl;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getVideo()
+    {
+        if (null === $this->video && true === $this->hasVideo()) {
+            $this->video = new Video($this->getVideoUrl());
+        }
+
+        return $this->video;
+    }
+    
+    public function setVirtualTourLink($virtualTourLink)
+    {
+        $this->virtualTourLink = $virtualTourLink;
+        
+        return $this;
+    }
+    
+    public function getVirtualTourLink()
+    {
+        return $this->virtualTourLink;
     }
 
     /**
@@ -782,7 +903,7 @@ class Type implements TypeServiceEntityInterface
      */
     public function getFeatures()
     {
-        return $this->features;
+        return (null === $this->features ? [] : $this->features);
     }
 
     /**

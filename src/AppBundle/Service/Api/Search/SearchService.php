@@ -41,7 +41,7 @@ class SearchService
     /**
      * @return array
      */
-    public function results()
+    public function search()
     {
         return $this->searchServiceRepository->search($this->build());
     }
@@ -49,5 +49,10 @@ class SearchService
     public function findOnlyNames($countries, $regions, $places, $accommodations)
     {
         return $this->searchServiceRepository->findOnlyNames($countries, $regions, $places, $accommodations);
+    }
+    
+    public function facets(PaginatorService $paginator, $filters)
+    {
+        return $this->searchServiceRepository->facets($paginator, $filters);
     }
 }

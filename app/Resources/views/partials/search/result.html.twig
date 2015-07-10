@@ -10,12 +10,12 @@
     {% set images = all_images[type.getId()] %}
 {% endif %}
 
-<article class="overview sale" id="F242">
+<article class="overview{% if offers[type.getId()] is defined %} sale{% endif %}" id="F242">
     <a href="{{ locale_path('show_type', {beginCode: country.getStartCode(), typeId: type.getId()}) }}">
         <div class="row">
             <div class="title-ipad title medium-12 columns">
                 {{ result.getName() }} {{ type.getLocaleName(locale) }}
-                <span>{% include 'partials/quality_stars.html.twig' with {'quality': 1} %}</span>
+                <span>{% include 'partials/quality_stars.html.twig' with {'quality': (type.getQuality() > 0 ? type.getQuality() : result.getQuality())} %}</span>
             </div>
             <div class="small-12 medium-5 large-5 columns">
                 <div class="accom-img">
@@ -24,8 +24,10 @@
                         <div><img data-lazy="{{ image.getLocation() }}" alt="{{ result.getName() }} {{ type.getLocaleName(locale) }}" /></div>
                         {% endfor %}
                     </div>
-                    <div class="circle"><span>Aan-</span><span>bieding</span></div>
-                    <div class="heart"><span><i class="fi-heart"></i></span></div>
+                    {% if offers[type.getId()] is defined %}
+                        <div class="circle"><span>Aan-</span><span>bieding</span></div>
+                    {% endif %}
+                    <div class="heart"><a href="#"{% if is_favorite(type) %} data-role="remove-favorite" class="active added"{% else %} data-role="add-favorite"{% endif %} data-id="{{ type.getId() }}" title="Dit resultaat opslaan in mijn favorieten"><i class="fi-heart"></i></a></div>
                 </div>
             </div>
             <div class="small-12 medium-7 large-7 columns">
@@ -37,13 +39,15 @@
                             </div>
                             <div class="title">
                                 {{ result.getName() }} {{ type.getLocaleName(locale) }}
-                                <span><span>{% include 'partials/quality_stars.html.twig' with {'quality': 1} %}</span></span>
+                                <span><span>{% include 'partials/quality_stars.html.twig' with {'quality': (type.getQuality() > 0 ? type.getQuality() : result.getQuality())} %}</span></span>
                             </div>
                         </div>
                         <div class="small-12 medium-5 large-4 columns price-details">
-                            <span class="price-info">Prijs per persoon per week, vanaf</span>
-                            <span class="price has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide prijsinformatie bij dit zoekresultaat]">&euro; 265,-<i class="fi-info"></i></span>
-                            <span class="price-inc"><i class="sprite sprite-icon-skipass"></i>Inclusief skipas</span>
+                            {% if prices[type.getId()] is defined and prices[type.getId()] > 0 %}
+                                <span class="price-info">Prijs per persoon per week, vanaf</span>
+                                <span class="price has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide prijsinformatie bij dit zoekresultaat]">&euro; {{ prices[type.getId()]|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
+                                <span class="price-inc"><i class="sprite sprite-icon-skipass"></i>Inclusief skipas</span>
+                            {% endif %}
                         </div>
                     </div>
                     {% set short_description = type.getLocaleShortDescription(locale) %}
@@ -56,5 +60,5 @@
             </div>
         </div>
     </a>
-    {% include 'partials/search/types.html.twig' with {'types': types|slice(1)} only %}
+    {% include 'partials/search/types.html.twig' with {'types': types|slice(1), 'prices': prices, 'offers': offers} only %}
 </article>

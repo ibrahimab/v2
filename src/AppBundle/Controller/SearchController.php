@@ -3,6 +3,7 @@ namespace AppBundle\Controller;
 use       AppBundle\Annotation\Breadcrumb;
 use       AppBundle\Service\Api\Search\SearchBuilder;
 use       AppBundle\Service\Api\Search\FilterBuilder;
+use       AppBundle\Service\FilterService;
 use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
@@ -11,6 +12,7 @@ use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use       Symfony\Component\HttpFoundation\Request;
 use       Symfony\Component\HttpFoundation\JsonResponse;
+use       Symfony\Component\HttpFoundation\Response;
 
 /**
  * SearchController
@@ -32,7 +34,7 @@ class SearchController extends Controller
      * @Route(path="/search-and-book.php",  name="search_en", options={"expose": true})
      */
     public function index(Request $request)
-    {   
+    {
         $c        = $request->query->get('c',  []);
         $r        = $request->query->get('r',  []);
         $pl       = $request->query->get('pl', []);
@@ -42,51 +44,60 @@ class SearchController extends Controller
         $page     = intval($request->query->get('p'));
         $page     = ($page === 0 ? $page : ($page - 1));
         $per_page = intval($this->container->getParameter('app')['results_per_page']);
-        $offset   = round($per_page * $page);
         $filters  = $request->query->get('f', []);
-        
+
         array_walk_recursive($filters, function(&$v) {
             $v = intval($v);
         });
 
         $formFilters   = [];
         $searchService = $this->get('app.api.search');
-        $paginator     = $searchService->build()
+        $searchBuilder = $searchService->build()
                                        ->limit($per_page)
-                                       ->offset($offset)
+                                       ->page($page)
                                        ->sort(SearchBuilder::SORT_BY_TYPE_SEARCH_ORDER, SearchBuilder::SORT_ORDER_ASC)
                                        ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0)
                                        ->filter($filters);
-
+        
+        $destination = false;
+        
         if ($request->query->has('a')) {
-            $paginator->where(SearchBuilder::WHERE_ACCOMMODATION, $a);
+            
+            $searchBuilder->where(SearchBuilder::WHERE_ACCOMMODATION, $a);
+            $destination = true;
         }
 
-        if ($request->query->has('c')) {            
-            $paginator->where(SearchBuilder::WHERE_COUNTRY, $c);
+        if ($request->query->has('c')) {
+            
+            $searchBuilder->where(SearchBuilder::WHERE_COUNTRY, $c);
+            $destination = true;
         }
-        
+
         if ($request->query->has('r')) {
-            $paginator->where(SearchBuilder::WHERE_REGION, $r);
+            
+            $searchBuilder->where(SearchBuilder::WHERE_REGION, $r);
+            $destination = true;
         }
-        
+
         if ($request->query->has('pl')) {
-            $paginator->where(SearchBuilder::WHERE_PLACE, $pl);
+            
+            $searchBuilder->where(SearchBuilder::WHERE_PLACE, $pl);
+            $destination = true;
         }
-        
+
         if ($request->query->has('be')) {
-            
+
             $formFilters['bedrooms'] = $be;
-            $paginator->where(SearchBuilder::WHERE_BEDROOMS, $be);
+            $searchBuilder->where(SearchBuilder::WHERE_BEDROOMS, $be);
         }
-        
+
         if ($request->query->has('ba')) {
-            
+
             $formFilters['bathrooms'] = $ba;
-            $paginator->where(SearchBuilder::WHERE_BATHROOMS, $ba);
+            $searchBuilder->where(SearchBuilder::WHERE_BATHROOMS, $ba);
         }
-        
-        $results    = $paginator->results();
+
+        $paginator  = $searchBuilder->search();
         $javascript = $this->get('app.javascript');
 
         $javascript->set('app.filters.normal',                $filters);
@@ -99,40 +110,68 @@ class SearchController extends Controller
 
         $data = [
 
-            'paginator'      => $results,
+            'paginator'      => $paginator,
             'filters'        => $filters,
             // instance needed to get constants easier from within twig template: constant('const', instance)
             'filter_service' => $this->container->get('app.filter'),
             'custom_filters' => ['countries' => [], 'regions' => [], 'places' => [], 'accommodations' => []],
             'form_filters'   => $formFilters,
+            'prices'         => [],
+            'offers'         => [],
+            'destination'    => $destination,
         ];
-        
+
+        $typeIds = [];
+        foreach ($paginator as $accommodation) {
+
+            $types = $accommodation->getTypes();
+            foreach ($types as $type) {                
+                $typeIds[] = $type->getId();
+            }
+        }
+
+        if (count($typeIds) > 0) {
+
+            $pricesService  = $this->get('old.prices.wrapper');
+            $data['prices'] = $pricesService->get($typeIds);
+
+            $priceService   = $this->get('app.api.price');
+            $data['offers'] = $priceService->offers($typeIds);
+        }
+
         $custom_filter_entities = $searchService->findOnlyNames($c, $r, $pl, $a);
         foreach ($custom_filter_entities as $entity) {
-            
+
             if ($entity instanceof CountryServiceEntityInterface) {
                 $data['custom_filters']['countries'][$entity->getId()] = $entity;
             }
-            
+
             if ($entity instanceof RegionServiceEntityInterface) {
                 $data['custom_filters']['regions'][$entity->getId()] = $entity;
             }
-            
+
             if ($entity instanceof PlaceServiceEntityInterface) {
                 $data['custom_filters']['places'][$entity->getId()] = $entity;
             }
-            
+
             if ($entity instanceof AccommodationServiceEntityInterface) {
                 $data['custom_filters']['accommodations'][$entity->getId()] = $entity;
             }
         }
         
+        // $facets = $searchService->facets($paginator, [
+        //
+        //     FilterService::FILTER_DISTANCE => [FilterService::FILTER_DISTANCE_BY_SLOPE, FilterService::FILTER_DISTANCE_MAX_250, FilterService::FILTER_DISTANCE_MAX_500, FilterService::FILTER_DISTANCE_MAX_1000],
+        //     FilterService::FILTER_LENGTH   => [FilterService::FILTER_LENGTH_MAX_100, FilterService::FILTER_LENGTH_MIN_100, FilterService::FILTER_LENGTH_MIN_200, FilterService::FILTER_LENGTH_MIN_400],
+        //     FilterService::FILTER_FACILITY => [FilterService::FILTER_FACILITY_CATERING, FilterService::FILTER_FACILITY_INTERNET_WIFI, FilterService::FILTER_FACILITY_SWIMMING_POOL, FilterService::FILTER_FACILITY_SAUNA, FilterService::FILTER_FACILITY_PRIVATE_SAUNA, FilterService::FILTER_FACILITY_PETS_ALLOWED, FilterService::FILTER_FACILITY_FIREPLACE],
+        //     FilterService::FILTER_THEME    => [FilterService::FILTER_THEME_KIDS, FilterService::FILTER_THEME_CHARMING_PLACES, FilterService::FILTER_THEME_10_FOR_APRES_SKI, FilterService::FILTER_THEME_SUPER_SKI_STATIONS, FilterService::FILTER_THEME_WINTER_WELLNESS],
+        // ]);
+
         return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', $data);
     }
 
     /**
-     * @Route(path="/zoek-en-boek/opslaan", name="save_search_nl", options={"expose": true})
-     * @Route(path="/search-and-book/save", name="save_search_en", options={"expose": true})
+     * @Route(path="/search/save", name="save_search", options={"expose": true})
      */
     public function save(Request $request)
     {
@@ -145,15 +184,19 @@ class SearchController extends Controller
         $r           = $request->query->get('r', []);
         $pl          = $request->query->get('pl', []);
         $a           = $request->query->get('a', []);
-        
+
         array_walk_recursive($f, function(&$v) {
             $v = intval($v);
         });
 
         if (null !== $user) {
-            $userService->saveSearch($user, ['f' => $f, 'be' => $be, 'ba' => $ba, 'c' => $c, 'r' => $r, 'pl' => $pl, 'a' => $a]);
+            $userService->saveSearch(['f' => $f, 'be' => $be, 'ba' => $ba, 'c' => $c, 'r' => $r, 'pl' => $pl, 'a' => $a]);
         }
 
-        return $this->redirectToRoute('search_' .  $request->getLocale(), ['f' => $f, 'be' => $be, 'ba' => $ba, 'c' => $c, 'r' => $r, 'pl' => $pl, 'a' => $a]);
+        return new JsonResponse([
+
+            'type'    => 'success',
+            'message' => 'Your search was successfully saved',
+        ]);
     }
 }

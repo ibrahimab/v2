@@ -1,0 +1,7 @@
+services:
+    app.mailer.contact:
+        class: AppBundle\Mail\Contact
+        arguments: [@templating, @mailer]
+    app.mailer.mail.a.friend:
+        class: AppBundle\Mail\MailAFriend
+        arguments: [@templating, @mailer]

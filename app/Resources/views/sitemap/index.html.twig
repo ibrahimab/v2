@@ -1,10 +1,102 @@
 {% extends 'layouts/default.html.twig' %}
+{% set locale = get_locale() %}
+
+{% block breadcrumbs %}
+    {{ breadcrumbs() }}
+{% endblock %}
 
 {% block body %}
-    
+
     {{ parent() }}
 
-    <h2>Sitemap#index</h2>
-    <p>This is a template for the Sitemap#index action</p>
-    
-{% endblock %}
+    <section class="landing landing-page contact-page">
+
+        <div class="row">
+
+            <div class="large-8 medium-8 columns">
+
+                <h1>{{ 'sitemap-title'|trans }}</h1>
+
+                <strong>{{ 'destinations-title'|trans }}</strong>
+                {% if website.type() == constant('WEBSITE_TYPE_ITALISSIMA', website) %}
+
+                    <ul>
+                        {% for region in regions %}
+
+                            <li><a href="{{ locale_path('show_region', {'regionSlug': region.getLocaleSeoName(locale)}) }}">{{ 'chalets-in'|trans }} {{ region.getName() }}</a></li>
+
+                        {% endfor %}
+
+                        {% if website.country() == constant('WEBSITE_COUNTRY_NL', website) %}
+
+                		    <li>
+                                <a href="#">Agriturismo Itali&euml;</a>
+                            </li>
+                		    <li>
+                                <a href="#">Agriturismo Toscane</a>
+                            </li>
+                		    <li>
+                                <a href="#">Vakantiehuizen Bloemenrivi&egrave;ra</a>
+                            </li>
+                		    <li>
+                                <a href="#">Vakantie in Itali&euml;</a>
+                            </li>
+
+                        {% endif %}
+
+                    </ul>
+
+                {% else %}
+
+                    {% set france      = 'france'|trans %}
+                    {% set austria     = 'austria'|trans %}
+                    {% set switzerland = 'switzerland'|trans %}
+                    {% set italy       = 'italy'|trans %}
+
+                    <ul>
+                        <li><a href="{{ locale_path('show_country', {countrySlug: france}) }}">{{ france }}</a></li>
+                        <li><a href="{{ locale_path('show_country', {countrySlug: austria}) }}">{{ austria }}</a></li>
+                        <li><a href="{{ locale_path('show_country', {countrySlug: switzerland}) }}">{{ switzerland }}</a></li>
+                        <li><a href="{{ locale_path('show_country', {countrySlug: italy}) }}">{{ italy }}</a></li>
+                    </ul>
+
+                {% endif %}
+
+                {% if themes|length > 0 %}
+
+                    <strong>{{ 'theme-title'|trans }}</strong>
+                    <ul>
+                        {% for theme in themes %}
+                            <li><a href="{{ locale_path('show_theme', {'url': theme.getLocaleUrl(locale)}) }}">{{ theme.getLocaleName(locale) }}</a></li>
+                        {% endfor %}
+                    </ul>
+
+                {% endif %}
+
+                <strong>{{ 'sitemap-common-title'|trans }}</strong>
+                <ul>
+                    <li>
+                        <a href="{{ path('contact') }}">{{ 'sitemap-contact'|trans }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('newsletter') }}">{{ 'sitemap-newsletter'|trans }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ locale_path('page_about') }}">{{ 'sitemap-about-us'|trans }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ locale_path('page_terms') }}">{{ 'sitemap-conditions'|trans }} {{ website.name() }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ locale_path('page_insurances') }}">{{ 'sitemap-insurances'|trans }}</a>
+                    </li>
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+
+    </section>
+
+{% endblock body %}

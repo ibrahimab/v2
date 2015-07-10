@@ -26,14 +26,13 @@ class RegionController extends Controller
      * @Breadcrumb(name="countries", title="countries", translate=true, path="show_countries")
      * @Breadcrumb(name="show_country", title="{countryName}", path="show_country", pathParams={"countrySlug"})
      * @Breadcrumb(name="show_region", title="{regionName}", active=true)
-     * @Template(":region:show.html.twig")
      */
     public function show($regionSlug)
     {
         $regionService   = $this->get('app.api.region');
         $typeService     = $this->get('app.api.type');
         $surveyService   = $this->get('app.api.booking.survey');
-        
+
         $places          = [];
         $allPlaces       = $regionService->findByLocaleSeoName($regionSlug, $this->getRequest()->getLocale());
 
@@ -49,29 +48,44 @@ class RegionController extends Controller
         if (count($typesCount) > 0) {
             $region->setTypesCount(array_sum($typesCount));
         }
-        
+
         if (isset($stats['surveyCount'])) {
             $region->setRatingsCount(intval($stats['surveyCount']));
         }
-        
+
         if (isset($stats['surveyAverageOverallRating'])) {
             $region->setAverageRatings(round($stats['surveyAverageOverallRating'], 1));
         }
-        
+
         foreach ($allPlaces as $place) {
-            
+
             if (true === array_key_exists($place->getId(), $typesCount)) {
-                
+
                 $place->setTypesCount($typesCount[$place->getId()]);
                 $places[] = $place;
             }
         }
-        
-        return [
-            
+
+        return $this->render('regions/show.html.twig', [
+
             'region'  => $region,
             'country' => $place->getCountry(),
             'places'  => $places,
-        ];
+        ]);
+    }
+
+    /**
+     * @Route(path="/skigebieden.php", name="all_regions_nl")
+     * @Route(path="/regions.php", name="all_regions_en")
+     * @Breadcrumb(name="all_regions", title="regions", translate=true, active=true)
+     */
+    public function all()
+    {
+        $regionService = $this->get('app.api.region');
+        $items         = $regionService->regions($this->container);
+
+        return $this->render('regions/all.html.twig', [
+            'items' => $items,
+        ]);
     }
 }

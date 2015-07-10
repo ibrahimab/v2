@@ -1,0 +1,19 @@
+chalet_be:
+    path: /
+    host: local.chalet.be
+
+chalet_eu:
+    path: /
+    host: local.chalet.eu
+
+chalettour_nl:
+    path: /
+    host: local.chalettour.nl
+
+zomerhuisje_nl:
+    path: /
+    host: local.zomerhuisje.nl
+
+italissima_nl:
+    path: /
+    host: local.italissima.nl

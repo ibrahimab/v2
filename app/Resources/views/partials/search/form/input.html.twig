@@ -1,9 +1,10 @@
-{% set persons   = 'persons'|trans|lower %}
-{% set bathrooms = 'bathrooms'|trans|lower %}
-{% set bedrooms  = 'bedrooms'|trans|lower %}
-    
+{% set persons     = 'persons'|trans|lower %}
+{% set bathrooms   = 'bathrooms'|trans|lower %}
+{% set bedrooms    = 'bedrooms'|trans|lower %}
+{% set placeholder = (destination == true ? 'Voeg nog een bestemming toe' : 'Waar wil je naartoe?') %}
+
 <div class="autocomplete-container">
-    <input type="text" name="query" data-role="autocomplete-query" data-type="search-book" id="choose-destination" class="radius" placeholder="Waar wil je naartoe?"  />
+    <input type="text" name="query" data-role="autocomplete-query" data-type="search-book" id="choose-destination" class="radius" data-focus-text="bijv. bestemming of accommodatie" data-default-placeholder="{{ placeholder }}" placeholder="{{ placeholder }}"  />
     <div class="results search-book" data-role="autocomplete-results">
     </div>
 </div>

@@ -1,7 +1,7 @@
 {% extends 'layouts/default.html.twig' %}
 
 {% block breadcrumbs %}
-    {{ 
+    {{
         breadcrumbs({
             countryName: country.getLocaleName(get_locale()),
             regionName:  region.getLocaleName(get_locale()),
@@ -14,9 +14,9 @@
 {% endblock %}
 
 {% block body %}
-    
+
     {{ parent() }}
-    
+
     <!-- content -->
     <section class="landing place-page">
         <div class="row" id="area-specs"><!-- id="area-specs" -->
@@ -40,19 +40,19 @@
             </div>
         </div>
     </section>
-    
+
     <section id="area-selected" class="place-page">
-        
+
         <h4>{{ 'Hoogtepunten uit ons aanbod in ' ~ place.getLocaleName(get_locale()) }}</h4>
-        
+
         <div class="row">
             {% for type in types %}
-            
-                {% include 'partials/highlight/highlight.html.twig' with { 'highlight': { 'type': type }, place: place, 'end': ( ((loop.index % 3) is same as(0)) or loop.last ) } only %}
-            
+
+                {% include 'partials/highlight/highlight.html.twig' with { 'highlight': { 'type': type }, place: place, 'end': ( ((loop.index % 3) is same as(0)) or loop.last ), offers: offers } only %}
+
             {% endfor %}
         </div>
-        
+
     </section>
-    
+
 {% endblock %}

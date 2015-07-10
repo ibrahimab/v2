@@ -50,7 +50,7 @@ class AnonymousListener
         }
         
         $cookies     = $event->getRequest()->cookies;
-        $anonymous   = $this->container->get('security.context')->getToken();
+        $anonymous   = $this->container->get('security.token_storage')->getToken();
         $userService = $this->container->get('app.api.user');
         
         if (null === $anonymous) {
@@ -82,7 +82,7 @@ class AnonymousListener
     {
         $request = $event->getRequest();
         $cookies = $request->cookies;
-        $anonymous = $this->container->get('security.context')->getToken();
+        $anonymous = $this->container->get('security.token_storage')->getToken();
         
         if (null === $anonymous) {
             return;

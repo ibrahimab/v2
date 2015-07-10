@@ -1,5 +1,7 @@
 <?php
 namespace AppBundle\Controller;
+use       AppBundle\Concern\SeasonConcern;
+use       AppBundle\Concern\WebsiteConcern;
 use       AppBundle\Annotation\Breadcrumb;
 use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
@@ -8,6 +10,7 @@ use       AppBundle\Service\FilterService;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use       Symfony\Component\HttpFoundation\Request;
 
 /**
  * PagesController
@@ -21,7 +24,7 @@ use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
  * @Breadcrumb(name="frontpage", title="frontpage", translate=true, path="home")
  */
 class PagesController extends Controller
-{   
+{
     /**
      * @Route("/", name="home")
      * @Template(":pages:home.html.twig")
@@ -35,10 +38,12 @@ class PagesController extends Controller
         $regionService        = $this->get('app.api.region');
         $placeService         = $this->get('app.api.place');
         $typeService          = $this->get('app.api.type');
+        $priceService         = $this->get('app.api.price');
 
         $regions              = $regionService->findHomepageRegions(['limit' => 1]);
         $places               = [];
         $region               = null;
+        $offers               = [];
 
         if (count($regions) > 0) {
 
@@ -74,6 +79,8 @@ class PagesController extends Controller
                 $types[$surveyStat['typeId']]->setSurveyCount($surveyStat['surveyCount']);
                 $types[$surveyStat['typeId']]->setSurveyAverageOverallRating($surveyStat['surveyAverageOverallRating']);
             }
+
+            $offers = $priceService->offers(array_keys($types));
         }
 
         $groupedHomepageBlocks = ['left' => [], 'right' => []];
@@ -94,73 +101,104 @@ class PagesController extends Controller
             'places'         => $places,
             'highlights'     => $highlights,
             'homepageBlocks' => $groupedHomepageBlocks,
+            'offers'         => $offers,
         ];
     }
 
     /**
-     * @Route("/over-ons", name="page_about_nl")
-     * @Route("/about-us", name="page_about_en")
+     * @Route("/wie-zijn-wij.php", name="page_about_nl")
+     * @Route("/about-us.php", name="page_about_en")
      * @Breadcrumb(name="about", title="about", translate=true, active=true)
-     * @Template(":pages:about.html.twig")
      */
-    public function about()
+    public function about(Request $request)
     {
-        return [];
+        return $this->render('pages/about/' . $request->getLocale() . '.html.twig');
     }
 
     /**
-     * @Route("/verzekeringen", name="page_insurances_nl")
-     * @Route("/insurances", name="page_insurances_en")
+     * @Route("/verzekeringen.php", name="page_insurances_nl")
+     * @Route("/insurance.php", name="page_insurances_en")
      * @Breadcrumb(name="insurances", title="insurances", translate=true, active=true)
-     * @Template(":pages:insurances.html.twig")
      */
-    public function insurances()
+    public function insurances(Request $request)
     {
-        return [];
+        $seasonService   = $this->get('app.api.season');
+        $optionService   = $this->get('app.api.option');
+        $locale          = $request->getLocale();
+        $app             = $this->container->getParameter('app');
+        $seasonConcern   = $this->get('app.concern.season');
+        $websiteConcern  = $this->get('app.concern.website');
+        $travelInsurance = $optionService->getTravelInsurancesDescription();
+
+        return $this->render('pages/insurances/' . $locale . '.html.twig', [
+
+            'costs'                     => $seasonService->getInsurancesPolicyCosts(),
+            'locale'                    => $locale,
+            'damages'                   => true,
+            'travel_insurance_possible' => $app['travel_insurance_possible'],
+            'ten_days_insurance_price'  => ($seasonConcern->get() === SeasonConcern::SEASON_SUMMER ? $app['ten_days_insurance_price_summer'] : $app['ten_days_insurance_price_default']),
+            'travelInsurance'           => $travelInsurance,
+            'show_sunnycar'             => $websiteConcern->get() === WebsiteConcern::WEBSITE_ITALISSIMA_NL,
+        ]);
     }
 
     /**
      * @Route("/veel-gestelde-vragen", name="page_faq_nl")
      * @Route("/frequently-asked-questions", name="page_faq_en")
      * @Breadcrumb(name="faq", title="faq", translate=true, active=true)
-     * @Template(":pages:faq.html.twig")
      */
     public function faq()
     {
-        return [];
+        $faqService = $this->get('app.api.faq');
+        $items      = $faqService->getItems();
+
+        return $this->render('pages/faq.html.twig', [
+            'items' => $items,
+        ]);
     }
 
     /**
-     * @Route("/algemene-voorwaarden", name="page_terms_nl")
-     * @Route("/terms", name="page_terms_en")
+     * @Route("/algemenevoorwaarden.php", name="page_terms_nl")
+     * @Route("/conditions.php", name="page_terms_en")
      * @Breadcrumb(name="terms", title="terms", translate=true, active=true)
-     * @Template(":pages:terms.html.twig")
      */
-    public function terms()
+    public function conditions(Request $request)
     {
-        return [];
+        return $this->render('pages/conditions/' . $request->getLocale() . '.html.twig', [
+            'website' => $this->get('app.concern.website')
+        ]);
     }
 
     /**
-     * @Route("/disclaimer", name="page_disclaimer")
+     * @Route("/disclaimer.php", name="page_disclaimer_nl")
+     * @Route("/disclaimer.php", name="page_disclaimer_en")
      * @Breadcrumb(name="disclaimer", title="disclaimer", translate=true, active=true)
-     * @Template(":pages:disclaimer.html.twig")
      */
-    public function disclaimer()
+    public function disclaimer(Request $request)
     {
-        return [];
+        return $this->render('pages/disclaimer/' . $request->getLocale() . '.html.twig', [
+            'website' => $this->get('app.concern.website'),
+        ]);
     }
 
     /**
-     * @Route("/privacy", name="page_privacy")
+     * @Route("/privacy-statement.php", name="page_privacy_nl")
+     * @Route("/privacy-statement.php", name="page_privacy_en")
      * @Breadcrumb(name="privacy", title="privacy", translate=true, active=true)
-     * @Template(":pages:privacy.html.twig")
      */
-    public function privacy()
+    public function privacy(Request $request)
     {
-        $filterService = $this->get('app.filter');
-        
-        return [];
+        return $this->render('pages/privacy/' . $request->getLocale() . '.html.twig', [
+            'website' => $this->get('app.concern.website'),
+        ]);
+    }
+
+    /**
+     * @Route("/werkenbij", name="page_working", requirements={"_locale": "nl"})
+     */
+    public function working()
+    {
+        return $this->render('pages/working.html.twig');
     }
 
     /**
@@ -170,9 +208,70 @@ class PagesController extends Controller
      */
     public function searches()
     {
-        dump($this->container->get('app.api.user')->user()->getSearches());
         return $this->render('pages/searches.html.twig', [
             'saved_searches' => $this->container->get('app.api.user')->user()->getSearches(),
         ]);
+    }
+
+    /**
+     * @Route("/bekeken-accommodaties", name="page_viewed_nl")
+     * @Route("/viewed-accommodations", name="page_viewed_en")
+     * @Breadcrumb(name="viewed", title="page-viewed", translate=true, active=true)
+     */
+    public function viewed()
+    {
+        $typeIds      = $this->get('app.api.user')->user()->getViewed();
+        $typeService  = $this->get('app.api.type');
+        $priceService = $this->get('app.api.price');
+
+        $offers       = [];
+        $types        = [];
+
+        if (count($typeIds) > 0) {
+
+            $types  = $typeService->findById($typeIds);
+            $offers = $priceService->offers($typeIds);
+        }
+
+        return $this->render('pages/viewed.html.twig', [
+
+            'types'  => $types,
+            'offers' => $offers,
+        ]);
+    }
+
+    /**
+     * @Route("/opgeslagen-accommodatie", name="page_saved_nl")
+     * @Route("/saved-accommodation", name="page_saved_en")
+     * @Breadcrumb(name="saved", title="page-saved", translate=true, active=true)
+     */
+    public function saved()
+    {
+        $typeIds      = $this->get('app.api.user')->user()->getFavorites();
+        $typeService  = $this->get('app.api.type');
+        $priceService = $this->get('app.api.price');
+
+        $offers       = [];
+        $types        = [];
+
+        if (count($typeIds) > 0) {
+
+            $types  = $typeService->findById($typeIds);
+            $offers = $priceService->offers($typeIds);
+        }
+
+        return $this->render('pages/saved.html.twig', [
+
+            'types'  => $types,
+            'offers' => $offers,
+        ]);
+    }
+
+    /**
+     * @Route("/header", name="page_header")
+     */
+    public function header()
+    {
+        return $this->render('pages/header.html.twig');
     }
 }

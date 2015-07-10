@@ -1,14 +1,39 @@
-(function(jq, Routing, Chalet, undefined) {
+(function(jq, Routing, Chalet, lc, undefined) {
     'use strict';
 
     // setting up scroll button for long pages
     jq(function() {
 
+        /**
+         * fixed header scroll effects
+         */
+        var stickyHeader = function() {
+            
+            if (window.innerWidth <= 641) {
+                
+                // mobile does not have sticky header!
+                jq('body').removeClass('smaller');
+                return;
+            }
+            
+            var distanceY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+            var body      = jq('body');
+            
+            if (distanceY > 10) {
+                body.addClass('smaller');
+            } else {
+                body.removeClass('smaller');
+            }
+        };
+        
+        jq(window).on('scroll', stickyHeader);
+        stickyHeader();
+
         // autocomplete
         Chalet.Autocomplete.initialize({
-            
-            input: '[data-role="autocomplete-query"]', 
-            limit: 5, 
+
+            input: '[data-role="autocomplete-query"]',
+            limit: 5,
             resultsContainer: '[data-role="autocomplete-results"]'
         });
 
@@ -71,6 +96,85 @@
             var height  = element.data('popup-height') || 200;
 
             return window.open(url, 'new-popup', 'height=' + height + ',width=' + width + ',resizable=yes,menubar=no,location=yes', false);
+        });
+
+        /**
+         * FAQ events
+         */
+        body.on('click', '[data-role="faq-question"]', function(event) {
+
+            event.preventDefault();
+            var element = jq(this);
+            var toggle  = jq('[data-role="faq-toggle"]');
+
+            jq('[data-role="faq-question"]').not(element).siblings('[data-role="faq-answer"]:visible').slideUp();
+            element.siblings('[data-role="faq-answer"]:hidden').slideDown();
+
+
+            toggle.data('toggle', 'open').text(toggle.data('toggle-label-open'));
+        });
+
+        body.on('click', '[data-role="faq-toggle"]', function(event) {
+
+            event.preventDefault();
+
+            var element = jq(this);
+
+            if (element.data('toggle') === 'open') {
+
+                jq('[data-role="faq-answer"]').slideDown();
+                element.data('toggle', 'close').text(element.data('toggle-label-close'));
+
+            } else {
+
+                jq('[data-role="faq-answer"]').slideUp();
+                element.data('toggle', 'open').text(element.data('toggle-label-open'));
+            }
+        });
+
+        /**
+         * Chat button
+         */
+        body.on('click', '[data-role="chat-button"]', function(event) {
+            
+            event.preventDefault();
+            
+            if (undefined !== LC_API) {
+                LC_API.open_chat_window();
+            }
+        });
+
+        /**
+         * Save favorite
+         */
+
+        body.on('click', '[data-role="add-favorite"]', function(event) {
+
+            event.preventDefault();
+            var element = jq(this);
+
+            if (true !== element.data('disable')) {
+                Chalet.Favorite.add(element);
+            }
+        });
+
+        body.on('click', '[data-role="remove-favorite"]', function(event) {
+
+            event.preventDefault();
+            var element = jq(this);
+
+            if (true !== element.data('disable')) {
+                Chalet.Favorite.remove(element);
+            }
+        });
+
+        /**
+         * Fancybox
+         */
+        jq('[data-role="fancybox"]').fancybox({
+            helpers : {
+                media: true
+            }
         });
 
         /**
@@ -171,6 +275,9 @@
         if (Chalet.get()['app']['controller'] === 'countries::destinations') {
             var italyMaps = Chalet.Maps.Italy.initialize('[data-role="italy-maps"]');
         }
+        
+        // display hide-on-load blocks
+        jq('.hide-on-load').removeClass('hide-on-load');
     });
 
 })(jQuery, Routing, window.Chalet = window.Chalet || {});

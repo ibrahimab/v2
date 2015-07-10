@@ -1,6 +1,6 @@
 <?php
 namespace AppBundle\Entity\Accommodation;
-
+use       AppBundle\Entity\Video;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
@@ -37,6 +37,25 @@ class Accommodation implements AccommodationServiceEntityInterface
      * @ORM\Column(name="naam", type="string", length=255)
      */
     private $name;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="video", type="boolean")
+     */
+    private $hasVideo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="video_url", type="string")
+     */
+    private $videoUrl;
+
+    /**
+     * @var Video
+     */
+    private $video;
 
     /**
      * @var string
@@ -136,7 +155,7 @@ class Accommodation implements AccommodationServiceEntityInterface
      * @ORM\Column(name="tonenzoekformulier", type="boolean")
      */
     private $displaySearch;
-    
+
     /**
      * @var int
      *
@@ -171,10 +190,10 @@ class Accommodation implements AccommodationServiceEntityInterface
      * @ORM\Column(name="weekendski", type="boolean")
      */
     private $weekendSki;
-    
+
     /**
      * @var int
-     * 
+     *
      * @ORM\Column(name="afstandpiste", type="integer")
      */
     private $distanceSlope;
@@ -282,6 +301,54 @@ class Accommodation implements AccommodationServiceEntityInterface
     public function getLocaleName($locale)
     {
         return $this->getLocaleField('name', $locale, ['nl']);
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setHasVideo($hasVideo)
+    {
+        $this->hasVideo = $hasVideo;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function hasVideo()
+    {
+        return $this->hasVideo;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setVideoUrl($videoUrl)
+    {
+        $this->videoUrl = $videoUrl;
+
+        return $this->videoUrl;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getVideoUrl()
+    {
+        return $this->videoUrl;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getVideo()
+    {
+        if (null === $this->video && true === $this->hasVideo()) {
+            $this->video = new Video($this->getVideoUrl());
+        }
+
+        return $this->video;
     }
 
     /**
@@ -642,7 +709,7 @@ class Accommodation implements AccommodationServiceEntityInterface
      */
     public function getFeatures()
     {
-        return $this->features;
+        return (null === $this->features ? [] : $this->features);
     }
 
     /**

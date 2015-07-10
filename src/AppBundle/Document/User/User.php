@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Document\User;
 use		  AppBundle\Service\Api\User\UserServiceDocumentInterface;
+use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use 	  Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use       JMS\Serializer\Annotation AS JMS;
 
@@ -12,7 +13,7 @@ use       JMS\Serializer\Annotation AS JMS;
  * @version 0.0.2
  * @since   0.0.2
  */
-/** 
+/**
  * @ODM\Document(collection="users", repositoryClass="AppBundle\Document\User\UserRepository")
  * @JMS\ExclusionPolicy("none")
  * @JMS\AccessType("public_method")
@@ -73,7 +74,7 @@ class User implements UserServiceDocumentInterface
      */
     private $updated_at;
 
-    
+
     /**
      * Constructor
      */
@@ -150,6 +151,36 @@ class User implements UserServiceDocumentInterface
     /**
      * {@InheritDoc}
      */
+    public function addFavorite(TypeServiceEntityInterface $type)
+    {
+        if (!in_array($type->getId(), $this->favorites)) {
+            $this->favorites[] = $type->getId();
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function removeFavorite(TypeServiceEntityInterface $type)
+    {
+        if (in_array($type->getId(), $this->favorites)) {
+
+            foreach ($this->favorites as $key => $favorite) {
+
+                if ($favorite === $type->getId()) {
+                    unset($this->favorites[$key]);
+                }
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
     public function setFavorites($favorites)
     {
         $this->favorites = $favorites;
@@ -171,6 +202,18 @@ class User implements UserServiceDocumentInterface
     public function totalFavorites()
     {
         return count($this->favorites);
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function addViewed(TypeServiceEntityInterface $type)
+    {
+        if (!in_array($type->getId(), $this->viewed)) {
+            $this->viewed[] = $type->getId();
+        }
+
+        return $this;
     }
 
     /**

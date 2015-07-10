@@ -1,14 +1,41 @@
 {% extends 'layouts/default.html.twig' %}
+{% set locale = get_locale() %}
 
 {% block breadcrumbs %}
     {{ breadcrumbs() }}
 {% endblock %}
 
 {% block body %}
-    
+
     {{ parent() }}
 
-    <h2>Pages#faq</h2>
-    <p>This is a template for the Page#faq action</p>
-    
-{% endblock %}
+    <section class="landing landing-page contact-page">
+
+        <div class="row">
+
+            <div class="large-8 medium-8 columns">
+
+                <h1>{{ 'faq-title'|trans }}</h1>
+
+                <ul>
+                    <li>Klik op een vraag om het antwoord te bekijken;</li>
+                    <li>Je kunt ook <a href="#" data-role="faq-toggle" data-toggle="open" data-toggle-label-open="alle antwoorden openklappen" data-toggle-label-close="alle antwoorden dichtklappen" class="faq_open_all">alle antwoorden openklappen</a>;</li>
+                    <li>Het antwoord op je vraag niet gevonden? Neem <a href="{{ path('contact') }}">contact</a> met ons op of <a href="#" data-role="open-chat">chat met ons</a>.</li>
+                </ul>
+
+                {% for faq in items %}
+
+                    <div>
+                        <div class="faq_vraag" data-role="faq-question">{{ faq.getLocaleQuestion(locale) }}</div>
+                        <div class="faq_antwoord" data-role="faq-answer">{{ faq.getLocaleAnswer(locale) }}</div>
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+{% endblock body %}

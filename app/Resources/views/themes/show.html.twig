@@ -1,0 +1,36 @@
+{% extends 'layouts/default.html.twig' %}
+
+{% set locale = get_locale() %}
+
+{% block breadcrumbs %}
+    {{ breadcrumbs({theme: theme.getLocaleName(locale)}) }}
+{% endblock %}
+
+{% block body %}
+
+    {{ parent() }}
+
+    <section class="landing landing-page contact-page">
+
+        <div class="row">
+            
+            <div class="medium-8 large-8 columns">
+                
+                <h1>{{ 'saved-title'|trans }}</h1>
+                <p>{{ theme.getLocaleDescription(locale)|nl2br }}</p>
+                
+                <hr />
+            
+                {% for accommodation in accommodations %}
+                    
+                    {% include 'partials/search/result.html.twig' with { result: accommodation, offers: offers, prices: prices } only %}
+
+                {% endfor %}
+                
+            </div>
+
+        </div>
+
+    </section>
+
+{% endblock %}

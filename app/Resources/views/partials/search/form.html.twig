@@ -1,5 +1,5 @@
 {% set save_search_label        = 'save-search'|trans %}
-    
+
 {% set filter_distance          = constant('FILTER_DISTANCE', filter_service) %}
 {% set filter_distance_value    = filters[filter_distance]|default(null) %}
 {% set distance_by_slope        = constant('FILTER_DISTANCE_BY_SLOPE', filter_service) %}
@@ -14,8 +14,8 @@
 {% set length_min_100           = constant('FILTER_LENGTH_MIN_100', filter_service) %}
 {% set length_min_200           = constant('FILTER_LENGTH_MIN_200', filter_service) %}
 {% set length_min_400           = constant('FILTER_LENGTH_MIN_400', filter_service) %}
-    
-    
+
+
 {% set filter_facility          = constant('FILTER_FACILITY', filter_service) %}
 {% set filter_facility_value    = filters[filter_facility]|default(null) %}
 {% set facility_catering        = constant('FILTER_FACILITY_CATERING', filter_service) %}
@@ -39,8 +39,8 @@
     <div id="search-filter-main">
         <h2><a href="" title="deze box in- of uitklappen">{{ 'search-book'|trans }}</a></h2>
         <div class="fields">
-            {% include 'partials/search/form/input.html.twig' %}
-            <a href="{{ locale_path('save_search', {f: app.request.query.get('f', {})}) }}" class="save" title="{{ save_search_label }}" data-role="save-search">{{ save_search_label }}<i class="sprite sprite-icon-plus "></i></a>
+            {% include 'partials/search/form/input.html.twig' with {'destination': destination} %}
+            <a href="{{ path('save_search', {f: app.request.query.get('f', {})}) }}" class="save" title="{{ save_search_label }}" data-role="save-search">{{ save_search_label }}<i class="sprite sprite-icon-plus "></i></a>
         </div>
     </div>
     <h2 class="title">{{ 'filter-results'|trans }}</h2>
@@ -163,5 +163,5 @@
                 </label>
             </div>
         </div>
-    </div> 
+    </div>
 </div>

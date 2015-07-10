@@ -2,67 +2,94 @@
 
 {% block bodyId %}home{% endblock %}
 {% block body %}
-<!-- header -->
-<header>
-    <div id="header-container">
-        <div id="header-usp">
-            <div class="large-12 columns">
-                <h2 class="title-usp">{{ "homepage.big-title"|trans }}<span>{{ "homepage.sub-title"|trans }}</span></h2>
-            </div>
-        </div>
-        <div id="header-form">
-            <div class="row" id="header-form-title">
-                <div class="large-12 columns">
-                    {% set trans_chalets_apartments = 'chalets-apartments'|trans %}
-                    {% set trans_in                 = 'in'|trans                 %}
-                    {% set trans_and                = 'and'|trans                %}
-                    {% set trans_ski_areas          = 'ski-areas'|trans          %}
-                    {% set trans_france             = 'france'|trans             %}
-                    {% set trans_austria            = 'austria'|trans            %}
-                    {% set trans_switzerland        = 'switzerland'|trans        %}
-                    {% set trans_italy              = 'italy'|trans              %}
-                    <h1 class="title-form">Kies uit <a href="" title="1.209 {{ trans_chalets_apartments }}">1209 {{ trans_chalets_apartments }}</a> {{ trans_in }} 45 {{ trans_ski_areas|lower }} {{ trans_in }} <a href="{{ locale_path('show_country', { countrySlug: trans_austria|seo }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_austria }}">{{ trans_austria }}</a>, <a href="{{ locale_path('show_country', { countrySlug: trans_switzerland|seo }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_switzerland }}">{{ trans_switzerland }}</a>, <a href="{{ locale_path('show_country', { countrySlug: trans_france|seo }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_france }}">{{ trans_france }}</a> {{ trans_and }} <a href="{{ locale_path('show_country', { countrySlug: trans_italy|seo }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_italy }}">{{ trans_italy }}</a></h1>
+
+    {% set search_path = locale_path('search') %}
+    <!-- header -->
+    <header>
+        <div class="home-menu">
+            <div class="row">
+                <div class="small-9 small-offset-3">
+                    <ul>
+                        <li class="home active"><a href="#"><i class="fi-home"></i></a></li>
+                        <li><a href="{{ locale_path('search') }}">zoek en boek</a></li>
+                        <li><a href="{{ locale_path('all_regions') }}">skigebieden</a></li>
+                        <li><a href="#">aanbiedingen</a></li>
+                    </ul>
                 </div>
             </div>
-            <div class="row" id="header-form-fields">
-                <form>
-                    <div class="large-3 medium-3 columns">
-                        <div class="autocomplete-container">
-                            <input type="text" name="query" data-role="autocomplete-query" data-type="home" id="choose-destination" class="radius home" placeholder="Waar wil je naartoe?"  />
-                            <div class="results" data-role="autocomplete-results">
+        </div>
+        <div id="header-container">
+            <div id="header-usp">
+                <div class="large-12 columns">
+                    <h2 class="title-usp">{{ "homepage.big-title"|trans }}<span>{{ "homepage.sub-title"|trans }}</span></h2>
+                </div>
+            </div>
+            <div id="header-form">
+                <div class="row" id="header-form-title">
+                    <div class="large-12 columns">
+                        {% set trans_chalets_apartments = 'chalets-apartments'|trans %}
+                        {% set trans_in                 = 'in'|trans                 %}
+                        {% set trans_and                = 'and'|trans                %}
+                        {% set trans_ski_areas          = 'ski-areas'|trans          %}
+                        {% set trans_france             = 'france'|trans             %}
+                        {% set trans_austria            = 'austria'|trans            %}
+                        {% set trans_switzerland        = 'switzerland'|trans        %}
+                        {% set trans_italy              = 'italy'|trans              %}
+                        <h1 class="title-form">Kies uit <a href="{{ search_path }}" title="1.209 {{ trans_chalets_apartments }}">1209 {{ trans_chalets_apartments }}</a> {{ trans_in }} 45 {{ trans_ski_areas|lower }} {{ trans_in }} <a href="{{ locale_path('show_country', { countrySlug: trans_austria|seo }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_austria }}">{{ trans_austria }}</a>, <a href="{{ locale_path('show_country', { countrySlug: trans_switzerland|seo }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_switzerland }}">{{ trans_switzerland }}</a>, <a href="{{ locale_path('show_country', { countrySlug: trans_france|seo }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_france }}">{{ trans_france }}</a> {{ trans_and }} <a href="{{ locale_path('show_country', { countrySlug: trans_italy|seo }) }}" title="{{ trans_chalets_apartments }} {{ trans_in }} {{ trans_italy }}">{{ trans_italy }}</a></h1>
+                    </div>
+                </div>
+                <div class="row" id="header-form-fields">
+                    <form>
+                        <div class="large-3 medium-3 columns">
+                            <div class="autocomplete-container">
+                                <input type="text" name="query" data-role="autocomplete-query" data-type="home" id="choose-destination" class="radius home" data-focus-text="bijv. bestemming of accommodatie" data-default-placeholder="Waar wil je naartoe?" placeholder="Waar wil je naartoe?" autocomplete="off" />
+                                <div class="results" data-role="autocomplete-results">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="large-3 medium-3 columns">
-                        <select class="radius">
-                            <option value="husker">Wanneer wil je gaan?</option>
-                            <option value="1423868400">weekend 14 februari 2015</option>
-                            <option value="1424473200">weekend 21 februari 2015</option>
-                            <option value="1425078000">weekend 28 februari 2015</option>
-                            <option value="1425682800">weekend 7 maart 2015</option>
-                            <option value="1426287600">weekend 14 maart 2015</option>
-                            <option value="1426892400">weekend 21 maart 2015</option>
-                            <option value="1427497200">weekend 28 maart 2015</option>
-                            <option value="1428098400">weekend 4 april 2015</option>
-                            <option value="1428703200">weekend 11 april 2015</option>
-                            <option value="1429308000">weekend 18 april 2015</option>
-                            <option value="1429912800">weekend 25 april 2015</option>
-                            <option value="1430517600">weekend 2 mei 2015</option>
-                        </select>
-                    </div>
-                    <div class="large-3 medium-3 columns">
-                        <select class="radius">
-                            <option value="hoeveel">Met hoeveel personen ga je?</option>
-                            <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option><option value="32">32</option><option value="33">33</option><option value="34">34</option><option value="35">35</option><option value="36">36</option><option value="37">37</option><option value="38">38</option><option value="39">39</option><option value="40">40 of meer</option>
-                        </select>
-                    </div>
-                    <div class="large-3 medium-3 columns">
-                        <a href="{{ locale_path('search') }}" data-role="search-simple" class="button radius right" title="Toon resultaten op Chalet.nl"><i class="fi-magnifying-glass"></i>Toon <span>1.209</span> resultaten</a><br />
-                        <a href="{{ locale_path('search') }}" data-role="search-advanced" class="link right" title="Uitgebreid zoeken op Chalet.nl">Uitgebreid zoeken</a>
-                    </div>
-                </form>
+                        <div class="large-3 medium-3 columns">
+                            <select class="radius">
+                                <option value="husker">Wanneer wil je gaan?</option>
+                                <option value="1423868400">weekend 14 februari 2015</option>
+                                <option value="1424473200">weekend 21 februari 2015</option>
+                                <option value="1425078000">weekend 28 februari 2015</option>
+                                <option value="1425682800">weekend 7 maart 2015</option>
+                                <option value="1426287600">weekend 14 maart 2015</option>
+                                <option value="1426892400">weekend 21 maart 2015</option>
+                                <option value="1427497200">weekend 28 maart 2015</option>
+                                <option value="1428098400">weekend 4 april 2015</option>
+                                <option value="1428703200">weekend 11 april 2015</option>
+                                <option value="1429308000">weekend 18 april 2015</option>
+                                <option value="1429912800">weekend 25 april 2015</option>
+                                <option value="1430517600">weekend 2 mei 2015</option>
+                            </select>
+                        </div>
+                        <div class="large-3 medium-3 columns">
+                            {# we have two select items because of text switching when resizing viewport (medium ('Hoeveel personen') vs rest ('Met hoeveel personen ga je?')) #}
+                            <select class="radius hide-for-medium">
+                                <option value="hoeveel">Met hoeveel personen ga je?</option>
+                                {% for i in 1..39 %}
+                                <option value="{{ i }}">{{ i }}</option>
+                                {% endfor %}
+                                <option value="40">40 of meer</option>
+                            </select>
+                    
+                            <select class="radius show-for-medium">
+                                <option value="hoeveel">Hoeveel personen?</option>
+                                {% for i in 1..39 %}
+                                <option value="{{ i }}">{{ i }}</option>
+                                {% endfor %}
+                                <option value="40">40 of meer</option>
+                            </select>
+                        </div>
+                        <div class="large-3 medium-3 columns">
+                            <a href="{{ search_path }}" data-role="search-simple" class="button radius right" title="Toon resultaten op Chalet.nl"><i class="fi-magnifying-glass"></i>Toon <span>1.209</span> resultaten</a><br />
+                            <a href="{{ search_path }}" data-role="search-advanced" class="link right" title="Uitgebreid zoeken op Chalet.nl">Uitgebreid zoeken</a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</header>
+    </header>
+
 {% endblock %}

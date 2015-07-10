@@ -58,6 +58,39 @@ services:
         arguments: [AppBundle\Entity\HomepageBlock\HomepageBlock]
         parent:    app.repository.orm
 
+    app.repository.season:
+        class:     AppBundle\Entity\Season\SeasonRepository
+        arguments: [AppBundle\Entity\Season\Season]
+        parent:    app.repository.orm
+        calls:
+            - [setSeason,  [@app.concern.season]]
+
+    app.repository.option:
+        class:     AppBundle\Entity\Option\OptionRepository
+        arguments: ["@doctrine.orm.entity_manager"]
+        calls:
+            - [setSeason,  [@app.concern.season]]
+            - [setWebsite, [@app.concern.website]]
+
+    app.repository.faq:
+        class:     AppBundle\Entity\Faq\FaqRepository
+        arguments: [AppBundle\Entity\Faq\Faq]
+        parent:    app.repository.orm
+        calls:
+            - [setWebsite, [@app.concern.website]]
+
+    app.repository.theme:
+        class:     AppBundle\Entity\Theme\ThemeRepository
+        arguments: [AppBundle\Entity\Theme\Theme]
+        parent:    app.repository.orm
+        calls:
+            - [setSeason, [@app.concern.season]]
+
+    app.repository.price:
+        class:     AppBundle\Entity\Price\PriceRepository
+        arguments: [AppBundle\Entity\Price\Price]
+        parent:    app.repository.orm
+
     app.repository.file.accommodation:
         class:     AppBundle\Document\File\AccommodationRepository
         arguments: [AppBundle\Document\File\Accommodation]
@@ -83,11 +116,21 @@ services:
         arguments: [AppBundle\Document\File\Country]
         parent:    app.repository.odm
 
+    app.repository.file.theme:
+        class:     AppBundle\Document\File\ThemeRepository
+        arguments: [AppBundle\Document\File\Theme]
+        parent:    app.repository.odm
+
+    app.repository.general.settings:
+        class:     AppBundle\Entity\GeneralSettings\GeneralSettingsRepository
+        arguments: [AppBundle\Entity\GeneralSettings\GeneralSettings]
+        parent:    app.repository.orm
+
     app.repository.user:
         class:     AppBundle\Document\User\UserRepository
         arguments: [AppBundle\Document\User\User]
         parent:    app.repository.odm
-        
+
     app.repository.search:
         class:     AppBundle\Entity\Search\SearchRepository
         arguments: ["@doctrine.orm.entity_manager"]
@@ -95,7 +138,7 @@ services:
             - [setSeason,  [@app.concern.season]]
             - [setWebsite, [@app.concern.website]]
             - [setLocale,  [@service_container]]
-            
+
     app.repository.autocomplete:
         class:     AppBundle\Document\Autocomplete\AutocompleteRepository
         arguments: [AppBundle\Document\Autocomplete\Autocomplete]

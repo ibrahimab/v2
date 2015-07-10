@@ -24,8 +24,8 @@
     </div>
     <div class="row" id="area-specs"><!-- id="area-specs" -->
         <div class="large-12 columns">
-            <span class="area-spec"><i class="sprite sprite-blue-pistes"></i> {{ region.getTotalSlopesDistance() }} kilometer piste totaal</span>
-            <span class="area-spec"><i class="sprite sprite-blue-mountain"></i> hoogte {{ region.getMinimumAltitude() }}{{ (region.getMinimumAltitude() == region.getMaximumAltitude() ? (' - ' ~ region.getMaximumAltitude()) : '') }} meter</span>
+            <span class="area-spec"><i class="sprite sprite-blue-pistes"></i> {{ region.getTotalSlopesDistance() }} kilometer piste</span>
+            <span class="area-spec"><i class="sprite sprite-blue-mountain"></i> {{ region.getMinimumAltitude() }}{{ (region.getMinimumAltitude() == region.getMaximumAltitude() ? (' - ' ~ region.getMaximumAltitude()) : '') }} meter hoog</span>
             <span class="area-spec"><i class="sprite sprite-blue-chalet"></i> {{ region.getTypesCount() }} chalets en appartementen verdeeld over {{ region.getPlacesCount() ~ (region.getPlacesCount() == 1 ? ' skidorp' : ' skipdorpen') }}</span>
         </div>
     </div>
@@ -37,9 +37,9 @@
         {% endfor %}
     </div>
     <div class="row">
-        <div class="large-12 centered columns">
-            <a href="{{ locales['seo']['region'] }}" class="button small radius" title="Meer over Skigebied Les Trois Vallees">Meer over {{ locales['name']['region'] }}</a>
-            <a href="zoekboek.html" class="button small radius" title="Bekijk alle skigebieden" style="margin-left:10px;">Bekijk alle skigebieden</a>
+        <div class="large-12 columns end text-center">
+            <a href="{{ locales['seo']['region'] }}" class="homepage-fix-region-button button small radius" title="Meer over Skigebied Les Trois Vallees">Meer over {{ locales['name']['region'] }}</a>
+            <a href="{{ locale_path('all_regions') }}" class="button small radius" title="Bekijk alle skigebieden" style="margin-left:10px;">Bekijk alle skigebieden</a>
         </div>
     </div>
 </section>

@@ -1,15 +1,37 @@
 <?php
 namespace AppBundle\Service\Api\Type;
+use       AppBundle\Entity\Video;
 use       AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
 
-interface TypeServiceEntityInterface {
-
+/**
+ * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
+ * @package Chalet
+ * @version 0.0.5
+ * @since   0.0.5
+ */
+interface TypeServiceEntityInterface
+{
     /**
      * Get id
      *
      * @return integer
      */
     public function getId();
+
+    /**
+     * Set price
+     *
+     * @param float
+     * @return TypeServiceEntityInterface
+     */
+    public function setPrice($price);
+
+    /**
+     * Get price
+     *
+     * @return TypeServiceEntityInterface
+     */
+    public function getPrice();
 
     /**
      * Set accommodationId
@@ -40,6 +62,58 @@ interface TypeServiceEntityInterface {
      * @return AccommodationServiceEntityInterface
      */
     public function getAccommodation();
+
+    /**
+     * Set has video flag
+     *
+     * @param  boolean $hasVideo
+     * @return TypeServiceEntityInterface
+     */
+    public function setHasVideo($hasVideo);
+
+    /**
+     * Check if it has a video
+     *
+     * @return boolean
+     */
+    public function hasVideo();
+
+    /**
+     * Set Video url
+     *
+     * @param  string $videoUrl
+     * @return TypeServiceEntityInterface
+     */
+    public function setVideoUrl($videoUrl);
+
+    /**
+     * Get Video url
+     *
+     * @return string
+     */
+    public function getVideoUrl();
+
+    /**
+     * Get Video
+     *
+     * @return Video
+     */
+    public function getVideo();
+    
+    /**
+     * Set virtual tour link
+     *
+     * @param string $virtualTourLink
+     * @return TypeServiceEntityInterface
+     */
+    public function setVirtualTourLink($virtualTourLink);
+    
+    /**
+     * Get virtual tour link
+     *
+     * @return TypeServiceEntityInterface
+     */
+    public function getVirtualTourLink();
 
     /**
      * Set name

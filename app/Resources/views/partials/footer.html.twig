@@ -1,7 +1,11 @@
+{% set website_concern = website() %}
+{% set twitter  = website_concern.getConfig(constant('WEBSITE_CONFIG_TWITTER',  website_concern)) %}
+{% set facebook = website_concern.getConfig(constant('WEBSITE_CONFIG_FACEBOOK', website_concern)) %}
+{% set google   = website_concern.getConfig(constant('WEBSITE_CONFIG_GOOGLE',   website_concern)) %}
 <footer>
     <div class="row">
         <div class="large-3 medium-3 columns">
-            <h4>Waarom Chalet.nl</h4>
+            <h4>Waarom {{ website_concern.name() }}</h4>
             <ul class="checked">
                 <li><i class="sprite sprite-blue-checked"></i>14 jaar winterspecialist</li>
                 <li><i class="sprite sprite-blue-checked"></i>Veel grote chalets</li>
@@ -10,9 +14,9 @@
                 <li><i class="sprite sprite-blue-checked"></i>Prijsbewust</li>
                 <li><i class="sprite sprite-blue-checked"></i>Lid SGR-Garantiefonds</li>
             </ul>
-            <h4>Chalet.nl</h4>
+            <h4>{{ website_concern.name() }}</h4>
             <p>
-                Wipmolenlaan 3<br />3447 GJ Woerden<br /><i class="fi-mail"></i>info@chalet.nl<br /><i class="fi-telephone"></i>0348 43 46 49
+                Wipmolenlaan 3<br />3447 GJ Woerden<br /><i class="fi-mail"></i><a href="mailto:info@chalet.nl">info@chalet.nl</a><br /><i class="fi-telephone"></i><a href="tel:+31-348-434649">0348 43 46 49</a>
             </p>
         </div>
         <div class="large-3 medium-3 columns">
@@ -42,15 +46,21 @@
         </div>
         <div class="large-3 medium-3 columns">
             <h4>Social media</h4>
-            <a href=""><i class="sprite sprite-social-twitter-big"></i></a>
-            <a href=""><i class="sprite sprite-social-fb-big"></i></a>
-            <a href=""><i class="sprite sprite-social-plus-big"></i></a>
+            {% if twitter != false %}
+                <a href="https://twitter.com/{{ twitter }}" data-role="new-window"><i class="sprite sprite-social-twitter-big"></i></a>
+            {% endif %}
+            {% if facebook != false %}
+                <a href="https://facebook.com/{{ facebook }}" data-role="new-window"><i class="sprite sprite-social-fb-big"></i></a>
+            {% endif %}
+            {% if google %}
+                <a href="https://plus.google.com/{{ google }}" data-role="new-window"><i class="sprite sprite-social-plus-big"></i></a>
+            {% endif %}
             <div id="footer-newsletter">
                 <h4>Nieuwsbrief</h4>
                 <p>Mis geen aanbiedingen, nieuws en reistips.</p>
-                <form>
+                <form name="newsletter-form" action="{{ path('newsletter') }}" method="get">
                     <div class="email-field">
-                        <input type="email" placeholder="e-mailadres" required>
+                        <input name="email" type="email" placeholder="e-mailadres" required />
                     </div>
                     <button type="submit" class="button radius tiny">Inschrijven</button>
                 </form>
@@ -66,13 +76,13 @@
             <div class="large-3 medium-3 columns">
                 <h4>Inspiratie</h4>
                 <ul>
-                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Kerst in de sneeuw</a></li>
-                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Aan de piste</a></li>
-                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Winterwellness</a></li>
-                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Gemak van catering</a></li>
-                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Prive sauna</a></li>
-                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Grote groepen</a></li>
-                    <li><i class="sprite sprite-blue-arrow"></i><a href="">Meer inspiratie</a></li>
+                    <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('show_theme', {url: '2015-2016'}) }}">Wintersport 2015/2016</a></li>
+                    <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('show_theme', {url: 'aan-de-piste'}) }}">Aan de piste</a></li>
+                    <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('show_theme', {url: 'wellness'}) }}">Winterwellness</a></li>
+                    <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('show_theme', {url: 'catering'}) }}">Gemak van catering</a></li>
+                    <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('show_theme', {url: 'sauna'}) }}">Prive sauna</a></li>
+                    <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('show_theme', {url: 'groepen'}) }}">Grote groepen</a></li>
+                    <li><i class="sprite sprite-blue-arrow"></i><a href="{{ locale_path('themes') }}">Meer inspiratie</a></li>
                 </ul>
             </div>
             <div class="large-3 medium-3 columns">

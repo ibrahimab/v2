@@ -1,16 +1,24 @@
 imports:
-    - { resource: "../dev/config.yml" }
+    - { resource: "../prod/config.yml" }
 
 framework:
     router:
         resource: "%kernel.root_dir%/config/stag/routing.yml"
 
-doctrine_mongodb:
-    default_database: chalet_stag
-
 assetic:
-    use_controller: true
+    debug:          "%kernel.debug%"
+    use_controller: false
+    write_to:       "%kernel.root_dir%/../web/"
     filters:
         cssrewrite: ~
         lessphp:
             apply_to: "\.less$"
+
+doctrine_mongodb:
+    default_database: chalet_stag
+    connections:
+        default:
+            server: "%mongodb_server%"
+            options:
+                connect: true
+                replicaSet: 'rs1'

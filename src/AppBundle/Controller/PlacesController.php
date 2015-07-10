@@ -34,51 +34,58 @@ class PlacesController extends Controller
         $placeService  = $this->get('app.api.place');
         $typeService   = $this->get('app.api.type');
         $surveyService = $this->get('app.api.booking.survey');
-        
+        $priceService  = $this->get('app.api.price');
+
         try {
-            
+
             $place        = $placeService->findByLocaleSeoName($placeSlug, $this->getRequest()->getLocale());
-            
+
         } catch (NoResultException $e) {
             throw $this->createNotFoundException('Place could not be found');
         }
-        
-        
+
+
         $typesCount   = $typeService->countByPlace($place);
         $surveyStats  = $surveyService->statsByPlace($place);
         $placeTypes   = $typeService->findByPlace($place, 3);
         $types        = [];
-        
+        $offers       = [];
+
         $place->setTypesCount($typesCount);
-        
+
         if (($total = count($surveyStats)) > 0) {
-            
+
             $place->setRatingsCount(array_sum(array_map('intval', array_column($surveyStats, 'surveyCount'))));
             $place->setAverageRatings(
                 round((array_sum(array_map('floatval', array_column($surveyStats, 'surveyAverageOverallRating'))) / $total), 1)
             );
         }
-        
+
         foreach ($placeTypes as $type) {
             $types[$type->getId()] = $type;
         }
 
+        if (count($types) > 0) {
+            $offers = $priceService->offers(array_keys($types));
+        }
+
         foreach ($surveyStats as $surveyStat) {
-            
+
             if (!isset($types[$surveyStat['typeId']])) {
                 continue;
             }
-            
+
             $types[$surveyStat['typeId']]->setSurveyCount($surveyStat['surveyCount']);
             $types[$surveyStat['typeId']]->setSurveyAverageOverallRating($surveyStat['surveyAverageOverallRating']);
         }
-        
+
         return [
-            
+
             'place'   => $place,
             'country' => $place->getCountry(),
             'region'  => $place->getRegion(),
             'types'   => $types,
+            'offers'  => $offers,
         ];
     }
 }

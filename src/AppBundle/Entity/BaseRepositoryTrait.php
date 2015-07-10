@@ -25,6 +25,11 @@ trait BaseRepositoryTrait
     /**
      * @var string
      */
+    protected $websiteConcern;
+    
+    /**
+     * @var string
+     */
     protected $locale;
 
     /**
@@ -56,6 +61,7 @@ trait BaseRepositoryTrait
     public function setWebsite(WebsiteConcern $websiteConcern)
     {
         $this->website = $websiteConcern->get();
+        $this->websiteConcern = $websiteConcern;
     }
 
     /**
@@ -66,6 +72,14 @@ trait BaseRepositoryTrait
     public function getWebsite()
     {
         return $this->website;
+    }
+    
+    /**
+     * @return WebsiteConcern
+     */
+    public function getWebsiteConcern()
+    {
+        return $this->websiteConcern;
     }
     
     /**

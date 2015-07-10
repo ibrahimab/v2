@@ -1,15 +1,28 @@
 {% extends 'layouts/home.html.twig' %}
 
+{% block title %}{{ website().name() }} Wintersport - Chalets en appartementen{% endblock title %}
+
+{% block seo %}
+
+    {% include 'layouts/seo-block.html.twig' with {
+
+        'meta_description': 'Wintersportspecialist: Chalets en appartementen voor 2 tot 50 personen, desgewenst inclusief catering, skipassen, materiaalhuur en skilessen.',
+        'meta_title':       website().name() ~ ' - Wintersport - Chalets en appartementen'
+
+    } %}
+
+{% endblock seo %}
+
 {% block body %}
-    
+
     {{ parent() }}
-    
-    {% include 'partials/highlights.html.twig'       with {'highlights':     highlights } only %}
-    
+
+    {% include 'partials/highlights.html.twig'       with {'highlights':     highlights, offers: offers, fix_blocks: true } only %}
+
     {% include 'partials/homepage_blocks.html.twig'  with {'homepageBlocks': homepageBlocks } only %}
-    
+
     {% if region and places|length > 0 %}
         {% include 'partials/homepage_regions.html.twig' with {'region': region, 'places': places } only %}
     {% endif %}
-    
+
 {% endblock %}

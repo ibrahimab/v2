@@ -43,6 +43,7 @@ class LoadAccommodationData extends AbstractFixture implements DependentFixtureI
                           ->setPlace($this->getReference('place-' . $i))
                           ->setKind($kinds[array_rand($kinds)])
                           ->setDisplay(true)
+                          ->setShow(1)
 						  ->setDisplaySearch(true)
                           ->setQuality(rand(1, 5))
                           ->setWeekendSki(($i === 1 ? false : ($i % 2 === 0)))

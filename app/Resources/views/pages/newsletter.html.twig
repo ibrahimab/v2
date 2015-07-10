@@ -1,0 +1,119 @@
+{% extends 'layouts/default.html.twig' %}
+
+{% block breadcrumbs %}
+	{{ breadcrumbs() }}
+{% endblock %}
+
+{% block body %}
+
+	{{ parent() }}
+
+	<section class="landing place-page">
+		<div class="row" id="area-specs"><!-- id="area-specs" -->
+			<h2>Nieuwsbrief</h2>
+		</div>
+		<div class="row">
+			<div class="large-12 columns">
+
+				{% if subscribeSucces %}
+
+					<p>
+						Bedankt voor je inschrijving voor de nieuwsbrief van {{ sitename }}!
+					</p>
+					<p>
+						Binnen enkele minuten ontvang je een e-mail ter bevestiging.
+					</p>
+
+				{% else %}
+					<p>
+						Schrijf jezelf hier in voor de nieuwsbrief van {{ sitename }} en ontvang regelmatig aanbiedingen, nieuws en reistips.
+					</p>
+
+					<form method="post" action="https://m16.mailplus.nl/genericservice/code/servlet/Redirect" enctype="application/x-www-form-urlencoded" name="{{ formname }}" id="{{ formname }}" data-abide>
+
+						<div class="row">
+							<div class="large-6 columns">
+								<label>E-mailadres
+									<input type="email" name="{{ email }}" value="{{ postEmail }}" required>
+								</label>
+								<small class="error">geen geldig e-mailadres</small>
+							</div>
+						</div>
+						<div class="row">
+							<div class="large-6 columns">
+								<label>Voornaam
+									<input type="text" name="{{ voornaam }}" value="" required>
+								</label>
+								<small class="error">verplicht veld</small>
+								</div>
+							</div>
+						<div class="row">
+							<div class="large-6 columns">
+								<label>Tussenvoegsel
+									<input type="text" name="{{ tussenvoegsel }}" value="">
+								</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="large-6 columns">
+								<label>Achternaam
+									<input type="text" name="{{ achternaam }}" value="" required>
+								</label>
+								<small class="error">verplicht veld</small>
+							</div>
+						</div>
+						{% if subscribeAfterSeason %}
+
+							<div class="row">
+								<div class="large-6 columns">
+									<label>Ik wil graag de {{ sitename }}-nieuwsbrief ontvangen:<br /><br /></label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="large-6 columns">
+									<input type="radio" name="{{ per_wanneer }}" value="" id="per_wanneer1" required checked><label for="per_wanneer1">per direct</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="large-6 columns">
+									<input type="radio" name="{{ per_wanneer }}" value="ja" id="per_wanneer2"><label for="per_wanneer2">tegen het einde van dit winterseizoen, met nieuws over het volgende winterseizoen</label>
+								</div>
+							</div>
+
+						{% endif %}
+
+						<div class="row">
+							<div class="large-6 columns">
+								<br /><input type="submit" value="Aanmelden" class="button">
+							</div>
+						</div>
+
+						 <input type="hidden" name="serviceInstanceId" id="serviceInstanceId" value="31302289">
+						 <input type="hidden" name="okLink" id="okLink" value="{{ app.request.getSchemeAndHttpHost() }}/nieuwsbrief?ok=1">
+						 <input type="hidden" name="redir" id="redir" value="formAdmin">
+						 <input type="hidden" name="formEncId" id="formEncId" value="{{ formEncId }}">
+
+					 </form>
+
+
+				 {% endif %}
+
+				 <p>
+					&nbsp;
+				 </p>
+
+				<strong>Onlangs verstuurde nieuwsbrieven</strong>:
+				<ul>
+					{% for url, name in newsletters %}
+						<li><a href="{{ url }}" target="_blank" rel="nofollow">{{ name }}</a></li>
+					{% endfor %}
+
+				</ul>
+
+			</div>
+
+		</div>
+
+	</section>
+
+{% endblock %}

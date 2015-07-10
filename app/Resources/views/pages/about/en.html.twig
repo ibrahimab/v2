@@ -1,0 +1,37 @@
+{% extends 'layouts/default.html.twig' %}
+
+{% block breadcrumbs %}
+    {{ breadcrumbs() }}
+{% endblock %}
+
+{% block body %}
+
+    {{ parent() }}
+
+    <section class="landing landing-page contact-page">
+
+        <div class="row">
+
+            <div class="large-8 medium-8 columns">
+
+                <h1>About us</h1>
+                <p>Chalet.nl is an independent tour operator specialized in the rental of detached chalets and luxurious apartments from 2 until 50 persons in France, Austria, Switzerland, Italy and Germany.</p>
+                <p>The organisation was founded in 1999 as a sole proprietorship and has grown to a fully fledged travel company with a team of twenty-two people. We are located in Woerden, in the province of Utrecht in the Netherlands.<p>
+                <p>Reservations can be made via our website or by phone. Chalet.nl is also the owner of the following websites: <a href="{{ url('chalet_be') }}" data-role="new-window">Chalet.be</a>, <a href="{{ url('chalet_eu') }}" data-role="new-window">Chalet.eu</a>, <a href="{{ url('zomerhuisje_nl') }}" data-role="new-window">Zomerhuisje.nl</a> and <a href="{{ url('italissima_nl') }}" data-role="new-window">Italissima</a>.</p>
+
+                <h2>The keyword is specialization</h2>
+                <p>Chalet.nl doesn't go for the mass tourism. Specialization is what we choose for. Winter sports enthusiasts can come to us for a winter holiday in a chalet or a luxurious apartment in one of the Alpine countries. If desired we can include ski passes, ski equipment catering and other extra options. Our sales department has an extensive knowledge of the various destinations in our programme and personally visit most accommodations.</p>
+
+                <h3>High quality of service</h3>
+                <p>
+                    Our quality of service and a personal approach is our has a very high priority. Give us your wishes, and we will find you the best suitable accommodation. If you want to make changes after booking? We will make them free of charge up to at least six weeks before your departure. <br />
+                    Do not hesitate to <a href="{{ path('contact') }}">reach us by phone, chat or e-mail</a>.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+{% endblock %}

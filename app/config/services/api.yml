@@ -56,14 +56,42 @@ services:
         class:     AppBundle\Service\Api\File\Country\CountryService
         arguments: ["@app.repository.file.country"]
 
+    app.api.file.theme:
+        class:     AppBundle\Service\Api\File\Theme\ThemeService
+        arguments: ["@app.repository.file.theme"]
+
+    app.api.general.settings:
+        class:     AppBundle\Service\Api\GeneralSettings\GeneralSettingsService
+        arguments: ["@app.repository.general.settings"]
+
     app.api.user:
         class:     AppBundle\Service\Api\User\UserService
-        arguments: ["@app.repository.user", "@security.context"]
-        
+        arguments: ["@app.repository.user", "@security.token_storage"]
+
     app.api.search:
         class:     AppBundle\Service\Api\Search\SearchService
         arguments: ["@app.repository.search"]
-        
+
     app.api.autocomplete:
         class:     AppBundle\Service\Api\Autocomplete\AutocompleteService
         arguments: ["@app.repository.autocomplete"]
+
+    app.api.season:
+        class:     AppBundle\Service\Api\Season\SeasonService
+        arguments: ["@app.repository.season"]
+
+    app.api.option:
+        class:     AppBundle\Service\Api\Option\OptionService
+        arguments: [@service_container]
+
+    app.api.faq:
+        class:      AppBundle\Service\Api\Faq\FaqService
+        arguments: ["@app.repository.faq"]
+
+    app.api.theme:
+        class:      AppBundle\Service\Api\Theme\ThemeService
+        arguments: ["@app.repository.theme"]
+
+    app.api.price:
+        class:      AppBundle\Service\Api\Price\PriceService
+        arguments: ["@app.repository.price"]

@@ -29,6 +29,8 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    globals:
+        chat_license: "%chat_license%"
 
 # Assetic Configuration
 assetic:
@@ -68,7 +70,9 @@ doctrine:
         auto_mapping: true
         dql:
             numeric_functions:
-                Rand: AppBundle\Doctrine\DQL\RandFunction
+                Rand: AppBundle\Doctrine\DQL\Functions\Rand
+            datetime_functions:
+                UNIX_TIMESTAMP: AppBundle\Doctrine\DQL\Functions\UnixTimestamp
 
 doctrine_mongodb:
     connections:

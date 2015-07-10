@@ -11,6 +11,17 @@ services:
 
     app.utils:
         class: AppBundle\Service\UtilsService
-        
+
     app.filter:
         class: AppBundle\Service\FilterService
+
+    app.mongo:
+        class: AppBundle\Service\Mongo\MongoService
+        arguments: [@doctrine_mongodb.odm.default_connection]
+
+    app.monitor:
+        class: AppBundle\Service\MonitorService
+
+    app.newsletter:
+        class: AppBundle\Service\Newsletter\NewsletterService
+        arguments: [@app.concern.website]

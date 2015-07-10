@@ -21,7 +21,7 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
     {
         $qb   = $this->createQueryBuilder('t');
         $expr = $qb->expr();
-        
+
         $qb->select('partial t.{id, optimalResidents, maxResidents, quality}, partial a.{id, name, kind, quality}')
            ->leftJoin('t.accommodation', 'a')
            ->where($expr->eq('a.place', ':place'))
@@ -30,14 +30,14 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
            ->setMaxResults($limit)
            ->orderBy('t.searchOrder', 'ASC')
            ->setParameters([
-               
+
                'place'   => $place,
                'display' => true,
            ]);
-        
+
         return $qb->getQuery()->getResult();
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -45,7 +45,7 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
     {
         $qb   = $this->createQueryBuilder('t');
         $expr = $qb->expr();
-        
+
         $qb->select('COUNT(t.id)')
            ->leftJoin('t.accommodation', 'a')
            ->leftJoin('a.place', 'p')
@@ -54,7 +54,7 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
            ->andWhere($expr->eq('t.display', ':display'))
            ->andWhere($expr->eq('a.weekendSki', ':weekendski'))
            ->setParameters([
-               
+
                'place'      => $place,
                'display'    => true,
                'weekendski' => false,
@@ -62,7 +62,7 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
 
         return $qb->getQuery()->getSingleScalarResult();
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -70,7 +70,7 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
     {
         $qb   = $this->createQueryBuilder('t');
         $expr = $qb->expr();
-        
+
         $qb->select('p.id as placeId, COUNT(t.id) AS typesCount')
            ->leftJoin('t.accommodation', 'a')
            ->leftJoin('a.place', 'p')
@@ -81,17 +81,17 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
            ->andWhere($expr->eq('a.weekendSki', ':weekendski'))
            ->groupBy('p.id')
            ->setParameters([
-               
+
                'region'     => $region,
                'display'    => true,
                'weekendski' => false,
            ]);
-        
+
         $results = $qb->getQuery()->getResult();
-        
+
         return array_map('intval', array_column($results, 'typesCount', 'placeId'));
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -99,7 +99,7 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
     {
         $qb   = $this->createQueryBuilder('t');
         $expr = $qb->expr();
-        
+
         $qb->select('r.id as regionId, COUNT(t.id) AS typesCount')
            ->leftJoin('t.accommodation', 'a')
            ->leftJoin('a.place', 'p')
@@ -110,17 +110,17 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
            ->andWhere($expr->eq('t.display', ':display'))
            ->andWhere($expr->eq('a.weekendSki', ':weekendski'))
            ->setParameters([
-               
+
                'regions'    => $regions,
                'display'    => true,
                'weekendski' => false,
            ]);
-        
+
         $results = $qb->getQuery()->getResult();
 
         return array_map('intval', array_column($results, 'typesCount', 'regionId'));
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -128,26 +128,27 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
     {
         $qb   = $this->createQueryBuilder('t');
         $expr = $qb->expr();
-        
+
         $qb->select('t, a, p, r, c, at')
            ->leftJoin('t.accommodation', 'a')
            ->leftJoin('a.types', 'at')
            ->leftJoin('a.place', 'p')
            ->leftJoin('p.region', 'r')
            ->leftJoin('p.country', 'c')
-           ->where($expr->eq('t.id', ':type'))
+           ->where((is_array($typeId) ? $expr->in('t.id', ':type') : $expr->eq('t.id', ':type')))
            ->andWhere($expr->eq('t.display', ':display'))
            ->andWhere($expr->eq('a.display', ':display'))
            ->andWhere($expr->eq('a.weekendSki', ':weekendSki'))
            ->andWhere($expr->eq('at.display', ':display'))
            ->setParameters([
-               
+
                'type'       => $typeId,
                'display'    => true,
                'weekendSki' => false,
            ])
            ->orderBy('at.maxResidents');
-           
-        return $qb->getQuery()->getSingleResult();
+
+        $query = $qb->getQuery();
+        return (is_array($typeId) ? $query->getResult() : $query->getSingleResult());
     }
 }

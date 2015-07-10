@@ -12,13 +12,16 @@
                        'bundles/app/css/slick.css'
                        'bundles/app/css/jqvmap.css'
                        'bundles/app/foundation-icons/foundation-icons.css'
-					   'bundles/app/css/lightbox.css'
+					   'bundles/app/css/jquery.fancybox.css'
+                       '@AppBundle/Resources/assets/css/faq.less'
+                       '@AppBundle/Resources/assets/css/rate-table.less'
+                       '@AppBundle/Resources/assets/css/header.less'
                        '@AppBundle/Resources/assets/css/custom.less' filter='cssrewrite' %}
             <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
 
-        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" />
-        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster" />
+        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,700" />
+        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lobster" />
 
         {% javascripts 'bundles/app/js/vendor/modernizr.js'
                        '@AppBundle/Resources/assets/js/chalet.js' %}
@@ -45,13 +48,16 @@
                        'bundles/app/js/vendor/jquery.color.js'
                        'bundles/app/js/vendor/jquery.scrollup.js'
                        'bundles/app/js/vendor/foundation.min.js'
+                       'bundles/app/js/vendor/foundation/foundation.equalizer.js'
                        'bundles/app/js/vendor/jquery.placeholder.js'
                        'bundles/app/js/vendor/foundation/foundation.offcanvas.js'
                        'bundles/app/js/vendor/jqvmap/jqvmap.js'
                        'bundles/app/js/vendor/jqvmap/italy.map.js'
                        'bundles/app/js/vendor/foundation/responsive-tables.js'
+                       'bundles/app/js/vendor/foundation/foundation.abide.js'
                        'bundles/app/js/vendor/slick.min.js'
-					   'bundles/app/js/vendor/lightbox.min.js'
+					   'bundles/app/js/vendor/jquery.fancybox.js'
+					   'bundles/app/js/vendor/jquery.fancybox-media.js'
 					   'bundles/app/js/vendor/uri.js'
                        'bundles/fosjsrouting/js/router.js'
                        'js/fos_js_routes.js'
@@ -59,13 +65,36 @@
                        '@AppBundle/Resources/assets/js/app.js'
 					   '@AppBundle/Resources/assets/js/maps/italy.js'
 					   '@AppBundle/Resources/assets/js/autocomplete.js'
-					   '@AppBundle/Resources/assets/js/search.js' %}
+					   '@AppBundle/Resources/assets/js/search.js'
+                       '@AppBundle/Resources/assets/js/favorite.js' %}
 
             <script type="text/javascript" src="{{ asset_url }}"></script>
 
         {% endjavascripts %}
 
-        <script async type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"></script>
+        {% set website_concern = website() %}
+        {% set chat            = website_concern.getConfig(constant('WEBSITE_CONFIG_CHAT',       website_concern)) %}
+        {% set trustpilot      = website_concern.getConfig(constant('WEBSITE_CONFIG_TRUSTPILOT', website_concern)) %}
+
+        {% if trustpilot != false %}
+            <script async type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"></script>
+        {% endif %}
+
+        {% if chat != false %}
+            <script type="text/javascript">
+            var __lc = {
+                license: {{ chat_license }},
+                group: {{ chat|split('-')|first }}
+            };
+
+            (function() {
+            	var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
+            	lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
+            	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
+            })();
+            </script>
+
+        {% endif %}
 
         {% block javascripts %}{% endblock %}
     </body>

@@ -1,4 +1,6 @@
-<img src="{{ homepage_block_image(homepageBlock) }}" alt="{{ homepageBlock.getLocaleTitle(get_locale(), false) }}" />
-<div class="title-theme"><h4>{{ homepageBlock.getLocaleTitle(get_locale())|raw }}</h4>
-    <a href="{{ homepageBlock.getLink() }}" class="button small radius" title="{{ homepageBlock.getLocaleTitle(get_locale(), false) }}">{{ homepageBlock.getLocaleButton(get_locale()) }}</a>
-</div>
+<a href="{{ homepageBlock.getLink() }}">
+    <img src="{{ homepage_block_image(homepageBlock) }}" alt="{{ homepageBlock.getLocaleTitle(get_locale(), false) }}" />
+    <div class="title-theme"><h4>{{ homepageBlock.getLocaleTitle(get_locale())|raw }}</h4>
+        <span class="button small radius">{{ homepageBlock.getLocaleButton(get_locale()) }}</span>
+    </div>
+</a> 

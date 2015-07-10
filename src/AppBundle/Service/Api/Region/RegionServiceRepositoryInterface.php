@@ -1,8 +1,8 @@
 <?php
 namespace AppBundle\Service\Api\Region;
-
 use       AppBundle\Concern\SeasonConcern;
 use       AppBundle\Concern\WebsiteConcern;
+use       Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * RegionServiceRepositoryInterface
@@ -15,34 +15,34 @@ interface RegionServiceRepositoryInterface
 {
     /**
      * Setting season
-     * 
+     *
      * @param SeasonConcern $seasonConcern
      * @return void
      */
     public function setSeason(SeasonConcern $seasonConcern);
-    
+
     /**
      * Getting season
      *
      * @return integer
      */
     public function getSeason();
-    
+
     /**
      * Setting website
-     * 
+     *
      * @param WebsiteConcern $seasonConcern
      * @return void
      */
     public function setWebsite(WebsiteConcern $websiteConcern);
-    
+
     /**
      * Getting website
      *
      * @return integer
      */
     public function getWebsite();
-    
+
     /**
      * Fetching regions
      *
@@ -51,7 +51,7 @@ interface RegionServiceRepositoryInterface
      * @param array $options
      */
     public function all($options = []);
-    
+
     /**
      * Finding a single region
      *
@@ -59,7 +59,7 @@ interface RegionServiceRepositoryInterface
      * @return RegionServiceEntityInterface
      */
     public function find($by = []);
-    
+
     /**
      * Find by locale name
      *
@@ -68,7 +68,7 @@ interface RegionServiceRepositoryInterface
      * @return RegionServiceEntityInterface
      */
     public function findByLocaleName($name, $locale);
-    
+
     /**
      * Find by locale name
      *
@@ -77,7 +77,7 @@ interface RegionServiceRepositoryInterface
      * @return RegionServiceEntityInterface
      */
     public function findByLocaleSeoName($seoName, $locale);
-    
+
     /**
      * Find random regions flagged as 'homepage' region
      *

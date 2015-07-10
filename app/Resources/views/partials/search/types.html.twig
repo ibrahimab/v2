@@ -14,26 +14,28 @@
         </div>
 
         {% for type in types %}
-        <a class="tb-r{{ loop.index % 2 ? ' sale-type' : '' }}" href="{{ locale_path('show_type', {'beginCode': type.getAccommodation().getPlace().getCountry().getStartCode(), 'typeId': type.getId()}) }}">
-            <div class="tb-c tb-c-1">
-                <i class="sprite sprite-icon-torso"></i>
-                {{ ( type.getOptimalResidents() == type.getMaxResidents() ? type.getOptimalResidents() : (type.getOptimalResidents() ~ ' - ' ~ type.getMaxResidents()) ) }}
-            </div>
-            <div class="tb-c">
-                <i class="sprite sprite-icon-sleep"></i>
-                {{ type.getBedrooms() }}
-            </div>
-            <div class="tb-c">
-                <i class="sprite sprite-icon-bath"></i>
-                {{ type.getBathrooms() }}
-            </div>
-            <div class="tb-c">
-                {{ type.getLocaleName(locale) }}
-            </div>
-            <div class="tb-c"><span>8,5</span></div>
-            <div class="tb-c tb-c-6">{% if loop.index % 2 %}<i class="sprite sprite-icon-discount"></i>{% endif %}</div>
-            <div class="tb-c tb-c-7">&euro; 295,-<i class="fi-info"></i></div>
-        </a>
+            
+            {% set accommodation = type.getAccommodation() %}
+            <a class="tb-r{% if offfers[type.getId()] is defined %} sale-type{% endif %}" href="{{ locale_path('show_type', {'beginCode': accommodation.getPlace().getCountry().getStartCode(), 'typeId': type.getId()}) }}">
+                <div class="tb-c tb-c-1">
+                    <i class="sprite sprite-icon-torso"></i>
+                    {{ ( type.getOptimalResidents() == type.getMaxResidents() ? type.getOptimalResidents() : (type.getOptimalResidents() ~ ' - ' ~ type.getMaxResidents()) ) }}
+                </div>
+                <div class="tb-c">
+                    <i class="sprite sprite-icon-sleep"></i>
+                    {{ type.getBedrooms() }}
+                </div>
+                <div class="tb-c">
+                    <i class="sprite sprite-icon-bath"></i>
+                    {{ type.getBathrooms() }}
+                </div>
+                <div class="tb-c">
+                    {{ type.getLocaleName(locale) }}
+                </div>
+                <div class="tb-c"><span>8,5</span></div>
+                <div class="tb-c tb-c-6">{% if offers[type.getId()] is defined %}<i class="sprite sprite-icon-discount"></i>{% endif %}</div>
+                <div class="tb-c tb-c-7">{% if prices[type.getId()] is defined and prices[type.getId()] > 0 %}&euro; {{ prices[type.getId()]|number_format(0, ',', '.') }},-<i class="fi-info"></i>{% endif %}</div>
+            </a>
         {% endfor %}
         
     </div>
