@@ -2,7 +2,7 @@
 namespace AppBundle\Service\Api\User;
 use       AppBundle\Service\Api\User\UserServiceDocumentInterface;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
-use       Symfony\Component\Security\Core\SecurityContextInterface;
+use       Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @author Ibrahim Abdullah <ibrahim@chalet.nl>
@@ -18,9 +18,9 @@ class UserService
 	private $userServiceRepository;
 
     /**
-     * @var SecurityContextInterface
+     * @var TokenStorageInterface
      */
-    private $securityContext;
+    private $tokenStorage;
 
     /**
      * @var UserServiceDocumentInterface
@@ -32,10 +32,10 @@ class UserService
      *
      * @param UserServiceRepositoryInterface $userServiceRepository
      */
-	public function __construct(UserServiceRepositoryInterface $userServiceRepository, SecurityContextInterface $securityContext)
+	public function __construct(UserServiceRepositoryInterface $userServiceRepository, TokenStorageInterface $tokenStorage)
 	{
 		$this->userServiceRepository = $userServiceRepository;
-        $this->securityContext       = $securityContext;
+        $this->tokenStorage          = $tokenStorage;
 	}
 
     /**
@@ -46,7 +46,7 @@ class UserService
     public function user()
     {
         // check if user cache is empty and if an actual user token is active
-        if (null === $this->user && null !== ($token = $this->securityContext->getToken())) {
+        if (null === $this->user && null !== ($token = $this->tokenStorage->getToken())) {
             $this->user = $this->get($token->getAttribute('_anon_tk'));
         }
 
