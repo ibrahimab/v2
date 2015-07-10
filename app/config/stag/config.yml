@@ -7,8 +7,6 @@ framework:
 
 doctrine_mongodb:
     default_database: chalet_stag
-
-doctrine_mongodb:
     connections:
         default:
             server: "%mongodb_server%"
