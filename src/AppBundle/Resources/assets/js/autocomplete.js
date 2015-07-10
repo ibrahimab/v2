@@ -84,7 +84,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                 
                 jq('body').on('keydown', ns.Autocomplete.input.selector, function(event) {
                     
-                    if ([13, 38, 40].indexOf(event.keyCode) > -1) {
+                    if ([13, 38, 40].indexOf((event.keyCode || event.which)) > -1) {
                         
                         event.preventDefault();
                         ns.Autocomplete.arrows.handle(event);
@@ -95,7 +95,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                 
                 jq('body').on('keypress', ns.Autocomplete.input.selector, _.debounce(function(event) {
 
-                    if ([13, 38, 40].indexOf(event.keyCode) === -1) {
+                    if ([13, 38, 40].indexOf((event.keyCode || event.which)) === -1) {
 
                         event.preventDefault();
                         var term = event.target.value;
@@ -162,7 +162,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                 
                 jq(document).on('keyup', function(event) {
                     
-                    if (event.keyCode === 27) {
+                    if ((event.keyCode || event.which) === 27) {
                         ns.Autocomplete.resultsContainer.hide();
                     }
                 });
@@ -184,7 +184,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                 
                 ns.Autocomplete.arrows.event = event;
                 
-                switch (event.keyCode) {
+                switch ((event.keyCode || event.which)) {
                     
                     case 13:
                         ns.Autocomplete.arrows.enter();
