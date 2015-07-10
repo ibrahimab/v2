@@ -23,6 +23,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
         resultsContainer: null,
         currentTerm: null,
         debounce: 250,
+        focused: false,
 
         url: function(term, limit) {
             return Routing.generate('autocomplete', {term: term, limit: limit});
@@ -65,6 +66,8 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     if (term === '') {
                         element.attr('placeholder', element.data('focus-text'));
                     }
+                    
+                    ns.Autocomplete.focused = true;
                 });
 
                 jq('body').on('blur', ns.Autocomplete.input.selector, function(event) {
@@ -75,25 +78,42 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     if (term === '') {
                         element.attr('placeholder', element.data('default-placeholder'));
                     }
+                    
+                    ns.Autocomplete.focused = true;
                 });
-
-                jq('body').on('keyup', ns.Autocomplete.input.selector, _.debounce(function(event) {
-
-                    var term = event.target.value;
-
-                    if (ns.Autocomplete.currentTerm === term || term === '') {
-
-                        if (term === '') {
-
-                            ns.Autocomplete.currentTerm = '';
-                            ns.Autocomplete.resultsContainer.empty();
-                        }
-
+                
+                jq('body').on('keydown', ns.Autocomplete.input.selector, function(event) {
+                    
+                    if ([13, 38, 40].indexOf(event.keyCode) > -1) {
+                        
+                        event.preventDefault();
+                        ns.Autocomplete.arrows.handle(event);
+                        
                         return;
                     }
+                });
+                
+                jq('body').on('keypress', ns.Autocomplete.input.selector, _.debounce(function(event) {
 
-                    ns.Autocomplete.currentTerm = term;
-                    ns.Autocomplete.request(term, ns.Autocomplete.limit);
+                    if ([13, 38, 40].indexOf(event.keyCode) === -1) {
+
+                        event.preventDefault();
+                        var term = event.target.value;
+
+                        if (ns.Autocomplete.currentTerm === term || term === '') {
+
+                            if (term === '') {
+
+                                ns.Autocomplete.currentTerm = '';
+                                ns.Autocomplete.resultsContainer.empty();
+                            }
+
+                            return;
+                        }
+
+                        ns.Autocomplete.currentTerm = term;
+                        ns.Autocomplete.request(term, ns.Autocomplete.limit);
+                    }
 
                 }, ns.Autocomplete.debounce));
             },
@@ -102,6 +122,8 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                 jq('body').on('click', '[data-role="autocomplete-result"]', function(event) {
 
+                    event.stopPropagation();
+                    event.stopImmediatePropagation();
                     event.preventDefault();
 
                     var element = jq(this);
@@ -144,6 +166,76 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         ns.Autocomplete.resultsContainer.hide();
                     }
                 });
+            }
+        },
+
+        arrows: {
+            
+            position: 0,
+            total: 0,
+            event: null,
+            initialize: function() {
+                
+                ns.Autocomplete.arrows.position = 0;
+                ns.Autocomplete.arrows.total    = ns.Autocomplete.results.length;
+                ns.Autocomplete.arrows.event    = null;
+            },
+            handle: function(event) {
+                
+                ns.Autocomplete.arrows.event = event;
+                
+                switch (event.keyCode) {
+                    
+                    case 13:
+                        ns.Autocomplete.arrows.enter();
+                    break;
+                    
+                    case 38:
+                        ns.Autocomplete.arrows.up();
+                    break;
+                    
+                    case 40:
+                        ns.Autocomplete.arrows.down();
+                    break;
+                }
+
+                jq('[data-role="autocomplete-result"]').removeClass('active');
+                
+                if (ns.Autocomplete.arrows.position > 0) {   
+                    jq('[data-role="autocomplete-result"]').eq(ns.Autocomplete.arrows.position - 1).addClass('active');
+                }
+            },
+            up: function() {
+                
+                if ((ns.Autocomplete.arrows.position - 1) >= 0) {
+                    
+                    ns.Autocomplete.arrows.position -= 1;
+                    
+                } else {
+                    
+                    ns.Autocomplete.arrows.position = 0;
+                }
+            },
+            down: function() {
+                
+                if ((ns.Autocomplete.arrows.position + 1) <= ns.Autocomplete.arrows.total) {
+                    
+                    ns.Autocomplete.arrows.position += 1;
+                    
+                } else {
+                    
+                    ns.Autocomplete.arrows.position = 0;
+                }
+            },
+            
+            enter: function() {
+                
+                if (ns.Autocomplete.arrows.position > 0) {
+                    
+                    jq('[data-role="autocomplete-result"]').eq(ns.Autocomplete.arrows.position - 1).trigger('click');
+                    jq(ns.Autocomplete.input.selector).blur();
+                    ns.Autocomplete.arrows.initialize();
+                }
             }
         },
 
@@ -230,6 +322,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                 success: function(data) {
 
                     ns.Autocomplete.results = data;
+                    ns.Autocomplete.arrows.initialize();
                     ns.Autocomplete.views.render();
                 },
 
