@@ -299,7 +299,7 @@ div.autocomplete-container {
             position: absolute;
             top: 0;
             background-color: #fff;
-            width: 100%;
+            width: 211%;
             margin: 0;
             margin-top: -1rem;
             max-height: 159px;
@@ -325,20 +325,11 @@ div.autocomplete-container {
                     color: #fff !important;
                 }
 
-                &.country {
+                & {
 
                     font-weight: bold;
-                    background-color: #003366;
-                    color: #fff;
-
-                    i { padding: 4px; padding-left: 6px; padding-right: 3px; }
-                }
-
-                &.region {
-
-                    font-weight: bold;
-                    // padding-left: 15px;
                     color: #003366;
+                    i { color: #000000; padding: 4px; padding-left: 6px; padding-right: 0; }
                 }
             }
         }
@@ -564,3 +555,14 @@ footer ul.checked i { margin-top: 0.7rem; }
     a { text-decoration: none; }
     &:hover { outline: 1px solid #C8C8C8; }
 }
+
+.sprite-black-pistes { background-position: -300px -225px; width: 24px; height: 24px; margin-top: -5px; }
+.sprite-chat-closed { 
+    
+    background-position: -350px -233px; 
+    width: 16px; 
+    height: 16px;
+}
+
+#contact-chat i.fi-comments {  }
+#contact-chat i.sprite-chat-closed  { margin-top: 3px; margin-right: 0.5rem; }
