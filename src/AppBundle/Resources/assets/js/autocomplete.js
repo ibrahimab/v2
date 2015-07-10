@@ -304,9 +304,13 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     break;
                 }
 
+                var span = document.createElement('span');
+                span.textContent = name;
+                
                 li.setAttribute('data-role', 'autocomplete-result');
                 li.setAttribute('data-label', name);
-                li.innerHTML = tag + name;
+                li.innerHTML = tag;
+                li.appendChild(span);
 
                 return li;
             }
