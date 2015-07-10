@@ -55,8 +55,7 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
         $results = [];
 
         $nameRegex = new \MongoRegex('/.*' . $term . '.*/i');
-        $codeRegex = new \MongoRegex('/.*' . $term . '.*/i');
-
+        
         $qb = $this->createQueryBuilder();
         $qb->select()
            ->hydrate(false)
@@ -72,7 +71,7 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
                                                   ->field('locales')->notEqual(null))
 
                                ->addOr($qb->expr()->field('code')->exists(true)
-                                                  ->field('code')->equals($codeRegex));
+                                                  ->field('code')->equals($term));
 
         $season   = $qb->expr()->addOr($qb->expr()->field('season')->exists(false))
                                ->addOr($qb->expr()->addAnd($qb->expr()->field('season')->exists(true))

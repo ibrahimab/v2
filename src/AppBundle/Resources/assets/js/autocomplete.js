@@ -23,8 +23,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
         resultsContainer: null,
         currentTerm: null,
         debounce: 250,
-        focused: false,
-
+        
         url: function(term, limit) {
             return Routing.generate('autocomplete', {term: term, limit: limit});
         },
@@ -60,26 +59,22 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                 jq('body').on('focus', ns.Autocomplete.input.selector, function(event) {
 
-                    var element = jq(this);
+                    var element = jq(this).addClass('active');
                     var term    = element.val();
 
                     if (term === '') {
                         element.attr('placeholder', element.data('focus-text'));
                     }
-                    
-                    ns.Autocomplete.focused = true;
                 });
 
                 jq('body').on('blur', ns.Autocomplete.input.selector, function(event) {
 
-                    var element = jq(this);
+                    var element = jq(this).removeClass('active');
                     var term    = element.val();
 
                     if (term === '') {
                         element.attr('placeholder', element.data('default-placeholder'));
                     }
-                    
-                    ns.Autocomplete.focused = true;
                 });
                 
                 jq('body').on('keydown', ns.Autocomplete.input.selector, function(event) {

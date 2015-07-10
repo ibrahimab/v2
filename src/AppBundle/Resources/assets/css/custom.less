@@ -286,6 +286,31 @@ div.autocomplete-container {
             filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=75);
         }
     }
+    
+    input.active {
+        
+        &::-webkit-input-placeholder {
+            color: rgba(180, 180, 180, 0.75);
+        }
+
+        &:-moz-placeholder {
+
+            color: #b4b4b4;
+            opacity: 0.75;
+        }
+
+        &::-moz-placeholder {
+
+            color: #b4b4b4;
+            opacity: 0.75;
+        }
+
+        &:-ms-input-placeholder {
+
+            color: #b4b4b4;
+            filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=75);
+        }
+    }
 
     div.results {
 
@@ -608,3 +633,7 @@ footer ul.checked i { margin-top: 0.7rem; }
 
 #contact-chat i.fi-comments {  }
 #contact-chat i.sprite-chat-closed  { margin-top: 3px; margin-right: 0.5rem; }
+
+.homepage-places { 
+    a, a:hover, a:active, a:visited { text-decoration: none; } 
+}

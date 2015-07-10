@@ -42,7 +42,7 @@ class PaginatorService implements \Iterator, \Countable
     
     public function checkCurrentPage($page)
     {
-        if ($page > $this->getTotalPages() || $page < 0) {
+        if (($page > $this->getTotalPages() || $page < 0) && count($paginator) > 0) {
             throw new OutOfBoundsException(sprintf('Page cannot be set to either below zero or above the total pages. You chose: %d, max: (%d)', $page, $this->getTotalPages() + 1));
         }
         
