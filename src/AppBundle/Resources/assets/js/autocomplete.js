@@ -279,7 +279,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         li.setAttribute('data-entity', entities.ENTITY_REGION);
                         li.setAttribute('data-id', name);
 
-                        tag += '<i class="sprite sprite-icon-pistes chalets-icon-box"></i> ';
+                        tag += '<i class="sprite sprite-black-pistes chalets-icon-box"></i> ';
 
                     break;
 

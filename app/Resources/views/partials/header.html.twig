@@ -13,7 +13,7 @@
                             {% set chat            = website_concern.getConfig(constant('WEBSITE_CONFIG_CHAT', website_concern)) %}
                             {% if chat != false %}
                                 {% set chat = chat|split('-')[1] %}
-                                <a href="#" data-role="chat-button" data-id="{{ chat }}" id="contact-chat"><i class="{{ opened() ? 'fi-comments' : 'fi-closed' }}"></i>Chat</a>
+                                <a href="#" data-role="chat-button" data-id="{{ chat }}" id="contact-chat"><i class="{{ opened() ? 'fi-comments' : 'sprite sprite-chat-closed chalets-icon-box' }}"></i>Chat</a>
                                 <span class="show-for-medium-up">{{ "general.or"|trans }}</span>
                             {% endif %}
                             <a href="tel:+31-348-434649" class="phone"><br class="show-for-small" /><i class="fi-telephone"></i>0348 - 43 46 49</a>
