@@ -137,6 +137,13 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         ns.Autocomplete.resultsContainer.hide();
                     }
                 });
+                
+                jq(document).on('keyup', function(event) {
+                    
+                    if (event.keyCode === 27) {
+                        ns.Autocomplete.resultsContainer.hide();
+                    }
+                });
             }
         },
 
@@ -250,7 +257,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     ul.appendChild(ns.Autocomplete.views.result(results[i]));
                 }
 
-                ns.Autocomplete.resultsContainer.html(ul);
+                ns.Autocomplete.resultsContainer.html(ul).show();
             },
 
             result: function(result) {
