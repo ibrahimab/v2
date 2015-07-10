@@ -94,7 +94,7 @@ class GeneralSettingsService
                 case ($weekday > 0 && $weekday < 6):
             
                     $times = $this->openingTimes['weekday'];
-                    $openedTime->setTime($times['open']['hour'], $times['open']['minues'], 0);
+                    $openedTime->setTime($times['open']['hour'], $times['open']['minutes'], 0);
                     $closedTime->setTime($times['closed']['hour'], $times['closed']['minutes'], 0);
                 
                 break;
