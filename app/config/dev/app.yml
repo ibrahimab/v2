@@ -11,6 +11,10 @@ parameters:
         default_website: C
         default_season:  1
         minimalSurveyCount: 1
+        service:
+            api:
+                highlight:
+                    limit: 6
         countries:
             I: 5
             K: 5
@@ -280,7 +284,3 @@ parameters:
                 damage_insurance: 1
                 newsletter: false
                 newsletter_cancel: false
-        service:
-            api:
-                highlight:
-                    limit: 6

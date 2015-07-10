@@ -2,15 +2,20 @@ imports:
     - { resource: "../dev/app.yml" }
 
 parameters:
+    mailer_transport: mail
     app:
         travel_insurance_possible: true
         ten_days_insurance_price_summer: 26.20
         ten_days_insurance_price_default: 36.20
-        results_per_page: 5
+        results_per_page: 50
         default_locale:  nl
         default_website: C
         default_season:  1
         minimalSurveyCount: 1
+        service:
+            api:
+                highlight:
+                    limit: 6
         countries:
             I: 5
             K: 5
@@ -26,7 +31,7 @@ parameters:
                 ga: UA-2078202-1
                 facebook: 156825034385110
                 twitter: ChaletNL
-                google: false
+                google: +ChaletNlWintersport
                 resale: false
                 cancel_insurance: 1
                 travel_insurance: 1
@@ -272,8 +277,8 @@ parameters:
                 trustpilot: false
                 ga: UA-2078202-13
                 facebook: 290286354404681
-                twitter: false
                 google: false
+                twitter: false
                 resale: false
                 cancel_insurance: 1
                 travel_insurance: 1
