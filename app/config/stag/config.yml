@@ -5,6 +5,11 @@ framework:
     router:
         resource: "%kernel.root_dir%/config/stag/routing.yml"
 
+assetic:
+    debug:          "%kernel.debug%"
+    use_controller: false
+    write_to:       "%kernel.root_dir%/../web/"
+
 doctrine_mongodb:
     default_database: chalet_stag
     connections:
