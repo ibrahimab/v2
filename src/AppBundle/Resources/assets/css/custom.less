@@ -305,6 +305,11 @@ div.autocomplete-container {
             max-height: 159px;
             z-index: 1000;
             overflow: scroll;
+            border-radius: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border: 1px solid #e5e5e5;
+            border-top: 0;
 
             li {
 
@@ -333,7 +338,18 @@ div.autocomplete-container {
                         float: left; color: #000000; 
                         &.fi-flag, &.fi-marker { height: 16px; width: 16px; padding-left: 4px; }
                     }
-                    span { display: inline-block; float: left; width: 85%; margin-left: 6px; }
+                    
+                    span { 
+                        
+                        display: inline-block; 
+                        float: left; 
+                        width: 85%; 
+                        margin-left: 6px;
+                        font-weight: normal;
+                        color: rgba(0, 0, 0, 0.75);
+                        font-size: 0.875rem;
+                        font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+                    }
                 }
             }
         }
