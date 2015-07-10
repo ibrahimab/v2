@@ -1,5 +1,5 @@
 imports:
-    - { resource: "../dev/config.yml" }
+    - { resource: "../prod/config.yml" }
 
 framework:
     router:
@@ -8,15 +8,9 @@ framework:
 doctrine_mongodb:
     default_database: chalet_stag
 
-assetic:
-    use_controller: true
-    filters:
-        cssrewrite: ~
-        lessphp:
-            apply_to: "\.less$"
-
 doctrine_mongodb:
     connections:
         default:
             options:
+                connect: true
                 replicaSet: 'rs1'
