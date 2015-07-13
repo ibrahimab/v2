@@ -46,9 +46,9 @@ class SearchService
         return $this->searchServiceRepository->search($this->build());
     }
     
-    public function findOnlyNames($countries, $regions, $places, $accommodations)
+    public function findOnlyNames($countries, $regions, $places, $accommodations, $types)
     {
-        return $this->searchServiceRepository->findOnlyNames($countries, $regions, $places, $accommodations);
+        return $this->searchServiceRepository->findOnlyNames($countries, $regions, $places, $accommodations, $types);
     }
     
     public function facets(PaginatorService $paginator, $filters)

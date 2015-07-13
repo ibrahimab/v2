@@ -14,7 +14,8 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
             ENTITY_COUNTRY: 'country',
             ENTITY_REGION: 'region',
             ENTITY_PLACE: 'place',
-            ENTITY_ACCOMMODATION: 'accommodation'
+            ENTITY_ACCOMMODATION: 'accommodation',
+            ENTITY_TYPE: 'type'
         },
 
         input: null,
@@ -251,6 +252,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     uri.removeQuery('r[]');
                     uri.removeQuery('pl[]');
                     uri.removeQuery('a[]');
+                    uri.removeQuery('t[]');
 
                     switch (data.entity) {
 
@@ -272,6 +274,11 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         case ns.Autocomplete.entities.ENTITY_ACCOMMODATION:
 
                             uri.setQuery('a[]', data.id);
+                            break;
+
+                        case ns.Autocomplete.entities.ENTITY_TYPE:
+
+                            uri.setQuery('t[]', data.id);
                             break;
                     }
                     
@@ -316,6 +323,11 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         case ns.Autocomplete.entities.ENTITY_ACCOMMODATION:
 
                             ns.Search.filters.addAccommodation(data.id);
+                            break;
+
+                        case ns.Autocomplete.entities.ENTITY_TYPE:
+
+                            ns.Search.filters.addType(data.id);
                             break;
                     }
 
@@ -410,6 +422,16 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                         li.className = 'accommodation';
                         li.setAttribute('data-entity', entities.ENTITY_ACCOMMODATION);
+                        li.setAttribute('data-id', result['type_id']);
+
+                        tag += '<i class="fi-home"></i> ';
+
+                    break;
+
+                    case entities.ENTITY_TYPE:
+
+                        li.className = 'accommodation';
+                        li.setAttribute('data-entity', entities.ENTITY_TYPE);
                         li.setAttribute('data-id', result['type_id']);
 
                         tag += '<i class="fi-home"></i> ';

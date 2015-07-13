@@ -8,6 +8,7 @@ use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
 use       AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
+use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use       Symfony\Component\HttpFoundation\Request;
@@ -39,6 +40,7 @@ class SearchController extends Controller
         $r        = $request->query->get('r',  []);
         $pl       = $request->query->get('pl', []);
         $a        = $request->query->get('a',  []);
+        $t        = $request->query->get('t',  []);
         $be       = $request->query->get('be', null);
         $ba       = $request->query->get('ba', null);
         $page     = intval($request->query->get('p'));
@@ -64,6 +66,12 @@ class SearchController extends Controller
         if ($request->query->has('a')) {
             
             $searchBuilder->where(SearchBuilder::WHERE_ACCOMMODATION, $a);
+            $destination = true;
+        }
+
+        if ($request->query->has('t')) {
+            
+            $searchBuilder->where(SearchBuilder::WHERE_TYPE, $t);
             $destination = true;
         }
 
@@ -114,7 +122,7 @@ class SearchController extends Controller
             'filters'        => $filters,
             // instance needed to get constants easier from within twig template: constant('const', instance)
             'filter_service' => $this->container->get('app.filter'),
-            'custom_filters' => ['countries' => [], 'regions' => [], 'places' => [], 'accommodations' => []],
+            'custom_filters' => ['countries' => [], 'regions' => [], 'places' => [], 'accommodations' => [], 'types' => []],
             'form_filters'   => $formFilters,
             'prices'         => [],
             'offers'         => [],
@@ -139,7 +147,7 @@ class SearchController extends Controller
             $data['offers'] = $priceService->offers($typeIds);
         }
 
-        $custom_filter_entities = $searchService->findOnlyNames($c, $r, $pl, $a);
+        $custom_filter_entities = $searchService->findOnlyNames($c, $r, $pl, $a, $t);
         foreach ($custom_filter_entities as $entity) {
 
             if ($entity instanceof CountryServiceEntityInterface) {
@@ -157,8 +165,11 @@ class SearchController extends Controller
             if ($entity instanceof AccommodationServiceEntityInterface) {
                 $data['custom_filters']['accommodations'][$entity->getId()] = $entity;
             }
+            
+            if ($entity instanceof TypeServiceEntityInterface) {
+                $data['custom_filters']['types'][$entity->getId()] = $entity;
+            }
         }
-        
         // $facets = $searchService->facets($paginator, [
         //
         //     FilterService::FILTER_DISTANCE => [FilterService::FILTER_DISTANCE_BY_SLOPE, FilterService::FILTER_DISTANCE_MAX_250, FilterService::FILTER_DISTANCE_MAX_500, FilterService::FILTER_DISTANCE_MAX_1000],

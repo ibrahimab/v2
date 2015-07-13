@@ -20,7 +20,7 @@ class AutocompleteService
     const KIND_TYPE          = 'type';
 
     private $allowedKinds    = [
-        self::KIND_COUNTRY, self::KIND_REGION, self::KIND_PLACE, self::KIND_ACCOMMODATION,
+        self::KIND_COUNTRY, self::KIND_REGION, self::KIND_PLACE, self::KIND_TYPE,
     ];
 
     /**
@@ -119,7 +119,7 @@ class AutocompleteService
         $countries      = $format(self::KIND_COUNTRY);
         $regions        = $format(self::KIND_REGION);
         $places         = $format(self::KIND_PLACE);
-        $accommodations = $format(self::KIND_ACCOMMODATION);
+        $types          = $format(self::KIND_TYPE);
         
         foreach ($places as $placeId => $place) {
             
@@ -158,7 +158,7 @@ class AutocompleteService
             }
         }
         
-        $this->tree = [self::KIND_COUNTRY => $countries, self::KIND_REGION => $regions, self::KIND_PLACE => $places, self::KIND_ACCOMMODATION => $accommodations];
+        $this->tree = [self::KIND_COUNTRY => $countries, self::KIND_REGION => $regions, self::KIND_PLACE => $places, self::KIND_TYPE => $types];
                        
         return $this;
     }

@@ -49,9 +49,9 @@ class SearchRepository implements SearchServiceRepositoryInterface
      * @param array $ids
      * @return array
      */
-    public function findOnlyNames($countries, $regions, $places, $accommodations)
+    public function findOnlyNames($countries, $regions, $places, $accommodations, $types)
     {
-        if (count(array_merge($countries, $regions, $places, $accommodations)) === 0) {
+        if (count(array_merge($countries, $regions, $places, $accommodations, $types)) === 0) {
             return [];
         }
 
@@ -96,6 +96,17 @@ class SearchRepository implements SearchServiceRepositoryInterface
 
             $where->add($expr->in('a.id', ':accommodation_ids'));
             $qb->setParameter('accommodation_ids', $accommodations);
+        }
+
+        if (count($types) > 0) {
+
+            $select[]   = 'partial a.{id, name}, partial t.{id, name, englishName, germanName}';
+            $entities[] = 'AppBundle:Type\Type t';
+            $entities[] = 'AppBundle:Accommodation\Accommodation a';
+
+            $where->add($expr->in('t.id', ':type_ids'));
+            $where->add('t.accommodationId = a.id');
+            $qb->setParameter('type_ids', $types);
         }
 
         $qb->select(implode(', ', $select))
@@ -518,6 +529,11 @@ class SearchRepository implements SearchServiceRepositoryInterface
                 case SearchBuilder::WHERE_ACCOMMODATION:
 
                     $andX->add($expr->in('a.id', ':where_' . $clause['field']));
+                    break;
+
+                case SearchBuilder::WHERE_TYPE:
+
+                    $andX->add($expr->in('t.id', ':where_' . $clause['field']));
                     break;
 
                 case SearchBuilder::WHERE_COUNTRY:

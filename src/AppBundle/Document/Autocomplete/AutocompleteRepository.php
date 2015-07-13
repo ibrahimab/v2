@@ -70,8 +70,8 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
                                ->addOr($qb->expr()->field('name.nl')->equals($nameRegex)
                                                   ->field('locales')->notEqual(null))
 
-                               ->addOr($qb->expr()->field('code')->exists(true)
-                                                  ->field('code')->equals($term));
+                               ->addOr($qb->expr()->addAnd($qb->expr()->field('code')->exists(true))
+                                                  ->addAnd($qb->expr()->field('code')->equals($term)));
 
         $season   = $qb->expr()->addOr($qb->expr()->field('season')->exists(false))
                                ->addOr($qb->expr()->addAnd($qb->expr()->field('season')->exists(true))
@@ -85,7 +85,7 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
            ->addAnd($name)
            ->addAnd($season)
            ->addAnd($websites);
-
+        
         $rawResults = $qb->getQuery()->execute()->toArray();
         $results    = [];
 
