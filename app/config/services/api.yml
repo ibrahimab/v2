@@ -78,7 +78,7 @@ services:
 
     app.api.season:
         class:     AppBundle\Service\Api\Season\SeasonService
-        arguments: ["@app.repository.season", "@request_stack", "@translator"]
+        arguments: ["@app.repository.season"]
 
     app.api.option:
         class:     AppBundle\Service\Api\Option\OptionService

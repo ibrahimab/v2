@@ -14,49 +14,17 @@ class SeasonService
      * @var SeasonServiceRepositoryInterface
      */
     private $seasonServiceRepository;
-    
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-    
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-    
-    /**
-     * @var string
-     */
-    private $locale;
 
     /**
      * Constructor
      *
      * @param SeasonServiceRepositoryInterface $seasonServiceRepository
      */
-    public function __construct(SeasonServiceRepositoryInterface $seasonServiceRepository, RequestStack $requestStack, TranslatorInterface $translator)
+    public function __construct(SeasonServiceRepositoryInterface $seasonServiceRepository)
     {
         $this->seasonServiceRepository = $seasonServiceRepository;
-        $this->requestStack            = $requestStack;
-        $this->translator              = $translator;
     }
     
-    /**
-     * @return string
-     */
-    public function getLocale()
-    {
-        if (null === $this->locale) {
-            
-            if (null !== ($request = $this->requestStack->getCurrentRequest())) {
-                $this->locale = $request->getLocale();
-            }
-        }
-        
-        return $this->locale;
-    }
-
     /**
      * @return float
      */
@@ -89,7 +57,7 @@ class SeasonService
             while ($begin->getTimestamp() <= $end) {
                 
                 if ($begin->getTimestamp() >= (time() - self::WEEKEND_MAX_DIFFERENCE)) {
-                    $weekends[$begin->getTimestamp()] = $this->translator->trans('weekend') . ' ' . strftime('%e %B %Y', $begin->getTimestamp());
+                    $weekends[$begin->getTimestamp()] = strftime('%e %B %Y', $begin->getTimestamp());
                 }
                 
                 $begin->add($nextWeek);

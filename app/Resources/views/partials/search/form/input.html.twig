@@ -4,14 +4,15 @@
 {% set placeholder = (destination == true ? 'Voeg nog een bestemming toe' : 'Waar wil je naartoe?') %}
 
 <div class="autocomplete-container">
-    <input type="text" name="query" data-role="autocomplete-query" data-type="search-book" id="choose-destination" class="radius" data-focus-text="bijv. bestemming of accommodatie" data-default-placeholder="{{ placeholder }}" placeholder="{{ placeholder }}"  />
+    <input type="text" name="query" data-role="autocomplete-query" data-type="search-book" id="choose-destination" class="radius" data-focus-text="bijv. bestemming of accommodatie" data-default-placeholder="{{ placeholder }}" placeholder="{{ placeholder }}" autocomplete="off"  />
     <div class="results search-book" data-role="autocomplete-results">
     </div>
 </div>
 <select class="radius">
     <option value="husker">{{ 'select-when'|trans }}</option>
+    {% set arrival_label = 'arrival'|trans %}
     {% for timestamp, weekend in weekends %}
-        <option value="{{ timestamp }}">{{ weekend }}</option>
+        <option value="{{ timestamp }}">{{arrival_label}} {{ weekend }}</option>
     {% endfor %}
 </select>
 <select class="radius">
