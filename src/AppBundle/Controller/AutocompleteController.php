@@ -25,6 +25,6 @@ class AutocompleteController extends Controller
 
         $autocompleteService->search($term, $kinds)->limit($limit)->parse()->flatten();
 
-        return new JsonResponse(array_slice($autocompleteService->flattened(), 0, 5));
+        return new JsonResponse(array_slice($autocompleteService->flattened(), 0, $limit));
     }
 }
