@@ -44,6 +44,8 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 body.on('change', '[data-role="change-bathrooms"]', ns.Search.events.formChanges.bathrooms);
 
                 body.on('click', '[data-role="save-search"]', ns.Search.actions.save);
+                
+                body.on('change', '[data-role="choose-persons"]', ns.Search.events.formChanges.persons);
             },
 
             change: function(event) {
@@ -143,6 +145,16 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                     ns.Search.actions.search();
                 },
+                
+                persons: function(event) {
+                    
+                    // event.preventDefault();
+                    // var val = parseInt(jq(this).val(), 10);
+                    //
+                    // if (val === 0) {
+                    //     ns.Search.filters.
+                    // }
+                }
             },
 
             clear: function(event) {

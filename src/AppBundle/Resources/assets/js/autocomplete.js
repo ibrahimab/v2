@@ -203,23 +203,13 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
             up: function() {
                 
                 if ((ns.Autocomplete.arrows.position - 1) >= 0) {
-                    
-                    ns.Autocomplete.arrows.position -= 1;
-                    
-                } else {
-                    
-                    ns.Autocomplete.arrows.position = 0;
+                    ns.Autocomplete.arrows.position -= 1;   
                 }
             },
             down: function() {
                 
                 if ((ns.Autocomplete.arrows.position + 1) <= ns.Autocomplete.arrows.total) {
-                    
-                    ns.Autocomplete.arrows.position += 1;
-                    
-                } else {
-                    
-                    ns.Autocomplete.arrows.position = 0;
+                    ns.Autocomplete.arrows.position += 1;   
                 }
             },
             
