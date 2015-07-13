@@ -751,6 +751,24 @@ class Accommodation implements AccommodationServiceEntityInterface
     /**
      * {@InheritDoc}
      */
+    public function setDistanceSlope($distanceSlope)
+    {
+        $this->distanceSlope = $distanceSlope;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getDistanceSlope()
+    {
+        return $this->distanceSlope;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
     public function setWeekendSki($weekendSki)
     {
         $this->weekendSki = $weekendSki;

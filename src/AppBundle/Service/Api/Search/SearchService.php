@@ -1,5 +1,10 @@
 <?php
 namespace AppBundle\Service\Api\Search;
+use       AppBundle\Service\Paginator\PaginatorService;
+use       AppBundle\Service\FilterService;
+use       AppBundle\Service\FacetService;
+use       AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
+use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 
 /**
  * This is the search service
@@ -46,13 +51,27 @@ class SearchService
         return $this->searchServiceRepository->search($this->build());
     }
     
+    /**
+     * @param array $countries
+     * @param array $regions
+     * @param array $places
+     * @param array $accommodations
+     * @param array $types
+     */
     public function findOnlyNames($countries, $regions, $places, $accommodations, $types)
     {
         return $this->searchServiceRepository->findOnlyNames($countries, $regions, $places, $accommodations, $types);
     }
     
+    /**
+     * @param PaginatorService $paginator
+     * @param array $filters
+     */
     public function facets(PaginatorService $paginator, $filters)
     {
-        return $this->searchServiceRepository->facets($paginator, $filters);
+        $facetService = new FacetService($paginator, $filters);
+        $facetService->calculate();
+        
+        return $facetService;
     }
 }

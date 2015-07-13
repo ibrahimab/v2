@@ -10,18 +10,9 @@
 </div>
 <select class="radius">
     <option value="husker">{{ 'select-when'|trans }}</option>
-    <option value="1423868400">weekend 14 februari 2015</option>
-    <option value="1424473200">weekend 21 februari 2015</option>
-    <option value="1425078000">weekend 28 februari 2015</option>
-    <option value="1425682800">weekend 7 maart 2015</option>
-    <option value="1426287600">weekend 14 maart 2015</option>
-    <option value="1426892400">weekend 21 maart 2015</option>
-    <option value="1427497200">weekend 28 maart 2015</option>
-    <option value="1428098400">weekend 4 april 2015</option>
-    <option value="1428703200">weekend 11 april 2015</option>
-    <option value="1429308000">weekend 18 april 2015</option>
-    <option value="1429912800">weekend 25 april 2015</option>
-    <option value="1430517600">weekend 2 mei 2015</option>
+    {% for timestamp, weekend in weekends %}
+        <option value="{{ timestamp }}">{{ weekend }}</option>
+    {% endfor %}
 </select>
 <select class="radius">
     <option value="hoeveel">{{ 'select-how-many'|trans }}</option>

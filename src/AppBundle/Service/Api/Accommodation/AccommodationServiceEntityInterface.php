@@ -479,6 +479,21 @@ interface AccommodationServiceEntityInterface
     public function getWeekendSki();
 
     /**
+     * Set distance slope
+     *
+     * @param integer
+     * @return AccommodationServiceEntityInterface
+     */
+    public function setDistanceSlope($distanceSlope);
+
+    /**
+     * Get distance slope
+     *
+     * @return integer
+     */
+    public function getDistanceSlope();
+
+    /**
      * General locale field getter
      *
      * @param string $field

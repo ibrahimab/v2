@@ -128,9 +128,9 @@ class SearchRepository implements SearchServiceRepositoryInterface
         $page  = $searchBuilder->block(SearchBuilder::BLOCK_PAGE);
         $qb    = $this->query($searchBuilder)
                       ->add('select', 't,
-                                       partial a.{id, name, shortDescription, englishShortDescription, germanShortDescription, features, quality},
-                                       partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName},
-                                       partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName},
+                                       partial a.{id, name, shortDescription, englishShortDescription, germanShortDescription, features, quality, distanceSlope},
+                                       partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, features},
+                                       partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, totalSlopesDistance},
                                        partial c.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, startCode}');
         
         $paginator = new PaginatorService($qb);
@@ -138,17 +138,6 @@ class SearchRepository implements SearchServiceRepositoryInterface
         $paginator->setCurrentPage($page);
         
         return $paginator;
-    }
-    
-    public function facets(SearchBuilder $searchBuilder, $filters)
-    {
-        foreach ($filters as $filter) {
-            
-            foreach ($filter as $values) {
-                
-                
-            }
-        }
     }
     
     public function query(SearchBuilder $searchBuilder)
@@ -362,11 +351,15 @@ class SearchRepository implements SearchServiceRepositoryInterface
             case FilterService::FILTER_FACILITY_INTERNET_WIFI:
 
                 $selector = $expr->orX()
-                                 ->add($expr->like('t.features', ':type_features_' . $facility))
-                                 ->add($expr->like('a.features', ':accommodation_features_' . $facility));
+                                 ->add($expr->like('t.features', ':type_features_1_' . $facility))
+                                 ->add($expr->like('t.features', ':type_features_2_' . $facility))
+                                 ->add($expr->like('a.features', ':accommodation_features_1_' . $facility))
+                                 ->add($expr->like('a.features', ':accommodation_features_2_' . $facility));
 
-                $qb->setParameter('type_features_' . $facility, '%20%')
-                   ->setParameter('accommodation_features_' . $facility, '%22%');
+                $qb->setParameter('type_features_1_' . $facility, '%20%')
+                   ->setParameter('type_features_2_' . $facility, '%22%')
+                   ->setParameter('accommodation_features_1_' . $facility, '%21%')
+                   ->setParameter('accommodation_features_2_' . $facility, '%23%');
 
                 break;
 

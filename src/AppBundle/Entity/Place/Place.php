@@ -989,7 +989,7 @@ class Place implements PlaceServiceEntityInterface
      */
     public function getFeatures()
     {
-        return $this->features;
+        return (null === $this->features ? [] : $this->features);
     }
 
     /**

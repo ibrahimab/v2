@@ -60,5 +60,8 @@
             </div>
         </div>
     </a>
-    {% include 'partials/search/types.html.twig' with {'types': types|slice(1), 'prices': prices, 'offers': offers} only %}
+    {% set rest = types|slice(1) %}
+    {% if rest|length > 0 %}
+        {% include 'partials/search/types.html.twig' with {'types': rest, 'prices': prices, 'offers': offers} only %}
+    {% endif %}
 </article>
