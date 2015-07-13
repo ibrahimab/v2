@@ -3,6 +3,7 @@ namespace AppBundle\Entity\Season;
 use       AppBundle\Entity\BaseRepository;
 use       AppBundle\Service\Api\Season\SeasonServiceRepositoryInterface;
 use       Doctrine\ORM\NoResultException;
+use       Doctrine\ORM\Query;
 
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
@@ -47,5 +48,23 @@ class SeasonRepository extends BaseRepository implements SeasonServiceRepository
         }
 
         return $costs;
+    }
+    
+    public function seasons()
+    {
+        $qb   = $this->createQueryBuilder('s');
+        $expr = $qb->expr();
+        
+        $qb->select('s.id, s.name, (UNIX_TIMESTAMP(s.start)) AS weekend_start, (UNIX_TIMESTAMP(s.end)) AS weekend_end, s.display')
+           ->where($expr->eq('s.season', ':season'))
+           ->andWhere($expr->eq('s.display', ':display'))
+           ->orderBy('s.start, s.end')
+           ->setParameters([
+               
+               'season'  => $this->getSeason(),
+               'display' => 3,
+           ]);
+        
+        return $qb->getQuery()->getResult(Query::HYDRATE_ARRAY);
     }
 }

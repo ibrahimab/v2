@@ -49,24 +49,15 @@
                         </div>
                         <div class="large-3 medium-3 columns">
                             <select class="radius">
-                                <option value="husker">Wanneer wil je gaan?</option>
-                                <option value="1423868400">weekend 14 februari 2015</option>
-                                <option value="1424473200">weekend 21 februari 2015</option>
-                                <option value="1425078000">weekend 28 februari 2015</option>
-                                <option value="1425682800">weekend 7 maart 2015</option>
-                                <option value="1426287600">weekend 14 maart 2015</option>
-                                <option value="1426892400">weekend 21 maart 2015</option>
-                                <option value="1427497200">weekend 28 maart 2015</option>
-                                <option value="1428098400">weekend 4 april 2015</option>
-                                <option value="1428703200">weekend 11 april 2015</option>
-                                <option value="1429308000">weekend 18 april 2015</option>
-                                <option value="1429912800">weekend 25 april 2015</option>
-                                <option value="1430517600">weekend 2 mei 2015</option>
+                                <option>Wanneer wil je gaan?</option>
+                                {% for timestamp, weekend in weekends %}
+                                    <option value="{{ timestamp }}">{{ weekend }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                         <div class="large-3 medium-3 columns">
                             {# we have two select items because of text switching when resizing viewport (medium ('Hoeveel personen') vs rest ('Met hoeveel personen ga je?')) #}
-                            <select class="radius hide-for-medium">
+                            <select class="radius hide-for-medium" data-role="choose-persons-home">
                                 <option value="hoeveel">Met hoeveel personen ga je?</option>
                                 {% for i in 1..39 %}
                                 <option value="{{ i }}">{{ i }}</option>
@@ -74,7 +65,7 @@
                                 <option value="40">40 of meer</option>
                             </select>
                     
-                            <select class="radius show-for-medium">
+                            <select class="radius show-for-medium" data-role="choose-persons">
                                 <option value="hoeveel">Hoeveel personen?</option>
                                 {% for i in 1..39 %}
                                 <option value="{{ i }}">{{ i }}</option>

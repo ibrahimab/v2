@@ -39,6 +39,7 @@ class PagesController extends Controller
         $placeService         = $this->get('app.api.place');
         $typeService          = $this->get('app.api.type');
         $priceService         = $this->get('app.api.price');
+        $seasonService        = $this->get('app.api.season');
 
         $regions              = $regionService->findHomepageRegions(['limit' => 1]);
         $places               = [];
@@ -102,6 +103,7 @@ class PagesController extends Controller
             'highlights'     => $highlights,
             'homepageBlocks' => $groupedHomepageBlocks,
             'offers'         => $offers,
+            'weekends'       => $seasonService->weekends($seasonService->seasons()),
         ];
     }
 

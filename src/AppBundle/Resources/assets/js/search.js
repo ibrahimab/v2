@@ -148,12 +148,16 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 
                 persons: function(event) {
                     
-                    // event.preventDefault();
-                    // var val = parseInt(jq(this).val(), 10);
-                    //
-                    // if (val === 0) {
-                    //     ns.Search.filters.
-                    // }
+                    event.preventDefault();
+                    var val = parseInt(jq(this).val(), 10);
+
+                    if (val === 0) {
+                        ns.Search.filters.removePersons();
+                    } else {
+                        ns.Search.filters.setPersons(val);
+                    }
+                    
+                    ns.Search.actions.search();
                 }
             },
 
@@ -253,6 +257,12 @@ window.Chalet = (function(ns, jq, _, undefined) {
                     uri.removeQuery('ba');
                     uri.setQuery('ba', ns.Search.filters.bathrooms);
                 }
+                
+                if (null !== ns.Search.filters.persons) {
+                    
+                    uri.removeQuery('pe');
+                    uri.setQuery('pe', ns.Search.filters.persons);
+                }
 
                 return uri;
             },
@@ -322,6 +332,8 @@ window.Chalet = (function(ns, jq, _, undefined) {
             bedrooms: null,
 
             bathrooms: null,
+            
+            persons: null,
 
             active: function() {
                 return ns.Search.filters.filters;
@@ -378,6 +390,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 ns.Search.filters.accommodations = [];
                 ns.Search.filters.bedrooms       = null;
                 ns.Search.filters.bathrooms      = null;
+                ns.Search.filters.persons        = null;
             },
 
             addCountry: function(country) {
@@ -452,6 +465,14 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
             removeBathrooms: function() {
                 ns.Search.filters.bathrooms = null;
+            },
+            
+            removePersons: function() {
+                ns.Search.filters.persons = null;
+            },
+            
+            setPersons: function(persons) {
+                ns.Search.filters.persons = persons;
             }
         },
     };

@@ -67,5 +67,6 @@ class LocaleListener
         }
 
         $request->setLocale($locale);
+        setlocale(LC_ALL, $this->systemLocales[$locale]);
     }
 }

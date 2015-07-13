@@ -111,6 +111,20 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     }
 
                 }, ns.Autocomplete.debounce));
+                
+                if (ns.Autocomplete.type === ns.Autocomplete.types.TYPE_HOME) {
+                    
+                    jq('body').on('change', '[data-role="choose-persons-home"]', function(event) {
+                        
+                        event.preventDefault();
+                        
+                        var persons = event.target.value;
+                        
+                        if (persons !== '') {
+                            ns.Autocomplete.actions.home.persons(persons);
+                        }
+                    });
+                }
             },
 
             click: function() {
@@ -227,12 +241,16 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
         actions: {
 
             home: {
-
+                
                 click: function(data) {
 
                     var link = jq('[data-role="search-simple"]');
                     var uri  = URI(link.attr('href'));
-                    uri.search('');
+                    
+                    uri.removeQuery('c[]');
+                    uri.removeQuery('r[]');
+                    uri.removeQuery('pl[]');
+                    uri.removeQuery('a[]');
 
                     switch (data.entity) {
 
@@ -256,11 +274,21 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                             uri.setQuery('a[]', data.id);
                             break;
                     }
-
-
+                    
                     link.attr('href', uri.toString());
                     ns.Autocomplete.input.val(data.label);
                     ns.Autocomplete.resultsContainer.hide();
+                },
+                
+                persons: function(persons) {
+                    
+                    var link = jq('[data-role="search-simple"]');
+                    var uri  = URI(link.attr('href'));
+                    
+                    uri.removeQuery('pe');
+                    uri.setQuery('pe', persons);
+                    
+                    link.attr('href', uri.toString());
                 }
             },
 
