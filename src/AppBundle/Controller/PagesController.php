@@ -276,4 +276,12 @@ class PagesController extends Controller
     {
         return $this->render('pages/header.html.twig');
     }
+
+    /**
+     * @Route("/zooverawards2015", name="page_zooverawards")
+     */
+    public function zooverawards()
+    {
+        return $this->render('pages/zooverawards.html.twig');
+    }
 }
