@@ -53,6 +53,7 @@ class SearchController extends Controller
         });
 
         $formFilters   = [];
+        $surveyService = $this->get('app.api.booking.survey');
         $seasonService = $this->get('app.api.season');
         $searchService = $this->get('app.api.search');
         $searchBuilder = $searchService->build()
@@ -129,14 +130,20 @@ class SearchController extends Controller
             'offers'         => [],
             'destination'    => $destination,
             'weekends'       => $seasonService->weekends($seasonService->seasons()),
+            'surveys'        => [],
         ];
 
-        $typeIds = [];
+        $typeIds      = [];
+        $typeEntities = [];
+        
         foreach ($paginator as $accommodation) {
 
             $types = $accommodation->getTypes();
-            foreach ($types as $type) {                
-                $typeIds[] = $type->getId();
+            
+            foreach ($types as $type) {
+                
+                $typeIds[]      = $type->getId();
+                $typeEntities[] = $type;
             }
         }
 
@@ -192,7 +199,13 @@ class SearchController extends Controller
         }
         
         $data['facet_service'] = $searchService->facets($paginator, $facetFilters);
-        // sleep(20);
+
+        $surveys = $surveyService->statsByTypes($typeEntities);
+        
+        foreach ($surveys as $surveyData) {            
+            $data['surveys'][$surveyData['typeId']] = ['count' => $surveyData['surveyCount'], 'rating' => $surveyData['surveyAverageOverallRating']];
+        }
+        
         return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', $data);
     }
 

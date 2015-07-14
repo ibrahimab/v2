@@ -32,7 +32,7 @@
                 <div class="tb-c">
                     {{ type.getLocaleName(locale) }}
                 </div>
-                <div class="tb-c"><span>8,5</span></div>
+                <div class="tb-c">{% if surveys[type.getId()] is defined %}<span>{{ surveys[type.getId()]['rating']|number_format(1, ',', '') }} ({{ surveys[type.getId()]['count'] }})</span>{% endif %}</div>
                 <div class="tb-c tb-c-6">{% if offers[type.getId()] is defined %}<i class="sprite sprite-icon-discount"></i>{% endif %}</div>
                 <div class="tb-c tb-c-7">{% if prices[type.getId()] is defined and prices[type.getId()] > 0 %}&euro; {{ prices[type.getId()]|number_format(0, ',', '.') }},-<i class="fi-info"></i>{% endif %}</div>
             </a>
