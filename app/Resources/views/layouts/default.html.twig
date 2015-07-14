@@ -4,22 +4,8 @@
 {% block body %}
 
     <!-- header -->
-    <header>
-        <div id="header-container">
-            <div class="row">
-                <div class="small-12 medium-0 large-4 columns">
-                </div>
-                <div class="small-12 medium-12 large-8 columns hide-for-small">
-                    {% set route = app.request.attributes.get('_route') %}
-                    <dl class="sub-nav">
-                        <dd class="sub-home{% if route == 'frontpage' %} active{% endif %}"><a href="{{ path('home') }}"><i class="fi-home"></i></a></dd>
-                        <dd class="sub-search{% if route in ['search_nl', 'search_en'] %} active{% endif %}"><a href="{{ locale_path('search') }}">Zoek en boek</a></dd>
-                        <dd class="sub-skiareas{% if route in ['all_regions_nl', 'all_regions_en'] %} active{% endif %}"><a href="{{ locale_path('all_regions') }}">Skigebieden</a></dd>
-                        <dd class="sub-discount"><a href="">Aanbiedingen</a></dd>
-                    </dl>
-                </div>
-            </div>
-        </div>
+    <header class="not-home">
+        {% include 'partials/menu.html.twig' %}
     </header>
 
     <!--breadcrumbs -->
