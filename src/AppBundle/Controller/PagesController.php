@@ -7,6 +7,7 @@ use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterfac
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Autocomplete\AutocompleteService;
 use       AppBundle\Service\FilterService;
+use       AppBundle\Service\Api\Search\SearchBuilder;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -40,6 +41,9 @@ class PagesController extends Controller
         $typeService          = $this->get('app.api.type');
         $priceService         = $this->get('app.api.price');
         $seasonService        = $this->get('app.api.season');
+        $searchService        = $this->get('app.api.search');
+        $searchBuilder        = $searchService->build()
+                                              ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0);
 
         $regions              = $regionService->findHomepageRegions(['limit' => 1]);
         $places               = [];
@@ -104,6 +108,7 @@ class PagesController extends Controller
             'homepageBlocks' => $groupedHomepageBlocks,
             'offers'         => $offers,
             'weekends'       => $seasonService->weekends($seasonService->seasons()),
+            'accommodations' => $searchBuilder->count(),
         ];
     }
 

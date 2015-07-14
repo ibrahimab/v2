@@ -43,4 +43,8 @@ namespace :deploy do
   task :ownership, [:user, :group] do |t, args|
     sh "sudo chown -R #{args.user}:#{args.group} app/cache app/logs"
   end
+  
+  task :routes do
+    Rake::Task[:console].invoke('fos:js-routing:dump')
+  end
 end

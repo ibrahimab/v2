@@ -28,6 +28,10 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
         url: function(term, limit) {
             return Routing.generate('autocomplete', {term: term, limit: limit});
         },
+        
+        countUrl: function(params) {
+            return Routing.generate('search_count') + '?' + params;
+        },
 
         initialize: function(options) {
 
@@ -285,6 +289,8 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     link.attr('href', uri.toString());
                     ns.Autocomplete.input.val(data.label);
                     ns.Autocomplete.resultsContainer.hide();
+                    
+                    ns.Autocomplete.count(uri.query());
                 },
                 
                 persons: function(persons) {
@@ -354,6 +360,22 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                 error: function() {}
             });
         },
+        
+        count: function(params) {
+            
+            if (ns.Autocomplete.type === ns.Autocomplete.types.TYPE_HOME) {
+            
+                jq.ajax({
+                
+                    url: ns.Autocomplete.countUrl(params),
+                    success: function(data) {
+                        ns.Autocomplete.views.updateCount(data.count)
+                    },
+                
+                    error: function() {}
+                });
+            }
+        },
 
         views: {
 
@@ -376,6 +398,10 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                 }
 
                 ns.Autocomplete.resultsContainer.html(ul).show();
+            },
+            
+            updateCount: function(count) {
+                jq('[data-role="results-count"]').text(count);
             },
 
             result: function(result) {

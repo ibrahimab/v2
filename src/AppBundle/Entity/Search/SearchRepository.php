@@ -11,6 +11,7 @@ use       AppBundle\Concern\SeasonConcern;
 use       AppBundle\Concern\WebsiteConcern;
 use       AppBundle\Entity\BaseRepository;
 use       Doctrine\ORM\EntityManager;
+use       Doctrine\ORM\QueryBuilder;
 
 /**
  * Search repository
@@ -139,7 +140,23 @@ class SearchRepository implements SearchServiceRepositoryInterface
 
         return $paginator;
     }
+    
+    /**
+     * @param SearchBuilder $searchBuilder
+     * @return integer
+     */
+    public function count(SearchBuilder $searchBuilder)
+    {
+        $qb = $this->query($searchBuilder)
+                   ->add('select', 'COUNT(t)');
+        
+        return (int)$qb->getQuery()->getSingleScalarResult();
+    }
 
+    /**
+     * @param SearchBuilder $searchBuilder
+     * @return QueryBuilder
+     */
     public function query(SearchBuilder $searchBuilder)
     {
         $sort_by     = $searchBuilder->block(SearchBuilder::BLOCK_SORT_BY, self::SORT_BY_DEFAULT);
@@ -180,6 +197,10 @@ class SearchRepository implements SearchServiceRepositoryInterface
         return $qb;
     }
 
+    /**
+     * @param integer $sort
+     * @return string
+     */
     public function sortField($sort)
     {
         switch ($sort) {
@@ -232,6 +253,11 @@ class SearchRepository implements SearchServiceRepositoryInterface
         return $qb;
     }
 
+    /**
+     * @param QueryBuilder $qb
+     * @param array $filters
+     * @return QueryBuilder
+     */
     public function distance($qb, $filters)
     {
         if (true === $filters->has(FilterService::FILTER_DISTANCE)) {
@@ -269,6 +295,11 @@ class SearchRepository implements SearchServiceRepositoryInterface
         return $qb;
     }
 
+    /**
+     * @param QueryBuilder $qb
+     * @param array $filters
+     * @return QueryBuilder
+     */
     public function length($qb, $filters)
     {
         if (true === $filters->has(FilterService::FILTER_LENGTH)) {
@@ -306,6 +337,11 @@ class SearchRepository implements SearchServiceRepositoryInterface
         return $qb;
     }
 
+    /**
+     * @param QueryBuilder $qb
+     * @param array $filters
+     * @return QueryBuilder
+     */
     public function facilities($qb, $filters)
     {
         if (true === $filters->has(FilterService::FILTER_FACILITY)) {
@@ -332,6 +368,11 @@ class SearchRepository implements SearchServiceRepositoryInterface
         return $qb;
     }
 
+    /**
+     * @param QueryBuilder $qb
+     * @param integer $facility
+     * @return QueryBuilder
+     */
     public function facility($qb, $facility)
     {
         $expr = $qb->expr();
@@ -428,6 +469,11 @@ class SearchRepository implements SearchServiceRepositoryInterface
         return $selector;
     }
 
+    /**
+     * @param QueryBuilder $qb
+     * @param array $filters
+     * @return QueryBuilder
+     */
     public function themes($qb, $filters)
     {
         if (true === $filters->has(FilterService::FILTER_THEME)) {
@@ -454,6 +500,11 @@ class SearchRepository implements SearchServiceRepositoryInterface
         return $qb;
     }
 
+    /**
+     * @param QueryBuilder $qb
+     * @param integer $theme
+     * @return QueryBuilder
+     */
     public function theme($qb, $theme)
     {
         $expr     = $qb->expr();
@@ -505,6 +556,11 @@ class SearchRepository implements SearchServiceRepositoryInterface
         return $selector;
     }
 
+    /**
+     * @param array $where
+     * @param QueryBuilder $qb
+     * @return QueryBuilder
+     */
     public function where($where, $qb)
     {
         $expr = $qb->expr();

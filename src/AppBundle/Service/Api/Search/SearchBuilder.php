@@ -189,4 +189,14 @@ class SearchBuilder
     {
         return $this->searchService->search();
     }
+    
+    /**
+     * Count results
+     *
+     * @return integer
+     */
+    public function count()
+    {
+        return $this->searchService->count();
+    }
 }

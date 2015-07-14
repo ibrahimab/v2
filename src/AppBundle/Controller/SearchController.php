@@ -208,6 +208,48 @@ class SearchController extends Controller
         
         return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', $data);
     }
+    
+    /**
+     * @Route(path="/search/count", name="search_count", options={"expose": true})
+     */
+    public function count(Request $request)
+    {
+        $searchService = $this->get('app.api.search');
+        $searchBuilder = $searchService->build()
+                                       ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0);
+        
+        if ($request->query->has('a')) {
+            $searchBuilder->where(SearchBuilder::WHERE_ACCOMMODATION, $request->query->get('a'));
+        }
+
+        if ($request->query->has('t')) {
+            $searchBuilder->where(SearchBuilder::WHERE_TYPE, $request->query->get('t'));
+        }
+
+        if ($request->query->has('c')) {
+            $searchBuilder->where(SearchBuilder::WHERE_COUNTRY, $request->query->get('c'));
+        }
+
+        if ($request->query->has('r')) {
+            $searchBuilder->where(SearchBuilder::WHERE_REGION, $request->query->get('r'));
+        }
+
+        if ($request->query->has('pl')) {
+            $searchBuilder->where(SearchBuilder::WHERE_PLACE, $request->query->get('pl'));
+        }
+
+        if ($request->query->has('be')) {
+            $searchBuilder->where(SearchBuilder::WHERE_BEDROOMS, $request->query->get('be'));
+        }
+
+        if ($request->query->has('ba')) {
+            $searchBuilder->where(SearchBuilder::WHERE_BATHROOMS, $request->query->get('ba'));
+        }
+        
+        return new JsonResponse([
+            'count' => $searchBuilder->count(),
+        ]);
+    }
 
     /**
      * @Route(path="/search/save", name="save_search", options={"expose": true})

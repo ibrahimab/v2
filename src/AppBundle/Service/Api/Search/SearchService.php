@@ -52,6 +52,14 @@ class SearchService
     }
     
     /**
+     * @return integer
+     */
+    public function count()
+    {
+        return $this->searchServiceRepository->count($this->build());
+    }
+    
+    /**
      * @param array $countries
      * @param array $regions
      * @param array $places
