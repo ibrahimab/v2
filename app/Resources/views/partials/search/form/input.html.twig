@@ -1,6 +1,7 @@
 {% set persons     = 'persons'|trans|lower %}
 {% set bathrooms   = 'bathrooms'|trans|lower %}
 {% set bedrooms    = 'bedrooms'|trans|lower %}
+{% set minimum     = 'minimum'|trans|lower %}
 {% set placeholder = (destination == true ? 'Voeg nog een bestemming toe' : 'Waar wil je naartoe?') %}
 
 <div class="autocomplete-container">
@@ -27,13 +28,13 @@
     <option value="0">{{ 'select-bedrooms'|trans }}</option>
     <option value="1"{{ form_filters['bedrooms'] is defined and 1 == form_filters['bedrooms'] ? ' selected="selected"' }}>1 {{ 'bedroom'|trans }}</option>
     {% for i in 2..10 %}
-        <option value="{{ i }}"{{ form_filters['bedrooms'] is defined and i == form_filters['bedrooms'] ? ' selected="selected"' }}>{{ i }} {{ bedrooms }}</option>
+        <option value="{{ i }}"{{ form_filters['bedrooms'] is defined and i == form_filters['bedrooms'] ? ' selected="selected"' }}>{{ minimum }} {{ i }} {{ bedrooms }}</option>
     {% endfor %}
 </select>
 <select class="radius" data-role="change-bathrooms">
     <option value="0">{{ 'select-bathrooms'|trans }}</option>
     <option value="1"{{ form_filters['bathrooms'] is defined and 1 == form_filters['bathrooms'] ? ' selected="selected"' }}>1 {{ 'bathroom'|trans }}</option>
     {% for i in 2..10 %}
-        <option value="{{ i }}"{{ form_filters['bathrooms'] is defined and i == form_filters['bathrooms'] ? ' selected="selected"' }}>{{ i }} {{ bathrooms }}</option>
+        <option value="{{ i }}"{{ form_filters['bathrooms'] is defined and i == form_filters['bathrooms'] ? ' selected="selected"' }}>{{ minimum }} {{ i }} {{ bathrooms }}</option>
     {% endfor %}
 </select>
