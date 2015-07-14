@@ -51,7 +51,6 @@
                 <div class="styled_label" data-role="change-filter" data-action="{{ filter_distance_value == distance_by_slope ? 'remove' : 'add' }}" data-filter="{{ filter_distance }}" data-filter-value="{{ distance_by_slope }}">
                     <label class="label_check" for="checkbox-01">
                         <input data-group="checkbox-1" id="checkbox-01" type="checkbox"{{ is_checked(filter_distance_value, distance_by_slope) }} />{{ 'filter-distance-by-slope'|trans }}
-                        {% dump(facet_service.has(filter_distance, distance_by_slope)) %}
                         {% if facet_service.has(filter_distance, distance_by_slope) %}
                             <span>({{ facet_service.get(filter_distance, distance_by_slope) }})</span>
                         {% endif %}
