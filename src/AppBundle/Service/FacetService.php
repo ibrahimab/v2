@@ -46,6 +46,17 @@ class FacetService
     /**
      * @param integer $filter
      * @param integer $value
+     * @return boolean
+     */
+    public function has($filter, $value)
+    {
+        return isset($this->filters[$filter]) && in_array($value, $this->filters[$filter]);
+    }
+    
+    /**
+     * @param integer $filter
+     * @param integer $value
+     * @return integer
      */
     public function get($filter, $value)
     {

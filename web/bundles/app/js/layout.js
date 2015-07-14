@@ -92,33 +92,28 @@ $('.readmore a').click(function() {//open close div (class=readmore)
 $(document).ready(function(){
 
     $('body').addClass('has-js');
-    $('.styled_label input:checked').parent('label.label_check').addClass('c_on');
-    $('.styled_label input:checked').parent('label.label_radio').addClass('r_on');
-
     $('body').on('click', '.styled_label', function(event) {
-
-        event.preventDefault();
-
-        var element = $(this);
-        var input   = element.children('label').children('input');
-        input.prop('checked', !input.prop('checked'));
-
-        if (input.data('group') !== null) {
-            $('.styled_label [data-group="' + input.data('group') + '"]').not(input).prop('checked', false);
-        }
-
-        $('.styled_label label.label_check').removeClass('c_on');
-        $('.styled_label input:checked').parent('label.label_check').addClass('c_on');
-
-        $('.styled_label label.label_radio').removeClass('r_on');
-        $('.styled_label input:checked').parent('label.label_radio').addClass('r_on');
+        window.recalculateStyledInput();
     });
+    
+    window.recalculateStyledInput = function() {
 
-    window.resetStyledInput = function() {
-
-        $('.styled_label input:checked').prop('checked', false).parent('label.label_check').removeClass('c_on');
-        $('.styled_label input:checked').prop('checked', false).parent('label.label_radio').removeClass('r_on');
+        $('.styled_label input').each(function() {
+            
+            var element     = $(this);
+            var labelClass  = element.attr('type') === 'checkbox' ? 'label_check' : 'label_radio';
+            var statusClass = element.attr('type') === 'checkbox' ? 'c_on'        : 'r_on';
+            
+            if (true === element.prop('checked')) {
+                element.parent('label.' + labelClass).addClass(statusClass);
+            } else {
+                element.parent('label.' + labelClass).removeClass(statusClass);
+            }
+        });
     };
+    
+    // initial calculation
+    window.recalculateStyledInput();
 });
 //go to next month - 'boek nu' table
 $( "table.responsive" ).append($('#types-nav'));

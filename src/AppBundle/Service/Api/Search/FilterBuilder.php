@@ -24,28 +24,6 @@ class FilterBuilder
      * @const int
      */
     const VALUE_DISTANCE_BY_SLOPE = 50;
-
-    /**
-     * @var array
-     */
-    private $options = [
-        
-        FilterService::FILTER_DISTANCE => [
-            'multiple' => false,
-        ],
-        
-        FilterService::FILTER_LENGTH   => [
-            'multiple' => false,
-        ],
-        
-        FilterService::FILTER_FACILITY => [
-            'multiple' => true,
-        ],
-        
-        FilterService::FILTER_THEME    => [
-            'multiple' => true,
-        ],
-    ];
     
     /**
      * Constructor
@@ -69,13 +47,13 @@ class FilterBuilder
     {
         foreach ($this->raw as $filter => $values) {
             
-            if (!array_key_exists($filter, $this->options)) {
+            if (false === FilterService::exists($filter)) {
                 
                 unset($this->raw[$filter]);
                 continue;
             }
             
-            if (is_array($values) && false === $this->options[$filter]['multiple']) {
+            if (is_array($values) && false === FilterService::multiple($filter)) {
                 $this->raw[$filter] = (count($values) > 0 ? $values[0] : null);
             }
             
@@ -90,7 +68,7 @@ class FilterBuilder
      */
     public function add($filter, $values)
     {
-        if (true === $this->options[$filter]['multiple'] && false === is_array($values)) {
+        if (true === FilterService::multiple($filter) && false === is_array($values)) {
             
             if (!isset($this->filters[$filter])) {
                 $this->filters[$filter] = [];

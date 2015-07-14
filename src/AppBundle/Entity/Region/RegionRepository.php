@@ -69,11 +69,11 @@ class RegionRepository extends BaseRepository implements RegionServiceRepository
 
         $qb->select('partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, totalSlopesDistance, minimumAltitude, maximumAltitude}, RAND() AS HIDDEN rand_seed')
            ->where($expr->eq('r.showOnHomepage', ':showOnHomepage'))
-           ->andWhere($expr->like('r.websites', ':website'))
+           ->andWhere($expr->gt('FIND_IN_SET(:website, r.websites)', 0))
            ->setParameters([
 
                'showOnHomepage' => true,
-               'website'        => '%' . $this->getWebsite(). '%'
+               'website'        => $this->getWebsite()
            ])
            ->setMaxResults($limit)
            ->orderBy('rand_seed');

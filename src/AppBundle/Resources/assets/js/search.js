@@ -22,7 +22,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
         },
 
         setContainer: function() {
-            ns.Search.container = jq('[data-role="search-results"]');
+            ns.Search.container = jq('[data-role="search-container"]');
         },
 
         events: {
@@ -268,7 +268,9 @@ window.Chalet = (function(ns, jq, _, undefined) {
             },
 
             loader: function() {
-                ns.Search.container.prepend('<div class="loading"></div>');
+                
+                ns.Search.container.find('[data-role="search-results-container"]').prepend('<div class="loading" style="height: 100px;"></div>').find('[data-role="search-results"]').hide();
+                jq('[data-role="search-filter-box"]').prepend('<div class="loading"></div>');
             },
 
             save: function(event) {
@@ -312,6 +314,9 @@ window.Chalet = (function(ns, jq, _, undefined) {
                         if (window.history.pushState) {
                             window.history.pushState({path: url}, '', url);
                         }
+                        
+                        // recalculate checkboxes
+                        window.recalculateStyledInput();
                     }
                 });
             }
