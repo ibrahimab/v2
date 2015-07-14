@@ -132,14 +132,14 @@ class SearchRepository implements SearchServiceRepositoryInterface
                                        partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, features},
                                        partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, totalSlopesDistance},
                                        partial c.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, startCode}');
-        
+
         $paginator = new PaginatorService($qb);
         $paginator->setLimit($limit);
         $paginator->setCurrentPage($page);
-        
+
         return $paginator;
     }
-    
+
     public function query(SearchBuilder $searchBuilder)
     {
         $sort_by     = $searchBuilder->block(SearchBuilder::BLOCK_SORT_BY, self::SORT_BY_DEFAULT);
@@ -176,7 +176,7 @@ class SearchRepository implements SearchServiceRepositoryInterface
         }
 
         $this->where($where, $qb);
-        
+
         return $qb;
     }
 
@@ -340,7 +340,7 @@ class SearchRepository implements SearchServiceRepositoryInterface
             case FilterService::FILTER_FACILITY_CATERING:
 
                 $selector = $expr->orX()
-                                 ->add($expr->like('t.features', ':type_features_' . $facility))
+                                 ->add($expr->gt('FIND_IN_SET(:type_features_' . $facility . ', t.features)', 0))
                                  ->add($expr->like('a.features', ':accommodation_features_' . $facility));
 
                 $qb->setParameter('type_features_' . $facility, '%1%')

@@ -10,7 +10,7 @@
 </div>
 <select class="radius">
     <option value="husker">{{ 'select-when'|trans }}</option>
-    {% set arrival_label = 'arrival'|trans %}
+    {% set arrival_label = 'weekend'|trans %}
     {% for timestamp, weekend in weekends %}
         <option value="{{ timestamp }}">{{arrival_label}} {{ weekend }}</option>
     {% endfor %}

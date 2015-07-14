@@ -71,6 +71,7 @@ doctrine:
         dql:
             numeric_functions:
                 Rand: AppBundle\Doctrine\DQL\Functions\Rand
+                FIND_IN_SET: AppBundle\Doctrine\DQL\Functions\FindInSet
             datetime_functions:
                 UNIX_TIMESTAMP: AppBundle\Doctrine\DQL\Functions\UnixTimestamp
 
