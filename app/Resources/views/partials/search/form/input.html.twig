@@ -32,7 +32,6 @@
 </select>
 <select class="radius" data-role="change-bathrooms">
     <option value="0">{{ 'select-bathrooms'|trans }}</option>
-    <option value="1423868400">1 {{ 'bathroom'|trans }}</option>
     <option value="1"{{ form_filters['bathrooms'] is defined and 1 == form_filters['bathrooms'] ? ' selected="selected"' }}>1 {{ 'bathroom'|trans }}</option>
     {% for i in 2..10 %}
         <option value="{{ i }}"{{ form_filters['bathrooms'] is defined and i == form_filters['bathrooms'] ? ' selected="selected"' }}>{{ i }} {{ bathrooms }}</option>
