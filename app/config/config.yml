@@ -15,7 +15,8 @@ framework:
     validation:      { enable_annotations: true }
     templating:
         engines: ['twig']
-        #assets_version: SomeVersionScheme
+        # bust caching by changing this to the current UNIX timestamp
+        assets_version: 1436871556
     default_locale:  "%locale%"
     trusted_hosts:   ~
     trusted_proxies: ~
