@@ -12,11 +12,17 @@ web_profiler:
     intercept_redirects: false
 
 monolog:
+    channels: ["controller"]
     handlers:
         main:
             type:   stream
             path:   "%kernel.logs_dir%/%kernel.environment%.log"
             level:  debug
+        app:
+            type:   stream
+            path:   "%kernel.logs_dir%/app.log"
+            level:  debug
+            channels: ["controller"]
         console:
             type:   console
             bubble: false
