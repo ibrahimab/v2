@@ -93,19 +93,21 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     }
                 });
                 
-                jq('body').on('keypress', ns.Autocomplete.input.selector, _.debounce(function(event) {
+                jq('body').on('keydown', ns.Autocomplete.input.selector, _.debounce(function(event) {
 
                     if ([13, 38, 40].indexOf((event.keyCode || event.which)) === -1) {
 
                         event.preventDefault();
                         var term = event.target.value;
-
+                        
                         if (ns.Autocomplete.currentTerm === term || term === '') {
 
                             if (term === '') {
 
                                 ns.Autocomplete.currentTerm = '';
                                 ns.Autocomplete.resultsContainer.empty();
+                                ns.Autocomplete.count('');
+                                console.log('test');
                             }
 
                             return;
