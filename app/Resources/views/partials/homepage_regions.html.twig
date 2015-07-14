@@ -26,7 +26,7 @@
         <div class="large-12 columns">
             <span class="area-spec"><i class="sprite sprite-blue-pistes"></i> {{ region.getTotalSlopesDistance() }} kilometer piste</span>
             <span class="area-spec"><i class="sprite sprite-blue-mountain"></i> {{ region.getMinimumAltitude() }}{{ (region.getMinimumAltitude() == region.getMaximumAltitude() ? (' - ' ~ region.getMaximumAltitude()) : '') }} meter hoog</span>
-            <span class="area-spec"><i class="sprite sprite-blue-chalet"></i> {{ region.getTypesCount() }} chalets en appartementen verdeeld over {{ region.getPlacesCount() ~ (region.getPlacesCount() == 1 ? ' skidorp' : ' skipdorpen') }}</span>
+            <span class="area-spec"><i class="sprite sprite-blue-chalet"></i> {{ region.getTypesCount() }} chalets en appartementen verdeeld over {{ region.getPlacesCount() ~ (region.getPlacesCount() == 1 ? ' skidorp' : ' skidorpen') }}</span>
         </div>
     </div>
     <div class="row homepage-places" data-equalizer><!-- each row contains 3 villages -->
