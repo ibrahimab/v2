@@ -647,8 +647,18 @@ footer ul.checked i { margin-top: 0.7rem; }
 
 @media all and (min-width: 40.063em) and (max-width: 64em) {
 
-    #home header #header-form #header-form-fields #choose-destination.active {
+    #home header #header-form {
 
-        &:focus { font-size: 0.8rem; }
+        #header-form-fields #choose-destination.active {
+
+            &:focus { font-size: 0.8rem; }
+        }
+    }
+}
+
+#home header #header-form {
+
+    #header-form-title .title-form a {
+        &:hover, &:active, &:visited { color: #e5e5e5; }
     }
 }
