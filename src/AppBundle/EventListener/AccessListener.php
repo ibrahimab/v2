@@ -2,6 +2,7 @@
 namespace AppBundle\EventListener;
 use       AppBundle\Security\Access\BootstrapAccess;
 use       AppBundle\Security\Access\Handler\Development;
+use       AppBundle\Security\Access\Handler\Staging;
 use       Symfony\Component\HttpFoundation\Request;
 use       Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use       Symfony\Component\HttpKernel\Event\GetResponseEvent;
