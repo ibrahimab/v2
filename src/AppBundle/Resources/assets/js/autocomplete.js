@@ -107,7 +107,6 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                                 ns.Autocomplete.currentTerm = '';
                                 ns.Autocomplete.resultsContainer.empty();
                                 ns.Autocomplete.count('');
-                                console.log('test');
                             }
 
                             return;
