@@ -80,4 +80,18 @@ class RegionRepository extends BaseRepository implements RegionServiceRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function count()
+    {
+        $qb   = $this->createQueryBuilder('r');
+        $expr = $qb->expr();
+
+        $qb->select('COUNT(r)')
+           ->where($expr->gt('FIND_IN_SET(:website, r.websites)', 0))
+           ->setParameters([
+               'website' => $this->getWebsite(),
+           ]);
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
 }

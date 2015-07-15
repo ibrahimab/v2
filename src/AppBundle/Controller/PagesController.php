@@ -40,6 +40,7 @@ class PagesController extends Controller
         $placeService         = $this->get('app.api.place');
         $typeService          = $this->get('app.api.type');
         $priceService         = $this->get('app.api.price');
+        $regionService        = $this->get('app.api.region');
         $seasonService        = $this->get('app.api.season');
         $searchService        = $this->get('app.api.search');
         $searchBuilder        = $searchService->build()
@@ -109,6 +110,7 @@ class PagesController extends Controller
             'offers'         => $offers,
             'weekends'       => $seasonService->weekends($seasonService->seasons()),
             'accommodations' => $searchBuilder->count(),
+            'regions'        => $regionService->count(),
         ];
     }
 
