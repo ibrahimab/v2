@@ -41,7 +41,7 @@ class Staging implements AccessHandlerInterface
     {
         foreach ($this->validators as $validator) {
 
-            if (true === $validator->validate()) {
+            if (true === $validator->validate($request)) {
                 return true;
             }
         }

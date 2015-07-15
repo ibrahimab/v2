@@ -29,7 +29,7 @@ class Github implements AccessValidatorInterface
      */
     public function validate(Request $request)
     {
-        return $this->isSignatureValid($request->headers->get('HTTP_X_HUB_SIGNATURE'));
+        return ($request->isMethod('POST') && $this->isSignatureValid($request->headers->get('HTTP_X_HUB_SIGNATURE')));
     }
 
     /**
