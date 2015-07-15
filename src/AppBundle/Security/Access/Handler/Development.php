@@ -35,12 +35,12 @@ class Development implements AccessHandlerInterface
     {
         foreach ($this->validators as $validator) {
 
-            if (false === $validator->validate($request)) {
-                return false;
+            if (true === $validator->validate($request)) {
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 
     /**
