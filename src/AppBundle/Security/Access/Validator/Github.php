@@ -11,6 +11,11 @@ use       Symfony\Component\HttpFoundation\Request;
 class Github implements AccessValidatorInterface
 {
     /**
+     * @const string
+     */
+    const GITHUB_HMAC_ALGORITHM = 'sha1';
+
+    /**
      * @var string
      */
     private $secret;
