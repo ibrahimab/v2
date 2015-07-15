@@ -1,5 +1,8 @@
 <?php
 namespace AppBundle\Security\Access\Handler;
+use       AppBundle\Security\Access\Validator\AccessValidatorInterface;
+use       AppBundle\Security\Access\Validator\Ip;
+use       AppBundle\Security\Access\Validator\Github;
 use       Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -11,10 +14,24 @@ use       Symfony\Component\HttpFoundation\Request;
 class Staging implements AccessHandlerInterface
 {
     /**
+     * @var AccessValidatorInterface[]
+     */
+    private $validators = [];
+
+    /**
      * @var array
      * @static
      */
     private static $_ALLOWED_IPS = ['62.194.208.250', '213.125.152.154', '31.223.173.113'];
+
+    /**
+     * Adding github validator in constructor
+     */
+    public function __construct(Ip $ip, Github $github)
+    {
+        $this->add($ip);
+        $this->add($github);
+    }
 
     /**
      * @param Request $request
@@ -22,6 +39,21 @@ class Staging implements AccessHandlerInterface
      */
     public function handle(Request $request)
     {
-        return in_array($request->getClientIp(), self::$_ALLOWED_IPS);
+        foreach ($this->validators as $validator) {
+
+            if (false === $validator->validate()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param AccessValidatorInterface $validator
+     */
+    public function add(AccessValidatorInterface $validator)
+    {
+        $this->validators[] = $validator;
     }
 }

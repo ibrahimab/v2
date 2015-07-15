@@ -1,0 +1,16 @@
+services:
+    app.security.access.handler.dev:
+        class: AppBundle\Security\Access\Handler\Development
+        arguments: [@app.security.access.validator.ip]
+
+    app.security.access.handler.stag:
+        class: AppBundle\Security\Access\Handler\Staging
+        arguments: [@app.security.access.validator.ip, @app.security.access.validator.github]
+
+    app.security.access.validator.ip:
+        class: AppBundle\Security\Access\Validator\Ip
+        arguments: [%allowed_ips%]
+
+    app.security.access.validator.github:
+        class: AppBundle\Security\Access\Validator\Github
+        arguments: [%github_secret%]

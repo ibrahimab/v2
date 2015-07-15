@@ -16,3 +16,5 @@ parameters:
     secret:
     ssl_enabled: false
     chat_license: 2618611
+    allowed_ips: []
+    github_secret: null

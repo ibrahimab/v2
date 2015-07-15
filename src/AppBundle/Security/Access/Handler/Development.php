@@ -1,5 +1,7 @@
 <?php
 namespace AppBundle\Security\Access\Handler;
+use       AppBundle\Security\Access\Validator\AccessValidatorInterface;
+use       AppBundle\Security\Access\Validator\Ip;
 use       Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -11,16 +13,41 @@ use       Symfony\Component\HttpFoundation\Request;
 class Development implements AccessHandlerInterface
 {
     /**
-     * @var array
-     * @static
+     * @var AccessValidatorInterface[]
      */
-    private static $_ALLOWED_IPS = ['192.168.33.1'];
+    private $validators = [];
+
+    /**
+     * Constructor - adding validators
+     *
+     * @param Ip $ipValidator
+     */
+    public function __construct(Ip $ip)
+    {
+        $this->add($ip);
+    }
+
     /**
      * @param Request $request
      * @return boolean
      */
     public function handle(Request $request)
     {
-        return in_array($request->getClientIp(), self::$_ALLOWED_IPS);
+        foreach ($this->validators as $validator) {
+
+            if (false === $validator->validate($request)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param AccessValidatorInterface $validator
+     */
+    public function add(AccessValidatorInterface $validator)
+    {
+        $this->validators[] = $validator;
     }
 }

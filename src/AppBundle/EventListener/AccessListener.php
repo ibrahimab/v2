@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\EventListener;
 use       AppBundle\Security\Access\BootstrapAccess;
+use       AppBundle\Security\Access\Handler\AccessHandlerInterface;
 use       AppBundle\Security\Access\Handler\Development;
 use       AppBundle\Security\Access\Handler\Staging;
 use       Symfony\Component\HttpFoundation\Request;
@@ -15,23 +16,19 @@ use       Symfony\Component\HttpKernel\Event\GetResponseEvent;
  */
 class AccessListener
 {
-    const ENVIRONMENT_DEVELOPMENT = 'dev';
-    const ENVIRONMENT_STAGING     = 'stag';
-    const ENVIRONMENT_PRODUCTION  = 'prod';
-
     /**
-     * @var string
+     * @var AccessHandlerInterface
      */
-    private $environment;
+    private $accessHandler;
 
     /**
      * Constructor
      *
      * @param string $environment
      */
-    public function __construct($environment)
+    public function __construct(AccessHandlerInterface $accessHandler)
     {
-        $this->environment = $environment;
+        $this->accessHandler = $accessHandler;
     }
 
     /**
@@ -46,21 +43,7 @@ class AccessListener
 
         $request = $event->getRequest();
 
-        switch ($this->environment) {
-
-            case self::ENVIRONMENT_DEVELOPMENT:
-                $handler = new Development($request);
-            break;
-
-            case self::ENVIRONMENT_STAGING:
-                $handler = new Staging($request);
-            break;
-
-            default:
-                throw new \Exception('Could not find requested environment');
-        }
-
-        $bootstrapAccess = new BootstrapAccess($handler, $request);
+        $bootstrapAccess = new BootstrapAccess($this->accessHandler, $request);
         $bootstrapAccess->check();
     }
 }
