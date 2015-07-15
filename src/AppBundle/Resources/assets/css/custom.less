@@ -643,11 +643,10 @@ footer ul.checked i { margin-top: 0.7rem; }
         img { background-color: #FFFFFF; opacity: 0.7; }
     }
 
-    .columns {
+    div.large-column {
 
-        margin-bottom: 20px;
-
-        &.small img { height: 204px; }
+        position: relative;
+        div.align-bottom { position: absolute; bottom: 0; }
     }
 }
 
@@ -688,4 +687,8 @@ footer ul.checked i { margin-top: 0.7rem; }
     &:hover:after {
         opacity: 0.5;
     }
+}
+
+.homepage-regions h2 a {
+    &:hover, &:active, &:visited { color: rgba(25, 55, 97, 0.5); }
 }

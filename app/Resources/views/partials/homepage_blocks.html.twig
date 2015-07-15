@@ -1,34 +1,33 @@
 <section id="themes-selected">
-    <div class="row">
+
+    <div class="row" data-equalizer>
+
         {% if homepageBlocks['left'] is not empty %}
 
-            {% for leftBlock in homepageBlocks['left'] %}
-
-                <div class="large-6 medium-6 columns big">
-                    {% include 'partials/homepage_block/block.html.twig' with { 'homepageBlock': leftBlock } only %}
-                </div>
-
-            {% endfor %}
+            <div class="large-6 columns large-column" data-equalizer-watch>
+                {% include 'partials/homepage_block/block.html.twig' with { 'homepageBlock': homepageBlocks['left']|first } only %}
+            </div>
 
         {% endif %}
+
         {% if homepageBlocks['right'] is not empty %}
-        <div class="large-6 medium-6 columns small">
 
-            <div class="row">
+            <div class="large-6 columns large-column end" data-equalizer-watch>
 
-                {% for rightBlock in homepageBlocks['right'] %}
-
-                    <div class="large-12 columns">
-                        {% include 'partials/homepage_block/block.html.twig' with { 'homepageBlock': rightBlock } only %}
+                {% set rightBlocks = homepageBlocks['right']|slice(0, 2) %}
+                {% for rightBlock in rightBlocks %}
+                    <div class="row{%  if loop.last %} align-bottom{% endif %}">
+                        <div class="large-12 columns end">
+                            {% include 'partials/homepage_block/block.html.twig' with { 'homepageBlock': rightBlock } only %}
+                        </div>
                     </div>
-
                 {% endfor %}
 
             </div>
 
-        </div>
         {% endif %}
     </div>
+
     <div class="row">
         <div class="large-12 centered columns">
             <a href="{{ locale_path('themes') }}" class="button small radius" title="Meer inspiratie">Meer inspiratie</a>

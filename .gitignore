@@ -40,3 +40,6 @@ tests/_output/*
 
 # assetic dumps
 /web/static
+
+# push file
+/github-push.txt

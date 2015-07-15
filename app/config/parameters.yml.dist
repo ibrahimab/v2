@@ -18,3 +18,4 @@ parameters:
     chat_license: 2618611
     allowed_ips: []
     github_secret: null
+    github_dir: %kernel.cache_dir%/github

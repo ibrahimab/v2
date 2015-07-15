@@ -28,7 +28,8 @@
         "friendsofsymfony/jsrouting-bundle": "~1.5",
         "symfony/finder": "~2.6",
         "jms/serializer": "^0.16.0",
-        "jms/serializer-bundle": "^0.13.0"
+        "jms/serializer-bundle": "^0.13.0",
+        "snc/redis-bundle": "1.1.x"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
