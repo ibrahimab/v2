@@ -25,7 +25,7 @@ class Type(Base):
     """
     def fetch(self):
 
-        sql = 'SELECT `t`.`type_id` AS `id`, `t`.`accommodatie_id` AS `accommodation_id`, `t`.`naam` AS `name_nl`, `t`.`websites`, '     \
+        sql = 'SELECT `t`.`type_id` AS `id`, `t`.`accommodatie_id` AS `accommodation_id`, `t`.`websites`, `t`.`naam` AS `name_nl`, '     \
               '`t`.`naam_de` AS `name_de`, `t`.`naam_en` AS `name_en`, `t`.`naam_fr` AS `name_fr`, `a`.`naam` AS `accommodation_name`, ' \
               '`t`.`zoekvolgorde` AS `order`, `l`.`begincode` AS `code`, `p`.`plaats_id` AS `place_id`, `l`.`land_id` AS `country_id` '  \
               'FROM   `type` t '                                                                                                         \
@@ -62,7 +62,7 @@ class Type(Base):
                 'type':             Type.AUTOCOMPLETE_TYPE,
                 'type_id':          row['id'],
                 'locales':          ['nl', 'en', 'fr', 'de'],
-                'name':             {
+                'label':            {
 
                     'nl': row['accommodation_name'] + ' ' + row['name_nl'],
                     'en': row['accommodation_name'] + ' ' + row['name_en'],

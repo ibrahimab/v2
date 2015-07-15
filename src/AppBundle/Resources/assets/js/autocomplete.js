@@ -24,11 +24,11 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
         resultsContainer: null,
         currentTerm: null,
         debounce: 250,
-        
+
         url: function(term, limit) {
             return Routing.generate('autocomplete', {term: term, limit: limit});
         },
-        
+
         countUrl: function(params) {
             return Routing.generate('search_count') + '?' + params;
         },
@@ -81,25 +81,25 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         element.attr('placeholder', element.data('default-placeholder'));
                     }
                 });
-                
+
                 jq('body').on('keydown', ns.Autocomplete.input.selector, function(event) {
-                    
+
                     if ([13, 38, 40].indexOf((event.keyCode || event.which)) > -1) {
-                        
+
                         event.preventDefault();
                         ns.Autocomplete.arrows.handle(event);
-                        
+
                         return;
                     }
                 });
-                
+
                 jq('body').on('keydown', ns.Autocomplete.input.selector, _.debounce(function(event) {
 
                     if ([13, 38, 40].indexOf((event.keyCode || event.which)) === -1) {
 
                         event.preventDefault();
                         var term = event.target.value;
-                        
+
                         if (ns.Autocomplete.currentTerm === term || term === '') {
 
                             if (term === '') {
@@ -118,15 +118,15 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     }
 
                 }, ns.Autocomplete.debounce));
-                
+
                 if (ns.Autocomplete.type === ns.Autocomplete.types.TYPE_HOME) {
-                    
+
                     jq('body').on('change', '[data-role="choose-persons-home"]', function(event) {
-                        
+
                         event.preventDefault();
-                        
+
                         var persons = event.target.value;
-                        
+
                         if (persons !== '') {
                             ns.Autocomplete.actions.home.persons(persons);
                         }
@@ -175,9 +175,9 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         ns.Autocomplete.resultsContainer.hide();
                     }
                 });
-                
+
                 jq(document).on('keyup', function(event) {
-                    
+
                     if ((event.keyCode || event.which) === 27) {
                         ns.Autocomplete.resultsContainer.hide();
                     }
@@ -186,58 +186,58 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
         },
 
         arrows: {
-            
+
             position: 0,
             total: 0,
             event: null,
             initialize: function() {
-                
+
                 ns.Autocomplete.arrows.position = 0;
                 ns.Autocomplete.arrows.total    = ns.Autocomplete.results.length;
                 ns.Autocomplete.arrows.event    = null;
             },
             handle: function(event) {
-                
+
                 ns.Autocomplete.arrows.event = event;
-                
+
                 switch ((event.keyCode || event.which)) {
-                    
+
                     case 13:
                         ns.Autocomplete.arrows.enter();
                     break;
-                    
+
                     case 38:
                         ns.Autocomplete.arrows.up();
                     break;
-                    
+
                     case 40:
                         ns.Autocomplete.arrows.down();
                     break;
                 }
 
                 jq('[data-role="autocomplete-result"]').removeClass('active');
-                
-                if (ns.Autocomplete.arrows.position > 0) {   
+
+                if (ns.Autocomplete.arrows.position > 0) {
                     jq('[data-role="autocomplete-result"]').eq(ns.Autocomplete.arrows.position - 1).addClass('active');
                 }
             },
             up: function() {
-                
+
                 if ((ns.Autocomplete.arrows.position - 1) >= 0) {
-                    ns.Autocomplete.arrows.position -= 1;   
+                    ns.Autocomplete.arrows.position -= 1;
                 }
             },
             down: function() {
-                
+
                 if ((ns.Autocomplete.arrows.position + 1) <= ns.Autocomplete.arrows.total) {
-                    ns.Autocomplete.arrows.position += 1;   
+                    ns.Autocomplete.arrows.position += 1;
                 }
             },
-            
+
             enter: function() {
-                
+
                 if (ns.Autocomplete.arrows.position > 0) {
-                    
+
                     jq('[data-role="autocomplete-result"]').eq(ns.Autocomplete.arrows.position - 1).trigger('click');
                     jq(ns.Autocomplete.input.selector).blur();
                     ns.Autocomplete.arrows.initialize();
@@ -248,12 +248,12 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
         actions: {
 
             home: {
-                
+
                 click: function(data) {
 
                     var link = jq('[data-role="search-simple"]');
                     var uri  = URI(link.attr('href'));
-                    
+
                     uri.removeQuery('c[]');
                     uri.removeQuery('r[]');
                     uri.removeQuery('pl[]');
@@ -287,22 +287,22 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                             uri.setQuery('t[]', data.id);
                             break;
                     }
-                    
+
                     link.attr('href', uri.toString());
                     ns.Autocomplete.input.val(data.label);
                     ns.Autocomplete.resultsContainer.hide();
-                    
+
                     ns.Autocomplete.count(uri.query());
                 },
-                
+
                 persons: function(persons) {
-                    
+
                     var link = jq('[data-role="search-simple"]');
                     var uri  = URI(link.attr('href'));
-                    
+
                     uri.removeQuery('pe');
                     uri.setQuery('pe', persons);
-                    
+
                     link.attr('href', uri.toString());
                 }
             },
@@ -362,18 +362,18 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                 error: function() {}
             });
         },
-        
+
         count: function(params) {
-            
+
             if (ns.Autocomplete.type === ns.Autocomplete.types.TYPE_HOME) {
-            
+
                 jq.ajax({
-                
+
                     url: ns.Autocomplete.countUrl(params),
                     success: function(data) {
                         ns.Autocomplete.views.updateCount(data.count)
                     },
-                
+
                     error: function() {}
                 });
             }
@@ -401,7 +401,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                 ns.Autocomplete.resultsContainer.html(ul).show();
             },
-            
+
             updateCount: function(count) {
                 jq('[data-role="results-count"]').text(count);
             },
@@ -411,7 +411,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                 var li        = document.createElement('li');
                 var entities  = ns.Autocomplete.entities;
                 var locale    = ns.get('app')['locale'];
-                var name      = (jq.type(result['name']) === 'string' ? result['name'] : result['name'][locale]);
+                var name      = (undefined !== result['name'] ? (jq.type(result['name']) === 'string' ? result['name'] : result['name'][locale]) : '');
                 var tag       = '';
 
                 switch (result.type) {
@@ -462,6 +462,8 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         li.setAttribute('data-entity', entities.ENTITY_TYPE);
                         li.setAttribute('data-id', result['type_id']);
 
+                        name = result['label'][locale];
+
                         tag += '<i class="fi-home"></i> ';
 
                     break;
@@ -469,7 +471,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                 var span = document.createElement('span');
                 span.textContent = name;
-                
+
                 li.setAttribute('data-role', 'autocomplete-result');
                 li.setAttribute('data-label', name);
                 li.innerHTML = tag;

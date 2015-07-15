@@ -31,7 +31,7 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
            ->sort('order', 'asc');
 
         $raw     = $qb->getQuery()->execute();
-        $results = [AutocompleteService::KIND_COUNTRY => [], AutocompleteService::KIND_REGION => [], AutocompleteService::KIND_PLACE => [], AutocompleteService::KIND_ACCOMMODATION];
+        $results = [AutocompleteService::KIND_COUNTRY => [], AutocompleteService::KIND_REGION => [], AutocompleteService::KIND_PLACE => [], AutocompleteService::KIND_ACCOMMODATION => [], AutocompleteService::KIND_TYPE => []];
 
         foreach ($raw as $row) {
             $results[$row['type']][] = $row;
@@ -55,7 +55,7 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
         $results = [];
 
         $nameRegex = new \MongoRegex('/.*' . $term . '.*/i');
-        
+
         $qb = $this->createQueryBuilder();
         $qb->select()
            ->hydrate(false)
@@ -85,7 +85,7 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
            ->addAnd($name)
            ->addAnd($season)
            ->addAnd($websites);
-        
+
         $rawResults = $qb->getQuery()->execute()->toArray();
         $results    = [];
 

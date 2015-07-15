@@ -12,7 +12,7 @@ namespace AppBundle\Service\Api\Autocomplete;
 class AutocompleteService
 {
     const DEFAULT_LIMIT      = 5;
-    
+
     const KIND_COUNTRY       = 'country';
     const KIND_REGION        = 'region';
     const KIND_PLACE         = 'place';
@@ -20,29 +20,29 @@ class AutocompleteService
     const KIND_TYPE          = 'type';
 
     private $allowedKinds    = [
-        self::KIND_COUNTRY, self::KIND_REGION, self::KIND_PLACE, self::KIND_TYPE,
+        self::KIND_COUNTRY, self::KIND_REGION, self::KIND_PLACE, self::KIND_ACCOMMODATION, self::KIND_TYPE,
     ];
 
     /**
      * @var AutocompleteServiceRepositoryInterface
      */
     private $autocompleteServiceRepository;
-    
+
     /**
      * @var array
      */
     private $results;
-    
+
     /**
      * @var array
      */
     private $tree;
-    
+
     /**
      * @var array
      */
     private $flattened;
-    
+
     /**
      * @var int
      */
@@ -61,7 +61,7 @@ class AutocompleteService
         $this->flattened                     = [];
         $this->limit                         = self::DEFAULT_LIMIT;
     }
-    
+
     /**
      * Get all the endpoints
      *
@@ -70,7 +70,7 @@ class AutocompleteService
     public function all()
     {
         $this->results = $this->autocompleteServiceRepository->all();
-        
+
         return $this;
     }
 
@@ -91,17 +91,17 @@ class AutocompleteService
         }
 
         $this->results = $this->autocompleteServiceRepository->search($term, $kinds);
-        
+
         return $this;
     }
-    
+
     public function limit($limit)
     {
         $this->limit = $limit;
-        
+
         return $this;
     }
-    
+
     /**
      * Parse results into tree format
      *
@@ -115,54 +115,55 @@ class AutocompleteService
         $format         = function($kind) use ($results, $limit) {
             return array_slice(array_column((isset($results[$kind]) ? $results[$kind] : []), null, 'type_id'), 0, $limit);
         };
-        
+
         $countries      = $format(self::KIND_COUNTRY);
         $regions        = $format(self::KIND_REGION);
         $places         = $format(self::KIND_PLACE);
+        $accommodations = $format(self::KIND_ACCOMMODATION);
         $types          = $format(self::KIND_TYPE);
-        
+
         foreach ($places as $placeId => $place) {
-            
+
             if (isset($regions[$place['region_id']])) {
-                
+
                 if (!isset($regions[$place['region_id']]['children'])) {
                     $regions[$place['region_id']]['children'] = [];
                 }
-                
+
                 $regions[$place['region_id']]['country_id'] = $place['country_id'];
                 $regions[$place['region_id']]['children'][] = $place;
                 unset($places[$place['type_id']]);
             }
-            
+
             if (isset($countries[$place['country_id']])) {
-                
+
                 if (!isset($countries[$place['country_id']]['children'])) {
                     $countries[$place['country_id']]['children'] = [];
                 }
-                
+
                 $countries[$place['country_id']]['children'][] = $place;
                 unset($places[$place['type_id']]);
             }
         }
-        
+
         foreach ($regions as $regionId => $region) {
-            
+
             if (isset($region['country_id']) && isset($countries[$region['country_id']])) {
-                
+
                 if (!isset($countries[$region['country_id']]['children'])){
                     $countries[$region['country_id']]['children'] = [];
                 }
-                
+
                 $countries[$region['country_id']]['children'][] = $region;
                 unset($regions[$region['type_id']]);
             }
         }
-        
-        $this->tree = [self::KIND_COUNTRY => $countries, self::KIND_REGION => $regions, self::KIND_PLACE => $places, self::KIND_TYPE => $types];
-                       
+
+        $this->tree = [self::KIND_COUNTRY => $countries, self::KIND_REGION => $regions, self::KIND_PLACE => $places, self::KIND_ACCOMMODATION => $accommodations, self::KIND_TYPE => $types];
+
         return $this;
     }
-    
+
     /**
      * Flatten tree for better readability
      *
@@ -172,28 +173,28 @@ class AutocompleteService
     {
         $results = [];
         $flattenArray = function($tree, &$results) use (&$flattenArray) {
-            
+
             foreach ($tree as $leaf) {
-                
+
                 $results[] = $leaf;
-                
+
                 if (isset($leaf['children'])) {
                     $flattenArray($leaf['children'], $results);
                 }
             }
-            
+
             return $results;
         };
-        
+
         foreach ($this->tree as $kind => $leaf) {
             $flattenArray($leaf, $results);
         }
-        
+
         $this->flattened = $results;
-        
+
         return $this;
     }
-    
+
     /**
      * Return raw results
      *
@@ -203,7 +204,7 @@ class AutocompleteService
     {
         return $this->results;
     }
-    
+
     /**
      * Return parsed results
      *
@@ -213,7 +214,7 @@ class AutocompleteService
     {
         return $this->tree;
     }
-    
+
     /**
      * Return flattened results
      *
