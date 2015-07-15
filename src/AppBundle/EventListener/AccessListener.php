@@ -40,6 +40,10 @@ class AccessListener
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+
         $request = $event->getRequest();
 
         switch ($this->environment) {
