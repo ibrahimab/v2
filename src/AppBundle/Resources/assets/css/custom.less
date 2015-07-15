@@ -323,7 +323,7 @@ div.autocomplete-container {
             text-align: left;
             position: absolute;
             top: 0;
-            background-color: #fff;
+            background-color: #fafafa;
             width:160%;
             margin: 0;
             margin-top: -1rem;
@@ -334,7 +334,6 @@ div.autocomplete-container {
             border-top-left-radius: 0;
             border-top-right-radius: 0;
             border: 1px solid #e5e5e5;
-            border-top: 0;
 
             li {
 
@@ -643,5 +642,13 @@ footer ul.checked i { margin-top: 0.7rem; }
     a:hover {
 
         img { background-color: #FFFFFF; opacity: 0.7; }
+    }
+}
+
+@media all and (min-width: 40.063em) and (max-width: 64em) {
+
+    #home header #header-form #header-form-fields #choose-destination.active {
+
+        &:focus { font-size: 0.8rem; }
     }
 }

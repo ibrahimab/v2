@@ -12,17 +12,17 @@ div.header-container {
     -ms-transition: height 0.5s;
     -o-transition: height 0.5s;
     transition: height 0.5s;
-    
+
     div.column-logo {
-    
+
         padding-right: 0.9375em;
-    
+
         img {
-            
+
             margin: 1rem 0 0 0;
             height: 162px;
             width: 206px;
-            
+
 
             -webkit-transition: all 0.5s;
             -moz-transition: all 0.5s;
@@ -30,16 +30,18 @@ div.header-container {
             -o-transition: all 0.5s;
             transition: all 0.5s;
         }
+
+        &:hover { opacity: 0.9; }
     }
 
     div.column-contact {
-    
+
         padding-top: 2.7rem;
-        
+
         i.fi-clock { color: #193761; }
-        
+
         #link-saved a {
-            
+
             border: thin solid #818181;
             color: #818181;
             border-radius: 3px;
@@ -47,15 +49,17 @@ div.header-container {
             font-size: 0.72rem;
         }
     }
-    
+
     div.column-lists {
-    
+
         div.zoover {
-            
+
             padding-top: 10px;
             margin: 0;
+
+            &:hover { opacity: 0.8; }
         }
-        
+
         div.lists-container {
             padding-top: 10px;
         }
@@ -71,24 +75,24 @@ div.header {
 }
 
 div.home-menu {
-    
+
     /* IE8 */
     -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#E8D5E1F9, endColorstr=#E8D5E1F9);
     /* IE9+ */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#E8D5E1F9, endColorstr=#E8D5E1F9);
     background-color: rgba(213, 225, 249, 0.91);
     padding-top: 20px;
-    
+
     ul {
-        
+
         position: relative;
         z-index: 101;
         list-style: none;
         margin: 0 0.875rem;
         padding: 0;
-        
+
         li {
-            
+
             float: left;
             list-style: none;
             font-size: 1.2rem;
@@ -96,9 +100,9 @@ div.home-menu {
             height: 25px;
             padding-left: 6px;
             margin-left: 30px;
-            
+
             &.home { margin-left: 0; font-size: 22px; line-height: 0; width: 25px;  }
-            
+
             &:hover, &.active { border-bottom: 3px solid #193761; }
             a, a:active, a:hover, a:visited { text-decoration: none; color: #193761; }
         }
@@ -110,84 +114,84 @@ div.home-menu {
 }
 
 @media all and (max-width: 64em) {
-    
+
     div.header-container {
-        
+
         div.column-logo img { height: 152px; width: 206px; }
         div.column-contact { padding-top: 2rem; }
     }
-    
+
     #dropdown-container { padding-top: 0.8rem; }
-    
-    div.home-menu { 
-        
-        padding-top: 2px; 
-    
-        ul li { 
-            
-            font-size: 1rem; 
-            padding-top: 4px; 
-            &.home { padding-top: 2px; } 
+
+    div.home-menu {
+
+        padding-top: 2px;
+
+        ul li {
+
+            font-size: 1rem;
+            padding-top: 4px;
+            &.home { padding-top: 2px; }
         }
     }
 }
 
 @media all and (max-width: 64em) and (orientation: portrait) {
-    
+
     div.header-container {
-        
+
         div.column-logo img { height: 166px; }
     }
 }
 
 @media all and (max-width: 40em) {
-    
+
     div.header-container {
-        
+
         position: inherit;
-        div.column-logo img { height: 117px; } 
+        div.column-logo img { height: 117px; }
         div.column-contact { padding-top: 1rem; a.phone { font-size: 0.98rem; } }
     }
-    
+
     div.home-menu { display: none; }
 }
 
 body.smaller {
-    
+
     div.header-container {
-    
+
         box-shadow: 0 1px 3px #193761;
         -webkit-box-shadow: 1px 1px 3px #193761 #193761;
         height: 51px;
-    
+
         div.column-logo {
-        
+
             img {
                 margin-top: 0.1rem;
                 height: 50px;
             }
         }
-    
+
         div.column-contact { padding-top: 0; }
-    
+
         div.column-lists {
-        
+
             div.zoover { margin-top: -4px; padding-top: 0; width: 174px; height: 17px; }
-        
+
             div.lists-container {
-            
+
                 padding-top: 6px;
                 button#dropdown-saved { padding: 0.4rem 0.2rem 0.4rem 1rem; font-size: 0.8rem; }
             }
         }
     }
-    
+
     header {
         margin-top: 65px;
     }
-    
+
     div.home-menu {
-        
+
         ul {
             z-index: 1;
         }
