@@ -71,7 +71,7 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
                                                   ->field('locales')->notEqual(null))
 
                                ->addOr($qb->expr()->addAnd($qb->expr()->field('code')->exists(true))
-                                                  ->addAnd($qb->expr()->field('code')->equals($term)));
+                                                  ->addAnd($qb->expr()->field('code')->equals(new \MongoRegex('/^' . $term . '$/i'))));
 
         $season   = $qb->expr()->addOr($qb->expr()->field('season')->exists(false))
                                ->addOr($qb->expr()->addAnd($qb->expr()->field('season')->exists(true))
