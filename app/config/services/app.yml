@@ -25,3 +25,7 @@ services:
     app.newsletter:
         class: AppBundle\Service\Newsletter\NewsletterService
         arguments: [@app.concern.website]
+
+    app.github:
+        class: AppBundle\Service\GithubService
+        arguments: [@app.security.access.validator.github, @snc_redis.default]

@@ -47,11 +47,14 @@ assetic:
         #yui_css:
         #    jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
 
-# snc_redis:
-#     clients:
-#         default:
-#             type: phpredis
-#             dsn: %redis_server%
+snc_redis:
+    clients:
+        default:
+            type: phpredis
+            alias: default
+            dsn: %redis_server%
+            options:
+                prefix: "%kernel.environment%_"
 
 # Doctrine Configuration
 doctrine:

@@ -4,10 +4,7 @@ use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use       Symfony\Component\HttpFoundation\Request;
-use       Symfony\Component\HttpFoundation\Response;
-use       Symfony\Component\Filesystem\Filesystem;
-use       Symfony\Component\Filesystem\Exception\IOExceptionInterface;
-
+use       Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
  * @package Chalet
@@ -24,20 +21,27 @@ class HookController extends Controller
         $logger = $this->get('monolog.logger.controller');
         $logger->info('Someone requested a push request');
 
-        $github = $this->get('app.security.access.validator.github');
-
-        $fs->touch($this->container->getParameter('github_dir') . '/push.txt');exit;
-        if (true === $valid) {
+        $github = $this->get('app.github');
+        if (true === $github->validate($request)) {
 
             $logger->info('Push request was a valid request from github');
+            $github->markPush();
 
-            $fs = new Filesystem();
-            $fs->touch($this->container->getParameter('github_dir') . '/push.txt');
+            $type    = 'success';
+            $message = 'Github push request successfully processed';
 
         } else {
+
             $logger->error('Push request was not a valid request from github');
+
+            $type    = 'error';
+            $message = 'Github push request was not a valid request';
         }
 
-        return new Response();
+        return new JsonResponse([
+
+            'type'    => $type,
+            'message' => $message,
+        ]);
     }
 }
