@@ -2,7 +2,7 @@
 namespace AppBundle\Security\Access;
 use       AppBundle\Security\Access\Handler\AccessHandlerInterface;
 use       Symfony\Component\HttpFoundation\Request;
-use       Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use       Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
@@ -38,7 +38,7 @@ class BootstrapAccess
     public function check()
     {
         if (false === $this->handler->handle($this->request)) {
-            throw new AccessDeniedException('You do not have access to this environment');
+            throw new AccessDeniedHttpException('You are not allowed to access this environment!');
         }
 
         return true;

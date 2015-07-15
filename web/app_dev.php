@@ -5,8 +5,6 @@
  * @version 0.0.5
  * @since   0.0.5
  */
-use AppBundle\Security\Access\BootstrapAccess;
-use AppBundle\Security\Access\Handler\Development;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Debug\Debug;
 
@@ -20,11 +18,7 @@ $kernel->loadClassCache();
 
 error_reporting(E_ALL ^ E_NOTICE);
 
-$request = Request::createFromGlobals();
-
-$bootstrapAccess = new BootstrapAccess(new Development, $request);
-$bootstrapAccess->check();
-
+$request  = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();
 
