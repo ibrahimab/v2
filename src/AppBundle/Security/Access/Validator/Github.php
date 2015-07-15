@@ -45,7 +45,6 @@ class Github implements AccessValidatorInterface
     public function isSignatureValid($signature, $payload)
     {
         $calculatedSignature = self::GITHUB_HMAC_ALGORITHM . '=' . hash_hmac(self::GITHUB_HMAC_ALGORITHM, $payload, $this->secret);
-        var_dump($signature);exit;
         return $signature === $calculatedSignature;
     }
 }
