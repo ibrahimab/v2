@@ -14,6 +14,19 @@ assetic:
         lessphp:
             apply_to: "\.less$"
 
+monolog:
+    channels: ["controller"]
+    handlers:
+        main:
+            type:   stream
+            path:   "%kernel.logs_dir%/%kernel.environment%.log"
+            level:  debug
+        app:
+            type:   stream
+            path:   "%kernel.logs_dir%/app.log"
+            level:  debug
+            channels: ["controller"]
+
 doctrine_mongodb:
     default_database: chalet_stag
     connections:

@@ -34,7 +34,7 @@ class Github implements AccessValidatorInterface
      */
     public function validate(Request $request)
     {
-        return ($request->isMethod('POST') && $this->isSignatureValid($request->headers->get('HTTP_X_HUB_SIGNATURE'), $request->getContent()));
+        return ($request->isMethod('POST') && $this->isSignatureValid($request->headers->get('X-HUB-SIGNATURE'), $request->getContent()));
     }
 
     /**
@@ -44,7 +44,8 @@ class Github implements AccessValidatorInterface
      */
     public function isSignatureValid($signature, $payload)
     {
-        $calculatedSignature = 'sha1=' . hash_hmac(self::GITHUB_HMAC_ALGORITHM, $payload, $this->secret);
+        $calculatedSignature = self::GITHUB_HMAC_ALGORITHM . '=' . hash_hmac(self::GITHUB_HMAC_ALGORITHM, $payload, $this->secret);
+        var_dump($signature);exit;
         return $signature === $calculatedSignature;
     }
 }
