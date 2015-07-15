@@ -14,7 +14,9 @@
             <div class="heart"><a href="#"{% if is_favorite(highlight.type) %} data-role="remove-favorite" class="active added"{% else %} data-role="add-favorite"{% endif %} data-id="{{ highlight.type.getId() }}" title="Dit resultaat opslaan in mijn favorieten"><i class="fi-heart"></i></a></div>
             {% set surveyCount = highlight.type.surveyCount %}
             {% if surveyCount > 1 %}
-                <div class="rating"><span class="figure">{{ highlight.type.surveyAverageOverallRating }}</span><span class="reviews-number">{{ surveyCount }} <a href="{{ link }}">{{ 'ratings'|trans|lower }}</a></span></div>
+                <a href="{{ link }}">
+                    <div class="rating"><span class="figure">{{ highlight.type.surveyAverageOverallRating }}</span><span class="reviews-number">{{ surveyCount }} {{ 'ratings'|trans|lower }}</span></div>
+                </a>
             {% endif %}
         </div>
         <a href="{{ link }}">
