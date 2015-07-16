@@ -24,25 +24,53 @@ class Price
      * @ORM\Id
      */
     private $id;
-    
+
     /**
      * @var boolean
      *
      * @ORM\Column(name="kortingactief", type="boolean")
      */
     private $discountActive;
-    
+
     /**
      * @var boolean
-     * 
+     *
      * @ORM\Column(name="aanbiedingskleur_korting", type="boolean")
      */
     private $offerDiscountColor;
-    
+
     /**
      * @var integer
-     * 
+     *
      * @ORM\Column(name="week", type="timestamp")
      */
-    private $week;
+    private $weekend;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="bruto", type="integer")
+     */
+    private $bruto;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="c_bruto", type="integer")
+     */
+    private $cbruto;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="arrangementsprijs", type="float")
+     */
+    private $arrangementPrice;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="beschikbaar", type="boolean")
+     */
+    private $available;
 }

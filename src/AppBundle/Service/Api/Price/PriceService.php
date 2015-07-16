@@ -30,10 +30,21 @@ class PriceService
      * Get types that have offers enabled
      *
      * @param array
-     * @return array[]
+     * @return array
      */
     public function offers($types)
     {
         return $this->priceServiceRepository->offers($types);
+    }
+
+    /**
+     * Get available types and possible offers
+     *
+     * @param integer $$week
+     * @return array
+     */
+    public function availableTypes($week)
+    {
+        return $this->priceServiceRepository->availableTypes($week);
     }
 }

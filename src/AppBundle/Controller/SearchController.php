@@ -46,6 +46,7 @@ class SearchController extends Controller
         $page     = intval($request->query->get('p'));
         $page     = ($page === 0 ? $page : ($page - 1));
         $per_page = intval($this->container->getParameter('app')['results_per_page']);
+        $offers   = [];
         $filters  = $request->query->get('f', []);
 
         array_walk_recursive($filters, function(&$v) {
@@ -62,35 +63,51 @@ class SearchController extends Controller
                                        ->sort(SearchBuilder::SORT_BY_TYPE_SEARCH_ORDER, SearchBuilder::SORT_ORDER_ASC)
                                        ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0)
                                        ->filter($filters);
-        
+
+        if ($request->query->has('w')) {
+
+            $priceService    = $this->get('app.api.price');
+            $restrictedTypes = $priceService->availableTypes($request->query->get('w'));
+
+            foreach ($restrictedTypes as $retrictedType) {
+
+                if (true === $retrictedType['offer']) {
+                    $offers[$retrictedType['id']] = true;
+                }
+            }
+
+            $searchBuilder->where(SearchBuilder::WHERE_TYPES, array_keys($restrictedTypes));
+            $formFilters['weekend'] = $request->query->get('w');
+        }
+
         $destination = false;
-        
+
         if ($request->query->has('a')) {
-            
+
             $searchBuilder->where(SearchBuilder::WHERE_ACCOMMODATION, $a);
             $destination = true;
         }
 
         if ($request->query->has('t')) {
-            
+
             $searchBuilder->where(SearchBuilder::WHERE_TYPE, $t);
             $destination = true;
         }
 
         if ($request->query->has('c')) {
-            
+
             $searchBuilder->where(SearchBuilder::WHERE_COUNTRY, $c);
             $destination = true;
         }
 
         if ($request->query->has('r')) {
-            
+
             $searchBuilder->where(SearchBuilder::WHERE_REGION, $r);
             $destination = true;
         }
 
         if ($request->query->has('pl')) {
-            
+
             $searchBuilder->where(SearchBuilder::WHERE_PLACE, $pl);
             $destination = true;
         }
@@ -127,7 +144,7 @@ class SearchController extends Controller
             'custom_filters' => ['countries' => [], 'regions' => [], 'places' => [], 'accommodations' => [], 'types' => []],
             'form_filters'   => $formFilters,
             'prices'         => [],
-            'offers'         => [],
+            'offers'         => $offers,
             'destination'    => $destination,
             'weekends'       => $seasonService->weekends($seasonService->seasons()),
             'surveys'        => [],
@@ -135,13 +152,13 @@ class SearchController extends Controller
 
         $typeIds      = [];
         $typeEntities = [];
-        
+
         foreach ($paginator as $accommodation) {
 
             $types = $accommodation->getTypes();
-            
+
             foreach ($types as $type) {
-                
+
                 $typeIds[]      = $type->getId();
                 $typeEntities[] = $type;
             }
@@ -152,8 +169,11 @@ class SearchController extends Controller
             $pricesService  = $this->get('old.prices.wrapper');
             $data['prices'] = $pricesService->get($typeIds);
 
-            $priceService   = $this->get('app.api.price');
-            $data['offers'] = $priceService->offers($typeIds);
+            if (!$request->query->has('w')) {
+
+                $priceService   = $this->get('app.api.price');
+                $data['offers'] = $priceService->offers($typeIds);
+            }
         }
 
         $custom_filter_entities = $searchService->findOnlyNames($c, $r, $pl, $a, $t);
@@ -174,12 +194,12 @@ class SearchController extends Controller
             if ($entity instanceof AccommodationServiceEntityInterface) {
                 $data['custom_filters']['accommodations'][$entity->getId()] = $entity;
             }
-            
+
             if ($entity instanceof TypeServiceEntityInterface) {
                 $data['custom_filters']['types'][$entity->getId()] = $entity;
             }
         }
-        
+
         $facetFilters = [
 
             FilterService::FILTER_DISTANCE => [FilterService::FILTER_DISTANCE_BY_SLOPE, FilterService::FILTER_DISTANCE_MAX_250, FilterService::FILTER_DISTANCE_MAX_500, FilterService::FILTER_DISTANCE_MAX_1000],
@@ -187,28 +207,28 @@ class SearchController extends Controller
             FilterService::FILTER_FACILITY => [FilterService::FILTER_FACILITY_CATERING, FilterService::FILTER_FACILITY_INTERNET_WIFI, FilterService::FILTER_FACILITY_SWIMMING_POOL, FilterService::FILTER_FACILITY_SAUNA, FilterService::FILTER_FACILITY_PRIVATE_SAUNA, FilterService::FILTER_FACILITY_PETS_ALLOWED, FilterService::FILTER_FACILITY_FIREPLACE],
             FilterService::FILTER_THEME    => [FilterService::FILTER_THEME_KIDS, FilterService::FILTER_THEME_CHARMING_PLACES, FilterService::FILTER_THEME_10_FOR_APRES_SKI, FilterService::FILTER_THEME_SUPER_SKI_STATIONS, FilterService::FILTER_THEME_WINTER_WELLNESS],
         ];
-        
+
         foreach ($filters as $filter => $activeFilterValues) {
-            
+
             if (false === FilterService::multiple($filter)) {
-                
+
                 $facetFilters[$filter] = array_filter($facetFilters[$filter], function($value) use ($activeFilterValues) {
                     return $value === $activeFilterValues;
                 });
             }
         }
-        
+
         $data['facet_service'] = $searchService->facets($paginator, $facetFilters);
 
         $surveys = $surveyService->statsByTypes($typeEntities);
-        
-        foreach ($surveys as $surveyData) {            
+
+        foreach ($surveys as $surveyData) {
             $data['surveys'][$surveyData['typeId']] = ['count' => $surveyData['surveyCount'], 'rating' => $surveyData['surveyAverageOverallRating']];
         }
-        
+
         return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', $data);
     }
-    
+
     /**
      * @Route(path="/search/count", name="search_count", options={"expose": true})
      */
@@ -217,7 +237,7 @@ class SearchController extends Controller
         $searchService = $this->get('app.api.search');
         $searchBuilder = $searchService->build()
                                        ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0);
-        
+
         if ($request->query->has('a')) {
             $searchBuilder->where(SearchBuilder::WHERE_ACCOMMODATION, $request->query->get('a'));
         }
@@ -245,7 +265,7 @@ class SearchController extends Controller
         if ($request->query->has('ba')) {
             $searchBuilder->where(SearchBuilder::WHERE_BATHROOMS, $request->query->get('ba'));
         }
-        
+
         return new JsonResponse([
             'count' => $searchBuilder->count(),
         ]);

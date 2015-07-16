@@ -279,7 +279,8 @@
                     type: 'get',
                     url: Routing.generate('additional_costs_type', {typeId: el.data('id'), seasonId: el.data('season')}),
                     success: function(data) {
-                        el.data('cached', true).find('[data-role="tooltip-content"]').html(data);
+
+                        el.data('cached', true).removeClass('loading').find('[data-role="tooltip-content"]').html(data);
                     }
                 });
             }

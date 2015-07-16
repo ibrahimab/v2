@@ -140,7 +140,7 @@ class SearchRepository implements SearchServiceRepositoryInterface
 
         return $paginator;
     }
-    
+
     /**
      * @param SearchBuilder $searchBuilder
      * @return integer
@@ -149,7 +149,7 @@ class SearchRepository implements SearchServiceRepositoryInterface
     {
         $qb = $this->query($searchBuilder)
                    ->add('select', 'COUNT(t)');
-        
+
         return (int)$qb->getQuery()->getSingleScalarResult();
     }
 
@@ -608,6 +608,10 @@ class SearchRepository implements SearchServiceRepositoryInterface
                 case SearchBuilder::WHERE_BATHROOMS:
 
                     $andX->add($expr->gte('t.bathrooms', ':where_' . $clause['field']));
+                    break;
+
+                case SearchBuilder::WHERE_TYPES:
+                    $andX->add($expr->in('t.id', ':where_' . $clause['field']));
                     break;
             }
 

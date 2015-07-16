@@ -45,7 +45,7 @@
                         <div class="small-12 medium-5 large-4 columns price-details">
                             {% if prices[type.getId()] is defined and prices[type.getId()] > 0 %}
                                 <span class="price-info">Prijs per persoon per week, vanaf</span>
-                                <div class="chalet-tooltip" data-role="ajax-tooltip" data-id="{{ type.getId() }}" data-season="{{ 27 }}">
+                                <div class="chalet-tooltip loading" data-role="ajax-tooltip" data-id="{{ type.getId() }}" data-season="{{ 27 }}">
                                     <div class="chalet-tooltip-content">
                                         <div data-role="tooltip-content">Bezig met laden...</div>
                                         <span class="nub rtl"></span>

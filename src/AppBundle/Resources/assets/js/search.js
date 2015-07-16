@@ -42,9 +42,10 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                 body.on('change', '[data-role="change-bedrooms"]', ns.Search.events.formChanges.bedrooms);
                 body.on('change', '[data-role="change-bathrooms"]', ns.Search.events.formChanges.bathrooms);
+                body.on('change', '[data-role="change-weekend"]', ns.Search.events.formChanges.weekend);
 
                 body.on('click', '[data-role="save-search"]', ns.Search.actions.save);
-                
+
                 body.on('change', '[data-role="choose-persons"]', ns.Search.events.formChanges.persons);
             },
 
@@ -145,9 +146,9 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                     ns.Search.actions.search();
                 },
-                
+
                 persons: function(event) {
-                    
+
                     event.preventDefault();
                     var val = parseInt(jq(this).val(), 10);
 
@@ -156,7 +157,21 @@ window.Chalet = (function(ns, jq, _, undefined) {
                     } else {
                         ns.Search.filters.setPersons(val);
                     }
-                    
+
+                    ns.Search.actions.search();
+                },
+
+                weekend: function(event) {
+
+                    event.preventDefault();
+                    var val = jq(this).val();
+
+                    if (val === '') {
+                        ns.Search.filters.removePersons();
+                    } else {
+                        ns.Search.filters.setWeekend(val);
+                    }
+
                     ns.Search.actions.search();
                 }
             },
@@ -257,18 +272,24 @@ window.Chalet = (function(ns, jq, _, undefined) {
                     uri.removeQuery('ba');
                     uri.setQuery('ba', ns.Search.filters.bathrooms);
                 }
-                
+
                 if (null !== ns.Search.filters.persons) {
-                    
+
                     uri.removeQuery('pe');
                     uri.setQuery('pe', ns.Search.filters.persons);
+                }
+
+                if (null !== ns.Search.filters.weekend) {
+
+                    uri.removeQuery('w');
+                    uri.setQuery('w', ns.Search.filters.weekend);
                 }
 
                 return uri;
             },
 
             loader: function() {
-                
+
                 ns.Search.container.find('[data-role="search-results-container"]').prepend('<div class="loading" style="height: 100px;"></div>').find('[data-role="search-results"]').hide();
                 jq('[data-role="search-filter-box"]').prepend('<div class="loading"></div>');
             },
@@ -314,7 +335,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
                         if (window.history.pushState) {
                             window.history.pushState({path: url}, '', url);
                         }
-                        
+
                         // recalculate checkboxes
                         window.recalculateStyledInput();
                     }
@@ -337,8 +358,10 @@ window.Chalet = (function(ns, jq, _, undefined) {
             bedrooms: null,
 
             bathrooms: null,
-            
+
             persons: null,
+
+            weekend: null,
 
             active: function() {
                 return ns.Search.filters.filters;
@@ -396,6 +419,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 ns.Search.filters.bedrooms       = null;
                 ns.Search.filters.bathrooms      = null;
                 ns.Search.filters.persons        = null;
+                ns.Search.filters.weekend        = null;
             },
 
             addCountry: function(country) {
@@ -471,13 +495,21 @@ window.Chalet = (function(ns, jq, _, undefined) {
             removeBathrooms: function() {
                 ns.Search.filters.bathrooms = null;
             },
-            
+
             removePersons: function() {
                 ns.Search.filters.persons = null;
             },
-            
+
             setPersons: function(persons) {
                 ns.Search.filters.persons = persons;
+            },
+
+            removeWeekend: function() {
+                ns.Search.filters.weekend = null;
+            },
+
+            setWeekend: function(weekend) {
+                ns.Search.filters.weekend = weekend;
             }
         },
     };

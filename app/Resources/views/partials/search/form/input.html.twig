@@ -9,14 +9,14 @@
     <div class="results search-book" data-role="autocomplete-results">
     </div>
 </div>
-<select class="radius">
-    <option value="husker">{{ 'select-when'|trans }}</option>
+<select class="radius" data-role="change-weekend">
+    <option>{{ 'select-when'|trans }}</option>
     {% set arrival_label = 'weekend'|trans %}
     {% for timestamp, weekend in weekends %}
-        <option value="{{ timestamp }}">{{arrival_label}} {{ weekend }}</option>
+        <option value="{{ timestamp }}"{{ form_filters['weekend'] is defined and timestamp == form_filters['weekend'] ? ' selected="selected"' }}>{{arrival_label}} {{ weekend }}</option>
     {% endfor %}
 </select>
-<select class="radius">
+<select class="radius" data-role="change-persons">
     <option value="hoeveel">{{ 'select-how-many'|trans }}</option>
     <option value="1">1 {{ 'person'|trans }}</option>
     {% for i in 2..39 %}

@@ -50,4 +50,12 @@ interface PriceServiceRepositoryInterface
      * @return array
      */
     public function offers($types);
+
+    /**
+     * Getting available types
+     *
+     * @param integer $weekend
+     * @return array
+     */
+    public function availableTypes($weekend);
 }
