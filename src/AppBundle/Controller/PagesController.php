@@ -90,15 +90,26 @@ class PagesController extends Controller
         }
 
         $groupedHomepageBlocks = ['left' => [], 'right' => []];
+        $homepageBlocks_left_counter = 0;
+        $homepageBlocks_right_counter = 0;
         foreach ($homepageBlocks as $block) {
 
             if ($block->getPosition() === HomepageBlockServiceEntityInterface::POSITION_LEFT) {
                 $groupedHomepageBlocks['left'][] = $block;
+                $homepageBlocks_left_counter++;
             }
 
             if ($block->getPosition() === HomepageBlockServiceEntityInterface::POSITION_RIGHT) {
                 $groupedHomepageBlocks['right'][] = $block;
+                $homepageBlocks_right_counter++;
             }
+        }
+
+        // check if there are 1 left and 2 right homepageBlocks
+        // if not: empty the array
+        if( $homepageBlocks_left_counter<>1 or $homepageBlocks_right_counter<>2 ) {
+            $groupedHomepageBlocks['left'] = array();
+            $groupedHomepageBlocks['right'] = array();
         }
 
         return [

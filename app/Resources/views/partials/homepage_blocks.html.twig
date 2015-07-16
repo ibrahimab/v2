@@ -1,31 +1,26 @@
+{% if homepageBlocks['left'] is not empty and homepageBlocks['right'] is not empty %}
 <section id="themes-selected">
 
     <div class="row" data-equalizer>
 
-        {% if homepageBlocks['left'] is not empty %}
+        <div class="large-6 columns large-column" data-equalizer-watch>
+            {% include 'partials/homepage_block/block.html.twig' with { 'homepageBlock': homepageBlocks['left']|first } only %}
+        </div>
 
-            <div class="large-6 columns large-column" data-equalizer-watch>
-                {% include 'partials/homepage_block/block.html.twig' with { 'homepageBlock': homepageBlocks['left']|first } only %}
-            </div>
 
-        {% endif %}
+        <div class="large-6 columns large-column end" data-equalizer-watch>
 
-        {% if homepageBlocks['right'] is not empty %}
-
-            <div class="large-6 columns large-column end" data-equalizer-watch>
-
-                {% set rightBlocks = homepageBlocks['right']|slice(0, 2) %}
-                {% for rightBlock in rightBlocks %}
-                    <div class="row small-column{%  if loop.last %} align-bottom{% endif %}">
-                        <div class="large-12 columns end">
-                            {% include 'partials/homepage_block/block.html.twig' with { 'homepageBlock': rightBlock } only %}
-                        </div>
+            {% set rightBlocks = homepageBlocks['right']|slice(0, 2) %}
+            {% for rightBlock in rightBlocks %}
+                <div class="row small-column{%  if loop.last %} align-bottom{% endif %}">
+                    <div class="large-12 columns end">
+                        {% include 'partials/homepage_block/block.html.twig' with { 'homepageBlock': rightBlock } only %}
                     </div>
-                {% endfor %}
+                </div>
+            {% endfor %}
 
-            </div>
+        </div>
 
-        {% endif %}
     </div>
 
     <div class="row">
@@ -34,3 +29,4 @@
         </div>
     </div>
 </section>
+{% endif %}
