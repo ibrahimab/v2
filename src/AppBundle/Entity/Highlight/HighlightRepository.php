@@ -15,7 +15,7 @@ use       Doctrine\ORM\Mapping\ClassMetadata;
  * @package Chalet
  */
 class HighlightRepository extends BaseRepository implements HighlightServiceRepositoryInterface
-{   
+{
     /**
      * {@InheritDoc}
      */
@@ -25,10 +25,10 @@ class HighlightRepository extends BaseRepository implements HighlightServiceRepo
         $limit    = self::getOption($options, 'limit',  null);
         $offset   = self::getOption($options, 'offset', null);
         $datetime = $datetime ?: new \DateTime('now');
-        
+
         $qb       = $this->createQueryBuilder('h');
         $expr     = $qb->expr();
-        
+
         $qb->select('partial h.{id, publishedAt, expiredAt}, partial t.{id, optimalResidents, maxResidents, quality}, partial a.{id, name, kind, quality}, partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}, partial r.{id, name, name, englishName, germanName, seoName, englishSeoName, germanSeoName}, partial c.{id, name, englishName, germanName, startCode}')
            ->leftJoin('h.type', 't')
            ->leftJoin('t.accommodation', 'a')
@@ -37,15 +37,17 @@ class HighlightRepository extends BaseRepository implements HighlightServiceRepo
            ->leftJoin('p.country', 'c')
            ->where($expr->eq('h.display', ':display'))
            ->andWhere($this->publishedExpr('h', $expr))
+           ->andWhere($this->activeWebsiteExpr('h', $expr))
            ->setParameters([
-               
+
                'display' => true,
                'now'     => $datetime,
+               'website'     => $this->getWebsite(),
            ])
            ->setMaxResults($limit)
            ->setFirstResult($offset)
            ->orderBy('h.' . $order);
-           
+
         return $qb->getQuery()->execute();
     }
 }
