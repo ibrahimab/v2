@@ -72,7 +72,7 @@ class AppExtension extends \Twig_Extension
      * @var WebsiteConcern
      */
     private $websiteConcern;
-    
+
     /**
      * @var GeneralSettingsService
      */
@@ -151,7 +151,7 @@ class AppExtension extends \Twig_Extension
     public function getOldImageRoot()
     {
         if (null === $this->oldImageRoot) {
-            $this->oldImageRoot = dirname($this->container->get('kernel')->getRootDir()) . '/web/chalet/pic';
+            $this->oldImageRoot = $this->container->getParameter('old_image_root');
         }
 
         return $this->oldImageRoot;
@@ -739,7 +739,7 @@ class AppExtension extends \Twig_Extension
     {
         return $this->websiteConcern;
     }
-    
+
     /**
      * @return boolean
      */
@@ -748,7 +748,7 @@ class AppExtension extends \Twig_Extension
         if (null === $this->generalSettingsService) {
             $this->generalSettingsService = $this->container->get('app.api.general.settings');
         }
-        
+
         return $this->generalSettingsService->opened();
     }
 
