@@ -52,7 +52,7 @@
                     <label class="label_check" for="checkbox-01">
                         <input data-group="checkbox-1" id="checkbox-01" type="checkbox"{{ is_checked(filter_distance_value, distance_by_slope) }} />{{ 'filter-distance-by-slope'|trans }}
                         {% if facet_service.has(filter_distance, distance_by_slope) %}
-                            <span>({{ facet_service.get(filter_distance, distance_by_slope) }})</span>
+                            ({{ facet_service.get(filter_distance, distance_by_slope) }})
                         {% endif %}
                     </label>
                 </div>
@@ -60,15 +60,15 @@
                     <label class="label_check" for="checkbox-02">
                         <input data-group="checkbox-1" id="checkbox-02" type="checkbox"{{ is_checked(filter_distance_value, distance_max_250) }} />{{ 'filter-distance-max-250'|trans }}
                         {% if facet_service.has(filter_distance, distance_max_250) %}
-                            <span>({{ facet_service.get(filter_distance, distance_max_250) }})</span>
+                            ({{ facet_service.get(filter_distance, distance_max_250) }})
                         {% endif %}
                     </label>
                 </div>
                 <div class="styled_label" data-role="change-filter" data-action="{{ filter_distance_value == distance_max_500 ? 'remove' : 'add' }}" data-filter="{{ filter_distance }}" data-filter-value="{{ distance_max_500 }}">
                     <label class="label_check" for="checkbox-03">
-                        <input data-group="checkbox-1" id="checkbox-03" type="checkbox"{{ is_checked(filter_distance_value, distance_max_500) }} />{{ 'filter-distance-max-500'|trans }}<span>
+                        <input data-group="checkbox-1" id="checkbox-03" type="checkbox"{{ is_checked(filter_distance_value, distance_max_500) }} />{{ 'filter-distance-max-500'|trans }}
                         {% if facet_service.has(filter_distance, distance_max_500) %}
-                            ({{ facet_service.get(filter_distance, distance_max_500) }})</span>
+                            ({{ facet_service.get(filter_distance, distance_max_500) }})
                         {% endif %}
                     </label>
                 </div>
@@ -76,7 +76,7 @@
                     <label class="label_check" for="checkbox-04">
                         <input data-group="checkbox-1" id="checkbox-04" type="checkbox"{{ is_checked(filter_distance_value, distance_max_1000) }} />{{ 'filter-distance-max-1000'|trans }}
                         {% if facet_service.has(filter_distance, distance_max_1000) %}
-                            <span>({{ facet_service.get(filter_distance, distance_max_1000) }})</span>
+                            ({{ facet_service.get(filter_distance, distance_max_1000) }})
                         {% endif %}
                     </label>
                 </div>
@@ -89,7 +89,7 @@
                     <label class="label_check" for="checkbox-05">
                         <input data-group="checkbox-2" id="checkbox-05" type="checkbox"{{ is_checked(filter_length_value, length_max_100) }} />{{ 'filter-length-max-100'|trans }}
                         {% if facet_service.has(filter_length, length_max_100) %}
-                            <span>({{ facet_service.get(filter_length, length_max_100) }})</span>
+                            ({{ facet_service.get(filter_length, length_max_100) }})
                         {% endif %}
                     </label>
                 </div>
@@ -97,7 +97,7 @@
                     <label class="label_check" for="checkbox-06">
                         <input data-group="checkbox-2" id="checkbox-06" type="checkbox"{{ is_checked(filter_length_value, length_min_100) }} />{{ 'filter-length-min-100'|trans }}
                         {% if facet_service.has(filter_length, length_min_100) %}
-                            <span>({{ facet_service.get(filter_length, length_min_100) }})</span>
+                            ({{ facet_service.get(filter_length, length_min_100) }})
                         {% endif %}
                     </label>
                 </div>
@@ -105,7 +105,7 @@
                     <label class="label_check" for="checkbox-07">
                         <input data-group="checkbox-2" id="checkbox-07" type="checkbox"{{ is_checked(filter_length_value, length_min_200) }} />{{ 'filter-length-min-200'|trans }}
                         {% if facet_service.has(filter_length, length_min_200) %}
-                            <span>({{ facet_service.get(filter_length, length_min_200) }})</span>
+                            ({{ facet_service.get(filter_length, length_min_200) }})
                         {% endif %}
                     </label>
                 </div>
@@ -113,7 +113,7 @@
                     <label class="label_check" for="checkbox-08">
                         <input data-group="checkbox-2" id="checkbox-08" type="checkbox"{{ is_checked(filter_length_value, length_min_400) }} />{{ 'filter-length-min-400'|trans }}
                         {% if facet_service.has(filter_length, length_min_400) %}
-                            <span>({{ facet_service.get(filter_length, length_min_400) }})</span>
+                            ({{ facet_service.get(filter_length, length_min_400) }})
                         {% endif %}
                     </label>
                 </div>
@@ -126,7 +126,7 @@
                     <label class="label_check" for="checkbox-09">
                         <input id="checkbox-09" type="checkbox"{{ is_checked(filter_facility_value, facility_catering) }} />{{ 'filter-facility-catering'|trans }}
                         {% if facet_service.has(filter_facility, facility_catering) %}
-                            <span>({{ facet_service.get(filter_facility, facility_catering) }})</span>
+                            ({{ facet_service.get(filter_facility, facility_catering) }})
                         {% endif %}
                     </label>
                 </div>
@@ -134,7 +134,7 @@
                     <label class="label_check" for="checkbox-10">
                         <input id="checkbox-10" type="checkbox"{{ is_checked(filter_facility_value, facility_internet_wifi) }} />{{ 'filter-facility-internet-wifi'|trans }}
                         {% if facet_service.has(filter_facility, facility_internet_wifi) %}
-                            <span>({{ facet_service.get(filter_facility, facility_internet_wifi) }})</span>
+                            ({{ facet_service.get(filter_facility, facility_internet_wifi) }})
                         {% endif %}
                     </label>
                 </div>
@@ -142,7 +142,7 @@
                     <label class="label_check" for="checkbox-11">
                         <input id="checkbox-11" type="checkbox"{{ is_checked(filter_facility_value, facility_swimming_pool) }} />{{ 'filter-facility-swimming-pool'|trans }}
                         {% if facet_service.has(filter_facility, facility_swimming_pool) %}
-                            <span>({{ facet_service.get(filter_facility, facility_swimming_pool) }})</span>
+                            ({{ facet_service.get(filter_facility, facility_swimming_pool) }})
                         {% endif %}
                     </label>
                 </div>
@@ -150,7 +150,7 @@
                     <label class="label_check" for="checkbox-12">
                         <input id="checkbox-12" type="checkbox"{{ is_checked(filter_facility_value, facility_sauna) }} />{{ 'filter-facility-sauna'|trans }}
                         {% if facet_service.has(filter_facility, facility_sauna) %}
-                            <span>({{ facet_service.get(filter_facility, facility_sauna) }})</span>
+                            ({{ facet_service.get(filter_facility, facility_sauna) }})
                         {% endif %}
                     </label>
                 </div>
@@ -158,7 +158,7 @@
                     <label class="label_check" for="checkbox-13">
                         <input id="checkbox-13" type="checkbox"{{ is_checked(filter_facility_value, facility_private_sauna) }} />{{ 'filter-facility-private-sauna'|trans }}
                         {% if facet_service.has(filter_facility, facility_private_sauna) %}
-                            <span>({{ facet_service.get(filter_facility, facility_private_sauna) }})</span>
+                            ({{ facet_service.get(filter_facility, facility_private_sauna) }})
                         {% endif %}
                     </label>
                 </div>
@@ -166,7 +166,7 @@
                     <label class="label_check" for="checkbox-14">
                         <input id="checkbox-14" type="checkbox"{{ is_checked(filter_facility_value, facility_pets_allowed) }} />{{ 'filter-facility-pets-allowed'|trans }}
                         {% if facet_service.has(filter_facility, facility_pets_allowed) %}
-                            <span>({{ facet_service.get(filter_facility, facility_pets_allowed) }})</span>
+                            ({{ facet_service.get(filter_facility, facility_pets_allowed) }})
                         {% endif %}
                     </label>
                 </div>
@@ -174,7 +174,7 @@
                     <label class="label_check" for="checkbox-15">
                         <input id="checkbox-15" type="checkbox"{{ is_checked(filter_facility_value, facility_fireplace) }} />{{ 'filter-facility-fireplace'|trans }}
                         {% if facet_service.has(filter_facility, facility_fireplace) %}
-                            <span>({{ facet_service.get(filter_facility, facility_fireplace) }})</span>
+                            ({{ facet_service.get(filter_facility, facility_fireplace) }})
                         {% endif %}
                     </label>
                 </div>
@@ -187,7 +187,7 @@
                     <label class="label_check" for="checkbox-23">
                         <input id="checkbox-23" type="checkbox"{{ is_checked(filter_theme_value, theme_kids) }} />{{ 'filter-theme-kids'|trans }}
                         {% if facet_service.has(filter_theme, theme_kids) %}
-                            <span>({{ facet_service.get(filter_theme, theme_kids) }})</span>
+                            ({{ facet_service.get(filter_theme, theme_kids) }})
                         {% endif %}
                     </label>
                 </div>
@@ -195,7 +195,7 @@
                     <label class="label_check" for="checkbox-24">
                         <input id="checkbox-24" type="checkbox"{{ is_checked(filter_theme_value, theme_charming_places) }} />{{ 'filter-theme-charming-places'|trans }}
                         {% if facet_service.has(filter_theme, theme_charming_places) %}
-                            <span>({{ facet_service.get(filter_theme, theme_charming_places) }})</span>
+                            ({{ facet_service.get(filter_theme, theme_charming_places) }})
                         {% endif %}
                     </label>
                 </div>
@@ -203,7 +203,7 @@
                     <label class="label_check" for="checkbox-25">
                         <input id="checkbox-25" type="checkbox"{{ is_checked(filter_theme_value, theme_10_for_apres_ski) }} />{{ 'filter-theme-10-for-apres-ski'|trans }}
                         {% if facet_service.has(filter_theme, theme_10_for_apres_ski) %}
-                            <span>({{ facet_service.get(filter_theme, theme_10_for_apres_ski) }})</span>
+                            ({{ facet_service.get(filter_theme, theme_10_for_apres_ski) }})
                         {% endif %}
                     </label>
                 </div>
@@ -211,7 +211,7 @@
                     <label class="label_check" for="checkbox-26">
                         <input id="checkbox-26" type="checkbox"{{ is_checked(filter_theme_value, theme_super_ski_stations) }} />{{ 'filter-theme-super-ski-stations'|trans }}
                         {% if facet_service.has(filter_theme, theme_super_ski_stations) %}
-                            <span>({{ facet_service.get(filter_theme, theme_super_ski_stations) }})</span>
+                            ({{ facet_service.get(filter_theme, theme_super_ski_stations) }})
                         {% endif %}
                     </label>
                 </div>
@@ -219,7 +219,7 @@
                     <label class="label_check" for="checkbox-27">
                         <input id="checkbox-27" type="checkbox"{{ is_checked(filter_theme_value, theme_winter_wellness) }} />{{ 'filter-theme-winter-wellness'|trans }}
                         {% if facet_service.has(filter_theme, theme_winter_wellness) %}
-                            <span>({{ facet_service.get(filter_theme, theme_winter_wellness) }})</span>
+                            ({{ facet_service.get(filter_theme, theme_winter_wellness) }})
                         {% endif %}
                     </label>
                 </div>
