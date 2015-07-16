@@ -52,7 +52,7 @@ snc_redis:
         default:
             type: phpredis
             alias: default
-            dsn: %redis_server%
+            dsn: redis://%redis_server%
             options:
                 prefix: "%kernel.environment%_"
 
