@@ -16,7 +16,7 @@
 
                 {% set rightBlocks = homepageBlocks['right']|slice(0, 2) %}
                 {% for rightBlock in rightBlocks %}
-                    <div class="row{%  if loop.last %} align-bottom{% endif %}">
+                    <div class="row small-column{%  if loop.last %} align-bottom{% endif %}">
                         <div class="large-12 columns end">
                             {% include 'partials/homepage_block/block.html.twig' with { 'homepageBlock': rightBlock } only %}
                         </div>
