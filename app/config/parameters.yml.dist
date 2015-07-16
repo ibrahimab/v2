@@ -19,3 +19,4 @@ parameters:
     allowed_ips: []
     github_secret: null
     github_dir: %kernel.cache_dir%/github
+    old_image_root: 
