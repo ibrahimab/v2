@@ -1,6 +1,5 @@
 <?php
 namespace AppBundle\Entity\Price;
-use       AppBundle\Service\Api\Price\PriceServiceEntityInterface;
 use       Doctrine\ORM\Mapping AS ORM;
 
 /**
@@ -38,6 +37,13 @@ class Price
      * @ORM\Column(name="aanbiedingskleur_korting", type="boolean")
      */
     private $offerDiscountColor;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="seizoen_id", type="integer")
+     */
+    private $seasonId;
 
     /**
      * @var integer

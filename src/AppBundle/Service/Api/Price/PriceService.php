@@ -40,11 +40,23 @@ class PriceService
     /**
      * Get available types and possible offers
      *
-     * @param integer $$week
+     * @param integer $weekend
      * @return array
      */
-    public function availableTypes($week)
+    public function availableTypes($weekend)
     {
-        return $this->priceServiceRepository->availableTypes($week);
+        return $this->priceServiceRepository->availableTypes($weekend);
+    }
+
+    /**
+     * Get prices with weekend and persons
+     *
+     * @param integer $weekend
+     * @param integer $persons
+     * @return array
+     */
+    public function pricesWithWeekendAndPersons($weekend, $persons)
+    {
+        return $this->priceServiceRepository->pricesWithWeekendAndPersons($weekend, $persons);
     }
 }

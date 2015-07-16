@@ -47,6 +47,7 @@ class SearchController extends Controller
         $page     = ($page === 0 ? $page : ($page - 1));
         $per_page = intval($this->container->getParameter('app')['results_per_page']);
         $offers   = [];
+        $prices   = [];
         $filters  = $request->query->get('f', []);
 
         array_walk_recursive($filters, function(&$v) {
@@ -64,7 +65,7 @@ class SearchController extends Controller
                                        ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0)
                                        ->filter($filters);
 
-        if ($request->query->has('w')) {
+        if ($request->query->has('w') && !$request->query->has('pe')) {
 
             $priceService    = $this->get('app.api.price');
             $restrictedTypes = $priceService->availableTypes($request->query->get('w'));
@@ -78,6 +79,26 @@ class SearchController extends Controller
 
             $searchBuilder->where(SearchBuilder::WHERE_TYPES, array_keys($restrictedTypes));
             $formFilters['weekend'] = $request->query->get('w');
+        }
+
+        if ($request->query->has('w') && $request->query->has('pe')) {
+
+            $priceService = $this->get('app.api.price');
+            $pricesTypes  = $priceService->pricesWithWeekendAndPersons($request->query->get('w'), $request->query->get('pe'));
+
+            foreach ($pricesTypes as $priceType) {
+
+                if (true === $priceType['offer']) {
+                    $offers[$priceType['id']] = true;
+                }
+
+                $prices[$priceType['id']] = $priceType['price'];
+            }
+
+            $searchBuilder->where(SearchBuilder::WHERE_TYPES, array_keys($pricesTypes));
+
+            $formFilters['weekend'] = $request->query->get('w');
+            $formFilters['persons'] = $request->query->get('pe');
         }
 
         $destination = false;
@@ -143,7 +164,7 @@ class SearchController extends Controller
             'filter_service' => $this->container->get('app.filter'),
             'custom_filters' => ['countries' => [], 'regions' => [], 'places' => [], 'accommodations' => [], 'types' => []],
             'form_filters'   => $formFilters,
-            'prices'         => [],
+            'prices'         => $prices,
             'offers'         => $offers,
             'destination'    => $destination,
             'weekends'       => $seasonService->weekends($seasonService->seasons()),
@@ -166,8 +187,11 @@ class SearchController extends Controller
 
         if (count($typeIds) > 0) {
 
-            $pricesService  = $this->get('old.prices.wrapper');
-            $data['prices'] = $pricesService->get($typeIds);
+            if (!$request->query->has('pe')) {
+
+                $pricesService  = $this->get('old.prices.wrapper');
+                $data['prices'] = $pricesService->get($typeIds);
+            }
 
             if (!$request->query->has('w')) {
 
