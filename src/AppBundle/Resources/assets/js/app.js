@@ -286,6 +286,47 @@
             }
         });
 
+        jq('body').on('click', '[data-role="toggle-filters"]', function(event) {
+
+            event.preventDefault();
+
+            var el = jq(this);
+            console.log(el.data('status'));
+            if (el.data('status') === 'closed') {
+
+                el.data('status', 'open').removeClass('closed');
+
+                jq('[data-role="closable-filter"]').data('status', 'open').find('.fields').slideDown();
+                jq('[data-role="closable-filter"] h2').removeClass('closed');
+
+            } else {
+
+                el.data('status', 'closed').addClass('closed');
+
+                jq('[data-role="closable-filter"]').data('status', 'closed').find('.fields').slideUp();
+                jq('[data-role="closable-filter"] h2').addClass('closed');
+            }
+
+        });
+
+        jq('body').on('click', '[data-role="closable-filter"]', function(event) {
+
+            event.preventDefault();
+
+            var el = jq(this);
+
+            if (el.data('status') === 'closed') {
+
+                el.data('status', 'open').find('.fields').slideDown();
+                el.find('h2').removeClass('closed');
+
+            } else {
+
+                el.data('status', 'closed').find('.fields').slideUp();
+                el.find('h2').addClass('closed');
+            }
+        });
+
         /**
          * This code handles the destinations map
          * It generates it via the jqvmap jQuery plugin

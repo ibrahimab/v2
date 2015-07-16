@@ -56,24 +56,24 @@ $('.table-explain .button').click(function() {
 //     return false;
 // });
 //open close divs
-$('#search-filter-results h2 a').click(function() {//close ONE filter
-    $(this).closest('h2').toggleClass('closed');
-    var getParent = "#" + $(this).closest("div").attr("id");
-    $(getParent + ' div').slideToggle();
-    return false;
-});
-$('#search-filter .title').click(function() {//close ALL filters
-    if ($(this).hasClass('closed')){
-        $('#search-filter .title').removeClass('closed');
-        $('#search-filter .search-filter-default .fields').slideDown();
-        $('#search-filter .search-filter-default h2').removeClass('closed');        
-    }else{
-        $('#search-filter .title').addClass('closed');
-        $('#search-filter .search-filter-default .fields').slideUp();
-        $('#search-filter .search-filter-default h2').addClass('closed');  
-    }
-    return false;
-});
+// $('#search-filter-results h2 a').click(function() {//close ONE filter
+//     $(this).closest('h2').toggleClass('closed');
+//     var getParent = "#" + $(this).closest("div").attr("id");
+//     $(getParent + ' div').slideToggle();
+//     return false;
+// });
+// $('#search-filter .title').click(function() {//close ALL filters
+//     if ($(this).hasClass('closed')){
+//         $('#search-filter .title').removeClass('closed');
+//         $('#search-filter .search-filter-default .fields').slideDown();
+//         $('#search-filter .search-filter-default h2').removeClass('closed');        
+//     }else{
+//         $('#search-filter .title').addClass('closed');
+//         $('#search-filter .search-filter-default .fields').slideUp();
+//         $('#search-filter .search-filter-default h2').addClass('closed');  
+//     }
+//     return false;
+// });
 $('.readmore a').click(function() {//open close div (class=readmore)
     var el = $(this);
     var state = el.data('state');
@@ -95,15 +95,15 @@ $(document).ready(function(){
     $('body').on('click', '.styled_label', function(event) {
         window.recalculateStyledInput();
     });
-    
+
     window.recalculateStyledInput = function() {
 
         $('.styled_label input').each(function() {
-            
+
             var element     = $(this);
             var labelClass  = element.attr('type') === 'checkbox' ? 'label_check' : 'label_radio';
             var statusClass = element.attr('type') === 'checkbox' ? 'c_on'        : 'r_on';
-            
+
             if (true === element.prop('checked')) {
                 element.parent('label.' + labelClass).addClass(statusClass);
             } else {
@@ -111,7 +111,7 @@ $(document).ready(function(){
             }
         });
     };
-    
+
     // initial calculation
     window.recalculateStyledInput();
 });
