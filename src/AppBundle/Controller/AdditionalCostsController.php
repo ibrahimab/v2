@@ -15,15 +15,15 @@ use       Symfony\Component\HttpFoundation\Request;
 class AdditionalCostsController extends Controller
 {
     /**
-     * @Route("/additional-costs/type/{typeId}/{seasonId}/{arrangement}", name="additional_costs_type", defaults={"arrangement": false})
+     * @Route("/additional-costs/type/{typeId}/{seasonId}/{arrangement}", name="additional_costs_type", defaults={"arrangement": false}, options={"expose": true})
      */
     public function type(Request $request, $typeId, $seasonId, $arrangement)
     {
         $constants = $this->container->get('old.constants');
         $constants->setup();
-        
+
         Loader::loadTxt($request->getLocale(), $this->get('app.concern.website'));
-        
+
         $config = $this->get('old.configuration');
         $accInfo = new \AccInfo($typeId, $aankomstdatum, $aantalpersonen);
         $accInfo->setConfiguration($config);
@@ -44,7 +44,7 @@ class AdditionalCostsController extends Controller
     	$additionalCosts->setRedis($this->get('old.redis'));
         $additionalCosts->accinfo    = $accInfo->process()->result();
     	$additionalCosts->seizoen_id = $seasonId;
-        
+
     	if (true === $arrangement) {
     		$additionalCosts->arrangement = true;
     	}

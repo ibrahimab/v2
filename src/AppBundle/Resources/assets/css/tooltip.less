@@ -1,0 +1,50 @@
+.chalet-tooltip {
+
+    display: inline;
+    position: relative;
+
+    .chalet-tooltip-content {
+
+        display: none !important;
+        width: 20rem;
+        text-align: left !important;
+    }
+
+    &:hover {
+
+        color: #193761;
+        text-decoration: none;
+
+        .chalet-tooltip-content {
+
+            background: #fff;
+            top:0;
+            right: 0;
+            color: #193761;
+            border: thin solid #bfbfbf;
+            display: block !important;
+            position: absolute;
+            padding: 0.5rem 1rem 0 1rem;
+            z-index: 3;
+
+            h2 {
+                background: none !important;
+            }
+
+            .nub {
+
+                position: absolute;
+                width: 0;
+                height: 0;
+                border: solid 5px;
+                left: auto;
+                bottom: -10px;
+                border-color: transparent transparent transparent #333333;
+                right: -10px;
+                top: 8%;
+                margin-top: -5px;
+                pointer-events: none;
+            }
+        }
+    }
+}

@@ -8,24 +8,24 @@
          * fixed header scroll effects
          */
         var stickyHeader = function() {
-            
+
             if (window.innerWidth <= 641) {
-                
+
                 // mobile does not have sticky header!
                 jq('body').removeClass('smaller');
                 return;
             }
-            
+
             var distanceY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
             var body      = jq('body');
-            
+
             if (distanceY > 10) {
                 body.addClass('smaller');
             } else {
                 body.removeClass('smaller');
             }
         };
-        
+
         jq(window).on('scroll', stickyHeader);
         stickyHeader();
 
@@ -136,9 +136,9 @@
          * Chat button
          */
         body.on('click', '[data-role="chat-button"]', function(event) {
-            
+
             event.preventDefault();
-            
+
             if (undefined !== LC_API) {
                 LC_API.open_chat_window();
             }
@@ -265,6 +265,26 @@
             }
         });
 
+        body.on('mouseover', '[data-role="ajax-tooltip"]', function(event) {
+
+            var el      = jq(this);
+            var retries = (undefined === el.data('retries') ? 0 : parseInt(el.data('retries'), 10));
+
+            el.data('retries', retries + 1);
+
+            if (true !== el.data('cached') && retries < 3) {
+
+                jq.ajax({
+
+                    type: 'get',
+                    url: Routing.generate('additional_costs_type', {typeId: el.data('id'), seasonId: el.data('season')}),
+                    success: function(data) {
+                        el.data('cached', true).find('[data-role="tooltip-content"]').html(data);
+                    }
+                });
+            }
+        });
+
         /**
          * This code handles the destinations map
          * It generates it via the jqvmap jQuery plugin
@@ -275,7 +295,7 @@
         if (Chalet.get()['app']['controller'] === 'countries::destinations') {
             var italyMaps = Chalet.Maps.Italy.initialize('[data-role="italy-maps"]');
         }
-        
+
         // display hide-on-load blocks
         jq('.hide-on-load').removeClass('hide-on-load');
     });
