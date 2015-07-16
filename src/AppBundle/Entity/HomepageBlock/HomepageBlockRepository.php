@@ -31,9 +31,11 @@ class HomepageBlockRepository extends BaseRepository implements HomepageBlockSer
 
             'display' => true,
             'now'     => $datetime,
+            'website'     => $this->getWebsite(),
         ];
 
-        $qb->where($this->publishedExpr('h', $expr))
+        $qb->andwhere($this->publishedExpr('h', $expr))
+           ->andWhere($this->activeWebsiteExpr('h', $expr))
            ->andWhere($expr->eq('h.display', ':display'));
 
         foreach ($by as $field => $value) {
