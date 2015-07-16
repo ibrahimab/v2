@@ -138,6 +138,7 @@ services:
             - [setSeason,  [@app.concern.season]]
             - [setWebsite, [@app.concern.website]]
             - [setLocale,  [@service_container]]
+            - [setMaximumPersonsMap, [%app%]]
 
     app.repository.autocomplete:
         class:     AppBundle\Document\Autocomplete\AutocompleteRepository

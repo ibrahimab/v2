@@ -103,6 +103,8 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
            ->andWhere($expr->gt('prp.price', 0))
            ->andWhere($expr->eq('prp.persons', ':persons'))
            ->andWhere($expr->gt('pr.weekend', ':today'))
+           ->andWhere($expr->gte('s.display', ':display'))
+           ->andWhere($expr->eq('s.season', ':season'))
            ->andWhere($bruto)
            ->setParameters([
 
@@ -110,6 +112,8 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
                'available' => true,
                'persons'   => $persons,
                'today'     => (new \DateTime())->getTimestamp(),
+               'display'   => 3,
+               'season'    => $this->getSeason(),
            ]);
 
         $results = $qb->getQuery()->getResult(Query::HYDRATE_ARRAY);

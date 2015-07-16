@@ -43,6 +43,8 @@ class SearchController extends Controller
         $t        = $request->query->get('t',  []);
         $be       = $request->query->get('be', null);
         $ba       = $request->query->get('ba', null);
+        $w        = $request->query->get('w',  null);
+        $pe       = $request->query->get('pe', null);
         $page     = intval($request->query->get('p'));
         $page     = ($page === 0 ? $page : ($page - 1));
         $per_page = intval($this->container->getParameter('app')['results_per_page']);
@@ -84,7 +86,7 @@ class SearchController extends Controller
         if ($request->query->has('w') && $request->query->has('pe')) {
 
             $priceService = $this->get('app.api.price');
-            $pricesTypes  = $priceService->pricesWithWeekendAndPersons($request->query->get('w'), $request->query->get('pe'));
+            $pricesTypes  = $priceService->pricesWithWeekendAndPersons($w, $pe);
 
             foreach ($pricesTypes as $priceType) {
 
@@ -97,8 +99,8 @@ class SearchController extends Controller
 
             $searchBuilder->where(SearchBuilder::WHERE_TYPES, array_keys($pricesTypes));
 
-            $formFilters['weekend'] = $request->query->get('w');
-            $formFilters['persons'] = $request->query->get('pe');
+            $formFilters['weekend'] = $w;
+            $formFilters['persons'] = $pe;
         }
 
         $destination = false;
@@ -143,6 +145,12 @@ class SearchController extends Controller
 
             $formFilters['bathrooms'] = $ba;
             $searchBuilder->where(SearchBuilder::WHERE_BATHROOMS, $ba);
+        }
+
+        if ($request->query->has('pe')) {
+
+            $formFilters['persons'] = $pe;
+            $searchBuilder->where(SearchBuilder::WHERE_PERSONS, $pe);
         }
 
         $paginator  = $searchBuilder->search();

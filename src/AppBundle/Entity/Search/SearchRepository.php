@@ -37,6 +37,11 @@ class SearchRepository implements SearchServiceRepositoryInterface
     const SORT_ORDER_DEFAULT = SearchBuilder::SORT_ORDER_ASC;
 
     /**
+     * @param array
+     */
+    private $maximumPersonsMap;
+
+    /**
      * Constructor, injecting the EntityManager
      *
      * @param EntityManager $entityManager
@@ -44,6 +49,14 @@ class SearchRepository implements SearchServiceRepositoryInterface
     public function __construct(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
+    }
+
+    /**
+     * @param array $maximumPersonsMap
+     */
+    public function setMaximumPersonsMap($app)
+    {
+        $this->maximumPersonsMap = $app['maximum_persons_map'];
     }
 
     /**
@@ -564,7 +577,6 @@ class SearchRepository implements SearchServiceRepositoryInterface
     public function where($where, $qb)
     {
         $expr = $qb->expr();
-        $andX = $expr->andX();
 
         foreach ($where as $clause) {
 
@@ -572,51 +584,101 @@ class SearchRepository implements SearchServiceRepositoryInterface
 
                 case SearchBuilder::WHERE_WEEKEND_SKI:
 
-                    $andX->add($expr->eq('a.weekendSki', ':where_' . $clause['field']));
+                    $qb->andWhere($expr->eq('a.weekendSki', ':where_' . $clause['field']));
+                    $qb->setParameter('where_' . $clause['field'], $clause['value']);
+
                     break;
 
                 case SearchBuilder::WHERE_ACCOMMODATION:
 
-                    $andX->add($expr->in('a.id', ':where_' . $clause['field']));
+                    $qb->andWhere($expr->in('a.id', ':where_' . $clause['field']));
+                    $qb->setParameter('where_' . $clause['field'], $clause['value']);
+
                     break;
 
                 case SearchBuilder::WHERE_TYPE:
 
-                    $andX->add($expr->in('t.id', ':where_' . $clause['field']));
+                    $qb->andWhere($expr->in('t.id', ':where_' . $clause['field']));
+                    $qb->setParameter('where_' . $clause['field'], $clause['value']);
+
                     break;
 
                 case SearchBuilder::WHERE_COUNTRY:
 
-                    $andX->add($expr->in('c.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
+                    $qb->andWhere($expr->in('c.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
+                    $qb->setParameter('where_' . $clause['field'], $clause['value']);
+
                     break;
 
                 case SearchBuilder::WHERE_REGION:
 
-                    $andX->add($expr->in('r.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
+                    $qb->andWhere($expr->in('r.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
+                    $qb->setParameter('where_' . $clause['field'], $clause['value']);
+
                     break;
 
                 case SearchBuilder::WHERE_PLACE:
 
-                    $andX->add($expr->in('p.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
+                    $qb->andWhere($expr->in('p.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
+                    $qb->setParameter('where_' . $clause['field'], $clause['value']);
+
                     break;
 
                 case SearchBuilder::WHERE_BEDROOMS:
 
-                    $andX->add($expr->gte('t.bedrooms', ':where_' . $clause['field']));
+                    $qb->andWhere($expr->gte('t.bedrooms', ':where_' . $clause['field']));
+                    $qb->setParameter('where_' . $clause['field'], $clause['value']);
+
                     break;
 
                 case SearchBuilder::WHERE_BATHROOMS:
 
-                    $andX->add($expr->gte('t.bathrooms', ':where_' . $clause['field']));
+                    $qb->andWhere($expr->gte('t.bathrooms', ':where_' . $clause['field']));
+                    $qb->setParameter('where_' . $clause['field'], $clause['value']);
+
+                    break;
+
+                case SearchBuilder::WHERE_PERSONS:
+
+                    if ($clause['value'] > 0) {
+
+                        if ($clause['value'] >= 40) {
+
+                            $min = $clause['value'];
+                            $max = 1000;
+
+                        } else if ($clause['value'] > 20) {
+
+                            $min = $clause['value'];
+                            $max = 50;
+
+                        } else {
+
+                            $min = $clause['value'];
+                            $max = (isset($this->maximumPersonsMap[$clause['value']]) ? $this->maximumPersonsMap[$clause['value']] : $clause['value']);
+                        }
+                    }
+
+                    // $andX = $expr->andX();
+                    $qb->andWhere($expr->gte('t.maxResidents', ':where_' . $min));
+                    $qb->andWhere($expr->lte('t.maxResidents', ':where_2_' . $max));
+                    $qb->andWhere($expr->lte('t.bedrooms', ':where_3_' . $min . '_' . $max));
+
+                    $qb->setParameter('where_' . $min, $min);
+                    $qb->setParameter('where_2_' . $max, $max);
+                    $qb->setParameter('where_3_' . $min . '_' . $max, $min);
+
+                    // $qb->andWhere($andX);
+
                     break;
 
                 case SearchBuilder::WHERE_TYPES:
-                    $andX->add($expr->in('t.id', ':where_' . $clause['field']));
+
+                    $qb->andWhere($expr->in('t.id', ':where_' . $clause['field']));
+                    $qb->setParameter('where_' . $clause['field'], $clause['value']);
+
                     break;
             }
-
-            $qb->setParameter('where_' . $clause['field'], $clause['value']);
-            $qb->andWhere($andX);
         }
 
         return $qb;
