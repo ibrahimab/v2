@@ -68,7 +68,7 @@ class PagesController extends Controller
         }
 
         $homepageBlocks       = $homepageBlockService->published();
-        $highlights           = $highlightService->displayable(['limit' => $config['service']['api']['highlight']['limit']]);
+        $highlights           = $highlightService->displayable(['limit' => $config['service']['api']['highlight']['limit'], 'results_per_row' => $config['service']['api']['highlight']['results_per_row'] ]);
         $types                = [];
 
         foreach ($highlights as $highlight) {
