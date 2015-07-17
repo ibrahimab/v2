@@ -35,12 +35,20 @@ class DeployCommand extends ContainerAwareCommand
         $logger    = $container->get('monolog.logger.application');
         $github    = $container->get('app.github');
         
+        
+        if (true === $github->isPulling()) {
+            
+            $logger->error(sprintf('Deployment has already been started at: %s', $github->getStartPulling()->format('d-m-Y H:i:s'));
+            return;
+        }
+        
         if (false === $github->pullAvailable()) {
             return;
         }
         
         $process = new Process(sprintf('sh %s/../deploy.sh', $container->getParameter('kernel.root_dir')));
 
+        $github->startPulling();
         $logger->info('Deploying application...');
         $process->run();
 
