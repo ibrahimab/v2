@@ -50,7 +50,9 @@ class DeployCommand extends ContainerAwareCommand
             $logger->error($process->getErrorOutput());
 
         } else {
-            $logger->info('Successfully deployed application');
+            
+            $pushTime = $github->pullCompleted();
+            $logger->info(sprintf('Successfully deployed application that was marked at: %s', $pushTime->format('d-m-Y H:i:s')));
         }
     }
 }

@@ -59,7 +59,7 @@ class GithubService
     /**
      * @return \DateTime
      */
-    public function unmarkPush()
+    public function pullCompleted()
     {
         $time = $this->redis->get(self::GITHUB_PUSH_RECEIVED);
         $this->redis->del(self::GITHUB_PUSH_RECEIVED);
