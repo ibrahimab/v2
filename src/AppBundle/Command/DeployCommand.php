@@ -1,7 +1,6 @@
 <?php
-namespace AppBundle\Command\Github;
+namespace AppBundle\Command;
 use       Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use       Symfony\Component\Console\Input\InputArgument;
 use       Symfony\Component\Console\Input\InputInterface;
 use       Symfony\Component\Console\Output\OutputInterface;
 use       Symfony\Component\Process\Process;
@@ -12,7 +11,7 @@ use       Symfony\Component\Process\Process;
  * @version 0.0.5
  * @since   0.0.5
  */
-class PullCommand extends ContainerAwareCommand
+class DeployCommand extends ContainerAwareCommand
 {
     /**
      * Configuring command
@@ -21,8 +20,8 @@ class PullCommand extends ContainerAwareCommand
      */
     protected function configure()
     {
-        $this->setName('github:pull')
-             ->setDescription('Pull repository changes from github');
+        $this->setName('deploy:app')
+             ->setDescription('Deploying application');
     }
 
     /**
@@ -40,18 +39,18 @@ class PullCommand extends ContainerAwareCommand
             return;
         }
         
-        $process = new Process('git pull');
+        $process = new Process(sprintf('sh %s/../deploy.sh', $container->getParameter('kernel.root_dir')));
 
-        $logger->info('Pulling changes from Github...');
+        $logger->info('Deploying application...');
         $process->run();
 
         if (!$process->isSuccessful()) {
 
-            $logger->error('Could not pull changes from github: ');
+            $logger->error('Could not deploy application');
             $logger->error($process->getErrorOutput());
 
         } else {
-            $logger->info('Successfully pulled from github');
+            $logger->info('Successfully deployed application');
         }
     }
 }
