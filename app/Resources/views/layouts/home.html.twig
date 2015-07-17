@@ -37,7 +37,7 @@
                             </div>
                         </div>
                         <div class="large-3 medium-3 columns">
-                            <select class="radius">
+                            <select class="radius" data-role="choose-weekend-home">
                                 <option>Wanneer wil je gaan?</option>
                                 {% set weekend_label = 'weekend'|trans %}
                                 {% for timestamp, weekend in weekends %}
@@ -48,7 +48,7 @@
                         <div class="large-3 medium-3 columns">
                             {# we have two select items because of text switching when resizing viewport (medium ('Hoeveel personen') vs rest ('Met hoeveel personen ga je?')) #}
                             <select class="radius hide-for-medium" data-role="choose-persons-home">
-                                <option value="hoeveel">Met hoeveel personen ga je?</option>
+                                <option>Met hoeveel personen ga je?</option>
                                 {% for i in 1..39 %}
                                 <option value="{{ i }}">{{ i }}</option>
                                 {% endfor %}

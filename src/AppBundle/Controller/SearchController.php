@@ -297,7 +297,23 @@ class SearchController extends Controller
         if ($request->query->has('ba')) {
             $searchBuilder->where(SearchBuilder::WHERE_BATHROOMS, $request->query->get('ba'));
         }
-
+        
+        if ($request->query->has('w') && !$request->query->has('pe')) {
+            
+            $priceService = $this->get('app.api.price');
+            $types        = $priceService->availableTypes($request->query->get('w'));
+            
+            $searchBuilder->where(SearchBuilder::WHERE_TYPES, array_keys($types));
+        }
+        
+        if ($request->query->has('w') && $request->query->has('pe')) {
+            
+            $priceService = $this->get('app.api.price');
+            $types        = $priceService->pricesWithWeekendAndPersons($request->query->get('w'), $request->query->get('pe'));
+            
+            $searchBuilder->where(SearchBuilder::WHERE_TYPES, array_keys($types));
+        }
+        
         return new JsonResponse([
             'count' => $searchBuilder->count(),
         ]);

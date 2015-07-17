@@ -129,6 +129,8 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         if (weekend !== '') {
                             ns.Autocomplete.actions.home.weekend(weekend);
                         }
+                        
+                        console.log(weekend);
                     });
 
                     jq('body').on('change', '[data-role="choose-persons-home"]', function(event) {
@@ -140,6 +142,8 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         if (persons !== '') {
                             ns.Autocomplete.actions.home.persons(persons);
                         }
+                        
+                        console.log(persons);
                     });
                 }
             },
@@ -314,6 +318,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     uri.setQuery('w', weekend);
                     
                     link.attr('href', uri.toString());
+                    ns.Autocomplete.count(uri.query());
                 },
 
                 persons: function(persons) {
@@ -325,6 +330,10 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     uri.setQuery('pe', persons);
 
                     link.attr('href', uri.toString());
+                    
+                    if (uri.hasQuery('w')) {
+                        ns.Autocomplete.count(uri.query());
+                    }
                 }
             },
 
