@@ -38,6 +38,7 @@ parameters:
             api:
                 highlight:
                     limit: 6
+                    results_per_row: 3
         countries:
             I: 5
             K: 5

@@ -21,9 +21,10 @@ class HighlightRepository extends BaseRepository implements HighlightServiceRepo
      */
     public function displayable($options = [], $datetime = null)
     {
-        $order    = self::getOption($options, 'order',  'rank');
-        $limit    = self::getOption($options, 'limit',  null);
-        $offset   = self::getOption($options, 'offset', null);
+        $order           = self::getOption($options, 'order',  'rank');
+        $limit           = self::getOption($options, 'limit',  null);
+        $offset          = self::getOption($options, 'offset', null);
+        $resultsPerRow = self::getOption($options, 'results_per_row', null);
         $datetime = $datetime ?: new \DateTime('now');
 
         $qb       = $this->createQueryBuilder('h');
@@ -48,6 +49,24 @@ class HighlightRepository extends BaseRepository implements HighlightServiceRepo
            ->setFirstResult($offset)
            ->orderBy('h.' . $order);
 
-        return $qb->getQuery()->execute();
+        //
+        // Return the correct number of results
+        //
+
+        // get number of results
+        $results = $qb->getQuery()->execute();
+        $numberOfResults = count($results);
+
+        if ( $numberOfResults == $limit || $numberOfResults % $resultsPerRow == 0 ) {
+          // full limit or $numberOfResults is divisible by $resultsPerRow
+          return $results;
+        } elseif($numberOfResults > $resultsPerRow ) {
+          // incorrect number of results: slice the results to make it divisible by $resultsPerRow
+          $numberOfResultsToReturn = floor($numberOfResults / $resultsPerRow) * $resultsPerRow;
+          return array_slice($results, 0, $numberOfResultsToReturn);
+        } else {
+          // not enough results
+          return array();
+        }
     }
 }
