@@ -120,6 +120,17 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                 if (ns.Autocomplete.type === ns.Autocomplete.types.TYPE_HOME) {
 
+                    jq('body').on('change', '[data-role="choose-weekend-home"]', function(event) {
+                        
+                        event.preventDefault();
+                        
+                        var weekend = event.target.value;
+                        
+                        if (weekend !== '') {
+                            ns.Autocomplete.actions.home.weekend(weekend);
+                        }
+                    });
+
                     jq('body').on('change', '[data-role="choose-persons-home"]', function(event) {
 
                         event.preventDefault();
@@ -292,6 +303,17 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     ns.Autocomplete.resultsContainer.hide();
 
                     ns.Autocomplete.count(uri.query());
+                },
+
+                weekend: function(weekend) {
+                    
+                    var link = jq('[data-role="search-simple"]');
+                    var uri  = URI(link.attr('href'));
+                    
+                    uri.removeQuery('w');
+                    uri.setQuery('w', weekend);
+                    
+                    link.attr('href', uri.toString());
                 },
 
                 persons: function(persons) {
