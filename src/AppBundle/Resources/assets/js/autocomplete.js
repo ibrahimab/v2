@@ -129,8 +129,6 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         if (weekend !== '') {
                             ns.Autocomplete.actions.home.weekend(weekend);
                         }
-                        
-                        console.log(weekend);
                     });
 
                     jq('body').on('change', '[data-role="choose-persons-home"]', function(event) {
@@ -142,8 +140,6 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         if (persons !== '') {
                             ns.Autocomplete.actions.home.persons(persons);
                         }
-                        
-                        console.log(persons);
                     });
                 }
             },
@@ -396,12 +392,14 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
         count: function(params) {
 
             if (ns.Autocomplete.type === ns.Autocomplete.types.TYPE_HOME) {
-
+                
+                ns.Autocomplete.views.updateCount('Bezig met laden...');
+                
                 jq.ajax({
 
                     url: ns.Autocomplete.countUrl(params),
                     success: function(data) {
-                        ns.Autocomplete.views.updateCount(data.count)
+                        ns.Autocomplete.views.updateCount(data.count);
                     },
 
                     error: function() {}
