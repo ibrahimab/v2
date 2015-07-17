@@ -2,7 +2,6 @@
 namespace AppBundle\Service;
 use       AppBundle\Security\Access\Validator\Github;
 use       Symfony\Component\HttpFoundation\Request;
-use       Snc\RedisBundle\Client\Phpredis\Client;
 
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
@@ -26,7 +25,7 @@ class GithubService
      * @param Github $githubValidator
      * @param Client $redis
      */
-    public function __construct(Github $githubValidator, Client $redis)
+    public function __construct(Github $githubValidator, $redis)
     {
         $this->githubValidator = $githubValidator;
         $this->redis           = $redis;

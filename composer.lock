@@ -2885,16 +2885,16 @@
         },
         {
             "name": "facebook/webdriver",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/facebook/php-webdriver.git",
-                "reference": "7cfa09f0a50b5e93087a9dc0eb669bc559eb9961"
+                "reference": "8eb1952d6be0725e1064c4fe0630d0d4d1de7639"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/7cfa09f0a50b5e93087a9dc0eb669bc559eb9961",
-                "reference": "7cfa09f0a50b5e93087a9dc0eb669bc559eb9961",
+                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/8eb1952d6be0725e1064c4fe0630d0d4d1de7639",
+                "reference": "8eb1952d6be0725e1064c4fe0630d0d4d1de7639",
                 "shasum": ""
             },
             "require": {
@@ -2924,7 +2924,7 @@
                 "selenium",
                 "webdriver"
             ],
-            "time": "2015-06-09 17:06:08"
+            "time": "2015-07-16 19:31:12"
         },
         {
             "name": "guzzlehttp/guzzle",
