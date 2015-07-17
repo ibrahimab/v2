@@ -18,7 +18,7 @@ class HookController extends Controller
      */
     public function push(Request $request)
     {
-        $logger = $this->get('monolog.logger.controller');
+        $logger = $this->get('monolog.logger.application');
         $github = $this->get('app.github');
         
         $logger->info('Someone requested a push request');
@@ -26,7 +26,7 @@ class HookController extends Controller
         if (true === $github->validate($request)) {
 
             $logger->info('Push request was a valid request from github');
-            $github->markPush();
+            $github->pushReceived();
 
             $type    = 'success';
             $message = 'Github push request successfully processed';

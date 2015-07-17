@@ -12,6 +12,11 @@ use       Symfony\Component\HttpFoundation\Request;
 class GithubService
 {
     /**
+     * @const string
+     */
+    const GITHUB_PUSH_RECEIVED = 'github:push:received';
+    
+    /**
      * @var Github
      */
     private $githubValidator;
@@ -43,7 +48,7 @@ class GithubService
     /**
      * @return \DateTime
      */
-    public function markPush()
+    public function pushReceived()
     {
         $time = new \DateTime();
         $this->redis->set('github-push-received', $time->getTimestamp());
@@ -57,8 +62,13 @@ class GithubService
     public function unmarkPush()
     {
         $time = $this->redis->get(self::GITHUB_PUSH_RECEIVED);
-        $this->redis->unset(self::GITHUB_PUSH_RECEIVED);
+        $this->redis->del(self::GITHUB_PUSH_RECEIVED);
 
         return (new \DateTime())->setTimestamp((int)$time);
+    }
+    
+    public function pullAvailable()
+    {
+        return $this->redis->exists(self::GITHUB_PUSH_RECEIVED);
     }
 }
