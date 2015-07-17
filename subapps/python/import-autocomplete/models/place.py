@@ -24,12 +24,19 @@ class Place(Base):
     """
     def fetch(self):
 
-        sql = 'SELECT `plaats_id` AS `id`, `skigebied_id` AS `region_id`, `land_id` AS `country_id`, `naam` AS `name_nl`, ' \
-              '`websites`, `wzt` AS `season`, `naam_de` AS `name_de`, `naam_en` AS `name_en`, `naam_fr` AS `name_fr`  '     \
-              'FROM   `plaats` '                                                                                            \
-              'ORDER BY `naam` ASC'
+        sql = "SELECT DISTINCT `plaats_id` AS `id`, `plaats` AS `name_nl`, `plaats_de` AS `name_de`, " \
+              "                `plaats_en` AS `name_en`, `plaats_fr` AS `name_fr` "                    \
+              "FROM   `view_accommodatie` "                                                            \
+              "WHERE FIND_IN_SET('%(website)s', `websites`) > 0 "                                      \
+              "AND `atonen` = 1 "                                                                      \
+              "AND `ttonen` = 1 "                                                                      \
+              "AND `atonenzoekformulier` = 1 "                                                         \
+              "AND `ttonenzoekformulier` = 1 "                                                         \
+              "AND `archief` = 0 "                                                                     \
+              "AND `weekendski` = 0 "                                                                  \
+              "ORDER BY `plaats` ASC"
 
-        self.adapter('mysql').execute(sql)
+        self.adapter('mysql').execute(sql % {'website': self.website})
         self.data = self.adapter('mysql').fetchall()
         return self
 
@@ -43,7 +50,7 @@ class Place(Base):
         if not self.data:
             return self
 
-        collection = self.adapter('mongo').autocomplete
+        collection = self.collection()
         data       = []
         order      = 1
 
@@ -51,21 +58,24 @@ class Place(Base):
 
             data.append({
 
-                'type':             Place.AUTOCOMPLETE_TYPE,
-                'type_id':          row['id'],
-                'region_id':        row['region_id'],
-                'country_id':       row['country_id'],
-                'locales':          ['nl', 'en', 'fr', 'de'],
-                'name':             {
+                'type': Place.AUTOCOMPLETE_TYPE,
+                'type_id': row['id'],
+                'locales': ['nl', 'en', 'fr', 'de'],
+                'order': order,
+                'name': {
 
                     'nl': row['name_nl'],
                     'en': row['name_en'],
                     'de': row['name_de'],
                     'fr': row['name_fr']
                 },
-                'websites':         row['websites'].split(','),
-                'season':           row['season'],
-                'order':            order
+                'searchable': {
+                    
+                    'nl': row['name_nl'].lower() if isinstance(row['name_nl'], basestring) else row['name_nl'],
+                    'en': row['name_en'].lower() if isinstance(row['name_en'], basestring) else row['name_en'],
+                    'de': row['name_de'].lower() if isinstance(row['name_de'], basestring) else row['name_de'],
+                    'fr': row['name_fr'].lower() if isinstance(row['name_fr'], basestring) else row['name_fr']
+                }
             })
 
             order += 1

@@ -25,20 +25,20 @@ class Type(Base):
     """
     def fetch(self):
 
-        sql = 'SELECT `t`.`type_id` AS `id`, `t`.`accommodatie_id` AS `accommodation_id`, `t`.`websites`, `t`.`naam` AS `name_nl`, '     \
-              '`t`.`naam_de` AS `name_de`, `t`.`naam_en` AS `name_en`, `t`.`naam_fr` AS `name_fr`, `a`.`naam` AS `accommodation_name`, ' \
-              '`t`.`zoekvolgorde` AS `order`, `l`.`begincode` AS `code`, `p`.`plaats_id` AS `place_id`, `l`.`land_id` AS `country_id` '  \
-              'FROM   `type` t '                                                                                                         \
-              'INNER JOIN `accommodatie` a '                                                                                             \
-              'ON (t.accommodatie_id = a.accommodatie_id) '                                                                              \
-              'INNER JOIN   `plaats` p '                                                                                                 \
-              'ON (a.plaats_id = p.plaats_id) '                                                                                          \
-              'INNER JOIN `land` l '                                                                                                     \
-              'ON (p.land_id = l.land_id) '                                                                                              \
-              'WHERE  `t`.`tonen` = 1 '                                                                                                  \
-              'AND    `t`.`tonenzoekformulier` = 1'
-
-        self.adapter('mysql').execute(sql)
+        sql = "SELECT DISTINCT `type_id` AS `id`, `accommodatie_id` AS `accommodation_id`, `tnaam` AS `name_nl`, " \
+              "                `tnaam_de` AS `name_de`, `tnaam_en` AS `name_en`, `tnaam_fr` AS `name_fr`, "        \
+              "                `naam` AS `accommodation_name`, `begincode` AS `code` "                             \
+              "FROM   `view_accommodatie` "                                                                        \
+              "WHERE FIND_IN_SET('%(website)s', `websites`) > 0 "                                                  \
+              "AND `atonen` = 1 "                                                                                  \
+              "AND `ttonen` = 1 "                                                                                  \
+              "AND `atonenzoekformulier` = 1 "                                                                     \
+              "AND `ttonenzoekformulier` = 1 "                                                                     \
+              "AND `archief` = 0 "                                                                                 \
+              "AND `weekendski` = 0 "                                                                              \
+              "ORDER BY `naam` ASC"
+        
+        self.adapter('mysql').execute(sql % {'website': self.website})
         self.data = self.adapter('mysql').fetchall()
         return self
 
@@ -52,30 +52,29 @@ class Type(Base):
         if not self.data:
             return self
 
-        collection = self.adapter('mongo').autocomplete
+        collection = self.collection()
         data       = []
+        order      = 1
 
         for row in self.data:
 
             data.append({
 
-                'type':             Type.AUTOCOMPLETE_TYPE,
-                'type_id':          row['id'],
-                'locales':          ['nl', 'en', 'fr', 'de'],
-                'label':            {
+                'type': Type.AUTOCOMPLETE_TYPE,
+                'type_id': row['id'],
+                'locales': ['nl', 'en', 'fr', 'de'],
+                'order': order,
+                'code': row['code'] + str(row['id']),
+                'name': {
 
                     'nl': row['accommodation_name'] + ' ' + row['name_nl'],
                     'en': row['accommodation_name'] + ' ' + row['name_en'],
                     'de': row['accommodation_name'] + ' ' + row['name_de'],
                     'fr': row['accommodation_name'] + ' ' + row['name_fr']
-                },
-                'code':             row['code'] + str(row['id']),
-                'websites':         row['websites'].split(','),
-                'accommodation_id': row['accommodation_id'],
-                'place_id':         row['place_id'],
-                'country_id':       row['country_id'],
-                'order':            row['order']
+                }
             })
+            
+            order += 1
 
         collection.insert(data)
         return self
