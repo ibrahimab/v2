@@ -53,9 +53,11 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
         $limit   = self::getOption($options, 'limit',  1);
         $offset  = self::getOption($options, 'offset', 0);
         $results = [];
-
+        
         $nameRegex = new \MongoRegex('/.*' . $term . '.*/i');
-
+        
+        dump('test');exit;
+        
         $qb = $this->createQueryBuilder();
         $qb->select()
            ->hydrate(false)
@@ -73,10 +75,6 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
                                ->addOr($qb->expr()->addAnd($qb->expr()->field('code')->exists(true))
                                                   ->addAnd($qb->expr()->field('code')->equals(new \MongoRegex('/^' . $term . '$/i'))));
 
-        $season   = $qb->expr()->addOr($qb->expr()->field('season')->exists(false))
-                               ->addOr($qb->expr()->addAnd($qb->expr()->field('season')->exists(true))
-                                                  ->addAnd($qb->expr()->field('season')->equals($this->getSeason())));
-
         $websites = $qb->expr()->addOr($qb->expr()->field('websites')->exists(false))
                                ->addOr($qb->expr()->addAnd($qb->expr()->field('websites')->exists(true))
                                                   ->addAnd($qb->expr()->field('websites')->equals($this->getWebsite())));
@@ -85,10 +83,10 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
            ->addAnd($name)
            ->addAnd($season)
            ->addAnd($websites);
-
+        dump($qb);exit;
         $rawResults = $qb->getQuery()->execute()->toArray();
         $results    = [];
-
+        dump($rawResults);exit;
         foreach ($rawResults as $rawResult) {
 
             if (!isset($results[$rawResult['type']])) {
