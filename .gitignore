@@ -5,8 +5,8 @@
 /app/logs/*
 !app/logs/.gitkeep
 /app/phpunit.xml
-/bin/
-!bin/import-autocomplete
+/bin/*
+!/bin/import-autocomplete
 /composer.phar
 /vendor/
 /web/bundles/*
