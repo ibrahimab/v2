@@ -19,8 +19,9 @@ use       Doctrine\ORM\QueryBuilder;
  * This is the search repository
  *
  * @author  Ibrahim Abdullah
+ * @author  Jeroen Boschman <jeroen@webtastic.nl>
  * @package Chalet
- * @version 0.0.4
+ * @version 0.0.5
  * @since   0.0.2
  */
 class SearchRepository implements SearchServiceRepositoryInterface
