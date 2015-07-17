@@ -38,7 +38,7 @@ class DeployCommand extends ContainerAwareCommand
         
         if (true === $github->isPulling()) {
             
-            $logger->error(sprintf('Deployment has already been started at: %s', $github->getStartPulling()->format('d-m-Y H:i:s'));
+            $logger->error(sprintf('Deployment has already been started at: %s', $github->getStartPulling()->format('d-m-Y H:i:s')));
             return;
         }
         
