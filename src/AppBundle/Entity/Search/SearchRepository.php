@@ -659,16 +659,17 @@ class SearchRepository implements SearchServiceRepositoryInterface
                         }
                     }
 
-                    // $andX = $expr->andX();
-                    $qb->andWhere($expr->gte('t.maxResidents', ':where_' . $min));
-                    $qb->andWhere($expr->lte('t.maxResidents', ':where_2_' . $max));
-                    $qb->andWhere($expr->lte('t.bedrooms', ':where_3_' . $min . '_' . $max));
+                    $qb->andWhere($expr->gte('t.optimalResidents', ':minResidents'));
+                    $qb->andWhere($expr->lte('t.maxResidents', ':maxResidents'));
 
-                    $qb->setParameter('where_' . $min, $min);
-                    $qb->setParameter('where_2_' . $max, $max);
-                    $qb->setParameter('where_3_' . $min . '_' . $max, $min);
+                    $qb->setParameter('minResidents', $min);
+                    $qb->setParameter('maxResidents', $max);
 
-                    // $qb->andWhere($andX);
+                    if( WebsiteConcern::WEBSITE_ZOMERHUISJE_NL != $this->getWebsite() ) {
+                        // max 1 bedroom per person (not for Zomerhuisje.nl)
+                        $qb->andWhere($expr->lte('t.bedrooms', ':bedroomsBasedOnResidents'));
+                        $qb->setParameter('bedroomsBasedOnResidents', $min);
+                    }
 
                     break;
 
