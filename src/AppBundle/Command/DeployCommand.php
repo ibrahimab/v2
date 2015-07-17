@@ -35,7 +35,6 @@ class DeployCommand extends ContainerAwareCommand
         $logger    = $container->get('monolog.logger.application');
         $github    = $container->get('app.github');
         
-        
         if (true === $github->isPulling()) {
             
             $logger->error(sprintf('Deployment has already been started at: %s', $github->getStartPulling()->format('d-m-Y H:i:s')));
