@@ -51,7 +51,7 @@ class GithubService
     public function pushReceived()
     {
         $time = new \DateTime();
-        $this->redis->set('github-push-received', $time->getTimestamp());
+        $this->redis->set(self::GITHUB_PUSH_RECEIVED, $time->getTimestamp());
 
         return $time;
     }
