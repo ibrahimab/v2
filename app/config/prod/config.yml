@@ -12,11 +12,17 @@ imports:
 #        query_cache_driver: apc
 
 monolog:
+    channels: ["application"]
     handlers:
         main:
             type:         fingers_crossed
             action_level: error
             handler:      nested
+        application:
+            type:   stream
+            path:   "%kernel.logs_dir%/app.log"
+            level:  debug
+            channels: ["application"]
         nested:
             type:  stream
             path:  "%kernel.logs_dir%/%kernel.environment%.log"

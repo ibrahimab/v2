@@ -15,17 +15,17 @@ assetic:
             apply_to: "\.less$"
 
 monolog:
-    channels: ["controller"]
+    channels: ["application"]
     handlers:
         main:
             type:   stream
             path:   "%kernel.logs_dir%/%kernel.environment%.log"
             level:  debug
-        app:
+        application:
             type:   stream
             path:   "%kernel.logs_dir%/app.log"
             level:  debug
-            channels: ["controller"]
+            channels: ["application"]
 
 doctrine_mongodb:
     default_database: chalet_stag
