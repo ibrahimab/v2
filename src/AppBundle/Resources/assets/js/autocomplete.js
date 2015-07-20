@@ -54,7 +54,9 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
         events: {
 
             rebind: function() {
+                
                 ns.Autocomplete.resultsContainer = jq(ns.Autocomplete.resultsContainer.selector);
+                ns.Autocomplete.input            = jq(ns.Autocomplete.input.selector);
             },
 
             bind: function() {
@@ -186,6 +188,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                 jq('body').on('click', '*', function(event) {
 
                     if (event.target.getAttribute('data-role') !== 'autocomplete-result' && event.target !== ns.Autocomplete.input.get(0)) {
+                        console.log('test');
                         ns.Autocomplete.resultsContainer.hide();
                     }
                 });
