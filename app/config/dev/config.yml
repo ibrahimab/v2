@@ -55,4 +55,4 @@ swiftmailer:
     transport: gmail
 
 doctrine_mongodb:
-    default_database: chalet_dev
+    default_database: %mongodb_database%

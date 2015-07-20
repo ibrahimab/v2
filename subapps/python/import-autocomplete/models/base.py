@@ -11,6 +11,7 @@ the default methods every model needs.
 @since      0.0.2
 """
 import sys
+import unicodedata
 class Base():
     """
     Initializing the model, injecting the MySQL and MongoDB connection dependencies.
@@ -37,3 +38,6 @@ class Base():
         
     def collection(self):
         return self.adapter('mongo')['%(website)s.autocomplete' % {'website': self.website}]
+        
+    def strip_accents(self, string):
+        return unicodedata.normalize('NFKD', string).encode('ascii', 'ignore') if isinstance(string, unicode) else string

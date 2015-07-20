@@ -145,5 +145,7 @@ services:
         arguments: [AppBundle\Document\Autocomplete\Autocomplete]
         parent:    app.repository.odm
         calls:
-            - [setSeason,  [@app.concern.season]]
-            - [setWebsite, [@app.concern.website]]
+            - [setSeason,        [@app.concern.season]]
+            - [setWebsite,       [@app.concern.website]]
+            - [setLocale,        [@service_container]]
+            - [setMongoDatabase, [%mongodb_database%]]

@@ -2,8 +2,9 @@
 namespace AppBundle\Document;
 use       AppBundle\Concern\SeasonConcern;
 use       AppBundle\Concern\WebsiteConcern;
+use       Symfony\Component\DependencyInjection\ContainerInterface;
 
-trait BaseRepository
+trait BaseRepositoryTrait
 {
     /**
      * @var integer
@@ -54,6 +55,26 @@ trait BaseRepository
     public function getWebsite()
     {
         return $this->website;
+    }
+    
+    /**
+     * Setting current locale
+     * 
+     * @param ContainerInterface $container
+     */
+    public function setLocale(ContainerInterface $container)
+    {
+        $this->locale = $container->get('request')->getLocale();
+    }
+    
+    /**
+     * Getting current locale
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
     }
     
     /**

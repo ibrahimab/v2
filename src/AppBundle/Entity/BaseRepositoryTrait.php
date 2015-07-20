@@ -81,26 +81,6 @@ trait BaseRepositoryTrait
     {
         return $this->websiteConcern;
     }
-    
-    /**
-     * Setting current locale
-     * 
-     * @param ContainerInterface $container
-     */
-    public function setLocale(ContainerInterface $container)
-    {
-        $this->locale = $container->get('request')->getLocale();
-    }
-    
-    /**
-     * Getting current locale
-     *
-     * @return string
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
 
     /**
      * Getting either the option passed in or the default

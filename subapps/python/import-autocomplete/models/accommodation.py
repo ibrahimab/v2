@@ -63,7 +63,7 @@ class Accommodation(Base):
                 'type_id': row['id'],
                 'locales': None,
                 'name': row['name'],
-                'searchable': row['name'].lower() if isinstance(row['name'], basestring) else row['name'],
+                'searchable': self.strip_accents(row['name'].lower()) if isinstance(row['name'], basestring) else row['name'],
                 'order': order
             })
             

@@ -37,7 +37,7 @@ try:
     mongo_database   = mongo_client[connection['mongo']['db']]
 
     # clearing old data
-    mongo_database.autocomplete.drop()
+    mongo_database[args.website + '.autocomplete'].drop()
 
     accommodations   = Accommodation(mysql_cursor, mongo_database, args.website)
     accommodations.fetch().insert()

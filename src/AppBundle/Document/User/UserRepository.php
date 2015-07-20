@@ -1,6 +1,6 @@
 <?php
 namespace AppBundle\Document\User;
-use		  AppBundle\Document\BaseRepository;
+use		  AppBundle\Document\BaseRepositoryTrait;
 use       AppBundle\Service\Api\User\UserServiceDocumentInterface;
 use		  AppBundle\Service\Api\User\UserServiceRepositoryInterface;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
@@ -15,7 +15,7 @@ use		  Doctrine\ODM\MongoDB\DocumentRepository;
  */
 class UserRepository extends DocumentRepository implements UserServiceRepositoryInterface
 {
-    use BaseRepository;
+    use BaseRepositoryTrait;
 
     /**
      * {@InheritDoc}
