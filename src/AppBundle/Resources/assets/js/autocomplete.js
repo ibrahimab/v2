@@ -393,7 +393,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
             if (ns.Autocomplete.type === ns.Autocomplete.types.TYPE_HOME) {
                 
-                ns.Autocomplete.views.updateCount('Bezig met laden...');
+                ns.Autocomplete.views.showLoader();
                 
                 jq.ajax({
 
@@ -431,7 +431,16 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
             },
 
             updateCount: function(count) {
+                
+                jq('[data-role="loading-text"]').addClass('hide');
+                jq('[data-role="show-results"]').show();
                 jq('[data-role="results-count"]').text(count);
+            },
+            
+            showLoader: function() {
+                
+                jq('[data-role="show-results"]').hide();
+                jq('[data-role="loading-text"]').removeClass('hide');
             },
 
             result: function(result) {
