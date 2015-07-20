@@ -652,15 +652,68 @@ footer ul.checked i { margin-top: 0.7rem; }
     div.large-column {
 
         position: relative;
-        div.align-bottom { position: absolute; bottom: 0; }
+        div.align-bottom { position: absolute; bottom: 0; img { width: 97%; } }
     }
 
     .title-theme {
 
-        top: 1rem;
+        top: 0.5rem;
         padding: 0 1rem;
 
-        h4 { font-size: 1rem; }
+        h4 { 
+            font-size: 2rem;
+        }
+        
+        &.large {
+            
+            top: 3rem;
+            padding: 0 2rem;
+            
+            h4 { font-size: 3rem; }
+        }
+    }
+}
+
+@media all and (max-width: 64em) and (min-width: 40.063em) {
+    
+    #themes-selected {
+        
+        div.large-column div.align-bottom img { width: 96%; }
+        
+        .title-theme {
+    
+            h4 {
+                font-size: 1.6rem;
+            }
+    
+            &.large {
+        
+                top: 1rem;
+        
+                h4 {
+                    font-size: 2.2rem;
+                }
+            }
+        }
+    }
+}
+
+@media all and (max-width: 40em) {
+    
+    #themes-selected {
+        
+        div.large-column div.align-bottom img { width: 100%; }
+        
+        .title-theme {
+    
+            h4 {
+                font-size: 1.1rem;
+            }
+        
+            &.large h4 {
+                font-size: 1.6rem;
+            }
+        }
     }
 }
 
