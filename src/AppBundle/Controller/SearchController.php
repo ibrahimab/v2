@@ -154,6 +154,12 @@ class SearchController extends Controller
         }
 
         $paginator  = $searchBuilder->search();
+        $locale     = $request->getLocale();
+        
+        $paginator->sort(function(AccommodationServiceEntityInterface $a, AccommodationServiceEntityInterface $b) use ($locale) {
+            return ($b->getLocaleName($locale) < $a->getLocaleName($locale)) ? -1 : 1;
+        });
+        
         $javascript = $this->get('app.javascript');
 
         $javascript->set('app.filters.normal',                $filters);

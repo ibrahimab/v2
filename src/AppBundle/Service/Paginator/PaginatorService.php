@@ -20,6 +20,7 @@ class PaginatorService implements \Iterator, \Countable
     private $current_page;
     private $total_pages;
     private $limit;
+    private $sorter;
     
     /**
      * Constructor
@@ -35,11 +36,26 @@ class PaginatorService implements \Iterator, \Countable
         $this->offset  = 0;
     }
     
+    /**
+     * @param QueryBuilder $builder
+     */
     public function setBuilder(QueryBuilder $builder)
     {
         $this->builder = $builder;
     }
     
+    /**
+     * @param callable $sorter
+     */
+    public function sort(callable $sorter)
+    {
+        uasort($this->results, $sorter);
+    }
+    
+    /**
+     * @param integer $page
+     * @return integer
+     */
     public function checkCurrentPage($page)
     {
         if (($page > $this->getTotalPages() || $page < 0) && count($paginator) > 0) {
@@ -49,26 +65,41 @@ class PaginatorService implements \Iterator, \Countable
         return (int)$page;
     }
     
+    /**
+     * @param integer $page
+     */
     public function setCurrentPage($page)
     {
         $this->current_page = $this->checkCurrentPage($page);
     }
     
+    /**
+     * @return integer
+     */
     public function getCurrentPage()
     {
         return $this->current_page;
     }
     
+    /**
+     * @param integer $limit
+     */
     public function setLimit($limit)
     {
         $this->limit = $limit;
     }
     
+    /**
+     * @return integer
+     */
     public function getLimit()
     {
         return $this->limit;
     }
     
+    /**
+     * @return integer
+     */
     public function getTotalPages()
     {
         if (null === $this->total_pages) {
@@ -97,6 +128,9 @@ class PaginatorService implements \Iterator, \Countable
         return $this->total;
     }
     
+    /**
+     * @return integer
+     */
     public function resultsCount()
     {
         if (null === $this->results_count) {
@@ -150,11 +184,17 @@ class PaginatorService implements \Iterator, \Countable
         return $valid;
     }
     
+    /**
+     * @return integer
+     */
     public function offset()
     {
         return $this->offset;
     }
     
+    /**
+     * @return Array
+     */
     public function results()
     {
         return $this->results;
