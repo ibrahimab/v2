@@ -499,8 +499,6 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         li.setAttribute('data-entity', entities.ENTITY_TYPE);
                         li.setAttribute('data-id', result['type_id']);
 
-                        name = result['label'][locale];
-
                         tag += '<i class="fi-home"></i> ';
 
                     break;

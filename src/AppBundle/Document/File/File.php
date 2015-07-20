@@ -1,6 +1,6 @@
 <?php
 namespace AppBundle\Document\File;
-use		  AppBundle\Document\BaseRepository;
+use		  AppBundle\Document\BaseRepositoryTrait;
 use		  AppBundle\Service\Api\File\FileServiceEntityInterface;
 use 	  Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
@@ -14,7 +14,7 @@ use 	  Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 /** @ODM\MappedSuperclass */
 class File implements FileServiceEntityInterface
 {
-    use BaseRepository;
+    use BaseRepositoryTrait;
     
 	/**
 	 * @ODM\Id

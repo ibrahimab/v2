@@ -8,7 +8,7 @@ services:
 
     app.listener.global_javascript:
         class: AppBundle\EventListener\GlobalJavascriptListener
-        arguments: [@app.javascript, @app.utils]
+        arguments: [@app.javascript]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 5 }
 

@@ -17,7 +17,7 @@ class UtilsService
             '/-{2,}/',
             '/-$/',
 
-    	], ['-', '-', ''], $this->normalizeText($text)));
+    	], ['-', '-', ''], self::normalizeText($text)));
     }
 
     public static function bbcode($text)

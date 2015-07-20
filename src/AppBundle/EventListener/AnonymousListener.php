@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\EventListener;
+use       AppBundle\Service\UtilsService;
 use		  Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use		  Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use		  Symfony\Component\DependencyInjection\ContainerInterface;
@@ -64,7 +65,7 @@ class AnonymousListener
         } else {
             
             $secret      = $this->container->getParameter('secret');
-            $this->token = $this->container->get('app.utils')->generateToken($secret);
+            $this->token = UtilsService::generateToken($secret);
             
             $userService->create($this->token);
         }

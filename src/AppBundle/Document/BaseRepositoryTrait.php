@@ -15,6 +15,11 @@ trait BaseRepositoryTrait
      * @var string
      */
     protected $website;
+    
+    /**
+     * @var string
+     */
+    protected $locale;
 
     /**
      * Setting season

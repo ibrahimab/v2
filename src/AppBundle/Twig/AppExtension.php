@@ -21,6 +21,7 @@ use       AppBundle\Service\Api\User\UserServiceDocumentInterface;
 use       AppBundle\Service\FilterService;
 use       AppBundle\Old\Service\PageService;
 use       AppBundle\Service\Api\GeneralSettings\GeneralSettingsService;
+use       AppBundle\Service\UtilsService;
 use       Symfony\Component\DependencyInjection\ContainerInterface;
 use       Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use       Symfony\Component\Finder\Finder;
@@ -594,7 +595,7 @@ class AppExtension extends \Twig_Extension
      */
     public function bbcode($text)
     {
-        return $this->container->get('app.utils')->bbcode($text);
+        return UtilsService::bbcode($text);
     }
 
     public function sortByProperty($objects, $property)
@@ -612,7 +613,7 @@ class AppExtension extends \Twig_Extension
      */
     public function seo($text)
     {
-        return $this->container->get('app.utils')->seo($text);
+        return UtilsService::seo($text);
     }
 
     /**

@@ -313,7 +313,7 @@ class SearchController extends Controller
             
             $searchBuilder->where(SearchBuilder::WHERE_TYPES, array_keys($types));
         }
-
+        
         return new JsonResponse([
             'count' => $searchBuilder->count(),
         ]);
