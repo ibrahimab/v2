@@ -85,10 +85,11 @@ class GithubService
      */
     public function pullCompleted()
     {
+        $time = (int)$this->redis->get(self::GITHUB_PUSH_RECEIVED);
         $this->redis->del(self::GITHUB_PUSH_RECEIVED);
         $this->redis->del(self::GITHUB_PULL_IN_PROGRESS);
 
-        return (new \DateTime())->setTimestamp((int)$this->redis->get(self::GITHUB_PUSH_RECEIVED));
+        return (new \DateTime())->setTimestamp($time);
     }
     
     /**

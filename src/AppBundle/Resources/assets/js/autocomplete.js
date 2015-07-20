@@ -53,6 +53,10 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
         events: {
 
+            rebind: function() {
+                ns.Autocomplete.resultsContainer = jq(ns.Autocomplete.resultsContainer.selector);
+            },
+
             bind: function() {
 
                 ns.Autocomplete.events.change();
@@ -111,7 +115,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                             return;
                         }
-
+                        
                         ns.Autocomplete.currentTerm = term;
                         ns.Autocomplete.request(term, ns.Autocomplete.limit);
                     }
@@ -413,7 +417,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                 var results = ns.Autocomplete.results;
                 var total   = results.length;
-
+                
                 if (total === 0) {
 
                     ns.Autocomplete.currentTerm = '';
@@ -421,7 +425,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     return;
                 }
 
-                var ul      = document.createElement('ul');
+                var ul = document.createElement('ul');
 
                 for (var i = 0; i < total; i++) {
                     ul.appendChild(ns.Autocomplete.views.result(results[i]));

@@ -337,6 +337,9 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                         // recalculate checkboxes
                         window.recalculateStyledInput();
+                        
+                        // rebind autocomplete events
+                        ns.Autocomplete.events.rebind();
                     }
                 });
             }
