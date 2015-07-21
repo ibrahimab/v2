@@ -3,6 +3,7 @@ namespace AppBundle\Controller;
 use       AppBundle\Annotation\Breadcrumb;
 use       AppBundle\Service\Api\Search\SearchBuilder;
 use       AppBundle\Service\Api\Search\FilterBuilder;
+use       AppBundle\Service\Paginator\PaginatorService;
 use       AppBundle\Service\FilterService;
 use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
@@ -237,6 +238,8 @@ class SearchController extends Controller
                 }
             }
         }
+
+        $paginator->sort(PaginatorService::SORT_ASC);
         
         $custom_filter_entities = $searchService->findOnlyNames($c, $r, $pl, $a, $t);
         foreach ($custom_filter_entities as $entity) {

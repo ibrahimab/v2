@@ -39,6 +39,11 @@ class Accommodation implements AccommodationServiceEntityInterface
      * @ORM\Column(name="naam", type="string", length=255)
      */
     private $name;
+
+    /**
+     * @var string
+     */
+    private $sortKey;
     
     /**
      * cheapest price cache for types
@@ -326,6 +331,24 @@ class Accommodation implements AccommodationServiceEntityInterface
         return $this->getLocaleField('name', $locale, ['nl']);
     }
     
+    /**
+     * {@InheritDoc}
+     */
+    public function setSortKey($sortKey)
+    {
+        $this->sortKey = $sortKey;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getSortKey()
+    {
+        return $this->sortKey;
+    }
+
     /**
      * {@InheritDoc}
      */
