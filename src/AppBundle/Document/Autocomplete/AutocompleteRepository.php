@@ -56,11 +56,11 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
      */
     public function search($term, $kinds, $options = [])
     {
-        $limit   = self::getOption($options, 'limit',  1);
-        $offset  = self::getOption($options, 'offset', 0);
-        $results = [];
-        $term    = UtilsService::normalizeText($term);
-        
+        $limit     = self::getOption($options, 'limit',  1);
+        $offset    = self::getOption($options, 'offset', 0);
+        $results   = [];
+        $term      = UtilsService::normalizeText($term);
+        $term      = strtolower($term);
         $nameRegex = new \MongoRegex('/.*' . $term . '.*/i');
         
         $collection = $this->collection();

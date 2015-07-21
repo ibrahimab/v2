@@ -64,7 +64,7 @@ class Type(Base):
                 'type_id': row['id'],
                 'locales': ['nl', 'en', 'fr', 'de'],
                 'order': order,
-                'code': row['code'] + str(row['id']),
+                'code': (row['code'] + str(row['id'])).lower(),
                 'name': {
 
                     'nl': self.strip_accents(row['accommodation_name'] + ' ' + row['name_nl']),
