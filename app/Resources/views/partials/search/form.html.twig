@@ -43,7 +43,7 @@
             <a href="{{ path('save_search', {f: app.request.query.get('f', {})}) }}" class="save" title="{{ save_search_label }}" data-role="save-search">{{ save_search_label }}<i class="sprite sprite-icon-plus "></i></a>
         </div>
     </div>
-    <div data-role="search-filter-box">
+    <div data-role="search-filter-box" class="search-filter-box">
         <h2 class="title" data-role="toggle-filters">{{ 'filter-results'|trans }}</h2>
         <div id="search-filter-piste-distance" class="search-filter-default" data-role="closable-filter">
             <h2><a href="" title="deze box in- of uitklappen">{{ 'distance-to-slopes'|trans }}</a></h2>
