@@ -10,7 +10,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
             ns.Search.filters.filters = filters || ns.Search.filters.filters;
             ns.Search.events.bind();
             ns.Search.setContainer();
-            ns.Search.actions.checkForPlaceholderLength();
+            ns.Search.actions.MediaQueryBasedLayoutChanges();
 
             var custom = ns.get('app')['filters'] === undefined ? {} : ns.get('app')['filters']['custom'];
 
@@ -351,12 +351,30 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 });
             },
 
-            checkForPlaceholderLength: function() {
-                // medium screens (e.g. iPad): show smaller placeholder text
-                var mq = window.matchMedia( "(min-width: 40.063em) and (max-width: 64em)" );
-                if (mq.matches) {
+            MediaQueryBasedLayoutChanges: function() {
+
+                //
+                // layout changes based on media queries
+                //
+
+                // size: small
+                var smallSize = window.matchMedia( "(max-width: 40em)" );
+                if (smallSize.matches) {
+
+                    // show correct open/close icons (class 'closed') and set the correct status ('closed')
+                    jq('[data-role="closable-filter"]').data('status', 'closed').find('h2').addClass('closed');
+                    jq('[data-role="toggle-filters"]').data('status', 'closed').addClass('closed');
+
+                }
+
+                // size: medium
+                var mediumSize = window.matchMedia( "(min-width: 40.063em) and (max-width: 64em)" );
+                if (mediumSize.matches) {
+
+                    // show smaller placeholder text
                     var first_option = jq('[data-role="choose-persons-home"] option:first, [data-role="change-persons"] option:first');
                     first_option.html( first_option.data('smaller-text') );
+
                 }
             }
 
