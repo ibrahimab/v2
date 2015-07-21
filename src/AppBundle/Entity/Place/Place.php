@@ -1,9 +1,10 @@
 <?php
 namespace AppBundle\Entity\Place;
-
 use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
 use       Doctrine\Common\Collections\ArrayCollection;
 use       Doctrine\ORM\Mapping as ORM;
+use       AppBundle\Entity\Region\Region;
+use       AppBundle\Entity\Country\Country;
 
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
@@ -1026,5 +1027,32 @@ class Place implements PlaceServiceEntityInterface
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+    
+    public static function hydrate($data)
+    {
+        $place = new self();
+        
+        foreach ($data as $field => $value) {
+            
+            switch ($field) {
+                
+                case 'region':
+                    $place->region = Region::hydrate($value);
+                break;
+                
+                case 'country':
+                    $place->country = Country::hydrate($value);
+                break;
+                
+                default:
+                
+                    if (property_exists($place, $field)) {
+                        $place->{$field} = $value;
+                    }
+            }
+        }
+        
+        return $place;
     }
 }

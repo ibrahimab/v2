@@ -1141,4 +1141,18 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->updatedAt;
     }
+    
+    public static function hydrate($data)
+    {
+        $country = new self();
+        
+        foreach ($data as $field => $value) {
+            
+            if (property_exists($country, $field)) {
+                $country->{$field} = $value;
+            }
+        }
+        
+        return $country;
+    }
 }

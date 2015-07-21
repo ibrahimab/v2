@@ -1,7 +1,9 @@
 <?php
 namespace AppBundle\Service\Paginator;
 use       AppBundle\Service\Paginator\OutOfBoundsException;
+use       AppBundle\Entity\Accommodation\Accommodation;
 use       Doctrine\ORM\QueryBuilder;
+use       Doctrine\ORM\Query;
 
 /**
  * @author  Ibrahim Abdullah
@@ -21,6 +23,7 @@ class PaginatorService implements \Iterator, \Countable
     private $total_pages;
     private $limit;
     private $sorter;
+    private $accommodation;
     
     /**
      * Constructor
@@ -31,7 +34,7 @@ class PaginatorService implements \Iterator, \Countable
     {
         $this->setBuilder($builder);
         
-        $this->results = $this->builder->getQuery()->getResult();
+        $this->results = $this->hydrate();
         $this->limit   = 10;
         $this->offset  = 0;
     }
@@ -119,8 +122,9 @@ class PaginatorService implements \Iterator, \Countable
         if (null === $this->total) {
             
             $this->total = 0;
+            $results = $this->results();
             
-            foreach ($this->results as $accommodation) {
+            foreach ($results as $accommodation) {
                 $this->total += count($accommodation->getTypes());
             }
         }
@@ -193,10 +197,19 @@ class PaginatorService implements \Iterator, \Countable
     }
     
     /**
-     * @return Array
+     * @return array
      */
     public function results()
     {
         return $this->results;
+    }
+    
+    /**
+     * @return array
+     */
+    public function hydrate()
+    {
+        $results = $this->builder->getQuery()->getResult(Query::HYDRATE_ARRAY);
+        return Accommodation::hydrateRows($results);
     }
 }

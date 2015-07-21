@@ -36,6 +36,7 @@ class SearchController extends Controller
      */
     public function index(Request $request)
     {
+        $start    = microtime(true);
         $c        = $request->query->get('c',  []);
         $r        = $request->query->get('r',  []);
         $pl       = $request->query->get('pl', []);
@@ -280,6 +281,7 @@ class SearchController extends Controller
         }
         
         $data['facet_service'] = $searchService->facets($paginator, $facetFilters);
+        $data['search_time']   = round((microtime(true) - $start), 2);
 
         return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', $data);
     }

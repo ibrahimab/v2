@@ -1412,4 +1412,18 @@ class Type implements TypeServiceEntityInterface
 
         return $localized;
     }
+    
+    public static function hydrate($data)
+    {
+        $type = new self();
+        
+        foreach ($data as $field => $value) {
+            
+            if (property_exists($type, $field)) {
+                $type->{$field} = $value;
+            }
+        }
+        
+        return $type;
+    }
 }
