@@ -10,6 +10,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
             ns.Search.filters.filters = filters || ns.Search.filters.filters;
             ns.Search.events.bind();
             ns.Search.setContainer();
+            ns.Search.actions.checkForPlaceholderLength();
 
             var custom = ns.get('app')['filters'] === undefined ? {} : ns.get('app')['filters']['custom'];
 
@@ -343,12 +344,22 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                         // recalculate checkboxes
                         window.recalculateStyledInput();
-                        
+
                         // rebind autocomplete events
                         ns.Autocomplete.events.rebind();
                     }
                 });
+            },
+
+            checkForPlaceholderLength: function() {
+                // medium screens (e.g. iPad): show smaller placeholder text
+                var mq = window.matchMedia( "(min-width: 40.063em) and (max-width: 64em)" );
+                if (mq.matches) {
+                    var first_option = jq('[data-role="choose-persons-home"] option:first, [data-role="change-persons"] option:first');
+                    first_option.html( first_option.data('smaller-text') );
+                }
             }
+
         },
 
         filters: {

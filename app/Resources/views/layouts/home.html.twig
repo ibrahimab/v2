@@ -47,16 +47,8 @@
                         </div>
                         <div class="large-3 medium-3 columns">
                             {# we have two select items because of text switching when resizing viewport (medium ('Hoeveel personen') vs rest ('Met hoeveel personen ga je?')) #}
-                            <select class="radius hide-for-medium" data-role="choose-persons-home">
-                                <option>Met hoeveel personen ga je?</option>
-                                {% for i in 1..39 %}
-                                <option value="{{ i }}">{{ i }}</option>
-                                {% endfor %}
-                                <option value="40">40 of meer</option>
-                            </select>
-
-                            <select class="radius show-for-medium" data-role="choose-persons">
-                                <option value="hoeveel">Hoeveel personen?</option>
+                            <select class="radius" data-role="choose-persons-home">
+                                <option data-smaller-text="Hoeveel personen?">Met hoeveel personen ga je?</option>
                                 {% for i in 1..39 %}
                                 <option value="{{ i }}">{{ i }}</option>
                                 {% endfor %}

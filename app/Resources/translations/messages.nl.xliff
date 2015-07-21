@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2015-07-14T14:42:20Z" source-language="en" target-language="nl" datatype="plaintext" original="not.available">
+  <file date="2015-07-21T15:48:48Z" source-language="en" target-language="nl" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -213,7 +213,7 @@
       <trans-unit id="72bfb05496f963647e4d2c8b9a3ba6c0265800b6" resname="bathroom">
         <source>bathroom</source>
         <target>badkamer</target>
-        <jms:reference-file line="36">search/form/input.html.twig</jms:reference-file>
+        <jms:reference-file line="41">search/form/input.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="7ecf7f9e0dce226235a7b6ab410a3c8d3bd3683d" resname="bathrooms">
         <source>bathrooms</source>
@@ -225,7 +225,7 @@
       <trans-unit id="009e058c883c683e1330228851ecafe3265c8f51" resname="bedroom">
         <source>bedroom</source>
         <target>slaapkamer</target>
-        <jms:reference-file line="29">search/form/input.html.twig</jms:reference-file>
+        <jms:reference-file line="33">search/form/input.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="935296d9eea533f89ab28d7ea89b30e1f61b477a" resname="bedrooms">
         <source>bedrooms</source>
@@ -613,7 +613,7 @@
       <trans-unit id="cb710f968a453a9d3a0f515f05a6db24d3e4eebe" resname="got-it">
         <source>got-it</source>
         <target>Ik heb het begrepen</target>
-        <jms:reference-file line="46">partials/search/types.html.twig</jms:reference-file>
+        <jms:reference-file line="56">partials/search/types.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="4a2ec0a7debeb41281873ff2ab348e39e09e0867" resname="header.bar.opening-hours-contact">
         <source>header.bar.opening-hours-contact</source>
@@ -624,7 +624,7 @@
         <source>header.bar.seen-and-saved</source>
         <target>Gezien en bewaard</target>
         <jms:reference-file line="24">views/partials/header.html.twig</jms:reference-file>
-        <jms:reference-file line="44">views/partials/header.html.twig</jms:reference-file>
+        <jms:reference-file line="43">views/partials/header.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="c114e8d27b1859eaa3b41601d5c7bc981d448923" resname="homepage.big-title">
         <source>homepage.big-title</source>
@@ -634,12 +634,12 @@
       <trans-unit id="3609bce29c5bf74a194c4d9f6133894b7061f6bb" resname="homepage.highlight.suitable-for">
         <source>homepage.highlight.suitable-for</source>
         <target>Geschikt voor %optimal% - %maximum% personen</target>
-        <jms:reference-file line="35">partials/highlight/highlight.html.twig</jms:reference-file>
+        <jms:reference-file line="39">partials/highlight/highlight.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="ce0738a141253a5b698957656251e76ae3ef161e" resname="homepage.highlight.suitable-for-max">
         <source>homepage.highlight.suitable-for-max</source>
         <target>Geschikt voor %maximum% personen</target>
-        <jms:reference-file line="33">partials/highlight/highlight.html.twig</jms:reference-file>
+        <jms:reference-file line="37">partials/highlight/highlight.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="e8ac4088e022529361aa1b2e3d8f57bf905f5d6f" resname="homepage.highlights">
         <source>homepage.highlights</source>
@@ -752,7 +752,7 @@
       <trans-unit id="7a78df7c9d69a07d0bca3c66cb46c62a9b7ec60a" resname="or-more">
         <source>or-more</source>
         <target>of meer</target>
-        <jms:reference-file line="25">search/form/input.html.twig</jms:reference-file>
+        <jms:reference-file line="28">search/form/input.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="658629914104487ea8f6b95c3f41cdd0f5a39b2f" resname="pdf-conditions-travel-insurance">
         <source>pdf-conditions-travel-insurance</source>
@@ -762,7 +762,7 @@
       <trans-unit id="d39a47507bbe27c2a7948861847f3607eda8e1be" resname="person">
         <source>person</source>
         <target>persoon</target>
-        <jms:reference-file line="21">search/form/input.html.twig</jms:reference-file>
+        <jms:reference-file line="24">search/form/input.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="123349a8c97443b33169a4de5e7eb0e2005c7f80" resname="persons">
         <source>persons</source>
@@ -805,7 +805,7 @@
         <source>ratings</source>
         <target>Beoordelingen</target>
         <jms:reference-file line="4">views/partials/features.html.twig</jms:reference-file>
-        <jms:reference-file line="15">partials/highlight/highlight.html.twig</jms:reference-file>
+        <jms:reference-file line="18">partials/highlight/highlight.html.twig</jms:reference-file>
         <jms:reference-file line="38">views/places/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="da09028e937f851d7be51f3576cb6b60c131d89a" resname="react-subject">
@@ -867,22 +867,27 @@
       <trans-unit id="f4a301e0b0591f9929a3ead5be56e52074404538" resname="select-bathrooms">
         <source>select-bathrooms</source>
         <target>Aantal badkamers</target>
-        <jms:reference-file line="35">search/form/input.html.twig</jms:reference-file>
+        <jms:reference-file line="39">search/form/input.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="64ca9cc349180e21a6c609b742345f0d8307c1bf" resname="select-bedrooms">
         <source>select-bedrooms</source>
         <target>Aantal slaapkamers</target>
-        <jms:reference-file line="28">search/form/input.html.twig</jms:reference-file>
+        <jms:reference-file line="31">search/form/input.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="53d2a8a2edcca1afc5922bb236e4efe42d5354d3" resname="select-how-many">
         <source>select-how-many</source>
         <target>Met hoeveel personen ga je?</target>
-        <jms:reference-file line="20">search/form/input.html.twig</jms:reference-file>
+        <jms:reference-file line="22">search/form/input.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e8ec8bb919b16f40b85407e830ad0ae5520f9c14" resname="select-how-many-short">
+        <source>select-how-many-short</source>
+        <target state="new">Hoeveel personen?</target>
+        <jms:reference-file line="22">search/form/input.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="d35431731e54ec6a92f11df8d83008b0f16508a8" resname="select-when">
         <source>select-when</source>
         <target>Wanneer wil je gaan?</target>
-        <jms:reference-file line="13">search/form/input.html.twig</jms:reference-file>
+        <jms:reference-file line="14">search/form/input.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="ff3af65b5c67485e19be4eae50079d4a4c904352" resname="sgr-id">
         <source>sgr-id</source>
@@ -963,7 +968,7 @@
       <trans-unit id="9b76e6eaa48eb63838536859daa41730fc88f247" resname="table-scrollable-horizontally">
         <source>table-scrollable-horizontally</source>
         <target>U kunt deze tabel horizontaal scrollen</target>
-        <jms:reference-file line="44">partials/search/types.html.twig</jms:reference-file>
+        <jms:reference-file line="54">partials/search/types.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="f37632fb1c633f4575ee6bfc314f8d2e2935ed1f" resname="tax-id">
         <source>tax-id</source>
@@ -1099,7 +1104,7 @@
         <source>weekend</source>
         <target>weekend</target>
         <jms:reference-file line="42">views/layouts/home.html.twig</jms:reference-file>
-        <jms:reference-file line="14">search/form/input.html.twig</jms:reference-file>
+        <jms:reference-file line="15">search/form/input.html.twig</jms:reference-file>
       </trans-unit>
     </body>
   </file>

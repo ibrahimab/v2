@@ -19,7 +19,7 @@
     {% endfor %}
 </select>
 <select class="radius" data-role="change-persons">
-    <option value="0">{{ 'select-how-many'|trans }}</option>
+    <option value="0" data-smaller-text="{{ 'select-how-many-short'|trans }}">{{ 'select-how-many'|trans }}</option>
     {% set current_persons = form_filters['persons'] is defined ? form_filters['persons'] : 0 %}
     <option value="1"{{ 1 == current_persons ? selected }}>1 {{ 'person'|trans }}</option>
     {% for i in 2..39 %}
