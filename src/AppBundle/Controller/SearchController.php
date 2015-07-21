@@ -152,14 +152,9 @@ class SearchController extends Controller
             $formFilters['persons'] = $pe;
             $searchBuilder->where(SearchBuilder::WHERE_PERSONS, $pe);
         }
-
+        
         $paginator  = $searchBuilder->search();
         $locale     = $request->getLocale();
-        
-        $paginator->sort(function(AccommodationServiceEntityInterface $a, AccommodationServiceEntityInterface $b) use ($locale) {
-            return ($b->getLocaleName($locale) < $a->getLocaleName($locale)) ? -1 : 1;
-        });
-        
         $javascript = $this->get('app.javascript');
 
         $javascript->set('app.filters.normal',                $filters);
@@ -213,7 +208,35 @@ class SearchController extends Controller
                 $data['offers'] = $priceService->offers($typeIds);
             }
         }
+        
+        $surveyData = $surveyService->statsByTypes($typeEntities);
+        $surveys    = [];
 
+        foreach ($surveyData as $survey) {
+            $surveys[$survey['typeId']] = $survey;
+        }
+        
+        foreach ($paginator as $accommodation) {
+            
+            $accommodation->setPrice($data['prices']);
+            $accommodation->setOffer($data['offers']);
+            
+            $types = $accommodation->getTypes();
+            
+            foreach ($types as $type) {
+            
+                if (isset($data['prices'][$type->getId()])) {
+                    $type->setPrice($data['prices'][$type->getId()]);
+                }
+            
+                if (isset($surveys[$type->getId()])) {
+                    
+                    $type->setSurveyCount($surveys[$type->getId()]['surveyCount']);
+                    $type->setSurveyAverageOverallRating($surveys[$type->getId()]['surveyAverageOverallRating']);
+                }
+            }
+        }
+        
         $custom_filter_entities = $searchService->findOnlyNames($c, $r, $pl, $a, $t);
         foreach ($custom_filter_entities as $entity) {
 
@@ -255,14 +278,8 @@ class SearchController extends Controller
                 });
             }
         }
-
+        
         $data['facet_service'] = $searchService->facets($paginator, $facetFilters);
-
-        $surveys = $surveyService->statsByTypes($typeEntities);
-
-        foreach ($surveys as $surveyData) {
-            $data['surveys'][$surveyData['typeId']] = ['count' => $surveyData['surveyCount'], 'rating' => $surveyData['surveyAverageOverallRating']];
-        }
 
         return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', $data);
     }

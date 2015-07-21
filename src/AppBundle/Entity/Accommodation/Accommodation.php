@@ -37,6 +37,27 @@ class Accommodation implements AccommodationServiceEntityInterface
      * @ORM\Column(name="naam", type="string", length=255)
      */
     private $name;
+    
+    /**
+     * cheapest price cache for types
+     *
+     * @var float
+     */
+    private $price = 0;
+    
+    /**
+     * cheapest type
+     *
+     * @var TypeServiceEntityInterface
+     */
+    private $cheapest = null;
+    
+    /**
+     * Is an offer enabled
+     *
+     * @var boolean
+     */
+    private $offer = false;
 
     /**
      * @var boolean
@@ -301,6 +322,78 @@ class Accommodation implements AccommodationServiceEntityInterface
     public function getLocaleName($locale)
     {
         return $this->getLocaleField('name', $locale, ['nl']);
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setPrice($prices)
+    {
+        $data     = [];
+        $cheapest = null;
+        
+        foreach ($this->types as $type) {
+            
+            if (isset($prices[$type->getId()])) {
+                
+                if (null === $cheapest) {
+                    $cheapest = ['price' => $prices[$type->getId()], 'type' => $type];
+                }
+                
+                if ($cheapest['price'] > $prices[$type->getId()] && $prices[$type->getId()] > 0) {
+                    $cheapest = ['price' => $prices[$type->getId()], 'type' => $type];
+                }
+            }
+        }
+        
+        if (null !== $cheapest) {
+            
+            $this->price    = $cheapest['price'];
+            $this->cheapest = $cheapest['type'];
+        }
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function getCheapest()
+    {
+        return $this->cheapest;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function setOffer($offers)
+    {
+        foreach ($this->types as $type) {
+            
+            if (isset($offers[$type->getId()])) {
+                
+                $this->offer = true;
+                break;
+            }
+        }
+        
+        return $this;
+    }
+    
+    /**
+     * {@InheritDoc}
+     */
+    public function hasOffer()
+    {
+        return $this->offer;
     }
 
     /**

@@ -188,7 +188,6 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                 jq('body').on('click', '*', function(event) {
 
                     if (event.target.getAttribute('data-role') !== 'autocomplete-result' && event.target !== ns.Autocomplete.input.get(0)) {
-                        console.log('test');
                         ns.Autocomplete.resultsContainer.hide();
                     }
                 });

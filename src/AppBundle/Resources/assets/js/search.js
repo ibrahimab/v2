@@ -260,6 +260,12 @@ window.Chalet = (function(ns, jq, _, undefined) {
                     uri.setQuery('a[]', ns.Search.filters.accommodations);
                 }
 
+                if (ns.Search.filters.types.length > 0) {
+
+                    uri.removeQuery('t[]');
+                    uri.setQuery('t[]', ns.Search.filters.types);
+                }
+
                 if (null !== ns.Search.filters.bedrooms) {
 
                     uri.removeQuery('be');
@@ -357,6 +363,8 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
             accommodations: [],
 
+            types: [],
+
             bedrooms: null,
 
             bathrooms: null,
@@ -418,6 +426,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 ns.Search.filters.regions        = [];
                 ns.Search.filters.places         = [];
                 ns.Search.filters.accommodations = [];
+                ns.Search.filters.types          = [];
                 ns.Search.filters.bedrooms       = null;
                 ns.Search.filters.bathrooms      = null;
                 ns.Search.filters.persons        = null;
@@ -440,9 +449,8 @@ window.Chalet = (function(ns, jq, _, undefined) {
             addRegion: function(region) {
 
                 ns.Search.filters.removeRegion(region);
-                console.log(ns.Search.filters.regions);
                 ns.Search.filters.regions.push(region);
-                console.log(ns.Search.filters.regions);
+
                 return ns.Search.filters.regions;
             },
 
@@ -476,6 +484,19 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                 ns.Search.filters.accommodations = _.reject(ns.Search.filters.accommodations, function(item) { return parseInt(item, 10) === parseInt(accommodation, 10); });
                 return ns.Search.filters.accommodations;
+            },
+
+            addType: function(type) {
+
+                ns.Search.filters.removeType(type);
+                ns.Search.filters.types.push(type);
+                return ns.Search.filters.types;
+            },
+
+            removeType: function(type) {
+
+                ns.Search.filters.types = _.reject(ns.Search.filters.types, function(item) { return parseInt(item, 10) === parseInt(type, 10); });
+                return ns.Search.filters.types;
             },
 
             setBedrooms: function(bedrooms) {
