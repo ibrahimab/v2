@@ -1,6 +1,8 @@
 <?php
 namespace AppBundle\Entity\Accommodation;
 use       AppBundle\Entity\Video;
+use       AppBundle\Entity\Type\Type;
+use       AppBundle\Entity\Place\Place;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
@@ -368,6 +370,12 @@ class Accommodation implements AccommodationServiceEntityInterface
      */
     public function getCheapest()
     {
+        if (null === $this->cheapest) {
+            
+            list($item) = $this->types;
+            $this->cheapest = $item;
+        }
+        
         return $this->cheapest;
     }
     
@@ -938,5 +946,46 @@ class Accommodation implements AccommodationServiceEntityInterface
         }
 
         return $localized;
+    }
+    
+    public static function hydrateRows($rows)
+    {
+        $results = [];
+        
+        foreach ($rows as $row) {
+            $results[] = self::hydrate($row);
+        }
+        
+        return $results;
+    }
+    
+    public static function hydrate($data)
+    {
+        $accommodation = new self();
+        
+        foreach ($data as $field => $value) {
+            
+            switch ($field) {
+                
+                case 'types':
+                
+                    foreach ($value as $type) {
+                        $accommodation->types[] = Type::hydrate($type);
+                    }
+                    
+                break;
+                
+                case 'place':
+                    $accommodation->place = Place::hydrate($value);
+                break;
+                
+                default:
+                    if (property_exists($accommodation, $field)) {
+                        $accommodation->{$field} = $value;
+                    }
+            }
+        }
+        
+        return $accommodation;
     }
 }
