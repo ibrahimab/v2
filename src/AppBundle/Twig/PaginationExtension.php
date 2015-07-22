@@ -1,6 +1,6 @@
 <?php
 namespace AppBundle\Twig;
-use       AppBundle\Service\Paginator\PaginatorService;
+use       AppBundle\Service\Api\Search\Result\Paginator\Paginator;
 use       Symfony\Component\DependencyInjection\ContainerInterface;
 use       Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use       Symfony\Component\HttpFoundation\Request;
@@ -89,7 +89,7 @@ class PaginationExtension extends \Twig_Extension
      * @param  PaginatorService $paginator
      * @return
      */
-    public function set(PaginatorService $paginator)
+    public function set(Paginator $paginator)
     {
         $this->paginator = $paginator;
     }
@@ -111,7 +111,7 @@ class PaginationExtension extends \Twig_Extension
      */
     public function count()
     {
-        return count($this->paginator);
+        return $this->paginator->total();
     }
 
     /**

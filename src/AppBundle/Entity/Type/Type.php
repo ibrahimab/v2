@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Entity\Type;
 use       AppBundle\Entity\Video;
+use       AppBundle\Entity\Supplier\Supplier;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       Doctrine\ORM\Mapping as ORM;
 use       Doctrine\Common\Collections\ArrayCollection;
@@ -34,6 +35,11 @@ class Type implements TypeServiceEntityInterface
     private $price;
 
     /**
+     * @var string
+     */
+    private $sortKey;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="accommodatie_id", type="integer")
@@ -65,7 +71,7 @@ class Type implements TypeServiceEntityInterface
      * @ORM\Column(name="video_url", type="string")
      */
     private $videoUrl;
-    
+
     /**
      * @var boolean
      *
@@ -401,6 +407,24 @@ class Type implements TypeServiceEntityInterface
     /**
      * {@InheritDoc}
      */
+    public function setSortKey($sortKey)
+    {
+        $this->sortKey = $sortKey;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getSortKey()
+    {
+        return $this->sortKey;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
     public function setAccommodationId($accommodationId)
     {
         $this->accommodationId = $accommodationId;
@@ -430,6 +454,24 @@ class Type implements TypeServiceEntityInterface
     public function setAccommodation($accommodation)
     {
         $this->accommodation = $accommodation;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getSupplier()
+    {
+        return $this->supplier;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setSupplier($supplier)
+    {
+        $this->supplier = $supplier;
 
         return $this;
     }
@@ -481,14 +523,14 @@ class Type implements TypeServiceEntityInterface
 
         return $this->video;
     }
-    
+
     public function setVirtualTourLink($virtualTourLink)
     {
         $this->virtualTourLink = $virtualTourLink;
-        
+
         return $this;
     }
-    
+
     public function getVirtualTourLink()
     {
         return $this->virtualTourLink;
@@ -1412,18 +1454,22 @@ class Type implements TypeServiceEntityInterface
 
         return $localized;
     }
-    
+
     public static function hydrate($data)
     {
         $type = new self();
-        
+
         foreach ($data as $field => $value) {
-            
-            if (property_exists($type, $field)) {
+
+            if ($field === 'supplier') {
+
+                $type->supplier = Supplier::hydrate($value);
+
+            } elseif (property_exists($type, $field)) {
                 $type->{$field} = $value;
             }
         }
-        
+
         return $type;
     }
 }

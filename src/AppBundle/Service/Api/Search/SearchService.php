@@ -1,10 +1,11 @@
 <?php
 namespace AppBundle\Service\Api\Search;
-use       AppBundle\Service\Paginator\PaginatorService;
+use       AppBundle\Service\Api\Search\Result\Resultset;
 use       AppBundle\Service\FilterService;
 use       AppBundle\Service\FacetService;
 use       AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
+use       AppBundle\AppTrait\LocaleTrait;
 
 /**
  * This is the search service
@@ -14,16 +15,18 @@ use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
  */
 class SearchService
 {
+    use LocaleTrait;
+
     /**
      * @var SearchServiceRepositoryInterface
      */
     private $searchServiceRepository;
-    
+
     /**
      * @var array
      */
     private $builder;
-    
+
     /**
      * Constructor
      *
@@ -34,7 +37,7 @@ class SearchService
         $this->searchServiceRepository = $searchServiceRepository;
         $this->builder                 = new SearchBuilder($this);
     }
-    
+
     /**
      * @return SearchBuilder
      */
@@ -42,15 +45,22 @@ class SearchService
     {
         return $this->builder;
     }
-    
+
     /**
      * @return array
      */
     public function search()
     {
-        return $this->searchServiceRepository->search($this->build());
+        $builder   = $this->build();
+        $resultset = new Resultset($this->searchServiceRepository->search($builder));
+        $resultset->setLocale($this->getLocale());
+        $resultset->paginator()->setLimit($builder->block(SearchBuilder::BLOCK_LIMIT));
+        $resultset->paginator()->setCurrentPage($builder->block(SearchBuilder::BLOCK_PAGE));
+        $resultset->prepare();
+
+        return $resultset;
     }
-    
+
     /**
      * @return integer
      */
@@ -58,7 +68,7 @@ class SearchService
     {
         return $this->searchServiceRepository->count($this->build());
     }
-    
+
     /**
      * @param array $countries
      * @param array $regions
@@ -70,16 +80,16 @@ class SearchService
     {
         return $this->searchServiceRepository->findOnlyNames($countries, $regions, $places, $accommodations, $types);
     }
-    
+
     /**
      * @param PaginatorService $paginator
      * @param array $filters
      */
-    public function facets(PaginatorService $paginator, $filters)
+    public function facets(Resultset $resultset, $filters)
     {
-        $facetService = new FacetService($paginator, $filters);
+        $facetService = new FacetService($resultset, $filters);
         $facetService->calculate();
-        
+
         return $facetService;
     }
 }

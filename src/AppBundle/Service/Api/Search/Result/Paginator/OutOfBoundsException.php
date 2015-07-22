@@ -1,5 +1,5 @@
 <?php
-namespace AppBundle\Service\Paginator;
+namespace AppBundle\Service\Api\Search\Result\Paginator;
 
 /**
  * @author  Ibrahim Abdullah

@@ -2,6 +2,7 @@
 namespace AppBundle\Entity;
 use       AppBundle\Concern\SeasonConcern;
 use       AppBundle\Concern\WebsiteConcern;
+use       AppBundle\AppTrait\LocaleTrait;
 use       Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -12,25 +13,22 @@ use       Symfony\Component\DependencyInjection\ContainerInterface;
  */
 trait BaseRepositoryTrait
 {
+    use LocaleTrait;
+
     /**
      * @var integer
      */
     protected $season;
-    
+
     /**
      * @var string
      */
     protected $website;
-    
+
     /**
      * @var string
      */
     protected $websiteConcern;
-    
-    /**
-     * @var string
-     */
-    protected $locale;
 
     /**
      * Setting season
@@ -73,33 +71,13 @@ trait BaseRepositoryTrait
     {
         return $this->website;
     }
-    
+
     /**
      * @return WebsiteConcern
      */
     public function getWebsiteConcern()
     {
         return $this->websiteConcern;
-    }
-    
-    /**
-     * Setting current locale
-     * 
-     * @param ContainerInterface $container
-     */
-    public function setLocale(ContainerInterface $container)
-    {
-        $this->locale = $container->get('request')->getLocale();
-    }
-    
-    /**
-     * Getting current locale
-     *
-     * @return string
-     */
-    public function getLocale()
-    {
-        return $this->locale;
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
-namespace AppBundle\Service\Paginator;
-use       AppBundle\Service\Paginator\OutOfBoundsException;
+namespace AppBundle\Service\Api\Search\Result\Paginator;
+use       AppBundle\Service\Api\Search\Result\Paginator\OutOfBoundsException;
+use       AppBundle\Service\Api\Search\Result\Resultset;
 use       AppBundle\Entity\Accommodation\Accommodation;
 use       Doctrine\ORM\QueryBuilder;
 use       Doctrine\ORM\Query;
@@ -11,56 +12,54 @@ use       Doctrine\ORM\Query;
  * @version 0.0.5
  * @since   0.0.5
  */
-class PaginatorService implements \Iterator, \Countable
+class Paginator implements \Iterator, \Countable
 {
-    const SORT_ASC  = 1;
-    const SORT_DESC = 2;
-
-    private $builder;
+    /**
+     * @var integer
+     */
     private $position;
+
+    /**
+     * @var integer
+     */
     private $offset;
-    private $results;
+
+    /**
+     * @var integer
+     */
     private $total;
-    private $results_count;
+
+    /**
+     * @var integer
+     */
+    private $count;
+
+    /**
+     * @var integer
+     */
     private $current_page;
+
+    /**
+     * @var integer
+     */
     private $total_pages;
+
+    /**
+     * @var integer
+     */
     private $limit;
-    private $accommodation;
 
     /**
      * Constructor
      *
      * @param QueryBuilder $queryBuilder
      */
-    public function __construct(QueryBuilder $builder)
+    public function __construct(Resultset $resultset, $limit = 10, $offset = 0)
     {
-        $this->setBuilder($builder);
-
-        $this->results = $this->hydrate();
-        $this->limit   = 10;
-        $this->offset  = 0;
-    }
-
-    /**
-     * @param QueryBuilder $builder
-     */
-    public function setBuilder(QueryBuilder $builder)
-    {
-        $this->builder = $builder;
-    }
-
-    /**
-     * @param integer $order
-     */
-    public function sort($order)
-    {
-        // r.2268
-        usort($this->results, function($a, $b) {
-            if ($a->getSortKey() == $b->getSortKey()) return 0;
-            return ($a->getSortKey() < $b->getSortKey() ? -1 : 1);
-        });
-
-        dump($this->results);exit;
+        $this->resultset = $resultset;
+        $this->position  = 0;
+        $this->limit     = $limit;
+        $this->offset    = $offset;
     }
 
     /**
@@ -114,7 +113,7 @@ class PaginatorService implements \Iterator, \Countable
     public function getTotalPages()
     {
         if (null === $this->total_pages) {
-            $this->total_pages = ($this->getLimit() > 0 ? ((int)ceil($this->resultsCount() / $this->getLimit()) - 1) : 0);
+            $this->total_pages = ($this->getLimit() > 0 ? ((int)ceil($this->total() / $this->getLimit()) - 1) : 0);
         }
 
         return $this->total_pages;
@@ -127,29 +126,15 @@ class PaginatorService implements \Iterator, \Countable
      */
     public function count()
     {
-        if (null === $this->total) {
-
-            $this->total = 0;
-            $results = $this->results();
-
-            foreach ($results as $accommodation) {
-                $this->total += count($accommodation->getTypes());
-            }
-        }
-
-        return $this->total;
+        return $this->resultset->count();
     }
 
     /**
      * @return integer
      */
-    public function resultsCount()
+    public function total()
     {
-        if (null === $this->results_count) {
-            $this->results_count = count($this->results);
-        }
-
-        return $this->results_count;
+        return $this->resultset->total();
     }
 
     /**
@@ -157,7 +142,7 @@ class PaginatorService implements \Iterator, \Countable
      */
     public function current()
     {
-        return ($this->position >= $this->offset && $this->position < ($this->offset() + $this->getLimit()) ? $this->results[$this->position] : false);
+        return ($this->position >= $this->offset && $this->position < ($this->offset() + $this->getLimit()) ? $this->resultset->results[$this->position] : false);
     }
 
     /**
@@ -192,8 +177,7 @@ class PaginatorService implements \Iterator, \Countable
      */
     public function valid()
     {
-        $valid = isset($this->results[$this->position]) && $this->position >= $this->offset && $this->position < ($this->getLimit() + $this->offset());
-        return $valid;
+        return isset($this->resultset->results[$this->position]) && $this->position >= $this->offset && $this->position < ($this->getLimit() + $this->offset());
     }
 
     /**
@@ -209,15 +193,6 @@ class PaginatorService implements \Iterator, \Countable
      */
     public function results()
     {
-        return $this->results;
-    }
-
-    /**
-     * @return array
-     */
-    public function hydrate()
-    {
-        $results = $this->builder->getQuery()->getResult(Query::HYDRATE_ARRAY);
-        return Accommodation::hydrateRows($results);
+        return $this->resultset->results;
     }
 }
