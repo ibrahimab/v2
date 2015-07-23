@@ -45,10 +45,13 @@ class Sorter
      */
     public function sort($by = self::SORT_ASC)
     {
-        $sorted   = [];
-        $sortable = [];
+        $sorted         = [];
+        $sortable       = [];
+        $accommodations = [];
 
         foreach ($this->resultset->results as $accommodation) {
+
+            $accommodations[$accommodation['id']] = $accommodation;
 
             foreach ($accommodation['types'] as $type) {
 
@@ -70,7 +73,9 @@ class Sorter
         foreach ($sortable as $sortKey => $accommodationId) {
 
             ksort($sorted[$accommodationId]);
-            $results[$accommodationId] = array_values($sorted[$accommodationId]); // reset keys
+
+            $results[$accommodationId]          = $accommodations[$accommodationId];
+            $results[$accommodationId]['types'] = array_values($sorted[$accommodationId]); // reset keys
         }
 
         $this->resultset->setSortedResults(array_values($results)); // reset keys
