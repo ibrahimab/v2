@@ -209,72 +209,49 @@ class SearchController extends Controller
         $resultset->setMetadata();
         $resultset->sorter()->sort();
 
-        // foreach ($paginator as $accommodation) {
-        //
-        //     $accommodation->setPrice($data['prices']);
-        //     $accommodation->setOffer($data['offers']);
-        //
-        //     $types = $accommodation->getTypes();
-        //
-        //     foreach ($types as $type) {
-        //
-        //         if (isset($data['prices'][$type->getId()])) {
-        //             $type->setPrice($data['prices'][$type->getId()]);
-        //         }
-        //
-        //         if (isset($surveys[$type->getId()])) {
-        //
-        //             $type->setSurveyCount($surveys[$type->getId()]['surveyCount']);
-        //             $type->setSurveyAverageOverallRating($surveys[$type->getId()]['surveyAverageOverallRating']);
-        //         }
-        //     }
-        // }
-        //
-        // $paginator->sort(PaginatorService::SORT_ASC);
-        //
-        // $custom_filter_entities = $searchService->findOnlyNames($c, $r, $pl, $a, $t);
-        // foreach ($custom_filter_entities as $entity) {
-        //
-        //     if ($entity instanceof CountryServiceEntityInterface) {
-        //         $data['custom_filters']['countries'][$entity->getId()] = $entity;
-        //     }
-        //
-        //     if ($entity instanceof RegionServiceEntityInterface) {
-        //         $data['custom_filters']['regions'][$entity->getId()] = $entity;
-        //     }
-        //
-        //     if ($entity instanceof PlaceServiceEntityInterface) {
-        //         $data['custom_filters']['places'][$entity->getId()] = $entity;
-        //     }
-        //
-        //     if ($entity instanceof AccommodationServiceEntityInterface) {
-        //         $data['custom_filters']['accommodations'][$entity->getId()] = $entity;
-        //     }
-        //
-        //     if ($entity instanceof TypeServiceEntityInterface) {
-        //         $data['custom_filters']['types'][$entity->getId()] = $entity;
-        //     }
-        // }
-        //
-        // $facetFilters = [
-        //
-        //     FilterService::FILTER_DISTANCE => [FilterService::FILTER_DISTANCE_BY_SLOPE, FilterService::FILTER_DISTANCE_MAX_250, FilterService::FILTER_DISTANCE_MAX_500, FilterService::FILTER_DISTANCE_MAX_1000],
-        //     FilterService::FILTER_LENGTH   => [FilterService::FILTER_LENGTH_MAX_100, FilterService::FILTER_LENGTH_MIN_100, FilterService::FILTER_LENGTH_MIN_200, FilterService::FILTER_LENGTH_MIN_400],
-        //     FilterService::FILTER_FACILITY => [FilterService::FILTER_FACILITY_CATERING, FilterService::FILTER_FACILITY_INTERNET_WIFI, FilterService::FILTER_FACILITY_SWIMMING_POOL, FilterService::FILTER_FACILITY_SAUNA, FilterService::FILTER_FACILITY_PRIVATE_SAUNA, FilterService::FILTER_FACILITY_PETS_ALLOWED, FilterService::FILTER_FACILITY_FIREPLACE],
-        //     FilterService::FILTER_THEME    => [FilterService::FILTER_THEME_KIDS, FilterService::FILTER_THEME_CHARMING_PLACES, FilterService::FILTER_THEME_10_FOR_APRES_SKI, FilterService::FILTER_THEME_SUPER_SKI_STATIONS, FilterService::FILTER_THEME_WINTER_WELLNESS],
-        // ];
-        //
-        // foreach ($filters as $filter => $activeFilterValues) {
-        //
-        //     if (false === FilterService::multiple($filter)) {
-        //
-        //         $facetFilters[$filter] = array_filter($facetFilters[$filter], function($value) use ($activeFilterValues) {
-        //             return $value === $activeFilterValues;
-        //         });
-        //     }
-        // }
-        //
-        // $data['facet_service'] = $searchService->facets($paginator, $facetFilters);
+        $custom_filter_entities = $searchService->findOnlyNames($c, $r, $pl, $a, $t);
+        foreach ($custom_filter_entities as $entity) {
+
+            if ($entity instanceof CountryServiceEntityInterface) {
+                $data['custom_filters']['countries'][$entity->getId()] = $entity;
+            }
+
+            if ($entity instanceof RegionServiceEntityInterface) {
+                $data['custom_filters']['regions'][$entity->getId()] = $entity;
+            }
+
+            if ($entity instanceof PlaceServiceEntityInterface) {
+                $data['custom_filters']['places'][$entity->getId()] = $entity;
+            }
+
+            if ($entity instanceof AccommodationServiceEntityInterface) {
+                $data['custom_filters']['accommodations'][$entity->getId()] = $entity;
+            }
+
+            if ($entity instanceof TypeServiceEntityInterface) {
+                $data['custom_filters']['types'][$entity->getId()] = $entity;
+            }
+        }
+
+        $facetFilters = [
+
+            FilterService::FILTER_DISTANCE => [FilterService::FILTER_DISTANCE_BY_SLOPE, FilterService::FILTER_DISTANCE_MAX_250, FilterService::FILTER_DISTANCE_MAX_500, FilterService::FILTER_DISTANCE_MAX_1000],
+            FilterService::FILTER_LENGTH   => [FilterService::FILTER_LENGTH_MAX_100, FilterService::FILTER_LENGTH_MIN_100, FilterService::FILTER_LENGTH_MIN_200, FilterService::FILTER_LENGTH_MIN_400],
+            FilterService::FILTER_FACILITY => [FilterService::FILTER_FACILITY_CATERING, FilterService::FILTER_FACILITY_INTERNET_WIFI, FilterService::FILTER_FACILITY_SWIMMING_POOL, FilterService::FILTER_FACILITY_SAUNA, FilterService::FILTER_FACILITY_PRIVATE_SAUNA, FilterService::FILTER_FACILITY_PETS_ALLOWED, FilterService::FILTER_FACILITY_FIREPLACE],
+            FilterService::FILTER_THEME    => [FilterService::FILTER_THEME_KIDS, FilterService::FILTER_THEME_CHARMING_PLACES, FilterService::FILTER_THEME_10_FOR_APRES_SKI, FilterService::FILTER_THEME_SUPER_SKI_STATIONS, FilterService::FILTER_THEME_WINTER_WELLNESS],
+        ];
+
+        foreach ($filters as $filter => $activeFilterValues) {
+
+            if (false === FilterService::multiple($filter)) {
+
+                $facetFilters[$filter] = array_filter($facetFilters[$filter], function($value) use ($activeFilterValues) {
+                    return $value === $activeFilterValues;
+                });
+            }
+        }
+
+        $data['facet_service'] = $searchService->facets($resultset, $facetFilters);
         $data['search_time']   = round((microtime(true) - $start), 2);
 
         return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', $data);
