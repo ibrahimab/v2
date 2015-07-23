@@ -13,14 +13,14 @@ class Sorter
     use LocaleTrait;
 
     /**
-     * @var PaginatorService
+     * @var Resultset
      */
-    private $paginator;
+    private $resultset;
 
     /**
      * @var integer
      */
-    private $order_by;
+    private $order_by = self::SORT_ASC;
 
     /**
      * @const integer
@@ -35,9 +35,9 @@ class Sorter
     /**
      * @param PaginatorService $paginator
      */
-    public function __construct(PaginatorService $paginator)
+    public function __construct(Resultset $resultset)
     {
-        $this->paginator = $paginator;
+        $this->resultset = $resultset;
     }
 
     /**
@@ -45,30 +45,35 @@ class Sorter
      */
     public function sort($by = self::SORT_ASC)
     {
-        $this->setOrderBy($by);
-        $this->setSortKeys();
+        $sorted   = [];
+        $sortable = [];
 
-        $accommodations = $this->paginator->results();
-        $sortable       = [];
+        foreach ($this->resultset->results as $accommodation) {
 
-        foreach ($accommodations as $accommodation) {
+            foreach ($accommodation['types'] as $type) {
 
-            $types = $accommodation->getTypes();
+                $accommodationId            = $type['accommodationId'];
+                $sortable[$type['sortKey']] = $accommodationId;
+                $accommodationSortKey       = $this->generateAccommodationSortKey($type);
 
-            foreach ($types as $type) {
-                $sortable[] = $type;
+                if (!isset($sorted[$accommodationId])) {
+                    $sorted[$accommodationId] = [];
+                }
+
+                $sorted[$accommodationId][$accommodationSortKey] = $type;
             }
         }
 
-        dump(array_map(function($r) { return $r->getSortKey(); }, $sortable));
+        ksort($sortable);
 
-        usort($sortable, function($a, $b) {
-            return $a->getSortKey() < $b->getSortKey() ? -1 : 1;
-        });
+        $results = [];
+        foreach ($sortable as $sortKey => $accommodationId) {
 
-        dump(array_map(function($r) { return $r->getSortKey(); }, $sortable));
+            ksort($sorted[$accommodationId]);
+            $results[$accommodationId] = array_values($sorted[$accommodationId]); // reset keys
+        }
 
-        exit;
+        $this->resultset->setSortedResults(array_values($results)); // reset keys
     }
 
     /**
@@ -77,6 +82,8 @@ class Sorter
     public function setOrderBy($by)
     {
         $this->order_by = $by;
+
+        return $this;
     }
 
     /**
@@ -88,52 +95,60 @@ class Sorter
     }
 
     /**
-     * @return void
+     * @return string
      */
-    public function setSortKeys()
+    public function generateSortKey($accommodation, $type)
     {
-        $results = $this->paginator->results();
-        $locale  = $this->getLocale();
+        $key = '';
 
-        foreach ($results as $accommodation) {
-
-            $types = $accommodation->getTypes();
-
-            foreach ($types as $type) {
-
-                $key = '';
-                if ($type->getPrice() > 0) {
-                    $key .= '1';
-                } else {
-                    $key .= '9';
-                }
-
-                if ($this->getOrderBy() === self::SORT_ASC) {
-                    $key .= substr('0000000' . number_format($type->getPrice(), 2, '', ''), -7) . '-';
-                } else {
-                    $key .= 1000000 - $type->getPrice();
-                }
-
-                $order = $type->getSupplier()->getSearchOrder();
-
-                if ($accommodation->getSearchOrder() !== 3) {
-                    $order = $accommodation->getSearchOrder();
-                }
-
-                if ($type->getSearchOrder() !== 3) {
-                    $order = $type->getSearchOrder();
-                }
-
-                $place = $accommodation->getPlace();
-                $key  .= $order . '-';
-                $key  .= $place->getRegion()->getLocaleName($locale) . '-';
-                $key  .= $place->getLocaleName($locale) . '-';
-                $key  .= $accommodation->getLocaleName($locale) . '-';
-                $key  .= sprintf('%03d', $type->getMaxResidents()) . '-';
-                $key  .= $type->getId();
-
-                $type->setSortKey($key);
-            }
+        if ($type['price'] > 0) {
+            $key .= '1';
+        } else {
+            $key .= '9';
         }
+
+        if ($this->getOrderBy() === self::SORT_ASC) {
+            $key .= substr('0000000' . number_format($type['price'], 2, '', ''), -7) . '-';
+        } else {
+            $key .= 1000000 - $type['price'];
+        }
+
+        $order = $type['supplier']['searchOrder'];
+
+        if ($accommodation['searchOrder'] !== 3) {
+            $order = $accommodation['searchOrder'];
+        }
+
+        if ($type['searchOrder'] !== 3) {
+            $order = $type['searchOrder'];
+        }
+
+        $key  .= $order . '-';
+        $key  .= $accommodation['place']['region']['localeName'] . '-';
+        $key  .= $accommodation['place']['localeName'] . '-';
+        $key  .= $accommodation['localeName'] . '-';
+        $key  .= sprintf('%03d', $type['maxResidents']) . '-';
+        $key  .= $type['id'];
+
+        return $key;
+    }
+
+    public function generateAccommodationSortKey($type)
+    {
+        $key = '';
+
+        if ($type['price'] > 0) {
+
+            $key   .= '1';
+            $price  = $type['price'];
+
+        } else {
+
+            $key   .= '9';
+            $price  = '99999999';
+        }
+
+        $key .= substr('0000' . $type['optimalResidents'], -4) . '_' . substr('0000' . $type['maxResidents'], -4) . '_' . substr('0000000000' . number_format($price, 2, '', ''), -10) . '_' . $type['id'];
+        return $key;
     }
 }

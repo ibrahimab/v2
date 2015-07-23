@@ -3,7 +3,7 @@ namespace AppBundle\Controller;
 use       AppBundle\Annotation\Breadcrumb;
 use       AppBundle\Service\Api\Search\SearchBuilder;
 use       AppBundle\Service\Api\Search\FilterBuilder;
-use       AppBundle\Service\Paginator\PaginatorService;
+use       AppBundle\Service\Api\Search\Result\Sorter;
 use       AppBundle\Service\FilterService;
 use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
@@ -181,43 +181,34 @@ class SearchController extends Controller
             'weekends'       => $seasonService->weekends($seasonService->seasons()),
             'surveys'        => [],
         ];
-        //
-        // $typeIds      = [];
-        // $typeEntities = [];
-        //
-        // foreach ($paginator as $accommodation) {
-        //
-        //     $types = $accommodation->getTypes();
-        //
-        //     foreach ($types as $type) {
-        //
-        //         $typeIds[]      = $type->getId();
-        //         $typeEntities[] = $type;
-        //     }
-        // }
-        //
-        // if (count($typeIds) > 0) {
-        //
-        //     if (!$request->query->has('pe')) {
-        //
-        //         $pricesService  = $this->get('old.prices.wrapper');
-        //         $data['prices'] = $pricesService->get($typeIds);
-        //     }
-        //
-        //     if (!$request->query->has('w')) {
-        //
-        //         $priceService   = $this->get('app.api.price');
-        //         $data['offers'] = $priceService->offers($typeIds);
-        //     }
-        // }
-        //
-        // $surveyData = $surveyService->statsByTypes($typeEntities);
-        // $surveys    = [];
-        //
-        // foreach ($surveyData as $survey) {
-        //     $surveys[$survey['typeId']] = $survey;
-        // }
-        //
+
+        $typeIds = $resultset->allTypeIds();
+
+        if (!$request->query->has('pe')) {
+
+            $pricesService  = $this->get('old.prices.wrapper');
+            $data['prices'] = $pricesService->get($typeIds);
+        }
+
+        if (!$request->query->has('w')) {
+
+            $priceService   = $this->get('app.api.price');
+            $data['offers'] = $priceService->offers($typeIds);
+        }
+
+        $surveyData = $surveyService->statsByTypes($typeIds);
+        $surveys    = [];
+
+        foreach ($surveyData as $survey) {
+            $surveys[$survey['typeId']] = $survey;
+        }
+
+        $resultset->setPrices($data['prices']);
+        $resultset->setOffers($data['offers']);
+        $resultset->setSurveys($surveys);
+        $resultset->setMetadata();
+        $resultset->sorter()->sort();
+
         // foreach ($paginator as $accommodation) {
         //
         //     $accommodation->setPrice($data['prices']);

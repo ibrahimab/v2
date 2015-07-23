@@ -36,6 +36,11 @@ class Resultset
     private $paginator;
 
     /**
+     * @var Sorter
+     */
+    private $sorter;
+
+    /**
      * @var array
      */
     public $results;
@@ -54,6 +59,26 @@ class Resultset
      * @var integer
      */
     public $total;
+
+    /**
+     * @var array
+     */
+    public $prices;
+
+    /**
+     * @var array
+     */
+    public $offers;
+
+    /**
+     * @var array
+     */
+    public $surveys;
+
+    /**
+     * @var array
+     */
+    public $sortKeys;
 
 
     /**
@@ -88,10 +113,12 @@ class Resultset
 
             foreach ($accommodation['types'] as $typeKey => $type) {
 
-                $this->results[$key]['types'][$typeKey]['price']       = 0;
-                $this->results[$key]['types'][$typeKey]['offer']       = false;
-                $this->results[$key]['types'][$typeKey]['surveyCount'] = 0;
-                $this->results[$key]['types'][$typeKey]['localeName']  = $this->getLocaleValue('name', $type);
+                $this->results[$key]['types'][$typeKey]['price']                      = 0;
+                $this->results[$key]['types'][$typeKey]['offer']                      = false;
+                $this->results[$key]['types'][$typeKey]['surveyCount']                = 0;
+                $this->results[$key]['types'][$typeKey]['surveyAverageOverallRating'] = 0;
+                $this->results[$key]['types'][$typeKey]['sortKey']                    = '-';
+                $this->results[$key]['types'][$typeKey]['localeName']                 = $this->getLocaleValue('name', $type);
             }
 
             $this->types[$accommodation['id']] =& $this->results[$key]['types'];
@@ -108,6 +135,17 @@ class Resultset
         }
 
         return $this->paginator;
+    }
+
+    public function sorter()
+    {
+        if (null === $this->sorter) {
+
+            $this->sorter = new Sorter($this);
+            $this->sorter->setLocale($this->getLocale());
+        }
+
+        return $this->sorter;
     }
 
     /**
@@ -149,6 +187,126 @@ class Resultset
     public function types($accommodationId)
     {
         return (isset($this->types[$accommodationId]) ? $this->types[$accommodationId] : []);
+    }
+
+    /**
+     * @return array
+     */
+    public function allTypes()
+    {
+        return $this->types;
+    }
+
+    /**
+     * @return array
+     */
+    public function allTypeIds()
+    {
+        $ids = [];
+
+        foreach ($this->types as $accommodationId => $types) {
+
+            foreach ($types as $type) {
+                $ids[] = $type['id'];
+            }
+        }
+
+        return $ids;
+    }
+
+    /**
+     * @return array
+     */
+    public function currentPageTypeIds()
+    {
+        $paginator = $this->paginator();
+        $ids       = [];
+
+        foreach ($paginator as $accommodation) {
+
+            foreach ($accommodation['types'] as $type) {
+                $ids[] = $type['id'];
+            }
+        }
+
+        return $ids;
+    }
+
+    /**
+     * @param array $prices
+     */
+    public function setPrices($prices)
+    {
+        $this->prices = $prices;
+    }
+
+    /**
+     * @param array $offers
+     */
+    public function setOffers($offers)
+    {
+        $this->offers = $offers;
+    }
+
+    /**
+     * @param array surveys
+     */
+    public function setSurveys($surveys)
+    {
+        $this->surveys = $surveys;
+    }
+
+    /**
+     * @return void
+     */
+    public function setMetadata()
+    {
+        foreach ($this->results as $key => $accommodation) {
+
+            $accommodationPrices[$accommodation['id']] = 0;
+
+            foreach ($accommodation['types'] as $typeKey => $type) {
+
+                if (isset($this->prices[$type['id']])) {
+
+                    $this->results[$key]['types'][$typeKey]['price'] = $this->prices[$type['id']];
+
+                    if ($accommodation['price'] < $this->prices[$type['id']] && $this->prices[$type['id']] > 0) {
+
+                        $this->results[$key]['price']    =  $this->prices[$type['id']];
+                        $this->results[$key]['cheapest'] =& $type;
+                    }
+                }
+
+                if (isset($this->offers[$type['id']])) {
+                    $this->results[$key]['types'][$typeKey]['offer'] = true;
+                }
+
+                if (isset($this->surveys[$type['id']])) {
+
+                    $this->results[$key]['types'][$typeKey]['surveyCount']                = $this->surveys[$type['id']]['surveyCount'];
+                    $this->results[$key]['types'][$typeKey]['surveyAverageOverallRating'] = $this->surveys[$type['id']]['surveyAverageOverallRating'];
+                }
+
+                $this->results[$key]['types'][$typeKey]['sortKey'] = $this->sorter()->generateSortKey($this->results[$key], $this->results[$key]['types'][$typeKey]);
+            }
+        }
+    }
+
+    /**
+     * @param array $sortKey
+     */
+    public function setSortKeys($sortKeys)
+    {
+        $this->sortKeys = $sortKeys;
+    }
+
+    /**
+     * @param array $results
+     */
+    public function setSortedResults($results)
+    {
+        $this->results = $results;
     }
 
     /**

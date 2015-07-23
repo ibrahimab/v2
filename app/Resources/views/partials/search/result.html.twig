@@ -53,7 +53,7 @@
                                         <div data-role="tooltip-content">Bezig met laden...</div>
                                         <span class="nub rtl"></span>
                                     </div>
-                                    <span class="price radius">&euro; {{ accommodation.getPrice()|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
+                                    <span class="price radius">&euro; {{ accommodation.price|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
                                 </div>
                                 <span class="price-inc"><i class="sprite sprite-icon-skipass"></i>Inclusief skipas</span>
                             {% endif %}
