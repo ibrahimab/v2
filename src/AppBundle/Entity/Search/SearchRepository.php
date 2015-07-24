@@ -6,7 +6,6 @@ use       AppBundle\Service\Api\Search\SearchService;
 use       AppBundle\Service\Api\Search\SearchBuilder;
 use       AppBundle\Service\Api\Search\FilterBuilder;
 use       AppBundle\Service\FilterService;
-use       AppBundle\Service\Paginator\PaginatorService;
 use       AppBundle\Concern\SeasonConcern;
 use       AppBundle\Concern\WebsiteConcern;
 use       AppBundle\Entity\BaseRepository;
@@ -139,20 +138,15 @@ class SearchRepository implements SearchServiceRepositoryInterface
      */
     public function search(SearchBuilder $searchBuilder)
     {
-        $limit = $searchBuilder->block(SearchBuilder::BLOCK_LIMIT);
-        $page  = $searchBuilder->block(SearchBuilder::BLOCK_PAGE);
         $qb    = $this->query($searchBuilder)
                       ->add('select', 't,
-                                       partial a.{id, name, shortDescription, englishShortDescription, germanShortDescription, features, quality, distanceSlope},
+                                       partial a.{id, name, shortDescription, englishShortDescription, germanShortDescription, features, quality, distanceSlope, searchOrder},
                                        partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, features},
                                        partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, totalSlopesDistance},
-                                       partial c.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, startCode}');
+                                       partial c.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, startCode},
+                                       partial s.{id, searchOrder}');
 
-        $paginator = new PaginatorService($qb);
-        $paginator->setLimit($limit);
-        $paginator->setCurrentPage($page);
-
-        return $paginator;
+        return $qb;
     }
 
     /**

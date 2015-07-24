@@ -265,11 +265,11 @@ class AppExtension extends \Twig_Extension
 
         foreach ($accommodations as $accommodation) {
 
-            $accommodationTypes = $accommodation->getTypes();
+            $accommodationTypes = $accommodation['types'];
             if (count($accommodationTypes) > 1) {
 
                 $types[] = $accommodationTypes[0];
-                $accommodationEntities[$accommodationTypes[0]->getId()] = $accommodation;
+                $accommodationEntities[$accommodationTypes[0]['id']] = $accommodation;
             }
         }
 
@@ -290,7 +290,7 @@ class AppExtension extends \Twig_Extension
             if (!array_key_exists($typeId, $found)) {
 
                 $notFound[] = $accommodation;
-                $mapper[$accommodation->getId()] = $typeId;
+                $mapper[$accommodation['id']] = $typeId;
             }
         }
 

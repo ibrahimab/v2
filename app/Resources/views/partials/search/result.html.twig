@@ -1,68 +1,74 @@
-{% set locale        = get_locale() %}
-{% set accommodation = result %}
-{% set place         = accommodation.getPlace() %}
-{% set region        = place.getRegion() %}
-{% set country       = place.getCountry() %}
-{% set types         = accommodation.getTypes() %}
-{% set images        = [] %}
+{% macro accommodation(accommodation) %}
+    {% import 'partials/search/types.html.twig' as typesMacro %}
 
-{% if all_images[accommodation.getId()] is defined %}
-    {% set images = all_images[accommodation.getId()] %}
-{% endif %}
+    {% set place         = accommodation.place %}
+    {% set region        = place.region %}
+    {% set country       = place.country %}
+    {% set types         = accommodation.types %}
 
-{% set quality_stars %}
-    {% include 'partials/quality_stars.html.twig' with {'quality': accommodation.getQuality()} %}
-{% endset %}
+    {# {% set images        = [] %}
 
-<article class="overview{{ accommodation.hasOffer() ? ' sale' }}">
-    <a href="{{ locale_path('show_type', {beginCode: country.getStartCode(), typeId: accommodation.getCheapest().getId()}) }}">
-        <div class="row">
-            <div class="title-ipad title medium-12 columns">
-                {{ accommodation.getName() }}
-                <span>{{ quality_stars }}</span>
-            </div>
-            <div class="small-12 medium-5 large-5 columns">
-                <div class="accom-img">
-                    <div class="accom-slides">
-                        {% for image in images %}
-                        <div><img data-lazy="{{ image.getLocation() }}" alt="{{ accommodation.getLocaleName(locale) }}" /></div>
-                        {% endfor %}
-                    </div>
-                    {% if accommodation.hasOffer() %}
-                        <div class="circle"><span>Aan-</span><span>bieding</span></div>
-                    {% endif %}
+    {% if all_images[accommodation.getId()] is defined %}
+        {% set images = all_images[accommodation.getId()] %}
+    {% endif %} #}
+
+    {% set quality_stars %}
+        {% include 'partials/quality_stars.html.twig' with {'quality': accommodation.quality} %}
+    {% endset %}
+
+    <article class="overview{{ accommodation.offer ? ' sale' }}">
+        <a href="{{ locale_path('show_type', {beginCode: country.startCode, typeId: accommodation.cheapest.id}) }}">
+            <div class="row">
+                <div class="title-ipad title medium-12 columns">
+                    {{ accommodation.name }}
+                    <span>{{ quality_stars }}</span>
                 </div>
-            </div>
-            <div class="small-12 medium-7 large-7 columns">
-                <div class="accom-desc">
-                    <div class="row">
-                        <div class="small-12 medium-7 large-8 columns">
-                            <div class="location">
-                                <span class="area">{{ region.getLocaleName(locale) }}</span>, <span class="city">{{ place.getLocaleName(locale) }}</span>, <span class="country">{{ country.getLocaleName(locale) }}</span>
-                            </div>
-                            <div class="title">
-                                {{ accommodation.getLocaleName(locale) }}
-                                <span>{{ quality_stars }}</span>
-                            </div>
+                <div class="small-12 medium-5 large-5 columns">
+                    <div class="accom-img">
+                        <div class="accom-slides">
+                            {# {% for image in images %}
+                            <div><img data-lazy="{{ image.getLocation() }}" alt="{{ accommodation.getLocaleName(locale) }}" /></div>
+                            {% endfor %} #}
                         </div>
-                        <div class="small-12 medium-5 large-4 columns price-details">
-                            {% if accommodation.getPrice() > 0 %}
-                                <span class="price-info">Prijs per persoon per week, vanaf</span>
-                                <div class="chalet-tooltip loading" data-role="ajax-tooltip" data-id="{{ accommodation.getCheapest().getId() }}" data-season="{{ 27 }}">
-                                    <div class="chalet-tooltip-content">
-                                        <div data-role="tooltip-content">Bezig met laden...</div>
-                                        <span class="nub rtl"></span>
-                                    </div>
-                                    <span class="price radius">&euro; {{ accommodation.getPrice()|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
+                        {% if accommodation.offer %}
+                            <div class="circle"><span>Aan-</span><span>bieding</span></div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="small-12 medium-7 large-7 columns">
+                    <div class="accom-desc">
+                        <div class="row">
+                            <div class="small-12 medium-7 large-8 columns">
+                                <div class="location">
+                                    <span class="area">{{ region.localeName }}</span>, <span class="city">{{ place.localeName }}</span>, <span class="country">{{ country.localeName }}</span>
                                 </div>
-                                <span class="price-inc"><i class="sprite sprite-icon-skipass"></i>Inclusief skipas</span>
-                            {% endif %}
+                                <div class="title">
+                                    {{ accommodation.localeName }}
+                                    <span>{{ quality_stars }}</span>
+                                </div>
+                            </div>
+                            <div class="small-12 medium-5 large-4 columns price-details">
+                                {% if accommodation.price > 0 %}
+                                    <span class="price-info">Prijs per persoon per week, vanaf</span>
+                                    <div class="chalet-tooltip loading" data-role="ajax-tooltip" data-id="{{ accommodation.cheapest.id }}" data-season="{{ 27 }}">
+                                        <div class="chalet-tooltip-content">
+                                            <div data-role="tooltip-content">Bezig met laden...</div>
+                                            <span class="nub rtl"></span>
+                                        </div>
+                                        <span class="price radius">&euro; {{ accommodation.price|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
+                                    </div>
+                                    <span class="price-inc"><i class="sprite sprite-icon-skipass"></i>Inclusief skipas</span>
+                                {% endif %}
+                            </div>
                         </div>
+                        <p>{{ accommodation.localeShortDescription }}</p>
                     </div>
-                    <p>{{ accommodation.getLocaleShortDescription(locale) }}</p>
                 </div>
             </div>
-        </div>
-    </a>
-    {% include 'partials/search/types.html.twig' with {'types': types, 'prices': prices, 'offers': offers, 'surveys': surveys, 'accommodation': accommodation} only %}
-</article>
+        </a>
+
+        {{ typesMacro.table(types, accommodation) }}
+
+    </article>
+
+{% endmacro %}

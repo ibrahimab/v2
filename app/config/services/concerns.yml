@@ -7,3 +7,7 @@ services:
     app.concern.website:
         class: AppBundle\Concern\WebsiteConcern
         arguments: ["%app%"]
+
+    app.concern.locale:
+        class: AppBundle\Concern\LocaleConcern
+        arguments: [@request_stack]

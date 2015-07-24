@@ -1,7 +1,7 @@
 <div data-role="search-container">
     {% include 'partials/search/form.html.twig' %}
     <div id="search-results" class="small-12 medium-8 large-9 columns" data-role="search-results-container">
-        {{ set_paginator(paginator) }}
+        {{ set_paginator(resultset.paginator()) }}
         <div class="search-results-container" data-role="search-results">
             {% include 'partials/search/filters.html.twig' %}
             <hr />
@@ -32,10 +32,11 @@
             <hr />
             <div class="row">
                 <div class="small-12 medium-12 large-12 columns">
-                    {% set results = get_paginator() %}
-                    {% set images  = search_images(results) %}
+                    {% import 'partials/search/result.html.twig' as resultMacro %}
+                    {% set results = resultset.paginator() %}
+                    {# {% set images  = search_images(results) %} #}
                     {% for result in results %}
-                    {% include 'partials/search/result.html.twig' with {'result': result, 'all_images': images} %}
+                        {{ resultMacro.accommodation(result) }}
                     {% endfor %}
                 </div>
             </div>

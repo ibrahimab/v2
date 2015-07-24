@@ -3,6 +3,7 @@ namespace AppBundle\Controller;
 use       AppBundle\Annotation\Breadcrumb;
 use       AppBundle\Service\Api\Search\SearchBuilder;
 use       AppBundle\Service\Api\Search\FilterBuilder;
+use       AppBundle\Service\Api\Search\Result\Sorter;
 use       AppBundle\Service\FilterService;
 use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
@@ -153,8 +154,8 @@ class SearchController extends Controller
             $formFilters['persons'] = $pe;
             $searchBuilder->where(SearchBuilder::WHERE_PERSONS, $pe);
         }
-        
-        $paginator  = $searchBuilder->search();
+
+        $resultset  = $searchBuilder->search();
         $locale     = $request->getLocale();
         $javascript = $this->get('app.javascript');
 
@@ -168,7 +169,7 @@ class SearchController extends Controller
 
         $data = [
 
-            'paginator'      => $paginator,
+            'resultset'      => $resultset,
             'filters'        => $filters,
             // instance needed to get constants easier from within twig template: constant('const', instance)
             'filter_service' => $this->container->get('app.filter'),
@@ -181,63 +182,33 @@ class SearchController extends Controller
             'surveys'        => [],
         ];
 
-        $typeIds      = [];
-        $typeEntities = [];
+        $typeIds = $resultset->allTypeIds();
 
-        foreach ($paginator as $accommodation) {
+        if (!$request->query->has('pe')) {
 
-            $types = $accommodation->getTypes();
-
-            foreach ($types as $type) {
-
-                $typeIds[]      = $type->getId();
-                $typeEntities[] = $type;
-            }
+            $pricesService  = $this->get('old.prices.wrapper');
+            $data['prices'] = $pricesService->get($typeIds);
         }
 
-        if (count($typeIds) > 0) {
+        if (!$request->query->has('w')) {
 
-            if (!$request->query->has('pe')) {
-
-                $pricesService  = $this->get('old.prices.wrapper');
-                $data['prices'] = $pricesService->get($typeIds);
-            }
-
-            if (!$request->query->has('w')) {
-
-                $priceService   = $this->get('app.api.price');
-                $data['offers'] = $priceService->offers($typeIds);
-            }
+            $priceService   = $this->get('app.api.price');
+            $data['offers'] = $priceService->offers($typeIds);
         }
-        
-        $surveyData = $surveyService->statsByTypes($typeEntities);
+
+        $surveyData = $surveyService->statsByTypes($typeIds);
         $surveys    = [];
 
         foreach ($surveyData as $survey) {
             $surveys[$survey['typeId']] = $survey;
         }
-        
-        foreach ($paginator as $accommodation) {
-            
-            $accommodation->setPrice($data['prices']);
-            $accommodation->setOffer($data['offers']);
-            
-            $types = $accommodation->getTypes();
-            
-            foreach ($types as $type) {
-            
-                if (isset($data['prices'][$type->getId()])) {
-                    $type->setPrice($data['prices'][$type->getId()]);
-                }
-            
-                if (isset($surveys[$type->getId()])) {
-                    
-                    $type->setSurveyCount($surveys[$type->getId()]['surveyCount']);
-                    $type->setSurveyAverageOverallRating($surveys[$type->getId()]['surveyAverageOverallRating']);
-                }
-            }
-        }
-        
+
+        $resultset->setPrices($data['prices']);
+        $resultset->setOffers($data['offers']);
+        $resultset->setSurveys($surveys);
+        $resultset->setMetadata();
+        $resultset->sorter()->sort();
+
         $custom_filter_entities = $searchService->findOnlyNames($c, $r, $pl, $a, $t);
         foreach ($custom_filter_entities as $entity) {
 
@@ -279,8 +250,8 @@ class SearchController extends Controller
                 });
             }
         }
-        
-        $data['facet_service'] = $searchService->facets($paginator, $facetFilters);
+
+        $data['facet_service'] = $searchService->facets($resultset, $facetFilters);
         $data['search_time']   = round((microtime(true) - $start), 2);
 
         return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', $data);
@@ -322,23 +293,23 @@ class SearchController extends Controller
         if ($request->query->has('ba')) {
             $searchBuilder->where(SearchBuilder::WHERE_BATHROOMS, $request->query->get('ba'));
         }
-        
+
         if ($request->query->has('w') && !$request->query->has('pe')) {
-            
+
             $priceService = $this->get('app.api.price');
             $types        = $priceService->availableTypes($request->query->get('w'));
-            
+
             $searchBuilder->where(SearchBuilder::WHERE_TYPES, array_keys($types));
         }
-        
+
         if ($request->query->has('w') && $request->query->has('pe')) {
-            
+
             $priceService = $this->get('app.api.price');
             $types        = $priceService->pricesWithWeekendAndPersons($request->query->get('w'), $request->query->get('pe'));
-            
+
             $searchBuilder->where(SearchBuilder::WHERE_TYPES, array_keys($types));
         }
-        
+
         return new JsonResponse([
             'count' => $searchBuilder->count(),
         ]);

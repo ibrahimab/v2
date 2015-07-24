@@ -135,9 +135,9 @@ services:
         class:     AppBundle\Entity\Search\SearchRepository
         arguments: ["@doctrine.orm.entity_manager"]
         calls:
-            - [setSeason,  [@app.concern.season]]
+            - [setSeason, [@app.concern.season]]
             - [setWebsite, [@app.concern.website]]
-            - [setLocale,  [@service_container]]
+            - [setLocale, [@=service('app.concern.locale').get()]]
             - [setMaximumPersonsMap, [%app%]]
 
     app.repository.autocomplete:

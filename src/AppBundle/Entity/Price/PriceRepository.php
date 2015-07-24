@@ -23,7 +23,7 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
         $qb   = $this->createQueryBuilder('pr');
         $expr = $qb->expr();
 
-        $qb->select('partial pr.{id, discountActive, offerDiscountColor}')
+        $qb->select('pr.id, pr.discountActive, pr.offerDiscountColor')
            ->where($expr->in('pr.id', ':types'))
            ->andWhere($expr->eq('pr.discountActive', ':discountActive'))
            ->andWhere($expr->eq('pr.offerDiscountColor', ':offerDiscountColor'))
@@ -37,7 +37,6 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
            ]);
 
         $results = $qb->getQuery()->getResult(Query::HYDRATE_ARRAY);
-        $offers  = [];
 
         foreach ($results as $result) {
 
