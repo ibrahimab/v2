@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2015-07-24T13:03:25Z" source-language="en" target-language="nl" datatype="plaintext" original="not.available">
+  <file date="2015-07-24T15:39:17Z" source-language="en" target-language="nl" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -842,6 +842,11 @@
         <source>save-search</source>
         <target>Deze zoekopdracht opslaan</target>
         <jms:reference-file line="117">partials/search/filters.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f48e2aaf4ee96c6157e05085f51aaaec0243deec" resname="save-search-confirm-msg">
+        <source>save-search-confirm-msg</source>
+        <target state="new">Zoekopdracht opgeslagen</target>
+        <jms:reference-file line="118">partials/search/filters.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="b57bd12c572424ecee874bf197e72d39f34d94af" resname="saved-title">
         <source>saved-title</source>

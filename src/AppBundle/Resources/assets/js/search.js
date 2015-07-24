@@ -340,6 +340,10 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                         var count = jq('[data-role="searches-count"]');
                         count.text(parseInt(count.text()) + 1);
+
+                        // show confirm message
+                        jq('[data-role="save-search"]').html( jq('[data-role="save-search"]').data('confirm-msg') );
+
                     }
                 });
             },

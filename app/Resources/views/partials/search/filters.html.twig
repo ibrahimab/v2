@@ -115,8 +115,9 @@
 
     {% if filters_active == true %}
         {% set save_search_label = 'save-search'|trans %}
+        {% set save_search_confirm_msg = 'save-search-confirm-msg'|trans %}
         <span class="action-buttons">
-            <div class="save-button"><a href="{{ path('save_search', {f: app.request.query.get('f', {})}) }}" data-role="save-search">{{ save_search_label }} <i class="sprite sprite-icon-plus"></i></a></div>
+            <div class="save-button"><a href="{{ path('save_search', {f: app.request.query.get('f', {})}) }}" data-confirm-msg="{{ save_search_confirm_msg }}" data-role="save-search">{{ save_search_label }} <i class="fi-plus"></i></a></div>
             <div><a href="#" data-role="remove-filters">Wis volledige zoekopdracht <i class="fi-trash"></i></a></div>
         </span>
     {% endif %}
