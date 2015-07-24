@@ -42,8 +42,8 @@
     </div>
     <div data-role="search-filter-box" class="search-filter-box">
         <h2 class="title" data-role="toggle-filters">{{ 'filter-results'|trans }}</h2>
-        <div id="search-filter-piste-distance" class="search-filter-default" data-role="closable-filter">
-            <h2><a href="" title="deze box in- of uitklappen">{{ 'distance-to-slopes'|trans }}</a></h2>
+        <div id="search-filter-piste-distance" class="search-filter-default">
+            <h2 data-role="closable-filter"><a href="" title="deze box in- of uitklappen">{{ 'distance-to-slopes'|trans }}</a></h2>
             <div class="fields">
                 <div class="styled_label" data-role="change-filter" data-action="{{ filter_distance_value == distance_by_slope ? 'remove' : 'add' }}" data-filter="{{ filter_distance }}" data-filter-value="{{ distance_by_slope }}">
                     <label class="label_check" for="checkbox-01">
@@ -79,8 +79,8 @@
                 </div>
             </div>
         </div>
-        <div id="search-filter-piste-length" class="search-filter-default" data-role="closable-filter">
-            <h2><a href="" title="deze box in- of uitklappen">{{ 'length-slopes'|trans }}</a></h2>
+        <div id="search-filter-piste-length" class="search-filter-default">
+            <h2 data-role="closable-filter"><a href="" title="deze box in- of uitklappen">{{ 'length-slopes'|trans }}</a></h2>
             <div class="fields">
                 <div class="styled_label" data-role="change-filter" data-action="{{ filter_length_value == length_max_100 ? 'remove' : 'add' }}" data-filter="{{ filter_length }}" data-filter-value="{{ length_max_100 }}">
                     <label class="label_check" for="checkbox-05">
@@ -116,8 +116,8 @@
                 </div>
             </div>
         </div>
-        <div id="search-filter-facilities" class="search-filter-default" data-role="closable-filter">
-            <h2><a href="" title="deze box in- of uitklappen">{{ 'facilities'|trans }}</a></h2>
+        <div id="search-filter-facilities" class="search-filter-default">
+            <h2 data-role="closable-filter"><a href="" title="deze box in- of uitklappen">{{ 'facilities'|trans }}</a></h2>
             <div class="fields">
                 <div class="styled_label" data-role="change-filter" data-action="{{ facility_catering in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_catering }}" data-filter-multi="true">
                     <label class="label_check" for="checkbox-09">
@@ -177,8 +177,8 @@
                 </div>
             </div>
         </div>
-        <div id="search-filter-themes" class="search-filter-default" data-role="closable-filter">
-            <h2><a href="" title="deze box in- of uitklappen">{{ 'themes'|trans }}</a></h2>
+        <div id="search-filter-themes" class="search-filter-default">
+            <h2 data-role="closable-filter"><a href="" title="deze box in- of uitklappen">{{ 'themes'|trans }}</a></h2>
             <div class="fields">
                 <div class="styled_label" data-role="change-filter" data-action="{{ theme_kids in filter_theme_value ? 'remove' : 'add' }}" data-filter="{{ filter_theme }}" data-filter-value="{{ theme_kids }}" data-filter-multi="true">
                     <label class="label_check" for="checkbox-23">

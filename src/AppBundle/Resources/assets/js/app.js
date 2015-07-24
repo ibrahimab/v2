@@ -291,20 +291,20 @@
             event.preventDefault();
 
             var el = jq(this);
-            console.log(el.data('status'));
+
             if (el.data('status') === 'closed') {
 
                 el.data('status', 'open').removeClass('closed');
 
-                jq('[data-role="closable-filter"]').data('status', 'open').find('.fields').slideDown();
-                jq('[data-role="closable-filter"] h2').removeClass('closed');
+                jq('[data-role="closable-filter"]').data('status', 'open').siblings('.fields').slideDown();
+                jq('[data-role="closable-filter"]').removeClass('closed');
 
             } else {
 
                 el.data('status', 'closed').addClass('closed');
 
-                jq('[data-role="closable-filter"]').data('status', 'closed').find('.fields').slideUp();
-                jq('[data-role="closable-filter"] h2').addClass('closed');
+                jq('[data-role="closable-filter"]').data('status', 'closed').siblings('.fields').slideUp();
+                jq('[data-role="closable-filter"]').addClass('closed');
             }
 
         });
@@ -317,13 +317,13 @@
 
             if (el.data('status') === 'closed') {
 
-                el.data('status', 'open').find('.fields').slideDown();
-                el.find('h2').removeClass('closed');
+                el.data('status', 'open').siblings('.fields').slideDown();
+                el.removeClass('closed');
 
             } else {
 
-                el.data('status', 'closed').find('.fields').slideUp();
-                el.find('h2').addClass('closed');
+                el.data('status', 'closed').siblings('.fields').slideUp();
+                el.addClass('closed');
             }
         });
 
