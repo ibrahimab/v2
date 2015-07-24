@@ -265,10 +265,26 @@
             }
         });
 
-        body.on('mouseover', '[data-role="ajax-tooltip"]', function(event) {
+        body.on('click', '[data-role="ajax-tooltip"]', function(event) {
+
+            event.preventDefault();
 
             var el      = jq(this);
             var retries = (undefined === el.data('retries') ? 0 : parseInt(el.data('retries'), 10));
+
+
+            if( el.find('[data-role=tooltip-wrapper]').is(':visible') ) {
+
+                // hide clicked tooltip
+                el.find('[data-role=tooltip-wrapper]').hide();
+            } else {
+
+                // hide all other active tooltips
+                jq('[data-role=tooltip-wrapper]').hide();
+
+                // show clicked tooltip
+                el.find('[data-role=tooltip-wrapper]').show();
+            }
 
             el.data('retries', retries + 1);
 

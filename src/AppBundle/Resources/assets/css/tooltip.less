@@ -3,6 +3,8 @@
     display: inline;
     position: relative;
 
+    color: #193761;
+
     &.loading {
 
         .nub {
@@ -10,48 +12,43 @@
         }
     }
 
+    i:hover {
+        opacity: 0.7;
+    }
+
     .chalet-tooltip-content {
 
-        display: none !important;
+        display: none;
         width: 20rem;
         text-align: left !important;
-    }
 
-    &:hover {
-
+        background: #fff;
+        top:0;
+        right: 0;
         color: #193761;
-        text-decoration: none;
+        border: thin solid #bfbfbf;
+        position: absolute;
+        padding: 0.5rem 1rem 0 1rem;
+        z-index: 3;
 
-        .chalet-tooltip-content {
+        h2 {
+            background: none !important;
+        }
 
-            background: #fff;
-            top:0;
-            right: 0;
-            color: #193761;
-            border: thin solid #bfbfbf;
-            display: block !important;
+        .nub {
+
             position: absolute;
-            padding: 0.5rem 1rem 0 1rem;
-            z-index: 3;
-
-            h2 {
-                background: none !important;
-            }
-
-            .nub {
-
-                position: absolute;
-                width: 0;
-                height: 0;
-                border: solid 5px;
-                left: auto;
-                bottom: -10px;
-                border-color: transparent transparent transparent #333333;
-                right: -10px;
-                top: 8%;
-                margin-top: -5px;
-                pointer-events: none;
-            }
+            width: 0;
+            height: 0;
+            border: solid 5px;
+            left: auto;
+            bottom: -10px;
+            border-color: transparent transparent transparent #333333;
+            right: -10px;
+            top: 8%;
+            margin-top: -5px;
+            pointer-events: none;
         }
     }
+
 }
