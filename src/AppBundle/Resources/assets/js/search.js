@@ -20,6 +20,9 @@ window.Chalet = (function(ns, jq, _, undefined) {
             ns.Search.filters.accommodations = custom['accommodations'] || [];
             ns.Search.filters.bedrooms       = custom['bedrooms']       || null;
             ns.Search.filters.bathrooms      = custom['bathrooms']      || null;
+            ns.Search.filters.weekend        = custom['weekend']        || null;
+            ns.Search.filters.persons        = custom['persons']        || null;
+            ns.Search.filters.sort           = custom['sort']           || null;
         },
 
         setContainer: function() {
@@ -45,6 +48,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 body.on('change', '[data-role="change-bathrooms"]', ns.Search.events.formChanges.bathrooms);
                 body.on('change', '[data-role="change-weekend"]', ns.Search.events.formChanges.weekend);
                 body.on('change', '[data-role="change-persons"]', ns.Search.events.formChanges.persons);
+                body.on('change', '[data-role="sort-results"]', ns.Search.events.formChanges.sort);
 
                 body.on('click', '[data-role="save-search"]', ns.Search.actions.save);
             },
@@ -173,6 +177,18 @@ window.Chalet = (function(ns, jq, _, undefined) {
                     }
 
                     ns.Search.actions.search();
+                },
+
+                sort: function(event) {
+
+                    event.preventDefault();
+                    var val = parseInt(jq(this).val(), 10);
+
+                    if (val === 1 || val === 2) {
+
+                        ns.Search.filters.setSort(val);
+                        ns.Search.actions.search();
+                    }
                 }
             },
 
@@ -291,6 +307,12 @@ window.Chalet = (function(ns, jq, _, undefined) {
                     uri.setQuery('w', ns.Search.filters.weekend);
                 }
 
+                if (null !== ns.Search.filters.sort) {
+
+                    uri.removeQuery('s');
+                    uri.setQuery('s', ns.Search.filters.sort);
+                }
+
                 return uri;
             },
 
@@ -303,25 +325,23 @@ window.Chalet = (function(ns, jq, _, undefined) {
             save: function(event) {
 
                 event.preventDefault();
-                if (false === jq.isEmptyObject(ns.Search.filters.filters)) {
 
-                    var save = ns.Search.actions.url(Routing.generate('save_search'));
+                var save = ns.Search.actions.url(Routing.generate('save_search'));
 
-                    jq('[data-role="saved-item"]').animate({color: '#d50d3b', borderColor: '#d50d3b' }, 500)
-                                                  .delay(1000)
-                                                  .animate({color: '#1a3761', borderColor: '#d9d9d9' }, 500);
+                jq('[data-role="saved-item"]').animate({color: '#d50d3b', borderColor: '#d50d3b' }, 500)
+                                              .delay(1000)
+                                              .animate({color: '#1a3761', borderColor: '#d9d9d9' }, 500);
 
-                    jq.ajax({
+                jq.ajax({
 
-                        type: 'post',
-                        url: save.toString(),
-                        success: function(data) {
+                    type: 'post',
+                    url: save.toString(),
+                    success: function(data) {
 
-                            var count = jq('[data-role="searches-count"]');
-                            count.text(parseInt(count.text()) + 1);
-                        }
-                    });
-                }
+                        var count = jq('[data-role="searches-count"]');
+                        count.text(parseInt(count.text()) + 1);
+                    }
+                });
             },
 
             search: function(page) {
@@ -401,6 +421,8 @@ window.Chalet = (function(ns, jq, _, undefined) {
             persons: null,
 
             weekend: null,
+
+            sort: null,
 
             active: function() {
                 return ns.Search.filters.filters;
@@ -562,6 +584,10 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
             setWeekend: function(weekend) {
                 ns.Search.filters.weekend = weekend;
+            },
+
+            setSort: function(direction) {
+                ns.Search.filters.sort = direction;
             }
         },
     };

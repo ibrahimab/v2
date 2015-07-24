@@ -41,9 +41,9 @@ class Sorter
     }
 
     /**
-     * @param integer $by
+     * @return void
      */
-    public function sort($by = self::SORT_ASC)
+    public function sort()
     {
         $sorted         = [];
         $sortable       = [];

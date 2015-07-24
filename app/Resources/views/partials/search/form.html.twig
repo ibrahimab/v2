@@ -1,5 +1,3 @@
-{% set save_search_label        = 'save-search'|trans %}
-
 {% set filter_distance          = constant('FILTER_DISTANCE', filter_service) %}
 {% set filter_distance_value    = filters[filter_distance]|default(null) %}
 {% set distance_by_slope        = constant('FILTER_DISTANCE_BY_SLOPE', filter_service) %}
@@ -40,7 +38,6 @@
         <h2><a href="" title="deze box in- of uitklappen">{{ 'search-book'|trans }}</a></h2>
         <div class="fields">
             {% include 'partials/search/form/input.html.twig' with {'destination': destination, 'weekends': weekends} %}
-            <a href="{{ path('save_search', {f: app.request.query.get('f', {})}) }}" class="save" title="{{ save_search_label }}" data-role="save-search">{{ save_search_label }}<i class="sprite sprite-icon-plus "></i></a>
         </div>
     </div>
     <div data-role="search-filter-box" class="search-filter-box">

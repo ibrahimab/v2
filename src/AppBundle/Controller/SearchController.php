@@ -47,6 +47,7 @@ class SearchController extends Controller
         $ba       = $request->query->get('ba', null);
         $w        = $request->query->get('w',  null);
         $pe       = $request->query->get('pe', null);
+        $s        = $request->query->get('s',  Sorter::SORT_ASC);
         $page     = intval($request->query->get('p'));
         $page     = ($page === 0 ? $page : ($page - 1));
         $per_page = intval($this->container->getParameter('app')['results_per_page']);
@@ -166,6 +167,7 @@ class SearchController extends Controller
         $javascript->set('app.filters.custom.accommodations', $a);
         $javascript->set('app.filters.form.bedrooms',         $be);
         $javascript->set('app.filters.form.bathrooms',        $ba);
+        $javascript->set('app.filters.form.sort',             $s);
 
         $data = [
 
@@ -180,6 +182,7 @@ class SearchController extends Controller
             'destination'    => $destination,
             'weekends'       => $seasonService->weekends($seasonService->seasons()),
             'surveys'        => [],
+            'sort'           => $s,
         ];
 
         $typeIds = $resultset->allTypeIds();
@@ -193,7 +196,7 @@ class SearchController extends Controller
         if (!$request->query->has('w')) {
 
             $priceService   = $this->get('app.api.price');
-            $data['offers'] = $priceService->offers($typeIds);
+            // $data['offers'] = $priceService->offers($typeIds);
         }
 
         $surveyData = $surveyService->statsByTypes($typeIds);
@@ -206,6 +209,7 @@ class SearchController extends Controller
         $resultset->setPrices($data['prices']);
         $resultset->setOffers($data['offers']);
         $resultset->setSurveys($surveys);
+        $resultset->sorter()->setOrderBy($s);
         $resultset->setMetadata();
         $resultset->sorter()->sort();
 

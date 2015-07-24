@@ -18,9 +18,9 @@
                                         <label for="right-label" class="right inline">{{ 'sort'|trans }}</label>
                                     </div>
                                     <div class="small-9 columns">
-                                        <select class="radius">
-                                            <option value="1423868400">{{ 'by-price-asc'|trans }}</option>
-                                            <option value="1423868400">{{ 'by-price-desc'|trans }}</option>
+                                        <select class="radius" data-role="sort-results">
+                                            <option value="1"{{ sort == 1 ? ' selected="selected"' }}>{{ 'by-price-asc'|trans }}</option>
+                                            <option value="2"{{ sort == 2 ? ' selected="selected"' }}>{{ 'by-price-desc'|trans }}</option>
                                         </select>
                                     </div>
                                 </div>

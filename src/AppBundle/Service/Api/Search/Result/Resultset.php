@@ -43,12 +43,12 @@ class Resultset
     /**
      * @var array
      */
-    public $results;
+    public $results = [];
 
     /**
      * @var array
      */
-    public $types;
+    public $types = [];
 
     /**
      * @var integer
