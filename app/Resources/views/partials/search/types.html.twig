@@ -40,7 +40,7 @@
                                     <div data-role="tooltip-content">Bezig met laden...</div>
                                     <span class="nub rtl"></span>
                                 </div>
-                                <span>&euro; {{ type.price|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
+                                <span>&euro; {{ type.price|round(0, 'ceil')|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
                             </div>
                         {% endif %}
                     </div>
