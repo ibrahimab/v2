@@ -36,7 +36,7 @@ class TypeService
 	 * @param TypeServiceEntityInterface $type
 	 * @return FileServiceEntityInterface
 	 */
-	public function getMainImage(TypeServiceEntityInterface $type)
+	public function getMainImage($type)
 	{
 		return $this->typeServiceRepository->getMainImage($type);
 	}
@@ -47,7 +47,7 @@ class TypeService
 	 * @param TypeServiceEntityInterface $type
 	 * @return FileServiceEntityInterface
 	 */
-	public function getImages(TypeServiceEntityInterface $type)
+	public function getImages($type)
 	{
 		return $this->typeServiceRepository->getImages($type);
 	}

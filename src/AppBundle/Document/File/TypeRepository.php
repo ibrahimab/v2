@@ -10,25 +10,30 @@ class TypeRepository extends DocumentRepository implements TypeServiceRepository
 	/**
 	 * {@InheritDoc}
 	 */
-	public function getMainImage(TypeServiceEntityInterface $type)
+	public function getMainImage($type)
 	{
-		return $this->findOneBy(['file_id' => $type->getId(), 'kind' => TypeService::MAIN_IMAGE, 'rank' => 1]);
+        $id = ($type instanceof TypeServiceEntityInterface ? $type->getId() : $type);
+		return $this->findOneBy(['file_id' => $id, 'kind' => TypeService::MAIN_IMAGE, 'rank' => 1]);
 	}
 
 	/**
 	 * {@InheritDoc}
 	 */
-	public function getImages(TypeServiceEntityInterface $type)
+	public function getImages($type)
 	{
-		return $this->findBy(['file_id' => $type->getId()]);
+        $id = ($type instanceof TypeServiceEntityInterface ? $type->getId() : $type);
+		return $this->findBy(['file_id' => $id]);
 	}
-    
+
     public function getSearchImages($types)
     {
-        $ids = array_map(function(TypeServiceEntityInterface $type) {
-            return $type->getId();
+        $ids = array_map(function($type) {
+
+            $id = ($type instanceof TypeServiceEntityInterface ? $type->getId() : $type);
+            return $id;
+
         }, $types);
-        
+
         return $this->findBy(['file_id' => ['$in' => $ids], 'kind' => TypeService::SEARCH_IMAGE]);
     }
 }

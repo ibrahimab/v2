@@ -268,8 +268,8 @@ class AppExtension extends \Twig_Extension
             $accommodationTypes = $accommodation['types'];
             if (count($accommodationTypes) > 1) {
 
-                $types[] = $accommodationTypes[0];
-                $accommodationEntities[$accommodationTypes[0]['id']] = $accommodation;
+                $types[] = $accommodationTypes[0]['id'];
+                $accommodationEntities[$accommodationTypes[0]['id']] = $accommodation['id'];
             }
         }
 
@@ -285,12 +285,12 @@ class AppExtension extends \Twig_Extension
         }
 
         $notFound = [];
-        foreach ($accommodationEntities as $typeId => $accommodation) {
+        foreach ($accommodationEntities as $typeId => $accommodationId) {
 
             if (!array_key_exists($typeId, $found)) {
 
-                $notFound[] = $accommodation;
-                $mapper[$accommodation['id']] = $typeId;
+                $notFound[] = $accommodationId;
+                $mapper[$accommodationId] = $typeId;
             }
         }
 

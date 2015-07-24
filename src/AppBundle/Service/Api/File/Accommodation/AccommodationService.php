@@ -15,12 +15,12 @@ class AccommodationService
 		$this->accommodationServiceRepository = $accommodationServiceRepository;
 	}
 
-	public function getMainImage(AccommodationServiceEntityInterface $accommodation)
+	public function getMainImage($accommodation)
 	{
 		return $this->accommodationServiceRepository->getMainImage($accommodation);
 	}
 
-	public function getImages(AccommodationServiceEntityInterface $accommodation)
+	public function getImages($accommodation)
 	{
 		return $this->accommodationServiceRepository->getImages($accommodation);
 	}

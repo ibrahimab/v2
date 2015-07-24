@@ -14,22 +14,27 @@ use		  Doctrine\ODM\MongoDB\DocumentRepository;
  */
 class AccommodationRepository extends DocumentRepository implements AccommodationServiceRepositoryInterface
 {
-	public function getMainImage(AccommodationServiceEntityInterface $accommodation)
+	public function getMainImage($accommodation)
 	{
-		return $this->findOneBy(['file_id' => $accommodation->getId(), 'kind' => AccommodationService::MAIN_IMAGE, 'rank' => 1]);
+        $id = $accommodation instanceof AccommodationServiceEntityInterface ? $accommodation->getId() : $accommodation;
+		return $this->findOneBy(['file_id' => $id, 'kind' => AccommodationService::MAIN_IMAGE, 'rank' => 1]);
 	}
 
-	public function getImages(AccommodationServiceEntityInterface $accommodation)
+	public function getImages($accommodation)
 	{
-		return $this->findBy(['file_id' => $accommodation->getId()]);
+        $id = $accommodation instanceof AccommodationServiceEntityInterface ? $accommodation->getId() : $accommodation;
+		return $this->findBy(['file_id' => $id]);
 	}
-    
+
     public function getSearchImages($accommodations)
     {
-        $ids = array_map(function(AccommodationServiceEntityInterface $accommodation) {
-            return $accommodation->getId();
+        $ids = array_map(function($accommodation) {
+
+            $id = $accommodation instanceof AccommodationServiceEntityInterface ? $accommodation->getId() : $accommodation;
+            return $id;
+
         }, $accommodations);
-        
+
         return $this->findBy(['file_id' => ['$in' => $ids], 'kind' => AccommodationService::SEARCH_IMAGE]);
     }
 }

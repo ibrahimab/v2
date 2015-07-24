@@ -4,7 +4,7 @@ use		  AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
 
 interface AccommodationServiceRepositoryInterface
 {
-	public function getMainImage(AccommodationServiceEntityInterface $accommodation);
-	public function getImages(AccommodationServiceEntityInterface $accommodation);
+	public function getMainImage($accommodation);
+	public function getImages($accommodation);
 	public function getSearchImages($accommodations);
 }
