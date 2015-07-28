@@ -265,11 +265,10 @@ class AppExtension extends \Twig_Extension
 
         foreach ($accommodations as $accommodation) {
 
-            $accommodationTypes = $accommodation['types'];
-            if (count($accommodationTypes) > 1) {
+            if (isset($accommodation['cheapest'])) {
 
-                $types[] = $accommodationTypes[0]['id'];
-                $accommodationEntities[$accommodationTypes[0]['id']] = $accommodation['id'];
+                $types[] = $accommodation['cheapest']['id'];
+                $accommodationEntities[$accommodation['cheapest']['id']] = $accommodation['id'];
             }
         }
 

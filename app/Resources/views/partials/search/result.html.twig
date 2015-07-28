@@ -1,16 +1,15 @@
-{% macro accommodation(accommodation) %}
+{% macro accommodation(accommodation, all_images) %}
     {% import 'partials/search/types.html.twig' as typesMacro %}
 
     {% set place         = accommodation.place %}
     {% set region        = place.region %}
     {% set country       = place.country %}
     {% set types         = accommodation.types %}
+    {% set images        = [] %}
 
-    {# {% set images        = [] %}
-
-    {% if all_images[accommodation.getId()] is defined %}
-        {% set images = all_images[accommodation.getId()] %}
-    {% endif %} #}
+    {% if all_images[accommodation.cheapest.id] is defined %}
+        {% set images = all_images[accommodation.cheapest.id] %}
+    {% endif %}
 
     {% set quality_stars %}
         {% include 'partials/quality_stars.html.twig' with {'quality': accommodation.quality} %}
@@ -26,9 +25,9 @@
                 <div class="small-12 medium-5 large-5 columns">
                     <div class="accom-img">
                         <div class="accom-slides">
-                            {# {% for image in images %}
-                            <div><img data-lazy="{{ image.getLocation() }}" alt="{{ accommodation.getLocaleName(locale) }}" /></div>
-                            {% endfor %} #}
+                            {% for image in images %}
+                            <div><img data-lazy="{{ image.getLocation() }}" alt="{{ accommodation.localeName }}" /></div>
+                            {% endfor %}
                         </div>
                         {% if accommodation.offer %}
                             <div class="circle"><span>Aan-</span><span>bieding</span></div>

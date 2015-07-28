@@ -264,18 +264,16 @@ class Resultset
         foreach ($this->results as $key => $accommodation) {
 
             $accommodationPrices[$accommodation['id']] = 0;
+            $this->results[$key]['prices']             = [];
+            $this->results[$key]['prices_types']       = [];
 
             foreach ($accommodation['types'] as $typeKey => $type) {
 
                 if (isset($this->prices[$type['id']])) {
 
                     $this->results[$key]['types'][$typeKey]['price'] = $this->prices[$type['id']];
-
-                    if ($accommodation['price'] < $this->prices[$type['id']] && $this->prices[$type['id']] > 0) {
-
-                        $this->results[$key]['price']    =  $this->prices[$type['id']];
-                        $this->results[$key]['cheapest'] =& $type;
-                    }
+                    $this->results[$key]['prices'][]                 = $this->prices[$type['id']];
+                    $this->results[$key]['prices_types'][]           = $typeKey;
                 }
 
                 if (isset($this->offers[$type['id']])) {
@@ -289,6 +287,21 @@ class Resultset
                 }
 
                 $this->results[$key]['types'][$typeKey]['sortKey'] = $this->sorter()->generateSortKey($this->results[$key], $this->results[$key]['types'][$typeKey]);
+            }
+
+            if (count($this->results[$key]['prices']) > 0) {
+
+                $this->results[$key]['price'] = min($this->results[$key]['prices']);
+
+                foreach ($this->results[$key]['prices'] as $priceKey => $price) {
+
+                    if ($price === $this->results[$key]['price']) {
+                        $this->results[$key]['cheapest'] =& $this->results[$key]['types'][$this->results[$key]['prices_types'][$priceKey]];
+                    }
+                }
+
+                unset($this->results[$key]['prices']);
+                unset($this->results[$key]['prices_types']);
             }
         }
     }
