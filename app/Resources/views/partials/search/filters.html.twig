@@ -67,6 +67,17 @@
         {% endfor %}
     {% endif %}
 
+    {% if custom_filters['accommodations']|length > 0 %}
+        {% set filters_active = true %}
+        {% for accommodation in custom_filters['accommodations'] %}
+            <div data-role="filter-tag">
+                Accommodatie:
+                {{ accommodation.getLocaleName(locale) }}
+                <a href="#" data-role="remove-accommodation-filter" data-id="{{ accommodation.getId() }}"><i class="fi-x"></i></a>
+            </div>
+        {% endfor %}
+    {% endif %}
+
     {% if custom_filters['types']|length > 0 %}
         {% set filters_active = true %}
         {% for type in custom_filters['types'] %}

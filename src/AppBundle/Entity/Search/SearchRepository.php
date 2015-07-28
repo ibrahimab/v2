@@ -75,6 +75,8 @@ class SearchRepository implements SearchServiceRepositoryInterface
         $where    = $expr->andX();
         $select   = [];
         $entities = [];
+        $website  = $this->getWebsite();
+        $season   = $this->getSeason();
 
         if (count($countries) > 0) {
 
@@ -90,8 +92,13 @@ class SearchRepository implements SearchServiceRepositoryInterface
             $select[]   = 'partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}';
             $entities[] = 'AppBundle:Region\Region r';
 
-            $where->add($expr->in('r.' . $this->getLocaleField('name'), ':region_names'));
-            $qb->setParameter('region_names', $regions);
+            $where->add($expr->in('r.' . $this->getLocaleField('name'), ':region_names'))
+                  ->add($expr->gt('FIND_IN_SET(:r_website, r.websites)', 0))
+                  ->add($expr->eq('r.season', ':r_season'));
+
+            $qb->setParameter('region_names', $regions)
+               ->setParameter('r_website', $website)
+               ->setParameter('r_season', $season);
         }
 
         if (count($places) > 0) {
@@ -99,8 +106,13 @@ class SearchRepository implements SearchServiceRepositoryInterface
             $select[]   = 'partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}';
             $entities[] = 'AppBundle:Place\Place p';
 
-            $where->add($expr->in('p.' . $this->getLocaleField('name'), ':place_names'));
-            $qb->setParameter('place_names', $places);
+            $where->add($expr->in('p.' . $this->getLocaleField('name'), ':place_names'))
+                  ->add($expr->gt('FIND_IN_SET(:p_website, p.websites)', 0))
+                  ->add($expr->eq('p.season', ':p_season'));
+
+            $qb->setParameter('place_names', $places)
+               ->setParameter('p_website', $website)
+               ->setParameter('p_season', $season);
         }
 
         if (count($accommodations) > 0) {
@@ -108,8 +120,13 @@ class SearchRepository implements SearchServiceRepositoryInterface
             $select[]   = 'partial a.{id, name, shortDescription, englishShortDescription, germanShortDescription}';
             $entities[] = 'AppBundle:Accommodation\Accommodation a';
 
-            $where->add($expr->in('a.id', ':accommodation_ids'));
-            $qb->setParameter('accommodation_ids', $accommodations);
+            $where->add($expr->in('a.id', ':accommodation_ids'))
+                  ->add($expr->gt('FIND_IN_SET(:a_website, a.websites)', 0))
+                  ->add($expr->eq('a.season', ':a_season'));
+
+            $qb->setParameter('accommodation_ids', $accommodations)
+               ->setParameter('a_website', $website)
+               ->setParameter('a_season', $season);
         }
 
         if (count($types) > 0) {
@@ -118,9 +135,12 @@ class SearchRepository implements SearchServiceRepositoryInterface
             $entities[] = 'AppBundle:Type\Type t';
             $entities[] = 'AppBundle:Accommodation\Accommodation a';
 
-            $where->add($expr->in('t.id', ':type_ids'));
-            $where->add('t.accommodationId = a.id');
-            $qb->setParameter('type_ids', $types);
+            $where->add($expr->in('t.id', ':type_ids'))
+                  ->add('t.accommodationId = a.id')
+                  ->add($expr->gt('FIND_IN_SET(:t_website, t.websites)', 0));
+
+            $qb->setParameter('type_ids', $types)
+               ->setParameter('t_website', $website);
         }
 
         $qb->select(implode(', ', $select))

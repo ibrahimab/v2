@@ -44,21 +44,21 @@ class Accommodation implements AccommodationServiceEntityInterface
      * @var string
      */
     private $sortKey;
-    
+
     /**
      * cheapest price cache for types
      *
      * @var float
      */
     private $price = 0;
-    
+
     /**
      * cheapest type
      *
      * @var TypeServiceEntityInterface
      */
     private $cheapest = null;
-    
+
     /**
      * Is an offer enabled
      *
@@ -133,6 +133,13 @@ class Accommodation implements AccommodationServiceEntityInterface
      * @ORM\Column(name="wzt", type="smallint")
      */
     private $season;
+
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="websites", type="simple_array")
+     */
+    private $websites;
 
     /**
      * @var string
@@ -330,7 +337,7 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         return $this->getLocaleField('name', $locale, ['nl']);
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -356,30 +363,30 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         $data     = [];
         $cheapest = null;
-        
+
         foreach ($this->types as $type) {
-            
+
             if (isset($prices[$type->getId()])) {
-                
+
                 if (null === $cheapest) {
                     $cheapest = ['price' => $prices[$type->getId()], 'type' => $type];
                 }
-                
+
                 if ($cheapest['price'] > $prices[$type->getId()] && $prices[$type->getId()] > 0) {
                     $cheapest = ['price' => $prices[$type->getId()], 'type' => $type];
                 }
             }
         }
-        
+
         if (null !== $cheapest) {
-            
+
             $this->price    = $cheapest['price'];
             $this->cheapest = $cheapest['type'];
         }
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -387,38 +394,38 @@ class Accommodation implements AccommodationServiceEntityInterface
     {
         return $this->price;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function getCheapest()
     {
         if (null === $this->cheapest) {
-            
+
             list($item) = $this->types;
             $this->cheapest = $item;
         }
-        
+
         return $this->cheapest;
     }
-    
+
     /**
      * {@InheritDoc}
      */
     public function setOffer($offers)
     {
         foreach ($this->types as $type) {
-            
+
             if (isset($offers[$type->getId()])) {
-                
+
                 $this->offer = true;
                 break;
             }
         }
-        
+
         return $this;
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -643,6 +650,24 @@ class Accommodation implements AccommodationServiceEntityInterface
     public function getSeason()
     {
         return $this->season;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setWebsites($websites)
+    {
+        $this->websites = $websites;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getWebsites()
+    {
+        return $this->websites;
     }
 
     /**
@@ -970,45 +995,45 @@ class Accommodation implements AccommodationServiceEntityInterface
 
         return $localized;
     }
-    
+
     public static function hydrateRows($rows)
     {
         $results = [];
-        
+
         foreach ($rows as $row) {
             $results[] = self::hydrate($row);
         }
-        
+
         return $results;
     }
-    
+
     public static function hydrate($data)
     {
         $accommodation = new self();
-        
+
         foreach ($data as $field => $value) {
-            
+
             switch ($field) {
-                
+
                 case 'types':
-                
+
                     foreach ($value as $type) {
                         $accommodation->types[] = Type::hydrate($type);
                     }
-                    
+
                 break;
-                
+
                 case 'place':
                     $accommodation->place = Place::hydrate($value);
                 break;
-                
+
                 default:
                     if (property_exists($accommodation, $field)) {
                         $accommodation->{$field} = $value;
                     }
             }
         }
-        
+
         return $accommodation;
     }
 }
