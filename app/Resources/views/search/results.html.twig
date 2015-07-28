@@ -19,8 +19,14 @@
                                     </div>
                                     <div class="small-9 columns">
                                         <select class="radius" data-role="sort-results">
-                                            <option value="1"{{ sort == 1 ? ' selected="selected"' }}>{{ 'by-price-asc'|trans }}</option>
-                                            <option value="2"{{ sort == 2 ? ' selected="selected"' }}>{{ 'by-price-desc'|trans }}</option>
+
+                                            {% set sort_normal = constant('AppBundle\\Service\\Api\\Search\\Result\\Sorter::SORT_NORMAL') %}
+                                            {% set sort_asc    = constant('AppBundle\\Service\\Api\\Search\\Result\\Sorter::SORT_ASC') %}
+                                            {% set sort_desc   = constant('AppBundle\\Service\\Api\\Search\\Result\\Sorter::SORT_DESC') %}
+
+                                            <option value="{{ sort_normal }}"{{ sort == sort_normal ? ' selected="selected"' }}>{{ 'by-price-normal'|trans }}</option>
+                                            <option value="{{ sort_asc }}"{{ sort == sort_asc ? ' selected="selected"' }}>{{ 'by-price-asc'|trans }}</option>
+                                            <option value="{{ sort_desc }}"{{ sort == sort_desc ? ' selected="selected"' }}>{{ 'by-price-desc'|trans }}</option>
                                         </select>
                                     </div>
                                 </div>

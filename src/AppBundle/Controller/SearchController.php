@@ -47,7 +47,7 @@ class SearchController extends Controller
         $ba       = $request->query->get('ba', null);
         $w        = $request->query->get('w',  null);
         $pe       = $request->query->get('pe', null);
-        $s        = $request->query->get('s',  Sorter::SORT_ASC);
+        $s        = $request->query->get('s',  Sorter::SORT_NORMAL);
         $page     = intval($request->query->get('p'));
         $page     = ($page === 0 ? $page : ($page - 1));
         $per_page = intval($this->container->getParameter('app')['results_per_page']);

@@ -20,17 +20,22 @@ class Sorter
     /**
      * @var integer
      */
-    private $order_by = self::SORT_ASC;
+    private $order_by = self::SORT_NORMAL;
 
     /**
      * @const integer
      */
-    const SORT_ASC  = 1;
+    const SORT_NORMAL = 1;
 
     /**
      * @const integer
      */
-    const SORT_DESC = 2;
+    const SORT_ASC  = 2;
+
+    /**
+     * @const integer
+     */
+    const SORT_DESC = 3;
 
     /**
      * @param PaginatorService $paginator
@@ -106,18 +111,6 @@ class Sorter
     {
         $key = '';
 
-        if ($type['price'] > 0) {
-            $key .= '1';
-        } else {
-            $key .= '9';
-        }
-
-        if ($this->getOrderBy() === self::SORT_ASC) {
-            $key .= substr('0000000' . number_format($type['price'], 2, '', ''), -7) . '-';
-        } else {
-            $key .= 1000000 - $type['price'];
-        }
-
         $order = $type['supplier']['searchOrder'];
 
         if ($accommodation['searchOrder'] !== 3) {
@@ -128,12 +121,28 @@ class Sorter
             $order = $type['searchOrder'];
         }
 
-        $key  .= $order . '-';
-        $key  .= $accommodation['place']['region']['localeName'] . '-';
-        $key  .= $accommodation['place']['localeName'] . '-';
-        $key  .= $accommodation['localeName'] . '-';
-        $key  .= sprintf('%03d', $type['maxResidents']) . '-';
-        $key  .= $type['id'];
+        switch ($this->getOrderBy()) {
+
+            case self::SORT_ASC:
+                $key .= substr('0000000' . number_format($type['price'], 2, '', ''), -7) . '-';
+            break;
+
+            case self::SORT_DESC:
+                $key .= 1000000 - $type['price'];
+            break;
+
+            case self::SORT_NORMAL:
+            default:
+
+                $key .= ($type['price'] > 0 ? 1 : 0);
+                $key .= 'AAA';
+                $key .= $order . '-';
+        }
+
+        $key .= $order . '-';
+        $key .= $accommodation['place']['region']['localeName'] . '-' . $accommodation['place']['localeName'] . '-' . $accommodation['localeName'] . '-' . sprintf('%03d', $type['maxResidents']) . '-';
+        $key .= $accommodation['place']['region']['localeName'] . '-' . $accommodation['place']['localeName'] . '-' . $accommodation['localeName'] . '-' . sprintf('%03d', $type['maxResidents']) . '-';
+        $key .= $type['id'];
 
         return $key;
     }
