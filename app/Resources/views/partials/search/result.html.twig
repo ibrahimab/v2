@@ -39,7 +39,7 @@
                         <div class="row">
                             <div class="small-12 medium-7 large-8 columns">
                                 <div class="location">
-                                    <span class="area">{{ region.localeName }}</span>, <span class="city">{{ place.localeName }}</span>, <span class="country">{{ country.localeName }}</span>
+                                    <span class="city">{{ place.localeName }}</span>, <span class="area">{{ region.localeName }}</span>, <span class="country">{{ country.localeName }}</span>
                                 </div>
                                 <div class="title">
                                     {{ accommodation.localeName }}
@@ -50,11 +50,11 @@
                                 {% if accommodation.price > 0 %}
                                     <span class="price-info">Prijs per persoon per week, vanaf</span>
                                     <div class="chalet-tooltip loading" data-role="ajax-tooltip" data-id="{{ accommodation.cheapest.id }}" data-season="{{ 27 }}">
-                                        <div class="chalet-tooltip-content">
+                                        <div class="chalet-tooltip-content" data-role="tooltip-wrapper">
                                             <div data-role="tooltip-content">Bezig met laden...</div>
                                             <span class="nub rtl"></span>
                                         </div>
-                                        <span class="price radius">&euro; {{ accommodation.price|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
+                                        <span class="price radius">&euro; {{ accommodation.price|round(0, 'ceil')|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
                                     </div>
                                     <span class="price-inc"><i class="sprite sprite-icon-skipass"></i>Inclusief skipas</span>
                                 {% endif %}

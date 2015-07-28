@@ -10,7 +10,7 @@
                 <div class="tb-c tb-h-4">{{ 'type'|trans }}</div>
                 <div class="tb-c tb-h-5">{{ 'rating'|trans }}</div>
                 <div class="tb-c tb-h-6">&nbsp;</div>
-                <div class="tb-c tb-h-7">{{ 'price-accommodation'|trans }}</div>
+                <div class="tb-c tb-h-7">{{ 'price'|trans }}</div>
             </div>
 
             {% for type in types %}
@@ -31,16 +31,16 @@
                     <div class="tb-c">
                         {{ type.localeName }}
                     </div>
-                    <div class="tb-c">{% if type.surveyCount > 0 %}<span>{{ type.surveyAverageOverallRating|number_format(1, ',', '') }} ({{ type.surveyCount }})</span>{% endif %}</div>
+                    <div class="tb-c">{% if type.surveyCount > 0 %}<span>{{ type.surveyAverageOverallRating|number_format(1, ',', '') }}</span>{% endif %}</div>
                     <div class="tb-c tb-c-6">{% if type.offer %}<i class="sprite sprite-icon-discount"></i>{% endif %}</div>
                     <div class="tb-c tb-c-7">
                         {% if type.price > 0 %}
                             <div class="chalet-tooltip" data-role="ajax-tooltip" data-id="{{ type.id }}" data-season="{{ 27 }}">
-                                <div class="chalet-tooltip-content">
+                                <div class="chalet-tooltip-content" data-role="tooltip-wrapper">
                                     <div data-role="tooltip-content">Bezig met laden...</div>
                                     <span class="nub rtl"></span>
                                 </div>
-                                <span>&euro; {{ type.price|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
+                                <span>&euro; {{ type.price|round(0, 'ceil')|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
                             </div>
                         {% endif %}
                     </div>

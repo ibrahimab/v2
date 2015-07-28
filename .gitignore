@@ -18,6 +18,7 @@
 .tm_properties
 .vimrc
 /logs/*
+src/AppBundle/Resources/assets/css/custom.css
 
 # python settings
 subapps/python/import-autocomplete/settings.py

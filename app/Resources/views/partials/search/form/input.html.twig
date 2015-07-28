@@ -30,7 +30,7 @@
 <select class="radius" data-role="change-bedrooms">
     <option value="0">{{ 'select-bedrooms'|trans }}</option>
     {% set current_bedrooms = form_filters['bedrooms'] is defined ? form_filters['bedrooms'] : 0 %}
-    <option value="1"{{ 1 == current_bedrooms ? selected }}>1 {{ 'bedroom'|trans }}</option>
+    <option value="1"{{ 1 == current_bedrooms ? selected }}>{{ minimum }} 1 {{ 'bedroom'|trans }}</option>
     {% for i in 2..10 %}
         <option value="{{ i }}"{{ i == current_bedrooms ? selected }}>{{ minimum }} {{ i }} {{ bedrooms }}</option>
     {% endfor %}
@@ -38,7 +38,7 @@
 <select class="radius" data-role="change-bathrooms">
     <option value="0">{{ 'select-bathrooms'|trans }}</option>
     {% set current_bathrooms = form_filters['bathrooms'] is defined ? form_filters['bathrooms'] : 0 %}
-    <option value="1"{{ 1 == current_bathrooms ? selected }}>1 {{ 'bathroom'|trans }}</option>
+    <option value="1"{{ 1 == current_bathrooms ? selected }}>{{ minimum }} 1 {{ 'bathroom'|trans }}</option>
     {% for i in 2..10 %}
         <option value="{{ i }}"{{ i == current_bathrooms ? selected }}>{{ minimum }} {{ i }} {{ bathrooms }}</option>
     {% endfor %}

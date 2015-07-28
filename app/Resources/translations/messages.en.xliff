@@ -785,9 +785,9 @@
         <target>Places</target>
         <jms:reference-file line="120">views/regions/show.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="c9de6c07d3ffc7d5ef0f1ddfbf1a0e357a7cf82e" resname="price-accommodation">
-        <source>price-accommodation</source>
-        <target>Price accommodation</target>
+      <trans-unit id="2097c33723b61c7e24d3d7d27840469989b61b49" resname="price">
+        <source>price</source>
+        <target state="new">price</target>
         <jms:reference-file line="13">partials/search/types.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="96ed5c5789b174a01557791c8e936673ae4d973f" resname="privacy">
@@ -847,6 +847,11 @@
         <source>save-search</source>
         <target>Save this search</target>
         <jms:reference-file line="117">partials/search/filters.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f48e2aaf4ee96c6157e05085f51aaaec0243deec" resname="save-search-confirm-msg">
+        <source>save-search-confirm-msg</source>
+        <target state="new">save-search-confirm-msg</target>
+        <jms:reference-file line="118">partials/search/filters.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="b57bd12c572424ecee874bf197e72d39f34d94af" resname="saved-title">
         <source>saved-title</source>
