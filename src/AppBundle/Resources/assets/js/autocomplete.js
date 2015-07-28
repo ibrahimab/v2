@@ -54,7 +54,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
         events: {
 
             rebind: function() {
-                
+
                 ns.Autocomplete.resultsContainer = jq(ns.Autocomplete.resultsContainer.selector);
                 ns.Autocomplete.input            = jq(ns.Autocomplete.input.selector);
             },
@@ -117,7 +117,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                             return;
                         }
-                        
+
                         ns.Autocomplete.currentTerm = term;
                         ns.Autocomplete.request(term, ns.Autocomplete.limit);
                     }
@@ -127,11 +127,11 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                 if (ns.Autocomplete.type === ns.Autocomplete.types.TYPE_HOME) {
 
                     jq('body').on('change', '[data-role="choose-weekend-home"]', function(event) {
-                        
+
                         event.preventDefault();
-                        
+
                         var weekend = event.target.value;
-                        
+
                         if (weekend !== '') {
                             ns.Autocomplete.actions.home.weekend(weekend);
                         }
@@ -158,6 +158,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     event.stopImmediatePropagation();
                     event.preventDefault();
 
+                    var locale  = ns.get('app')['locale'];
                     var element = jq(this);
                     var data    = {
 
@@ -165,6 +166,11 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         id:     element.data('id'),
                         label:  element.data('label')
                     };
+
+                    console.log(data);
+                    if (data.entity === ns.Autocomplete.entities.ENTITY_TYPE) {
+                        return window.location.href = Routing.generate('show_type_' + locale, {beginCode: element.data('begin-code'), typeId: data.id});
+                    }
 
                     switch (ns.Autocomplete.type) {
 
@@ -312,13 +318,13 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                 },
 
                 weekend: function(weekend) {
-                    
+
                     var link = jq('[data-role="search-simple"]');
                     var uri  = URI(link.attr('href'));
-                    
+
                     uri.removeQuery('w');
                     uri.setQuery('w', weekend);
-                    
+
                     link.attr('href', uri.toString());
                     ns.Autocomplete.count(uri.query());
                 },
@@ -332,7 +338,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     uri.setQuery('pe', persons);
 
                     link.attr('href', uri.toString());
-                    
+
                     if (uri.hasQuery('w')) {
                         ns.Autocomplete.count(uri.query());
                     }
@@ -398,9 +404,9 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
         count: function(params) {
 
             if (ns.Autocomplete.type === ns.Autocomplete.types.TYPE_HOME) {
-                
+
                 ns.Autocomplete.views.showLoader();
-                
+
                 jq.ajax({
 
                     url: ns.Autocomplete.countUrl(params),
@@ -419,7 +425,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                 var results = ns.Autocomplete.results;
                 var total   = results.length;
-                
+
                 if (total === 0) {
 
                     ns.Autocomplete.currentTerm = '';
@@ -437,14 +443,14 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
             },
 
             updateCount: function(count) {
-                
+
                 jq('[data-role="loading-text"]').addClass('hide');
                 jq('[data-role="show-results"]').show();
                 jq('[data-role="results-count"]').text(count);
             },
-            
+
             showLoader: function() {
-                
+
                 jq('[data-role="show-results"]').hide();
                 jq('[data-role="loading-text"]').removeClass('hide');
             },
@@ -504,6 +510,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         li.className = 'accommodation';
                         li.setAttribute('data-entity', entities.ENTITY_TYPE);
                         li.setAttribute('data-id', result['type_id']);
+                        li.setAttribute('data-begin-code', result['begin_code']);
 
                         tag += '<i class="fi-home"></i> ';
 

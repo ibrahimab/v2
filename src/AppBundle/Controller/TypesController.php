@@ -26,11 +26,11 @@ class TypesController extends Controller
      * @Route(name="show_type_nl", path="/accommodatie/{beginCode}{typeId}", requirements={
      *    "beginCode": "[A-Z]{1,2}",
      *    "typeId": "\d+"
-     * })
+     * }, options={"expose": true})
      * @Route(name="show_type_en", path="/accommodation/{beginCode}{typeId}", requirements={
      *    "beginCode": "[A-Z]{1,2}",
      *    "typeId": "\d+"
-     * })
+     * }, options={"expose": true})
      * @Breadcrumb(name="show_country", title="{countryName}",       path="show_country", pathParams={"countrySlug"})
      * @Breadcrumb(name="show_region",  title="{regionName}",        path="show_region",  pathParams={"regionSlug"})
      * @Breadcrumb(name="show_place",   title="{placeName}",         path="show_place",   pathParams={"placeSlug"})

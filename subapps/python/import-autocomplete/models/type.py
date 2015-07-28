@@ -37,7 +37,7 @@ class Type(Base):
               "AND `archief` = 0 "                                                                                 \
               "AND `weekendski` = 0 "                                                                              \
               "ORDER BY `naam` ASC"
-        
+
         self.adapter('mysql').execute(sql % {'website': self.website})
         self.data = self.adapter('mysql').fetchall()
         return self
@@ -64,16 +64,17 @@ class Type(Base):
                 'type_id': row['id'],
                 'locales': ['nl', 'en', 'fr', 'de'],
                 'order': order,
+                'begin_code': row['code'],
                 'code': (row['code'] + str(row['id'])).lower(),
                 'name': {
 
-                    'nl': self.strip_accents(row['accommodation_name'] + ' ' + row['name_nl']),
-                    'en': self.strip_accents(row['accommodation_name'] + ' ' + row['name_en']),
-                    'de': self.strip_accents(row['accommodation_name'] + ' ' + row['name_de']),
-                    'fr': self.strip_accents(row['accommodation_name'] + ' ' + row['name_fr'])
+                    'nl': self.strip_accents(row['accommodation_name'] + (' ' + row['name_nl']).strip()),
+                    'en': self.strip_accents(row['accommodation_name'] + (' ' + row['name_en']).strip()),
+                    'de': self.strip_accents(row['accommodation_name'] + (' ' + row['name_de']).strip()),
+                    'fr': self.strip_accents(row['accommodation_name'] + (' ' + row['name_fr']).strip())
                 }
             })
-            
+
             order += 1
 
         collection.insert(data)

@@ -184,7 +184,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
                     event.preventDefault();
                     var val = parseInt(jq(this).val(), 10);
 
-                    if (val === 1 || val === 2) {
+                    if (val === 1 || val === 2 || val === 3) {
 
                         ns.Search.filters.setSort(val);
                         ns.Search.actions.search();

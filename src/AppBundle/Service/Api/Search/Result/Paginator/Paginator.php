@@ -113,7 +113,7 @@ class Paginator implements \Iterator, \Countable
     public function getTotalPages()
     {
         if (null === $this->total_pages) {
-            $this->total_pages = ($this->getLimit() > 0 ? ((int)ceil($this->total() / $this->getLimit()) - 1) : 0);
+            $this->total_pages = ($this->getLimit() > 0 ? ((int)ceil($this->count() / $this->getLimit()) - 1) : 0);
         }
 
         return $this->total_pages;
