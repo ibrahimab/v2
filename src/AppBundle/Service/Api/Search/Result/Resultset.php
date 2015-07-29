@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Service\Api\Search\Result;
+use       AppBundle\Entity\Accommodation\Accommodation;
 use       AppBundle\Service\Api\Search\Result\Paginator\Paginator;
 use       AppBundle\AppTrait\LocaleTrait;
 use       Doctrine\ORM\QueryBuilder;
@@ -102,6 +103,7 @@ class Resultset
             $this->results[$key]['price']                  = 0;
             $this->results[$key]['localeName']             = $this->getLocaleValue('name', $accommodation);
             $this->results[$key]['localeShortDescription'] = $this->getLocaleValue('shortDescription', $accommodation);
+            $this->results[$key]['kindIdentifier']         = (isset(Accommodation::$kindIdentifiers[$accommodation['kind']]) ? Accommodation::$kindIdentifiers[$accommodation['kind']] : null);
 
             $place   = $accommodation['place'];
             $region  = $place['region'];

@@ -252,7 +252,7 @@ class Accommodation implements AccommodationServiceEntityInterface
      *
      * @var array
      */
-    private static $kindIdentifiers = [
+    public static $kindIdentifiers = [
 
         self::KIND_CHALET           => 'chalet',
         self::KIND_APARTMENT        => 'apartment',

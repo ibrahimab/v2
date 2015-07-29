@@ -41,7 +41,7 @@
                                     <span class="city">{{ place.localeName }}</span>, <span class="area">{{ region.localeName }}</span>, <span class="country">{{ country.localeName }}</span>
                                 </div>
                                 <div class="title">
-                                    {{ accommodation.localeName }}
+                                    {{ ('type.kind.' ~ accommodation.kindIdentifier)|trans|capitalize ~ ' ' ~ accommodation.localeName }}
                                     <span>{{ quality_stars }}</span>
                                 </div>
                             </div>
