@@ -39,10 +39,12 @@
             <div class="row">
                 <div class="small-12 medium-12 large-12 columns">
                     {% import 'partials/search/result.html.twig' as resultMacro %}
-                    {% set results = resultset.paginator() %}
-                    {% set images  = search_images(results) %}
+                    {% set results         = resultset.paginator() %}
+                    {% set images          = search_images(results) %}
+                    {% set website_concern = website() %}
+                    {% set resale          = website_concern.getConfig(constant('WEBSITE_CONFIG_RESALE', website_concern)) %}
                     {% for result in results %}
-                        {{ resultMacro.accommodation(result, images) }}
+                        {{ resultMacro.accommodation(result, images, resale) }}
                     {% endfor %}
                 </div>
             </div>

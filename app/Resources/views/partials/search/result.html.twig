@@ -1,11 +1,10 @@
-{% macro accommodation(accommodation, all_images) %}
+{% macro accommodation(accommodation, all_images, resale) %}
     {% import 'partials/search/types.html.twig' as typesMacro %}
-
-    {% set place         = accommodation.place %}
-    {% set region        = place.region %}
-    {% set country       = place.country %}
-    {% set types         = accommodation.types %}
-    {% set images        = [] %}
+    {% set place   = accommodation.place %}
+    {% set region  = place.region %}
+    {% set country = place.country %}
+    {% set types   = accommodation.types %}
+    {% set images  = [] %}
 
     {% if all_images[accommodation.cheapest.id] is defined %}
         {% set images = all_images[accommodation.cheapest.id] %}
@@ -47,16 +46,22 @@
                                 </div>
                             </div>
                             <div class="small-12 medium-5 large-4 columns price-details">
-                                {% if accommodation.price > 0 %}
+                                {% if accommodation.cheapest.price > 0 %}
                                     <span class="price-info">Prijs per persoon per week, vanaf</span>
                                     <div class="chalet-tooltip loading" data-role="ajax-tooltip" data-id="{{ accommodation.cheapest.id }}" data-season="{{ 27 }}">
                                         <div class="chalet-tooltip-content" data-role="tooltip-wrapper">
                                             <div data-role="tooltip-content">Bezig met laden...</div>
                                             <span class="nub rtl"></span>
                                         </div>
-                                        <span class="price radius">&euro; {{ accommodation.price|round(0, 'ceil')|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
+                                        <span class="price radius">&euro; {{ accommodation.cheapest.price|round(0, 'ceil')|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
                                     </div>
-                                    <span class="price-inc"><i class="sprite sprite-icon-skipass"></i>Inclusief skipas</span>
+                                    {% set skipas = true %}
+                                    {% if accommodation.show == 3 or resale %}
+                                        {% set skipas = false %}
+                                    {% endif %}
+                                    {% if skipas %}
+                                        <span class="price-inc"><i class="sprite sprite-icon-skipass"></i>Inclusief skipas</span>
+                                    {% endif %}
                                 {% endif %}
                             </div>
                         </div>

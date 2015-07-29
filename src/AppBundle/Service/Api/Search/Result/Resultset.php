@@ -97,7 +97,7 @@ class Resultset
     {
         foreach ($this->results as $key => $accommodation) {
 
-            $this->results[$key]['cheapest']               = ['id' => 0];
+            $this->results[$key]['cheapest']               = ['id' => 0, 'price' => 0];
             $this->results[$key]['offer']                  = false;
             $this->results[$key]['price']                  = 0;
             $this->results[$key]['localeName']             = $this->getLocaleValue('name', $accommodation);
@@ -269,7 +269,7 @@ class Resultset
 
             foreach ($accommodation['types'] as $typeKey => $type) {
 
-                if (isset($this->prices[$type['id']])) {
+                if (isset($this->prices[$type['id']]) && $this->prices[$type['id']] > 0) {
 
                     $this->results[$key]['types'][$typeKey]['price'] = $this->prices[$type['id']];
                     $this->results[$key]['prices'][]                 = $this->prices[$type['id']];

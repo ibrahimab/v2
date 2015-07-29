@@ -160,7 +160,7 @@ class SearchRepository implements SearchServiceRepositoryInterface
     {
         $qb    = $this->query($searchBuilder)
                       ->add('select', 't,
-                                       partial a.{id, name, shortDescription, englishShortDescription, germanShortDescription, features, quality, distanceSlope, searchOrder},
+                                       partial a.{id, name, shortDescription, englishShortDescription, germanShortDescription, features, quality, distanceSlope, searchOrder, show},
                                        partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, features},
                                        partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, totalSlopesDistance},
                                        partial c.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, startCode},
