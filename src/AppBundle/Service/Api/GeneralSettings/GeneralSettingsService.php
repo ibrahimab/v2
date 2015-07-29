@@ -16,27 +16,27 @@ class GeneralSettingsService
      * @var boolean
      */
     private $opened;
-    
+
     /**
      * Opening times
      *
      * @var array
      */
     private $openingTimes = [
-        
+
         'weekday' => [
-            
+
             'open'   => ['hour' => 9,  'minutes' => 0],
             'closed' => ['hour' => 17, 'minutes' => 30],
         ],
-        
+
         'saturday' => [
-            
+
             'open'   => ['hour' => 10, 'minutes' => 0],
             'closed' => ['hour' => 17, 'minutes' => 30],
         ],
     ];
-    
+
     /**
      * @var GeneralSettingsServiceRepositoryInterface
      */
@@ -53,16 +53,23 @@ class GeneralSettingsService
     }
 
     /**
-     * Fetch all the homepage blocks
+     * Fetch all the newsletters
      *
-     * Fetching all the homepage blocks based on the options passed in. The supported options are: 'where', 'order', 'limit', 'offset'
-     *
-     * @param array $options
      * @return GeneralSettingsServiceEntityInterface[]
      */
     public function getNewsletters()
     {
         return $this->generalSettingsServiceRepository->getNewsletters();
+    }
+
+    /**
+     * Finding if message "search without dates" has to be shown on search form winter
+     *
+     * @return boolean
+     */
+    public function getSearchFormMessageSearchWithoutDates()
+    {
+        return $this->generalSettingsServiceRepository->getSearchFormMessageSearchWithoutDates();
     }
 
     /**
@@ -74,7 +81,7 @@ class GeneralSettingsService
     {
         return $this->generalSettingsServiceRepository->monitorDatabase();
     }
-    
+
     /**
      * This service endpoints returns a boolean that determines whether company is open or not
      *
@@ -83,37 +90,37 @@ class GeneralSettingsService
     public function opened()
     {
         if (null === $this->opened) {
-        
+
             $currentTime = new \DateTime();
             $openedTime  = clone $currentTime;
             $closedTime  = clone $currentTime;
             $weekday     = (int)$currentTime->format('w');
-        
+
             switch (true) {
-            
+
                 case ($weekday > 0 && $weekday < 6):
-            
+
                     $times = $this->openingTimes['weekday'];
                     $openedTime->setTime($times['open']['hour'], $times['open']['minutes'], 0);
                     $closedTime->setTime($times['closed']['hour'], $times['closed']['minutes'], 0);
-                
+
                 break;
-            
+
                 case ($weekday === 6):
-            
+
                     $times = $this->openingTimes['saturday'];
                     $openedTime->setTime($times['open']['hour'], $times['open']['minutes'], 0);
                     $closedTime->setTime($times['closed']['hour'], $times['closed']['minutes'], 0);
-                    
+
                 break;
-            
+
                 default:
                     $closedTime->setTimestamp($currentTime->getTimestamp() - 1);
             }
-        
+
             $this->opened = ($currentTime->getTimestamp() > $openedTime->getTimestamp()) && ($currentTime->getTimestamp() < $closedTime->getTimestamp());
         }
-        
+
         return $this->opened;
     }
 }

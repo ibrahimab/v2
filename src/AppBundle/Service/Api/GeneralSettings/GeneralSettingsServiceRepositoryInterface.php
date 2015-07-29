@@ -13,12 +13,19 @@ interface GeneralSettingsServiceRepositoryInterface
 {
 
     /**
-     * Fetching newsletters
+     * Finding all previously sent newsletters
      *
-     *
-     * @return GeneralSettingsServiceEntityInterface[]
+     * @return array
      */
     public function getNewsletters();
+
+    /**
+     * Finding if message "search without dates" has to be shown on search form
+     *
+     *
+     * @return boolean
+     */
+    public function getSearchFormMessageSearchWithoutDates();
 
     /**
      * Monitoring database

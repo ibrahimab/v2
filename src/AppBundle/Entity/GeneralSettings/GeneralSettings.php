@@ -58,6 +58,20 @@ class GeneralSettings implements GeneralSettingsServiceEntityInterface
     /**
      * @var string
      *
+     * @ORM\Column(name="zoekformulier_weinig_tarieven_1", type="integer")
+     */
+    private $searchFormMessageSearchWithoutDatesWinter;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="zoekformulier_weinig_tarieven_2", type="integer")
+     */
+    private $searchFormMessageSearchWithoutDatesSummer;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="monitor_mysql", type="string", length=52)
      */
     private $monitorMySQL;
@@ -141,6 +155,42 @@ class GeneralSettings implements GeneralSettingsServiceEntityInterface
     public function getSummerNewslettersBelgium()
     {
         return $this->summerNewslettersBelgium;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setSearchFormMessageSearchWithoutDatesWinter($searchFormMessageSearchWithoutDatesWinter)
+    {
+        $this->searchFormMessageSearchWithoutDatesWinter = $searchFormMessageSearchWithoutDatesWinter;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getSearchFormMessageSearchWithoutDatesWinter()
+    {
+        return $this->searchFormMessageSearchWithoutDatesWinter;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setSearchFormMessageSearchWithoutDatesSummer($searchFormMessageSearchWithoutDatesSummer)
+    {
+        $this->searchFormMessageSearchWithoutDatesSummer = $searchFormMessageSearchWithoutDatesSummer;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getSearchFormMessageSearchWithoutDatesSummer()
+    {
+        return $this->searchFormMessageSearchWithoutDatesSummer;
     }
 
     /**

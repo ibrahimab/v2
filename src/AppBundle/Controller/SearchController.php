@@ -63,6 +63,7 @@ class SearchController extends Controller
         $surveyService = $this->get('app.api.booking.survey');
         $seasonService = $this->get('app.api.season');
         $searchService = $this->get('app.api.search');
+        $generalSettingsService = $this->get('app.api.general.settings');
         $searchBuilder = $searchService->build()
                                        ->limit($per_page)
                                        ->page($page)
@@ -257,6 +258,7 @@ class SearchController extends Controller
 
         $data['facet_service'] = $searchService->facets($resultset, $facetFilters);
         $data['search_time']   = round((microtime(true) - $start), 2);
+        $data['searchFormMessageSearchWithoutDates']   = $generalSettingsService->getSearchFormMessageSearchWithoutDates();
 
         return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', $data);
     }
