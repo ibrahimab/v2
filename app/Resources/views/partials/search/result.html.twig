@@ -18,7 +18,7 @@
         <a href="{{ locale_path('show_type', {beginCode: country.startCode, typeId: accommodation.cheapest.id}) }}">
             <div class="row">
                 <div class="title-ipad title medium-12 columns">
-                    {{ accommodation.name }}
+                    {{ ('type.kind.' ~ accommodation.kindIdentifier)|trans|capitalize ~ ' ' ~ accommodation.localeName }}
                     <span>{{ quality_stars }}</span>
                 </div>
                 <div class="small-12 medium-5 large-5 columns">

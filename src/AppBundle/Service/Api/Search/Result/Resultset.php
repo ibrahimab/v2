@@ -98,7 +98,7 @@ class Resultset
     {
         foreach ($this->results as $key => $accommodation) {
 
-            $this->results[$key]['cheapest']               = ['id' => 0, 'price' => 0];
+            $this->results[$key]['cheapest']               = ['id' => $accommodation['types'][0]['id'], 'price' => 0];
             $this->results[$key]['offer']                  = false;
             $this->results[$key]['price']                  = 0;
             $this->results[$key]['localeName']             = $this->getLocaleValue('name', $accommodation);

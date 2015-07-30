@@ -196,7 +196,7 @@ class SearchController extends Controller
         if (!$request->query->has('w')) {
 
             $priceService   = $this->get('app.api.price');
-            // $data['offers'] = $priceService->offers($typeIds);
+            $data['offers'] = $priceService->offers($typeIds);
         }
 
         $surveyData = $surveyService->statsByTypes($typeIds);

@@ -204,7 +204,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 ns.Search.actions.search();
 
                 // resetting all the input fields
-                window.resetStyledInput();
+                window.recalculateStyledInput();
                 jq('[data-role="change-filter"]').data('action', 'add').attr('data-action', 'add');
             },
 
