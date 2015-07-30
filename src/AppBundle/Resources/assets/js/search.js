@@ -342,6 +342,12 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                 event.preventDefault();
 
+                var save_button = jq('[data-role="save-search"]');
+
+                if (true === save_button.data('disabled')) {
+                    return;
+                }
+
                 var save = ns.Search.actions.url(Routing.generate('save_search'));
 
                 jq('[data-role="saved-item"]').animate({color: '#d50d3b', borderColor: '#d50d3b' }, 500)
@@ -358,7 +364,8 @@ window.Chalet = (function(ns, jq, _, undefined) {
                         count.text(parseInt(count.text()) + 1);
 
                         // show confirm message
-                        jq('[data-role="save-search"]').html( jq('[data-role="save-search"]').data('confirm-msg') );
+                        save_button.find('div').html( save_button.data('confirm-msg') + ' <i class="fi-check"></i>' );
+                        save_button.data('disabled', true).addClass('disabled');
 
                     }
                 });
