@@ -92,13 +92,13 @@ $('.readmore a').click(function() {//open close div (class=readmore)
 $(document).ready(function(){
 
     $('body').addClass('has-js');
-    $('body').on('click', '.styled_label', function(event) {
+    $('body').on('click', '.styled_label:not(.disabled)', function(event) {
         window.recalculateStyledInput();
     });
 
     window.recalculateStyledInput = function() {
 
-        $('.styled_label input').each(function() {
+        $('.styled_label:not(.disabled) input').each(function() {
 
             var element     = $(this);
             var labelClass  = element.attr('type') === 'checkbox' ? 'label_check' : 'label_radio';
