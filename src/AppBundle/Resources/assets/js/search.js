@@ -366,7 +366,6 @@ window.Chalet = (function(ns, jq, _, undefined) {
                         // show confirm message
                         save_button.find('div').html( save_button.data('confirm-msg') + ' <i class="fi-check"></i>' );
                         save_button.data('disabled', true).addClass('disabled');
-
                     }
                 });
             },
@@ -396,6 +395,9 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                         // recalculate checkboxes
                         window.recalculateStyledInput();
+
+                        // reinit images
+                        window.initializeSlick();
 
                         // rebind autocomplete events
                         ns.Autocomplete.events.rebind();

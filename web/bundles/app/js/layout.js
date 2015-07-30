@@ -166,10 +166,15 @@ jQuery(function() {
 
     $('input').placeholder({customClass:'my-placeholder'});
 
-    $('.accom-slides').slick({
+    window.initializeSlick = function() {
 
-        lazyLoad: 'ondemand',
-        slidesToShow: 1,
-        slidesToScroll: 1
-    });
+        $('.accom-slides').slick({
+
+            lazyLoad: 'ondemand',
+            slidesToShow: 1,
+            slidesToScroll: 1
+        });
+    };
+
+    window.initializeSlick();
 });
