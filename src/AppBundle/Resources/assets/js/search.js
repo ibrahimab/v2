@@ -55,6 +55,18 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 body.on('change', '[data-role="sort-results"]', ns.Search.events.formChanges.sort);
 
                 body.on('click', '[data-role="save-search"]', ns.Search.actions.save);
+
+                window.onpopstate = function(event) {
+
+                    var uri  = URI();
+                    var page = uri.query(true).p;
+
+                    if (undefined !== page) {
+                        page = parseInt(page, 10);
+                    }
+
+                    ns.Search.actions.search(page, false);
+                };
             },
 
             change: function(event) {
@@ -352,14 +364,17 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 });
             },
 
-            search: function(page) {
+            search: function(page, pushHistory) {
 
                 ns.Search.actions.loader();
 
                 var url = ns.Search.actions.url(Routing.generate('search_' + ns.get('app')['locale']), page);
 
-                if (window.history.pushState) {
-                    window.history.pushState({path: url}, '', url);
+                if (false !== pushHistory) {
+
+                    if (window.history.pushState) {
+                        window.history.pushState({path: url}, '', url);
+                    }
                 }
 
                 ns.Search.htmlBody.scrollTop(0);
