@@ -5,6 +5,8 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
         container: null,
 
+        htmlBody: null,
+
         initialize: function(filters) {
 
             ns.Search.filters.filters = filters || ns.Search.filters.filters;
@@ -23,6 +25,8 @@ window.Chalet = (function(ns, jq, _, undefined) {
             ns.Search.filters.weekend        = custom['weekend']        || null;
             ns.Search.filters.persons        = custom['persons']        || null;
             ns.Search.filters.sort           = custom['sort']           || null;
+
+            ns.Search.htmlBody = jq('html, body');
         },
 
         setContainer: function() {
@@ -354,6 +358,12 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                 var url = ns.Search.actions.url(Routing.generate('search_' + ns.get('app')['locale']), page);
 
+                if (window.history.pushState) {
+                    window.history.pushState({path: url}, '', url);
+                }
+
+                ns.Search.htmlBody.scrollTop(0);
+
                 jq.ajax({
 
                     url: url.toString(),
@@ -361,10 +371,6 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                         ns.Search.container.replaceWith(data);
                         ns.Search.setContainer();
-
-                        if (window.history.pushState) {
-                            window.history.pushState({path: url}, '', url);
-                        }
 
                         // recalculate checkboxes
                         window.recalculateStyledInput();
