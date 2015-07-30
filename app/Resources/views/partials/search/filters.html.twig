@@ -128,8 +128,8 @@
         {% set save_search_label = 'save-search'|trans %}
         {% set save_search_confirm_msg = 'save-search-confirm-msg'|trans %}
         <span class="action-buttons">
-            <div class="save-button"><a href="{{ path('save_search', {f: app.request.query.get('f', {})}) }}" data-confirm-msg="{{ save_search_confirm_msg }}" data-role="save-search">{{ save_search_label }} <i class="fi-plus"></i></a></div>
-            <div><a href="#" data-role="remove-filters">Wis volledige zoekopdracht <i class="fi-trash"></i></a></div>
+            <a href="{{ path('save_search', {f: app.request.query.get('f', {})}) }}" data-confirm-msg="{{ save_search_confirm_msg }}" data-role="save-search"><div class="save-button">{{ save_search_label }} <i class="fi-plus"></i></div></a>
+            <a href="#" data-role="remove-filters"><div>Wis volledige zoekopdracht <i class="fi-trash"></i></div></a>
         </span>
     {% endif %}
 
