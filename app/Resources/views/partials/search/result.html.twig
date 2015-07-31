@@ -47,7 +47,15 @@
                             </div>
                             <div class="small-12 medium-5 large-4 columns price-details">
                                 {% if accommodation.cheapest.price > 0 %}
-                                    <span class="price-info">Prijs per persoon per week, vanaf</span>
+                                    {% set skipas = true %}
+                                    {% if accommodation.show == 3 or resale %}
+                                        {% set skipas = false %}
+                                    {% endif %}
+                                    {% if skipas %}
+                                        <span class="price-info">Prijs per persoon per week, vanaf</span>
+                                    {% else %}
+                                        <span class="price-info">Prijs per accommodatie, vanaf</span>
+                                    {% endif %}
                                     <div class="chalet-tooltip loading" data-role="ajax-tooltip" data-id="{{ accommodation.cheapest.id }}" data-season="{{ 27 }}">
                                         <div class="chalet-tooltip-content" data-role="tooltip-wrapper">
                                             <div data-role="tooltip-content">Bezig met laden...</div>
@@ -55,10 +63,6 @@
                                         </div>
                                         <span class="price radius">&euro; {{ accommodation.cheapest.price|round(0, 'ceil')|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
                                     </div>
-                                    {% set skipas = true %}
-                                    {% if accommodation.show == 3 or resale %}
-                                        {% set skipas = false %}
-                                    {% endif %}
                                     {% if skipas %}
                                         <span class="price-inc"><i class="sprite sprite-icon-skipass"></i>Inclusief skipas</span>
                                     {% endif %}
