@@ -215,6 +215,33 @@ class FilterService
                 'value'  => self::FILTER_DISTANCE_MAX_1000,
             ],
         ],
+        
+        'vf_km' => [
+            
+            1 => [
+                
+                'filter' => self::FILTER_LENGTH,
+                'value'  => self::FILTER_LENGTH_MAX_100,
+            ],
+            
+            2 => [
+                
+                'filter' => self::FILTER_LENGTH,
+                'value'  => self::FILTER_LENGTH_MIN_100,
+            ],
+            
+            3 => [
+                
+                'filter' => self::FILTER_LENGTH,
+                'value'  => self::FILTER_LENGTH_MIN_200,
+            ],
+            
+            4 => [
+                
+                'filter' => self::FILTER_LENGTH,
+                'value'  => self::FILTER_LENGTH_MIN_400,
+            ],
+        ],
     ];
     
     /**

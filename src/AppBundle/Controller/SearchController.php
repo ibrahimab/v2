@@ -37,6 +37,9 @@ class SearchController extends Controller
      */
     public function index(Request $request)
     {
+        $filterService = $this->container->get('app.filter');
+        $this->reroute($filterService, $request->query->all());
+        
         $start    = microtime(true);
         $c        = $request->query->get('c',  []);
         $r        = $request->query->get('r',  []);
@@ -177,7 +180,7 @@ class SearchController extends Controller
             'resultset'      => $resultset,
             'filters'        => $filters,
             // instance needed to get constants easier from within twig template: constant('const', instance)
-            'filter_service' => $this->container->get('app.filter'),
+            'filter_service' => $filterService,
             'custom_filters' => ['countries' => [], 'regions' => [], 'places' => [], 'accommodations' => [], 'types' => []],
             'form_filters'   => $formFilters,
             'prices'         => $prices,
@@ -351,5 +354,44 @@ class SearchController extends Controller
             'type'    => 'success',
             'message' => 'Your search was successfully saved',
         ]);
+    }
+    
+    public function reroute(FilterService $filterService, $params)
+    {
+        $reroute = [];
+        
+        foreach ($params as $param => $value) {
+            
+            $matches = [];
+            $result  = preg_match('/(?:(?P<param>[a-zA-Z0-9_-]+)(?P<value>[0-9]+))/i', $param, $matches);
+
+            if ($matches['param'] === 'vf_badk') {
+                
+                $reroute['ba'] = $matches['value'];
+                
+            } else {
+
+                if (null !== ($filter = $filterService->convertThemeFilter($matches['param'], (int)$matches['value']))) {
+                    
+                    if (!isset($reroute['f'])) {
+                        $reroute['f'] = [];
+                    }
+        
+                    if (FilterService::multiple($filter['filter'])) {
+            
+                        if (!isset($filters[$filter['filter']])) {
+                            $reroute['f'][$filter['filter']] = [];
+                        }
+            
+                        $reroute['f'][$filter['filter']][] = $filter['value'];
+            
+                    } else {
+                        $reroute['f'][$filter['filter']] = $filter['value'];
+                    }
+                }
+            }
+        }
+        
+        dump($reroute);exit;
     }
 }
