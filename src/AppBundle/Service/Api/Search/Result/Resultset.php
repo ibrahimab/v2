@@ -167,7 +167,7 @@ class Resultset
      */
     public function total()
     {
-        if (null === $this->blocks) {
+        if (null === $this->total) {
 
             $this->total = 0;
 
@@ -298,7 +298,9 @@ class Resultset
                 foreach ($this->results[$key]['prices'] as $priceKey => $price) {
 
                     if ($price === $this->results[$key]['price']) {
-                        $this->results[$key]['cheapest'] =& $this->results[$key]['types'][$this->results[$key]['prices_types'][$priceKey]];
+                        
+                        $type = $this->results[$key]['types'][$this->results[$key]['prices_types'][$priceKey]];
+                        $this->results[$key]['cheapest'] = ['id' => $type['id'], 'price' => $type['price']];
                     }
                 }
 

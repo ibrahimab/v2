@@ -170,8 +170,10 @@ class SearchController extends Controller
         $javascript->set('app.filters.form.bathrooms',        $ba);
         $javascript->set('app.filters.form.sort',             $s);
 
-        $data = [
+        $seasons = $seasonService->seasons();
+        $data    = [
 
+            'season'         => (isset($seasons[0]) ? $seasons[0]['id'] : 0),
             'resultset'      => $resultset,
             'filters'        => $filters,
             // instance needed to get constants easier from within twig template: constant('const', instance)
@@ -181,11 +183,11 @@ class SearchController extends Controller
             'prices'         => $prices,
             'offers'         => $offers,
             'destination'    => $destination,
-            'weekends'       => $seasonService->weekends($seasonService->seasons()),
+            'weekends'       => $seasonService->weekends($seasons),
             'surveys'        => [],
             'sort'           => $s,
         ];
-
+        
         $typeIds = $resultset->allTypeIds();
 
         if (!$request->query->has('pe')) {

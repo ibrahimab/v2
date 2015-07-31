@@ -1,4 +1,4 @@
-{% macro accommodation(accommodation, all_images, resale) %}
+{% macro accommodation(accommodation, all_images, resale, season) %}
     {% import 'partials/search/types.html.twig' as typesMacro %}
     {% set place   = accommodation.place %}
     {% set region  = place.region %}
@@ -56,7 +56,7 @@
                                     {% else %}
                                         <span class="price-info">Prijs per accommodatie, vanaf</span>
                                     {% endif %}
-                                    <div class="chalet-tooltip loading" data-role="ajax-tooltip" data-id="{{ accommodation.cheapest.id }}" data-season="{{ 27 }}">
+                                    <div class="chalet-tooltip loading" data-role="ajax-tooltip" data-id="{{ accommodation.cheapest.id }}" data-season="{{ season }}">
                                         <div class="chalet-tooltip-content" data-role="tooltip-wrapper">
                                             <div data-role="tooltip-content">Bezig met laden...</div>
                                             <span class="nub rtl"></span>
