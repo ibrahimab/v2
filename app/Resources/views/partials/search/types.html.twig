@@ -31,10 +31,9 @@
                     <div class="tb-c">
                         {{ type.localeName }}
                     </div>
-                    <div class="tb-c">{% if type.surveyCount > 0 %}<span>{{ type.surveyAverageOverallRating|number_format(1, ',', '') }}</span>{% endif %}</div>
+                    <div class="tb-c">{% if type.surveyCount > 0 %}<span class="table-price">{{ type.surveyAverageOverallRating|number_format(1, ',', '') }}</span>{% endif %}</div>
                     <div class="tb-c tb-c-6">
                         {% if type.offer %}
-                            {# <i class="sprite sprite-icon-discount"></i> #}
                             <div class="types_circle"><div>Aan-</div><div>bieding</div></div>
                         {% endif %}
                         </div>
@@ -45,7 +44,7 @@
                                     <div data-role="tooltip-content">Bezig met laden...</div>
                                     <span class="nub rtl"></span>
                                 </div>
-                                <span>&euro; {{ type.price|round(0, 'ceil')|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
+                                <span class="table-price">&euro; {{ type.price|round(0, 'ceil')|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
                             </div>
                         {% endif %}
                     </div>
