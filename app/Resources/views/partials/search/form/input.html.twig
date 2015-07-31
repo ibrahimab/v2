@@ -18,6 +18,11 @@
         <option value="{{ timestamp }}"{{ timestamp == current_weekend ? selected }}>{{arrival_label}} {{ weekend }}</option>
     {% endfor %}
 </select>
+{% if searchFormMessageSearchWithoutDates %}
+<div class="msg-search-without-date">
+    (omdat een groot deel van de accommodaties nog niet geprijsd is kan het verstandig zijn om zonder aankomstdatum te zoeken)
+</div>
+{% endif %}
 <select class="radius" data-role="change-persons">
     <option value="0" data-smaller-text="{{ 'select-how-many-short'|trans }}">{{ 'select-how-many'|trans }}</option>
     {% set current_persons = form_filters['persons'] is defined ? form_filters['persons'] : 0 %}
