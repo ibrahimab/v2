@@ -780,47 +780,6 @@ footer ul.checked i { margin-top: 0.7rem; }
     padding-left: 5px;
 }
 
-#search-results #search-filters-active {
-
-    span.action-buttons {
-
-        display: block;
-
-        a {
-            color: #FFFFFF;
-        }
-
-        a:hover {
-
-            div {
-                text-decoration: underline;
-            }
-
-            i.fi-x {
-                color: red;
-            }
-        }
-
-        a.disabled {
-
-            &:hover {
-
-                cursor: default;
-                div { text-decoration: none; }
-            }
-        }
-    }
-
-    div.save-button {
-        display: table;
-        float: left;
-        background-color: #193761;
-        a {
-            color: #fff;
-        }
-    }
-}
-
 #search-filter #search-filter-main {
 
     input {
@@ -836,3 +795,39 @@ footer ul.checked i { margin-top: 0.7rem; }
 .types_circle {background-color:#193761;border-radius:50%;-moz-border-radius:50%;-webkit-border-radius:50%;color:white;display:inline;height:4rem;line-height:4rem;text-align:center;width:4rem;}
 .types_circle {background-color:#d4213b;display:block;height:3rem;line-height:3rem;padding-top:.4rem;text-align:center;width:3rem;}
 .types_circle div{display:block;height:1.2rem;line-height:normal;text-align:center;width:auto;font-size:0.7rem;}
+
+#search-results #search-filters-active div:last-child {
+    
+    background-color: #e9edf8;
+    display: inline-block;
+    
+    a {
+        
+        color: #193761;
+        display: inline;
+    }
+}
+
+#search-results .action-buttons {
+    
+    a:hover {
+        
+        div { text-decoration: underline; }
+    }
+    
+    div {
+        
+        float: left;
+        background-color: #193761;
+        display: inline-block;
+        font-size: 0.8rem;
+        margin: 0 0.25rem 0.5rem 0;
+        padding: 0.2rem 0.75rem 0.2rem 0.5rem;
+        border: 1px solid #d9d9d9;
+        color: #FFFFFF;
+        
+        i {
+            margin: 0 0 0 .5rem;
+        }
+    }
+}
