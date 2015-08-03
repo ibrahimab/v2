@@ -47,6 +47,10 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 body.on('click', '[data-role="remove-region-filter"]', ns.Search.events.removeCustom.region);
                 body.on('click', '[data-role="remove-place-filter"]', ns.Search.events.removeCustom.place);
                 body.on('click', '[data-role="remove-accommodation-filter"]', ns.Search.events.removeCustom.accommodation);
+                body.on('click', '[data-role="remove-bedrooms-filter"]', ns.Search.events.removeCustom.bedrooms);
+                body.on('click', '[data-role="remove-bathrooms-filter"]', ns.Search.events.removeCustom.bathrooms);
+                body.on('click', '[data-role="remove-persons-filter"]', ns.Search.events.removeCustom.persons);
+                body.on('click', '[data-role="remove-weekend-filter"]', ns.Search.events.removeCustom.persons);
 
                 body.on('change', '[data-role="change-bedrooms"]', ns.Search.events.formChanges.bedrooms);
                 body.on('change', '[data-role="change-bathrooms"]', ns.Search.events.formChanges.bathrooms);
@@ -133,6 +137,38 @@ window.Chalet = (function(ns, jq, _, undefined) {
                     var element = jq(this);
 
                     ns.Search.filters.removeAccommodation(element.data('id'));
+                    ns.Search.actions.search();
+                },
+                bedrooms: function(event) {
+                    
+                    event.preventDefault();
+                    var element = jq(this);
+                    
+                    ns.Search.filters.removeBedrooms();
+                    ns.Search.actions.search();
+                },
+                bathrooms: function(event) {
+                    
+                    event.preventDefault();
+                    var element = jq(this);
+                    
+                    ns.Search.filters.removeBathrooms();
+                    ns.Search.actions.search();
+                },
+                persons: function(event) {
+                    
+                    event.preventDefault();
+                    var element = jq(this);
+                    
+                    ns.Search.filters.removePersons();
+                    ns.Search.actions.search();
+                },
+                weekend: function(event) {
+
+                    event.preventDefault();
+                    var element = jq(this);
+                    
+                    ns.Search.filters.removeWeekend();
                     ns.Search.actions.search();
                 }
             },

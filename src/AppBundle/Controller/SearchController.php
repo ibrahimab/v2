@@ -38,7 +38,12 @@ class SearchController extends Controller
     public function index(Request $request)
     {
         $filterService = $this->container->get('app.filter');
-        $this->reroute($filterService, $request->query->all());
+        $locale        = $request->getLocale();
+        $reroute       = $this->reroute($filterService, $request->query->all());
+        
+        if (count($reroute) > 0) {
+            return $this->redirect($this->generateUrl('search_' . $locale, $reroute), 301);
+        }
         
         $start    = microtime(true);
         $c        = $request->query->get('c',  []);
@@ -161,7 +166,6 @@ class SearchController extends Controller
         }
 
         $resultset  = $searchBuilder->search();
-        $locale     = $request->getLocale();
         $javascript = $this->get('app.javascript');
 
         $javascript->set('app.filters.normal',                $filters);
@@ -362,27 +366,41 @@ class SearchController extends Controller
         
         foreach ($params as $param => $value) {
             
-            $matches = [];
-            $result  = preg_match('/(?:(?P<param>[a-zA-Z0-9_-]+)(?P<value>[0-9]+))/i', $param, $matches);
+            $matches = ['f' => []];
+            $result  = preg_match('/(?P<param>[a-zA-Z_-]+)(?:(?P<value>[0-9]+))?/i', $param, $matches);
+            $data    = $matches['param'] === 'vf_kenm' ? $matches['value'] : $value;
+            $data    = (int)$data;
 
             if ($matches['param'] === 'vf_badk') {
                 
-                $reroute['ba'] = $matches['value'];
+                $reroute['ba'] = $data;
+                
+            } else if ($matches['param'] === 'fap') {
+                
+                $reroute['pe'] = $data;
+                
+            } else if ($matches['param'] === 'fas') {
+                
+                $reroute['be'] = $data;
+                
+            } else if ($matches['param'] === 'fad') {
+                
+                $reroute['w'] = $data;
                 
             } else {
-
-                if (null !== ($filter = $filterService->convertThemeFilter($matches['param'], (int)$matches['value']))) {
+            
+                if (null !== ($filter = $filterService->convertThemeFilter($matches['param'], $data))) {
                     
                     if (!isset($reroute['f'])) {
                         $reroute['f'] = [];
                     }
         
                     if (FilterService::multiple($filter['filter'])) {
-            
-                        if (!isset($filters[$filter['filter']])) {
+
+                        if (!isset($reroute['f'][$filter['filter']])) {
                             $reroute['f'][$filter['filter']] = [];
                         }
-            
+                        
                         $reroute['f'][$filter['filter']][] = $filter['value'];
             
                     } else {
@@ -392,6 +410,6 @@ class SearchController extends Controller
             }
         }
         
-        dump($reroute);exit;
+        return $reroute;
     }
 }

@@ -103,7 +103,7 @@
         <div data-role="filter-tag">
             Badkamers:
             minimaal {{ form_filters['bathrooms'] }}
-            <a href="#" data-role="remove-bedrooms-filter"><i class="fi-x"></i></a>
+            <a href="#" data-role="remove-bathrooms-filter"><i class="fi-x"></i></a>
         </div>
     {% endif %}
 
@@ -111,7 +111,7 @@
         {% set filters_active = true %}
         <div data-role="filter-tag">
             {{ form_filters['persons'] }} personen
-            <a href="#" data-role="remove-bedrooms-filter"><i class="fi-x"></i></a>
+            <a href="#" data-role="remove-persons-filter"><i class="fi-x"></i></a>
         </div>
     {% endif %}
 
@@ -120,7 +120,7 @@
         <div data-role="filter-tag">
             Weekend:
             {{ weekends[form_filters['weekend']] }}
-            <a href="#" data-role="remove-bedrooms-filter"><i class="fi-x"></i></a>
+            <a href="#" data-role="remove-weekend-filter"><i class="fi-x"></i></a>
         </div>
     {% endif %}
 

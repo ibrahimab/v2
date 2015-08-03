@@ -412,8 +412,8 @@ class SearchRepository implements SearchServiceRepositoryInterface
                                  ->add($expr->gt('FIND_IN_SET(:type_facility_01_' . $facility . ', t.features)', 0))
                                  ->add($expr->gt('FIND_IN_SET(:accommodation_facility_02_' . $facility . ', a.features)', 0));
 
-                $qb->setParameter('type_features_01_' . $facility, 1)
-                   ->setParameter('accommodation_features_02_' . $facility, 1);
+                $qb->setParameter('type_facility_01_' . $facility, 1)
+                   ->setParameter('accommodation_facility_02_' . $facility, 1);
 
                 break;
 
