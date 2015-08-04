@@ -60,58 +60,61 @@ class SearchController extends Controller
         $page     = intval($request->query->get('p'));
         $page     = ($page === 0 ? $page : ($page - 1));
         $per_page = intval($this->container->getParameter('app')['results_per_page']);
-        $offers   = [];
-        $prices   = [];
         $filters  = $request->query->get('f', []);
 
         array_walk_recursive($filters, function(&$v) {
             $v = intval($v);
         });
 
-        $formFilters   = [];
-        $surveyService = $this->get('app.api.booking.survey');
-        $seasonService = $this->get('app.api.season');
-        $searchService = $this->get('app.api.search');
+        $offers      = [];
+        $prices      = [];
+        $formFilters = [];
+        $typeIds     = [];
+        
+        $surveyService          = $this->get('app.api.booking.survey');
+        $seasonService          = $this->get('app.api.season');
+        $searchService          = $this->get('app.api.search');
+        $priceService           = $this->get('app.api.price');
         $generalSettingsService = $this->get('app.api.general.settings');
+        
         $searchBuilder = $searchService->build()
                                        ->limit($per_page)
                                        ->page($page)
                                        ->sort(SearchBuilder::SORT_BY_TYPE_SEARCH_ORDER, SearchBuilder::SORT_ORDER_ASC)
                                        ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0)
                                        ->filter($filters);
-
+        
+        $priceService->setPersons($request->query->get('pe'));
+        $priceService->getDataByPersons();
+        dump($priceService->getPrices());
+        exit;
         if ($request->query->has('w') && !$request->query->has('pe')) {
-
-            $priceService    = $this->get('app.api.price');
-            $restrictedTypes = $priceService->availableTypes($request->query->get('w'));
-
-            foreach ($restrictedTypes as $retrictedType) {
-
-                if (true === $retrictedType['offer']) {
-                    $offers[$retrictedType['id']] = true;
-                }
-            }
-
-            $searchBuilder->where(SearchBuilder::WHERE_TYPES, array_keys($restrictedTypes));
+            
+            /**
+             * weekend is known
+             * persons is not known
+             *
+             * get available types for selected weekend
+             * and set offers and type ids
+             */
+            $priceService->setWeekend($request->query->get('w'));
+            $priceService->getDataByWeekend();
+            dump($priceService->getPrices());
+            exit;
+            
+            $searchBuilder->where(SearchBuilder::WHERE_TYPES, $typeIds);
             $formFilters['weekend'] = $request->query->get('w');
         }
 
         if ($request->query->has('w') && $request->query->has('pe')) {
 
-            $priceService = $this->get('app.api.price');
-            $pricesTypes  = $priceService->pricesWithWeekendAndPersons($w, $pe);
-
-            foreach ($pricesTypes as $priceType) {
-
-                if (true === $priceType['offer']) {
-                    $offers[$priceType['id']] = true;
-                }
-
-                $prices[$priceType['id']] = $priceType['price'];
-            }
-
+            /**
+             * weekend is known
+             * persons is known
+             *
+             * get prices and offers with weekend and persons
+             */
             $searchBuilder->where(SearchBuilder::WHERE_TYPES, array_keys($pricesTypes));
-
             $formFilters['weekend'] = $w;
             $formFilters['persons'] = $pe;
         }
@@ -188,8 +191,6 @@ class SearchController extends Controller
             'filter_service' => $filterService,
             'custom_filters' => ['countries' => [], 'regions' => [], 'places' => [], 'accommodations' => [], 'types' => []],
             'form_filters'   => $formFilters,
-            'prices'         => $prices,
-            'offers'         => $offers,
             'destination'    => $destination,
             'weekends'       => $seasonService->weekends($seasons),
             'surveys'        => [],
@@ -197,17 +198,14 @@ class SearchController extends Controller
         ];
         
         $typeIds = $resultset->allTypeIds();
+        $priceService = $this->get('app.api.price');
 
-        if (!$request->query->has('pe')) {
+        if (!$request->has('w') && !$request->query->has('pe')) {
 
-            $pricesService  = $this->get('old.prices.wrapper');
-            $data['prices'] = $pricesService->get($typeIds);
-        }
-
-        if (!$request->query->has('w')) {
-
-            $priceService   = $this->get('app.api.price');
-            $data['offers'] = $priceService->offers($typeIds);
+            /**
+             * no weekend
+             * no persons
+             */
         }
 
         $surveyData = $surveyService->statsByTypes($typeIds);
@@ -217,8 +215,8 @@ class SearchController extends Controller
             $surveys[$survey['typeId']] = $survey;
         }
 
-        $resultset->setPrices($data['prices']);
-        $resultset->setOffers($data['offers']);
+        $resultset->setPrices($prices);
+        $resultset->setOffers($offers);
         $resultset->setSurveys($surveys);
         $resultset->sorter()->setOrderBy($s);
         $resultset->setMetadata();
