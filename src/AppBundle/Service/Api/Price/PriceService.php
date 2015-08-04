@@ -29,6 +29,26 @@ class PriceService
     private $additionalCosts;
     
     /**
+     * @var array
+     */
+    private $additionalCostsCache;
+    
+    /**
+     * @var array
+     */
+    private $additionalCostsPersonsCache;
+    
+    /**
+     * @var integer
+     */
+    private $additionalCostsSeasonId;
+    
+    /**
+     * @var array
+     */
+    private $additionCache;
+    
+    /**
      * @var SeasonConcern
      */
     private $season;
@@ -66,12 +86,16 @@ class PriceService
      */
     public function __construct(PriceServiceRepositoryInterface $priceServiceRepository)
     {
-        $this->priceServiceRepository = $priceServiceRepository;
-        $this->types                  = [];
-        $this->weekend                = null;
-        $this->persons                = null;
-        $this->prices                 = [];
-        $this->offers                 = [];
+        $this->priceServiceRepository      = $priceServiceRepository;
+        $this->types                       = [];
+        $this->weekend                     = null;
+        $this->persons                     = null;
+        $this->prices                      = [];
+        $this->offers                      = [];
+        $this->additionalCostsCache        = null;
+        $this->additionalCostsPersonsCache = null;
+        $this->additionCache               = [];
+        $this->additionalCostsSeasonId     = null;
     }
     
     public function setOldPricesWrapper($oldPricesWrapper)
@@ -144,6 +168,46 @@ class PriceService
     }
     
     /**
+     * @param integer $seasonId
+     */
+    public function setAdditionalCostsSeasonId($seasonId)
+    {
+        $this->additionalCostsSeasonId = $seasonId;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getAdditionalCostsSeasonId()
+    {
+        return $this->additionalCostsSeasonId;
+    }
+    
+    /**
+     * @return void
+     */
+    public function getAdditionalCostsCache()
+    {
+        if (null === $this->additionalCostsCache) {
+            $this->additionalCostsCache = $this->additionalCosts->get_complete_cache($this->season->get());
+        }
+        
+        return $this->additionalCostsCache;
+    }
+    
+    /**
+     * @return void
+     */
+    public function getAdditionalCostsPersonsCache()
+    {
+        if (null === $this->additionalCostsCache) {
+            $this->additionalCostsPersonsCache = $this->additionalCosts->get_complete_cache_per_persons($this->season->get(), $this->persons);
+        }
+        
+        return $this->additionalCostsCache;
+    }
+    
+    /**
      * This is a deprecated function
      * @TODO: fix this by refactoring it
      * @deprecated
@@ -178,7 +242,7 @@ class PriceService
     public function getDataByPersons()
     {
         $results = $this->priceServiceRepository->getDataByPersons($this->persons);
-        $costs   = $this->additionalCosts->get_complete_cache_per_persons($this->season->get(), $this->persons);
+        $costs   = $this->getAdditionalCostsPersonsCache();
 
         foreach ($results as $key => $result) {
             
@@ -250,10 +314,42 @@ class PriceService
     }
     
     /**
-     * @return void
+     * @param integer
+     * @param integer
+     * @param integer
+     * @return integer
      */
-    public function getAdditionalCostsCache()
+    public function getAdditionalCostsByType($type, $show, $maxResidents)
     {
-        $this->additionalCostsCache = $this->additionalCosts->get_complete_cache($this->season->get());
+        if (isset($this->additionCache[$type])) {
+            return $this->additionCache[$type];
+        }
+        
+        $cache    = $this->getAdditionalCostsCache();
+        $persons  = null === $this->persons ? $maxResidents : $this->persons;
+        $addition = 0;
+        $seasonId = $this->getAdditionalCostsSeasonId();
+        $addition = (isset($cache[$type]) && isset($cache[$type][$seasonId]) ? $cache[$type][$seasonId][$persons] : 0);
+        
+        if ($show === 1) {
+            
+            // arrangement
+            $addition = ($addition / $persons);
+            
+        } else {
+            
+            // accommodation
+            $costs = $this->getAdditionalCostsPersonsCache();
+            
+            if (null !== $this->persons && null !== $this->weekend && isset($costs[$type]) && isset($costs[$type][$this->weekend])) {
+                $addition += $costs[$type][$this->weekend];
+            }
+        }
+        
+        if ($type == 11417) {
+            dump($maxResidents);
+        }
+        
+        return $this->additionCache[$type] = $addition;
     }
 }

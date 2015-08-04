@@ -179,10 +179,11 @@ class SearchController extends Controller
         $javascript->set('app.filters.form.bathrooms',        $ba);
         $javascript->set('app.filters.form.sort',             $s);
 
-        $seasons = $seasonService->seasons();
-        $data    = [
+        $seasons  = $seasonService->seasons();
+        $seasonId = (isset($seasons[0]) ? $seasons[0]['id'] : 0);
+        $data     = [
 
-            'season'         => (isset($seasons[0]) ? $seasons[0]['id'] : 0),
+            'season'         => $seasonId,
             'resultset'      => $resultset,
             'filters'        => $filters,
             // instance needed to get constants easier from within twig template: constant('const', instance)
@@ -196,8 +197,9 @@ class SearchController extends Controller
         ];
         
         $typeIds = $resultset->allTypeIds();
-        $priceService = $this->get('app.api.price');
-
+        
+        $priceService->setAdditionalCostsSeasonId($seasonId);
+        
         if (!$request->query->has('w') && !$request->query->has('pe')) {
 
             /**
@@ -219,6 +221,7 @@ class SearchController extends Controller
         $resultset->setOffers($priceService->getOffers());
         $resultset->setSurveys($surveys);
         $resultset->sorter()->setOrderBy($s);
+        $resultset->setPriceService($priceService);
         $resultset->setMetadata();
         $resultset->setResale($this->get('app.concern.website')->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE));
         $resultset->sorter()->sort();

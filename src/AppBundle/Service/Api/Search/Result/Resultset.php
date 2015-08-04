@@ -2,6 +2,7 @@
 namespace AppBundle\Service\Api\Search\Result;
 use       AppBundle\Entity\Accommodation\Accommodation;
 use       AppBundle\Service\Api\Search\Result\Paginator\Paginator;
+use       AppBundle\Service\Api\Price\PriceService;
 use       AppBundle\AppTrait\LocaleTrait;
 use       Doctrine\ORM\QueryBuilder;
 use       Doctrine\ORM\Query;
@@ -40,6 +41,11 @@ class Resultset
      * @var Sorter
      */
     private $sorter;
+    
+    /**
+     * @var PriceService
+     */
+    private $priceService;
 
     /**
      * @var array
@@ -144,6 +150,9 @@ class Resultset
         return $this->paginator;
     }
 
+    /**
+     * @return Sorter
+     */
     public function sorter()
     {
         if (null === $this->sorter) {
@@ -153,6 +162,14 @@ class Resultset
         }
 
         return $this->sorter;
+    }
+    
+    /**
+     * @param PriceService $priceService
+     */
+    public function setPriceService(PriceService $priceService)
+    {
+        $this->priceService = $priceService;
     }
 
     /**
@@ -277,7 +294,9 @@ class Resultset
             foreach ($accommodation['types'] as $typeKey => $type) {
 
                 if (isset($this->prices[$type['id']]) && $this->prices[$type['id']] > 0) {
-                    $this->results[$key]['types'][$typeKey]['price'] = floatval($this->prices[$type['id']]);
+                    
+                    $this->results[$key]['types'][$typeKey]['price']  = floatval($this->prices[$type['id']]);
+                    $this->results[$key]['types'][$typeKey]['price'] += floatval($this->priceService->getAdditionalCostsByType($type['id'], $accommodation['show'], $type['maxResidents']));
                 }
 
                 if (isset($this->offers[$type['id']])) {
