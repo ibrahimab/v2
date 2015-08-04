@@ -122,6 +122,14 @@ class PriceService
     /**
      * @return array
      */
+    public function getTypes()
+    {
+        return $this->types;
+    }
+    
+    /**
+     * @return array
+     */
     public function getOffers()
     {
         return $this->offers;

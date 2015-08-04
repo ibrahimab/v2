@@ -84,10 +84,6 @@ class SearchController extends Controller
                                        ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0)
                                        ->filter($filters);
         
-        $priceService->setPersons($request->query->get('pe'));
-        $priceService->getDataByPersons();
-        dump($priceService->getPrices());
-        exit;
         if ($request->query->has('w') && !$request->query->has('pe')) {
             
             /**
@@ -98,11 +94,9 @@ class SearchController extends Controller
              * and set offers and type ids
              */
             $priceService->setWeekend($request->query->get('w'));
-            $priceService->getDataByWeekend();
-            dump($priceService->getPrices());
-            exit;
+            $priceService->getDataWithWeekendAndOrPersons();
             
-            $searchBuilder->where(SearchBuilder::WHERE_TYPES, $typeIds);
+            $searchBuilder->where(SearchBuilder::WHERE_TYPES, $priceService->getTypes());
             $formFilters['weekend'] = $request->query->get('w');
         }
 
@@ -114,7 +108,11 @@ class SearchController extends Controller
              *
              * get prices and offers with weekend and persons
              */
-            $searchBuilder->where(SearchBuilder::WHERE_TYPES, array_keys($pricesTypes));
+            $priceService->setWeekend($request->query->get('w'));
+            $priceService->setPersons($request->query->get('pe'));
+            $priceService->getDataWithWeekendAndOrPersons();
+            
+            $searchBuilder->where(SearchBuilder::WHERE_TYPES, $priceService->getTypes());
             $formFilters['weekend'] = $w;
             $formFilters['persons'] = $pe;
         }
@@ -200,12 +198,14 @@ class SearchController extends Controller
         $typeIds = $resultset->allTypeIds();
         $priceService = $this->get('app.api.price');
 
-        if (!$request->has('w') && !$request->query->has('pe')) {
+        if (!$request->query->has('w') && !$request->query->has('pe')) {
 
             /**
              * no weekend
              * no persons
              */
+            $priceService->setTypes($typeIds);
+            $priceService->getDataWithWeekendAndOrPersons();
         }
 
         $surveyData = $surveyService->statsByTypes($typeIds);
@@ -215,8 +215,8 @@ class SearchController extends Controller
             $surveys[$survey['typeId']] = $survey;
         }
 
-        $resultset->setPrices($prices);
-        $resultset->setOffers($offers);
+        $resultset->setPrices($priceService->getPrices());
+        $resultset->setOffers($priceService->getOffers());
         $resultset->setSurveys($surveys);
         $resultset->sorter()->setOrderBy($s);
         $resultset->setMetadata();
