@@ -15,7 +15,7 @@
     {% endset %}
 
     <article class="overview{{ accommodation.offer ? ' sale' }}">
-        <a href="{{ locale_path('show_type', {beginCode: country.startCode, typeId: accommodation.cheapest.id}) }}">
+        <a href="{{ locale_path('show_type', {beginCode: country.startCode, typeId: accommodation.cheapest.id}) }}" data-role="link-to-accpage">
             <div class="row">
                 <div class="title-ipad title medium-12 columns">
                     {{ ('type.kind.' ~ accommodation.kindIdentifier)|trans|capitalize ~ ' ' ~ accommodation.localeName }}
@@ -46,12 +46,12 @@
                                 </div>
                             </div>
                             <div class="small-12 medium-5 large-4 columns price-details">
-                                
+
                                 {% set skipas = true %}
                                 {% if accommodation.show == 3 or resale %}
                                     {% set skipas = false %}
                                 {% endif %}
-                                
+
                                 {% if accommodation.cheapest.price > 0 %}
                                     {% if skipas %}
                                         <span class="price-info">Prijs per persoon per week, vanaf</span>
@@ -66,11 +66,11 @@
                                         <span class="price radius">&euro; {{ accommodation.cheapest.price|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
                                     </div>
                                 {% endif %}
-                                
+
                                 {% if skipas %}
                                     <span class="price-inc"><i class="sprite sprite-icon-skipass"></i>Inclusief skipas</span>
                                 {% endif %}
-                                
+
                             </div>
                         </div>
                         <p>{{ accommodation.localeShortDescription }}</p>

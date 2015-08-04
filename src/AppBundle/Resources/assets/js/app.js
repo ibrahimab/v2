@@ -306,6 +306,36 @@
             }
         });
 
+        // var to prevent unwanted clickthrough to accpage when clicking a tooltip-icon
+        var clickthrough_to_accpage = true;
+
+        body.on('mouseenter', '[data-role="ajax-tooltip"]', function(event) {
+            clickthrough_to_accpage = false;
+        });
+
+        body.on('mouseleave', '[data-role="ajax-tooltip"]', function(event) {
+            clickthrough_to_accpage = true;
+        });
+
+        body.on('touchstart', '[data-role="ajax-tooltip"]', function(event) {
+            clickthrough_to_accpage = false;
+        });
+
+        body.on('touchend', '[data-role="ajax-tooltip"]', function(event) {
+            clickthrough_to_accpage = true;
+        });
+
+        // check if user wants to clickthrough to accpage or is clicking a tooltip-icon
+        body.on('click', '[data-role="link-to-accpage"]', function(event) {
+            if( clickthrough_to_accpage ) {
+                return true;
+            } else {
+                // click on tooltip-icon: no action
+                event.preventDefault();
+                return false;
+            }
+        });
+
 
         /**
          * function to scroll the screen vertically to make an element that is below the fold visible

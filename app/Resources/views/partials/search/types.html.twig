@@ -15,7 +15,7 @@
 
             {% for type in types %}
 
-                <a class="tb-r{{ type.offer ? ' sale-type' }}" href="{{ locale_path('show_type', {'beginCode': accommodation.place.country.startCode, 'typeId': type.id}) }}">
+                <a class="tb-r{{ type.offer ? ' sale-type' }}" href="{{ locale_path('show_type', {'beginCode': accommodation.place.country.startCode, 'typeId': type.id}) }}" data-role="link-to-accpage">
                     <div class="tb-c tb-c-1">
                         <i class="sprite sprite-icon-torso"></i>
                         {{ ( type.optimalResidents == type.maxResidents ? type.optimalResidents : (type.optimalResidents ~ ' - ' ~ type.maxResidents) ) }}
