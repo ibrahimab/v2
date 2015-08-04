@@ -99,11 +99,11 @@ class Sorter
             if (count($priceGroups[$groupId]) > 0) {
                 $min = min($priceGroups[$groupId]);
             }
-            dump($min);
+            
             foreach ($priceGroups[$groupId] as $priceKey => $price) {
 
                 if ($min === $price) {
-                    $accommodations[$groupId]['cheapest'] = ['id' => $priceTypesGroups[$groupId][$priceKey], 'price' => $price];
+                    $accommodations[$groupId]['cheapest'] = ['id' => $priceTypesGroups[$groupId][$priceKey], 'price' => ceil($price)];
                 }
             }
         }
@@ -158,7 +158,10 @@ class Sorter
         switch ($this->getOrderBy()) {
 
             case self::SORT_ASC:
+            
+                $key .= ($type['price'] > 0 ? 1 : 9);
                 $key .= substr('0000000' . number_format($type['price'], 2, '', ''), -7) . '-';
+                
             break;
 
             case self::SORT_DESC:

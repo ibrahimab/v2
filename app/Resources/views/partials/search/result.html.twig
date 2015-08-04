@@ -46,11 +46,13 @@
                                 </div>
                             </div>
                             <div class="small-12 medium-5 large-4 columns price-details">
+                                
+                                {% set skipas = true %}
+                                {% if accommodation.show == 3 or resale %}
+                                    {% set skipas = false %}
+                                {% endif %}
+                                
                                 {% if accommodation.cheapest.price > 0 %}
-                                    {% set skipas = true %}
-                                    {% if accommodation.show == 3 or resale %}
-                                        {% set skipas = false %}
-                                    {% endif %}
                                     {% if skipas %}
                                         <span class="price-info">Prijs per persoon per week, vanaf</span>
                                     {% else %}
@@ -63,10 +65,12 @@
                                         </div>
                                         <span class="price radius">&euro; {{ accommodation.cheapest.price|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
                                     </div>
-                                    {% if skipas %}
-                                        <span class="price-inc"><i class="sprite sprite-icon-skipass"></i>Inclusief skipas</span>
-                                    {% endif %}
                                 {% endif %}
+                                
+                                {% if skipas %}
+                                    <span class="price-inc"><i class="sprite sprite-icon-skipass"></i>Inclusief skipas</span>
+                                {% endif %}
+                                
                             </div>
                         </div>
                         <p>{{ accommodation.localeShortDescription }}</p>

@@ -127,7 +127,7 @@ class Resultset
                 $this->results[$key]['types'][$typeKey]['sortKey']                    = '-';
                 $this->results[$key]['types'][$typeKey]['localeName']                 = $this->getLocaleValue('name', $type);
             }
-
+            
             $this->types[$accommodation['id']] =& $this->results[$key]['types'];
         }
     }
