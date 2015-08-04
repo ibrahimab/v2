@@ -15,6 +15,41 @@ use       Doctrine\ORM\Query;
 class PriceRepository extends BaseRepository implements PriceServiceRepositoryInterface
 {
     /**
+     * @param array $types
+     * @return array
+     * @deprecated
+     */
+    public function offers($types)
+    {
+        $connection = $this->getEntityManager()->getConnection();
+        $qb         = $connection->createQueryBuilder();
+        $expr       = $qb->expr();
+
+        $qb->select('`type_id` AS `id`, `kortingactief` AS `discountActive`, `aanbiedingskleur_korting` AS `offerDiscountColor`')
+           ->from('tarief', 't')
+           ->where($expr->in('type_id', $types))
+           ->andWhere('kortingactief = 1')
+           ->andWhere('aanbiedingskleur_korting = 1')
+           ->andWhere($expr->gt('week', (new \DateTime())->getTimestamp()));
+
+        $statement = $qb->execute();
+        $results = [];
+        $results   = $statement->fetchAll();
+        $offers    = [];
+
+        foreach ($results as $result) {
+
+            $result = array_map('intval', $result);
+
+            if (1 === $result['discountActive'] && 1 === $result['offerDiscountColor']) {
+                $offers[$result['id']] = true;
+            }
+        }
+        
+        return $offers;
+    }
+    
+    /**
      * @param integer $weekend
      * @return array
      */
@@ -35,7 +70,7 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
            ->andWhere('tp.seizoen_id = s.seizoen_id')
            ->andWhere('tp.week = tr.week')
            ->andWhere($expr->gt('tr.week', ':today'))
-           ->andWhere($expr->eq('s.tonen', ':show'))
+           ->andWhere($expr->gte('s.tonen', ':show'))
            ->andWhere($expr->eq('s.type', ':season'))
            ->andWhere($expr->eq('tr.beschikbaar', ':available'))
            ->andWhere($bruto)
@@ -45,7 +80,7 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
                'today'     => time(),
                'show'      => 3,
                'season'    => $this->getSeason(),
-               'available' => true,
+               'available' => 1,
            ]);
         
         if (null !== $weekend) {
@@ -113,7 +148,7 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
            ->andWhere($expr->eq('t.tonen', 1))
            ->andWhere($expr->eq('t.tonenzoekformulier', 1))
            ->andWhere($expr->gt('tr.week', ':today'))
-           ->andWhere($expr->eq('s.tonen', ':show'))
+           ->andWhere($expr->gte('s.tonen', ':show'))
            ->andWhere($expr->eq('s.type', ':season'))
            ->andWhere($expr->eq('tr.beschikbaar', ':available'))
            ->andWhere($bruto)
@@ -127,7 +162,7 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
                'season'    => $this->getSeason(),
                'website'   => $this->getWebsite(),
                'weekend'   => $weekend,
-               'available' => true,
+               'available' => 1,
            ]);
 
         $statement = $qb->execute();
@@ -182,13 +217,13 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
                            ->add($expr->gt('tr.c_bruto', 0))
                            ->add($expr->gt('tr.arrangementsprijs', 0));
         
-        $qb->select('tr.type_id, tr.c_verkoop_site AS price, tr.week, tr.kortingactief, tr.aanbiedingskleur_korting')
+        $qb->select('tr.type_id, tr.c_verkoop_site AS prijs, tr.week, tr.kortingactief, tr.aanbiedingskleur_korting')
            ->from('accommodatie a, type t, tarief tr, seizoen s', '')
            ->where('tr.type_id = t.type_id')
            ->andWhere('tr.seizoen_id = s.seizoen_id')
            ->andWhere('t.accommodatie_id = a.accommodatie_id')
            ->andWhere($expr->gt('tr.week', ':today'))
-           ->andWhere($expr->eq('s.tonen', ':show'))
+           ->andWhere($expr->gte('s.tonen', ':show'))
            ->andWhere($expr->eq('s.type', ':season'))
            ->andWhere($expr->eq('tr.beschikbaar', ':available'))
            ->andWhere($bruto)
@@ -205,7 +240,7 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
                'show'      => 3,
                'season'    => $this->getSeason(),
                'website'   => $this->getWebsite(),
-               'available' => true,
+               'available' => 1,
            ]);
            
         $statement = $qb->execute();
@@ -225,8 +260,8 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
                 ];
             }
             
-            if ($result['price'] > 0) {
-                $data[$result['type_id']]['prices'][(int)$result['week']] = floatval($result['price']);
+            if ($result['prijs'] > 0) {
+                $data[$result['type_id']]['prices'][(int)$result['week']] = floatval($result['prijs']);
             }
         }
         

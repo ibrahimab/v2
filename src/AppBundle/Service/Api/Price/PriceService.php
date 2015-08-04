@@ -144,6 +144,16 @@ class PriceService
     }
     
     /**
+     * This is a deprecated function
+     * @TODO: fix this by refactoring it
+     * @deprecated
+     */
+    public function offers($types)
+    {
+        return $this->priceServiceRepository->offers($types);
+    }
+    
+    /**
      * @return void
      */
     public function getDataByWeekend()
@@ -237,5 +247,13 @@ class PriceService
              */
             $this->getDataByWeekendAndPersons();
         }
+    }
+    
+    /**
+     * @return void
+     */
+    public function getAdditionalCostsCache()
+    {
+        $this->additionalCostsCache = $this->additionalCosts->get_complete_cache($this->season->get());
     }
 }
