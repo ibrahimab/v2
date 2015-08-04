@@ -5,6 +5,9 @@
  * @version    1.0.0
  * @since      1.0.0
  */
+
+@import "globals.less";
+
 @media only screen and (min-width: 40em) {
 
     body.smallfix {
@@ -81,6 +84,22 @@ section.area-countries {
     .accom-desc {
         padding: 1.03em 0 0 1.03em;
     }
+}
+
+div.header {
+
+    a#contact-chat, a#opening-hours-contact {
+        border-bottom:1px dotted #193761;
+        text-decoration: none;
+
+        &:hover {
+            border-bottom-style: solid;
+        }
+    }
+}
+
+footer a {
+    color: @link-color;
 }
 
 footer ul li a {
@@ -523,11 +542,11 @@ div.tb {
         }
 
         &.sale-type {
-            
-            div.tb-c.tb-c-7 { 
-                
+
+            div.tb-c.tb-c-7 {
+
                 color: #d4213b;
-                
+
                 span.table-price { color: #d4213b; }
             }
         }
@@ -803,26 +822,26 @@ footer ul.checked i { margin-top: 0.7rem; }
 .types_circle div{display:block;height:0.95rem;line-height:normal;text-align:center;width:auto;font-size:0.7rem;}
 
 #search-results #search-filters-active div:last-child {
-    
+
     background-color: #e9edf8;
     display: inline-block;
-    
+
     a {
-        
+
         color: #193761;
         display: inline;
     }
 }
 
 #search-results .action-buttons {
-    
+
     a:hover {
-        
+
         div { text-decoration: underline; }
     }
-    
+
     div {
-        
+
         float: left;
         background-color: #193761;
         display: inline-block;
@@ -831,7 +850,7 @@ footer ul.checked i { margin-top: 0.7rem; }
         padding: 0.2rem 0.75rem 0.2rem 0.5rem;
         border: 1px solid #d9d9d9;
         color: #FFFFFF;
-        
+
         i {
             margin: 0 0 0 .5rem;
         }
