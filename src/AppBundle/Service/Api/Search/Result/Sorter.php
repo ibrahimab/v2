@@ -50,39 +50,73 @@ class Sorter
      */
     public function sort()
     {
-        $sorted         = [];
-        $sortable       = [];
-        $accommodations = [];
-
+        $sortable         = [];
+        $resultGroups     = [];
+        $accommodations   = [];
+        $priceGroups      = [];
+        $priceTypesGroups = [];
+        $cheapest         = [];
+        
         foreach ($this->resultset->results as $accommodation) {
-
-            $accommodations[$accommodation['id']] = $accommodation;
-
-            foreach ($accommodation['types'] as $type) {
-
-                $accommodationId            = $type['accommodationId'];
-                $sortable[$type['sortKey']] = $accommodationId;
+            
+            $types = $accommodation['types'];
+            unset($accommodation['types']);
+            
+            foreach ($types as $type) {
+                
+                $groupId                    = ($type['singleInSearch'] ? ($accommodation['id'] . '_' . $type['id']) : $accommodation['id']);
+                $accommodations[$groupId]   = $accommodation;
+                $sortable[$type['sortKey']] = $groupId;
                 $accommodationSortKey       = $this->generateAccommodationSortKey($type);
+                
+                if (!isset($resultGroups[$groupId])) {
+                    $resultGroups[$groupId] = [];
+                }
+                
+                $resultGroups[$groupId][$accommodationSortKey] = $type;
+            }
+        }
+        
+        ksort($sortable);
+        
+        foreach ($resultGroups as $groupId => $types) {
 
-                if (!isset($sorted[$accommodationId])) {
-                    $sorted[$accommodationId] = [];
+            foreach ($types as $typeKey => $type) {
+
+                if (!isset($priceGroups[$groupId])) {
+                    $priceGroups[$groupId] = [];
                 }
 
-                $sorted[$accommodationId][$accommodationSortKey] = $type;
+                if ($type['price'] > 0) {
+                    
+                    $priceGroups[$groupId][]      = $type['price'];
+                    $priceTypesGroups[$groupId][] = $type['id'];
+                }
+            }
+
+            $min = 0;
+            
+            if (count($priceGroups[$groupId]) > 0) {
+                $min = min($priceGroups[$groupId]);
+            }
+            dump($min);
+            foreach ($priceGroups[$groupId] as $priceKey => $price) {
+
+                if ($min === $price) {
+                    $accommodations[$groupId]['cheapest'] = ['id' => $priceTypesGroups[$groupId][$priceKey], 'price' => $price];
+                }
             }
         }
 
-        ksort($sortable);
-
         $results = [];
-        foreach ($sortable as $sortKey => $accommodationId) {
+        foreach ($sortable as $sortKey => $groupId) {
 
-            ksort($sorted[$accommodationId]);
+            ksort($resultGroups[$groupId]);
 
-            $results[$accommodationId]          = $accommodations[$accommodationId];
-            $results[$accommodationId]['types'] = array_values($sorted[$accommodationId]); // reset keys
+            $results[$groupId]          = $accommodations[$groupId];
+            $results[$groupId]['types'] = array_values($resultGroups[$groupId]); // reset keys
         }
-
+        
         $this->resultset->setSortedResults(array_values($results)); // reset keys
     }
 
@@ -134,16 +168,14 @@ class Sorter
             case self::SORT_NORMAL:
             default:
 
-                $key .= ($type['price'] > 0 ? 1 : 0);
-                $key .= 'AAA';
-                $key .= $order . '-';
+                $key .= ($type['price'] > 0 ? 1 : 9);
+                $key .= 'AAA' . $order . '-';
         }
 
         $key .= $order . '-';
-        $key .= $accommodation['place']['region']['localeName'] . '-' . $accommodation['place']['localeName'] . '-' . $accommodation['localeName'] . '-' . sprintf('%03d', $type['maxResidents']) . '-';
-        $key .= $accommodation['place']['region']['localeName'] . '-' . $accommodation['place']['localeName'] . '-' . $accommodation['localeName'] . '-' . sprintf('%03d', $type['maxResidents']) . '-';
-        $key .= $type['id'];
-
+        $key .= $accommodation['place']['region']['localeName'] . '-' . $accommodation['place']['localeName'] . '-' . $accommodation['localeName'] . '-' . sprintf('%03d', $type['maxResidents']) . '-' . $type['id'];
+        $key .= $accommodation['place']['region']['localeName'] . '-' . $accommodation['place']['localeName'] . '-' . $accommodation['localeName'] . '-' . sprintf('%03d', $type['maxResidents']) . '-' . $type['id'];
+        
         return $key;
     }
 

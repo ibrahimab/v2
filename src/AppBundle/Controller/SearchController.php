@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Controller;
+use       AppBundle\Concern\WebsiteConcern;
 use       AppBundle\Annotation\Breadcrumb;
 use       AppBundle\Service\Api\Search\SearchBuilder;
 use       AppBundle\Service\Api\Search\FilterBuilder;
@@ -221,6 +222,7 @@ class SearchController extends Controller
         $resultset->setSurveys($surveys);
         $resultset->sorter()->setOrderBy($s);
         $resultset->setMetadata();
+        $resultset->setResale($this->get('app.concern.website')->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE));
         $resultset->sorter()->sort();
 
         $custom_filter_entities = $searchService->findOnlyNames($c, $r, $pl, $a, $t);

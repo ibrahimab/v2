@@ -340,6 +340,13 @@ class Type implements TypeServiceEntityInterface
      * @ORM\Column(name="zoekvolgorde", type="smallint")
      */
     private $searchOrder;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="apart_tonen_in_zoekresultaten", type="boolean")
+     */
+    private $singleInSearch;
 
     /**
      * @var SurveyServiceEntityInterface

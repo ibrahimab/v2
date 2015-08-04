@@ -80,6 +80,11 @@ class Resultset
      * @var array
      */
     public $sortKeys;
+    
+    /**
+     * @var boolean
+     */
+    public $resale;
 
 
     /**
@@ -239,7 +244,7 @@ class Resultset
      */
     public function setPrices($prices)
     {
-        $this->prices = $prices;
+        $this->prices = array_map('ceil', $prices);
     }
 
     /**
@@ -272,13 +277,12 @@ class Resultset
             foreach ($accommodation['types'] as $typeKey => $type) {
 
                 if (isset($this->prices[$type['id']]) && $this->prices[$type['id']] > 0) {
-
-                    $this->results[$key]['types'][$typeKey]['price'] = $this->prices[$type['id']];
-                    $this->results[$key]['prices'][]                 = $this->prices[$type['id']];
-                    $this->results[$key]['prices_types'][]           = $typeKey;
+                    $this->results[$key]['types'][$typeKey]['price'] = floatval($this->prices[$type['id']]);
                 }
 
                 if (isset($this->offers[$type['id']])) {
+                    
+                    $this->results[$key]['offer']                    = true;
                     $this->results[$key]['types'][$typeKey]['offer'] = true;
                 }
 
@@ -289,23 +293,6 @@ class Resultset
                 }
 
                 $this->results[$key]['types'][$typeKey]['sortKey'] = $this->sorter()->generateSortKey($this->results[$key], $this->results[$key]['types'][$typeKey]);
-            }
-
-            if (count($this->results[$key]['prices']) > 0) {
-
-                $this->results[$key]['price'] = min($this->results[$key]['prices']);
-
-                foreach ($this->results[$key]['prices'] as $priceKey => $price) {
-
-                    if ($price === $this->results[$key]['price']) {
-                        
-                        $type = $this->results[$key]['types'][$this->results[$key]['prices_types'][$priceKey]];
-                        $this->results[$key]['cheapest'] = ['id' => $type['id'], 'price' => $type['price']];
-                    }
-                }
-
-                unset($this->results[$key]['prices']);
-                unset($this->results[$key]['prices_types']);
             }
         }
     }
@@ -324,6 +311,14 @@ class Resultset
     public function setSortedResults($results)
     {
         $this->results = $results;
+    }
+    
+    /**
+     * @param boolean $resale
+     */
+    public function setResale($resale)
+    {
+        $this->resale = $resale;
     }
 
     /**

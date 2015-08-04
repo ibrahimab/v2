@@ -20,31 +20,31 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
      */
     public function offers($types)
     {
-        $qb   = $this->createQueryBuilder('pr');
-        $expr = $qb->expr();
+        $connection = $this->getEntityManager()->getConnection();
+        $qb         = $connection->createQueryBuilder();
+        $expr       = $qb->expr();
 
-        $qb->select('pr.id, pr.discountActive, pr.offerDiscountColor')
-           ->where($expr->in('pr.id', ':types'))
-           ->andWhere($expr->eq('pr.discountActive', ':discountActive'))
-           ->andWhere($expr->eq('pr.offerDiscountColor', ':offerDiscountColor'))
-           ->andWhere($expr->gte('pr.weekend', ':today'))
-           ->setParameters([
+        $qb->select('`type_id` AS `id`, `kortingactief` AS `discountActive`, `aanbiedingskleur_korting` AS `offerDiscountColor`')
+           ->from('tarief', 't')
+           ->where($expr->in('type_id', $types))
+           ->andWhere('kortingactief = 1')
+           ->andWhere('aanbiedingskleur_korting = 1')
+           ->andWhere($expr->gt('week', (new \DateTime())->getTimestamp()));
 
-               'types'              => $types,
-               'today'              => (new \DateTime())->getTimestamp(),
-               'discountActive'     => true,
-               'offerDiscountColor' => true,
-           ]);
-
-        $results = $qb->getQuery()->getResult(Query::HYDRATE_ARRAY);
+        $statement = $qb->execute();
+        $results = [];
+        $results   = $statement->fetchAll();
+        $offers    = [];
 
         foreach ($results as $result) {
 
-            if (true === $result['discountActive'] && true === $result['offerDiscountColor']) {
+            $result = array_map('intval', $result);
+
+            if (1 === $result['discountActive'] && 1 === $result['offerDiscountColor']) {
                 $offers[$result['id']] = true;
             }
         }
-
+        
         return $offers;
     }
 
