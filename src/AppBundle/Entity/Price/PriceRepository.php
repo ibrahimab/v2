@@ -251,10 +251,6 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
 
         foreach ($results as $result) {
             
-            if ($result['type_id'] == 10535) {
-                dump('test');exit;
-            }
-            
             if (!isset($data[$result['type_id']])) {
             
                 $data[$result['type_id']] = [
