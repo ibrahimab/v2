@@ -173,9 +173,10 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
             
             $data[] = [
                 
-                'id'    => $result['type_id'],
-                'offer' => (1 === (int)$result['kortingactief'] && 1 === (int)$result['aanbiedingskleur_korting']),
-                'price' => floatval($result['prijs']),
+                'id'            => $result['type_id'],
+                'offer'         => (1 === (int)$result['kortingactief'] && 1 === (int)$result['aanbiedingskleur_korting']),
+                'price'         => floatval($result['prijs']),
+                'accommodation' => true,
             ];
         }
         
@@ -250,13 +251,18 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
 
         foreach ($results as $result) {
             
+            if ($result['type_id'] == 10535) {
+                dump('test');exit;
+            }
+            
             if (!isset($data[$result['type_id']])) {
             
                 $data[$result['type_id']] = [
                 
-                    'id'     => $result['type_id'],
-                    'offer'  => (1 === (int)$result['kortingactief'] && 1 === (int)$result['aanbiedingskleur_korting']),
-                    'prices' => [],
+                    'id'            => $result['type_id'],
+                    'offer'         => (1 === (int)$result['kortingactief'] && 1 === (int)$result['aanbiedingskleur_korting']),
+                    'prices'        => [],
+                    'accommodation' => true,
                 ];
             }
             

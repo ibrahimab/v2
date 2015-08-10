@@ -209,6 +209,17 @@ class SearchController extends Controller
             $priceService->setTypes($typeIds);
             $priceService->getDataWithWeekendAndOrPersons();
         }
+        
+        if (!$request->query->has('w') && $request->query->has('pe')) {
+            
+            /**
+             * no weekend
+             * persons
+             */
+            $priceService->setPersons($request->query->get('pe'));
+            $priceService->setTypes($typeIds);
+            $priceService->getDataWithWeekendAndOrPersons();
+        }
 
         $surveyData = $surveyService->statsByTypes($typeIds);
         $surveys    = [];
@@ -216,15 +227,20 @@ class SearchController extends Controller
         foreach ($surveyData as $survey) {
             $surveys[$survey['typeId']] = $survey;
         }
-
+        
         $resultset->setPrices($priceService->getPrices());
         $resultset->setOffers($priceService->getOffers());
+        $resultset->setIsAccommodations($priceService->getAccommodations());
         $resultset->setSurveys($surveys);
         $resultset->sorter()->setOrderBy($s);
         $resultset->setPriceService($priceService);
         $resultset->setMetadata();
         $resultset->setResale($this->get('app.concern.website')->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE));
         $resultset->sorter()->sort();
+        
+        if ($request->query->has('pe')) {
+            $resultset->sorter()->setPersons(intval($request->query->get('pe')));
+        }
 
         $custom_filter_entities = $searchService->findOnlyNames($c, $r, $pl, $a, $t);
         foreach ($custom_filter_entities as $entity) {

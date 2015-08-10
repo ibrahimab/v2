@@ -77,6 +77,11 @@ class PriceService
      * @var array
      */
     private $offers;
+    
+    /**
+     * @var array
+     */
+    private $accommodations;
 
 
     /**
@@ -92,6 +97,7 @@ class PriceService
         $this->persons                     = null;
         $this->prices                      = [];
         $this->offers                      = [];
+        $this->accommodations              = [];
         $this->additionalCostsCache        = null;
         $this->additionalCostsPersonsCache = null;
         $this->additionCache               = [];
@@ -166,6 +172,15 @@ class PriceService
     {
         return $this->prices;
     }
+    
+    /**
+     * @var array
+     * @return array
+     */
+    public function getAccommodations()
+    {
+        return $this->accommodations;
+    }
 
     /**
      * @param integer $seasonId
@@ -204,7 +219,7 @@ class PriceService
             $this->additionalCostsPersonsCache = $this->additionalCosts->get_complete_cache_per_persons($this->season->get(), $this->persons);
         }
 
-        return $this->additionalCostsCache;
+        return $this->additionalCostsPersonsCache;
     }
 
     /**
@@ -231,8 +246,13 @@ class PriceService
             if (true === $result['offer']) {
                 $this->offers[$result['id']] = $result['offer'];
             }
+            
+            if (isset($result['accommodation']) && true == $result['accommodation']) {
+                $this->accommodationKinds[$result['id']] = true;
+            }
 
-            $this->prices[$result['id']] = $result['price'];
+            $this->prices[$result['id']]             = $result['price'];
+            $this->accommodationKinds[$result['id']] = true;
         }
     }
 
@@ -243,13 +263,21 @@ class PriceService
     {
         $results = $this->priceServiceRepository->getDataByPersons($this->persons);
         $costs   = $this->getAdditionalCostsPersonsCache();
-
+        
         foreach ($results as $key => $result) {
 
             $this->types[] = $result['id'];
 
             if (true === $result['offer']) {
                 $this->offers[$result['id']] = $result['offer'];
+            }
+            
+            if (isset($result['accommodation']) && true == $result['accommodation']) {
+                $this->accommodations[$result['id']] = true;
+            }
+            
+            if (isset($result['price'])) {
+                $this->prices[$result['id']] = $result['price'];
             }
 
             if (isset($result['prices'])) {
@@ -303,6 +331,14 @@ class PriceService
              */
             $this->getDataByWeekend();
         }
+        
+        if (null === $this->weekend && null !== $this->persons) {
+            
+            /**
+             * Persons is selected
+             */
+            $this->getDataByPersons();
+        }
 
         if (null !== $this->weekend && null !== $this->persons) {
 
@@ -355,6 +391,6 @@ class PriceService
             }
         }
 
-        return $this->additionCache[$type] = $addition;
+        return $this->additionCache[$type] = ceil($addition);
     }
 }

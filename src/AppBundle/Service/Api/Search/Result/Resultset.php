@@ -76,6 +76,11 @@ class Resultset
      * @var array
      */
     public $offers;
+    
+    /**
+     * @var array
+     */
+    public $isAccommodation;
 
     /**
      * @var array
@@ -279,6 +284,16 @@ class Resultset
     {
         $this->surveys = $surveys;
     }
+    
+    /**
+     * show=3
+     *
+     * @param array
+     */
+    public function setIsAccommodations($accommodations)
+    {
+        $this->accommodations = $accommodations;
+    }
 
     /**
      * @return void
@@ -309,6 +324,10 @@ class Resultset
 
                     $this->results[$key]['types'][$typeKey]['surveyCount']                = $this->surveys[$type['id']]['surveyCount'];
                     $this->results[$key]['types'][$typeKey]['surveyAverageOverallRating'] = $this->surveys[$type['id']]['surveyAverageOverallRating'];
+                }
+                
+                if (isset($this->isAccommodation[$type['id']])) {
+                    $this->results[$key]['types'][$typeKey]['accommodation'] = true === $this->isAccommodation[$type['id']];
                 }
 
                 $this->results[$key]['types'][$typeKey]['sortKey'] = $this->sorter()->generateSortKey($this->results[$key], $this->results[$key]['types'][$typeKey]);
