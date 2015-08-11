@@ -130,28 +130,24 @@
                             </select>
                         </div>
                         <div class="table-wrapper">
+                            {% for kind in options %}
                             <table>
                                 <thead>
                                     <tr>
-                                        <th><span class="price has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide prijsinformatie bij Ski's volwassen]">Ski's volwassen<i class="fi-info"></i></span></th>
+                                        <th><span class="price has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide prijsinformatie bij Ski's volwassen]">{{ kind.name }}<i class="fi-info"></i></span></th>
                                         <th>Prijs</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {% for part in kind.parts %}
                                     <tr>
-                                        <td>Huur Bronze Schoenen</td>
-                                        <td>&euro; 27,50</td>
+                                        <td>{{ part.name }}</td>
+                                        <td>&euro; {{ part.price }}</td>
                                     </tr>
-                                    <tr>
-                                        <td>Huur Bronze Ski's + Stokken</td>
-                                        <td>&euro; 57,50</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Huur Bronze Ski's + Schoenen + Stokken</td>
-                                        <td>&euro; 75,-</td>
-                                    </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
+                            {% endfor %}
                         </div>
                     </div>
                     <div id="types-other" class="table-wrapper">

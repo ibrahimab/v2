@@ -90,6 +90,7 @@ class OptionRepository implements OptionServiceRepositoryInterface
            ->where('vo.optie_soort_id = a.optie_soort_id')
            ->andWhere('vo.optie_groep_id = a.optie_groep_id')
            ->andWhere('t.accommodatie_id = a.accommodatie_id')
+           ->andWhere('vo.optie_onderdeel_id = ta.optie_onderdeel_id')
            ->andWhere($expr->eq('t.type_id', ':type'))
            ->andWhere($expr->gte('ta.week', ':week'))
            ->andWhere($expr->gte('ta.beschikbaar', ':available'))
@@ -100,12 +101,12 @@ class OptionRepository implements OptionServiceRepositoryInterface
                'week'      => time(),
                'available' => 1,
            ]);
-           dump($qb->getSQL());exit;
+           
         $statement = $qb->execute();
         $locale    = $this->getLocale();
         $results   = $statement->fetchAll();
         $tree      = [];
-        dump($results);exit;
+        
         foreach ($results as $result) {
             
             switch ($locale) {
@@ -132,7 +133,7 @@ class OptionRepository implements OptionServiceRepositoryInterface
             }
             
             if (!isset($tree[$result['optie_soort_id']])) {
-                $tree[$result['optie_soort_id']] = ['kind' => $kind, 'parts' => []];
+                $tree[$result['optie_soort_id']] = ['name' => $kind, 'parts' => []];
             }
             
             $tree[$result['optie_soort_id']]['parts'][] = [
@@ -142,8 +143,6 @@ class OptionRepository implements OptionServiceRepositoryInterface
                 'price' => $result['verkoop'],
             ];
         }
-        
-        // dump($tree);exit;
         
         return $tree;
     }
