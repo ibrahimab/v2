@@ -36,15 +36,6 @@ class OptionService
     
     public function options($type)
     {
-        $wrapper = $this->container->get('old.rate.table.wrapper');
-        $wrapper->setType($type);
-        
-        $seasons       = $wrapper->getSeasonRates();
-        $accommodation = $this->accommodation($type->getAccommodation());
-    }
-    
-    public function accommodation($accommodation)
-    {
-        return $this->optionServiceRepository->accommodation($accommodation);
+        return $this->optionServiceRepository->options($type);
     }
 }

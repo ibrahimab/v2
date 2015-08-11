@@ -80,6 +80,9 @@ class TypesController extends Controller
 
         $userService   = $this->get('app.api.user');
         $userService->addViewedAccommodation($type);
+        
+        $optionService = $this->get('app.api.option');
+        $options       = $optionService->options($type->getId());
 
         return [
 
@@ -89,6 +92,7 @@ class TypesController extends Controller
             'features'           => array_keys($features),
             'prices'             => $prices,
             'offers'             => $offers,
+            'options'            => $options,
         ];
     }
 
@@ -159,7 +163,7 @@ class TypesController extends Controller
         $optionService = $this->get('app.api.option');
 
         $type          = $typeService->find(['id' => 240]);
-        $options       = $optionService->options($type);
+        $options       = $optionService->options($type->getId());
 
         return new Response();
     }
