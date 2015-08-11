@@ -314,6 +314,24 @@ class PriceService
             if (isset($result['price'])) {
                 $this->prices[$result['id']] = $result['price'];
             }
+
+            if (isset($result['prices'])) {
+
+                // add with additional costs
+                if (isset($costs[$result['id']])) {
+
+                    foreach ($result['prices'] as $weekend => $price) {
+
+                        if (isset($costs[$result['id']][$weekend])) {
+                            $results[$key]['prices'][$weekend] += floatval($costs[$result['id']][$weekend]);
+                        }
+                    }
+                }
+
+                if (count($results[$key]['prices']) > 0) {
+                    $this->prices[$result['id']] = min($results[$key]['prices']);
+                }
+            }
             
             if (true === $result['offer']) {
                 $this->offers[$result['id']] = $result['offer'];
