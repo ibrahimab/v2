@@ -281,4 +281,13 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
         
         return array_merge($arrangements, $accommodations);
     }
+    
+    public function getDataByWeekendAndPersons($weekend, $persons)
+    {
+        $arrangements   = $this->getArrangementDataBy($weekend, $persons);
+        $accommodations = $this->getAccommodationDataByWeekend($weekend);
+        $accommodations = array_merge($accommodations, $this->getAccommodationDataByPersons($persons));
+        
+        return array_merge($arrangements, $accommodations);
+    }
 }
