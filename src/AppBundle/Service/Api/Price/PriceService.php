@@ -321,6 +321,7 @@ class PriceService
              * No weekend and persons are selected, so we need to select prices from the cache
              */
             $this->prices = $this->oldPricesWrapper->get($this->types);
+            $this->offers = $this->priceServiceRepository->offers($this->types);
         }
 
         if (null !== $this->weekend && null === $this->persons) {
