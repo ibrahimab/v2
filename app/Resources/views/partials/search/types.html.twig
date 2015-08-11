@@ -29,7 +29,7 @@
                         {{ type.bathrooms }}
                     </div>
                     <div class="tb-c">
-                        {{ type.localeName }}
+                        {{ type.sortKey }}
                     </div>
                     <div class="tb-c">{% if type.surveyCount > 0 %}<span class="table-price">{{ type.surveyAverageOverallRating|number_format(1, ',', '') }}</span>{% endif %}</div>
                     <div class="tb-c tb-c-6">

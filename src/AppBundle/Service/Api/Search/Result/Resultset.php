@@ -2,6 +2,7 @@
 namespace AppBundle\Service\Api\Search\Result;
 use       AppBundle\Entity\Accommodation\Accommodation;
 use       AppBundle\Service\Api\Search\Result\Paginator\Paginator;
+use       AppBundle\Service\Api\Price\PriceService;
 use       AppBundle\AppTrait\LocaleTrait;
 use       Doctrine\ORM\QueryBuilder;
 use       Doctrine\ORM\Query;
@@ -42,6 +43,11 @@ class Resultset
     private $sorter;
 
     /**
+     * @var PriceService
+     */
+    private $priceService;
+
+    /**
      * @var array
      */
     public $results = [];
@@ -74,17 +80,27 @@ class Resultset
     /**
      * @var array
      */
+    public $isAccommodation;
+
+    /**
+     * @var array
+     */
     public $surveys;
 
     /**
      * @var array
      */
     public $sortKeys;
-    
+
     /**
      * @var boolean
      */
     public $resale;
+
+    /**
+     * @var array
+     */
+    public $appConfig;
 
 
     /**
@@ -127,7 +143,7 @@ class Resultset
                 $this->results[$key]['types'][$typeKey]['sortKey']                    = '-';
                 $this->results[$key]['types'][$typeKey]['localeName']                 = $this->getLocaleValue('name', $type);
             }
-            
+
             $this->types[$accommodation['id']] =& $this->results[$key]['types'];
         }
     }
@@ -144,15 +160,40 @@ class Resultset
         return $this->paginator;
     }
 
+    /**
+     * @return Sorter
+     */
     public function sorter()
     {
         if (null === $this->sorter) {
 
             $this->sorter = new Sorter($this);
             $this->sorter->setLocale($this->getLocale());
+            $this->sorter->setOptimalMaximumPersonsMap($this->getAppConfig());
         }
 
         return $this->sorter;
+    }
+
+    /**
+     * @param PriceService $priceService
+     */
+    public function setPriceService(PriceService $priceService)
+    {
+        $this->priceService = $priceService;
+    }
+
+    /**
+     * @param array
+     */
+    public function setAppConfig($appConfig)
+    {
+        $this->appConfig = $appConfig;
+    }
+
+    public function getAppConfig()
+    {
+        return $this->appConfig;
     }
 
     /**
@@ -264,6 +305,16 @@ class Resultset
     }
 
     /**
+     * show=3
+     *
+     * @param array
+     */
+    public function setIsAccommodations($accommodations)
+    {
+        $this->accommodations = $accommodations;
+    }
+
+    /**
      * @return void
      */
     public function setMetadata()
@@ -277,11 +328,13 @@ class Resultset
             foreach ($accommodation['types'] as $typeKey => $type) {
 
                 if (isset($this->prices[$type['id']]) && $this->prices[$type['id']] > 0) {
-                    $this->results[$key]['types'][$typeKey]['price'] = floatval($this->prices[$type['id']]);
+
+                    $this->results[$key]['types'][$typeKey]['price']  = floatval($this->prices[$type['id']]);
+                    $this->results[$key]['types'][$typeKey]['price'] += floatval($this->priceService->getAdditionalCostsByType($type['id'], $accommodation['show'], $type['maxResidents']));
                 }
 
                 if (isset($this->offers[$type['id']])) {
-                    
+
                     $this->results[$key]['offer']                    = true;
                     $this->results[$key]['types'][$typeKey]['offer'] = true;
                 }
@@ -290,6 +343,10 @@ class Resultset
 
                     $this->results[$key]['types'][$typeKey]['surveyCount']                = $this->surveys[$type['id']]['surveyCount'];
                     $this->results[$key]['types'][$typeKey]['surveyAverageOverallRating'] = $this->surveys[$type['id']]['surveyAverageOverallRating'];
+                }
+
+                if (isset($this->isAccommodation[$type['id']])) {
+                    $this->results[$key]['types'][$typeKey]['accommodation'] = true === $this->isAccommodation[$type['id']];
                 }
 
                 $this->results[$key]['types'][$typeKey]['sortKey'] = $this->sorter()->generateSortKey($this->results[$key], $this->results[$key]['types'][$typeKey]);
@@ -312,7 +369,7 @@ class Resultset
     {
         $this->results = $results;
     }
-    
+
     /**
      * @param boolean $resale
      */

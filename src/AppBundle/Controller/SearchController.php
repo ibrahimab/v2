@@ -41,11 +41,11 @@ class SearchController extends Controller
         $filterService = $this->container->get('app.filter');
         $locale        = $request->getLocale();
         $reroute       = $this->reroute($filterService, $request->query->all());
-        
+
         if (count($reroute) > 0) {
             return $this->redirect($this->generateUrl('search_' . $locale, $reroute), 301);
         }
-        
+
         $start    = microtime(true);
         $c        = $request->query->get('c',  []);
         $r        = $request->query->get('r',  []);
@@ -70,22 +70,22 @@ class SearchController extends Controller
         $prices      = [];
         $formFilters = [];
         $typeIds     = [];
-        
+
         $surveyService          = $this->get('app.api.booking.survey');
         $seasonService          = $this->get('app.api.season');
         $searchService          = $this->get('app.api.search');
         $priceService           = $this->get('app.api.price');
         $generalSettingsService = $this->get('app.api.general.settings');
-        
+
         $searchBuilder = $searchService->build()
                                        ->limit($per_page)
                                        ->page($page)
                                        ->sort(SearchBuilder::SORT_BY_TYPE_SEARCH_ORDER, SearchBuilder::SORT_ORDER_ASC)
                                        ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0)
                                        ->filter($filters);
-        
+
         if ($request->query->has('w') && !$request->query->has('pe')) {
-            
+
             /**
              * weekend is known
              * persons is not known
@@ -95,7 +95,7 @@ class SearchController extends Controller
              */
             $priceService->setWeekend($request->query->get('w'));
             $priceService->getDataWithWeekendAndOrPersons();
-            
+
             $searchBuilder->where(SearchBuilder::WHERE_TYPES, $priceService->getTypes());
             $formFilters['weekend'] = $request->query->get('w');
         }
@@ -111,7 +111,7 @@ class SearchController extends Controller
             $priceService->setWeekend($request->query->get('w'));
             $priceService->setPersons($request->query->get('pe'));
             $priceService->getDataWithWeekendAndOrPersons();
-            
+
             $searchBuilder->where(SearchBuilder::WHERE_TYPES, $priceService->getTypes());
             $formFilters['weekend'] = $w;
             $formFilters['persons'] = $pe;
@@ -179,10 +179,11 @@ class SearchController extends Controller
         $javascript->set('app.filters.form.bathrooms',        $ba);
         $javascript->set('app.filters.form.sort',             $s);
 
-        $seasons = $seasonService->seasons();
-        $data    = [
+        $seasons  = $seasonService->seasons();
+        $seasonId = (isset($seasons[0]) ? $seasons[0]['id'] : 0);
+        $data     = [
 
-            'season'         => (isset($seasons[0]) ? $seasons[0]['id'] : 0),
+            'season'         => $seasonId,
             'resultset'      => $resultset,
             'filters'        => $filters,
             // instance needed to get constants easier from within twig template: constant('const', instance)
@@ -194,9 +195,10 @@ class SearchController extends Controller
             'surveys'        => [],
             'sort'           => $s,
         ];
-        
+
         $typeIds = $resultset->allTypeIds();
-        $priceService = $this->get('app.api.price');
+
+        $priceService->setAdditionalCostsSeasonId($seasonId);
 
         if (!$request->query->has('w') && !$request->query->has('pe')) {
 
@@ -208,6 +210,17 @@ class SearchController extends Controller
             $priceService->getDataWithWeekendAndOrPersons();
         }
 
+        if (!$request->query->has('w') && $request->query->has('pe')) {
+
+            /**
+             * no weekend
+             * persons
+             */
+            $priceService->setPersons($request->query->get('pe'));
+            $priceService->setTypes($typeIds);
+            $priceService->getDataWithWeekendAndOrPersons();
+        }
+
         $surveyData = $surveyService->statsByTypes($typeIds);
         $surveys    = [];
 
@@ -215,13 +228,21 @@ class SearchController extends Controller
             $surveys[$survey['typeId']] = $survey;
         }
 
+        $resultset->setAppConfig($this->getParameter('app'));
         $resultset->setPrices($priceService->getPrices());
         $resultset->setOffers($priceService->getOffers());
+        $resultset->setIsAccommodations($priceService->getAccommodations());
         $resultset->setSurveys($surveys);
         $resultset->sorter()->setOrderBy($s);
+        $resultset->sorter()->setPersons($priceService->getPersons());
+        $resultset->setPriceService($priceService);
         $resultset->setMetadata();
         $resultset->setResale($this->get('app.concern.website')->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE));
         $resultset->sorter()->sort();
+
+        if ($request->query->has('pe')) {
+            $resultset->sorter()->setPersons(intval($request->query->get('pe')));
+        }
 
         $custom_filter_entities = $searchService->findOnlyNames($c, $r, $pl, $a, $t);
         foreach ($custom_filter_entities as $entity) {
@@ -359,57 +380,57 @@ class SearchController extends Controller
             'message' => 'Your search was successfully saved',
         ]);
     }
-    
+
     public function reroute(FilterService $filterService, $params)
     {
         $reroute = [];
-        
+
         foreach ($params as $param => $value) {
-            
+
             $matches = ['f' => []];
             $result  = preg_match('/(?P<param>[a-zA-Z_-]+)(?:(?P<value>[0-9]+))?/i', $param, $matches);
             $data    = $matches['param'] === 'vf_kenm' ? $matches['value'] : $value;
             $data    = (int)$data;
 
             if ($matches['param'] === 'vf_badk') {
-                
+
                 $reroute['ba'] = $data;
-                
+
             } else if ($matches['param'] === 'fap') {
-                
+
                 $reroute['pe'] = $data;
-                
+
             } else if ($matches['param'] === 'fas') {
-                
+
                 $reroute['be'] = $data;
-                
+
             } else if ($matches['param'] === 'fad') {
-                
+
                 $reroute['w'] = $data;
-                
+
             } else {
-            
+
                 if (null !== ($filter = $filterService->convertThemeFilter($matches['param'], $data))) {
-                    
+
                     if (!isset($reroute['f'])) {
                         $reroute['f'] = [];
                     }
-        
+
                     if (FilterService::multiple($filter['filter'])) {
 
                         if (!isset($reroute['f'][$filter['filter']])) {
                             $reroute['f'][$filter['filter']] = [];
                         }
-                        
+
                         $reroute['f'][$filter['filter']][] = $filter['value'];
-            
+
                     } else {
                         $reroute['f'][$filter['filter']] = $filter['value'];
                     }
                 }
             }
         }
-        
+
         return $reroute;
     }
 }

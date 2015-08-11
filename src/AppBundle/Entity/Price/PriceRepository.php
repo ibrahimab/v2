@@ -172,10 +172,11 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
         foreach ($results as $result) {
 
             $data[] = [
-
-                'id'    => $result['type_id'],
-                'offer' => (1 === (int)$result['kortingactief'] && 1 === (int)$result['aanbiedingskleur_korting']),
-                'price' => floatval($result['prijs']),
+                
+                'id'            => $result['type_id'],
+                'offer'         => (1 === (int)$result['kortingactief'] && 1 === (int)$result['aanbiedingskleur_korting']),
+                'price'         => floatval($result['prijs']),
+                'accommodation' => true,
             ];
         }
 
@@ -253,10 +254,11 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
             if (!isset($data[$result['type_id']])) {
 
                 $data[$result['type_id']] = [
-
-                    'id'     => $result['type_id'],
-                    'offer'  => (1 === (int)$result['kortingactief'] && 1 === (int)$result['aanbiedingskleur_korting']),
-                    'prices' => [],
+                
+                    'id'            => $result['type_id'],
+                    'offer'         => (1 === (int)$result['kortingactief'] && 1 === (int)$result['aanbiedingskleur_korting']),
+                    'prices'        => [],
+                    'accommodation' => true,
                 ];
             }
 
@@ -290,6 +292,14 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
         $arrangements   = $this->getArrangementDataByWeekendAndPersons($weekend, $persons);
         $accommodations = $this->getAccommodationDataByWeekend($weekend);
 
+        return array_merge($arrangements, $accommodations);
+    }
+    
+    public function getDataByWeekendAndPersons($weekend, $persons)
+    {
+        $arrangements   = $this->getArrangementDataBy($weekend, $persons);
+        $accommodations = $this->getAccommodationDataByPersons($persons);
+        
         return array_merge($arrangements, $accommodations);
     }
 }

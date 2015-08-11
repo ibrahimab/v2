@@ -24,6 +24,27 @@ parameters:
             18: 50
             19: 50
             20: 50
+        optimal_maximum_persons_map:
+            1: 4
+            2: 6
+            3: 6
+            4: 8
+            5: 9
+            6: 10
+            7: 11
+            8: 12
+            9: 13
+            10: 14
+            11: 15
+            12: 16
+            13: 18
+            14: 19
+            15: 20
+            16: 25
+            17: 25
+            18: 28
+            19: 28
+            20: 50
         travel_insurance_possible: true
         ten_days_insurance_price_summer: 26.20
         ten_days_insurance_price_default: 36.20
