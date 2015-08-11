@@ -77,7 +77,7 @@ class PriceService
      * @var array
      */
     private $offers;
-    
+
     /**
      * @var array
      */
@@ -142,6 +142,14 @@ class PriceService
     }
 
     /**
+     * @return integer|null
+     */
+    public function getPersons()
+    {
+        return $this->persons;
+    }
+
+    /**
      * @param array $types
      */
     public function setTypes(array $types)
@@ -172,7 +180,7 @@ class PriceService
     {
         return $this->prices;
     }
-    
+
     /**
      * @var array
      * @return array
@@ -241,18 +249,20 @@ class PriceService
 
         foreach ($results as $result) {
 
-            $this->types[]  = $result['id'];
-
             if (true === $result['offer']) {
                 $this->offers[$result['id']] = $result['offer'];
             }
-            
+
             if (isset($result['accommodation']) && true == $result['accommodation']) {
                 $this->accommodationKinds[$result['id']] = true;
             }
 
             $this->prices[$result['id']]             = $result['price'];
             $this->accommodationKinds[$result['id']] = true;
+
+            if ($result['price'] > 0) {
+                $this->types[] = $result['id'];
+            }
         }
     }
 
@@ -263,7 +273,7 @@ class PriceService
     {
         $results = $this->priceServiceRepository->getDataByPersons($this->persons);
         $costs   = $this->getAdditionalCostsPersonsCache();
-        
+
         foreach ($results as $key => $result) {
 
             $this->types[] = $result['id'];
@@ -271,11 +281,11 @@ class PriceService
             if (true === $result['offer']) {
                 $this->offers[$result['id']] = $result['offer'];
             }
-            
+
             if (isset($result['accommodation']) && true == $result['accommodation']) {
                 $this->accommodations[$result['id']] = true;
             }
-            
+
             if (isset($result['price'])) {
                 $this->prices[$result['id']] = $result['price'];
             }
@@ -306,11 +316,9 @@ class PriceService
     public function getDataByWeekendAndPersons()
     {
         $results = $this->priceServiceRepository->getDataByWeekendAndPersons($this->weekend, $this->persons);
-        
+
         foreach ($results as $result) {
-            
-            $this->types[] = $result['id'];
-            
+
             if (isset($result['price'])) {
                 $this->prices[$result['id']] = $result['price'];
             }
@@ -332,11 +340,15 @@ class PriceService
                     $this->prices[$result['id']] = min($results[$key]['prices']);
                 }
             }
-            
+
+            if (isset($this->prices[$result['id']]) && $this->prices[$result['id']] > 0) {
+                $this->types[] = $result['id'];
+            }
+
             if (true === $result['offer']) {
                 $this->offers[$result['id']] = $result['offer'];
             }
-            
+
             if (isset($result['accommodation']) && true === $result['accommodation']) {
                 $this->accommodations[$result['id']] = true;
             }
@@ -367,9 +379,9 @@ class PriceService
              */
             $this->getDataByWeekend();
         }
-        
+
         if (null === $this->weekend && null !== $this->persons) {
-            
+
             /**
              * Persons is selected
              */

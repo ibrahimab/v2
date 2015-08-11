@@ -16,7 +16,7 @@ class Sorter
      * @var Resultset
      */
     private $resultset;
-    
+
     /**
      * @var integer
      */
@@ -26,11 +26,11 @@ class Sorter
      * @var integer
      */
     private $order_by = self::SORT_NORMAL;
-    
+
     /**
      * @param array
      */
-    private $maximumPersonsMap;
+    private $optimalMaximumPersonsMap;
 
     /**
      * @const integer
@@ -58,9 +58,9 @@ class Sorter
     /**
      * @param array $maximumPersonsMap
      */
-    public function setMaximumPersonsMap($app)
+    public function setOptimalMaximumPersonsMap($app)
     {
-        $this->maximumPersonsMap = $app['maximum_persons_map'];
+        $this->optimalMaximumPersonsMap = $app['optimal_maximum_persons_map'];
     }
 
     /**
@@ -74,29 +74,29 @@ class Sorter
         $priceGroups      = [];
         $priceTypesGroups = [];
         $cheapest         = [];
-        
+
         foreach ($this->resultset->results as $accommodation) {
-            
+
             $types = $accommodation['types'];
             unset($accommodation['types']);
-            
+
             foreach ($types as $type) {
-                
+
                 $groupId                    = ($type['singleInSearch'] ? ($accommodation['id'] . '_' . $type['id']) : $accommodation['id']);
                 $accommodations[$groupId]   = $accommodation;
                 $sortable[$type['sortKey']] = $groupId;
                 $accommodationSortKey       = $this->generateAccommodationSortKey($type);
-                
+
                 if (!isset($resultGroups[$groupId])) {
                     $resultGroups[$groupId] = [];
                 }
-                
+
                 $resultGroups[$groupId][$accommodationSortKey] = $type;
             }
         }
-        
+
         ksort($sortable);
-        
+
         foreach ($resultGroups as $groupId => $types) {
 
             foreach ($types as $typeKey => $type) {
@@ -106,18 +106,18 @@ class Sorter
                 }
 
                 if ($type['price'] > 0) {
-                    
+
                     $priceGroups[$groupId][]      = $type['price'];
                     $priceTypesGroups[$groupId][] = $type['id'];
                 }
             }
 
             $min = 0;
-            
+
             if (count($priceGroups[$groupId]) > 0) {
                 $min = min($priceGroups[$groupId]);
             }
-            
+
             foreach ($priceGroups[$groupId] as $priceKey => $price) {
 
                 if ($min === $price) {
@@ -134,7 +134,7 @@ class Sorter
             $results[$groupId]          = $accommodations[$groupId];
             $results[$groupId]['types'] = array_values($resultGroups[$groupId]); // reset keys
         }
-        
+
         $this->resultset->setSortedResults(array_values($results)); // reset keys
     }
 
@@ -155,7 +155,7 @@ class Sorter
     {
         return $this->order_by;
     }
-    
+
     /**
      * @var integer
      */
@@ -172,7 +172,7 @@ class Sorter
         $key = '';
 
         $order = $type['supplier']['searchOrder'];
-        
+
         if ($accommodation['searchOrder'] !== 3) {
             $order = $accommodation['searchOrder'];
         }
@@ -184,14 +184,14 @@ class Sorter
         switch ($this->getOrderBy()) {
 
             case self::SORT_ASC:
-            
-                $key .= ($type['price'] > 0 ? 1 : 9);            
+
+                $key .= ($type['price'] > 0 ? 1 : 9);
                 $key .= substr('0000000' . number_format($type['price'], 2, '', ''), -7) . '-';
-                
+
             break;
 
             case self::SORT_DESC:
-            
+
                 $key .= ($type['price'] > 0 ? 1 : 9);
                 $key .= 1000000 - $type['price'];
             break;
@@ -200,40 +200,40 @@ class Sorter
             default:
 
                 $key .= ($type['price'] > 0 ? 1 : 9);
-                
+
                 if (null !== $this->persons) {
-                    
+
                     if ($this->persons > 20) {
-                        
-                        $min = $this->persons;
+
+                        $min = intval($this->persons);
                         $max = 50;
-                        
+
                     } else {
-                        
-                        $min = $this->persons;
-                        $max = (isset($this->maximumPersonsMap[$this->persons]) ? $this->maximumPersonsMap[$this->persons] : $this->persons);
+
+                        $min = intval($this->persons);
+                        $max = intval(isset($this->optimalMaximumPersonsMap[$this->persons]) ? $this->optimalMaximumPersonsMap[$this->persons] : $this->persons);
                     }
-                    
+
                     if ($type['optimalResidents'] >= $min && $type['maxResidents'] <= $max) {
                         $key .= '22-';
                     } else {
                         $key .= '88-';
                     }
                 }
-                
+
                 if (isset($type['accommodation']) && true === $type['accommodation']) {
                     $key .= 'ZZZ';
                 } else {
                     $key .= 'AAA';
                 }
-                
+
                 $key .= $order . '-';
         }
 
         $key .= $order . '-';
         $key .= $accommodation['place']['region']['localeName'] . '-' . $accommodation['place']['localeName'] . '-' . $accommodation['localeName'] . '-' . sprintf('%03d', $type['maxResidents']) . '-' . $type['id'];
         $key .= $accommodation['place']['region']['localeName'] . '-' . $accommodation['place']['localeName'] . '-' . $accommodation['localeName'] . '-' . sprintf('%03d', $type['maxResidents']) . '-' . $type['id'];
-        
+
         return $key;
     }
 

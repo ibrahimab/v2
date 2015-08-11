@@ -41,7 +41,7 @@ class Resultset
      * @var Sorter
      */
     private $sorter;
-    
+
     /**
      * @var PriceService
      */
@@ -76,7 +76,7 @@ class Resultset
      * @var array
      */
     public $offers;
-    
+
     /**
      * @var array
      */
@@ -91,11 +91,16 @@ class Resultset
      * @var array
      */
     public $sortKeys;
-    
+
     /**
      * @var boolean
      */
     public $resale;
+
+    /**
+     * @var array
+     */
+    public $appConfig;
 
 
     /**
@@ -138,7 +143,7 @@ class Resultset
                 $this->results[$key]['types'][$typeKey]['sortKey']                    = '-';
                 $this->results[$key]['types'][$typeKey]['localeName']                 = $this->getLocaleValue('name', $type);
             }
-            
+
             $this->types[$accommodation['id']] =& $this->results[$key]['types'];
         }
     }
@@ -164,17 +169,31 @@ class Resultset
 
             $this->sorter = new Sorter($this);
             $this->sorter->setLocale($this->getLocale());
+            $this->sorter->setOptimalMaximumPersonsMap($this->getAppConfig());
         }
 
         return $this->sorter;
     }
-    
+
     /**
      * @param PriceService $priceService
      */
     public function setPriceService(PriceService $priceService)
     {
         $this->priceService = $priceService;
+    }
+
+    /**
+     * @param array
+     */
+    public function setAppConfig($appConfig)
+    {
+        $this->appConfig = $appConfig;
+    }
+
+    public function getAppConfig()
+    {
+        return $this->appConfig;
     }
 
     /**
@@ -284,7 +303,7 @@ class Resultset
     {
         $this->surveys = $surveys;
     }
-    
+
     /**
      * show=3
      *
@@ -309,13 +328,13 @@ class Resultset
             foreach ($accommodation['types'] as $typeKey => $type) {
 
                 if (isset($this->prices[$type['id']]) && $this->prices[$type['id']] > 0) {
-                    
+
                     $this->results[$key]['types'][$typeKey]['price']  = floatval($this->prices[$type['id']]);
                     $this->results[$key]['types'][$typeKey]['price'] += floatval($this->priceService->getAdditionalCostsByType($type['id'], $accommodation['show'], $type['maxResidents']));
                 }
 
                 if (isset($this->offers[$type['id']])) {
-                    
+
                     $this->results[$key]['offer']                    = true;
                     $this->results[$key]['types'][$typeKey]['offer'] = true;
                 }
@@ -325,7 +344,7 @@ class Resultset
                     $this->results[$key]['types'][$typeKey]['surveyCount']                = $this->surveys[$type['id']]['surveyCount'];
                     $this->results[$key]['types'][$typeKey]['surveyAverageOverallRating'] = $this->surveys[$type['id']]['surveyAverageOverallRating'];
                 }
-                
+
                 if (isset($this->isAccommodation[$type['id']])) {
                     $this->results[$key]['types'][$typeKey]['accommodation'] = true === $this->isAccommodation[$type['id']];
                 }
@@ -350,7 +369,7 @@ class Resultset
     {
         $this->results = $results;
     }
-    
+
     /**
      * @param boolean $resale
      */
