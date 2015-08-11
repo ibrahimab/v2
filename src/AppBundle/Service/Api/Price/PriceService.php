@@ -214,6 +214,17 @@ class PriceService
     public function getDataByWeekendAndPersons()
     {
         $results = $this->priceServiceRepository->getDataByWeekendAndPersons($this->weekend, $this->persons);
+
+        foreach ($results as $result) {
+
+            $this->types[] = $result['id'];
+
+            if (true === $result['offer']) {
+                $this->offers[$result['id']] = $result['offer'];
+            }
+
+            $this->prices[] = floatval($result['price']);
+        }
     }
     
     /**

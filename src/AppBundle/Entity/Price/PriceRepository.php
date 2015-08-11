@@ -45,10 +45,10 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
                 $offers[$result['id']] = true;
             }
         }
-        
+
         return $offers;
     }
-    
+
     /**
      * @param integer $weekend
      * @return array
@@ -82,36 +82,36 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
                'season'    => $this->getSeason(),
                'available' => 1,
            ]);
-        
+
         if (null !== $weekend) {
-            
+
             $qb->andWhere($expr->eq('tr.week', ':weekend'))
                ->setParameter('weekend', $weekend);
         }
-        
+
         if (null !== $persons) {
 
             $qb->andWhere($expr->eq('tp.personen', ':persons'))
                ->setParameter('persons', $persons);
         }
-        
+
         $statement = $qb->execute();
         $results   = $statement->fetchAll();
         $data      = [];
-        
+
         foreach ($results as $result) {
-            
+
             $data[] = [
-                
+
                 'id'    => $result['type_id'],
                 'offer' => (1 === (int)$result['kortingactief'] && 1 === (int)$result['aanbiedingskleur_korting']),
                 'price' => floatval($result['prijs']),
             ];
         }
-        
+
         return $data;
     }
-    
+
     /**
      * @param integer $weekend
      * @return array
@@ -120,7 +120,7 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
     {
         return $this->getArrangementDataBy($weekend);
     }
-    
+
     /**
      * @param integer $weekend
      * @return array
@@ -168,20 +168,20 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
         $statement = $qb->execute();
         $results   = $statement->fetchAll();
         $data      = [];
-        
+
         foreach ($results as $result) {
-            
+
             $data[] = [
-                
+
                 'id'    => $result['type_id'],
                 'offer' => (1 === (int)$result['kortingactief'] && 1 === (int)$result['aanbiedingskleur_korting']),
                 'price' => floatval($result['prijs']),
             ];
         }
-        
+
         return $data;
     }
-    
+
     /**
      * @param integer $weekend
      * @return array
@@ -190,10 +190,10 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
     {
         $arrangements   = $this->getArrangementDataByWeekend($weekend);
         $accommodations = $this->getAccommodationDataByWeekend($weekend);
-        
+
         return array_merge($arrangements, $accommodations);
     }
-    
+
     /**
      * @param integer $persons
      * @return array
@@ -202,7 +202,7 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
     {
         return $this->getArrangementDataBy(null, $persons);
     }
-    
+
     /**
      * @param integer $persons
      * @return array
@@ -216,7 +216,7 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
                            ->add($expr->gt('tr.bruto', 0))
                            ->add($expr->gt('tr.c_bruto', 0))
                            ->add($expr->gt('tr.arrangementsprijs', 0));
-        
+
         $qb->select('tr.type_id, tr.c_verkoop_site AS prijs, tr.week, tr.kortingactief, tr.aanbiedingskleur_korting')
            ->from('accommodatie a, type t, tarief tr, seizoen s', '')
            ->where('tr.type_id = t.type_id')
@@ -242,32 +242,32 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
                'website'   => $this->getWebsite(),
                'available' => 1,
            ]);
-           
+
         $statement = $qb->execute();
         $results   = $statement->fetchAll();
         $data      = [];
         $prices    = [];
 
         foreach ($results as $result) {
-            
+
             if (!isset($data[$result['type_id']])) {
-            
+
                 $data[$result['type_id']] = [
-                
+
                     'id'     => $result['type_id'],
                     'offer'  => (1 === (int)$result['kortingactief'] && 1 === (int)$result['aanbiedingskleur_korting']),
                     'prices' => [],
                 ];
             }
-            
+
             if ($result['prijs'] > 0) {
                 $data[$result['type_id']]['prices'][(int)$result['week']] = floatval($result['prijs']);
             }
         }
-        
+
         return $data;
     }
-    
+
     /**
      * @param integer $persons
      * @return array
@@ -276,7 +276,20 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
     {
         $arrangements   = $this->getArrangementDataByPersons($persons);
         $accommodations = $this->getAccommodationDataByPersons($persons);
-        
+
+        return array_merge($arrangements, $accommodations);
+    }
+
+    public function getArrangementDataByWeekendAndPersons($weekend, $persons)
+    {
+        return $this->getArrangementDataBy($weekend, $persons);
+    }
+
+    public function getDataByWeekendAndPersons($weekend, $persons)
+    {
+        $arrangements   = $this->getArrangementDataByWeekendAndPersons($weekend, $persons);
+        $accommodations = $this->getAccommodationDataByWeekend($weekend);
+
         return array_merge($arrangements, $accommodations);
     }
 }

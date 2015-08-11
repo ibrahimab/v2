@@ -69,7 +69,7 @@ class ThemeController extends Controller
         $page     = intval($request->query->get('p'));
         $page     = ($page === 0 ? $page : ($page - 1));
 
-        $paginator = $searchService->build()
+        $resultset = $searchService->build()
                                    ->limit($per_page)
                                    ->page($page)
                                    ->sort(SearchBuilder::SORT_BY_TYPE_SEARCH_ORDER, SearchBuilder::SORT_ORDER_ASC)
@@ -77,17 +77,17 @@ class ThemeController extends Controller
                                    ->filter($filters)
                                    ->search();
 
-        $typeIds = [];
+        $typeIds = $resultset->allTypeIds();
         $prices  = [];
         $offers  = [];
-        
-        foreach ($paginator as $accommodation) {
 
-            $types = $accommodation->getTypes();
-            foreach ($types as $type) {                
-                $typeIds[] = $type->getId();
-            }
-        }
+        // foreach ($paginator as $accommodation) {
+        //
+        //     $types = $accommodation->getTypes();
+        //     foreach ($types as $type) {
+        //         $typeIds[] = $type->getId();
+        //     }
+        // }
 
         if (count($typeIds) > 0) {
 
@@ -99,11 +99,12 @@ class ThemeController extends Controller
         }
 
         return $this->render('themes/show.html.twig', [
-            
-            'theme'          => $theme,
-            'accommodations' => $paginator,
-            'prices'         => $prices,
-            'offers'         => $offers,
+
+            'theme'     => $theme,
+            'resultset' => $resultset,
+            'prices'    => $prices,
+            'offers'    => $offers,
+            'season'    => 27,
         ]);
     }
 }
