@@ -146,9 +146,6 @@
                                         {% if part.price != 0 %}
                                             <td>{{ part.discount == true ? 'korting' }}</td>
                                             <td>&euro; {{ part.price|number_format(2, ',', '.') }}</td>
-                                        {% elseif part.dependent == true %}
-                                            <td></td>
-                                            <td>afhankelijk van week</td>
                                         {% else %}
                                             <td></td>
                                             <td>gratis</td>
@@ -267,7 +264,7 @@
                         <div class="social-buttons">
                             <a href="" class="button social fb tiny radius" title="Like"><i class="fi-social-facebook"></i>Deel</a>
                             <a href="" class="button social tw tiny radius" title="Tweet"><i class="fi-social-twitter"></i>Tweet</a>
-                            <a href="" class="button social ml tiny radius" title="Mail"><i class="fi-mail"></i>Mail</a>
+                            <a href="{{ locale_path('mail_a_friend', {beginCode: country.startCode, typeId: type.id}) }}" class="button social ml tiny radius" title="Mail"><i class="fi-mail"></i>Mail</a>
                             {% set type_is_favorite = is_favorite(type) %}
                             <div class="heart"><a href="#"{% if type_is_favorite %} data-role="remove-favorite"{% else %} data-role="add-favorite"{% endif %} data-id="{{ type.getId() }}" class="{% if type_is_favorite %}active added {% endif %}button social tiny radius" title="Dit resultaat opslaan in mijn favorieten"><i class="fi-heart"></i>Favoriet</a></div>
                         </div>

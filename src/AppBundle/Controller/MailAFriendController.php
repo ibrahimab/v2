@@ -43,7 +43,7 @@ class MailAFriendController extends Controller
         }
 
         $priceService  = $this->get('app.api.price');
-        $offers        = $priceService->offers($typeIds);
+        $offers        = $priceService->offers([$typeId]);
         
         return $this->render('mail-a-friend/new.html.twig', [
 
@@ -77,35 +77,39 @@ class MailAFriendController extends Controller
     {
         try {
             
-            $typeService = $this->get('app.api.type');
-            $type        = $typeService->findById($typeId);
+            $typeService  = $this->get('app.api.type');
+            $priceService = $this->get('app.api.price');
+            
+            $type         = $typeService->findById($typeId);
+            $offers       = $priceService->offers([$typeId]);
             
         } catch (NoResultException $exception) {
             throw $this->createNotFoundException(sprintf('Type with ID=%d could not be found', $typeId));
         }
         
-        $mailAFriend = new MailAFriend($request->get('mail_a_friend'));
+        $mailAFriend = new MailAFriend($request->get('mail_a_friend'), $this->get('validator'));
         $mailAFriend->validate();
 
         if ($mailAFriend->isValid()) {
 
-            $data         = $mailAFriend->getData();
-            $data['type'] = $type;
-            $locale       = $request->getLocale();
-            $to           = $mailAFriend->getToEmail();
-            $mailer       = $this->get('app.mailer.mail.a.friend');
-            $result       = $mailer->setSubject($type->getAccommodation()->getLocaleName($locale) . ' ' . $type->getLocaleName($locale))
-                                   ->setFrom($mailAFriend->getFromEmail(), $mailAFriend->getFromName())
-                                   ->setTo(explode(',', $to))
-                                   ->setTemplate('mail/mail-a-friend.html.twig', 'text/html')
-                                   ->setTemplate('mail/mail-a-friend.txt.twig', 'text/plain')
-                                   ->send($data);
+            $data           = $mailAFriend->getData();
+            $data['type']   = $type;
+            $data['offers'] = $offers;
+            $locale         = $request->getLocale();
+            $to             = $mailAFriend->getToEmail();
+            $mailer         = $this->get('app.mailer.mail.a.friend');
+            $result         = $mailer->setSubject($type->getAccommodation()->getLocaleName($locale) . ' ' . $type->getLocaleName($locale))
+                                     ->setFrom($mailAFriend->getFromEmail(), $mailAFriend->getFromName())
+                                     ->setTo(explode(',', $to))
+                                     ->setTemplate('mail/mail-a-friend.html.twig', 'text/html')
+                                     // ->setTemplate('mail/mail-a-friend.txt.twig', 'text/plain')
+                                     ->send($data);
 
-            return $this->redirectToRoute('mail_a_friend_' . $request->getLocale(), ['beginCode' => $beginCode, 'typeId' => $typeId]);
+            // return $this->redirectToRoute('mail_a_friend_' . $request->getLocale(), ['beginCode' => $beginCode, 'typeId' => $typeId]);
         }
 
         $priceService  = $this->get('app.api.price');
-        $offers        = $priceService->offers($typeIds);
+        $offers        = $priceService->offers([$typeId]);
 
         return $this->render('mail-a-friend/new.html.twig', [
 
