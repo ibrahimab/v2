@@ -129,12 +129,13 @@
                                 <option value="2">zaterdag 14 maart</option>
                             </select>
                         </div>
-                        <div class="table-wrapper">
+                        <div class="table-wrapper"> 
                             {% for kind in options %}
                             <table>
                                 <thead>
                                     <tr>
                                         <th><span class="price has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide prijsinformatie bij Ski's volwassen]">{{ kind.name }}<i class="fi-info"></i></span></th>
+                                        <th></th>
                                         <th>Prijs</th>
                                     </tr>
                                 </thead>
@@ -142,7 +143,16 @@
                                     {% for part in kind.parts %}
                                     <tr>
                                         <td>{{ part.name }}</td>
-                                        <td>&euro; {{ part.price }}</td>
+                                        {% if part.price != 0 %}
+                                            <td>{{ part.discount == true ? 'korting' }}</td>
+                                            <td>&euro; {{ part.price|number_format(2, ',', '.') }}</td>
+                                        {% elseif part.dependent == true %}
+                                            <td></td>
+                                            <td>afhankelijk van week</td>
+                                        {% else %}
+                                            <td></td>
+                                            <td>gratis</td>
+                                        {% endif %}
                                     </tr>
                                     {% endfor %}
                                 </tbody>

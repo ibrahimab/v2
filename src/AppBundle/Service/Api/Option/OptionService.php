@@ -34,8 +34,13 @@ class OptionService
         return $this->optionServiceRepository->getTravelInsurancesDescription();
     }
     
-    public function options($type)
+    /**
+     * @param integer $accommodationId
+     * @param integer $weekend
+     * @return array
+     */
+    public function options($accommodationId, $weekend = null)
     {
-        return $this->optionServiceRepository->options($type);
+        return $this->optionServiceRepository->options($accommodationId, $weekend);
     }
 }

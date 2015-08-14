@@ -22,15 +22,17 @@ class OptionRepository implements OptionServiceRepositoryInterface
     
     const OPTION_GROUP_SEASON_SUMMER  = 369;
     const OPTION_GROUP_SEASON_DEFAULT = 42;
+    
+    private $manager;
 
     public function __construct(EntityManager $manager)
     {
-        $this->entityManager = $manager;
+        $this->manager = $manager;
     }
     
     public function getEntityManager()
     {
-        return $this->entityManager;
+        return $this->manager;
     }
 
     /**
@@ -79,28 +81,42 @@ class OptionRepository implements OptionServiceRepositoryInterface
         return $description;
     }
     
-    public function options($type)
+    public function options($accommodationId, $weekend = null)
     {
+        $website    = $this->getWebsiteConcern();
         $connection = $this->getEntityManager()->getConnection();
         $qb         = $connection->createQueryBuilder();
         $expr       = $qb->expr();
         
-        $qb->select('vo.optie_soort_id, vo.snaam, vo.snaam_en, vo.snaam_de, vo.optie_onderdeel_id, vo.onaam, vo.onaam_en, vo.onaam_de')
-           ->from('view_optie vo, optie_accommodatie a, optie_tarief ta, type t', '')
-           ->where('vo.optie_soort_id = a.optie_soort_id')
-           ->andWhere('vo.optie_groep_id = a.optie_groep_id')
-           ->andWhere('t.accommodatie_id = a.accommodatie_id')
+        $qb->select('vo.optie_soort_id, vo.snaam, vo.snaam_en, vo.snaam_de, vo.optie_onderdeel_id, vo.onaam, vo.onaam_en, vo.onaam_de, ta.verkoop')
+           ->from('optie_accommodatie a, view_optie vo, optie_soort s, optie_onderdeel o, optie_tarief ta', '')
+           ->where('a.optie_soort_id = vo.optie_soort_id')
+           ->where('a.optie_soort_id = s.optie_soort_id')
+           ->andWhere('a.optie_groep_id = vo.optie_groep_id')
+           ->andWhere('vo.optie_onderdeel_id = o.optie_onderdeel_id')
            ->andWhere('vo.optie_onderdeel_id = ta.optie_onderdeel_id')
-           ->andWhere($expr->eq('t.type_id', ':type'))
+           ->andWhere($expr->eq('a.accommodatie_id', ':accommodation'))
            ->andWhere($expr->gte('ta.week', ':week'))
-           ->andWhere($expr->gte('ta.beschikbaar', ':available'))
+           ->andWhere($expr->eq('ta.beschikbaar', ':available'))
+           ->andWhere('o.tonen_accpagina = 1')
+           ->andWhere('o.actief = 1')
            ->orderBy('vo.svolgorde, vo.snaam, vo.ovolgorde, vo.onaam')
            ->setParameters([
                
-               'type'      => $type,
-               'week'      => time(),
-               'available' => 1,
+               'accommodation' => $accommodationId,
+               'week'          => time(),
+               'available'     => 1,
            ]);
+           
+        if ($website->getConfig(WebsiteConcern::WEBSITE_CONFIG_TRAVEL_INSURANCE) !== 1) {
+            $qb->andWhere('s.reisverzekering = 0');
+        }
+        
+        if (true === $website->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE)) {
+            $qb->andWhere('s.beschikbaar_wederverkoop = 1');
+        } else {
+            $qb->andWhere('s.beschikbaar_directeklanten = 1');
+        }
            
         $statement = $qb->execute();
         $locale    = $this->getLocale();
@@ -136,11 +152,13 @@ class OptionRepository implements OptionServiceRepositoryInterface
                 $tree[$result['optie_soort_id']] = ['name' => $kind, 'parts' => []];
             }
             
-            $tree[$result['optie_soort_id']]['parts'][] = [
+            $tree[$result['optie_soort_id']]['parts'][$result['optie_onderdeel_id']] = [
                 
-                'id'    => $result['optie_onderdeel_id'],
-                'name'  => $part,
-                'price' => $result['verkoop'],
+                'id'        => $result['optie_onderdeel_id'],
+                'name'      => $part,
+                'price'     => abs($result['verkoop']),
+                'discount'  => ($result['verkoop'] < 0),
+                'free'      => ($result['verkoop'] != 0),
             ];
         }
         

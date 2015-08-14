@@ -1,11 +1,11 @@
 <?php
 namespace AppBundle\Controller;
-
 use       AppBundle\Annotation\Breadcrumb;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use       Doctrine\ORM\NoResultException;
+use       Symfony\Component\HttpFoundation\Request;
 use       Symfony\Component\HttpFoundation\Response;
 use       Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -37,7 +37,7 @@ class TypesController extends Controller
      * @Breadcrumb(name="show_type",    title="{accommodationName}", active=true)
      * @Template(":types:show.html.twig")
      */
-    public function showAction($beginCode, $typeId)
+    public function showAction($beginCode, $typeId, Request $request)
     {
         $typeService    = $this->get('app.api.type');
         $surveyService  = $this->get('app.api.booking.survey');
@@ -82,7 +82,7 @@ class TypesController extends Controller
         $userService->addViewedAccommodation($type);
         
         $optionService = $this->get('app.api.option');
-        $options       = $optionService->options($type->getId());
+        $options       = $optionService->options($type->getAccommodationId(), $request->query->get('w', null));
 
         return [
 
