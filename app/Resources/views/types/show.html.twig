@@ -27,7 +27,7 @@
     }
 %}
 
-{% block breadcrumbs %}r
+{% block breadcrumbs %}
 
     {{
         breadcrumbs({
@@ -136,7 +136,9 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th><span class="price has-tip radius" title="Tooltips suck" data-tooltip >{{ kind.name }}<i class="fi-info"></i></span></th>
+                                        <th>
+                                            <span id="{{ kind.groupId }}" class="price has-tip tip-left radius" title="Tooltip positie klopt niet" data-tooltip>{{ kind.name }}<i class="fi-info"></i></span>
+                                        </th>
                                         <th></th>
                                         <th>Prijs</th>
                                     </tr>
@@ -270,7 +272,7 @@
                         <hr />
                         <ul class="accom-details">
                             <li>Personen<span>{{ ( type.getOptimalResidents() == type.getMaxResidents() ? type.getOptimalResidents() : (type.getOptimalResidents() ~ ' - ' ~ type.getMaxResidents()) ) }}<i class="sprite sprite-icon-torso"></i></span></li>
-                            <li>Slaapkamers<span>{{ type.getBedrooms() }}<i class="sprite sprite-icon-sleep"></i></span>{% if type.getLocaleBedroomsExtra(locale) != '' %}<span class="extra">({{ type.getLocaleBedroomsExtra(locale) }})</span>{% endif %}</span></li>
+                            <li>Slaapkamers<span>{{ type.getBedrooms() }}<i class="sprite sprite-icon-sleep"></i></span>{% if type.getLocaleBedroomsExtra(locale) != '' %}<span class="extra">({{ type.getLocaleBedroomsExtra(locale) }})</span>{% endif %}</li>
                             <li>Badkamers<span>{{ type.getBathrooms() }}<i class="sprite sprite-icon-bath"></i></span>{% if type.getLocaleBathroomsExtra(locale) != '' %}<span class="extra">({{ type.getLocaleBathroomsExtra(locale) }})</span>{% endif %}</li>
                             <li>Oppervlakte<span>{{ type.getSurface() }} m&sup2;{% if type.getLocaleSurfaceExtra(locale) != '' %} - {{ type.getLocaleSurfaceExtra(locale) }}&sup2;{% endif %}<i class="sprite sprite-icon-surface"></i></span></li>
                         </ul>

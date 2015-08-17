@@ -3,7 +3,7 @@
 
     // setting up scroll button for long pages
     jq(function() {
-
+        
         /**
          * fixed header scroll effects
          */
