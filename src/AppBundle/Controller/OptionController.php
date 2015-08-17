@@ -23,7 +23,7 @@ use       Doctrine\ORM\NoResultException;
 class OptionController extends Controller
 {
     /**
-     * @Route("/options/{optionId}", name="show_option_nl")
+     * @Route("/options/{optionId}", name="show_option")
      */
     public function show($optionId)
     {

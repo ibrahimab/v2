@@ -294,7 +294,7 @@
                 jq.ajax({
 
                     type: 'get',
-                    url: Routing.generate('additional_costs_type', {typeId: el.data('id'), seasonId: el.data('season')}),
+                    url: el.data('url'),
                     success: function(data) {
 
                         el.data('cached', true).removeClass('loading').find('[data-role="tooltip-content"]').html(data);
@@ -407,7 +407,7 @@
             window.location.href = uri.toString();
         });
         
-        body.on('click', '[data-role="external-popup"]', function(event) {
+        body.on('click', '[data-role="external-popup"], [data-role="internal-popup"]', function(event) {
             
             event.preventDefault();
             

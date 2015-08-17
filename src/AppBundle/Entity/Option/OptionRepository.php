@@ -88,7 +88,7 @@ class OptionRepository implements OptionServiceRepositoryInterface
         $qb         = $connection->createQueryBuilder();
         $expr       = $qb->expr();
         
-        $qb->select('vo.optie_soort_id, vo.snaam, vo.snaam_en, vo.snaam_de, vo.optie_onderdeel_id, vo.onaam, vo.onaam_en, vo.onaam_de')
+        $qb->select('vo.optie_soort_id, vo.optie_groep_id, vo.snaam, vo.snaam_en, vo.snaam_de, vo.optie_onderdeel_id, vo.onaam, vo.onaam_en, vo.onaam_de')
            ->from('optie_accommodatie a, view_optie vo, optie_soort s, optie_onderdeel o', '')
            ->where('a.optie_soort_id = vo.optie_soort_id')
            ->where('a.optie_soort_id = s.optie_soort_id')
@@ -142,7 +142,7 @@ class OptionRepository implements OptionServiceRepositoryInterface
             }
             
             if (!isset($tree[$result['optie_soort_id']])) {
-                $tree[$result['optie_soort_id']] = ['name' => $kind, 'parts' => []];
+                $tree[$result['optie_soort_id']] = ['name' => $kind, 'groupId' => $result['optie_groep_id'], 'parts' => []];
             }
             
             $tree[$result['optie_soort_id']]['parts'][$result['optie_onderdeel_id']] = [
