@@ -80,9 +80,13 @@ class TypesController extends Controller
 
         $userService   = $this->get('app.api.user');
         $userService->addViewedAccommodation($type);
-        
+
+        $seasonService = $this->get('app.api.season');
+        $seasons       = $seasonService->seasons();
+        $seasonId      = (isset($seasons[0]) ? $seasons[0]['id'] : null);
+
         $optionService = $this->get('app.api.option');
-        $options       = $optionService->options($type->getAccommodationId(), $request->query->get('w', null));
+        $options       = $optionService->options($type->getAccommodationId(), $seasonId, $request->query->get('w', null));
 
         return [
 
@@ -93,6 +97,7 @@ class TypesController extends Controller
             'prices'             => $prices,
             'offers'             => $offers,
             'options'            => $options,
+            'weekends'           => $seasonService->weekends($seasons),
         ];
     }
 

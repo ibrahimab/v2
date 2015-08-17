@@ -81,7 +81,7 @@ class OptionRepository implements OptionServiceRepositoryInterface
         return $description;
     }
     
-    public function options($accommodationId, $weekend = null)
+    public function options($accommodationId, $season = null, $weekend = null)
     {
         $website    = $this->getWebsiteConcern();
         $connection = $this->getEntityManager()->getConnection();
@@ -94,19 +94,11 @@ class OptionRepository implements OptionServiceRepositoryInterface
            ->where('a.optie_soort_id = s.optie_soort_id')
            ->andWhere('a.optie_groep_id = vo.optie_groep_id')
            ->andWhere('vo.optie_onderdeel_id = o.optie_onderdeel_id')
-           // ->andWhere('vo.optie_onderdeel_id = ta.optie_onderdeel_id')
            ->andWhere($expr->eq('a.accommodatie_id', ':accommodation'))
-           // ->andWhere($expr->gte('ta.week', ':week'))
-           // ->andWhere($expr->eq('ta.beschikbaar', ':available'))
            ->andWhere('o.tonen_accpagina = 1')
            ->andWhere('o.actief = 1')
            ->orderBy('vo.svolgorde, vo.snaam, vo.ovolgorde, vo.onaam')
-           ->setParameters([
-               
-               'accommodation' => $accommodationId,
-               // 'week'          => time(),
-               // 'available'     => 1,
-           ]);
+           ->setParameter('accommodation', $accommodationId);
            
         if ($website->getConfig(WebsiteConcern::WEBSITE_CONFIG_TRAVEL_INSURANCE) !== 1) {
             $qb->andWhere('s.reisverzekering = 0');
@@ -167,14 +159,26 @@ class OptionRepository implements OptionServiceRepositoryInterface
         $qb->select('ta.optie_onderdeel_id, ta.week, ta.verkoop')
            ->from('optie_tarief ta, optie_onderdeel o', '')
            ->where('ta.optie_onderdeel_id = o.optie_onderdeel_id')
-           ->andWhere($expr->gte('ta.week', ':week'))
            ->andWhere($expr->eq('ta.beschikbaar', ':available'))
            ->andWhere($expr->in('ta.optie_onderdeel_id', $parts))
-           ->setParameters([
-               
-               'week'      => time(),
-               'available' => 1,
-           ]);
+           ->setParameter('available', 1);
+           
+        if (null !== $season) {
+            
+            $qb->andWhere($expr->eq('ta.seizoen_id', ':season'));
+            $qb->setParameter('season', $season);
+        }
+        
+        if (null === $weekend) {
+            
+            $qb->andWhere($expr->gte('ta.week', ':week'))
+               ->setParameter('week' , time());
+            
+        } else {
+            
+            $qb->andWhere($expr->eq('ta.week', ':week'))
+               ->setParameter('week', $weekend);
+        }
            
         $statement = $qb->execute();
         $results   = $statement->fetchAll();

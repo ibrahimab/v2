@@ -39,8 +39,8 @@ class OptionService
      * @param integer $weekend
      * @return array
      */
-    public function options($accommodationId, $weekend = null)
+    public function options($accommodationId, $season = null, $weekend = null)
     {
-        return $this->optionServiceRepository->options($accommodationId, $weekend);
+        return $this->optionServiceRepository->options($accommodationId, $season, $weekend);
     }
 }

@@ -353,7 +353,7 @@
             }
         }
 
-        jq('body').on('click', '[data-role="toggle-filters"]', function(event) {
+        body.on('click', '[data-role="toggle-filters"]', function(event) {
 
             event.preventDefault();
 
@@ -376,7 +376,7 @@
 
         });
 
-        jq('body').on('click', '[data-role="closable-filter"]', function(event) {
+        body.on('click', '[data-role="closable-filter"]', function(event) {
 
             event.preventDefault();
 
@@ -392,6 +392,20 @@
                 el.data('status', 'closed').siblings('.fields').slideUp();
                 el.addClass('closed');
             }
+        });
+        
+        /**
+         * changing week on type detail page will change the extra options
+         */
+        body.on('change', '[data-role="extra-options-week"]', function(event) {
+            
+            event.preventDefault();
+            
+            var uri = URI();
+            
+            uri.setQuery('w', jq(this).val());
+            
+            window.location.href = uri.toString();
         });
 
         /**
