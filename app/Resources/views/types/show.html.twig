@@ -1,5 +1,6 @@
 {% extends 'layouts/default.html.twig' %}
 
+{% set website_concern        = website() %}
 {% set locale                 = get_locale() %}
 {% set accommodation          = type.getAccommodation() %}
 {% set country, region, place = accommodation.getPlace().getCountry(), accommodation.getPlace().getRegion(), accommodation.getPlace() %}
@@ -26,7 +27,7 @@
     }
 %}
 
-{% block breadcrumbs %}
+{% block breadcrumbs %}r
 
     {{
         breadcrumbs({
@@ -164,6 +165,17 @@
                                 </tbody>
                             </table>
                             {% endfor %}
+                            {% if website_concern.get() == constant('WEBSITE_CHALET_NL', website_concern) %}
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th><span class="price has-tip tip-left radius">Autohuur</span></th>
+                                            <th></th>
+                                            <th>Een auto huren? <a href="#" data-role="external-popup" data-uri="{{ sunny_cars }}" data-width="1000" data-height="330">Boek dan direct bij Sunny Cars.</a></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            {% endif %}
                         </div>
                     </div>
                     <div id="types-other" class="table-wrapper">

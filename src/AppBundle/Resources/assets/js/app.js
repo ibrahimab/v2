@@ -404,8 +404,15 @@
             var uri = URI();
             
             uri.setQuery('w', jq(this).val());
-            
             window.location.href = uri.toString();
+        });
+        
+        body.on('click', '[data-role="external-popup"]', function(event) {
+            
+            event.preventDefault();
+            
+            var element = jq(this);
+            window.open(element.data('uri'), '_blank', 'scrollbars=yes,width=' + element.data('width') + ',height=' + element.data('height'));
         });
 
         /**
