@@ -51,7 +51,7 @@
 
     {{ parent() }}
 
-    <section id="accom" class="discount type-section">
+    {# <section id="accom" class="discount type-section">
         <div class="row">
             <div id="accom-left" class="small-12 medium-8 large-9 columns">
                 <div class="overview{% if offers[type.getId()] is defined %} sale{%endif %}">
@@ -131,13 +131,13 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="table-wrapper"> 
+                        <div class="table-wrapper">
                             {% for kind in options %}
                             <table>
                                 <thead>
                                     <tr>
                                         <th>
-                                            <span id="{{ kind.groupId }}" class="price has-tip tip-left radius" title="Tooltip positie klopt niet" data-tooltip>{{ kind.name }}<i class="fi-info"></i></span>
+                                            <span id="{{ kind.groupId }}" class="price" title="Tooltip positie klopt niet" data-role="tooltip">{{ kind.name }}</span>
                                         </th>
                                         <th></th>
                                         <th>Prijs</th>
@@ -257,7 +257,7 @@
                         <div data-role="google-maps" class="google-maps"></div>
                         <div class="readmore"><a href="" class="button blank small radius" title="Bekijk al onze accommodaties in dit gebied" data-open-title="Bekijk al onze accommodaties in dit gebied" data-close-title="Verberg al onze accommodaties in dit gebied"><i class="sprite sprite-icon-close-all"></i><span>Bekijk al onze accommodaties in dit gebied</span></a></div>
                     </div> #}
-                </div>
+                {# </div>
             </div>
             <div id="accom-right" class="small-12 medium-4 large-3 columns">
                 <div id="accom-main-box-container">
@@ -328,6 +328,8 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> #}
+                    
+    <span title="Testing tooltip" data-role="tooltip">Dit is een tooltip</span>
 
 {% endblock %}

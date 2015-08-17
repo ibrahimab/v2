@@ -4,6 +4,7 @@
     // setting up scroll button for long pages
     jq(function() {
         
+        jq('[data-role="tooltip"]').tipso();
         /**
          * fixed header scroll effects
          */
