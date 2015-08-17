@@ -143,12 +143,20 @@
                                     {% for part in kind.parts %}
                                     <tr>
                                         <td>{{ part.name }}</td>
-                                        {% if part.price != 0 %}
-                                            <td>{{ part.discount == true ? 'korting' }}</td>
-                                            <td>&euro; {{ part.price|number_format(2, ',', '.') }}</td>
+                                        {% if part.price is defined %}
+                                            {% if part.free == true %}
+                                                <td></td>
+                                                <td>gratis</td>
+                                            {% elseif part.price != 0 %}
+                                                <td>{{ part.discount == true ? 'korting' }}</td>
+                                                <td>&euro; {{ part.price|number_format(2, ',', '.') }}</td>
+                                            {% elseif part.price == false %}
+                                                <td></td>
+                                                <td>afhankelijk van week</td>
+                                            {% endif %}
                                         {% else %}
-                                            <td></td>
-                                            <td>gratis</td>
+                                            <td>...</td>
+                                            <td>...</td>
                                         {% endif %}
                                     </tr>
                                     {% endfor %}
@@ -173,7 +181,7 @@
                             </thead>
                             <tbody>
                                 {% set types = accommodation.getTypes().toArray() %}
-                                {% set l = types|sortprop('name') %}
+                                {% set l     = types|sortprop('name') %}
                                 {% for t in types %}
                                 <tr{{ t.getId() == type.getId() ? ' class="active"' : '' }} data-role="clickable" data-url="{{ locale_path('show_type', { beginCode: country.getStartCode(), typeId: t.getId() }) }}"><!-- notice this row is in discount -->
                                     <td><i class="sprite sprite-icon-torso"></i>{{ (t.getOptimalResidents() == t.getMaxResidents() ? t.getOptimalResidents() : (t.getOptimalResidents() ~ ' - ' ~ t.getMaxResidents())) }}</td>

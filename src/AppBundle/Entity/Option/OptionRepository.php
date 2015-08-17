@@ -88,24 +88,24 @@ class OptionRepository implements OptionServiceRepositoryInterface
         $qb         = $connection->createQueryBuilder();
         $expr       = $qb->expr();
         
-        $qb->select('vo.optie_soort_id, vo.snaam, vo.snaam_en, vo.snaam_de, vo.optie_onderdeel_id, vo.onaam, vo.onaam_en, vo.onaam_de, ta.verkoop')
-           ->from('optie_accommodatie a, view_optie vo, optie_soort s, optie_onderdeel o, optie_tarief ta', '')
+        $qb->select('vo.optie_soort_id, vo.snaam, vo.snaam_en, vo.snaam_de, vo.optie_onderdeel_id, vo.onaam, vo.onaam_en, vo.onaam_de')
+           ->from('optie_accommodatie a, view_optie vo, optie_soort s, optie_onderdeel o', '')
            ->where('a.optie_soort_id = vo.optie_soort_id')
            ->where('a.optie_soort_id = s.optie_soort_id')
            ->andWhere('a.optie_groep_id = vo.optie_groep_id')
            ->andWhere('vo.optie_onderdeel_id = o.optie_onderdeel_id')
-           ->andWhere('vo.optie_onderdeel_id = ta.optie_onderdeel_id')
+           // ->andWhere('vo.optie_onderdeel_id = ta.optie_onderdeel_id')
            ->andWhere($expr->eq('a.accommodatie_id', ':accommodation'))
-           ->andWhere($expr->gte('ta.week', ':week'))
-           ->andWhere($expr->eq('ta.beschikbaar', ':available'))
+           // ->andWhere($expr->gte('ta.week', ':week'))
+           // ->andWhere($expr->eq('ta.beschikbaar', ':available'))
            ->andWhere('o.tonen_accpagina = 1')
            ->andWhere('o.actief = 1')
            ->orderBy('vo.svolgorde, vo.snaam, vo.ovolgorde, vo.onaam')
            ->setParameters([
                
                'accommodation' => $accommodationId,
-               'week'          => time(),
-               'available'     => 1,
+               // 'week'          => time(),
+               // 'available'     => 1,
            ]);
            
         if ($website->getConfig(WebsiteConcern::WEBSITE_CONFIG_TRAVEL_INSURANCE) !== 1) {
@@ -122,6 +122,7 @@ class OptionRepository implements OptionServiceRepositoryInterface
         $locale    = $this->getLocale();
         $results   = $statement->fetchAll();
         $tree      = [];
+        $parts     = [];
         
         foreach ($results as $result) {
             
@@ -156,10 +157,74 @@ class OptionRepository implements OptionServiceRepositoryInterface
                 
                 'id'        => $result['optie_onderdeel_id'],
                 'name'      => $part,
-                'price'     => abs($result['verkoop']),
-                'discount'  => ($result['verkoop'] < 0),
-                'free'      => ($result['verkoop'] != 0),
             ];
+            
+            $parts[] = $result['optie_onderdeel_id'];
+        }
+        
+        $qb = $connection->createQueryBuilder();
+        
+        $qb->select('ta.optie_onderdeel_id, ta.week, ta.verkoop')
+           ->from('optie_tarief ta, optie_onderdeel o', '')
+           ->where('ta.optie_onderdeel_id = o.optie_onderdeel_id')
+           ->andWhere($expr->gte('ta.week', ':week'))
+           ->andWhere($expr->eq('ta.beschikbaar', ':available'))
+           ->andWhere($expr->in('ta.optie_onderdeel_id', $parts))
+           ->setParameters([
+               
+               'week'      => time(),
+               'available' => 1,
+           ]);
+           
+        $statement = $qb->execute();
+        $results   = $statement->fetchAll();
+        $prices    = [];
+        $cache     = [];
+        
+        foreach ($results as $result) {
+            
+            $result['verkoop'] = floatval($result['verkoop']);
+            
+            if (!isset($prices[$result['optie_onderdeel_id']])) {
+                
+                $prices[$result['optie_onderdeel_id']] = [
+                    
+                    'prices' => [],
+                    'price'  => $result['verkoop'],
+                ];
+            }
+            
+            $prices[$result['optie_onderdeel_id']]['prices'][] = $result['verkoop'];
+        }
+        
+        foreach ($prices as $id => $data) {
+            
+            if (count(array_unique($data['prices'])) > 1) {
+                $prices[$id] = false;
+            } else {
+                $prices[$id] = $data['price'];
+            }
+        }
+
+        foreach ($tree as $kind => $data) {
+            
+            foreach ($data['parts'] as $id => $row) {
+                
+                if (isset($prices[$id])) {
+                    
+                    $tree[$kind]['parts'][$id]['price']    = abs($prices[$id]);
+                    $tree[$kind]['parts'][$id]['discount'] = ($prices[$id] < 0);
+                    $tree[$kind]['parts'][$id]['free']     = ($prices[$id] === 0.0);
+                    
+                } else {
+                    
+                    unset($tree[$kind]['parts'][$id]);
+                    
+                    if (count($tree[$kind]['parts']) === 0) {
+                        unset($tree[$kind]);
+                    }
+                }
+            }
         }
         
         return $tree;
