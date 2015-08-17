@@ -43,4 +43,13 @@ class OptionService
     {
         return $this->optionServiceRepository->options($accommodationId, $season, $weekend);
     }
+    
+    /**
+     * @param integer $optionId
+     * @return string
+     */
+    public function option($optionId)
+    {
+        return $this->optionServiceRepository->option($optionId);
+    }
 }

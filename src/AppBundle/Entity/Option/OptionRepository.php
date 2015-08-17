@@ -233,4 +233,58 @@ class OptionRepository implements OptionServiceRepositoryInterface
         
         return $tree;
     }
+    
+    /**
+     * @param integer $optionId
+     * @return string
+     */
+    public function option($optionId)
+    {
+        $connection = $this->getEntityManager()->getConnection();
+        $qb         = $connection->createQueryBuilder();
+        $expr       = $qb->expr();
+        
+        $qb->select('s.naam, s.omschrijving AS somschrijving, s.omschrijving_en AS somschrijving_en, s.omschrijving_de AS somschrijving_de,
+                     g.omschrijving AS gomschrijving, g.omschrijving_en AS gomschrijving_en, g.omschrijving_de AS gomschrijving_de')
+           ->from('optie_soort s, optie_groep g', '')
+           ->where('g.optie_soort_id = s.optie_soort_id')
+           ->andWhere($expr->eq('g.optie_groep_id', ':optionId'))
+           ->setParameter('optionId', $optionId);
+           
+        $statement   = $qb->execute();
+        $result      = $statement->fetch();
+        $locale      = $this->getLocale();
+        $description = '';
+        
+        if (false !== $result) {
+            
+            switch ($locale) {
+                
+                case 'en':
+                
+                    $description  = nl2br($result['somschrijving_en']);
+                    $description .= (trim($result['somschrijving_en']) !== '' ? '<br />' : '');
+                    $description .= nl2br($result['gomschrijving_en']);
+                    
+                break;
+                
+                case 'de':
+            
+                    $description  = nl2br($result['somschrijving_de']);
+                    $description .= (trim($result['somschrijving_de']) !== '' ? '<br />' : '');
+                    $description .= nl2br($result['gomschrijving_de']);
+                    
+                break;
+                
+                case 'nl':
+                default:
+                    
+                    $description  = nl2br($result['somschrijving']);
+                    $description .= (trim($result['somschrijving']) !== '' ? '<br />' : '');
+                    $description .= nl2br($result['gomschrijving']);
+            }
+        }
+        
+        return ['name' => $result['naam'], 'description' => $description];
+    }
 }

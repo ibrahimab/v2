@@ -19,17 +19,19 @@ use       Doctrine\ORM\NoResultException;
  * @version 0.0.5
  * @since   0.0.1
  *
- * @Breadcrumb(name="frontpage", title="frontpage", translate=true, path="home")
  */
 class OptionController extends Controller
 {
     /**
-     * @Route("/themas.php", name="new_option_nl")
-     * @Route("/available.php", name="new_option_en")
-     * @Breadcrumb(name="new_option", title="new-option", translate=true, active=true)
-     * @Method("GET")
+     * @Route("/options/{optionId}", name="show_option_nl")
      */
-    public function newAction()
+    public function show($optionId)
     {
+        $optionService = $this->get('app.api.option');
+        $option        = $optionService->option($optionId);
+        
+        return $this->render('option/show.html.twig', [
+            'option' => $option,
+        ]);
     }
 }
