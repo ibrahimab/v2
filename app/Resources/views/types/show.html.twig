@@ -137,7 +137,7 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                            <span id="{{ kind.groupId }}" class="price" title="Tooltip positie klopt niet" data-role="tooltip">{{ kind.name }}</span>
+                                            <span class="price">{{ kind.name }} <i class="fi-info has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[{{ kind.name }}]" data-tooltip-dynamic="true" data-tooltip-url="{{ path('show_option', {optionId: kind.groupId}) }}"></i></span>
                                         </th>
                                         <th></th>
                                         <th>Prijs</th>

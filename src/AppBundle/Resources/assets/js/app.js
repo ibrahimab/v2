@@ -4,7 +4,6 @@
     // setting up scroll button for long pages
     jq(function() {
         
-        jq('[data-role="tooltip"]').tipso();
         /**
          * fixed header scroll effects
          */
@@ -414,6 +413,50 @@
             
             var element = jq(this);
             window.open(element.data('uri'), '_blank', 'scrollbars=yes,width=' + element.data('width') + ',height=' + element.data('height'));
+        });
+        
+        /**
+         * Dynamic tooltips
+         */
+        body.on('mouseenter', '[data-tooltip]', function(event) {
+            
+            var element = jq(this);
+            
+            if (true === element.data('open')) {
+                Foundation.libs.tooltip.showTip(element.data('selector'));
+            } else {
+                
+                event.preventDefault();
+            }
+        });
+        
+        body.on('click', '[data-tooltip]', function() {
+            
+            console.log('test2');
+            var element = jq(this);
+            var cache   = element.data('tooltip-cache') || null;
+            var lock    = element.data('tooltip-lock')  || false;
+            var dynamic = element.data('tooltip-dynamic') || false;
+
+            if (true === lock) {
+                return;
+            }
+            
+            if (null === cache && true === dynamic) {
+                
+                element.data('tooltip-lock', true);
+                
+                jq.ajax({
+                    
+                    url: element.data('tooltip-url'),
+                    success: function(content) {
+                        
+                        element.data('tooltip-cache', content).data('tooltip-lock', false);
+                        jq('#' + element.data('selector')).html(content);
+                        console.log(jq('#' + element.data('selector')));
+                    }
+                });
+            }
         });
 
         /**
