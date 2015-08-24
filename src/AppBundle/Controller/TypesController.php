@@ -99,6 +99,7 @@ class TypesController extends Controller
             'options'            => $options,
             'weekends'           => $seasonService->weekends($seasons),
             'sunny_cars'         => $this->container->getParameter('sunny_cars'),
+            'current_weekend'    => $request->query->get('w', null),
         ];
     }
 
