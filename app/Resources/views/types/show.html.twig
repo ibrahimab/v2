@@ -127,7 +127,7 @@
                         <div class="small-12 medium-4 large-3 columns">
                             <select class="radius" data-role="extra-options-week">
                                 {% for timestamp, weekend in weekends %}
-                                <option value="{{ timestamp }}"{{ timestamp == current_weekend ? ' selected="selected"' }}>{{ weekend }}</option>
+                                <option value="{{ timestamp }}">{{ weekend }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -137,7 +137,16 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                            <span class="price">{{ kind.name }} <i class="fi-info has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[{{ kind.name }}]" data-tooltip-dynamic="true" data-tooltip-url="{{ path('show_option', {optionId: kind.groupId}) }}"></i></span>
+                                            <span class="price">
+                                                {{ kind.name }} 
+                                                <div class="chalet-tooltip" data-role="ajax-tooltip" data-url="{{ path('show_option', {optionId: kind.groupId}) }}">
+                                                    <div class="chalet-tooltip-content tooltip-right" data-role="tooltip-wrapper">
+                                                        <div data-role="tooltip-content">Bezig met laden...</div>
+                                                        <span class="nub rtl"></span>
+                                                    </div>
+                                                    <i class="fi-info"></i>
+                                                </div>
+                                            </span>
                                         </th>
                                         <th></th>
                                         <th>Prijs</th>
@@ -329,5 +338,5 @@
             </div>
         </div>
     </section>
-
+    
 {% endblock %}
