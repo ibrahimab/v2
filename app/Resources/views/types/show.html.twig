@@ -339,7 +339,7 @@
                         <span class="distance"><i class="fi-compass fi-gray"></i><em>{{ place.getDistanceFromUtrecht() }} km</em> van Utrecht</span>
                     </div>
                     <div class="hide-for-small"><!-- class hide-for-small-->
-                        <img src="{{ place_image(place).getLocation() }}" alt="{{ localeData['name']['place'] }}" />
+                        <img src="{{ generate_image_path(place_image(place)) }}" alt="{{ localeData['name']['place'] }}" />
                         <div class="text">
                             <p>{{ place.getLocaleShortDescription(locale) }}</p>
                         </div>
@@ -357,7 +357,7 @@
                         <span class="piste"><i class="sprite sprite-icon-pistes"></i><em>{{ region.getTotalSlopesDistance() }} km</em> pistes</span>
                     </div>
                     <div class="hide-for-small"><!-- class hide-for-small-->
-                        <img src="{{ region_image(region).getLocation() }}" alt="{{ localeData['name']['region'] }}" />
+                        <img src="{{ generate_image_path(region_image(region)) }}" alt="{{ localeData['name']['region'] }}" />
                         <div class="text">
                             <p>{{ region.getLocaleShortDescription(locale) }}</p>
                         </div>

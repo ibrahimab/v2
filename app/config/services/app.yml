@@ -29,16 +29,23 @@ services:
         
     app.file:
         class: AppBundle\Service\File\FileService
-        arguments: [@app.mongo]
+        arguments: [@app.mongo, %mongodb_files_database%]
+
+    app.file.file:
+        alias: app.file
         
     app.file.accommodation:
         class: AppBundle\Service\File\Accommodation
-        arguments: [@app.mongo]
+        arguments: [@app.mongo, %mongodb_files_database%]
         
     app.file.type:
         class: AppBundle\Service\File\Type
-        arguments: [@app.mongo]
+        arguments: [@app.mongo, %mongodb_files_database%]
         
     app.file.region:
         class: AppBundle\Service\File\Region
-        arguments: [@app.mongo]
+        arguments: [@app.mongo, %mongodb_files_database%]
+        
+    app.file.place:
+        class: AppBundle\Service\File\Place
+        arguments: [@app.mongo, %mongodb_files_database%]

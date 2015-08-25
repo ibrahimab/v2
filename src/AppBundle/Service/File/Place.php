@@ -9,4 +9,18 @@ namespace AppBundle\Service\File;
  */
 class Place extends FileService
 {
+    /**
+     * @var string
+     */
+    protected $collection = 'places';
+    
+    /**
+     * @param integer $id
+     * @return array
+     */
+    public function getImage($id)
+    {
+        return $this->mongo->findOne(['file_id' => $id, 
+                                      'rank'    => 1]);
+    }
 }

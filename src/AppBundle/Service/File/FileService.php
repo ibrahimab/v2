@@ -23,10 +23,10 @@ class FileService
     /**
      * @param MongoService $mongo
      */
-    public function __construct(MongoService $mongo)
+    public function __construct(MongoService $mongo, $database)
     {
         $this->mongo = clone $mongo;
-        $this->mongo->setDatabase('dev_files');
+        $this->mongo->setDatabase($database);
         $this->mongo->setCollection($this->collection);
     }
     

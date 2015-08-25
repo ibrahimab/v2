@@ -328,18 +328,7 @@ class AppExtension extends \Twig_Extension
      */
     public function getPlaceImage(PlaceServiceEntityInterface $place)
     {
-        $placeFileService = $this->container->get('app.api.file.place');
-        $placeImage       = $placeFileService->getImage($place);
-
-        if (null === $placeImage) {
-
-            $placeImage = new PlaceFileDocument();
-            $placeImage->setDirectory('accommodaties');
-            $placeImage->setFilename('0.jpg');
-        }
-
-        $placeImage->setUrlPrefix($this->getOldImageUrlPrefix());
-
+        $placeImage = $this->getFileService('place')->getImage($place->getId());
         return $placeImage;
     }
 
