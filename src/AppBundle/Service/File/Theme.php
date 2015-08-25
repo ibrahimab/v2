@@ -9,4 +9,21 @@ namespace AppBundle\Service\File;
  */
 class Theme extends FileService
 {
+    /**
+     * @var string
+     */
+    protected $collection = 'themes';
+    
+    /**
+     * @param integer $id
+     * @return array
+     */
+    public function getImage($id)
+    {
+        $result = $this->mongo->find(['file_id' => $id])
+                              ->sort(['rank' => 1])
+                              ->limit(1);
+        dump(count($result));
+        return count($result) > 0 ? (array)$result : null;
+    }
 }
