@@ -23,4 +23,14 @@ class Place extends FileService
         return $this->mongo->findOne(['file_id' => $id, 
                                       'rank'    => 1]);
     }
+    
+    /**
+     * @param integer $id
+     * @return array
+     */
+    public function getImages($id)
+    {
+        return $this->mongo->find(['file_id' => $id])
+                           ->sort(['rank'    => 1]);
+    }
 }

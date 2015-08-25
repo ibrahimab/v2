@@ -11,6 +11,8 @@
     }}
 {% endblock %}
 
+{% set images = region_images(region) %}
+
 {% block body %}
 
     {{ parent() }}
@@ -25,7 +27,6 @@
                 <h2>{{ region.getLocaleShortDescription(get_locale())|nl2br }}</h2>
                 <p>{{ region.getLocaleDescription(get_locale())|bbcode|nl2br }}</p>
                 <h3><a href="{{ locale_path('show_region', {regionSlug: region.getLocaleSeoName(get_locale())}) }}" class="button small radius" title="Bekijk het gehele aanbod">Bekijk al onze chalets en appartementen in {{ region.getLocaleName(get_locale()) }}</a></h3>
-
             </div>
             <div class="large-4 medium-4 columns">
                 <h5>{{ 'features'|trans }} {{ region.getLocaleName(get_locale()) }}</h5>
@@ -111,7 +112,20 @@
                     </li>
                 </ul>
                 <h6>{{ 'ski-runs-map'|trans }}</h6>
-                <a href="{{ region_skirun_map_image(region).getLocation() }}" data-featherlight="image"><img src="{{ region_skirun_map_image(region).getLocation() }}" /></a>
+                {% set skimap = generate_image_path(region_skimap_image(region)) %}
+                <a href="{{ skimap }}" data-featherlight="image"><img src="{{ skimap }}" /></a>
+            </div>
+            <div class="large-12 columns">
+                <ul class="small-block-grid-3">
+                    {% for image in images %}
+                        <li>
+                            {% set image_path = generate_image_path(image) %}
+                            <a href="{{ image_path }}">
+                                <img src="{{ image_path }}" alt="{{ image.label }}" />
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </section>
@@ -123,7 +137,8 @@
             <div class="small-12 medium-3 large-3 columns{{ (( ((loop.index % 4) is same as(0)) or loop.last) ? ' end' : '') }}">
                 <article class="overview" data-equalizer-watch>
                     <div class="accom-img">
-                        <img src="{{ place_image(place).getLocation() }}" alt="{{ place.getLocaleName(get_locale()) }}" />
+                        {% set image = generate_image_path(place_image(place)) %}
+                        <img src="{{ image }}" alt="{{ image }}" />
                     </div>
                     <div class="accom-desc">
                         <div class="title"><a href="{{ locale_path('show_place', {placeSlug: place.getLocaleSeoName(get_locale())}) }}">{{ place.getLocaleName(get_locale()) }}</a></div>

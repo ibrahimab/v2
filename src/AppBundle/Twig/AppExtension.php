@@ -108,15 +108,17 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('type_images', [$this, 'getTypeImages']),
             new \Twig_SimpleFunction('search_images', [$this, 'getSearchImages']),
             new \Twig_SimpleFunction('region_image', [$this, 'getRegionImage']),
+            new \Twig_SimpleFunction('region_images', [$this, 'getRegionImages']),
             new \Twig_SimpleFunction('country_image', [$this, 'getCountryImage']),
             new \Twig_SimpleFunction('place_image', [$this, 'getPlaceImage']),
+            new \Twig_SimpleFunction('place_images', [$this, 'getPlaceImages']),
             new \Twig_SimpleFunction('theme_image', [$this, 'getThemeImage']),
             new \Twig_SimpleFunction('homepage_block_image', [$this, 'getHomepageBlockImage']),
             new \Twig_SimpleFunction('generate_image_path', [$this, 'generateImagePath']),
             new \Twig_SimpleFunction('breadcrumbs', [$this, 'breadcrumbs'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new \Twig_SimpleFunction('get_locale', [$this, 'getLocale']),
             new \Twig_SimpleFunction('js_object', [$this, 'getJavascriptObject']),
-            new \Twig_SimpleFunction('region_skirun_map_image', [$this, 'getRegionSkiRunMapImage']),
+            new \Twig_SimpleFunction('region_skimap_image', [$this, 'getRegionSkimapImage']),
             new \Twig_SimpleFunction('favorites_count', [$this, 'favoritesCount']),
             new \Twig_SimpleFunction('viewed_count', [$this, 'viewedCount']),
             new \Twig_SimpleFunction('render_rate_table', [$this, 'renderRateTable']),
@@ -290,12 +292,22 @@ class AppExtension extends \Twig_Extension
      * Getting Region ski runs map image
      *
      * @param RegionServiceEntityInterface $region
-     * @return string
+     * @return array
      */
     public function getRegionImage(RegionServiceEntityInterface $region)
     {
-        $regionImage = $this->getFileService('region')->getImage($region->getId());
-        return $regionImage;
+        $image = $this->getFileService('region')->getImage($region->getId());
+        return $image;
+    }
+    
+    /**
+     * @param RegionServiceEntityInterface $region
+     * @return array
+     */
+    public function getRegionImages(RegionServiceEntityInterface $region)
+    {
+        $images = $this->getFileService('region')->getImages($region->getId());
+        return $images;
     }
 
     /**
@@ -304,32 +316,32 @@ class AppExtension extends \Twig_Extension
      * @param RegionServiceEntityInterface $region
      * @return string
      */
-    public function getRegionSkiRunMapImage(RegionServiceEntityInterface $region)
+    public function getRegionSkimapImage(RegionServiceEntityInterface $region)
     {
-        $regionFileService = $this->container->get('app.api.file.region');
-        $regionImage       = $regionFileService->getSkiRunsMapImage($region);
-
-        if (null === $regionImage) {
-
-            $regionImage = new RegionFileDocument();
-            $regionImage->setUrlPrefix($this->getOldImageUrlPrefix());
-            $regionImage->setDirectory('accommodaties');
-            $regionImage->setFilename('0.jpg');
-        }
-
-        return $regionImage;
+        $image = $this->getFileService('region')->getSkimapImage($region->getId());
+        return $image;
     }
 
     /**
      * Getting Place image
      *
      * @param PlaceServiceEntityInterface $place
-     * @return string
+     * @return array
      */
     public function getPlaceImage(PlaceServiceEntityInterface $place)
     {
-        $placeImage = $this->getFileService('place')->getImage($place->getId());
-        return $placeImage;
+        $image = $this->getFileService('place')->getImage($place->getId());
+        return $image;
+    }
+    
+    /**
+     * @param PlaceServiceEntityInterface $place
+     * @return array
+     */
+    public function getPlaceImages(PlaceServiceEntityInterface $place)
+    {
+        $images = $this->getFileService('place')->getImages($place->getId());
+        return $images;
     }
 
     /**
@@ -340,19 +352,8 @@ class AppExtension extends \Twig_Extension
      */
     public function getThemeImage(ThemeServiceEntityInterface $theme)
     {
-        $themeFileService = $this->container->get('app.api.file.theme');
-        $themeImage       = $themeFileService->getImage($theme);
-
-        if (null === $themeImage) {
-
-            $themeImage = new ThemeFileDocument();
-            $themeImage->setDirectory('accommodaties');
-            $themeImage->setFilename('0.jpg');
-        }
-
-        $themeImage->setUrlPrefix($this->getOldImageUrlPrefix());
-
-        return $themeImage;
+        $image = $this->getFileService('theme')->getImage($theme->getId());
+        return $image;
     }
 
     /**
@@ -363,33 +364,33 @@ class AppExtension extends \Twig_Extension
      */
     public function getHomepageBlockImage(HomepageBlockServiceEntityInterface $homepageBlock)
     {
-        $homepageBlockId = $homepageBlock->getId();
-        $file            = $this->getOldImageRoot() . '/cms/homepageblokken/' . $homepageBlockId . '.jpg';
-        $filename        = 'homepageblokken/0.jpg';
-
-        if (file_exists($file)) {
-            $filename = 'homepageblokken/' . $homepageBlockId . '.jpg';
-        }
-
-        return $this->getOldImageUrlPrefix() . '/' . $filename;
+        // $homepageBlockId = $homepageBlock->getId();
+        // $file            = $this->getOldImageRoot() . '/cms/homepageblokken/' . $homepageBlockId . '.jpg';
+        // $filename        = 'homepageblokken/0.jpg';
+        //
+        // if (file_exists($file)) {
+        //     $filename = 'homepageblokken/' . $homepageBlockId . '.jpg';
+        // }
+        //
+        // return $this->getOldImageUrlPrefix() . '/' . $filename;
     }
 
     public function getCountryImage($countryId)
     {
-        $countryFileService = $this->container->get('app.api.file.country');
-        $countryImage       = $countryFileService->getImage($countryId);
-
-        if (null === $countryImage) {
-
-            $countryImage = new CountryFileDocument();
-            $countryImage->setUrlPrefix($this->getOldImageUrlPrefix());
-            $countryImage->setDirectory('accommodaties');
-            $countryImage->setFilename('0.jpg');
-        }
-
-        $countryImage->setUrlPrefix($this->getOldImageUrlPrefix());
-
-        return $countryImage;
+        // $countryFileService = $this->container->get('app.api.file.country');
+        // $countryImage       = $countryFileService->getImage($countryId);
+        //
+        // if (null === $countryImage) {
+        //
+        //     $countryImage = new CountryFileDocument();
+        //     $countryImage->setUrlPrefix($this->getOldImageUrlPrefix());
+        //     $countryImage->setDirectory('accommodaties');
+        //     $countryImage->setFilename('0.jpg');
+        // }
+        //
+        // $countryImage->setUrlPrefix($this->getOldImageUrlPrefix());
+        //
+        // return $countryImage;
     }
     
     /**
