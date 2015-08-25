@@ -26,3 +26,19 @@ services:
     app.github:
         class: AppBundle\Service\GithubService
         arguments: [@app.security.access.validator.github, @snc_redis.default]
+        
+    app.file:
+        class: AppBundle\Service\File\FileService
+        arguments: [@app.mongo]
+        
+    app.file.accommodation:
+        class: AppBundle\Service\File\Accommodation
+        arguments: [@app.mongo]
+        
+    app.file.type:
+        class: AppBundle\Service\File\Type
+        arguments: [@app.mongo]
+        
+    app.file.region:
+        class: AppBundle\Service\File\Region
+        arguments: [@app.mongo]

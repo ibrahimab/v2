@@ -25,7 +25,7 @@
                     <div class="accom-img">
                         <div class="accom-slides">
                             {% for image in images %}
-                            <div><img data-lazy="{{ image.getLocation() }}" alt="{{ accommodation.localeName }}" /></div>
+                            <div><img data-lazy="{{ generate_image_path(image) }}" alt="{{ accommodation.localeName }}" /></div>
                             {% endfor %}
                         </div>
                         {% if accommodation.offer %}

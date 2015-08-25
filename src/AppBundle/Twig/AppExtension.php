@@ -90,6 +90,7 @@ class AppExtension extends \Twig_Extension
         $this->locale         = $this->container->get('request')->getLocale();
         $this->filterService  = $this->container->get('app.filter');
         $this->websiteConcern = $this->container->get('app.concern.website');
+        $this->fileServices   = [];
     }
 
     /**
@@ -111,6 +112,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('place_image', [$this, 'getPlaceImage']),
             new \Twig_SimpleFunction('theme_image', [$this, 'getThemeImage']),
             new \Twig_SimpleFunction('homepage_block_image', [$this, 'getHomepageBlockImage']),
+            new \Twig_SimpleFunction('generate_image_path', [$this, 'generateImagePath']),
             new \Twig_SimpleFunction('breadcrumbs', [$this, 'breadcrumbs'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new \Twig_SimpleFunction('get_locale', [$this, 'getLocale']),
             new \Twig_SimpleFunction('js_object', [$this, 'getJavascriptObject']),
@@ -165,6 +167,19 @@ class AppExtension extends \Twig_Extension
     {
         return '/chalet-pic';
     }
+    
+    /**
+     * @param string $kind
+     * @return FileService
+     */
+    public function getFileService($kind)
+    {
+        if (!isset($this->fileServices[$kind])) {
+            $this->fileServices[$kind] = $this->container->get('app.file.' . $kind);
+        }
+        
+        return $this->fileServices[$kind];
+    }
 
     /**
      * Getting Image url from a Type Entity
@@ -174,25 +189,15 @@ class AppExtension extends \Twig_Extension
      */
     public function getTypeImage(TypeServiceEntityInterface $type)
     {
-        $typeFileService = $this->container->get('app.api.file.type');
-        $mainImage       = $typeFileService->getMainImage($type);
-
-        if (null === $mainImage) {
-
-            $accommodationFileService = $this->container->get('app.api.file.accommodation');
-            $mainImage                = $accommodationFileService->getMainImage($type->getAccommodation());
-
-            if (null === $mainImage) {
-
-                $mainImage = new AccommodationFileDocument();
-                $mainImage->setDirectory('accommodaties');
-                $mainImage->setFilename('0.jpg');
-            }
+        $file = $this->getFileService('type')->getMainImage($type->getId());
+        
+        if (null === $file) {
+            
+            // type image not found
+            $file = $this->getFileService('accommodation')->getMainImage($type->getAccommodation()->getId());
         }
-
-        $mainImage->setUrlPrefix($this->getOldImageUrlPrefix());
-
-        return $mainImage;
+        
+        return $file;
     }
 
     /**
@@ -204,53 +209,12 @@ class AppExtension extends \Twig_Extension
      * @return []
      */
     public function getTypeImages(TypeServiceEntityInterface $type, $above_limit = 3, $below_limit = 2)
-    {
-        $typeFileService = $this->container->get('app.api.file.type');
-        $files           = $typeFileService->getImages($type);
-        $images          = ['above' => [], 'below' => [], 'rest' => []];
-        $above_done      = 1;
-        $below_done      = 1;
-
-        foreach ($files as $file) {
-
-            $file->setUrlPrefix($this->getOldImageUrlPrefix());
-
-            if ($file->getKind() === TypeFileService::MAIN_IMAGE && $above_done <= $above_limit) {
-
-                $images['above'][] = $file;
-                $above_done       += 1;
-
-            } else {
-
-                $images[($below_done <= $below_limit ? 'below': 'rest')][] = $file;
-
-                $below_done += 1;
-            }
-        }
-
-        if (count($images['above']) === 0) {
-
-            $accommodationFileService = $this->container->get('app.api.file.accommodation');
-            $files                    = $accommodationFileService->getImages($type->getAccommodation());
-
-            foreach ($files as $file) {
-
-                $file->setUrlPrefix($this->getOldImageUrlPrefix());
-
-                if ($file->getKind() === AccommodationFileService::MAIN_IMAGE && $above_done <= $above_limit) {
-
-                    $images['above'][] = $file;
-                    $above_done       += 1;
-
-                } else {
-
-                    $images[($below_done <= $below_limit ? 'below': 'rest')][] = $file;
-
-                    $below_done += 1;
-                }
-            }
-        }
-
+    {   
+        $accommodationFiles = $this->getFileService('accommodation')->getImages($type->getAccommodation()->getId());
+        $typeFiles          = $this->getFileService('type')->getImages($type->getId());
+        $images             = $this->getFileService('file')->parse($accommodationFiles);
+        $images             = $this->getFileService('file')->parse($typeFiles, $images);
+        
         return $images;
     }
 
@@ -260,31 +224,29 @@ class AppExtension extends \Twig_Extension
      */
     public function getSearchImages($accommodations)
     {
-        $types = [];
-        $accommodationEntities = [];
+        $ids = ['types' => [], 'accommodations' => []];
 
         foreach ($accommodations as $accommodation) {
 
             if (isset($accommodation['cheapest'])) {
 
-                $types[] = $accommodation['cheapest']['id'];
-                $accommodationEntities[$accommodation['cheapest']['id']] = $accommodation['id'];
+                $ids['types'][] = $accommodation['cheapest']['id'];
+                $ids['accommodations'][$accommodation['cheapest']['id']] = $accommodation['id'];
             }
         }
 
-        $typeFileService    = $this->container->get('app.api.file.type');
-        $files              = $typeFileService->getSearchImages($types);
+        $files              = $this->getFileService('type')->getSearchImages($ids['types']);
         $images             = [];
         $found              = [];
         $mapper             = [];
         $accommodationFiles = [];
 
         foreach ($files as $file) {
-            $found[$file->getFileId()] = true;
+            $found[$file['file_id']] = true;
         }
 
         $notFound = [];
-        foreach ($accommodationEntities as $typeId => $accommodationId) {
+        foreach ($ids['accommodations'] as $typeId => $accommodationId) {
 
             if (!array_key_exists($typeId, $found)) {
 
@@ -294,34 +256,30 @@ class AppExtension extends \Twig_Extension
         }
 
         if (count($notFound) > 0) {
-
-            $accommodationFileService = $this->container->get('app.api.file.accommodation');
-            $accommodationFiles       = $accommodationFileService->getSearchImages($notFound);
+            $accommodationFiles = $this->getFileService('accommodation')->getSearchImages($notFound);
         }
 
         foreach ($files as $file) {
 
-            if (!isset($images[$file->getFileId()])) {
-                $images[$file->getFileId()] = [];
+            if (!isset($images[$file['file_id']])) {
+                $images[$file['file_id']] = [];
             }
 
-            $file->setUrlPrefix($this->getOldImageUrlPrefix());
-            $images[$file->getFileId()][] = $file;
+            $images[$file['file_id']][] = $file;
         }
 
         foreach ($accommodationFiles as $file) {
 
-            if (!isset($mapper[$file->getFileId()])) {
+            if (!isset($mapper[$file['file_id']])) {
                 continue;
             }
 
-            $typeId = $mapper[$file->getFileId()];
+            $typeId = $mapper[$file['file_id']];
 
             if (!isset($images[$typeId])) {
                 $images[$typeId] = [];
             }
 
-            $file->setUrlPrefix($this->getOldImageUrlPrefix());
             $images[$typeId][] = $file;
         }
 
@@ -336,18 +294,7 @@ class AppExtension extends \Twig_Extension
      */
     public function getRegionImage(RegionServiceEntityInterface $region)
     {
-        $regionFileService = $this->container->get('app.api.file.region');
-        $regionImage       = $regionFileService->getImage($region);
-
-        if (null === $regionImage) {
-
-            $regionImage = new RegionFileDocument();
-            $regionImage->setDirectory('accommodaties');
-            $regionImage->setFilename('0.jpg');
-        }
-
-        $regionImage->setUrlPrefix($this->getOldImageUrlPrefix());
-
+        $regionImage = $this->getFileService('region')->getImage($region->getId());
         return $regionImage;
     }
 
@@ -454,6 +401,15 @@ class AppExtension extends \Twig_Extension
         $countryImage->setUrlPrefix($this->getOldImageUrlPrefix());
 
         return $countryImage;
+    }
+    
+    /**
+     * @param array $file
+     * @return string
+     */
+    public function generateImagePath($file)
+    {
+        return $this->getOldImageUrlPrefix() . '/' . (null === $file ? 'accommodaties/0.jpg' : $file['directory'] . '/' . $file['filename']);
     }
 
     /**

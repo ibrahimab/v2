@@ -60,7 +60,7 @@
                         <div class="location">
                             <span class="area"><a href="{{ locale_path('show_region', { regionSlug: localeData['seo']['region'] }) }}" title="{{ localeData['name']['region'] }}">{{ localeData['name']['region'] }}</a></span>, <span class="city"><a href="{{ locale_path('show_place', { placeSlug: localeData['seo']['place'] }) }}" title="{{ localeData['name']['place'] }}">{{ localeData['name']['place'] }}</a></span>, <span class="country"><a href="{{ locale_path('show_country', { countrySlug: localeData['seo']['country'] } ) }}" title="{{ localeData['name']['country'] }}">{{ localeData['name']['country'] }}</a></span>
                         </div>
-                        <div class="type">{% if localeData['name']['type'] is not empty %}<h3>{{ localeData['name']['type'] }} </h3>{% endif %}<a href="#types-other" class="goto button small radius right" title="Bekijk alle foto's">Overige type's</a></div>
+                        <div class="type">{% if localeData['name']['type'] is not empty %}<h3>{{ localeData['name']['type'] }} </h3>{% endif %}</div>
                         <div class="clearfix"></div>
                         <div class="accom-img">
                             <div class="accom-slides show-for-small">
@@ -70,25 +70,35 @@
                                 <div><a href=""><img data-lazy="/bundles/app/img/accom/accom-4.jpg" alt="" /></a></div>
                             </div>
                             <div class="accom-img-big-1 row hide-for-small">
-                                {% for image in images['above'] %}
-
-                                    {% if loop.index == 1 %}
-
-                                        <div class="large-8 medium-8 columns">
-                                            <a href="{{ image.getLocation() }}" data-role="fancybox" data-fancybox-group="accommodation-images"{% if image.getLabel() %}data-fancybox-title="image.getLabel()"{% endif %}><img src="{{ image.getLocation() }}" alt="" /></a>
-                                        </div>
-                                        <div class="large-4 medium-4 column">
-
+                                <div class="large-8 medium-8 columns">
+                                    {% set big   = images['top']['big'] %}
+                                    {% set small = images['top']['small'] %}
+                                    
+                                    {% if big != null %}
+                                        <a href="{{ generate_image_path(big) }}" data-role="fancybox" data-fancybox-group="accommodation-images" data-fancybox-title="{{ big.label }}">
+                                            <img src="{{ generate_image_path(big) }}" alt="{{ big.label }}" />
+                                        </a>
                                     {% else %}
-
-                                        <a href="{{ image.getLocation() }}" data-role="fancybox" data-fancybox-group="accommodation-images"{% if image.getLabel() %}data-fancybox-title="image.getLabel()"{% endif %}><img src="{{ image.getLocation() }}" alt="" /></a>
-
+                                        <img src="{{ generate_image_path(null) }}" />
                                     {% endif %}
-
-                                {% endfor %}
-                                {% if images['above']|length > 0 %}
-                                        </div>
-                                {% endif %}
+                                </div>
+                                <div class="large-4 medium-4 column">
+                                    {% if small.above != null %}
+                                        <a href="{{ generate_image_path(small.above) }}" data-role="fancybox" data-fancybox-group="accommodation-images" data-fancybox-title="{{ small.above.label }}">
+                                            <img src="{{ generate_image_path(small.above) }}" alt="{{ small.above.label }}" />
+                                        </a>
+                                    {% else %}
+                                        <img src="{{ generate_image_path(null) }}" />
+                                    {% endif %}
+                                    
+                                    {% if small.below != null %}
+                                        <a href="{{ generate_image_path(small.below) }}" data-role="fancybox" data-fancybox-group="accommodation-images" data-fancybox-title="{{ small.below.label }}">
+                                            <img src="{{ generate_image_path(small.below) }}" alt="{{ small.below.label }}" />
+                                        </a>
+                                    {% else %}
+                                        <img src="{{ generate_image_path(null) }}" />
+                                    {% endif %}
+                                </div>
                             </div>
                             {% if offers[type.getId()] is defined %}
                                 <div class="circle"><span>Aan-</span><span>bieding</span></div>
@@ -190,7 +200,7 @@
                         </div>
                     </div>
                     <div id="types-other" class="table-wrapper">
-                        <h3>Overige types van deze accommodatie</h3>
+                        <h3>Alle types van deze accommodatie</h3>
                         <table>
                             <thead>
                                 <tr>
@@ -222,15 +232,19 @@
                     </div>
 
                     {% include 'partials/surveys.html.twig' with {'surveyData': surveyData, 'surveyCount': surveyCount, 'surveyAverage': surveyAverage, 'minimalSurveyCount': minimalSurveyCount} only %}
+                    
+                    {% set has_video = false %}
+                    {% if type.hasVideo() or accommodation.hasVideo() %}
+                        {% set has_video = true %}
+                    {% endif %}
 
                     <div id="images" class="images">
-                        <h3>Foto's</h3>
+                        <h3>Foto's{{ has_video == true ? ' en Video\'s' }}</h3>
                         {% if type.getVirtualTourLink() %}
                             <a href="{{ type.getVirtualTourLink() }}" data-role="new-window">{{ 'checkout-virtual-tour'|trans }}</a>
                         {% endif %}
                         <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-2">
-                            {% set has_video = false %}
-                            {% if type.hasVideo() or accommodation.hasVideo() %}
+                            {% if has_video == true %}
                                 <li>
                                     <a href="{{ type.hasVideo() ? type.getVideo().getUrl() : accommodation.getVideo().getUrl() }}?autoplay=1" data-role="fancybox" data-fancybox-group="accommodation-images">
                                         {% image 'bundles/app/img/video-preview.jpg' %}
@@ -238,27 +252,41 @@
                                         {% endimage %}
                                     </a>
                                 </li>
-                                {% set has_video = true %}
                             {% endif %}
-                            {% set images_below = images['below'] %}
-                            {% set images_rest  = images['rest'] %}
+                            
+                            {% set bottom = images['bottom'] %}
+                            {% set rest   = images['rest']   %}
+                                
                             {% if has_video %}
-                                {% set second_image = images['below']|slice(1) %}
-                                {% set images_below = images_below|slice(0, 1) %}
-                                {% set images_rest  = images_rest|merge(second_image) %}
+                                
+                                {% set second_image = bottom|slice(1) %}
+                                {% set bottom       = bottom|slice(0, 1) %}
+                                {% set rest         = rest|merge(second_image) %}
+                                    
                             {% endif %}
-                            {% for image in images_below %}
-                                <li><a href="{{ image.getLocation() }}"{% if image.getLabel() %}data-fancybox-title="image.getLabel()"{% endif %} class="th" data-role="fancybox" data-fancybox-group="accommodation-images"><img src="{{ image.getLocation() }}" alt="" /></a></li>
+                            
+                            {% for image in bottom %}
+                                <li>
+                                    <a href="{{ generate_image_path(image) }}" class="th" data-role="fancybox" data-fancybox-group="accommodation-images"{% if image.label %}data-fancybox-title="{{ image.label }}"{% endif %}>
+                                        <img src="{{ generate_image_path(image) }}" alt="{{ image.label }}" />
+                                    </a>
+                                </li>
                             {% endfor %}
                         </ul>
                         <div class="hide">
                             <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
-                                {% for image in images_rest %}
-                                    <li><a href="{{ image.getLocation() }}"{% if image.getLabel() %}data-fancybox-title="image.getLabel()"{% endif %} class="th" data-role="fancybox" data-fancybox-group="accommodation-images"><img src="{{ image.getLocation() }}" alt="" /></a></li>
+                                {% for image in rest %}
+                                    <li>
+                                        <a href="{{ generate_image_path(image) }}" class="th" data-role="fancybox" data-fancybox-group="accommodation-images"{% if image.label %}data-fancybox-title="{{ image.label }}"{% endif %}>
+                                            <img src="{{ generate_image_path(image) }}" alt="{{ image.label }}" />
+                                        </a>
+                                    </li>
                                 {% endfor %}
                             </ul>
                         </div>
-                        <div class="readmore"><a href="" class="button blank small radius" title="Toon meer foto's" data-open-title="Toon meer foto's" data-close-title="Verberg foto's"><i class="sprite sprite-icon-close-all"></i><span>Toon meer foto's</span></a></div>
+                        {% if rest|length > 0 %}
+                            <div class="readmore"><a href="" class="button blank small radius" title="Toon meer foto's" data-open-title="Toon meer foto's" data-close-title="Verberg foto's"><i class="sprite sprite-icon-close-all"></i><span>Toon meer foto's</span></a></div>
+                        {% endif %}
                     </div>
 
                     {# <div id="map" class="map">
@@ -285,6 +313,7 @@
                             <li>Badkamers<span>{{ type.getBathrooms() }}<i class="sprite sprite-icon-bath"></i></span>{% if type.getLocaleBathroomsExtra(locale) != '' %}<span class="extra">({{ type.getLocaleBathroomsExtra(locale) }})</span>{% endif %}</li>
                             <li>Oppervlakte<span>{{ type.getSurface() }} m&sup2;{% if type.getLocaleSurfaceExtra(locale) != '' %} - {{ type.getLocaleSurfaceExtra(locale) }}&sup2;{% endif %}<i class="sprite sprite-icon-surface"></i></span></li>
                         </ul>
+                        <a href="#types-other" class="button goto blank small radius" title="Bekijk alle foto's">Alle types van deze accommodatie</a>
                         <div class="rating">
                             <span class="stars has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide informatie bij klassering]">{% include 'partials/quality_stars.html.twig' with {quality: (type.getQuality() > 0 ? type.getQuality() : accommodation.getQuality())} only %}<i class="fi-info"></i></span>
                             {% if surveyCount > minimalSurveyCount %}
