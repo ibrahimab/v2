@@ -73,7 +73,7 @@
                                 <div class="large-8 medium-8 columns">
                                     {% set big   = images['top']['big'] %}
                                     {% set small = images['top']['small'] %}
-                                    
+
                                     {% if big != null %}
                                         <a href="{{ generate_image_path(big) }}" data-role="fancybox" data-fancybox-group="accommodation-images" data-fancybox-title="{{ big.label }}">
                                             <img src="{{ generate_image_path(big) }}" alt="{{ big.label }}" />
@@ -90,7 +90,7 @@
                                     {% else %}
                                         <img src="{{ generate_image_path(null) }}" />
                                     {% endif %}
-                                    
+
                                     {% if small.below != null %}
                                         <a href="{{ generate_image_path(small.below) }}" data-role="fancybox" data-fancybox-group="accommodation-images" data-fancybox-title="{{ small.below.label }}">
                                             <img src="{{ generate_image_path(small.below) }}" alt="{{ small.below.label }}" />
@@ -148,7 +148,7 @@
                                     <tr>
                                         <th>
                                             <span class="price">
-                                                {{ kind.name }} 
+                                                {{ kind.name }}
                                                 <div class="chalet-tooltip" data-role="ajax-tooltip" data-url="{{ path('show_option', {optionId: kind.groupId}) }}">
                                                     <div class="chalet-tooltip-content tooltip-right" data-role="tooltip-wrapper">
                                                         <div data-role="tooltip-content">Bezig met laden...</div>
@@ -232,7 +232,7 @@
                     </div>
 
                     {% include 'partials/surveys.html.twig' with {'surveyData': surveyData, 'surveyCount': surveyCount, 'surveyAverage': surveyAverage, 'minimalSurveyCount': minimalSurveyCount} only %}
-                    
+
                     {% set has_video = false %}
                     {% if type.hasVideo() or accommodation.hasVideo() %}
                         {% set has_video = true %}
@@ -253,18 +253,18 @@
                                     </a>
                                 </li>
                             {% endif %}
-                            
+
                             {% set bottom = images['bottom'] %}
                             {% set rest   = images['rest']   %}
-                                
+
                             {% if has_video %}
-                                
+
                                 {% set second_image = bottom|slice(1) %}
                                 {% set bottom       = bottom|slice(0, 1) %}
                                 {% set rest         = rest|merge(second_image) %}
-                                    
+
                             {% endif %}
-                            
+
                             {% for image in bottom %}
                                 <li>
                                     <a href="{{ generate_image_path(image) }}" class="th" data-role="fancybox" data-fancybox-group="accommodation-images"{% if image.label %}data-fancybox-title="{{ image.label }}"{% endif %}>
@@ -315,7 +315,7 @@
                         </ul>
                         <a href="#types-other" class="button goto blank small radius" title="Bekijk alle foto's">Alle types van deze accommodatie</a>
                         <div class="rating">
-                            <span class="stars has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide informatie bij klassering]">{% include 'partials/quality_stars.html.twig' with {quality: (type.getQuality() > 0 ? type.getQuality() : accommodation.getQuality())} only %}<i class="fi-info"></i></span>
+                            <span class="stars has-tip tip-left radius" data-tooltip aria-haspopup="true" title="<h4>Klassering Chalet.nl</h4><p>Onze accommodaties worden ingedeeld in verschillende kwaliteitscategorieën. Het vermelde aantal sterren is een indicatie van de kwaliteit van de accommodatie.</p><p>Toekenning van het aantal sterren gebeurt op basis van onder andere de volgende punten: inrichting, uiterlijk, aantal vierkante meters, ligging, staat van onderhoud, enz. Het aantal toegekende sterren ligt tussen 1 en 5.</p>">{% include 'partials/quality_stars.html.twig' with {quality: (type.getQuality() > 0 ? type.getQuality() : accommodation.getQuality())} only %}<i class="fi-info"></i></span>
                             {% if surveyCount > minimalSurveyCount %}
                                 <span class="rate">{{ surveyAverage|number_format(1, ',', '')  }}</span> (<a href="#reviews" class="goto" title="Bekijk beoordelingen">{{ surveyCount }} beoordelingen</a>)
                             {% endif %}
@@ -367,5 +367,5 @@
             </div>
         </div>
     </section>
-    
+
 {% endblock %}
