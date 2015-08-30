@@ -7,6 +7,7 @@
 {% set images                 = type_images(type) %}
 {% set surveyCount            = surveyData.surveys|length %}
 {% set surveyAverage          = surveyData.average %}
+{% set resale                 = website_concern.getConfig(constant('WEBSITE_CONFIG_RESALE', website_concern)) %}
 {%
     set localeData = {
 
@@ -58,7 +59,7 @@
                     <div class="accom-desc">
                         <h1>{{ ('type.kind.' ~ accommodation.getKindIdentifier() )|trans|capitalize ~ ' ' ~ localeData['name']['accommodation'] }}</h1>
                         <div class="location">
-                            <span class="area"><a href="{{ locale_path('show_region', { regionSlug: localeData['seo']['region'] }) }}" title="{{ localeData['name']['region'] }}">{{ localeData['name']['region'] }}</a></span>, <span class="city"><a href="{{ locale_path('show_place', { placeSlug: localeData['seo']['place'] }) }}" title="{{ localeData['name']['place'] }}">{{ localeData['name']['place'] }}</a></span>, <span class="country"><a href="{{ locale_path('show_country', { countrySlug: localeData['seo']['country'] } ) }}" title="{{ localeData['name']['country'] }}">{{ localeData['name']['country'] }}</a></span>
+                            <span class="city"><a href="{{ locale_path('show_place', { placeSlug: localeData['seo']['place'] }) }}" title="{{ localeData['name']['place'] }}">{{ localeData['name']['place'] }}</a></span>, <span class="area"><a href="{{ locale_path('show_region', { regionSlug: localeData['seo']['region'] }) }}" title="{{ localeData['name']['region'] }}">{{ localeData['name']['region'] }}</a></span>, <span class="country"><a href="{{ locale_path('show_country', { countrySlug: localeData['seo']['country'] } ) }}" title="{{ localeData['name']['country'] }}">{{ localeData['name']['country'] }}</a></span>
                         </div>
                         <div class="type">{% if localeData['name']['type'] is not empty %}<h3>{{ localeData['name']['type'] }} </h3>{% endif %}</div>
                         <div class="clearfix"></div>
@@ -299,7 +300,15 @@
                 <div id="accom-main-box-container">
                     <div id="accom-main-box">
                         <div class="price-details">
-                            <span class="price-info">Prijs per persoon per week, vanaf</span>
+                            {% set skipas = true %}
+                            {% if accommodation.show == 3 or resale %}
+                                {% set skipas = false %}
+                            {% endif %}
+                            {% if skipas %}
+                                <span class="price-info">Prijs per persoon per week, vanaf</span>
+                            {% else %}
+                                <span class="price-info">Prijs per accommodatie, vanaf</span>
+                            {% endif %}
                             {% if prices[type.getId()] is defined %}
                                 <span class="price has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide prijsinformatie bij dit zoekresultaat]">&euro; {{ prices[type.getId()]|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
                             {% endif %}
