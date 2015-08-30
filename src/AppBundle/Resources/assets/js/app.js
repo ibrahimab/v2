@@ -3,7 +3,10 @@
 
     // setting up scroll button for long pages
     jq(function() {
-        
+
+        // social links
+        Chalet.Social.initialize();
+
         /**
          * fixed header scroll effects
          */
@@ -393,45 +396,45 @@
                 el.addClass('closed');
             }
         });
-        
+
         /**
          * changing week on type detail page will change the extra options
          */
         body.on('change', '[data-role="extra-options-week"]', function(event) {
-            
+
             event.preventDefault();
-            
+
             var uri = URI();
-            
+
             uri.setQuery('w', jq(this).val());
             window.location.href = uri.toString();
         });
-        
+
         body.on('click', '[data-role="external-popup"], [data-role="internal-popup"]', function(event) {
-            
+
             event.preventDefault();
-            
+
             var element = jq(this);
             window.open(element.data('uri'), '_blank', 'scrollbars=yes,width=' + element.data('width') + ',height=' + element.data('height'));
         });
-        
+
         /**
          * Dynamic tooltips
          */
         body.on('mouseenter', '[data-tooltip]', function(event) {
-            
+
             var element = jq(this);
-            
+
             if (true === element.data('open')) {
                 Foundation.libs.tooltip.showTip(element.data('selector'));
             } else {
-                
+
                 event.preventDefault();
             }
         });
-        
+
         body.on('click', '[data-tooltip]', function() {
-            
+
             console.log('test2');
             var element = jq(this);
             var cache   = element.data('tooltip-cache') || null;
@@ -441,16 +444,16 @@
             if (true === lock) {
                 return;
             }
-            
+
             if (null === cache && true === dynamic) {
-                
+
                 element.data('tooltip-lock', true);
-                
+
                 jq.ajax({
-                    
+
                     url: element.data('tooltip-url'),
                     success: function(content) {
-                        
+
                         element.data('tooltip-cache', content).data('tooltip-lock', false);
                         jq('#' + element.data('selector')).html(content);
                         console.log(jq('#' + element.data('selector')));
