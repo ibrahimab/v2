@@ -56,7 +56,7 @@
             <div id="accom-left" class="small-12 medium-8 large-9 columns">
                 <div class="overview{% if offers[type.getId()] is defined %} sale{%endif %}">
                     <div class="accom-desc">
-                        <h1>{{ ('type.kind.' ~ accommodation.getKindIdentifier() )|trans ~ ' ' ~ localeData['name']['accommodation'] }}</h1>
+                        <h1>{{ ('type.kind.' ~ accommodation.getKindIdentifier() )|trans|capitalize ~ ' ' ~ localeData['name']['accommodation'] }}</h1>
                         <div class="location">
                             <span class="area"><a href="{{ locale_path('show_region', { regionSlug: localeData['seo']['region'] }) }}" title="{{ localeData['name']['region'] }}">{{ localeData['name']['region'] }}</a></span>, <span class="city"><a href="{{ locale_path('show_place', { placeSlug: localeData['seo']['place'] }) }}" title="{{ localeData['name']['place'] }}">{{ localeData['name']['place'] }}</a></span>, <span class="country"><a href="{{ locale_path('show_country', { countrySlug: localeData['seo']['country'] } ) }}" title="{{ localeData['name']['country'] }}">{{ localeData['name']['country'] }}</a></span>
                         </div>
