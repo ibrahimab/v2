@@ -1,3 +1,97 @@
 {{ message }}
 
-{{ type.getLocaleName(get_locale()) }}
+<style type="text/css">
+/*articles*/
+.overview {background-color:white;position:relative;}
+#search-results .overview {margin-bottom:5rem;}/*marge between search results*/
+.overview .accom-desc {padding:1.250em;}
+#accom .overview .accom-desc {padding:0;}
+#search-results .overview .accom-desc {padding:0;}
+.overview .accom-desc .title {color:#193761;font-size:1.05rem;font-weight:400;min-height:3.4rem;}
+@media only screen and (max-width:40em) {.overview .accom-desc .title {min-height:initial;}}
+.overview .accom-desc .title a {margin-right:0.25rem;}
+.overview .accom-desc .title span {display:inline-block;vertical-align:text-bottom;}/*stars*/
+.overview .accom-desc .title span img {padding-bottom:2px;}/*stars*/
+.overview .accom-desc .location {min-height:3.4rem;}
+#accom .overview .accom-desc .location {min-height:initial;}
+#search-results .overview .accom-desc .location {min-height:initial;}
+.overview .accom-desc .location a {color:#818181;}
+.overview .accom-desc .persons {}
+.overview .accom-img {overflow:hidden;position:relative;}
+.overview .accom-img img{transition:all 0.2s linear;}
+.overview .accom-img img:hover{-webkit-backface-visibility:hidden;-webkit-transform:translateZ(0) scale(0.98, 0.98);}
+#accom .overview .accom-img img, #search-results .overview .accom-img img, .landing-page .overview .accom-img img{transition:initial;-webkit-backface-visibility:visible;}
+#accom .overview .accom-img img:hover, #search-results .overview .accom-img img:hover, .landing-page .overview .accom-img img:hover{transform:initial;-webkit-backface-visibility:visible;}
+
+.overview .accom-img .circle {left:1rem;position:absolute;top:1rem;}
+.overview .accom-img .heart {background-color:white;border-radius:0 0 0 3px;-moz-border-radius:0 0 0 3px;-webkit-border-radius:0 0 0 3px;padding:0.6rem 0;position:absolute;right:0;top:0;}
+#search-results .overview .accom-img .heart {border-right:thin solid #bfbfbf;border-top:thin solid #bfbfbf;}
+.overview .accom-img .heart a{padding:1rem;}
+.overview .accom-img .heart i{margin-right:0;}
+.overview .accom-img .heart i:hover{color:#d4213b;}
+.overview .accom-img .rating{background-color:#d4213b;border-radius:3px;bottom:1rem;font-size:0.875em;min-width:120px;padding:0.2rem 0 0 0;position:absolute;right:1rem;text-align:center;-moz-border-radius:3px;-webkit-border-radius:3px;}
+.overview .accom-img .rating .figure{color:white;display:block;font-size:2rem;line-height:2.1rem;padding-bottom:0.3rem;}
+.overview .accom-img .rating .reviews-number{background-color:white;border-radius:0 0 3px 3px;display:block;padding:0.2rem 0.4rem;-moz-border-radius:0 0 3px 3px;-webkit-border-radius:0 0 3px 3px;}
+.overview .accom-img .rating .reviews-number a{border-bottom:thin solid #bfbfbf;text-decoration:none;}
+</style>
+
+{% set locale        = get_locale() %}
+{% set offer         = offers is defined and offers[type.getId()] is defined %}
+{% set accommodation = type.getAccommodation() %}
+{% set place         = accommodation.getPlace() %}
+{% set region        = place.getRegion}
+{% set country       = place.getCountry() %}
+{% set link          = locale_path('show_type', { beginCode: country.getStartCode(), typeId: type.id }) %}
+
+    <article class="overview{% if offers %} sale{% endif %}" data-equalizer-watch>
+        <div class="accom-img">
+            <a href="{{ link }}"><img src="{{ type_image(type).getLocation() }}" alt="{{ accommodation.getLocaleName(locale) }}" /></a>
+            {% if offer %}
+                <a href="{{ link }}">
+                    <div class="circle"><span>Aan-</span><span>bieding</span></div>
+                </a>
+            {% endif %}
+            {% set surveyCount = highlight.type.surveyCount %}
+            {% if surveyCount > 1 %}
+                <a href="{{ link }}">
+                    <div class="rating"><span class="figure">{{ highlight.type.surveyAverageOverallRating }}</span><span class="reviews-number">{{ surveyCount }} {{ 'ratings'|trans|lower }}</span></div>
+                </a>
+            {% endif %}
+        </div>
+        <a href="{{ link }}">
+            <div class="accom-desc">
+                <div class="title">
+                    {{ ('type.kind.' ~ highlight.type.accommodation.kindIdentifier)|trans|capitalize ~ ' ' ~ highlight.type.accommodation.getLocaleName(locale) ~ ' ' ~ highlight.type.getLocaleName(locale) }}
+                    <span>
+                        {% set quality = (highlight.type.getQuality() > 0 ? highlight.type.getQuality() : highlight.type.accommodation.getQuality()) %}
+                        {% include 'partials/quality_stars.html.twig' with {quality: quality} only %}
+                    </span>
+                </div>
+                <div class="location">
+                    <span class="city">{{ place.getLocaleName(locale) }}</span>,
+                    <span class="area">{{ place.region.getLocaleName(locale) }}</span>,
+                    <span class="country">{{ place.country.getLocaleName(locale) }}</span>
+                </div>
+                {% if highlight.type.optimalResidents is same as(highlight.type.maxResidents) %}
+                    <div class="persons"><i class="fi-torso"></i>{{ 'homepage.highlight.suitable-for-max'|trans({'%maximum%': highlight.type.maxResidents}) }}</div>
+                {% else %}
+                    <div class="persons"><i class="fi-torso"></i>{{ 'homepage.highlight.suitable-for'|trans({'%optimal%': highlight.type.optimalResidents, '%maximum%': highlight.type.maxResidents}) }}</div>
+                {% endif %}
+            </div>
+        </a>
+    </article>
+    
+    <table>
+        <tr>
+            <td>
+                <img src="{{ type_image(type).getLocation() }}" alt="{{ accommodation.getLocaleName(locale) }}" />
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <td>{{ place.getLocaleName(locale) }}, {{ region.getLocaleName(locale) }}, {{ country.getLocaleName(locale) }}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>

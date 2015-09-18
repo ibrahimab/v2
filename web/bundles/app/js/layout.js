@@ -74,7 +74,10 @@ $('.table-explain .button').click(function() {
 //     }
 //     return false;
 // });
-$('.readmore a').click(function() {//open close div (class=readmore)
+$('.readmore a').on('click', function(event) {//open close div (class=readmore)
+    
+    event.preventDefault();
+
     var el = $(this);
     var state = el.data('state');
 
@@ -87,7 +90,6 @@ $('.readmore a').click(function() {//open close div (class=readmore)
     var getParent =  "." + el.parents('div:eq(1)').attr('class');
     $(getParent+ ' .readmore a').toggleClass('open');
     $(getParent+ ' .hide').slideToggle('slow');
-    return false;
 });
 $(document).ready(function(){
 

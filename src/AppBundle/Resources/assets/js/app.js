@@ -4,6 +4,9 @@
     // setting up scroll button for long pages
     jq(function() {
 
+        // social links
+        Chalet.Social.initialize();
+
         /**
          * fixed header scroll effects
          */
@@ -294,7 +297,7 @@
                 jq.ajax({
 
                     type: 'get',
-                    url: Routing.generate('additional_costs_type', {typeId: el.data('id'), seasonId: el.data('season')}),
+                    url: el.data('url'),
                     success: function(data) {
 
                         el.data('cached', true).removeClass('loading').find('[data-role="tooltip-content"]').html(data);
@@ -353,7 +356,7 @@
             }
         }
 
-        jq('body').on('click', '[data-role="toggle-filters"]', function(event) {
+        body.on('click', '[data-role="toggle-filters"]', function(event) {
 
             event.preventDefault();
 
@@ -376,7 +379,7 @@
 
         });
 
-        jq('body').on('click', '[data-role="closable-filter"]', function(event) {
+        body.on('click', '[data-role="closable-filter"]', function(event) {
 
             event.preventDefault();
 
@@ -391,6 +394,84 @@
 
                 el.data('status', 'closed').siblings('.fields').slideUp();
                 el.addClass('closed');
+            }
+        });
+
+        /**
+         * changing week on type detail page will change the extra options
+         */
+        body.on('change', '[data-role="extra-options-week"]', function(event) {
+
+            event.preventDefault();
+
+            var uri = URI();
+
+            uri.setQuery('w', jq(this).val());
+            window.location.href = uri.toString();
+        });
+
+        body.on('click', '[data-role="external-popup"], [data-role="internal-popup"]', function(event) {
+
+            event.preventDefault();
+
+            var element = jq(this);
+            window.open(element.data('uri'), '_blank', 'scrollbars=yes,width=' + element.data('width') + ',height=' + element.data('height'));
+        });
+
+        /**
+         * Dynamic tooltips
+         */
+        body.on('mouseenter', '[data-tooltip]', function(event) {
+
+            var element = jq(this);
+
+            if (true === element.data('open')) {
+                Foundation.libs.tooltip.showTip(element.data('selector'));
+            } else {
+
+                event.preventDefault();
+            }
+        });
+
+        body.on('click', '[data-tooltip]', function() {
+
+            var element = jq(this);
+            var cache   = element.data('tooltip-cache') || null;
+            var lock    = element.data('tooltip-lock')  || false;
+            var dynamic = element.data('tooltip-dynamic') || false;
+
+            if (true === lock) {
+                return;
+            }
+
+            if (null === cache && true === dynamic) {
+
+                element.data('tooltip-lock', true);
+
+                jq.ajax({
+
+                    url: element.data('tooltip-url'),
+                    success: function(content) {
+
+                        element.data('tooltip-cache', content).data('tooltip-lock', false);
+                        jq('#' + element.data('selector')).html(content);
+                        console.log(jq('#' + element.data('selector')));
+                    }
+                });
+            }
+        });
+        
+        body.on('click', '[data-action="show-more"]', function(event) {
+            
+            event.preventDefault();
+            var element = jq('[data-show-more-element="' + jq(this).data('element') + '"]');
+            
+            if (true === element.data('opened')) {
+                // element.removeClass('shorten-for-mobile').data('opened', false);
+                element.animate({height: '100px'}).data('opened', false);
+            } else {
+                // element.removeClass('shorten-for-mobile').data('opened', true);
+                element.animate({height: element.prop('scrollHeight')}).data('opened', true);
             }
         });
 

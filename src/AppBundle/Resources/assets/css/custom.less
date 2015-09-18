@@ -655,14 +655,16 @@ footer ul.checked i { margin-top: 0.7rem; }
     &:hover { outline: 1px solid #C8C8C8; }
 }
 
+.mail-a-friend-page .overview {
+    
+    a { text-decoration: none; }
+    &:hover { outline: 1px solid #C8C8C8; }
+}
+
 .sprite-black-pistes { background-position: -300px -225px; width: 24px; height: 24px; margin-top: -5px; }
 .sprite-white-pistes { background-position: -350px -157px; width: 24px; height: 24px; margin-top: -5px; }
-.sprite-chat-closed {
-
-    background-position: -350px -233px;
-    width: 16px;
-    height: 16px;
-}
+.sprite-whatsapp     { background-position: 0      -278px; width: 20px; height: 20px; }
+.sprite-chat-closed  { background-position: -350px -233px; width: 16px; height: 16px; }
 
 #contact-chat i.fi-comments {  }
 #contact-chat i.sprite-chat-closed  { margin-top: 3px; margin-right: 0.5rem; }
@@ -856,3 +858,23 @@ footer ul.checked i { margin-top: 0.7rem; }
         }
     }
 }
+
+#accom .accom-img-big-1 a { 
+    
+    display: block;
+    
+    &:first-child {
+        margin-bottom: 1.49rem; 
+    }
+}
+
+@media all and (max-width: 40em) {
+    
+    .shorten-for-mobile {
+         
+        height: 100px; 
+        overflow: hidden;
+    }
+}
+
+a.wa i { position: relative; top: 1px; }

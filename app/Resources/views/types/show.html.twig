@@ -1,11 +1,13 @@
 {% extends 'layouts/default.html.twig' %}
 
+{% set website_concern        = website() %}
 {% set locale                 = get_locale() %}
 {% set accommodation          = type.getAccommodation() %}
 {% set country, region, place = accommodation.getPlace().getCountry(), accommodation.getPlace().getRegion(), accommodation.getPlace() %}
 {% set images                 = type_images(type) %}
 {% set surveyCount            = surveyData.surveys|length %}
 {% set surveyAverage          = surveyData.average %}
+{% set resale                 = website_concern.getConfig(constant('WEBSITE_CONFIG_RESALE', website_concern)) %}
 {%
     set localeData = {
 
@@ -55,39 +57,48 @@
             <div id="accom-left" class="small-12 medium-8 large-9 columns">
                 <div class="overview{% if offers[type.getId()] is defined %} sale{%endif %}">
                     <div class="accom-desc">
-                        <h1>{{ ('type.kind.' ~ accommodation.getKindIdentifier() )|trans ~ ' ' ~ localeData['name']['accommodation'] }}</h1>
+                        <h1>{{ ('type.kind.' ~ accommodation.getKindIdentifier() )|trans|capitalize ~ ' ' ~ localeData['name']['accommodation'] }}</h1>
                         <div class="location">
-                            <span class="area"><a href="{{ locale_path('show_region', { regionSlug: localeData['seo']['region'] }) }}" title="{{ localeData['name']['region'] }}">{{ localeData['name']['region'] }}</a></span>, <span class="city"><a href="{{ locale_path('show_place', { placeSlug: localeData['seo']['place'] }) }}" title="{{ localeData['name']['place'] }}">{{ localeData['name']['place'] }}</a></span>, <span class="country"><a href="{{ locale_path('show_country', { countrySlug: localeData['seo']['country'] } ) }}" title="{{ localeData['name']['country'] }}">{{ localeData['name']['country'] }}</a></span>
+                            <span class="city"><a href="{{ locale_path('show_place', { placeSlug: localeData['seo']['place'] }) }}" title="{{ localeData['name']['place'] }}">{{ localeData['name']['place'] }}</a></span>, <span class="area"><a href="{{ locale_path('show_region', { regionSlug: localeData['seo']['region'] }) }}" title="{{ localeData['name']['region'] }}">{{ localeData['name']['region'] }}</a></span>, <span class="country"><a href="{{ locale_path('show_country', { countrySlug: localeData['seo']['country'] } ) }}" title="{{ localeData['name']['country'] }}">{{ localeData['name']['country'] }}</a></span>
                         </div>
-                        <div class="type">{% if localeData['name']['type'] is not empty %}<h3>{{ localeData['name']['type'] }} </h3>{% endif %}<a href="#types-other" class="goto button small radius right" title="Bekijk alle foto's">Overige type's</a></div>
+                        <div class="type">{% if localeData['name']['type'] is not empty %}<h3>{{ localeData['name']['type'] }} </h3>{% endif %}</div>
                         <div class="clearfix"></div>
                         <div class="accom-img">
                             <div class="accom-slides show-for-small">
-                                <div><a href=""><img data-lazy="/bundles/app/img/accom/accom-2.jpg" alt="" /></a></div>
-                                <div><a href=""><img data-lazy="/bundles/app/img/accom/accom-1.jpg" alt="" /></a></div>
-                                <div><a href=""><img data-lazy="/bundles/app/img/accom/accom-3.jpg" alt="" /></a></div>
-                                <div><a href=""><img data-lazy="/bundles/app/img/accom/accom-4.jpg" alt="" /></a></div>
+                                <div><a href=""><img data-lazy="{{ generate_image_path(images['top']['big']) }}" /></a></div>
+                                <div><a href=""><img data-lazy="{{ generate_image_path(images['top']['small']['above']) }}" alt="" /></a></div>
+                                <div><a href=""><img data-lazy="{{ generate_image_path(images['top']['small']['below']) }}" alt="" /></a></div>
                             </div>
                             <div class="accom-img-big-1 row hide-for-small">
-                                {% for image in images['above'] %}
+                                <div class="large-8 medium-8 columns">
+                                    {% set big   = images['top']['big'] %}
+                                    {% set small = images['top']['small'] %}
 
-                                    {% if loop.index == 1 %}
-
-                                        <div class="large-8 medium-8 columns">
-                                            <a href="{{ image.getLocation() }}" data-role="fancybox" data-fancybox-group="accommodation-images"{% if image.getLabel() %}data-fancybox-title="image.getLabel()"{% endif %}><img src="{{ image.getLocation() }}" alt="" /></a>
-                                        </div>
-                                        <div class="large-4 medium-4 column">
-
+                                    {% if big != null %}
+                                        <a href="{{ generate_image_path(big) }}" data-role="fancybox" data-fancybox-group="accommodation-images" data-fancybox-title="{{ big.label|default(localeData['name']['type']) }}">
+                                            <img src="{{ generate_image_path(big) }}" alt="{{ big.label|default(localeData['name']['type']) }}" />
+                                        </a>
                                     {% else %}
-
-                                        <a href="{{ image.getLocation() }}" data-role="fancybox" data-fancybox-group="accommodation-images"{% if image.getLabel() %}data-fancybox-title="image.getLabel()"{% endif %}><img src="{{ image.getLocation() }}" alt="" /></a>
-
+                                        <img src="{{ generate_image_path(null) }}" />
+                                    {% endif %}
+                                </div>
+                                <div class="large-4 medium-4 column">
+                                    {% if small.above != null %}
+                                        <a href="{{ generate_image_path(small.above) }}" data-role="fancybox" data-fancybox-group="accommodation-images" data-fancybox-title="{{ small.above.label }}">
+                                            <img src="{{ generate_image_path(small.above) }}" alt="{{ small.above.label }}" />
+                                        </a>
+                                    {% else %}
+                                        <img src="{{ generate_image_path(null) }}" />
                                     {% endif %}
 
-                                {% endfor %}
-                                {% if images['above']|length > 0 %}
-                                        </div>
-                                {% endif %}
+                                    {% if small.below != null %}
+                                        <a href="{{ generate_image_path(small.below) }}" data-role="fancybox" data-fancybox-group="accommodation-images" data-fancybox-title="{{ small.below.label }}">
+                                            <img src="{{ generate_image_path(small.below) }}" alt="{{ small.below.label }}" />
+                                        </a>
+                                    {% else %}
+                                        <img src="{{ generate_image_path(null) }}" />
+                                    {% endif %}
+                                </div>
                             </div>
                             {% if offers[type.getId()] is defined %}
                                 <div class="circle"><span>Aan-</span><span>bieding</span></div>
@@ -103,18 +114,24 @@
                             {% endfor %}
                         </ul>
                         <h3>Algemene omschrijving</h3>
-                        <p>{{ (type.getLocaleDescription(locale) ? type.getLocaleDescription(locale) : accommodation.getLocaleDescription(locale))|nl2br }}</p>
+                        <p class="shorten-for-mobile" data-show-more-element="description">{{ (type.getLocaleDescription(locale) ? type.getLocaleDescription(locale) : accommodation.getLocaleDescription(locale))|nl2br }}</p>
+                        <div class="readmore show-for-small-only">
+                            <a href="" class="button blank small radius" title="Toon meer" data-action="show-more" data-element="description" data-open-title="Toon meer" data-close-title="Toon minder"><i class="sprite sprite-icon-close-all"></i><span>Toon meer</span></a>
+                        </div>
                     </div>
 
                     <div id="mapping" class="mapping">
                         <h3>{{ 'layout'|trans|capitalize }}</h3>
                         <div class="text">
-                            <p>{{ (type.getLocaleLayout(locale) ? type.getLocaleLayout(locale) : accommodation.getLocaleLayout(locale))|nl2br }}</p>
+                            <p class="shorten-for-mobile" data-show-more-element="layout">{{ (type.getLocaleLayout(locale) ? type.getLocaleLayout(locale) : accommodation.getLocaleLayout(locale))|nl2br }}</p>
+                            <div class="readmore show-for-small-only">
+                            <a href="" class="button blank small radius" title="Toon meer" data-action="show-more" data-element="layout" data-open-title="Toon meer" data-close-title="Toon minder"><i class="sprite sprite-icon-close-all"></i><span>Toon meer</span></a>
+                        </div>
                         </div>
                     </div>
 
                     <div id="price-availability">
-                        {{ render_rate_table(type)|raw }}
+                        {# {{ render_rate_table(type)|raw }} #}
                     </div>
 
                     <p>&nbsp;</p>
@@ -124,76 +141,72 @@
                             <h3>Extra opties winter 2014/2015</h3>
                         </div>
                         <div class="small-12 medium-4 large-3 columns">
-                            <select class="radius">
-                                <option value="1">zaterdag 7 maart</option>
-                                <option value="2">zaterdag 14 maart</option>
+                            <select class="radius" data-role="extra-options-week">
+                                {% for timestamp, weekend in weekends %}
+                                <option value="{{ timestamp }}">{{ weekend }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                         <div class="table-wrapper">
+                            {% for kind in options %}
                             <table>
                                 <thead>
                                     <tr>
-                                        <th><span class="price has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide prijsinformatie bij Ski's volwassen]">Ski's volwassen<i class="fi-info"></i></span></th>
+                                        <th>
+                                            <span class="price">
+                                                {{ kind.name }}
+                                                <div class="chalet-tooltip" data-role="ajax-tooltip" data-url="{{ path('show_option', {optionId: kind.groupId}) }}">
+                                                    <div class="chalet-tooltip-content tooltip-right" data-role="tooltip-wrapper">
+                                                        <div data-role="tooltip-content">Bezig met laden...</div>
+                                                        <span class="nub rtl"></span>
+                                                    </div>
+                                                    <i class="fi-info"></i>
+                                                </div>
+                                            </span>
+                                        </th>
+                                        <th></th>
                                         <th>Prijs</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {% for part in kind.parts %}
                                     <tr>
-                                        <td>Huur Bronze Schoenen</td>
-                                        <td>&euro; 27,50</td>
+                                        <td>{{ part.name }}</td>
+                                        {% if part.price is defined %}
+                                            {% if part.free == true %}
+                                                <td></td>
+                                                <td>gratis</td>
+                                            {% elseif part.price != 0 %}
+                                                <td>{{ part.discount == true ? 'korting' }}</td>
+                                                <td>&euro; {{ part.price|number_format(2, ',', '.') }}</td>
+                                            {% elseif part.price == false %}
+                                                <td></td>
+                                                <td>afhankelijk van week</td>
+                                            {% endif %}
+                                        {% else %}
+                                            <td>...</td>
+                                            <td>...</td>
+                                        {% endif %}
                                     </tr>
-                                    <tr>
-                                        <td>Huur Bronze Ski's + Stokken</td>
-                                        <td>&euro; 57,50</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Huur Bronze Ski's + Schoenen + Stokken</td>
-                                        <td>&euro; 75,-</td>
-                                    </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
+                            {% endfor %}
+                            {% if website_concern.get() == constant('WEBSITE_CHALET_NL', website_concern) %}
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th><span class="price has-tip tip-left radius">Autohuur</span></th>
+                                            <th></th>
+                                            <th>Een auto huren? <a href="#" data-role="external-popup" data-uri="{{ sunny_cars }}" data-width="1000" data-height="330">Boek dan direct bij Sunny Cars.</a></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            {% endif %}
                         </div>
-                        <div class="table-wrapper hide"><!-- class hide-->
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th><span class="price has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide prijsinformatie bij Snowboard Volwassenen]">Snowboard Volwassenen<i class="fi-info"></i></span></th>
-                                        <th>Prijs</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Zilver Boots</td>
-                                        <td>&euro; 35,-</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Zilver Snowboard</td>
-                                        <td>&euro; 72,50</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Zilver Snowboard + Boots</td>
-                                        <td>&euro; 92,-</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Goud Boots</td>
-                                        <td>&euro; 45,-</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Goud Snowboard</td>
-                                        <td>&euro; 82,50</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Goud Snowboard + Boots</td>
-                                        <td>&euro; 102,-</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="readmore"><a href="" class="button blank small radius" title="Toon alle extra opties" data-open-title="Toon alle extra opties" data-close-title="Verberg extra opties"><i class="sprite sprite-icon-close-all"></i><span>Toon alle extra opties</span></a><a href="" class="button small radius right" title="Prijs berekenen">Prijs berekenen</a></div>
                     </div>
-
                     <div id="types-other" class="table-wrapper">
-                        <h3>Overige types van deze accommodatie</h3>
+                        <h3>Alle types van deze accommodatie</h3>
                         <table>
                             <thead>
                                 <tr>
@@ -208,7 +221,7 @@
                             </thead>
                             <tbody>
                                 {% set types = accommodation.getTypes().toArray() %}
-                                {% set l = types|sortprop('name') %}
+                                {% set l     = types|sortprop('name') %}
                                 {% for t in types %}
                                 <tr{{ t.getId() == type.getId() ? ' class="active"' : '' }} data-role="clickable" data-url="{{ locale_path('show_type', { beginCode: country.getStartCode(), typeId: t.getId() }) }}"><!-- notice this row is in discount -->
                                     <td><i class="sprite sprite-icon-torso"></i>{{ (t.getOptimalResidents() == t.getMaxResidents() ? t.getOptimalResidents() : (t.getOptimalResidents() ~ ' - ' ~ t.getMaxResidents())) }}</td>
@@ -226,14 +239,18 @@
 
                     {% include 'partials/surveys.html.twig' with {'surveyData': surveyData, 'surveyCount': surveyCount, 'surveyAverage': surveyAverage, 'minimalSurveyCount': minimalSurveyCount} only %}
 
+                    {% set has_video = false %}
+                    {% if type.hasVideo() or accommodation.hasVideo() %}
+                        {% set has_video = true %}
+                    {% endif %}
+
                     <div id="images" class="images">
-                        <h3>Foto's</h3>
+                        <h3>Foto's{{ has_video == true ? ' en video\'s' }}</h3>
                         {% if type.getVirtualTourLink() %}
                             <a href="{{ type.getVirtualTourLink() }}" data-role="new-window">{{ 'checkout-virtual-tour'|trans }}</a>
                         {% endif %}
                         <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-2">
-                            {% set has_video = false %}
-                            {% if type.hasVideo() or accommodation.hasVideo() %}
+                            {% if has_video == true %}
                                 <li>
                                     <a href="{{ type.hasVideo() ? type.getVideo().getUrl() : accommodation.getVideo().getUrl() }}?autoplay=1" data-role="fancybox" data-fancybox-group="accommodation-images">
                                         {% image 'bundles/app/img/video-preview.jpg' %}
@@ -241,27 +258,41 @@
                                         {% endimage %}
                                     </a>
                                 </li>
-                                {% set has_video = true %}
                             {% endif %}
-                            {% set images_below = images['below'] %}
-                            {% set images_rest  = images['rest'] %}
+
+                            {% set bottom = images['bottom'] %}
+                            {% set rest   = images['rest']   %}
+
                             {% if has_video %}
-                                {% set second_image = images['below']|slice(1) %}
-                                {% set images_below = images_below|slice(0, 1) %}
-                                {% set images_rest  = images_rest|merge(second_image) %}
+
+                                {% set second_image = bottom|slice(1) %}
+                                {% set bottom       = bottom|slice(0, 1) %}
+                                {% set rest         = rest|merge(second_image) %}
+
                             {% endif %}
-                            {% for image in images_below %}
-                                <li><a href="{{ image.getLocation() }}"{% if image.getLabel() %}data-fancybox-title="image.getLabel()"{% endif %} class="th" data-role="fancybox" data-fancybox-group="accommodation-images"><img src="{{ image.getLocation() }}" alt="" /></a></li>
+
+                            {% for image in bottom %}
+                                <li>
+                                    <a href="{{ generate_image_path(image) }}" class="th" data-role="fancybox" data-fancybox-group="accommodation-images"{% if image.label is defined %}data-fancybox-title="{{ image.label }}"{% endif %}>
+                                        <img src="{{ generate_image_path(image) }}" alt="{{ image.label|default(localeData['name']['type']) }}" />
+                                    </a>
+                                </li>
                             {% endfor %}
                         </ul>
                         <div class="hide">
                             <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
-                                {% for image in images_rest %}
-                                    <li><a href="{{ image.getLocation() }}"{% if image.getLabel() %}data-fancybox-title="image.getLabel()"{% endif %} class="th" data-role="fancybox" data-fancybox-group="accommodation-images"><img src="{{ image.getLocation() }}" alt="" /></a></li>
+                                {% for image in rest %}
+                                    <li>
+                                        <a href="{{ generate_image_path(image) }}" class="th" data-role="fancybox" data-fancybox-group="accommodation-images"{% if image.label is defined %}data-fancybox-title="{{ image.label }}"{% endif %}>
+                                            <img src="{{ generate_image_path(image) }}" alt="{{ image.label|default(localeData['name']['type']) }}" />
+                                        </a>
+                                    </li>
                                 {% endfor %}
                             </ul>
                         </div>
-                        <div class="readmore"><a href="" class="button blank small radius" title="Toon meer foto's" data-open-title="Toon meer foto's" data-close-title="Verberg foto's"><i class="sprite sprite-icon-close-all"></i><span>Toon meer foto's</span></a></div>
+                        {% if rest|length > 0 %}
+                            <div class="readmore"><a href="" class="button blank small radius" title="Toon meer foto's" data-open-title="Toon meer foto's" data-close-title="Verberg foto's"><i class="sprite sprite-icon-close-all"></i><span>Toon meer foto's</span></a></div>
+                        {% endif %}
                     </div>
 
                     {# <div id="map" class="map">
@@ -275,7 +306,15 @@
                 <div id="accom-main-box-container">
                     <div id="accom-main-box">
                         <div class="price-details">
-                            <span class="price-info">Prijs per persoon per week, vanaf</span>
+                            {% set skipas = true %}
+                            {% if accommodation.show == 3 or resale %}
+                                {% set skipas = false %}
+                            {% endif %}
+                            {% if skipas %}
+                                <span class="price-info">Prijs per persoon per week, vanaf</span>
+                            {% else %}
+                                <span class="price-info">Prijs per accommodatie, vanaf</span>
+                            {% endif %}
                             {% if prices[type.getId()] is defined %}
                                 <span class="price has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide prijsinformatie bij dit zoekresultaat]">&euro; {{ prices[type.getId()]|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
                             {% endif %}
@@ -284,12 +323,13 @@
                         <hr />
                         <ul class="accom-details">
                             <li>Personen<span>{{ ( type.getOptimalResidents() == type.getMaxResidents() ? type.getOptimalResidents() : (type.getOptimalResidents() ~ ' - ' ~ type.getMaxResidents()) ) }}<i class="sprite sprite-icon-torso"></i></span></li>
-                            <li>Slaapkamers<span>{{ type.getBedrooms() }}<i class="sprite sprite-icon-sleep"></i></span>{% if type.getLocaleBedroomsExtra(locale) != '' %}<span class="extra">({{ type.getLocaleBedroomsExtra(locale) }})</span>{% endif %}</span></li>
+                            <li>Slaapkamers<span>{{ type.getBedrooms() }}<i class="sprite sprite-icon-sleep"></i></span>{% if type.getLocaleBedroomsExtra(locale) != '' %}<span class="extra">({{ type.getLocaleBedroomsExtra(locale) }})</span>{% endif %}</li>
                             <li>Badkamers<span>{{ type.getBathrooms() }}<i class="sprite sprite-icon-bath"></i></span>{% if type.getLocaleBathroomsExtra(locale) != '' %}<span class="extra">({{ type.getLocaleBathroomsExtra(locale) }})</span>{% endif %}</li>
                             <li>Oppervlakte<span>{{ type.getSurface() }} m&sup2;{% if type.getLocaleSurfaceExtra(locale) != '' %} - {{ type.getLocaleSurfaceExtra(locale) }}&sup2;{% endif %}<i class="sprite sprite-icon-surface"></i></span></li>
                         </ul>
+                        <a href="#types-other" class="button goto blank small radius" title="Bekijk alle foto's">Alle types van deze accommodatie</a>
                         <div class="rating">
-                            <span class="stars has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide informatie bij klassering]">{% include 'partials/quality_stars.html.twig' with {quality: (type.getQuality() > 0 ? type.getQuality() : accommodation.getQuality())} only %}<i class="fi-info"></i></span>
+                            <span class="stars has-tip tip-left radius" data-tooltip aria-haspopup="true" title="<h4>Klassering Chalet.nl</h4><p>Onze accommodaties worden ingedeeld in verschillende kwaliteitscategorieën. Het vermelde aantal sterren is een indicatie van de kwaliteit van de accommodatie.</p><p>Toekenning van het aantal sterren gebeurt op basis van onder andere de volgende punten: inrichting, uiterlijk, aantal vierkante meters, ligging, staat van onderhoud, enz. Het aantal toegekende sterren ligt tussen 1 en 5.</p>">{% include 'partials/quality_stars.html.twig' with {quality: (type.getQuality() > 0 ? type.getQuality() : accommodation.getQuality())} only %}<i class="fi-info"></i></span>
                             {% if surveyCount > minimalSurveyCount %}
                                 <span class="rate">{{ surveyAverage|number_format(1, ',', '')  }}</span> (<a href="#reviews" class="goto" title="Bekijk beoordelingen">{{ surveyCount }} beoordelingen</a>)
                             {% endif %}
@@ -297,11 +337,12 @@
                         <hr />
                         <a href="{{ locale_path('booking') }}?tid={{ type.getId() }}" class="button large radius" title="Boek nu">Boek nu</a>
                         <div class="social-buttons">
-                            <a href="" class="button social fb tiny radius" title="Like"><i class="fi-social-facebook"></i>Deel</a>
-                            <a href="" class="button social tw tiny radius" title="Tweet"><i class="fi-social-twitter"></i>Tweet</a>
-                            <a href="" class="button social ml tiny radius" title="Mail"><i class="fi-mail"></i>Mail</a>
+                            <a href="#" data-role="social-share" data-social-source="facebook" data-social-url="{{ locale_url('show_type', {beginCode: country.getStartCode(), typeId: type.getId()}) }}" class="button social fb tiny radius" title="Like"><i class="fi-social-facebook"></i>Deel</a>
+                            <a href="#" data-role="social-share" data-social-source="twitter" data-social-url="{{ locale_url('show_type', {beginCode: country.getStartCode(), typeId: type.getId()}) }}" data-social-tweet="Bekijk deze accommodatie bij Chalet.nl:" class="button social tw tiny radius" title="Tweet"><i class="fi-social-twitter"></i>Tweet</a>
+                            <a href="{{ locale_path('mail_a_friend', {beginCode: country.startCode, typeId: type.id}) }}" class="button social ml tiny radius" title="Mail"><i class="fi-mail"></i>Mail</a>
                             {% set type_is_favorite = is_favorite(type) %}
                             <div class="heart"><a href="#"{% if type_is_favorite %} data-role="remove-favorite"{% else %} data-role="add-favorite"{% endif %} data-id="{{ type.getId() }}" class="{% if type_is_favorite %}active added {% endif %}button social tiny radius" title="Dit resultaat opslaan in mijn favorieten"><i class="fi-heart"></i>Favoriet</a></div>
+                            <a href="whatsapp://send?text={{ 'Bekijk deze accommodatie bij Chalet.nl: ' ~ locale_url('show_type', {beginCode: country.getStartCode(), typeId: type.getId()}) }}" class="show-for-small-only button social wa tiny radius"><i class="sprite sprite-whatsapp"></i>Whatsapp</a>
                         </div>
                     </div>
                 </div>
@@ -313,7 +354,7 @@
                         <span class="distance"><i class="fi-compass fi-gray"></i><em>{{ place.getDistanceFromUtrecht() }} km</em> van Utrecht</span>
                     </div>
                     <div class="hide-for-small"><!-- class hide-for-small-->
-                        <img src="{{ place_image(place).getLocation() }}" alt="{{ localeData['name']['place'] }}" />
+                        <img src="{{ generate_image_path(place_image(place)) }}" alt="{{ localeData['name']['place'] }}" />
                         <div class="text">
                             <p>{{ place.getLocaleShortDescription(locale) }}</p>
                         </div>
@@ -331,7 +372,7 @@
                         <span class="piste"><i class="sprite sprite-icon-pistes"></i><em>{{ region.getTotalSlopesDistance() }} km</em> pistes</span>
                     </div>
                     <div class="hide-for-small"><!-- class hide-for-small-->
-                        <img src="{{ region_image(region).getLocation() }}" alt="{{ localeData['name']['region'] }}" />
+                        <img src="{{ generate_image_path(region_image(region)) }}" alt="{{ localeData['name']['region'] }}" />
                         <div class="text">
                             <p>{{ region.getLocaleShortDescription(locale) }}</p>
                         </div>

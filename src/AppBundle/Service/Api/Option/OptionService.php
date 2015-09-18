@@ -34,17 +34,22 @@ class OptionService
         return $this->optionServiceRepository->getTravelInsurancesDescription();
     }
     
-    public function options($type)
+    /**
+     * @param integer $accommodationId
+     * @param integer $weekend
+     * @return array
+     */
+    public function options($accommodationId, $season = null, $weekend = null)
     {
-        $wrapper = $this->container->get('old.rate.table.wrapper');
-        $wrapper->setType($type);
-        
-        $seasons       = $wrapper->getSeasonRates();
-        $accommodation = $this->accommodation($type->getAccommodation());
+        return $this->optionServiceRepository->options($accommodationId, $season, $weekend);
     }
     
-    public function accommodation($accommodation)
+    /**
+     * @param integer $optionId
+     * @return string
+     */
+    public function option($optionId)
     {
-        return $this->optionServiceRepository->accommodation($accommodation);
+        return $this->optionServiceRepository->option($optionId);
     }
 }

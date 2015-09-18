@@ -110,7 +110,7 @@ class PagesController extends Controller
             $groupedHomepageBlocks['left'] = array();
             $groupedHomepageBlocks['right'] = array();
         }
-
+        
         return [
 
             'region'         => $region,

@@ -5,7 +5,7 @@
 <div class="small-{{ small_size|default(12) }} medium-{{ medium_size|default(4) }} large-{{ large_size|default(4) }} columns {% if end == true %}end{% endif %}">
     <article class="overview{% if offer %} sale{% endif %}" data-equalizer-watch>
         <div class="accom-img">
-            <a href="{{ link }}"><img src="{{ type_image(highlight.type).getLocation() }}" alt="{{ highlight.type.accommodation.getLocaleName(locale) }}" /></a>
+            <a href="{{ link }}"><img src="{{ generate_image_path(type_image(highlight.type)) }}" alt="{{ highlight.type.accommodation.getLocaleName(locale) }}" /></a>
             {% if offer %}
                 <a href="{{ link }}">
                     <div class="circle"><span>Aan-</span><span>bieding</span></div>

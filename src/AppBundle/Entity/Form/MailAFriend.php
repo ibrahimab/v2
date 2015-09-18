@@ -1,5 +1,7 @@
 <?php
 namespace AppBundle\Entity\Form;
+use       Symfony\Component\Validator\Validator\RecursiveValidator;
+use       Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
@@ -33,6 +35,11 @@ class MailAFriend
      * @var array
      */
     private $errors;
+    
+    /**
+     * @var RecursiveValidator
+     */
+    private $validator;
 
 
     /**
@@ -40,9 +47,10 @@ class MailAFriend
      *
      * @param array $data
      */
-    public function __construct($data)
+    public function __construct($data, RecursiveValidator $validator)
     {
-        $this->errors = [];
+        $this->errors    = [];
+        $this->validator = $validator;
         $this->setData($data);
     }
 
@@ -114,9 +122,9 @@ class MailAFriend
      * @param string $field
      * @return Contact
      */
-    public function addError($field)
+    public function addError($field, $identifier)
     {
-        $this->errors[] = $field;
+        $this->errors[$field] = $identifier;
 
         return $this;
     }
@@ -135,19 +143,45 @@ class MailAFriend
     public function validate()
     {
         if (empty($this->from_name)) {
-            $this->addError('from_name');
+            $this->addError('from_name', 'empty');
         }
 
         if (empty($this->from_email)) {
-            $this->addError('from_email');
+            $this->addError('from_email', 'empty');
         }
 
         if (empty($this->to_email)) {
-            $this->addError('to_email');
+            $this->addError('to_email', 'empty');
         }
 
         if (empty($this->message)) {
-            $this->addError('message');
+            $this->addError('message', 'empte');
+        }
+        
+        if (!empty($this->to_email)) {
+            
+            $addresses  = explode(',', $this->to_email);
+            $error      = false;
+            $constraint = new Assert\Email();
+            
+            foreach ($addresses as $address) {
+                
+                if (empty($address)) {
+                    
+                    $error = true;
+                    continue;
+                }
+                
+                $errorList = $this->validator->validate($address, $constraint);
+                
+                if (count($errorList) > 0) {
+                    $error = true;
+                }
+            }
+            
+            if (true === $error) {
+                $this->addError('to_email', 'invalid');
+            }
         }
     }
 

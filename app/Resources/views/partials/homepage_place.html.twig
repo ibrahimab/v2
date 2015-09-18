@@ -1,7 +1,7 @@
 <a href="{{ locale_path('show_place', {placeSlug: place.getLocaleSeoName(get_locale())}) }}">
     <article class="overview" data-equalizer-watch>
         <div class="accom-img">
-            <img src="{{ place_image(place).getLocation() }}" alt="" />
+            <img src="{{ generate_image_path(place_image(place)) }}" alt="" />
         </div>
         <div class="accom-desc">
             <div class="title">{{ place.getLocaleName(get_locale()) }}</div>

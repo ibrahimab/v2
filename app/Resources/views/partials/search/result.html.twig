@@ -25,7 +25,7 @@
                     <div class="accom-img">
                         <div class="accom-slides">
                             {% for image in images %}
-                            <div><img data-lazy="{{ image.getLocation() }}" alt="{{ accommodation.localeName }}" /></div>
+                            <div><img data-lazy="{{ generate_image_path(image) }}" alt="{{ accommodation.localeName }}" /></div>
                             {% endfor %}
                         </div>
                         {% if accommodation.offer %}
@@ -58,7 +58,7 @@
                                     {% else %}
                                         <span class="price-info">Prijs per accommodatie, vanaf</span>
                                     {% endif %}
-                                    <div class="chalet-tooltip loading" data-role="ajax-tooltip" data-id="{{ accommodation.cheapest.id }}" data-season="{{ season }}">
+                                    <div class="chalet-tooltip loading" data-role="ajax-tooltip" data-url="{{ path('additional_costs_type', {typeId: accommodation.cheapest.id, seasonId: season}) }}">
                                         <div class="chalet-tooltip-content" data-role="tooltip-wrapper">
                                             <div data-role="tooltip-content">Bezig met laden...</div>
                                             <span class="nub rtl"></span>

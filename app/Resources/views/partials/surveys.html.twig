@@ -12,11 +12,13 @@
                 {% include 'partials/survey/survey.html.twig' with {'survey': survey, 'loop': loop, 'total': surveyCount} only %}
             {% endfor %}
         </div>
+        {% if hidden == 0 %}
         <div class="readmore">
             <a href class="button blank small radius" title="Toon alle reviews" data-open-title="Toon alle reviews" data-close-title="Verberg alle reviews">
                 <i class="sprite sprite-icon-close-all"></i>
                 <span>Toon alle reviews</span>
             </a>
         </div>
+        {% endif %}
     </div>
 {% endif %}

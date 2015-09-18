@@ -71,6 +71,7 @@ services:
         calls:
             - [setSeason,  [@app.concern.season]]
             - [setWebsite, [@app.concern.website]]
+            - [setLocale,  [@=service('app.concern.locale').get()]]
 
     app.repository.faq:
         class:     AppBundle\Entity\Faq\FaqRepository
