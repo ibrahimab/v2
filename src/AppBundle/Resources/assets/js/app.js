@@ -435,7 +435,6 @@
 
         body.on('click', '[data-tooltip]', function() {
 
-            console.log('test2');
             var element = jq(this);
             var cache   = element.data('tooltip-cache') || null;
             var lock    = element.data('tooltip-lock')  || false;
@@ -459,6 +458,20 @@
                         console.log(jq('#' + element.data('selector')));
                     }
                 });
+            }
+        });
+        
+        body.on('click', '[data-action="show-more"]', function(event) {
+            
+            event.preventDefault();
+            var element = jq('[data-show-more-element="' + jq(this).data('element') + '"]');
+            
+            if (true === element.data('opened')) {
+                // element.removeClass('shorten-for-mobile').data('opened', false);
+                element.animate({height: '100px'}).data('opened', false);
+            } else {
+                // element.removeClass('shorten-for-mobile').data('opened', true);
+                element.animate({height: element.prop('scrollHeight')}).data('opened', true);
             }
         });
 

@@ -114,13 +114,19 @@
                             {% endfor %}
                         </ul>
                         <h3>Algemene omschrijving</h3>
-                        <p>{{ (type.getLocaleDescription(locale) ? type.getLocaleDescription(locale) : accommodation.getLocaleDescription(locale))|nl2br }}</p>
+                        <p class="shorten-for-mobile" data-show-more-element="description">{{ (type.getLocaleDescription(locale) ? type.getLocaleDescription(locale) : accommodation.getLocaleDescription(locale))|nl2br }}</p>
+                        <div class="readmore show-for-small-only">
+                            <a href="" class="button blank small radius" title="Toon meer" data-action="show-more" data-element="description" data-open-title="Toon meer" data-close-title="Toon minder"><i class="sprite sprite-icon-close-all"></i><span>Toon meer</span></a>
+                        </div>
                     </div>
 
                     <div id="mapping" class="mapping">
                         <h3>{{ 'layout'|trans|capitalize }}</h3>
                         <div class="text">
-                            <p>{{ (type.getLocaleLayout(locale) ? type.getLocaleLayout(locale) : accommodation.getLocaleLayout(locale))|nl2br }}</p>
+                            <p class="shorten-for-mobile" data-show-more-element="layout">{{ (type.getLocaleLayout(locale) ? type.getLocaleLayout(locale) : accommodation.getLocaleLayout(locale))|nl2br }}</p>
+                            <div class="readmore show-for-small-only">
+                            <a href="" class="button blank small radius" title="Toon meer" data-action="show-more" data-element="layout" data-open-title="Toon meer" data-close-title="Toon minder"><i class="sprite sprite-icon-close-all"></i><span>Toon meer</span></a>
+                        </div>
                         </div>
                     </div>
 
