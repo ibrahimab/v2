@@ -75,8 +75,8 @@
                                     {% set small = images['top']['small'] %}
 
                                     {% if big != null %}
-                                        <a href="{{ generate_image_path(big) }}" data-role="fancybox" data-fancybox-group="accommodation-images" data-fancybox-title="{{ big.label }}">
-                                            <img src="{{ generate_image_path(big) }}" alt="{{ big.label }}" />
+                                        <a href="{{ generate_image_path(big) }}" data-role="fancybox" data-fancybox-group="accommodation-images" data-fancybox-title="{{ big.label|default(localeData['name']['type']) }}">
+                                            <img src="{{ generate_image_path(big) }}" alt="{{ big.label|default(localeData['name']['type']) }}" />
                                         </a>
                                     {% else %}
                                         <img src="{{ generate_image_path(null) }}" />
@@ -125,7 +125,7 @@
                     </div>
 
                     <div id="price-availability">
-                        {{ render_rate_table(type)|raw }}
+                        {# {{ render_rate_table(type)|raw }} #}
                     </div>
 
                     <p>&nbsp;</p>
@@ -267,8 +267,8 @@
 
                             {% for image in bottom %}
                                 <li>
-                                    <a href="{{ generate_image_path(image) }}" class="th" data-role="fancybox" data-fancybox-group="accommodation-images"{% if image.label %}data-fancybox-title="{{ image.label }}"{% endif %}>
-                                        <img src="{{ generate_image_path(image) }}" alt="{{ image.label }}" />
+                                    <a href="{{ generate_image_path(image) }}" class="th" data-role="fancybox" data-fancybox-group="accommodation-images"{% if image.label is defined %}data-fancybox-title="{{ image.label }}"{% endif %}>
+                                        <img src="{{ generate_image_path(image) }}" alt="{{ image.label|default(localeData['name']['type']) }}" />
                                     </a>
                                 </li>
                             {% endfor %}
@@ -277,8 +277,8 @@
                             <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
                                 {% for image in rest %}
                                     <li>
-                                        <a href="{{ generate_image_path(image) }}" class="th" data-role="fancybox" data-fancybox-group="accommodation-images"{% if image.label %}data-fancybox-title="{{ image.label }}"{% endif %}>
-                                            <img src="{{ generate_image_path(image) }}" alt="{{ image.label }}" />
+                                        <a href="{{ generate_image_path(image) }}" class="th" data-role="fancybox" data-fancybox-group="accommodation-images"{% if image.label is defined %}data-fancybox-title="{{ image.label }}"{% endif %}>
+                                            <img src="{{ generate_image_path(image) }}" alt="{{ image.label|default(localeData['name']['type']) }}" />
                                         </a>
                                     </li>
                                 {% endfor %}

@@ -26,7 +26,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
             twitter: function() {
 
-                jq('body').on('click', '[data-role="share"][data-social-social="twitter"]', function(event) {
+                jq('body').on('click', '[data-role="social-share"][data-social-source="twitter"]', function(event) {
 
                     event.preventDefault();
 
@@ -43,7 +43,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
             },
 
             twitter: function(url, via, tweet) {
-                return ns.Social.popup('https://twitter.com/share?url=' + url + '&text=' + tweet);
+                return ns.Social.popup('https://twitter.com/share?url=' + url + '&text=' + tweet, 660, 250);
             }
         },
 
