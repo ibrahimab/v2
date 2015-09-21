@@ -45,3 +45,6 @@ tests/_output/*
 
 # push file
 /github-push.txt
+
+# Visual Studio Code settings folder
+.vscode
