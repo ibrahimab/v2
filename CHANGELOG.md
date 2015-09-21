@@ -1,6 +1,9 @@
 # Chalet.nl V2 VERSION
 ================================================
 
+## Release 0.0.7
+hotfix of adding visual studio settings folder to gitignore
+
 ## Release 0.0.6
 Incorporate RES-42 and RES-40 changes + fixed a lot of bugs
 
