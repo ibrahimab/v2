@@ -84,7 +84,28 @@ class FilterService
           TOKEN_THEME_10_FOR_APRES_SKI    = 'filter-theme-10-for-apres-ski',
           TOKEN_THEME_SUPER_SKI_STATIONS  = 'filter-theme-super-ski-stations',
           TOKEN_THEME_WINTER_WELLNESS     = 'filter-theme-winter-wellness';
+
+    /**
+     * @var array
+     */
+    private static $filters = [
     
+        FilterService::FILTER_DISTANCE => [
+            'multiple' => false,
+        ],
+    
+        FilterService::FILTER_LENGTH   => [
+            'multiple' => false,
+        ],
+    
+        FilterService::FILTER_FACILITY => [
+            'multiple' => true,
+        ],
+    
+        FilterService::FILTER_THEME    => [
+            'multiple' => true,
+        ],
+    ];
           
     /**
      * This map converts the old parameters to the new search builder system
@@ -194,6 +215,33 @@ class FilterService
                 'value'  => self::FILTER_DISTANCE_MAX_1000,
             ],
         ],
+        
+        'vf_km' => [
+            
+            1 => [
+                
+                'filter' => self::FILTER_LENGTH,
+                'value'  => self::FILTER_LENGTH_MAX_100,
+            ],
+            
+            2 => [
+                
+                'filter' => self::FILTER_LENGTH,
+                'value'  => self::FILTER_LENGTH_MIN_100,
+            ],
+            
+            3 => [
+                
+                'filter' => self::FILTER_LENGTH,
+                'value'  => self::FILTER_LENGTH_MIN_200,
+            ],
+            
+            4 => [
+                
+                'filter' => self::FILTER_LENGTH,
+                'value'  => self::FILTER_LENGTH_MIN_400,
+            ],
+        ],
     ];
     
     /**
@@ -204,6 +252,24 @@ class FilterService
     public function tokenize($filter, $value = null)
     {
         return null === $value ? $this->filter($filter) : $this->value($filter, $value);
+    }
+    
+    /**
+     * @param integer $filter
+     * @return boolean
+     */
+    public static function exists($filter)
+    {
+        return isset(self::$filters[$filter]);
+    }
+    
+    /**
+     * @param integer $filter
+     * @return boolean
+     */
+    public static function multiple($filter)
+    {
+        return self::$filters[$filter]['multiple'];
     }
     
     /**

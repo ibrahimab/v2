@@ -24,4 +24,56 @@ class Supplier
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="zoekvolgorde", type="smallint")
+     */
+    private $searchOrder;
+
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param integer $searchOrder
+     * @return Supplier
+     */
+    public function setSearchOrder($searchOrder)
+    {
+        $this->searchOrder = $searchOrder;
+
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getSearchOrder()
+    {
+        return $this->searchOrder;
+    }
+
+    /**
+     * @param array $data
+     * @return Supplier
+     */
+    public static function hydrate($data)
+    {
+        $supplier = new self();
+
+        foreach ($data as $field => $value) {
+
+            if (property_exists($supplier, $field)) {
+                $supplier->{$field} = $value;
+            }
+        }
+
+        return $supplier;
+    }
 }

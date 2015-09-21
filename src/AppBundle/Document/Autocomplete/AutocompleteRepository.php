@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Document\Autocomplete;
-use       AppBundle\Document\BaseRepository;
+use       AppBundle\Document\BaseRepositoryTrait;
+use       AppBundle\Service\UtilsService;
 use       AppBundle\Service\Api\Autocomplete\AutocompleteService;
 use       AppBundle\Service\Api\Autocomplete\AutocompleteServiceRepositoryInterface;
 use       Doctrine\ODM\MongoDB\DocumentRepository;
@@ -15,7 +16,12 @@ use       Doctrine\ODM\MongoDB\DocumentRepository;
  */
 class AutocompleteRepository extends DocumentRepository implements AutocompleteServiceRepositoryInterface
 {
-    use BaseRepository;
+    use BaseRepositoryTrait;
+    
+    /**
+     * @var string
+     */
+    private $mongoDatabase;
 
     /**
      * Return all the autocomplete entries
@@ -31,7 +37,7 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
            ->sort('order', 'asc');
 
         $raw     = $qb->getQuery()->execute();
-        $results = [AutocompleteService::KIND_COUNTRY => [], AutocompleteService::KIND_REGION => [], AutocompleteService::KIND_PLACE => [], AutocompleteService::KIND_ACCOMMODATION];
+        $results = [AutocompleteService::KIND_COUNTRY => [], AutocompleteService::KIND_REGION => [], AutocompleteService::KIND_PLACE => [], AutocompleteService::KIND_ACCOMMODATION => [], AutocompleteService::KIND_TYPE => []];
 
         foreach ($raw as $row) {
             $results[$row['type']][] = $row;
@@ -50,46 +56,61 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
      */
     public function search($term, $kinds, $options = [])
     {
-        $limit   = self::getOption($options, 'limit',  1);
-        $offset  = self::getOption($options, 'offset', 0);
-        $results = [];
-
+        $limit     = self::getOption($options, 'limit',  1);
+        $offset    = self::getOption($options, 'offset', 0);
+        $results   = [];
+        $term      = UtilsService::normalizeText($term);
+        $term      = strtolower($term);
         $nameRegex = new \MongoRegex('/.*' . $term . '.*/i');
-        $codeRegex = new \MongoRegex('/.*' . $term . '.*/i');
+        
+        $collection = $this->collection();
+        $rawResults = $collection->find([
 
-        $qb = $this->createQueryBuilder();
-        $qb->select()
-           ->hydrate(false)
-           ->eagerCursor(true)
-           ->sort('order', 'asc');
-
-        $type     = $qb->expr()->field('type')->in($kinds);
-
-        $name     = $qb->expr()->addOr($qb->expr()->field('name')->equals($nameRegex)
-                                                  ->field('locales')->equals(null))
-
-                               ->addOr($qb->expr()->field('name.nl')->equals($nameRegex)
-                                                  ->field('locales')->notEqual(null))
-
-                               ->addOr($qb->expr()->field('code')->exists(true)
-                                                  ->field('code')->equals($codeRegex));
-
-        $season   = $qb->expr()->addOr($qb->expr()->field('season')->exists(false))
-                               ->addOr($qb->expr()->addAnd($qb->expr()->field('season')->exists(true))
-                                                  ->addAnd($qb->expr()->field('season')->equals($this->getSeason())));
-
-        $websites = $qb->expr()->addOr($qb->expr()->field('websites')->exists(false))
-                               ->addOr($qb->expr()->addAnd($qb->expr()->field('websites')->exists(true))
-                                                  ->addAnd($qb->expr()->field('websites')->equals($this->getWebsite())));
-
-        $qb->addAnd($type)
-           ->addAnd($name)
-           ->addAnd($season)
-           ->addAnd($websites);
-
-        $rawResults = $qb->getQuery()->execute()->toArray();
-        $results    = [];
-
+            '$and' => [
+                
+                [
+                    'type' => [
+                        '$in' => $kinds,
+                    ],
+                ],
+                
+                [
+                    '$or' => [
+                        
+                        [
+                            'searchable' => $nameRegex,
+                            'locales'    => null,
+                        ],
+                        
+                        [
+                            'searchable.' . $this->getLocale() => $nameRegex,
+                            'locales' => [
+                                '$ne' => null,
+                            ],
+                        ],
+                        
+                        [
+                            '$and' => [
+                                
+                                [
+                                    'code' => [
+                                        '$exists' => true,
+                                    ],
+                                ],
+                                
+                                [
+                                    'code' => $term,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            
+        ])->limit(5)->sort(['order' => 1]);
+        
+        $results = [];
+        
         foreach ($rawResults as $rawResult) {
 
             if (!isset($results[$rawResult['type']])) {
@@ -104,5 +125,15 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
         }
 
         return $results;
+    }
+    
+    public function collection()
+    {
+        return $this->getDocumentManager()->getConnection()->getMongo()->selectCollection($this->mongoDatabase, $this->getWebsite() . '.autocomplete');
+    }
+    
+    public function setMongoDatabase($database)
+    {
+        $this->mongoDatabase = $database;
     }
 }

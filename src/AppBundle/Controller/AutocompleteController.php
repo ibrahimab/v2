@@ -21,10 +21,10 @@ class AutocompleteController extends Controller
     public function search($term, $limit)
     {
         $autocompleteService = $this->get('app.api.autocomplete');
-        $kinds               = [AutocompleteService::KIND_COUNTRY, AutocompleteService::KIND_REGION, AutocompleteService::KIND_PLACE, AutocompleteService::KIND_ACCOMMODATION];
+        $kinds               = [AutocompleteService::KIND_COUNTRY, AutocompleteService::KIND_REGION, AutocompleteService::KIND_PLACE, AutocompleteService::KIND_ACCOMMODATION, AutocompleteService::KIND_TYPE];
 
         $autocompleteService->search($term, $kinds)->limit($limit)->parse()->flatten();
 
-        return new JsonResponse($autocompleteService->flattened());
+        return new JsonResponse(array_slice($autocompleteService->flattened(), 0, $limit));
     }
 }

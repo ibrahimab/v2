@@ -1,6 +1,6 @@
 <a href="{{ homepageBlock.getLink() }}">
     <img src="{{ homepage_block_image(homepageBlock) }}" alt="{{ homepageBlock.getLocaleTitle(get_locale(), false) }}" />
-    <div class="title-theme"><h4>{{ homepageBlock.getLocaleTitle(get_locale())|raw }}</h4>
+    <div class="title-theme{{ large_title is defined ? ' large' }}"><h4>{{ homepageBlock.getLocaleTitle(get_locale())|raw }}</h4>
         <span class="button small radius">{{ homepageBlock.getLocaleButton(get_locale()) }}</span>
     </div>
-</a> 
+</a>

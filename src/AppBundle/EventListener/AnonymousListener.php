@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\EventListener;
+use       AppBundle\Service\UtilsService;
 use		  Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use		  Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use		  Symfony\Component\DependencyInjection\ContainerInterface;
@@ -23,12 +24,12 @@ class AnonymousListener
 	 * @var ContainerInterface
 	 */
 	protected $container;
-    
+
     /**
      * @var string
      */
     protected $token;
-    
+
 	/**
 	 * Injecting the service container
 	 *
@@ -39,7 +40,7 @@ class AnonymousListener
 		$this->container = $container;
         $this->token     = null;
 	}
-	
+
     /**
      * @param FilterControllerEvent $event
      */
@@ -48,33 +49,37 @@ class AnonymousListener
         if (!is_array($controller = $event->getController())) {
             return;
         }
-        
+
         $cookies     = $event->getRequest()->cookies;
         $anonymous   = $this->container->get('security.token_storage')->getToken();
         $userService = $this->container->get('app.api.user');
-        
+
         if (null === $anonymous) {
             return;
         }
 
         if ($cookies->has('_anon_tk')) {
-            
+
             $this->token = $cookies->get('_anon_tk');
-            
+
+            if (null === $userService->get($this->token)) {
+                $userService->create($this->token);
+            }
+
         } else {
-            
+
             $secret      = $this->container->getParameter('secret');
-            $this->token = $this->container->get('app.utils')->generateToken($secret);
-            
+            $this->token = UtilsService::generateToken($secret);
+
             $userService->create($this->token);
         }
-        
+
         $anonymous->setAttribute('_anon_tk', $this->token);
-        
+
         $javascriptService = $this->container->get('app.javascript');
         $javascriptService->set('app.user', $userService->user());
 	}
-    
+
     /**
      * @param FilterResponseEvent $event
      */
@@ -83,17 +88,17 @@ class AnonymousListener
         $request = $event->getRequest();
         $cookies = $request->cookies;
         $anonymous = $this->container->get('security.token_storage')->getToken();
-        
+
         if (null === $anonymous) {
             return;
         }
-        
+
         if (false === $cookies->has('_anon_tk')) {
-            
+
             $response    = $event->getResponse();
             $sslEnabled  = $this->container->getParameter('ssl_enabled');
             $domain      = $request->server->get('HTTP_HOST');
-            
+
             $expiration  = new \DateTime();
             $expiration->add(new \DateInterval('P2Y'));
 

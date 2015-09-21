@@ -51,13 +51,13 @@ class PlaceRepository extends BaseRepository implements PlaceServiceRepositoryIn
         $qb->select('partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, altitude}')
            ->where($expr->eq('p.showOnHomepage', ':showOnHomepage'))
            ->andWhere($expr->eq('p.region', ':region'))
-           ->andWhere($expr->like('p.websites', ':website'))
+           ->andWhere($expr->gt('FIND_IN_SET(:website, p.websites)', 0))
            ->setMaxResults($limit)
            ->setParameters([
 
                'showOnHomepage' => true,
                'region'         => $region,
-               'website'        => '%' . $this->getWebsite() . '%',
+               'website'        => $this->getWebsite(),
            ]);
 
         return $qb->getQuery()->getResult();

@@ -41,3 +41,8 @@ services:
     old.prices.wrapper:
         class: AppBundle\Old\PricesWrapper
         arguments: [@service_container]
+        
+    old.additional.costs:
+        class: bijkomendekosten
+        calls:
+            - [setRedis, [@old.redis]]

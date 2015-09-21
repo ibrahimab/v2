@@ -1,3 +1,5 @@
-{% for i in 1..5 %}
-<i class="sprite sprite-star{{ (i <= quality ? '' : '-empty') }}"></i>
-{% endfor %}
+{% if quality >= 1 %}
+    {% for i in 1..5 %}
+    <i class="sprite sprite-star{{ (i <= quality ? '' : '-empty') }}"></i>
+    {% endfor %}
+{% endif %}

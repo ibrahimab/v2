@@ -133,4 +133,12 @@ class RegionService
 
         return $result;
     }
+
+    /**
+     * @return integer
+     */
+    public function count()
+    {
+        return $this->regionServiceRepository->count();
+    }
 }

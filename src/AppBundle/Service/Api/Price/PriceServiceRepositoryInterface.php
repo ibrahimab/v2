@@ -42,12 +42,4 @@ interface PriceServiceRepositoryInterface
      * @return integer
      */
     public function getWebsite();
-
-    /**
-     * Getting active offers types
-     *
-     * @param array $types
-     * @return array
-     */
-    public function offers($types);
 }

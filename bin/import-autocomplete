@@ -1,0 +1,18 @@
+#!/usr/bin/env python
+"""
+Executor of the import application.
+Call this executable to index all the searchable objects
+in the MySQL database
+"""
+import os
+import sys
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-w', dest='website', required=True)
+parser.add_argument('--env', dest='env', default='test')
+
+args = parser.parse_args()
+
+basedir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+os.system('python %(basedir)s/subapps/python/import-autocomplete -w=%(website)s --env=%(env)s' % {'basedir': basedir, 'env': args.env, 'website': args.website})

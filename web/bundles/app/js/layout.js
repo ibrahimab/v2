@@ -56,25 +56,28 @@ $('.table-explain .button').click(function() {
 //     return false;
 // });
 //open close divs
-$('#search-filter-results h2 a').click(function() {//close ONE filter
-    $(this).closest('h2').toggleClass('closed');
-    var getParent = "#" + $(this).closest("div").attr("id");
-    $(getParent + ' div').slideToggle();
-    return false;
-});
-$('#search-filter .title').click(function() {//close ALL filters
-    if ($(this).hasClass('closed')){
-        $('#search-filter .title').removeClass('closed');
-        $('#search-filter .search-filter-default .fields').slideDown();
-        $('#search-filter .search-filter-default h2').removeClass('closed');        
-    }else{
-        $('#search-filter .title').addClass('closed');
-        $('#search-filter .search-filter-default .fields').slideUp();
-        $('#search-filter .search-filter-default h2').addClass('closed');  
-    }
-    return false;
-});
-$('.readmore a').click(function() {//open close div (class=readmore)
+// $('#search-filter-results h2 a').click(function() {//close ONE filter
+//     $(this).closest('h2').toggleClass('closed');
+//     var getParent = "#" + $(this).closest("div").attr("id");
+//     $(getParent + ' div').slideToggle();
+//     return false;
+// });
+// $('#search-filter .title').click(function() {//close ALL filters
+//     if ($(this).hasClass('closed')){
+//         $('#search-filter .title').removeClass('closed');
+//         $('#search-filter .search-filter-default .fields').slideDown();
+//         $('#search-filter .search-filter-default h2').removeClass('closed');        
+//     }else{
+//         $('#search-filter .title').addClass('closed');
+//         $('#search-filter .search-filter-default .fields').slideUp();
+//         $('#search-filter .search-filter-default h2').addClass('closed');  
+//     }
+//     return false;
+// });
+$('.readmore a').on('click', function(event) {//open close div (class=readmore)
+    
+    event.preventDefault();
+
     var el = $(this);
     var state = el.data('state');
 
@@ -87,38 +90,32 @@ $('.readmore a').click(function() {//open close div (class=readmore)
     var getParent =  "." + el.parents('div:eq(1)').attr('class');
     $(getParent+ ' .readmore a').toggleClass('open');
     $(getParent+ ' .hide').slideToggle('slow');
-    return false;
 });
 $(document).ready(function(){
 
     $('body').addClass('has-js');
-    $('.styled_label input:checked').parent('label.label_check').addClass('c_on');
-    $('.styled_label input:checked').parent('label.label_radio').addClass('r_on');
-
-    $('body').on('click', '.styled_label', function(event) {
-
-        event.preventDefault();
-
-        var element = $(this);
-        var input   = element.children('label').children('input');
-        input.prop('checked', !input.prop('checked'));
-
-        if (input.data('group') !== null) {
-            $('.styled_label [data-group="' + input.data('group') + '"]').not(input).prop('checked', false);
-        }
-
-        $('.styled_label label.label_check').removeClass('c_on');
-        $('.styled_label input:checked').parent('label.label_check').addClass('c_on');
-
-        $('.styled_label label.label_radio').removeClass('r_on');
-        $('.styled_label input:checked').parent('label.label_radio').addClass('r_on');
+    $('body').on('click', '.styled_label:not(.disabled)', function(event) {
+        window.recalculateStyledInput();
     });
 
-    window.resetStyledInput = function() {
+    window.recalculateStyledInput = function() {
 
-        $('.styled_label input:checked').prop('checked', false).parent('label.label_check').removeClass('c_on');
-        $('.styled_label input:checked').prop('checked', false).parent('label.label_radio').removeClass('r_on');
+        $('.styled_label:not(.disabled) input').each(function() {
+
+            var element     = $(this);
+            var labelClass  = element.attr('type') === 'checkbox' ? 'label_check' : 'label_radio';
+            var statusClass = element.attr('type') === 'checkbox' ? 'c_on'        : 'r_on';
+
+            if (true === element.prop('checked')) {
+                element.parent('label.' + labelClass).addClass(statusClass);
+            } else {
+                element.parent('label.' + labelClass).removeClass(statusClass);
+            }
+        });
     };
+
+    // initial calculation
+    window.recalculateStyledInput();
 });
 //go to next month - 'boek nu' table
 $( "table.responsive" ).append($('#types-nav'));
@@ -171,10 +168,15 @@ jQuery(function() {
 
     $('input').placeholder({customClass:'my-placeholder'});
 
-    $('.accom-slides').slick({
+    window.initializeSlick = function() {
 
-        lazyLoad: 'ondemand',
-        slidesToShow: 1,
-        slidesToScroll: 1
-    });
+        $('.accom-slides').slick({
+
+            lazyLoad: 'ondemand',
+            slidesToShow: 1,
+            slidesToScroll: 1
+        });
+    };
+
+    window.initializeSlick();
 });

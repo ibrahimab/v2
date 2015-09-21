@@ -6,11 +6,11 @@ use       AppBundle\Service\Api\Search\SearchService;
 use       AppBundle\Service\Api\Search\SearchBuilder;
 use       AppBundle\Service\Api\Search\FilterBuilder;
 use       AppBundle\Service\FilterService;
-use       AppBundle\Service\Paginator\PaginatorService;
 use       AppBundle\Concern\SeasonConcern;
 use       AppBundle\Concern\WebsiteConcern;
 use       AppBundle\Entity\BaseRepository;
 use       Doctrine\ORM\EntityManager;
+use       Doctrine\ORM\QueryBuilder;
 
 /**
  * Search repository
@@ -18,8 +18,9 @@ use       Doctrine\ORM\EntityManager;
  * This is the search repository
  *
  * @author  Ibrahim Abdullah
+ * @author  Jeroen Boschman <jeroen@webtastic.nl>
  * @package Chalet
- * @version 0.0.4
+ * @version 0.0.5
  * @since   0.0.2
  */
 class SearchRepository implements SearchServiceRepositoryInterface
@@ -36,6 +37,11 @@ class SearchRepository implements SearchServiceRepositoryInterface
     const SORT_ORDER_DEFAULT = SearchBuilder::SORT_ORDER_ASC;
 
     /**
+     * @param array
+     */
+    private $maximumPersonsMap;
+
+    /**
      * Constructor, injecting the EntityManager
      *
      * @param EntityManager $entityManager
@@ -46,12 +52,20 @@ class SearchRepository implements SearchServiceRepositoryInterface
     }
 
     /**
+     * @param array $maximumPersonsMap
+     */
+    public function setMaximumPersonsMap($app)
+    {
+        $this->maximumPersonsMap = $app['maximum_persons_map'];
+    }
+
+    /**
      * @param array $ids
      * @return array
      */
-    public function findOnlyNames($countries, $regions, $places, $accommodations)
+    public function findOnlyNames($countries, $regions, $places, $accommodations, $types)
     {
-        if (count(array_merge($countries, $regions, $places, $accommodations)) === 0) {
+        if (count(array_merge($countries, $regions, $places, $accommodations, $types)) === 0) {
             return [];
         }
 
@@ -61,6 +75,8 @@ class SearchRepository implements SearchServiceRepositoryInterface
         $where    = $expr->andX();
         $select   = [];
         $entities = [];
+        $website  = $this->getWebsite();
+        $season   = $this->getSeason();
 
         if (count($countries) > 0) {
 
@@ -76,8 +92,13 @@ class SearchRepository implements SearchServiceRepositoryInterface
             $select[]   = 'partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}';
             $entities[] = 'AppBundle:Region\Region r';
 
-            $where->add($expr->in('r.' . $this->getLocaleField('name'), ':region_names'));
-            $qb->setParameter('region_names', $regions);
+            $where->add($expr->in('r.' . $this->getLocaleField('name'), ':region_names'))
+                  ->add($expr->gt('FIND_IN_SET(:r_website, r.websites)', 0))
+                  ->add($expr->eq('r.season', ':r_season'));
+
+            $qb->setParameter('region_names', $regions)
+               ->setParameter('r_website', $website)
+               ->setParameter('r_season', $season);
         }
 
         if (count($places) > 0) {
@@ -85,8 +106,13 @@ class SearchRepository implements SearchServiceRepositoryInterface
             $select[]   = 'partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName}';
             $entities[] = 'AppBundle:Place\Place p';
 
-            $where->add($expr->in('p.' . $this->getLocaleField('name'), ':place_names'));
-            $qb->setParameter('place_names', $places);
+            $where->add($expr->in('p.' . $this->getLocaleField('name'), ':place_names'))
+                  ->add($expr->gt('FIND_IN_SET(:p_website, p.websites)', 0))
+                  ->add($expr->eq('p.season', ':p_season'));
+
+            $qb->setParameter('place_names', $places)
+               ->setParameter('p_website', $website)
+               ->setParameter('p_season', $season);
         }
 
         if (count($accommodations) > 0) {
@@ -94,8 +120,27 @@ class SearchRepository implements SearchServiceRepositoryInterface
             $select[]   = 'partial a.{id, name, shortDescription, englishShortDescription, germanShortDescription}';
             $entities[] = 'AppBundle:Accommodation\Accommodation a';
 
-            $where->add($expr->in('a.id', ':accommodation_ids'));
-            $qb->setParameter('accommodation_ids', $accommodations);
+            $where->add($expr->in('a.id', ':accommodation_ids'))
+                  ->add($expr->gt('FIND_IN_SET(:a_website, a.websites)', 0))
+                  ->add($expr->eq('a.season', ':a_season'));
+
+            $qb->setParameter('accommodation_ids', $accommodations)
+               ->setParameter('a_website', $website)
+               ->setParameter('a_season', $season);
+        }
+
+        if (count($types) > 0) {
+
+            $select[]   = 'partial a.{id, name}, partial t.{id, name, englishName, germanName}';
+            $entities[] = 'AppBundle:Type\Type t';
+            $entities[] = 'AppBundle:Accommodation\Accommodation a';
+
+            $where->add($expr->in('t.id', ':type_ids'))
+                  ->add('t.accommodationId = a.id')
+                  ->add($expr->gt('FIND_IN_SET(:t_website, t.websites)', 0));
+
+            $qb->setParameter('type_ids', $types)
+               ->setParameter('t_website', $website);
         }
 
         $qb->select(implode(', ', $select))
@@ -113,33 +158,33 @@ class SearchRepository implements SearchServiceRepositoryInterface
      */
     public function search(SearchBuilder $searchBuilder)
     {
-        $limit = $searchBuilder->block(SearchBuilder::BLOCK_LIMIT);
-        $page  = $searchBuilder->block(SearchBuilder::BLOCK_PAGE);
         $qb    = $this->query($searchBuilder)
                       ->add('select', 't,
-                                       partial a.{id, name, shortDescription, englishShortDescription, germanShortDescription, features, quality},
-                                       partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName},
-                                       partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName},
-                                       partial c.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, startCode}');
-        
-        $paginator = new PaginatorService($qb);
-        $paginator->setLimit($limit);
-        $paginator->setCurrentPage($page);
-        
-        return $paginator;
+                                       partial a.{id, name, shortDescription, englishShortDescription, germanShortDescription, features, quality, distanceSlope, searchOrder, show, kind},
+                                       partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, features},
+                                       partial r.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, totalSlopesDistance},
+                                       partial c.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, startCode},
+                                       partial s.{id, searchOrder}');
+
+        return $qb;
     }
-    
-    public function facets(SearchBuilder $searchBuilder, $filters)
+
+    /**
+     * @param SearchBuilder $searchBuilder
+     * @return integer
+     */
+    public function count(SearchBuilder $searchBuilder)
     {
-        foreach ($filters as $filter) {
-            
-            foreach ($filter as $values) {
-                
-                
-            }
-        }
+        $qb = $this->query($searchBuilder)
+                   ->add('select', 'COUNT(t)');
+
+        return (int)$qb->getQuery()->getSingleScalarResult();
     }
-    
+
+    /**
+     * @param SearchBuilder $searchBuilder
+     * @return QueryBuilder
+     */
     public function query(SearchBuilder $searchBuilder)
     {
         $sort_by     = $searchBuilder->block(SearchBuilder::BLOCK_SORT_BY, self::SORT_BY_DEFAULT);
@@ -156,7 +201,7 @@ class SearchRepository implements SearchServiceRepositoryInterface
            ->leftJoin('a.place',  'p')
            ->leftJoin('p.region', 'r')
            ->leftJoin('p.country', 'c')
-           ->where($expr->like('t.websites', ':website'))
+           ->where($expr->gt('FIND_IN_SET(:website, t.websites)', 0))
            ->andWhere($expr->eq('a.display', ':display'))
            ->andWhere($expr->eq('a.displaySearch', ':displaySearch'))
            ->andWhere($expr->eq('t.display', ':display'))
@@ -165,7 +210,7 @@ class SearchRepository implements SearchServiceRepositoryInterface
 
                'display'       => true,
                'displaySearch' => true,
-               'website'       => '%' . $this->getWebsite() . '%',
+               'website'       => $this->getWebsite(),
            ]);
 
         // apply filters
@@ -176,10 +221,14 @@ class SearchRepository implements SearchServiceRepositoryInterface
         }
 
         $this->where($where, $qb);
-        
+
         return $qb;
     }
 
+    /**
+     * @param integer $sort
+     * @return string
+     */
     public function sortField($sort)
     {
         switch ($sort) {
@@ -232,6 +281,11 @@ class SearchRepository implements SearchServiceRepositoryInterface
         return $qb;
     }
 
+    /**
+     * @param QueryBuilder $qb
+     * @param array $filters
+     * @return QueryBuilder
+     */
     public function distance($qb, $filters)
     {
         if (true === $filters->has(FilterService::FILTER_DISTANCE)) {
@@ -269,6 +323,11 @@ class SearchRepository implements SearchServiceRepositoryInterface
         return $qb;
     }
 
+    /**
+     * @param QueryBuilder $qb
+     * @param array $filters
+     * @return QueryBuilder
+     */
     public function length($qb, $filters)
     {
         if (true === $filters->has(FilterService::FILTER_LENGTH)) {
@@ -306,6 +365,11 @@ class SearchRepository implements SearchServiceRepositoryInterface
         return $qb;
     }
 
+    /**
+     * @param QueryBuilder $qb
+     * @param array $filters
+     * @return QueryBuilder
+     */
     public function facilities($qb, $filters)
     {
         if (true === $filters->has(FilterService::FILTER_FACILITY)) {
@@ -332,6 +396,11 @@ class SearchRepository implements SearchServiceRepositoryInterface
         return $qb;
     }
 
+    /**
+     * @param QueryBuilder $qb
+     * @param integer $facility
+     * @return QueryBuilder
+     */
     public function facility($qb, $facility)
     {
         $expr = $qb->expr();
@@ -340,80 +409,84 @@ class SearchRepository implements SearchServiceRepositoryInterface
             case FilterService::FILTER_FACILITY_CATERING:
 
                 $selector = $expr->orX()
-                                 ->add($expr->like('t.features', ':type_features_' . $facility))
-                                 ->add($expr->like('a.features', ':accommodation_features_' . $facility));
+                                 ->add($expr->gt('FIND_IN_SET(:type_facility_01_' . $facility . ', t.features)', 0))
+                                 ->add($expr->gt('FIND_IN_SET(:accommodation_facility_02_' . $facility . ', a.features)', 0));
 
-                $qb->setParameter('type_features_' . $facility, '%1%')
-                   ->setParameter('accommodation_features_' . $facility, '%1%');
+                $qb->setParameter('type_facility_01_' . $facility, 1)
+                   ->setParameter('accommodation_facility_02_' . $facility, 1);
 
                 break;
 
             case FilterService::FILTER_FACILITY_INTERNET_WIFI:
 
                 $selector = $expr->orX()
-                                 ->add($expr->like('t.features', ':type_features_' . $facility))
-                                 ->add($expr->like('a.features', ':accommodation_features_' . $facility));
+                                 ->add($expr->gt('FIND_IN_SET(:type_facility_03_' . $facility . ', t.features)', 0))
+                                 ->add($expr->gt('FIND_IN_SET(:type_facility_04_' . $facility . ', t.features)', 0))
+                                 ->add($expr->gt('FIND_IN_SET(:accommodation_facility_05_' . $facility . ', a.features)', 0))
+                                 ->add($expr->gt('FIND_IN_SET(:accommodation_facility_06_' . $facility . ', a.features)', 0));
 
-                $qb->setParameter('type_features_' . $facility, '%20%')
-                   ->setParameter('accommodation_features_' . $facility, '%22%');
+                $qb->setParameter('type_facility_03_' . $facility, 20)
+                   ->setParameter('type_facility_04_' . $facility, 22)
+                   ->setParameter('accommodation_facility_05_' . $facility, 21)
+                   ->setParameter('accommodation_facility_06_' . $facility, 23);
 
                 break;
 
             case FilterService::FILTER_FACILITY_SWIMMING_POOL:
 
-                $selector = $expr->orX()->add($expr->like('t.features', ':type_features_' . $facility))
-                                        ->add($expr->like('a.features', ':accommodation_features_1_' . $facility))
-                                        ->add($expr->like('a.features', ':accommodation_features_2_' . $facility));
+                $selector = $expr->orX()->add($expr->gt('FIND_IN_SET(:type_facility_07_' . $facility . ', t.features)', 0))
+                                        ->add($expr->gt('FIND_IN_SET(:accommodation_facility_08_' . $facility . ', a.features)', 0))
+                                        ->add($expr->gt('FIND_IN_SET(:accommodation_facility_09_' . $facility . ', a.features)', 0));
 
-                $qb->setParameter('type_features_' . $facility, '%4%')
-                   ->setParameter('accommodation_features_1_' . $facility, '%4%')
-                   ->setParameter('accommodation_features_2_' . $facility, '%11%');
+                $qb->setParameter('type_facility_07_' . $facility, 4)
+                   ->setParameter('accommodation_facility_08_' . $facility, 4)
+                   ->setParameter('accommodation_facility_09_' . $facility, 11);
 
                 break;
 
             case FilterService::FILTER_FACILITY_SAUNA:
 
                 $selector = $expr->orX()
-                                 ->add($expr->like('t.features', ':type_features_' . $facility))
-                                 ->add($expr->like('a.features', ':accommodation_features_1_' . $facility))
-                                 ->add($expr->like('a.features', ':accommodation_features_2_' . $facility));
+                                 ->add($expr->gt('FIND_IN_SET(:type_facility_10_' . $facility . ', t.features)', 0))
+                                 ->add($expr->gt('FIND_IN_SET(:accommodation_facility_11_' . $facility . ', a.features)', 0))
+                                 ->add($expr->gt('FIND_IN_SET(:accommodation_facility_12_' . $facility . ', a.features)', 0));
 
-                $qb->setParameter('type_features_' . $facility, '%3%')
-                   ->setParameter('accommodation_features_1_' . $facility, '%3%')
-                   ->setParameter('accommodation_features_2_' . $facility, '%10%');
+                $qb->setParameter('type_facility_10_' . $facility, 3)
+                   ->setParameter('accommodation_facility_11_' . $facility, 3)
+                   ->setParameter('accommodation_facility_12_' . $facility, 10);
 
                 break;
 
             case FilterService::FILTER_FACILITY_PRIVATE_SAUNA:
 
                 $selector = $expr->orX()
-                                 ->add($expr->like('t.features', ':type_features_' . $facility))
-                                 ->add($expr->like('a.features', ':accommodation_features_' . $facility));
+                                 ->add($expr->gt('FIND_IN_SET(:type_facility_13_' . $facility . ', t.features)', 0))
+                                 ->add($expr->gt('FIND_IN_SET(:accommodation_facility_14_' . $facility . ', a.features)', 0));
 
-                $qb->setParameter('type_features_' . $facility, '%3%')
-                   ->setParameter('accommodation_features_' . $facility, '%3%');
+                $qb->setParameter('type_facility_13_' . $facility, 3)
+                   ->setParameter('accommodation_facility_14_' . $facility, 3);
 
                 break;
 
             case FilterService::FILTER_FACILITY_PETS_ALLOWED:
 
                 $selector = $expr->orX()
-                                 ->add($expr->like('t.features', ':type_features_' . $facility))
-                                 ->add($expr->like('a.features', ':accommodation_features_' . $facility));
+                                 ->add($expr->gt('FIND_IN_SET(:type_facility_15_' . $facility . ', t.features)', 0))
+                                 ->add($expr->gt('FIND_IN_SET(:accommodation_facility_16_' . $facility . ', a.features)', 0));
 
-                $qb->setParameter('type_features_' . $facility, '%11%')
-                   ->setParameter('accommodation_features_' . $facility, '%13%');
+                $qb->setParameter('type_facility_15_' . $facility, 11)
+                   ->setParameter('accommodation_facility_16_' . $facility, 13);
 
                 break;
 
             case FilterService::FILTER_FACILITY_FIREPLACE:
 
                 $selector = $expr->orX()
-                                 ->add($expr->like('t.features', ':type_features_' . $facility))
-                                 ->add($expr->like('a.features', ':accommodation_features_' . $facility));
+                                 ->add($expr->gt('FIND_IN_SET(:type_facility_17_' . $facility . ', t.features)', 0))
+                                 ->add($expr->gt('FIND_IN_SET(:accommodation_facility_18_' . $facility . ', a.features)', 0));
 
-                $qb->setParameter('type_features_' . $facility, '%10%')
-                   ->setParameter('accommodation_features_' . $facility, '%12%');
+                $qb->setParameter('type_facility_17_' . $facility, 10)
+                   ->setParameter('accommodation_facility_18_' . $facility, 12);
 
                 break;
 
@@ -424,6 +497,11 @@ class SearchRepository implements SearchServiceRepositoryInterface
         return $selector;
     }
 
+    /**
+     * @param QueryBuilder $qb
+     * @param array $filters
+     * @return QueryBuilder
+     */
     public function themes($qb, $filters)
     {
         if (true === $filters->has(FilterService::FILTER_THEME)) {
@@ -450,48 +528,56 @@ class SearchRepository implements SearchServiceRepositoryInterface
         return $qb;
     }
 
+    /**
+     * @param QueryBuilder $qb
+     * @param integer $theme
+     * @return QueryBuilder
+     */
     public function theme($qb, $theme)
     {
         $expr     = $qb->expr();
-        $selector = $expr->like('p.features', ':place_features_theme_' . $theme);
 
         switch ($theme) {
 
             case FilterService::FILTER_THEME_KIDS:
 
                 $selector = $expr->orX()
-                                 ->add($expr->like('t.features', ':type_features_theme_' . $theme))
-                                 ->add($expr->like('a.features', ':accommodation_features_theme_' . $theme));
+                                 ->add($expr->gt('FIND_IN_SET(:type_theme_01_' . $theme . ', t.features)', 0))
+                                 ->add($expr->gt('FIND_IN_SET(:accommodation_theme_02_' . $theme . ', a.features)', 0));
 
-                $qb->setParameter(':type_features_theme_' . $theme, '%5%')
-                   ->setParameter(':accommodation_features_theme_' . $theme, '%5%');
+                $qb->setParameter(':type_theme_01_' . $theme, 5)
+                   ->setParameter(':accommodation_theme_02_' . $theme, 5);
 
                 break;
 
             case FilterService::FILTER_THEME_CHARMING_PLACES:
 
-                $qb->setParameter(':place_features_theme_' . $theme, '%13%');
+                $selector = $expr->gt('FIND_IN_SET(:place_theme_03_' . $theme . ', p.features)', 0);
+                $qb->setParameter(':place_theme_03_' . $theme, 13);
+
                 break;
 
             case FilterService::FILTER_THEME_WINTER_WELLNESS:
 
                 $selector = $expr->orX()
-                                 ->add($expr->like('t.features', ':type_features_theme_' . $theme))
-                                 ->add($expr->like('a.features', ':accommodation_features_theme_' . $theme));
+                                 ->add($expr->gt('FIND_IN_SET(:type_theme_04_' . $theme . ', t.features)', 0))
+                                 ->add($expr->gt('FIND_IN_SET(:accommodation_theme_05_' . $theme . ', a.features)', 0));
 
-                $qb->setParameter(':type_features_theme_' . $theme, '%9%');
-                $qb->setParameter(':accommodation_features_theme_' . $theme, '%9%');
+                $qb->setParameter(':type_theme_04_' . $theme, 9);
+                $qb->setParameter(':accommodation_theme_05_' . $theme, 9);
 
                 break;
 
             case FilterService::FILTER_THEME_SUPER_SKI_STATIONS:
 
-                $qb->setParameter(':place_features_theme_' . $theme, '%14%');
+                $selector = $expr->gt('FIND_IN_SET(:place_theme_06_' . $theme . ', p.features)', 0);
+                $qb->setParameter(':place_theme_06_' . $theme, 14);
                 break;
 
             case FilterService::FILTER_THEME_10_FOR_APRES_SKI:
 
-                $qb->setParameter(':place_features_theme_' . $theme, '%6%');
+                $selector = $expr->gt('FIND_IN_SET(:place_theme_07_' . $theme . ', p.features)', 0);
+                $qb->setParameter(':place_theme_07_' . $theme, 6);
                 break;
 
             default:
@@ -501,10 +587,14 @@ class SearchRepository implements SearchServiceRepositoryInterface
         return $selector;
     }
 
+    /**
+     * @param array $where
+     * @param QueryBuilder $qb
+     * @return QueryBuilder
+     */
     public function where($where, $qb)
     {
         $expr = $qb->expr();
-        $andX = $expr->andX();
 
         foreach ($where as $clause) {
 
@@ -512,42 +602,102 @@ class SearchRepository implements SearchServiceRepositoryInterface
 
                 case SearchBuilder::WHERE_WEEKEND_SKI:
 
-                    $andX->add($expr->eq('a.weekendSki', ':where_' . $clause['field']));
+                    $qb->andWhere($expr->eq('a.weekendSki', ':where_' . $clause['field']));
+                    $qb->setParameter('where_' . $clause['field'], $clause['value']);
+
                     break;
 
                 case SearchBuilder::WHERE_ACCOMMODATION:
 
-                    $andX->add($expr->in('a.id', ':where_' . $clause['field']));
+                    $qb->andWhere($expr->in('a.id', ':where_' . $clause['field']));
+                    $qb->setParameter('where_' . $clause['field'], $clause['value']);
+
+                    break;
+
+                case SearchBuilder::WHERE_TYPE:
+
+                    $qb->andWhere($expr->in('t.id', ':where_' . $clause['field']));
+                    $qb->setParameter('where_' . $clause['field'], $clause['value']);
+
                     break;
 
                 case SearchBuilder::WHERE_COUNTRY:
 
-                    $andX->add($expr->in('c.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
+                    $qb->andWhere($expr->in('c.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
+                    $qb->setParameter('where_' . $clause['field'], $clause['value']);
+
                     break;
 
                 case SearchBuilder::WHERE_REGION:
 
-                    $andX->add($expr->in('r.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
+                    $qb->andWhere($expr->in('r.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
+                    $qb->setParameter('where_' . $clause['field'], $clause['value']);
+
                     break;
 
                 case SearchBuilder::WHERE_PLACE:
 
-                    $andX->add($expr->in('p.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
+                    $qb->andWhere($expr->in('p.' . $this->getLocaleField('name'), ':where_' . $clause['field']));
+                    $qb->setParameter('where_' . $clause['field'], $clause['value']);
+
                     break;
 
                 case SearchBuilder::WHERE_BEDROOMS:
 
-                    $andX->add($expr->gte('t.bedrooms', ':where_' . $clause['field']));
+                    $qb->andWhere($expr->gte('t.bedrooms', ':where_' . $clause['field']));
+                    $qb->setParameter('where_' . $clause['field'], $clause['value']);
+
                     break;
 
                 case SearchBuilder::WHERE_BATHROOMS:
 
-                    $andX->add($expr->gte('t.bathrooms', ':where_' . $clause['field']));
+                    $qb->andWhere($expr->gte('t.bathrooms', ':where_' . $clause['field']));
+                    $qb->setParameter('where_' . $clause['field'], $clause['value']);
+
+                    break;
+
+                case SearchBuilder::WHERE_PERSONS:
+
+                    if ($clause['value'] > 0) {
+
+                        if ($clause['value'] >= 40) {
+
+                            $min = $clause['value'];
+                            $max = 1000;
+
+                        } else if ($clause['value'] > 20) {
+
+                            $min = $clause['value'];
+                            $max = 50;
+
+                        } else {
+
+                            $min = $clause['value'];
+                            $max = (isset($this->maximumPersonsMap[$clause['value']]) ? $this->maximumPersonsMap[$clause['value']] : $clause['value']);
+                        }
+                    }
+
+                    $qb->andWhere($expr->gte('t.optimalResidents', ':minResidents'));
+                    $qb->andWhere($expr->lte('t.maxResidents', ':maxResidents'));
+
+                    $qb->setParameter('minResidents', $min);
+                    $qb->setParameter('maxResidents', $max);
+
+                    if( WebsiteConcern::WEBSITE_ZOMERHUISJE_NL != $this->getWebsite() ) {
+                        // max 1 bedroom per person (not for Zomerhuisje.nl)
+                        $qb->andWhere($expr->lte('t.bedrooms', ':bedroomsBasedOnResidents'));
+                        $qb->setParameter('bedroomsBasedOnResidents', $min);
+                    }
+
+                    break;
+
+                case SearchBuilder::WHERE_TYPES:
+
+                    $qb->andWhere($expr->in('t.id', ':where_' . $clause['field']));
+                    $qb->setParameter('where_' . $clause['field'], $clause['value']);
+
                     break;
             }
-
-            $qb->setParameter('where_' . $clause['field'], $clause['value']);
-            $qb->andWhere($andX);
         }
 
         return $qb;

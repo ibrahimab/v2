@@ -5,14 +5,18 @@
 <div class="small-{{ small_size|default(12) }} medium-{{ medium_size|default(4) }} large-{{ large_size|default(4) }} columns {% if end == true %}end{% endif %}">
     <article class="overview{% if offer %} sale{% endif %}" data-equalizer-watch>
         <div class="accom-img">
-            <a href="{{ link }}"><img src="{{ type_image(highlight.type).getLocation() }}" alt="{{ highlight.type.accommodation.getLocaleName(locale) }}" /></a>
+            <a href="{{ link }}"><img src="{{ generate_image_path(type_image(highlight.type)) }}" alt="{{ highlight.type.accommodation.getLocaleName(locale) }}" /></a>
             {% if offer %}
-                <div class="circle"><span>Aan-</span><span>bieding</span></div>
+                <a href="{{ link }}">
+                    <div class="circle"><span>Aan-</span><span>bieding</span></div>
+                </a>
             {% endif %}
             <div class="heart"><a href="#"{% if is_favorite(highlight.type) %} data-role="remove-favorite" class="active added"{% else %} data-role="add-favorite"{% endif %} data-id="{{ highlight.type.getId() }}" title="Dit resultaat opslaan in mijn favorieten"><i class="fi-heart"></i></a></div>
             {% set surveyCount = highlight.type.surveyCount %}
             {% if surveyCount > 1 %}
-                <div class="rating"><span class="figure">{{ highlight.type.surveyAverageOverallRating }}</span><span class="reviews-number">{{ surveyCount }} <a href="{{ link }}">{{ 'ratings'|trans|lower }}</a></span></div>
+                <a href="{{ link }}">
+                    <div class="rating"><span class="figure">{{ highlight.type.surveyAverageOverallRating }}</span><span class="reviews-number">{{ surveyCount }} {{ 'ratings'|trans|lower }}</span></div>
+                </a>
             {% endif %}
         </div>
         <a href="{{ link }}">
@@ -25,8 +29,8 @@
                     </span>
                 </div>
                 <div class="location">
-                    <span class="city">{{ place.getLocaleName(locale) }}</span>, 
-                    <span class="area">{{ place.region.getLocaleName(locale) }}</span>, 
+                    <span class="city">{{ place.getLocaleName(locale) }}</span>,
+                    <span class="area">{{ place.region.getLocaleName(locale) }}</span>,
                     <span class="country">{{ place.country.getLocaleName(locale) }}</span>
                 </div>
                 {% if highlight.type.optimalResidents is same as(highlight.type.maxResidents) %}

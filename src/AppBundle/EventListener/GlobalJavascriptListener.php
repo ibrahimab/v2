@@ -17,10 +17,9 @@ class GlobalJavascriptListener
      *
      * @param JavascriptService $javascriptService
      */
-    public function __construct(JavascriptService $javascriptService, UtilsService $utilsService)
+    public function __construct(JavascriptService $javascriptService)
     {
         $this->javascriptService = $javascriptService;
-		$this->utilsService		 = $utilsService;
     }
 
     /**
@@ -42,7 +41,7 @@ class GlobalJavascriptListener
         $this->javascriptService->set('app.locale',           $request->getLocale());
         $this->javascriptService->set('app.season',           $attributes->get('_season'));
         $this->javascriptService->set('app.website',          $attributes->get('_website'));
-        $this->javascriptService->set('app.controller.short', $this->utilsService->normalizeController($attributes->get('_controller')));
+        $this->javascriptService->set('app.controller.short', UtilsService::normalizeController($attributes->get('_controller')));
 		$this->javascriptService->set('app.controller.full',  $attributes->get('_controller'));
         $this->javascriptService->set('app.route.name',   	  $attributes->get('_route'));
         $this->javascriptService->set('app.route.params', 	  $attributes->get('_route_params'));

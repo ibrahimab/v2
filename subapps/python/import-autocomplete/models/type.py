@@ -25,13 +25,20 @@ class Type(Base):
     """
     def fetch(self):
 
-        sql = 'SELECT `type_id` AS `id`, `accommodatie_id` AS `accommodation_id`, `naam` AS `name_nl`, `websites`, ' \
-              '`naam_de` AS `name_de`, `naam_en` AS `name_en`, `naam_fr` AS `name_fr`, `zoekvolgorde` AS `order` '   \
-              'FROM   `type` '                                                                                       \
-              'WHERE  `tonen` = 1 '                                                                                  \
-              'AND    `tonenzoekformulier` = 1'
+        sql = "SELECT DISTINCT `type_id` AS `id`, `accommodatie_id` AS `accommodation_id`, `tnaam` AS `name_nl`, " \
+              "                `tnaam_de` AS `name_de`, `tnaam_en` AS `name_en`, `tnaam_fr` AS `name_fr`, "        \
+              "                `naam` AS `accommodation_name`, `begincode` AS `code` "                             \
+              "FROM   `view_accommodatie` "                                                                        \
+              "WHERE FIND_IN_SET('%(website)s', `websites`) > 0 "                                                  \
+              "AND `atonen` = 1 "                                                                                  \
+              "AND `ttonen` = 1 "                                                                                  \
+              "AND `atonenzoekformulier` = 1 "                                                                     \
+              "AND `ttonenzoekformulier` = 1 "                                                                     \
+              "AND `archief` = 0 "                                                                                 \
+              "AND `weekendski` = 0 "                                                                              \
+              "ORDER BY `naam` ASC"
 
-        self.adapter('mysql').execute(sql)
+        self.adapter('mysql').execute(sql % {'website': self.website})
         self.data = self.adapter('mysql').fetchall()
         return self
 
@@ -45,27 +52,30 @@ class Type(Base):
         if not self.data:
             return self
 
-        collection = self.adapter('mongo').autocomplete
+        collection = self.collection()
         data       = []
+        order      = 1
 
         for row in self.data:
 
             data.append({
 
-                'type':             Type.AUTOCOMPLETE_TYPE,
-                'type_id':          row['id'],
-                'locales':          ['nl', 'en', 'fr', 'de'],
-                'name':             {
+                'type': Type.AUTOCOMPLETE_TYPE,
+                'type_id': row['id'],
+                'locales': ['nl', 'en', 'fr', 'de'],
+                'order': order,
+                'begin_code': row['code'],
+                'code': (row['code'] + str(row['id'])).lower(),
+                'name': {
 
-                    'nl': row['name_nl'],
-                    'en': row['name_en'],
-                    'de': row['name_de'],
-                    'fr': row['name_fr']
-                },
-                'websites':         row['websites'].split(','),
-                'accommodation_id': row['accommodation_id'],
-                'order':            row['order']
+                    'nl': self.strip_accents(row['accommodation_name'] + (' ' + row['name_nl']).strip()),
+                    'en': self.strip_accents(row['accommodation_name'] + (' ' + row['name_en']).strip()),
+                    'de': self.strip_accents(row['accommodation_name'] + (' ' + row['name_de']).strip()),
+                    'fr': self.strip_accents(row['accommodation_name'] + (' ' + row['name_fr']).strip())
+                }
             })
+
+            order += 1
 
         collection.insert(data)
         return self

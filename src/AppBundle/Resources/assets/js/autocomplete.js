@@ -14,7 +14,8 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
             ENTITY_COUNTRY: 'country',
             ENTITY_REGION: 'region',
             ENTITY_PLACE: 'place',
-            ENTITY_ACCOMMODATION: 'accommodation'
+            ENTITY_ACCOMMODATION: 'accommodation',
+            ENTITY_TYPE: 'type'
         },
 
         input: null,
@@ -26,6 +27,10 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
         url: function(term, limit) {
             return Routing.generate('autocomplete', {term: term, limit: limit});
+        },
+
+        countUrl: function(params) {
+            return Routing.generate('search_count') + '?' + params;
         },
 
         initialize: function(options) {
@@ -48,6 +53,12 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
         events: {
 
+            rebind: function() {
+
+                ns.Autocomplete.resultsContainer = jq(ns.Autocomplete.resultsContainer.selector);
+                ns.Autocomplete.input            = jq(ns.Autocomplete.input.selector);
+            },
+
             bind: function() {
 
                 ns.Autocomplete.events.change();
@@ -59,7 +70,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                 jq('body').on('focus', ns.Autocomplete.input.selector, function(event) {
 
-                    var element = jq(this);
+                    var element = jq(this).addClass('active');
                     var term    = element.val();
 
                     if (term === '') {
@@ -69,7 +80,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                 jq('body').on('blur', ns.Autocomplete.input.selector, function(event) {
 
-                    var element = jq(this);
+                    var element = jq(this).removeClass('active');
                     var term    = element.val();
 
                     if (term === '') {
@@ -77,33 +88,77 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     }
                 });
 
-                jq('body').on('keyup', ns.Autocomplete.input.selector, _.debounce(function(event) {
+                jq('body').on('keydown', ns.Autocomplete.input.selector, function(event) {
 
-                    var term = event.target.value;
+                    if ([13, 38, 40].indexOf((event.keyCode || event.which)) > -1) {
 
-                    if (ns.Autocomplete.currentTerm === term || term === '') {
-
-                        if (term === '') {
-
-                            ns.Autocomplete.currentTerm = '';
-                            ns.Autocomplete.resultsContainer.empty();
-                        }
+                        event.preventDefault();
+                        ns.Autocomplete.arrows.handle(event);
 
                         return;
                     }
+                });
 
-                    ns.Autocomplete.currentTerm = term;
-                    ns.Autocomplete.request(term, ns.Autocomplete.limit);
+                jq('body').on('keydown', ns.Autocomplete.input.selector, _.debounce(function(event) {
+
+                    if ([13, 38, 40].indexOf((event.keyCode || event.which)) === -1) {
+
+                        event.preventDefault();
+                        var term = event.target.value;
+
+                        if (ns.Autocomplete.currentTerm === term || term === '') {
+
+                            if (term === '') {
+
+                                ns.Autocomplete.currentTerm = '';
+                                ns.Autocomplete.resultsContainer.empty();
+                                ns.Autocomplete.count('');
+                            }
+
+                            return;
+                        }
+
+                        ns.Autocomplete.currentTerm = term;
+                        ns.Autocomplete.request(term, ns.Autocomplete.limit);
+                    }
 
                 }, ns.Autocomplete.debounce));
+
+                if (ns.Autocomplete.type === ns.Autocomplete.types.TYPE_HOME) {
+
+                    jq('body').on('change', '[data-role="choose-weekend-home"]', function(event) {
+
+                        event.preventDefault();
+
+                        var weekend = event.target.value;
+
+                        if (weekend !== '') {
+                            ns.Autocomplete.actions.home.weekend(weekend);
+                        }
+                    });
+
+                    jq('body').on('change', '[data-role="choose-persons-home"]', function(event) {
+
+                        event.preventDefault();
+
+                        var persons = event.target.value;
+
+                        if (persons !== '') {
+                            ns.Autocomplete.actions.home.persons(persons);
+                        }
+                    });
+                }
             },
 
             click: function() {
 
                 jq('body').on('click', '[data-role="autocomplete-result"]', function(event) {
 
+                    event.stopPropagation();
+                    event.stopImmediatePropagation();
                     event.preventDefault();
 
+                    var locale  = ns.get('app')['locale'];
                     var element = jq(this);
                     var data    = {
 
@@ -111,6 +166,11 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         id:     element.data('id'),
                         label:  element.data('label')
                     };
+
+                    console.log(data);
+                    if (data.entity === ns.Autocomplete.entities.ENTITY_TYPE) {
+                        return window.location.href = Routing.generate('show_type_' + locale, {beginCode: element.data('begin-code'), typeId: data.id});
+                    }
 
                     switch (ns.Autocomplete.type) {
 
@@ -137,6 +197,73 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         ns.Autocomplete.resultsContainer.hide();
                     }
                 });
+
+                jq(document).on('keyup', function(event) {
+
+                    if ((event.keyCode || event.which) === 27) {
+                        ns.Autocomplete.resultsContainer.hide();
+                    }
+                });
+            }
+        },
+
+        arrows: {
+
+            position: 0,
+            total: 0,
+            event: null,
+            initialize: function() {
+
+                ns.Autocomplete.arrows.position = 0;
+                ns.Autocomplete.arrows.total    = ns.Autocomplete.results.length;
+                ns.Autocomplete.arrows.event    = null;
+            },
+            handle: function(event) {
+
+                ns.Autocomplete.arrows.event = event;
+
+                switch ((event.keyCode || event.which)) {
+
+                    case 13:
+                        ns.Autocomplete.arrows.enter();
+                    break;
+
+                    case 38:
+                        ns.Autocomplete.arrows.up();
+                    break;
+
+                    case 40:
+                        ns.Autocomplete.arrows.down();
+                    break;
+                }
+
+                jq('[data-role="autocomplete-result"]').removeClass('active');
+
+                if (ns.Autocomplete.arrows.position > 0) {
+                    jq('[data-role="autocomplete-result"]').eq(ns.Autocomplete.arrows.position - 1).addClass('active');
+                }
+            },
+            up: function() {
+
+                if ((ns.Autocomplete.arrows.position - 1) >= 0) {
+                    ns.Autocomplete.arrows.position -= 1;
+                }
+            },
+            down: function() {
+
+                if ((ns.Autocomplete.arrows.position + 1) <= ns.Autocomplete.arrows.total) {
+                    ns.Autocomplete.arrows.position += 1;
+                }
+            },
+
+            enter: function() {
+
+                if (ns.Autocomplete.arrows.position > 0) {
+
+                    jq('[data-role="autocomplete-result"]').eq(ns.Autocomplete.arrows.position - 1).trigger('click');
+                    jq(ns.Autocomplete.input.selector).blur();
+                    ns.Autocomplete.arrows.initialize();
+                }
             }
         },
 
@@ -148,7 +275,12 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                     var link = jq('[data-role="search-simple"]');
                     var uri  = URI(link.attr('href'));
-                    uri.search('');
+
+                    uri.removeQuery('c[]');
+                    uri.removeQuery('r[]');
+                    uri.removeQuery('pl[]');
+                    uri.removeQuery('a[]');
+                    uri.removeQuery('t[]');
 
                     switch (data.entity) {
 
@@ -171,12 +303,45 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                             uri.setQuery('a[]', data.id);
                             break;
-                    }
 
+                        case ns.Autocomplete.entities.ENTITY_TYPE:
+
+                            uri.setQuery('t[]', data.id);
+                            break;
+                    }
 
                     link.attr('href', uri.toString());
                     ns.Autocomplete.input.val(data.label);
                     ns.Autocomplete.resultsContainer.hide();
+
+                    ns.Autocomplete.count(uri.query());
+                },
+
+                weekend: function(weekend) {
+
+                    var link = jq('[data-role="search-simple"]');
+                    var uri  = URI(link.attr('href'));
+
+                    uri.removeQuery('w');
+                    uri.setQuery('w', weekend);
+
+                    link.attr('href', uri.toString());
+                    ns.Autocomplete.count(uri.query());
+                },
+
+                persons: function(persons) {
+
+                    var link = jq('[data-role="search-simple"]');
+                    var uri  = URI(link.attr('href'));
+
+                    uri.removeQuery('pe');
+                    uri.setQuery('pe', persons);
+
+                    link.attr('href', uri.toString());
+
+                    if (uri.hasQuery('w')) {
+                        ns.Autocomplete.count(uri.query());
+                    }
                 }
             },
 
@@ -205,6 +370,11 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                             ns.Search.filters.addAccommodation(data.id);
                             break;
+
+                        case ns.Autocomplete.entities.ENTITY_TYPE:
+
+                            ns.Search.filters.addType(data.id);
+                            break;
                     }
 
                     ns.Search.actions.search();
@@ -223,11 +393,30 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                 success: function(data) {
 
                     ns.Autocomplete.results = data;
+                    ns.Autocomplete.arrows.initialize();
                     ns.Autocomplete.views.render();
                 },
 
                 error: function() {}
             });
+        },
+
+        count: function(params) {
+
+            if (ns.Autocomplete.type === ns.Autocomplete.types.TYPE_HOME) {
+
+                ns.Autocomplete.views.showLoader();
+
+                jq.ajax({
+
+                    url: ns.Autocomplete.countUrl(params),
+                    success: function(data) {
+                        ns.Autocomplete.views.updateCount(data.count);
+                    },
+
+                    error: function() {}
+                });
+            }
         },
 
         views: {
@@ -244,13 +433,26 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     return;
                 }
 
-                var ul      = document.createElement('ul');
+                var ul = document.createElement('ul');
 
                 for (var i = 0; i < total; i++) {
                     ul.appendChild(ns.Autocomplete.views.result(results[i]));
                 }
 
-                ns.Autocomplete.resultsContainer.html(ul);
+                ns.Autocomplete.resultsContainer.html(ul).show();
+            },
+
+            updateCount: function(count) {
+
+                jq('[data-role="loading-text"]').addClass('hide');
+                jq('[data-role="show-results"]').show();
+                jq('[data-role="results-count"]').text(count);
+            },
+
+            showLoader: function() {
+
+                jq('[data-role="show-results"]').hide();
+                jq('[data-role="loading-text"]').removeClass('hide');
             },
 
             result: function(result) {
@@ -258,7 +460,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                 var li        = document.createElement('li');
                 var entities  = ns.Autocomplete.entities;
                 var locale    = ns.get('app')['locale'];
-                var name      = (jq.type(result['name']) === 'string' ? result['name'] : result['name'][locale]);
+                var name      = (undefined !== result['name'] ? (jq.type(result['name']) === 'string' ? result['name'] : result['name'][locale]) : '');
                 var tag       = '';
 
                 switch (result.type) {
@@ -279,7 +481,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         li.setAttribute('data-entity', entities.ENTITY_REGION);
                         li.setAttribute('data-id', name);
 
-                        tag += '<i class="sprite sprite-icon-pistes chalets-icon-box"></i> ';
+                        tag += '<i class="sprite sprite-black-pistes chalets-icon-box"></i> ';
 
                     break;
 
@@ -302,11 +504,26 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         tag += '<i class="fi-home"></i> ';
 
                     break;
+
+                    case entities.ENTITY_TYPE:
+
+                        li.className = 'accommodation';
+                        li.setAttribute('data-entity', entities.ENTITY_TYPE);
+                        li.setAttribute('data-id', result['type_id']);
+                        li.setAttribute('data-begin-code', result['begin_code']);
+
+                        tag += '<i class="fi-home"></i> ';
+
+                    break;
                 }
+
+                var span = document.createElement('span');
+                span.textContent = name;
 
                 li.setAttribute('data-role', 'autocomplete-result');
                 li.setAttribute('data-label', name);
-                li.innerHTML = tag + name;
+                li.innerHTML = tag;
+                li.appendChild(span);
 
                 return li;
             }

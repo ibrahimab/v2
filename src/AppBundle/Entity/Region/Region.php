@@ -1191,4 +1191,18 @@ class Region implements RegionServiceEntityInterface
     {
         return $this->updatedAt;
     }
+    
+    public static function hydrate($data)
+    {
+        $region = new self();
+        
+        foreach ($data as $field => $value) {
+            
+            if (property_exists($region, $field)) {
+                $region->{$field} = $value;
+            }
+        }
+        
+        return $region;
+    }
 }

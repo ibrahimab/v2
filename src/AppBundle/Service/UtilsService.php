@@ -9,7 +9,7 @@ class UtilsService
      * @param string $text
      * @return string
      */
-    public function seo($text)
+    public static function seo($text)
     {
     	return urlencode(preg_replace([
 
@@ -17,10 +17,10 @@ class UtilsService
             '/-{2,}/',
             '/-$/',
 
-    	], ['-', '-', ''], $this->normalizeText($text)));
+    	], ['-', '-', ''], self::normalizeText($text)));
     }
 
-    public function bbcode($text)
+    public static function bbcode($text)
     {
         return preg_replace([
 
@@ -43,7 +43,7 @@ class UtilsService
      * @param string $text
      * @return string
      */
-	public function normalizeText($text)
+	public static function normalizeText($text)
     {
 		return strtr($text, [
 
@@ -64,7 +64,7 @@ class UtilsService
 	 * @param string $controller
 	 * @return string
 	 */
-	public function normalizeController($controller)
+	public static function normalizeController($controller)
 	{
 		// if controller is called without the AppBundle namespace in it, just return full controller
 		if (false === strpos($controller, 'AppBundle')) {
@@ -87,7 +87,7 @@ class UtilsService
      * @param int $length
      * @return string
      */
-    public function generateToken($seed, $length = 30)
+    public static function generateToken($seed, $length = 30)
     {
         $characters = array_merge(range(0, 9), range('a', 'z'), range('A', 'F'), str_split(sha1($seed) . time()));
         $total      = count($characters);

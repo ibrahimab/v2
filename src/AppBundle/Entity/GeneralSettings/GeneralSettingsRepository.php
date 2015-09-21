@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Entity\GeneralSettings;
 
+use       AppBundle\Concern\SeasonConcern;
 use       AppBundle\Entity\BaseRepository;
 use       AppBundle\Service\Api\GeneralSettings\GeneralSettingsServiceRepositoryInterface;
 
@@ -19,10 +20,7 @@ class GeneralSettingsRepository extends BaseRepository implements GeneralSetting
     const MONITOR_DATABASE_ID = 1;
 
     /**
-     * Finding all previously sent newsletters
-     *
-     * @param array $options
-     * @return array
+     * {@InheritDoc}
      */
     public function getNewsletters()
     {
@@ -31,7 +29,7 @@ class GeneralSettingsRepository extends BaseRepository implements GeneralSetting
         $expr = $qb->expr();
 
         $qb->select('partial d.{id, winterNewsletters}')
-           ->where('d.id=1');
+           ->andWhere('d.id=1');
 
         $results = $qb->getQuery()->getResult()[0]->getWinterNewsletters();
 
@@ -44,6 +42,27 @@ class GeneralSettingsRepository extends BaseRepository implements GeneralSetting
         }
 
        return $newslettersResults;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getSearchFormMessageSearchWithoutDates()
+    {
+
+        $seasonType  = ($this->getSeason() === SeasonConcern::SEASON_SUMMER ? "Summer" : "Winter");
+
+        $qb   = $this->createQueryBuilder('d');
+        $expr = $qb->expr();
+
+        $qb->select('partial d.{id, searchFormMessageSearchWithoutDates'.$seasonType.'}')
+           ->andWhere('d.id=1');
+
+        $callFunction = 'getSearchFormMessageSearchWithoutDates'.$seasonType;
+
+        $results = $qb->getQuery()->getResult()[0]->$callFunction();
+
+        return $results;
     }
 
     /**

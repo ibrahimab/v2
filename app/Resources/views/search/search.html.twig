@@ -4,16 +4,28 @@
     {{ breadcrumbs() }}
 {% endblock %}
 
+{% set website_concern = website() %}
+
+{% block title %}Zoek en boek - {{ website_concern.name() }}{% endblock title %}
+
+{% block seo %}
+
+    {% include 'layouts/seo-block.html.twig' with {
+
+        'meta_description': 'Zoek en boek',
+        'meta_title':       'Zoek en boek - ' ~ website_concern.name()
+
+    } %}
+
+{% endblock seo %}
+
 {% block body %}
 
     {{ parent() }}
 
     <section id="search-filter-results">
         <div class="row">
-            {% include 'partials/search/form.html.twig' with {'destination': destination} %}
-            <div id="search-results" class="small-12 medium-8 large-9 columns">
-                {% include 'search/results.html.twig' %}
-            </div>
+            {% include 'search/results.html.twig' %}
         </div>
     </section>
 

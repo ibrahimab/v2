@@ -85,4 +85,11 @@ interface RegionServiceRepositoryInterface
      * @return RegionServiceEntityInterface
      */
     public function findHomepageRegions($options = []);
+
+    /**
+     * Count all the regions
+     *
+     * @return integer
+     */
+    public function count();
 }

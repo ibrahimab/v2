@@ -159,17 +159,9 @@ function wt_he($text) {
 	//
 	// htmlentities with correct character encoding
 	//
-	global $vars;
 	if(is_array($text)) {
 		return false;
 	} else {
-		if($vars["wt_htmlentities_cp1252"]) {
-			$text=htmlentities($text,ENT_COMPAT,'cp1252');
-		} elseif($vars["wt_htmlentities_utf8"]) {
-			$text=htmlentities($text,ENT_COMPAT,'UTF-8');
-		} else {
-			$text=htmlentities($text);
-		}
-		return $text;
+		return htmlentities($text,ENT_COMPAT,'cp1252');
 	}
 }

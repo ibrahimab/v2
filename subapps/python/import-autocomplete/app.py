@@ -22,6 +22,7 @@ from models.region        import Region
 from models.place         import Place
 
 parser = argparse.ArgumentParser()
+parser.add_argument('-w', dest='website', required=True)
 parser.add_argument('--env', dest='env', default='test')
 
 args   = parser.parse_args()
@@ -36,21 +37,21 @@ try:
     mongo_database   = mongo_client[connection['mongo']['db']]
 
     # clearing old data
-    mongo_database.autocomplete.drop()
+    mongo_database[args.website + '.autocomplete'].drop()
 
-    accommodations   = Accommodation(mysql_cursor, mongo_database)
+    accommodations   = Accommodation(mysql_cursor, mongo_database, args.website)
     accommodations.fetch().insert()
 
-    types            = Type(mysql_cursor, mongo_database)
+    types            = Type(mysql_cursor, mongo_database, args.website)
     types.fetch().insert()
 
-    countries        = Country(mysql_cursor, mongo_database)
+    countries        = Country(mysql_cursor, mongo_database, args.website)
     countries.fetch().insert()
 
-    regions          = Region(mysql_cursor, mongo_database)
+    regions          = Region(mysql_cursor, mongo_database, args.website)
     regions.fetch().insert()
 
-    places           = Place(mysql_cursor, mongo_database)
+    places           = Place(mysql_cursor, mongo_database, args.website)
     places.fetch().insert()
 
 except mysql.Error, e:

@@ -12,11 +12,17 @@ web_profiler:
     intercept_redirects: false
 
 monolog:
+    channels: ["application"]
     handlers:
         main:
             type:   stream
             path:   "%kernel.logs_dir%/%kernel.environment%.log"
             level:  debug
+        application:
+            type:   stream
+            path:   "%kernel.logs_dir%/app.log"
+            level:  debug
+            channels: ["application"]
         console:
             type:   console
             bubble: false
@@ -49,4 +55,4 @@ swiftmailer:
     transport: gmail
 
 doctrine_mongodb:
-    default_database: chalet_dev
+    default_database: %mongodb_database%

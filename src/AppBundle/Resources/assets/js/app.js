@@ -4,28 +4,31 @@
     // setting up scroll button for long pages
     jq(function() {
 
+        // social links
+        Chalet.Social.initialize();
+
         /**
          * fixed header scroll effects
          */
         var stickyHeader = function() {
-            
+
             if (window.innerWidth <= 641) {
-                
+
                 // mobile does not have sticky header!
                 jq('body').removeClass('smaller');
                 return;
             }
-            
+
             var distanceY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
             var body      = jq('body');
-            
+
             if (distanceY > 10) {
                 body.addClass('smaller');
             } else {
                 body.removeClass('smaller');
             }
         };
-        
+
         jq(window).on('scroll', stickyHeader);
         stickyHeader();
 
@@ -136,9 +139,9 @@
          * Chat button
          */
         body.on('click', '[data-role="chat-button"]', function(event) {
-            
+
             event.preventDefault();
-            
+
             if (undefined !== LC_API) {
                 LC_API.open_chat_window();
             }
@@ -265,6 +268,213 @@
             }
         });
 
+        body.on('click', '[data-role="ajax-tooltip"]', function(event) {
+
+            event.preventDefault();
+
+            var el      = jq(this);
+            var retries = (undefined === el.data('retries') ? 0 : parseInt(el.data('retries'), 10));
+            var wrapper = el.find('[data-role=tooltip-wrapper]');
+
+
+            if( wrapper.is(':visible') ) {
+
+                // hide clicked tooltip
+                wrapper.hide();
+            } else {
+
+                // hide all other active tooltips
+                jq('[data-role=tooltip-wrapper]').hide();
+
+                // show clicked tooltip
+                wrapper.show();
+            }
+
+            el.data('retries', retries + 1);
+
+            if (true !== el.data('cached') && retries < 3) {
+
+                jq.ajax({
+
+                    type: 'get',
+                    url: el.data('url'),
+                    success: function(data) {
+
+                        el.data('cached', true).removeClass('loading').find('[data-role="tooltip-content"]').html(data);
+                        scrollToMakeVisible(wrapper);
+                    }
+                });
+            } else {
+                scrollToMakeVisible(wrapper);
+            }
+        });
+
+        // var to prevent unwanted clickthrough to accpage when clicking a tooltip-icon
+        var clickthrough_to_accpage = true;
+
+        body.on('mouseenter', '[data-role="ajax-tooltip"]', function(event) {
+            clickthrough_to_accpage = false;
+        });
+
+        body.on('mouseleave', '[data-role="ajax-tooltip"]', function(event) {
+            clickthrough_to_accpage = true;
+        });
+
+        body.on('touchstart', '[data-role="ajax-tooltip"]', function(event) {
+            clickthrough_to_accpage = false;
+        });
+
+        body.on('touchend', '[data-role="ajax-tooltip"]', function(event) {
+            clickthrough_to_accpage = true;
+        });
+
+        // check if user wants to clickthrough to accpage or is clicking a tooltip-icon
+        body.on('click', '[data-role="link-to-accpage"]', function(event) {
+            if( clickthrough_to_accpage ) {
+                return true;
+            } else {
+                // click on tooltip-icon: no action
+                event.preventDefault();
+                return false;
+            }
+        });
+
+
+        /**
+         * function to scroll the screen vertically to make an element that is below the fold visible
+         */
+        function scrollToMakeVisible(element) {
+
+            var offset = element.offset();
+            var top = offset.top;
+            var bottom = top + element.outerHeight();
+            var bottom_of_screen = jq(window).scrollTop() + window.innerHeight;
+
+            if (bottom>bottom_of_screen) {
+                var scroll_to = jq(window).scrollTop() + (bottom - bottom_of_screen) + 10;
+                jq('html, body').animate({scrollTop: scroll_to}, 500);
+            }
+        }
+
+        body.on('click', '[data-role="toggle-filters"]', function(event) {
+
+            event.preventDefault();
+
+            var el = jq(this);
+
+            if (el.data('status') === 'closed') {
+
+                el.data('status', 'open').removeClass('closed');
+
+                jq('[data-role="closable-filter"]').data('status', 'open').siblings('.fields').slideDown();
+                jq('[data-role="closable-filter"]').removeClass('closed');
+
+            } else {
+
+                el.data('status', 'closed').addClass('closed');
+
+                jq('[data-role="closable-filter"]').data('status', 'closed').siblings('.fields').slideUp();
+                jq('[data-role="closable-filter"]').addClass('closed');
+            }
+
+        });
+
+        body.on('click', '[data-role="closable-filter"]', function(event) {
+
+            event.preventDefault();
+
+            var el = jq(this);
+
+            if (el.data('status') === 'closed') {
+
+                el.data('status', 'open').siblings('.fields').slideDown();
+                el.removeClass('closed');
+
+            } else {
+
+                el.data('status', 'closed').siblings('.fields').slideUp();
+                el.addClass('closed');
+            }
+        });
+
+        /**
+         * changing week on type detail page will change the extra options
+         */
+        body.on('change', '[data-role="extra-options-week"]', function(event) {
+
+            event.preventDefault();
+
+            var uri = URI();
+
+            uri.setQuery('w', jq(this).val());
+            window.location.href = uri.toString();
+        });
+
+        body.on('click', '[data-role="external-popup"], [data-role="internal-popup"]', function(event) {
+
+            event.preventDefault();
+
+            var element = jq(this);
+            window.open(element.data('uri'), '_blank', 'scrollbars=yes,width=' + element.data('width') + ',height=' + element.data('height'));
+        });
+
+        /**
+         * Dynamic tooltips
+         */
+        body.on('mouseenter', '[data-tooltip]', function(event) {
+
+            var element = jq(this);
+
+            if (true === element.data('open')) {
+                Foundation.libs.tooltip.showTip(element.data('selector'));
+            } else {
+
+                event.preventDefault();
+            }
+        });
+
+        body.on('click', '[data-tooltip]', function() {
+
+            var element = jq(this);
+            var cache   = element.data('tooltip-cache') || null;
+            var lock    = element.data('tooltip-lock')  || false;
+            var dynamic = element.data('tooltip-dynamic') || false;
+
+            if (true === lock) {
+                return;
+            }
+
+            if (null === cache && true === dynamic) {
+
+                element.data('tooltip-lock', true);
+
+                jq.ajax({
+
+                    url: element.data('tooltip-url'),
+                    success: function(content) {
+
+                        element.data('tooltip-cache', content).data('tooltip-lock', false);
+                        jq('#' + element.data('selector')).html(content);
+                        console.log(jq('#' + element.data('selector')));
+                    }
+                });
+            }
+        });
+        
+        body.on('click', '[data-action="show-more"]', function(event) {
+            
+            event.preventDefault();
+            var element = jq('[data-show-more-element="' + jq(this).data('element') + '"]');
+            
+            if (true === element.data('opened')) {
+                // element.removeClass('shorten-for-mobile').data('opened', false);
+                element.animate({height: '100px'}).data('opened', false);
+            } else {
+                // element.removeClass('shorten-for-mobile').data('opened', true);
+                element.animate({height: element.prop('scrollHeight')}).data('opened', true);
+            }
+        });
+
         /**
          * This code handles the destinations map
          * It generates it via the jqvmap jQuery plugin
@@ -275,7 +485,7 @@
         if (Chalet.get()['app']['controller'] === 'countries::destinations') {
             var italyMaps = Chalet.Maps.Italy.initialize('[data-role="italy-maps"]');
         }
-        
+
         // display hide-on-load blocks
         jq('.hide-on-load').removeClass('hide-on-load');
     });

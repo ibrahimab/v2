@@ -29,7 +29,7 @@
                     {% endif %}
                         <article class="overview" data-equalizer-watch>
                             <div class="accom-img">
-                                <img src="{{ theme_image(theme).getLocation() }}" alt="{{ theme.getLocaleName(locale) }}" />
+                                <img src="{{ generate_image_path(theme_image(theme)) }}" alt="{{ theme.getLocaleName(locale) }}" />
                             </div>
                             <div class="accom-desc">
                                 <div class="title">{{ theme.getLocaleName(locale) }}</div>

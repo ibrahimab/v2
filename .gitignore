@@ -5,7 +5,8 @@
 /app/logs/*
 !app/logs/.gitkeep
 /app/phpunit.xml
-/bin/
+/bin/*
+!/bin/import-autocomplete
 /composer.phar
 /vendor/
 /web/bundles/*
@@ -17,6 +18,7 @@
 .tm_properties
 .vimrc
 /logs/*
+src/AppBundle/Resources/assets/css/*.css
 
 # python settings
 subapps/python/import-autocomplete/settings.py
@@ -40,3 +42,6 @@ tests/_output/*
 
 # assetic dumps
 /web/static
+
+# push file
+/github-push.txt

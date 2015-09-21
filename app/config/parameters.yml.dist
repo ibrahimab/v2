@@ -7,6 +7,8 @@ parameters:
     database_user:
     database_password:
     mongodb_server: mongodb://localhost:27017
+    mongodb_database: local
+    mongodb_files_database: local
     redis_server: 127.0.0.1
     mailer_transport: smtp
     mailer_host: 127.0.0.1
@@ -16,3 +18,8 @@ parameters:
     secret:
     ssl_enabled: false
     chat_license: 2618611
+    allowed_ips: []
+    github_secret: null
+    github_dir: %kernel.cache_dir%/github
+    old_image_root: 
+    sunny_cars: 

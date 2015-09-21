@@ -71,6 +71,8 @@ services:
     app.api.search:
         class:     AppBundle\Service\Api\Search\SearchService
         arguments: ["@app.repository.search"]
+        calls:
+            - [setLocale, [@=service('app.concern.locale').get()]]
 
     app.api.autocomplete:
         class:     AppBundle\Service\Api\Autocomplete\AutocompleteService
@@ -95,3 +97,7 @@ services:
     app.api.price:
         class:      AppBundle\Service\Api\Price\PriceService
         arguments: ["@app.repository.price"]
+        calls:
+            - [setOldPricesWrapper, ["@old.prices.wrapper"]]
+            - [setSeason, [@app.concern.season]]
+            - [setAdditionalCosts, ["@old.additional.costs"]]

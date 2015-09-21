@@ -3,6 +3,48 @@ parameters:
     mailer_password: ibietje24!
     mailer_to: abdul.ibrahim16@gmail.com
     app:
+        maximum_persons_map:
+            1: 8
+            2: 12
+            3: 12
+            4: 16
+            5: 18
+            6: 20
+            7: 22
+            8: 24
+            9: 26
+            10: 28
+            11: 30
+            12: 32
+            13: 36
+            14: 38
+            15: 40
+            16: 50
+            17: 50
+            18: 50
+            19: 50
+            20: 50
+        optimal_maximum_persons_map:
+            1: 4
+            2: 6
+            3: 6
+            4: 8
+            5: 9
+            6: 10
+            7: 11
+            8: 12
+            9: 13
+            10: 14
+            11: 15
+            12: 16
+            13: 18
+            14: 19
+            15: 20
+            16: 25
+            17: 25
+            18: 28
+            19: 28
+            20: 50
         travel_insurance_possible: true
         ten_days_insurance_price_summer: 26.20
         ten_days_insurance_price_default: 36.20
@@ -15,6 +57,7 @@ parameters:
             api:
                 highlight:
                     limit: 6
+                    results_per_row: 3
         countries:
             I: 5
             K: 5
@@ -283,4 +326,23 @@ parameters:
                 travel_insurance: 1
                 damage_insurance: 1
                 newsletter: false
+                newsletter_cancel: false
+
+            chalet.webtastic.nl:
+                locale:  nl
+                website: C
+                season:  1
+                country: nl
+                name: Chalet.nl
+                chat: 2-PTFmcHUgtM
+                trustpilot: bd82d1c7@trustpilotservice.com
+                ga: UA-2078202-1
+                facebook: 156825034385110
+                twitter: ChaletNL
+                google: +ChaletNlWintersport
+                resale: false
+                cancel_insurance: 1
+                travel_insurance: 1
+                damage_insurance: 1
+                newsletter: true
                 newsletter_cancel: false

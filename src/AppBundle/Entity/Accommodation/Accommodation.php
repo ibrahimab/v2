@@ -1,6 +1,8 @@
 <?php
 namespace AppBundle\Entity\Accommodation;
 use       AppBundle\Entity\Video;
+use       AppBundle\Entity\Type\Type;
+use       AppBundle\Entity\Place\Place;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
@@ -37,6 +39,32 @@ class Accommodation implements AccommodationServiceEntityInterface
      * @ORM\Column(name="naam", type="string", length=255)
      */
     private $name;
+
+    /**
+     * @var string
+     */
+    private $sortKey;
+
+    /**
+     * cheapest price cache for types
+     *
+     * @var float
+     */
+    private $price = 0;
+
+    /**
+     * cheapest type
+     *
+     * @var TypeServiceEntityInterface
+     */
+    private $cheapest = null;
+
+    /**
+     * Is an offer enabled
+     *
+     * @var boolean
+     */
+    private $offer = false;
 
     /**
      * @var boolean
@@ -105,6 +133,13 @@ class Accommodation implements AccommodationServiceEntityInterface
      * @ORM\Column(name="wzt", type="smallint")
      */
     private $season;
+
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="websites", type="simple_array")
+     */
+    private $websites;
 
     /**
      * @var string
@@ -217,7 +252,7 @@ class Accommodation implements AccommodationServiceEntityInterface
      *
      * @var array
      */
-    private static $kindIdentifiers = [
+    public static $kindIdentifiers = [
 
         self::KIND_CHALET           => 'chalet',
         self::KIND_APARTMENT        => 'apartment',
@@ -301,6 +336,102 @@ class Accommodation implements AccommodationServiceEntityInterface
     public function getLocaleName($locale)
     {
         return $this->getLocaleField('name', $locale, ['nl']);
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setSortKey($sortKey)
+    {
+        $this->sortKey = $sortKey;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getSortKey()
+    {
+        return $this->sortKey;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setPrice($prices)
+    {
+        $data     = [];
+        $cheapest = null;
+
+        foreach ($this->types as $type) {
+
+            if (isset($prices[$type->getId()])) {
+
+                if (null === $cheapest) {
+                    $cheapest = ['price' => $prices[$type->getId()], 'type' => $type];
+                }
+
+                if ($cheapest['price'] > $prices[$type->getId()] && $prices[$type->getId()] > 0) {
+                    $cheapest = ['price' => $prices[$type->getId()], 'type' => $type];
+                }
+            }
+        }
+
+        if (null !== $cheapest) {
+
+            $this->price    = $cheapest['price'];
+            $this->cheapest = $cheapest['type'];
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getCheapest()
+    {
+        if (null === $this->cheapest) {
+
+            list($item) = $this->types;
+            $this->cheapest = $item;
+        }
+
+        return $this->cheapest;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setOffer($offers)
+    {
+        foreach ($this->types as $type) {
+
+            if (isset($offers[$type->getId()])) {
+
+                $this->offer = true;
+                break;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function hasOffer()
+    {
+        return $this->offer;
     }
 
     /**
@@ -519,6 +650,24 @@ class Accommodation implements AccommodationServiceEntityInterface
     public function getSeason()
     {
         return $this->season;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setWebsites($websites)
+    {
+        $this->websites = $websites;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getWebsites()
+    {
+        return $this->websites;
     }
 
     /**
@@ -751,6 +900,24 @@ class Accommodation implements AccommodationServiceEntityInterface
     /**
      * {@InheritDoc}
      */
+    public function setDistanceSlope($distanceSlope)
+    {
+        $this->distanceSlope = $distanceSlope;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getDistanceSlope()
+    {
+        return $this->distanceSlope;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
     public function setWeekendSki($weekendSki)
     {
         $this->weekendSki = $weekendSki;
@@ -827,5 +994,46 @@ class Accommodation implements AccommodationServiceEntityInterface
         }
 
         return $localized;
+    }
+
+    public static function hydrateRows($rows)
+    {
+        $results = [];
+
+        foreach ($rows as $row) {
+            $results[] = self::hydrate($row);
+        }
+
+        return $results;
+    }
+
+    public static function hydrate($data)
+    {
+        $accommodation = new self();
+
+        foreach ($data as $field => $value) {
+
+            switch ($field) {
+
+                case 'types':
+
+                    foreach ($value as $type) {
+                        $accommodation->types[] = Type::hydrate($type);
+                    }
+
+                break;
+
+                case 'place':
+                    $accommodation->place = Place::hydrate($value);
+                break;
+
+                default:
+                    if (property_exists($accommodation, $field)) {
+                        $accommodation->{$field} = $value;
+                    }
+            }
+        }
+
+        return $accommodation;
     }
 }

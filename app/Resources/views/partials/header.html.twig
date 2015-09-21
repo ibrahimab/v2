@@ -1,4 +1,4 @@
-        
+
         <div class="header-container hide-on-load">
             <div class="row header">
                 <div class="large-3 medium-3 small-6 columns column-logo">
@@ -13,7 +13,7 @@
                             {% set chat            = website_concern.getConfig(constant('WEBSITE_CONFIG_CHAT', website_concern)) %}
                             {% if chat != false %}
                                 {% set chat = chat|split('-')[1] %}
-                                <a href="#" data-role="chat-button" data-id="{{ chat }}" id="contact-chat"><i class="{{ opened() ? 'fi-comments' : 'fi-closed' }}"></i>Chat</a>
+                                <a href="#" data-role="chat-button" data-id="{{ chat }}" id="contact-chat"><i class="{{ opened() ? 'fi-comments' : 'sprite sprite-chat-closed chalets-icon-box' }}"></i>Chat</a>
                                 <span class="show-for-medium-up">{{ "general.or"|trans }}</span>
                             {% endif %}
                             <a href="tel:+31-348-434649" class="phone"><br class="show-for-small" /><i class="fi-telephone"></i>0348 - 43 46 49</a>
@@ -25,21 +25,20 @@
                     </div>
                 </div>
                 <div class="large-4 medium-4 hide-for-small columns column-lists">
-                    
+
                     <div class="right">
-                        
+
                         <div class="row zoover">
-                            
+
                             <div class="small-12">
-                                <a href="#">
+                                <a href="{{ path('page_zooverawards') }}">
                                     {% image 'bundles/app/img/logos/logo-zoover-awards.png' %}<img id="logo" src="{{ asset_url }}" alt="Chalet home" />{% endimage %}
                                 </a>
                             </div>
-                            
+
                         </div>
-                    
+
                         <div class="lists-container" id="dropdown-container" data-role="saved-item">
-                            <!-- this button gets class="active" after: 1. first visit / 2. click on heart-icon -->
                             <button id="dropdown-saved" data-role="saved-item" class="button dropdown radius right" href="#" data-dropdown="dropdown-saved-list" aria-controls="dropdown-saved-list" aria-expanded="false">
                                 <i class="fi-heart"></i>{{ "header.bar.seen-and-saved"|trans }}<i class="fi-play"></i>
                             </button>
@@ -51,10 +50,10 @@
                                 <li><a href="zoekboek.html">Mijn boekingen</a></li>
                             </ul>
                         </div>
-                        
+
                     </div>
-                    
+
                 </div>
-                
+
             </div>
         </div>

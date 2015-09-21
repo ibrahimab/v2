@@ -1,5 +1,11 @@
 <?php
 namespace AppBundle\Service\Api\Search;
+use       AppBundle\Service\Api\Search\Result\Resultset;
+use       AppBundle\Service\FilterService;
+use       AppBundle\Service\FacetService;
+use       AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
+use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
+use       AppBundle\AppTrait\LocaleTrait;
 
 /**
  * This is the search service
@@ -9,16 +15,18 @@ namespace AppBundle\Service\Api\Search;
  */
 class SearchService
 {
+    use LocaleTrait;
+
     /**
      * @var SearchServiceRepositoryInterface
      */
     private $searchServiceRepository;
-    
+
     /**
      * @var array
      */
     private $builder;
-    
+
     /**
      * Constructor
      *
@@ -29,7 +37,7 @@ class SearchService
         $this->searchServiceRepository = $searchServiceRepository;
         $this->builder                 = new SearchBuilder($this);
     }
-    
+
     /**
      * @return SearchBuilder
      */
@@ -37,22 +45,51 @@ class SearchService
     {
         return $this->builder;
     }
-    
+
     /**
      * @return array
      */
     public function search()
     {
-        return $this->searchServiceRepository->search($this->build());
+        $builder   = $this->build();
+        $resultset = new Resultset($this->searchServiceRepository->search($builder));
+        $resultset->setLocale($this->getLocale());
+        $resultset->paginator()->setLimit($builder->block(SearchBuilder::BLOCK_LIMIT));
+        $resultset->paginator()->setCurrentPage($builder->block(SearchBuilder::BLOCK_PAGE));
+        $resultset->prepare();
+
+        return $resultset;
     }
-    
-    public function findOnlyNames($countries, $regions, $places, $accommodations)
+
+    /**
+     * @return integer
+     */
+    public function count()
     {
-        return $this->searchServiceRepository->findOnlyNames($countries, $regions, $places, $accommodations);
+        return $this->searchServiceRepository->count($this->build());
     }
-    
-    public function facets(PaginatorService $paginator, $filters)
+
+    /**
+     * @param array $countries
+     * @param array $regions
+     * @param array $places
+     * @param array $accommodations
+     * @param array $types
+     */
+    public function findOnlyNames($countries, $regions, $places, $accommodations, $types)
     {
-        return $this->searchServiceRepository->facets($paginator, $filters);
+        return $this->searchServiceRepository->findOnlyNames($countries, $regions, $places, $accommodations, $types);
+    }
+
+    /**
+     * @param PaginatorService $paginator
+     * @param array $filters
+     */
+    public function facets(Resultset $resultset, $filters)
+    {
+        $facetService = new FacetService($resultset, $filters);
+        $facetService->calculate();
+
+        return $facetService;
     }
 }

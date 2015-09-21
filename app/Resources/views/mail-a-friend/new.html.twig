@@ -18,49 +18,55 @@
                 
                     <div class="row">
                         <div class="large-12 columns">
-                            <label for="from_name"{{ 'from_name' in form['errors'] ? ' class="error"' : '' }}>{{ 'form-mail-a-friend-from_name'|trans }}
+                            <label for="from_name"{{ form['errors']['from_name'] is defined ? ' class="error"' : '' }}>{{ 'form-mail-a-friend-from_name'|trans }}
                                 <input type="text" id="from_name" name="mail_a_friend[from_name]" value="{{ form['mail_a_friend']['from_name'] }}" />
                             </label>
-                            {% if 'from_name' in form['errors'] %}
+                            {% if form['errors']['from_name'] is defined %}
                                 <small class="error">{{ 'form-mail-a-friend-errors-from_name'|trans }}</small>
                             {% endif %}
                         </div>
                     </div>
                     <div class="row">
                         <div class="large-12 columns">
-                            <label for="from_email"{{ 'from_email' in form['errors'] ? ' class="error"' : '' }}>{{ 'form-mail-a-friend-from_email'|trans }}
+                            <label for="from_email"{{ form['errors']['from_email'] is defined ? ' class="error"' : '' }}>{{ 'form-mail-a-friend-from_email'|trans }}
                                 <input type="email" id="from_email" name="mail_a_friend[from_email]" value="{{ form['mail_a_friend']['from_email'] }}" />
                             </label>
-                            {% if 'from_email' in form['errors'] %}
+                            {% if form['errors']['from_email'] is defined %}
                                 <small class="error">{{ 'form-mail-a-friend-errors-from_email'|trans }}</small>
                             {% endif %}
                         </div>
                     </div>
                     <div class="row">
                         <div class="large-12 columns">
-                            <label for="to_email"{{ 'to_email' in form['errors'] ? ' class="error"' : '' }}>{{ 'form-mail-a-friend-to_email'|trans }}
-                                <input type="email" id="to_email" name="mail_a_friend[to_email]" value="{{ form['mail_a_friend']['to_email'] }}" />
+                            <label for="to_email"{{ form['errors']['to_email'] is defined ? ' class="error"' : '' }}>{{ 'form-mail-a-friend-to_email'|trans }}
+                                <input type="text" pattern="^([\w+-.%]+@[\w-.]+\.[A-Za-z]{2,4},*[\W]*)+$" id="to_email" name="mail_a_friend[to_email]" value="{{ form['mail_a_friend']['to_email'] }}" required />
                             </label>
-                            {% if 'to_email' in form['errors'] %}
-                                <small class="error">{{ 'form-mail-a-friend-errors-to_email'|trans }}</small>
+                            {% if form['errors']['to_email'] is defined %}
+                                {% if form['errors']['to_email'] == 'empty' %}
+                                    <small class="error">{{ 'form-mail-a-friend-errors-to_email_empty'|trans }}</small>
+                                {% endif %}
+                                {% if form['errors']['to_email'] == 'invalid' %}
+                                    <small class="error">{{ 'form-mail-a-friend-errors-to_email_invalid'|trans }}</small>
+                                {% endif %}w
                             {% endif %}
                         </div>
                     </div>
                     <div class="row">
                         <div class="large-12 columns">
-                            <label for="message"{{ 'message' in form['errors'] ? ' class="error"' : '' }}>{{ 'form-mail-a-friend-message'|trans }}
+                            <label for="message"{{ form['errors']['message'] is defined ? ' class="error"' : '' }}>{{ 'form-mail-a-friend-message'|trans }}
                                 <textarea name="mail_a_friend[message]">{{ form['mail_a_friend']['message'] }}</textarea>
                             </label>
-                            {% if 'message' in form['errors'] %}
+                            {% if form['errors']['message'] is defined %}
                                 <small class="error">{{ 'form-mail-a-friend-errors-message'|trans }}</small>
                             {% endif %}
                         </div>
                     </div>
                     <div class="row">
-                        <div class="large-4 large-centered columns">
+                        <div class="large-4 columns">
                             <input type="submit" class="button" name="submit" value="{{ 'form-mail-a-friend-submit'|trans }}" />
                         </div>
                     </div>
+                    <br />
                 
                 </div>
 

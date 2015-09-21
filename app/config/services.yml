@@ -9,3 +9,4 @@ imports:
     - { resource: services/twig.yml }
     - { resource: services/app.yml }
     - { resource: services/mailers.yml }
+    - { resource: services/security.yml }

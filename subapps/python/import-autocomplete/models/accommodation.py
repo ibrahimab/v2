@@ -25,17 +25,18 @@ class Accommodation(Base):
     """
     def fetch(self):
 
-        sql = 'SELECT DISTINCT `a`.`accommodatie_id` AS `id`, `a`.`naam` AS `name`, `a`.`websites`, `a`.`wzt` AS `season`, ' \
-              '`a`.`plaats_id` AS `place_id`, `zoekvolgorde` AS `order`, `l`.`begincode` AS `code` '                         \
-              'FROM   `accommodatie` a '                                                                                     \
-              'INNER JOIN   `plaats` p '                                                                                     \
-              'ON (a.plaats_id = p.plaats_id) '                                                                              \
-              'INNER JOIN `land` l '                                                                                         \
-              'ON (p.land_id = l.land_id) '                                                                                  \
-              'WHERE  `a`.`tonen` = 1 '                                                                                      \
-              'AND    `a`.`tonenzoekformulier` = 1'
+        sql = "SELECT DISTINCT `accommodatie_id` AS `id`, `naam` AS `name`, `begincode` AS `code` " \
+              "FROM   `view_accommodatie` "                                                         \
+              "WHERE FIND_IN_SET('%(website)s', `websites`) > 0 "                                   \
+              "AND `atonen` = 1 "                                                                   \
+              "AND `ttonen` = 1 "                                                                   \
+              "AND `atonenzoekformulier` = 1 "                                                      \
+              "AND `ttonenzoekformulier` = 1 "                                                      \
+              "AND `archief` = 0 "                                                                  \
+              "AND `weekendski` = 0 "                                                               \
+              "ORDER BY `naam` ASC"
 
-        self.adapter('mysql').execute(sql)
+        self.adapter('mysql').execute(sql % {'website': self.website})
         self.data = self.adapter('mysql').fetchall()
 
         return self
@@ -50,23 +51,23 @@ class Accommodation(Base):
         if not self.data:
             return self
 
-        collection = self.adapter('mongo').autocomplete
+        collection = self.collection()
         data       = []
+        order      = 0
 
         for row in self.data:
 
             data.append({
 
-                'type':     Accommodation.AUTOCOMPLETE_TYPE,
-                'type_id':  row['id'],
-                'locales':  None,
-                'name':     row['name'],
-                'code':     row['code'] + str(row['id']),
-                'websites': row['websites'].split(','),
-                'season':   row['season'],
-                'place_id': row['place_id'],
-                'order':    row['order']
+                'type': Accommodation.AUTOCOMPLETE_TYPE,
+                'type_id': row['id'],
+                'locales': None,
+                'name': row['name'],
+                'searchable': self.strip_accents(row['name'].lower()) if isinstance(row['name'], basestring) else row['name'],
+                'order': order
             })
+            
+            order += 1
 
         collection.insert(data)
         return self

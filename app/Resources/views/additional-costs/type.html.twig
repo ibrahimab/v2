@@ -1,0 +1,13 @@
+{% if costs is iterable %}
+    
+    <h2>{{ 'additional-costs-inclusive-title'|trans }}</h2>
+
+    <ul>
+        {% for cost in costs %}
+            <li>{{ cost|raw }}</li>
+        {% endfor %}
+    </ul>
+    
+{% else %}
+    <p>{{ 'no-additional-costs'|trans }}</p>
+{% endif %}

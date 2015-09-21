@@ -1,5 +1,3 @@
-{% set save_search_label        = 'save-search'|trans %}
-
 {% set filter_distance          = constant('FILTER_DISTANCE', filter_service) %}
 {% set filter_distance_value    = filters[filter_distance]|default(null) %}
 {% set distance_by_slope        = constant('FILTER_DISTANCE_BY_SLOPE', filter_service) %}
@@ -39,128 +37,269 @@
     <div id="search-filter-main">
         <h2><a href="" title="deze box in- of uitklappen">{{ 'search-book'|trans }}</a></h2>
         <div class="fields">
-            {% include 'partials/search/form/input.html.twig' with {'destination': destination} %}
-            <a href="{{ path('save_search', {f: app.request.query.get('f', {})}) }}" class="save" title="{{ save_search_label }}" data-role="save-search">{{ save_search_label }}<i class="sprite sprite-icon-plus "></i></a>
+            {% include 'partials/search/form/input.html.twig' with {'destination': destination, 'weekends': weekends} %}
         </div>
     </div>
-    <h2 class="title">{{ 'filter-results'|trans }}</h2>
-    <div id="search-filter-piste-distance" class="search-filter-default">
-        <h2 class="closed"><a href="" title="deze box in- of uitklappen">{{ 'distance-to-slopes'|trans }}</a></h2>
-        <div class="fields">
-            <div class="styled_label" data-role="change-filter" data-action="{{ filter_distance_value == distance_by_slope ? 'remove' : 'add' }}" data-filter="{{ filter_distance }}" data-filter-value="{{ distance_by_slope }}">
-                <label class="label_check" for="checkbox-01">
-                    <input data-group="checkbox-1" id="checkbox-01" type="checkbox"{{ is_checked(filter_distance_value, distance_by_slope) }} />{{ 'filter-distance-by-slope'|trans }}<span>(848)</span>
-                </label>
-            </div>
-            <div class="styled_label" data-role="change-filter" data-action="{{ filter_distance_value == distance_max_250 ? 'remove' : 'add' }}" data-filter="{{ filter_distance }}" data-filter-value="{{ distance_max_250 }}">
-                <label class="label_check" for="checkbox-02">
-                    <input data-group="checkbox-1" id="checkbox-02" type="checkbox"{{ is_checked(filter_distance_value, distance_max_250) }} />{{ 'filter-distance-max-250'|trans }}<span>(1419)</span>
-                </label>
-            </div>
-            <div class="styled_label" data-role="change-filter" data-action="{{ filter_distance_value == distance_max_500 ? 'remove' : 'add' }}" data-filter="{{ filter_distance }}" data-filter-value="{{ distance_max_500 }}">
-                <label class="label_check" for="checkbox-03">
-                    <input data-group="checkbox-1" id="checkbox-03" type="checkbox"{{ is_checked(filter_distance_value, distance_max_500) }} />{{ 'filter-distance-max-500'|trans }}<span>(1729)</span>
-                </label>
-            </div>
-            <div class="styled_label" data-role="change-filter" data-action="{{ filter_distance_value == distance_max_1000 ? 'remove' : 'add' }}" data-filter="{{ filter_distance }}" data-filter-value="{{ distance_max_1000 }}">
-                <label class="label_check" for="checkbox-04">
-                    <input data-group="checkbox-1" id="checkbox-04" type="checkbox"{{ is_checked(filter_distance_value, distance_max_1000) }} />{{ 'filter-distance-max-1000'|trans }}<span>(1933)</span>
-                </label>
-            </div>
-        </div>
-    </div>
-    <div id="search-filter-piste-length" class="search-filter-default">
-        <h2 class="closed"><a href="" title="deze box in- of uitklappen">{{ 'length-slopes'|trans }}</a></h2>
-        <div class="fields">
-            <div class="styled_label" data-role="change-filter" data-action="{{ filter_length_value == length_max_100 ? 'remove' : 'add' }}" data-filter="{{ filter_length }}" data-filter-value="{{ length_max_100 }}">
-                <label class="label_check" for="checkbox-05">
-                    <input data-group="checkbox-2" id="checkbox-05" type="checkbox"{{ is_checked(filter_length_value, length_max_100) }} />{{ 'filter-length-max-100'|trans }}<span>(114)</span>
-                </label>
-            </div>
-            <div class="styled_label" data-role="change-filter" data-action="{{ filter_length_value == length_min_100 ? 'remove' : 'add' }}" data-filter="{{ filter_length }}" data-filter-value="{{ length_min_100 }}">
-                <label class="label_check" for="checkbox-06">
-                    <input data-group="checkbox-2" id="checkbox-06" type="checkbox"{{ is_checked(filter_length_value, length_min_100) }} />{{ 'filter-length-min-100'|trans }}<span>(2140)</span>
-                </label>
-            </div>
-            <div class="styled_label" data-role="change-filter" data-action="{{ filter_length_value == length_min_200 ? 'remove' : 'add' }}" data-filter="{{ filter_length }}" data-filter-value="{{ length_min_200 }}">
-                <label class="label_check" for="checkbox-07">
-                    <input data-group="checkbox-2" id="checkbox-07" type="checkbox"{{ is_checked(filter_length_value, length_min_200) }} />{{ 'filter-length-min-200'|trans }}<span>(1748)</span>
-                </label>
-            </div>
-            <div class="styled_label" data-role="change-filter" data-action="{{ filter_length_value == length_min_400 ? 'remove' : 'add' }}" data-filter="{{ filter_length }}" data-filter-value="{{ length_min_400 }}">
-                <label class="label_check" for="checkbox-08">
-                    <input data-group="checkbox-2" id="checkbox-08" type="checkbox"{{ is_checked(filter_length_value, length_min_400) }} />{{ 'filter-length-min-400'|trans }}<span>(1212)</span>
-                </label>
-            </div>
-        </div>
-    </div>
-    <div id="search-filter-facilities" class="search-filter-default">
-        <h2 class="closed"><a href="" title="deze box in- of uitklappen">{{ 'facilities'|trans }}</a></h2>
-        <div class="fields">
-            <div class="styled_label" data-role="change-filter" data-action="{{ facility_catering in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_catering }}" data-filter-multi="true">
-                <label class="label_check" for="checkbox-09">
-                    <input id="checkbox-09" type="checkbox"{{ is_checked(filter_facility_value, facility_catering) }} />{{ 'filter-facility-catering'|trans }}<span>(351)</span>
-                </label>
-            </div>
-            <div class="styled_label" data-role="change-filter" data-action="{{ facility_internet_wifi in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_internet_wifi }}" data-filter-multi="true">
-                <label class="label_check" for="checkbox-10">
-                    <input id="checkbox-10" type="checkbox"{{ is_checked(filter_facility_value, facility_internet_wifi) }} />{{ 'filter-facility-internet-wifi'|trans }}<span>(1743)</span>
-                </label>
-            </div>
-            <div class="styled_label" data-role="change-filter" data-action="{{ facility_swimming_pool in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_swimming_pool }}" data-filter-multi="true">
-                <label class="label_check" for="checkbox-11">
-                    <input id="checkbox-11" type="checkbox"{{ is_checked(filter_facility_value, facility_swimming_pool) }} />{{ 'filter-facility-swimming-pool'|trans }}<span>(565)</span>
-                </label>
-            </div>
-            <div class="styled_label" data-role="change-filter" data-action="{{ facility_sauna in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_sauna }}" data-filter-multi="true">
-                <label class="label_check" for="checkbox-12">
-                    <input id="checkbox-12" type="checkbox"{{ is_checked(filter_facility_value, facility_sauna) }} />{{ 'filter-facility-sauna'|trans }}<span>(1125)</span>
-                </label>
-            </div>
-            <div class="styled_label" data-role="change-filter" data-action="{{ facility_private_sauna in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_private_sauna }}" data-filter-multi="true">
-                <label class="label_check" for="checkbox-13">
-                    <input id="checkbox-13" type="checkbox"{{ is_checked(filter_facility_value, facility_private_sauna) }} />{{ 'filter-facility-private-sauna'|trans }}<span>(299)</span>
-                </label>
-            </div>
-            <div class="styled_label" data-role="change-filter" data-action="{{ facility_pets_allowed in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_pets_allowed }}" data-filter-multi="true">
-                <label class="label_check" for="checkbox-14">
-                    <input id="checkbox-14" type="checkbox"{{ is_checked(filter_facility_value, facility_pets_allowed) }} />{{ 'filter-facility-pets-allowed'|trans }}<span>(1344)</span>
-                </label>
-            </div>
-            <div class="styled_label" data-role="change-filter" data-action="{{ facility_fireplace in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_fireplace }}" data-filter-multi="true">
-                <label class="label_check" for="checkbox-15">
-                    <input id="checkbox-15" type="checkbox"{{ is_checked(filter_facility_value, facility_fireplace) }} />{{ 'filter-facility-fireplace'|trans }}<span>(748)</span>
-                </label>
+    <div data-role="search-filter-box" class="search-filter-box">
+        <h2 class="title" data-role="toggle-filters">{{ 'filter-results'|trans }}</h2>
+        <div id="search-filter-piste-distance" class="search-filter-default">
+            <h2 data-role="closable-filter"><a href="" title="deze box in- of uitklappen">{{ 'distance-to-slopes'|trans }}</a></h2>
+            <div class="fields">
+                {% set distance_by_slope_facet = 0 %}
+                {% if facet_service.has(filter_distance, distance_by_slope) %}
+                    {% set distance_by_slope_facet = facet_service.get(filter_distance, distance_by_slope) %}
+                {% endif %}
+                <div class="styled_label{{ distance_by_slope_facet == 0 ? ' disabled' }}"{% if distance_by_slope_facet > 0 %} data-role="change-filter" data-action="{{ filter_distance_value == distance_by_slope ? 'remove' : 'add' }}" data-filter="{{ filter_distance }}" data-filter-value="{{ distance_by_slope }}"{% endif %}>
+                    <label class="label_check" for="checkbox-01">
+                        <input data-group="checkbox-1" id="checkbox-01" type="checkbox"{{ is_checked(filter_distance_value, distance_by_slope) }} />{{ 'filter-distance-by-slope'|trans }}
+                        {% if distance_by_slope_facet > 0 %}
+                            ({{ distance_by_slope_facet }})
+                        {% endif %}
+                    </label>
+                </div>
+                {% set distance_max_250_facet = 0 %}
+                {% if facet_service.has(filter_distance, distance_max_250) %}
+                    {% set distance_max_250_facet = facet_service.get(filter_distance, distance_max_250) %}
+                {% endif %}
+                <div class="styled_label{{ distance_max_250_facet == 0 ? ' disabled' }}"{% if distance_max_250_facet > 0 %} data-role="change-filter" data-action="{{ filter_distance_value == distance_max_250 ? 'remove' : 'add' }}" data-filter="{{ filter_distance }}" data-filter-value="{{ distance_max_250 }}"{% endif %}>
+                    <label class="label_check" for="checkbox-02">
+                        <input data-group="checkbox-1" id="checkbox-02" type="checkbox"{{ is_checked(filter_distance_value, distance_max_250) }} />{{ 'filter-distance-max-250'|trans }}
+                        {% if distance_max_250_facet > 0 %}
+                            ({{ distance_max_250_facet }})
+                        {% endif %}
+                    </label>
+                </div>
+                {% set distance_max_500_facet = 0 %}
+                {% if facet_service.has(filter_distance, distance_max_500) %}
+                    {% set distance_max_500_facet = facet_service.get(filter_distance, distance_max_500) %}
+                {% endif %}
+                <div class="styled_label{{ distance_max_500_facet == 0 ? ' disabled' }}"{% if distance_max_500_facet > 0 %} data-role="change-filter" data-action="{{ filter_distance_value == distance_max_500 ? 'remove' : 'add' }}" data-filter="{{ filter_distance }}" data-filter-value="{{ distance_max_500 }}"{% endif %}>
+                    <label class="label_check" for="checkbox-03">
+                        <input data-group="checkbox-1" id="checkbox-03" type="checkbox"{{ is_checked(filter_distance_value, distance_max_500) }} />{{ 'filter-distance-max-500'|trans }}
+                        {% if distance_max_500_facet > 0 %}
+                            ({{ distance_max_500_facet }})
+                        {% endif %}
+                    </label>
+                </div>
+                {% set distance_max_1000_facet = 0 %}
+                {% if facet_service.has(filter_distance, distance_max_1000) %}
+                    {% set distance_max_1000_facet = facet_service.get(filter_distance, distance_max_1000) %}
+                {% endif %}
+                <div class="styled_label{{ distance_max_1000_facet == 0 ? ' disabled' }}"{% if distance_max_1000_facet > 0 %} data-role="change-filter" data-action="{{ filter_distance_value == distance_max_1000 ? 'remove' : 'add' }}" data-filter="{{ filter_distance }}" data-filter-value="{{ distance_max_1000 }}"{% endif %}>
+                    <label class="label_check" for="checkbox-04">
+                        <input data-group="checkbox-1" id="checkbox-04" type="checkbox"{{ is_checked(filter_distance_value, distance_max_1000) }} />{{ 'filter-distance-max-1000'|trans }}
+                        {% if distance_max_1000_facet > 0 %}
+                            ({{ distance_max_1000_facet }})
+                        {% endif %}
+                    </label>
+                </div>
             </div>
         </div>
-    </div>
-    <div id="search-filter-themes" class="search-filter-default">
-        <h2 class="closed"><a href="" title="deze box in- of uitklappen">{{ 'themes'|trans }}</a></h2>
-        <div class="fields">
-            <div class="styled_label" data-role="change-filter" data-action="{{ theme_kids in filter_theme_value ? 'remove' : 'add' }}" data-filter="{{ filter_theme }}" data-filter-value="{{ theme_kids }}" data-filter-multi="true">
-                <label class="label_check" for="checkbox-23">
-                    <input id="checkbox-23" type="checkbox"{{ is_checked(filter_theme_value, theme_kids) }} />{{ 'filter-theme-kids'|trans }}<span>(604)</span>
-                </label>
+        <div id="search-filter-piste-length" class="search-filter-default">
+            <h2 data-role="closable-filter"><a href="" title="deze box in- of uitklappen">{{ 'length-slopes'|trans }}</a></h2>
+            <div class="fields">
+                {% set length_max_100_facet = 0 %}
+                {% if facet_service.has(filter_length, length_max_100) %}
+                    {% set length_max_100_facet = facet_service.get(filter_length, length_max_100) %}
+                {% endif %}
+                <div class="styled_label{{ length_max_100_facet == 0 ? ' disabled' }}"{% if length_max_100_facet > 0 %} data-role="change-filter" data-action="{{ filter_length_value == length_max_100 ? 'remove' : 'add' }}" data-filter="{{ filter_length }}" data-filter-value="{{ length_max_100 }}"{% endif %}>
+                    <label class="label_check" for="checkbox-05">
+                        <input data-group="checkbox-2" id="checkbox-05" type="checkbox"{{ is_checked(filter_length_value, length_max_100) }} />{{ 'filter-length-max-100'|trans }}
+                        {% if length_max_100_facet > 0 %}
+                            ({{ length_max_100_facet }})
+                        {% endif %}
+                    </label>
+                </div>
+                {% set length_min_100_facet = 0 %}
+                {% if facet_service.has(filter_length, length_min_100) %}
+                    {% set length_min_100_facet = facet_service.get(filter_length, length_min_100) %}
+                {% endif %}
+                <div class="styled_label{{ length_min_100_facet == 0 ? ' disabled' }}"{% if length_min_100_facet > 0 %} data-role="change-filter" data-action="{{ filter_length_value == length_min_100 ? 'remove' : 'add' }}" data-filter="{{ filter_length }}" data-filter-value="{{ length_min_100 }}"{% endif %}>
+                    <label class="label_check" for="checkbox-06">
+                        <input data-group="checkbox-2" id="checkbox-06" type="checkbox"{{ is_checked(filter_length_value, length_min_100) }} />{{ 'filter-length-min-100'|trans }}
+                        {% if length_min_100_facet > 0 %}
+                            ({{ length_min_100_facet }})
+                        {% endif %}
+                    </label>
+                </div>
+                {% set length_min_200_facet = 0 %}
+                {% if facet_service.has(filter_length, length_min_200) %}
+                    {% set length_min_200_facet = facet_service.get(filter_length, length_min_200) %}
+                {% endif %}
+                <div class="styled_label{{ length_min_200_facet == 0 ? ' disabled' }}"{% if length_min_200_facet > 0 %} data-role="change-filter" data-action="{{ filter_length_value == length_min_200 ? 'remove' : 'add' }}" data-filter="{{ filter_length }}" data-filter-value="{{ length_min_200 }}"{% endif %}>
+                    <label class="label_check" for="checkbox-07">
+                        <input data-group="checkbox-2" id="checkbox-07" type="checkbox"{{ is_checked(filter_length_value, length_min_200) }} />{{ 'filter-length-min-200'|trans }}
+                        {% if length_min_200_facet > 0 %}
+                            ({{ length_min_200_facet }})
+                        {% endif %}
+                    </label>
+                </div>
+                {% set length_min_400_facet = 0 %}
+                {% if facet_service.has(filter_length, length_min_400) %}
+                    {% set length_min_400_facet = facet_service.get(filter_length, length_min_400) %}
+                {% endif %}
+                <div class="styled_label{{ length_min_400_facet == 0 ? ' disabled' }}"{% if length_min_400_facet > 0 %} data-role="change-filter" data-action="{{ filter_length_value == length_min_400 ? 'remove' : 'add' }}" data-filter="{{ filter_length }}" data-filter-value="{{ length_min_400 }}"{% endif %}>
+                    <label class="label_check" for="checkbox-08">
+                        <input data-group="checkbox-2" id="checkbox-08" type="checkbox"{{ is_checked(filter_length_value, length_min_400) }} />{{ 'filter-length-min-400'|trans }}
+                        {% if length_min_400_facet >0 %}
+                            ({{ length_min_400_facet }})
+                        {% endif %}
+                    </label>
+                </div>
             </div>
-            <div class="styled_label" data-role="change-filter" data-action="{{ theme_charming_places in filter_theme_value ? 'remove' : 'add' }}" data-filter="{{ filter_theme }}" data-filter-value="{{ theme_charming_places }}" data-filter-multi="true">
-                <label class="label_check" for="checkbox-24">
-                    <input id="checkbox-24" type="checkbox"{{ is_checked(filter_theme_value, theme_charming_places) }} />{{ 'filter-theme-charming-places'|trans }}<span>(1032)</span>
-                </label>
+        </div>
+        <div id="search-filter-facilities" class="search-filter-default">
+            <h2 data-role="closable-filter"><a href="" title="deze box in- of uitklappen">{{ 'facilities'|trans }}</a></h2>
+            <div class="fields">
+                {% set facility_catering_facet = 0 %}
+                {% if facet_service.has(filter_facility, facility_catering) %}
+                    {% set facility_catering_facet = facet_service.get(filter_facility, facility_catering) %}
+                {% endif %}
+                <div class="styled_label{{ facility_catering_facet == 0 ? ' disabled' }}"{% if facility_catering_facet > 0 %} data-role="change-filter" data-action="{{ facility_catering in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_catering }}" data-filter-multi="true"{% endif %}>
+                    <label class="label_check" for="checkbox-09">
+                        <input id="checkbox-09" type="checkbox"{{ is_checked(filter_facility_value, facility_catering) }} />{{ 'filter-facility-catering'|trans }}
+                        {% if facility_catering_facet > 0 %}
+                            ({{ facility_catering_facet }})
+                        {% endif %}
+                    </label>
+                </div>
+                {% set facility_internet_wifi_facet = 0 %}
+                {% if facet_service.has(filter_facility, facility_internet_wifi) %}
+                    {% set facility_internet_wifi_facet = facet_service.get(filter_facility, facility_internet_wifi) %}
+                {% endif %}
+                <div class="styled_label{{ facility_internet_wifi_facet == 0 ? ' disabled' }}"{% if facility_internet_wifi_facet > 0 %} data-role="change-filter" data-action="{{ facility_internet_wifi in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_internet_wifi }}" data-filter-multi="true"{% endif %}>
+                    <label class="label_check" for="checkbox-10">
+                        <input id="checkbox-10" type="checkbox"{{ is_checked(filter_facility_value, facility_internet_wifi) }} />{{ 'filter-facility-internet-wifi'|trans }}
+                        {% if facility_internet_wifi_facet > 0 %}
+                            ({{ facility_internet_wifi_facet }})
+                        {% endif %}
+                    </label>
+                </div>
+                {% set facility_swimming_pool_facet = 0 %}
+                {% if facet_service.has(filter_facility, facility_swimming_pool) %}
+                    {% set facility_swimming_pool_facet = facet_service.get(filter_facility, facility_swimming_pool) %}
+                {% endif %}
+                <div class="styled_label{{ facility_swimming_pool_facet == 0 ? ' disabled' }}"{% if facility_swimming_pool_facet > 0 %} data-role="change-filter" data-action="{{ facility_swimming_pool in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_swimming_pool }}" data-filter-multi="true"{% endif %}>
+                    <label class="label_check" for="checkbox-11">
+                        <input id="checkbox-11" type="checkbox"{{ is_checked(filter_facility_value, facility_swimming_pool) }} />{{ 'filter-facility-swimming-pool'|trans }}
+                        {% if facility_swimming_pool_facet > 0 %}
+                            ({{ facility_swimming_pool_facet }})
+                        {% endif %}
+                    </label>
+                </div>
+                {% set facility_sauna_facet = 0 %}
+                {% if facet_service.has(filter_facility, facility_sauna) %}
+                    {% set facility_sauna_facet = facet_service.get(filter_facility, facility_sauna) %}
+                {% endif %}
+                <div class="styled_label{{ facility_sauna_facet == 0 ? ' disabled' }}"{% if facility_sauna_facet > 0 %} data-role="change-filter" data-action="{{ facility_sauna in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_sauna }}" data-filter-multi="true"{% endif %}>
+                    <label class="label_check" for="checkbox-12">
+                        <input id="checkbox-12" type="checkbox"{{ is_checked(filter_facility_value, facility_sauna) }} />{{ 'filter-facility-sauna'|trans }}
+                        {% if facility_sauna_facet > 0 %}
+                            ({{ facility_sauna_facet }})
+                        {% endif %}
+                    </label>
+                </div>
+                {% set facility_private_sauna_facet = 0 %}
+                {% if facet_service.has(filter_facility, facility_private_sauna) %}
+                    {% set facility_private_sauna_facet = facet_service.get(filter_facility, facility_private_sauna) %}
+                {% endif %}
+                <div class="styled_label{{ facility_private_sauna_facet == 0 ? ' disabled' }}"{% if facility_private_sauna_facet > 0 %} data-role="change-filter" data-action="{{ facility_private_sauna in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_private_sauna }}" data-filter-multi="true"{% endif %}>
+                    <label class="label_check" for="checkbox-13">
+                        <input id="checkbox-13" type="checkbox"{{ is_checked(filter_facility_value, facility_private_sauna) }} />{{ 'filter-facility-private-sauna'|trans }}
+                        {% if facility_private_sauna_facet > 0 %}
+                            ({{ facility_private_sauna_facet }})
+                        {% endif %}
+                    </label>
+                </div>
+                {% set facility_pets_allowed_facet = 0 %}
+                {% if facet_service.has(filter_facility, facility_pets_allowed) %}
+                    {% set facility_pets_allowed_facet = facet_service.get(filter_facility, facility_pets_allowed) %}
+                {% endif %}
+                <div class="styled_label{{ facility_pets_allowed_facet == 0 ? ' disabled' }}"{% if facility_pets_allowed_facet > 0 %} data-role="change-filter" data-action="{{ facility_pets_allowed in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_pets_allowed }}" data-filter-multi="true"{% endif %}>
+                    <label class="label_check" for="checkbox-14">
+                        <input id="checkbox-14" type="checkbox"{{ is_checked(filter_facility_value, facility_pets_allowed) }} />{{ 'filter-facility-pets-allowed'|trans }}
+                        {% if facility_pets_allowed_facet > 0 %}
+                            ({{ facility_pets_allowed_facet }})
+                        {% endif %}
+                    </label>
+                </div>
+                {% set facility_fireplace_facet = 0 %}
+                {% if facet_service.has(filter_facility, facility_fireplace) %}
+                    {% set facility_fireplace_facet = facet_service.get(filter_facility, facility_fireplace) %}
+                {% endif %}
+                <div class="styled_label{{ facility_fireplace_facet == 0 ? ' disabled' }}"{% if facility_fireplace_facet > 0 %} data-role="change-filter" data-action="{{ facility_fireplace in filter_facility_value ? 'remove' : 'add' }}" data-filter="{{ filter_facility }}" data-filter-value="{{ facility_fireplace }}" data-filter-multi="true"{% endif %}>
+                    <label class="label_check" for="checkbox-15">
+                        <input id="checkbox-15" type="checkbox"{{ is_checked(filter_facility_value, facility_fireplace) }} />{{ 'filter-facility-fireplace'|trans }}
+                        {% if facility_fireplace_facet > 0 %}
+                            ({{ facility_fireplace_facet }})
+                        {% endif %}
+                    </label>
+                </div>
             </div>
-            <div class="styled_label" data-role="change-filter" data-action="{{ theme_10_for_apres_ski in filter_theme_value ? 'remove' : 'add' }}" data-filter="{{ filter_theme }}" data-filter-value="{{ theme_10_for_apres_ski }}" data-filter-multi="true">
-                <label class="label_check" for="checkbox-25">
-                    <input id="checkbox-25" type="checkbox"{{ is_checked(filter_theme_value, theme_10_for_apres_ski) }} />{{ 'filter-theme-10-for-apres-ski'|trans }}<span>(822)</span>
-                </label>
-            </div>
-            <div class="styled_label" data-role="change-filter" data-action="{{ theme_super_ski_stations in filter_theme_value ? 'remove' : 'add' }}" data-filter="{{ filter_theme }}" data-filter-value="{{ theme_super_ski_stations }}" data-filter-multi="true">
-                <label class="label_check" for="checkbox-26">
-                    <input id="checkbox-26" type="checkbox"{{ is_checked(filter_theme_value, theme_super_ski_stations) }} />{{ 'filter-theme-super-ski-stations'|trans }}<span>(1031)</span>
-                </label>
-            </div>
-            <div class="styled_label" data-role="change-filter" data-action="{{ theme_winter_wellness in filter_theme_value ? 'remove' : 'add' }}" data-filter="{{ filter_theme }}" data-filter-value="{{ theme_winter_wellness }}" data-filter-multi="true">
-                <label class="label_check" for="checkbox-27">
-                    <input id="checkbox-27" type="checkbox"{{ is_checked(filter_theme_value, theme_winter_wellness) }} />{{ 'filter-theme-winter-wellness'|trans }}<span>(792)</span>
-                </label>
+        </div>
+        <div id="search-filter-themes" class="search-filter-default">
+            <h2 data-role="closable-filter"><a href="" title="deze box in- of uitklappen">{{ 'themes'|trans }}</a></h2>
+            <div class="fields">
+                {% set theme_kids_facet = 0 %}
+                {% if facet_service.has(filter_theme, theme_kids) %}
+                    {% set theme_kids_facet = facet_service.get(filter_theme, theme_kids) %}
+                {% endif %}
+                <div class="styled_label{{ theme_kids_facet == 0 ? ' disabled' }}"{% if theme_kids_facet > 0 %} data-role="change-filter" data-action="{{ theme_kids in filter_theme_value ? 'remove' : 'add' }}" data-filter="{{ filter_theme }}" data-filter-value="{{ theme_kids }}" data-filter-multi="true"{% endif %}>
+                    <label class="label_check" for="checkbox-23">
+                        <input id="checkbox-23" type="checkbox"{{ is_checked(filter_theme_value, theme_kids) }} />{{ 'filter-theme-kids'|trans }}
+                        {% if theme_kids_facet > 0 %}
+                            ({{ theme_kids_facet }})
+                        {% endif %}
+                    </label>
+                </div>
+                {% set theme_charming_places_facet = 0 %}
+                {% if facet_service.has(filter_theme, theme_charming_places) %}
+                    {% set theme_charming_places_facet = facet_service.get(filter_theme, theme_charming_places) %}
+                {% endif %}
+                <div class="styled_label{{ theme_charming_places_facet == 0 ? ' disabled' }}"{% if theme_charming_places_facet > 0 %} data-role="change-filter" data-action="{{ theme_charming_places in filter_theme_value ? 'remove' : 'add' }}" data-filter="{{ filter_theme }}" data-filter-value="{{ theme_charming_places }}" data-filter-multi="true"{% endif %}>
+                    <label class="label_check" for="checkbox-24">
+                        <input id="checkbox-24" type="checkbox"{{ is_checked(filter_theme_value, theme_charming_places) }} />{{ 'filter-theme-charming-places'|trans }}
+                        {% if theme_charming_places_facet > 0 %}
+                            ({{ theme_charming_places_facet }})
+                        {% endif %}
+                    </label>
+                </div>
+                {% set theme_10_for_apres_ski_facet = 0 %}
+                {% if facet_service.has(filter_theme, theme_10_for_apres_ski) %}
+                    {% set theme_10_for_apres_ski_facet = facet_service.get(filter_theme, theme_10_for_apres_ski) %}
+                {% endif %}
+                <div class="styled_label{{ theme_10_for_apres_ski_facet == 0 ? ' disabled' }}"{% if theme_10_for_apres_ski_facet > 0 %} data-role="change-filter" data-action="{{ theme_10_for_apres_ski in filter_theme_value ? 'remove' : 'add' }}" data-filter="{{ filter_theme }}" data-filter-value="{{ theme_10_for_apres_ski }}" data-filter-multi="true"{% endif %}>
+                    <label class="label_check" for="checkbox-25">
+                        <input id="checkbox-25" type="checkbox"{{ is_checked(filter_theme_value, theme_10_for_apres_ski) }} />{{ 'filter-theme-10-for-apres-ski'|trans }}
+                        {% if theme_10_for_apres_ski_facet > 0 %}
+                            ({{ theme_10_for_apres_ski_facet }})
+                        {% endif %}
+                    </label>
+                </div>
+                {% set theme_super_ski_stations_facet = 0 %}
+                {% if facet_service.has(filter_theme, theme_super_ski_stations) %}
+                    {% set theme_super_ski_stations_facet = facet_service.get(filter_theme, theme_super_ski_stations) %}
+                {% endif %}
+                <div class="styled_label{{ theme_super_ski_stations_facet == 0 ? ' disabled' }}"{% if theme_super_ski_stations_facet > 0 %} data-role="change-filter" data-action="{{ theme_super_ski_stations in filter_theme_value ? 'remove' : 'add' }}" data-filter="{{ filter_theme }}" data-filter-value="{{ theme_super_ski_stations }}" data-filter-multi="true"{% endif %}>
+                    <label class="label_check" for="checkbox-26">
+                        <input id="checkbox-26" type="checkbox"{{ is_checked(filter_theme_value, theme_super_ski_stations) }} />{{ 'filter-theme-super-ski-stations'|trans }}
+                        {% if theme_super_ski_stations_facet > 0 %}
+                            ({{ theme_super_ski_stations_facet }})
+                        {% endif %}
+                    </label>
+                </div>
+                {% set theme_winter_wellness_facet = 0 %}
+                {% if facet_service.has(filter_theme, theme_winter_wellness) %}
+                    {% set theme_winter_wellness_facet = facet_service.get(filter_theme, theme_winter_wellness) %}
+                {% endif %}
+                <div class="styled_label{{ theme_winter_wellness == 0 ? ' disabled' }}"{% if theme_winter_wellness > 0 %} data-role="change-filter" data-action="{{ theme_winter_wellness in filter_theme_value ? 'remove' : 'add' }}" data-filter="{{ filter_theme }}" data-filter-value="{{ theme_winter_wellness }}" data-filter-multi="true"{% endif %}>
+                    <label class="label_check" for="checkbox-27">
+                        <input id="checkbox-27" type="checkbox"{{ is_checked(filter_theme_value, theme_winter_wellness) }} />{{ 'filter-theme-winter-wellness'|trans }}
+                        {% if theme_winter_wellness > 0 %}
+                            ({{ theme_winter_wellness }})
+                        {% endif %}
+                    </label>
+                </div>
             </div>
         </div>
     </div>

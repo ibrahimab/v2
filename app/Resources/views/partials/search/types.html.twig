@@ -1,50 +1,65 @@
-{% set locale = get_locale() %}
-<div class="table-wrapper">
-    
-    <div class="tb">
+{% macro table(types, accommodation) %}
+    <div class="table-wrapper">
 
-        <div class="tb-h">
-            <div class="tb-c tb-h-1">{{ 'persons'|trans }}</div>
-            <div class="tb-c tb-h-2">{{ 'bedrooms'|trans }}</div>
-            <div class="tb-c tb-h-3">{{ 'bathrooms'|trans }}</div>
-            <div class="tb-c tb-h-4">{{ 'type'|trans }}</div>
-            <div class="tb-c tb-h-5">{{ 'rating'|trans }}</div>
-            <div class="tb-c tb-h-6">&nbsp;</div>
-            <div class="tb-c tb-h-7">{{ 'price-accommodation'|trans }}</div>
+        <div class="tb">
+
+            <div class="tb-h">
+                <div class="tb-c tb-h-1">{{ 'persons'|trans }}</div>
+                <div class="tb-c tb-h-2">{{ 'bedrooms'|trans }}</div>
+                <div class="tb-c tb-h-3">{{ 'bathrooms'|trans }}</div>
+                <div class="tb-c tb-h-4">{{ 'type'|trans }}</div>
+                <div class="tb-c tb-h-5">{{ 'rating'|trans }}</div>
+                <div class="tb-c tb-h-6">&nbsp;</div>
+                <div class="tb-c tb-h-7">{{ 'price'|trans }}</div>
+            </div>
+
+            {% for type in types %}
+
+                <a class="tb-r{{ type.offer ? ' sale-type' }}" href="{{ locale_path('show_type', {'beginCode': accommodation.place.country.startCode, 'typeId': type.id}) }}" data-role="link-to-accpage">
+                    <div class="tb-c tb-c-1">
+                        <i class="sprite sprite-icon-torso"></i>
+                        {{ ( type.optimalResidents == type.maxResidents ? type.optimalResidents : (type.optimalResidents ~ ' - ' ~ type.maxResidents) ) }}
+                    </div>
+                    <div class="tb-c">
+                        <i class="sprite sprite-icon-sleep"></i>
+                        {{ type.bedrooms }}
+                    </div>
+                    <div class="tb-c">
+                        <i class="sprite sprite-icon-bath"></i>
+                        {{ type.bathrooms }}
+                    </div>
+                    <div class="tb-c">
+                        {{ type.localeName }}
+                    </div>
+                    <div class="tb-c">{% if type.surveyCount > 0 %}<span class="table-price">{{ type.surveyAverageOverallRating|number_format(1, ',', '') }}</span>{% endif %}</div>
+                    <div class="tb-c tb-c-6">
+                        {% if type.offer %}
+                            <div class="types_circle"><div>Aan-</div><div>bieding</div></div>
+                        {% endif %}
+                        </div>
+                    <div class="tb-c tb-c-7">
+                        {% if type.price > 0 %}
+                            <div class="chalet-tooltip" data-role="ajax-tooltip" data-id="{{ type.id }}" data-season="{{ 27 }}">
+                                <div class="chalet-tooltip-content" data-role="tooltip-wrapper">
+                                    <div data-role="tooltip-content">Bezig met laden...</div>
+                                    <span class="nub rtl"></span>
+                                </div>
+                                <span class="table-price">&euro; {{ type.price|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
+                            </div>
+                        {% endif %}
+                    </div>
+                </a>
+            {% endfor %}
+
+        </div>
+        <div class="table-explain">
+            <p>
+                <span>{{ 'table-scrollable-horizontally'|trans }}</span>
+                <i class="sprite sprite-cursor-explain"></i>
+                <a href="" class="button tiny radius">{{ 'got-it'|trans }}</a>
+            </p>
         </div>
 
-        {% for type in types %}
-            
-            {% set accommodation = type.getAccommodation() %}
-            <a class="tb-r{% if offfers[type.getId()] is defined %} sale-type{% endif %}" href="{{ locale_path('show_type', {'beginCode': accommodation.getPlace().getCountry().getStartCode(), 'typeId': type.getId()}) }}">
-                <div class="tb-c tb-c-1">
-                    <i class="sprite sprite-icon-torso"></i>
-                    {{ ( type.getOptimalResidents() == type.getMaxResidents() ? type.getOptimalResidents() : (type.getOptimalResidents() ~ ' - ' ~ type.getMaxResidents()) ) }}
-                </div>
-                <div class="tb-c">
-                    <i class="sprite sprite-icon-sleep"></i>
-                    {{ type.getBedrooms() }}
-                </div>
-                <div class="tb-c">
-                    <i class="sprite sprite-icon-bath"></i>
-                    {{ type.getBathrooms() }}
-                </div>
-                <div class="tb-c">
-                    {{ type.getLocaleName(locale) }}
-                </div>
-                <div class="tb-c"><span>8,5</span></div>
-                <div class="tb-c tb-c-6">{% if offers[type.getId()] is defined %}<i class="sprite sprite-icon-discount"></i>{% endif %}</div>
-                <div class="tb-c tb-c-7">{% if prices[type.getId()] is defined and prices[type.getId()] > 0 %}&euro; {{ prices[type.getId()]|number_format(0, ',', '.') }},-<i class="fi-info"></i>{% endif %}</div>
-            </a>
-        {% endfor %}
-        
     </div>
-    <div class="table-explain">
-        <p>
-            <span>{{ 'table-scrollable-horizontally'|trans }}</span>
-            <i class="sprite sprite-cursor-explain"></i>
-            <a href="" class="button tiny radius">{{ 'got-it'|trans }}</a>
-        </p>
-    </div>
-    
-</div>
+
+{% endmacro %}

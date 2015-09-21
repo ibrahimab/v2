@@ -13,20 +13,24 @@
     <section class="landing landing-page contact-page">
 
         <div class="row">
-            
+
             <div class="medium-8 large-8 columns">
-                
+
                 <h1>{{ 'saved-title'|trans }}</h1>
                 <p>{{ theme.getLocaleDescription(locale)|nl2br }}</p>
-                
-                <hr />
-            
-                {% for accommodation in accommodations %}
-                    
-                    {% include 'partials/search/result.html.twig' with { result: accommodation, offers: offers, prices: prices } only %}
 
-                {% endfor %}
-                
+                <hr />
+
+                    {% import 'partials/search/result.html.twig' as resultMacro %}
+
+                    {% set results         = resultset.paginator() %}
+                    {% set images          = search_images(results) %}
+                    {% set website_concern = website() %}
+                    {% set resale          = website_concern.getConfig(constant('WEBSITE_CONFIG_RESALE', website_concern)) %}
+                    {% for result in results %}
+                        {{ resultMacro.accommodation(result, images, resale, season) }}
+                    {% endfor %}
+
             </div>
 
         </div>

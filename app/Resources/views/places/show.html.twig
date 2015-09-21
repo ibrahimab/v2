@@ -1,5 +1,7 @@
 {% extends 'layouts/default.html.twig' %}
 
+{% set images = place_images(place) %}
+
 {% block breadcrumbs %}
     {{
         breadcrumbs({
@@ -36,6 +38,18 @@
                     <li>{{ 'chalets-apartments'|trans|capitalize }}<span>{{ place.getTypesCount() }}</span></li>
                     <li>{{ 'average-rating'|trans }}<span>{{ place.getAverageRatings() }}</span></li>
                     <li>{{ 'ratings'|trans }}<span>{{ place.getRatingsCount() }}</span></li>
+                </ul>
+            </div>
+            <div class="large-12 columns">
+                <ul class="small-block-grid-3">
+                    {% for image in images %}
+                        <li>
+                            {% set image_path = generate_image_path(image) %}
+                            <a href="{{ image_path }}">
+                                <img src="{{ image_path }}" alt="{{ image.label }}" />
+                            </a>
+                        </li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>

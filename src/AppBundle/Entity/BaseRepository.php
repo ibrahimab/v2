@@ -38,7 +38,8 @@ class BaseRepository extends EntityRepository
     }
 
     /**
-     * Published expression for QueryBuilder instances
+     * published expression for QueryBuilder instances:
+     * Make sure the begin and end dates are null or :now is within them
      *
      * @param string $fieldPrefix
      * @param Expr $expr
@@ -48,9 +49,9 @@ class BaseRepository extends EntityRepository
     {
         return $expr->andX(
 
-            $expr->andX(
+            $expr->orX(
 
-                $expr->isNotNull($fieldPrefix . '.publishedAt'),
+                $expr->isNull($fieldPrefix . '.publishedAt'),
                 $expr->lte($fieldPrefix . '.publishedAt', ':now')
             ),
             $expr->orX(
@@ -58,6 +59,21 @@ class BaseRepository extends EntityRepository
                 $expr->isNull($fieldPrefix . '.expiredAt'),
                 $expr->gt($fieldPrefix . '.expiredAt', ':now')
             )
+        );
+    }
+
+    /**
+     * activeWebsite expression for QueryBuilder instances:
+     * Make sure only records for the active website are returned
+     *
+     * @param string $fieldPrefix
+     * @param Expr $expr
+     * @return Expr
+     */
+    public function activeWebsiteExpr($fieldPrefix, $expr)
+    {
+        return $expr->andX(
+            $expr->gt('FIND_IN_SET(:website, '.$fieldPrefix.'.websites)', 0)
         );
     }
 }

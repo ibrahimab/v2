@@ -15,7 +15,8 @@ framework:
     validation:      { enable_annotations: true }
     templating:
         engines: ['twig']
-        #assets_version: SomeVersionScheme
+        # bust caching by changing this to the current UNIX timestamp
+        assets_version: 1436871556
     default_locale:  "%locale%"
     trusted_hosts:   ~
     trusted_proxies: ~
@@ -46,6 +47,15 @@ assetic:
         #yui_css:
         #    jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
 
+snc_redis:
+    clients:
+        default:
+            type: phpredis
+            alias: default
+            dsn: redis://%redis_server%
+            options:
+                prefix: "%kernel.environment%:"
+
 # Doctrine Configuration
 doctrine:
     dbal:
@@ -71,6 +81,7 @@ doctrine:
         dql:
             numeric_functions:
                 Rand: AppBundle\Doctrine\DQL\Functions\Rand
+                FIND_IN_SET: AppBundle\Doctrine\DQL\Functions\FindInSet
             datetime_functions:
                 UNIX_TIMESTAMP: AppBundle\Doctrine\DQL\Functions\UnixTimestamp
 

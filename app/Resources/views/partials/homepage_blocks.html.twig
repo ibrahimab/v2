@@ -1,37 +1,32 @@
+{% if homepageBlocks['left'] is not empty and homepageBlocks['right'] is not empty %}
 <section id="themes-selected">
-    <div class="row">
-        {% if homepageBlocks['left'] is not empty %}
 
-            {% for leftBlock in homepageBlocks['left'] %}
+    <div class="row" data-equalizer>
 
-                <div class="large-6 medium-6 columns big">
-                    {% include 'partials/homepage_block/block.html.twig' with { 'homepageBlock': leftBlock } only %}
-                </div>
+        <div class="large-6 medium-6 columns large-column" data-equalizer-watch>
+            {% include 'partials/homepage_block/block.html.twig' with { 'homepageBlock': homepageBlocks['left']|first, 'large_title': true } only %}
+        </div>
 
-            {% endfor %}
 
-        {% endif %}
-        {% if homepageBlocks['right'] is not empty %}
-        <div class="large-6 medium-6 columns small">
+        <div class="large-6 medium-6 columns large-column end" data-equalizer-watch>
 
-            <div class="row">
-
-                {% for rightBlock in homepageBlocks['right'] %}
-
+            {% set rightBlocks = homepageBlocks['right']|slice(0, 2) %}
+            {% for rightBlock in rightBlocks %}
+                <div class="row small-column{%  if loop.last %} align-bottom{% endif %}">
                     <div class="large-12 columns">
                         {% include 'partials/homepage_block/block.html.twig' with { 'homepageBlock': rightBlock } only %}
                     </div>
-
-                {% endfor %}
-
-            </div>
+                </div>
+            {% endfor %}
 
         </div>
-        {% endif %}
+
     </div>
+
     <div class="row">
         <div class="large-12 centered columns">
-            <a href="{{ locale_path('search') }}" class="button small radius" title="Meer inspiratie">Meer inspiratie</a>
+            <a href="{{ locale_path('themes') }}" class="button small radius" title="Meer inspiratie">Meer inspiratie</a>
         </div>
     </div>
 </section>
+{% endif %}

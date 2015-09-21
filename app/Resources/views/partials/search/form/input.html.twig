@@ -1,48 +1,50 @@
 {% set persons     = 'persons'|trans|lower %}
 {% set bathrooms   = 'bathrooms'|trans|lower %}
 {% set bedrooms    = 'bedrooms'|trans|lower %}
+{% set minimum     = 'minimum'|trans|lower %}
 {% set placeholder = (destination == true ? 'Voeg nog een bestemming toe' : 'Waar wil je naartoe?') %}
+{% set selected    = ' selected="selected"' %}
 
 <div class="autocomplete-container">
-    <input type="text" name="query" data-role="autocomplete-query" data-type="search-book" id="choose-destination" class="radius" data-focus-text="bijv. bestemming of accommodatie" data-default-placeholder="{{ placeholder }}" placeholder="{{ placeholder }}"  />
+    <input type="text" name="query" data-role="autocomplete-query" data-type="search-book" id="choose-destination" class="radius" data-focus-text="bestemming of accommodatie" data-default-placeholder="{{ placeholder }}" placeholder="{{ placeholder }}" autocomplete="off"  />
     <div class="results search-book" data-role="autocomplete-results">
     </div>
 </div>
-<select class="radius">
-    <option value="husker">{{ 'select-when'|trans }}</option>
-    <option value="1423868400">weekend 14 februari 2015</option>
-    <option value="1424473200">weekend 21 februari 2015</option>
-    <option value="1425078000">weekend 28 februari 2015</option>
-    <option value="1425682800">weekend 7 maart 2015</option>
-    <option value="1426287600">weekend 14 maart 2015</option>
-    <option value="1426892400">weekend 21 maart 2015</option>
-    <option value="1427497200">weekend 28 maart 2015</option>
-    <option value="1428098400">weekend 4 april 2015</option>
-    <option value="1428703200">weekend 11 april 2015</option>
-    <option value="1429308000">weekend 18 april 2015</option>
-    <option value="1429912800">weekend 25 april 2015</option>
-    <option value="1430517600">weekend 2 mei 2015</option>
-</select>
-<select class="radius">
-    <option value="hoeveel">{{ 'select-how-many'|trans }}</option>
-    <option value="1">1 {{ 'person'|trans }}</option>
-    {% for i in 2..39 %}
-        <option value="{{ i }}">{{ i ~ ' ' ~ persons }}</option>
+<select class="radius" data-role="change-weekend">
+    <option>{{ 'select-when'|trans }}</option>
+    {% set arrival_label = 'weekend'|trans %}
+    {% set current_weekend = form_filters['weekend'] is defined ? form_filters['weekend'] : 0 %}
+    {% for timestamp, weekend in weekends %}
+        <option value="{{ timestamp }}"{{ timestamp == current_weekend ? selected }}>{{arrival_label}} {{ weekend }}</option>
     {% endfor %}
-    <option value="40">40 {{ 'or-more'|trans }} {{ persons }}</option>
+</select>
+{% if searchFormMessageSearchWithoutDates %}
+<div class="msg-search-without-date">
+    (omdat een groot deel van de accommodaties nog niet geprijsd is kan het verstandig zijn om zonder aankomstdatum te zoeken)
+</div>
+{% endif %}
+<select class="radius" data-role="change-persons">
+    <option value="0" data-smaller-text="{{ 'select-how-many-short'|trans }}">{{ 'select-how-many'|trans }}</option>
+    {% set current_persons = form_filters['persons'] is defined ? form_filters['persons'] : 0 %}
+    <option value="1"{{ 1 == current_persons ? selected }}>1 {{ 'person'|trans }}</option>
+    {% for i in 2..39 %}
+        <option value="{{ i }}"{{ i == current_persons ? selected }}>{{ i ~ ' ' ~ persons }}</option>
+    {% endfor %}
+    <option value="40"{{ 40 == current_persons ? selected }}>40 {{ 'or-more'|trans }} {{ persons }}</option>
 </select>
 <select class="radius" data-role="change-bedrooms">
     <option value="0">{{ 'select-bedrooms'|trans }}</option>
-    <option value="1"{{ form_filters['bedrooms'] is defined and 1 == form_filters['bedrooms'] ? ' selected="selected"' }}>1 {{ 'bedroom'|trans }}</option>
+    {% set current_bedrooms = form_filters['bedrooms'] is defined ? form_filters['bedrooms'] : 0 %}
+    <option value="1"{{ 1 == current_bedrooms ? selected }}>{{ minimum }} 1 {{ 'bedroom'|trans }}</option>
     {% for i in 2..10 %}
-        <option value="{{ i }}"{{ form_filters['bedrooms'] is defined and i == form_filters['bedrooms'] ? ' selected="selected"' }}>{{ i }} {{ bedrooms }}</option>
+        <option value="{{ i }}"{{ i == current_bedrooms ? selected }}>{{ minimum }} {{ i }} {{ bedrooms }}</option>
     {% endfor %}
 </select>
 <select class="radius" data-role="change-bathrooms">
     <option value="0">{{ 'select-bathrooms'|trans }}</option>
-    <option value="1423868400">1 {{ 'bathroom'|trans }}</option>
-    <option value="1"{{ form_filters['bathrooms'] is defined and 1 == form_filters['bathrooms'] ? ' selected="selected"' }}>1 {{ 'bathroom'|trans }}</option>
+    {% set current_bathrooms = form_filters['bathrooms'] is defined ? form_filters['bathrooms'] : 0 %}
+    <option value="1"{{ 1 == current_bathrooms ? selected }}>{{ minimum }} 1 {{ 'bathroom'|trans }}</option>
     {% for i in 2..10 %}
-        <option value="{{ i }}"{{ form_filters['bathrooms'] is defined and i == form_filters['bathrooms'] ? ' selected="selected"' }}>{{ i }} {{ bathrooms }}</option>
+        <option value="{{ i }}"{{ i == current_bathrooms ? selected }}>{{ minimum }} {{ i }} {{ bathrooms }}</option>
     {% endfor %}
 </select>

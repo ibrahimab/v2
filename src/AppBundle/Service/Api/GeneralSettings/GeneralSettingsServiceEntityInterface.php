@@ -78,6 +78,36 @@ interface GeneralSettingsServiceEntityInterface
     public function getSummerNewslettersBelgium();
 
     /**
+     * Set searchFormMessageSearchWithoutDatesWinter
+     *
+     * @param string $searchFormMessageSearchWithoutDatesWinter
+     * @return GeneralSettingsServiceEntityInterface
+     */
+    public function setSearchFormMessageSearchWithoutDatesWinter($searchFormMessageSearchWithoutDatesWinter);
+
+    /**
+     * Get searchFormMessageSearchWithoutDatesWinter
+     *
+     * @return string
+     */
+    public function getSearchFormMessageSearchWithoutDatesWinter();
+
+    /**
+     * Set searchFormMessageSearchWithoutDatesSummer
+     *
+     * @param string $searchFormMessageSearchWithoutDatesSummer
+     * @return GeneralSettingsServiceEntityInterface
+     */
+    public function setSearchFormMessageSearchWithoutDatesSummer($searchFormMessageSearchWithoutDatesSummer);
+
+    /**
+     * Get searchFormMessageSearchWithoutDatesSummer
+     *
+     * @return string
+     */
+    public function getSearchFormMessageSearchWithoutDatesSummer();
+
+    /**
      * Set Monitor MySQL value
      *
      * @param string $monitorMySQL

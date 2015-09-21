@@ -5,11 +5,14 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
         container: null,
 
+        htmlBody: null,
+
         initialize: function(filters) {
 
             ns.Search.filters.filters = filters || ns.Search.filters.filters;
             ns.Search.events.bind();
             ns.Search.setContainer();
+            ns.Search.actions.MediaQueryBasedLayoutChanges();
 
             var custom = ns.get('app')['filters'] === undefined ? {} : ns.get('app')['filters']['custom'];
 
@@ -19,10 +22,15 @@ window.Chalet = (function(ns, jq, _, undefined) {
             ns.Search.filters.accommodations = custom['accommodations'] || [];
             ns.Search.filters.bedrooms       = custom['bedrooms']       || null;
             ns.Search.filters.bathrooms      = custom['bathrooms']      || null;
+            ns.Search.filters.weekend        = custom['weekend']        || null;
+            ns.Search.filters.persons        = custom['persons']        || null;
+            ns.Search.filters.sort           = custom['sort']           || null;
+
+            ns.Search.htmlBody = jq('html, body');
         },
 
         setContainer: function() {
-            ns.Search.container = jq('[data-role="search-results"]');
+            ns.Search.container = jq('[data-role="search-container"]');
         },
 
         events: {
@@ -39,11 +47,30 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 body.on('click', '[data-role="remove-region-filter"]', ns.Search.events.removeCustom.region);
                 body.on('click', '[data-role="remove-place-filter"]', ns.Search.events.removeCustom.place);
                 body.on('click', '[data-role="remove-accommodation-filter"]', ns.Search.events.removeCustom.accommodation);
+                body.on('click', '[data-role="remove-bedrooms-filter"]', ns.Search.events.removeCustom.bedrooms);
+                body.on('click', '[data-role="remove-bathrooms-filter"]', ns.Search.events.removeCustom.bathrooms);
+                body.on('click', '[data-role="remove-persons-filter"]', ns.Search.events.removeCustom.persons);
+                body.on('click', '[data-role="remove-weekend-filter"]', ns.Search.events.removeCustom.persons);
 
                 body.on('change', '[data-role="change-bedrooms"]', ns.Search.events.formChanges.bedrooms);
                 body.on('change', '[data-role="change-bathrooms"]', ns.Search.events.formChanges.bathrooms);
+                body.on('change', '[data-role="change-weekend"]', ns.Search.events.formChanges.weekend);
+                body.on('change', '[data-role="change-persons"]', ns.Search.events.formChanges.persons);
+                body.on('change', '[data-role="sort-results"]', ns.Search.events.formChanges.sort);
 
                 body.on('click', '[data-role="save-search"]', ns.Search.actions.save);
+
+                window.onpopstate = function(event) {
+
+                    var uri  = URI();
+                    var page = uri.query(true).p;
+
+                    if (undefined !== page) {
+                        page = parseInt(page, 10);
+                    }
+
+                    ns.Search.actions.search(page, false);
+                };
             },
 
             change: function(event) {
@@ -111,6 +138,38 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                     ns.Search.filters.removeAccommodation(element.data('id'));
                     ns.Search.actions.search();
+                },
+                bedrooms: function(event) {
+                    
+                    event.preventDefault();
+                    var element = jq(this);
+                    
+                    ns.Search.filters.removeBedrooms();
+                    ns.Search.actions.search();
+                },
+                bathrooms: function(event) {
+                    
+                    event.preventDefault();
+                    var element = jq(this);
+                    
+                    ns.Search.filters.removeBathrooms();
+                    ns.Search.actions.search();
+                },
+                persons: function(event) {
+                    
+                    event.preventDefault();
+                    var element = jq(this);
+                    
+                    ns.Search.filters.removePersons();
+                    ns.Search.actions.search();
+                },
+                weekend: function(event) {
+
+                    event.preventDefault();
+                    var element = jq(this);
+                    
+                    ns.Search.filters.removeWeekend();
+                    ns.Search.actions.search();
                 }
             },
 
@@ -143,6 +202,46 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                     ns.Search.actions.search();
                 },
+
+                persons: function(event) {
+
+                    event.preventDefault();
+                    var val = parseInt(jq(this).val(), 10);
+
+                    if (val === 0) {
+                        ns.Search.filters.removePersons();
+                    } else {
+                        ns.Search.filters.setPersons(val);
+                    }
+
+                    ns.Search.actions.search();
+                },
+
+                weekend: function(event) {
+
+                    event.preventDefault();
+                    var val = jq(this).val();
+
+                    if (val === '') {
+                        ns.Search.filters.removePersons();
+                    } else {
+                        ns.Search.filters.setWeekend(val);
+                    }
+
+                    ns.Search.actions.search();
+                },
+
+                sort: function(event) {
+
+                    event.preventDefault();
+                    var val = parseInt(jq(this).val(), 10);
+
+                    if (val === 1 || val === 2 || val === 3) {
+
+                        ns.Search.filters.setSort(val);
+                        ns.Search.actions.search();
+                    }
+                }
             },
 
             clear: function(event) {
@@ -153,7 +252,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 ns.Search.actions.search();
 
                 // resetting all the input fields
-                resetStyledInput();
+                window.recalculateStyledInput();
                 jq('[data-role="change-filter"]').data('action', 'add').attr('data-action', 'add');
             },
 
@@ -230,6 +329,12 @@ window.Chalet = (function(ns, jq, _, undefined) {
                     uri.setQuery('a[]', ns.Search.filters.accommodations);
                 }
 
+                if (ns.Search.filters.types.length > 0) {
+
+                    uri.removeQuery('t[]');
+                    uri.setQuery('t[]', ns.Search.filters.types);
+                }
+
                 if (null !== ns.Search.filters.bedrooms) {
 
                     uri.removeQuery('be');
@@ -242,42 +347,79 @@ window.Chalet = (function(ns, jq, _, undefined) {
                     uri.setQuery('ba', ns.Search.filters.bathrooms);
                 }
 
+                if (null !== ns.Search.filters.persons) {
+
+                    uri.removeQuery('pe');
+                    uri.setQuery('pe', ns.Search.filters.persons);
+                }
+
+                if (null !== ns.Search.filters.weekend) {
+
+                    uri.removeQuery('w');
+                    uri.setQuery('w', ns.Search.filters.weekend);
+                }
+
+                if (null !== ns.Search.filters.sort) {
+
+                    uri.removeQuery('s');
+                    uri.setQuery('s', ns.Search.filters.sort);
+                }
+
                 return uri;
             },
 
             loader: function() {
-                ns.Search.container.prepend('<div class="loading"></div>');
+
+                ns.Search.container.find('[data-role="search-results-container"]').prepend('<div class="loading" style="height: 100px;"></div>').find('[data-role="search-results"]').hide();
+                jq('[data-role="search-filter-box"]').prepend('<div class="loading"></div>');
             },
 
             save: function(event) {
 
                 event.preventDefault();
-                if (false === jq.isEmptyObject(ns.Search.filters.filters)) {
 
-                    var save = ns.Search.actions.url(Routing.generate('save_search'));
+                var save_button = jq('[data-role="save-search"]');
 
-                    jq('[data-role="saved-item"]').animate({color: '#d50d3b', borderColor: '#d50d3b' }, 500)
-                                                  .delay(1000)
-                                                  .animate({color: '#1a3761', borderColor: '#d9d9d9' }, 500);
-
-                    jq.ajax({
-
-                        type: 'post',
-                        url: save.toString(),
-                        success: function(data) {
-
-                            var count = jq('[data-role="searches-count"]');
-                            count.text(parseInt(count.text()) + 1);
-                        }
-                    });
+                if (true === save_button.data('disabled')) {
+                    return;
                 }
+
+                var save = ns.Search.actions.url(Routing.generate('save_search'));
+
+                jq('[data-role="saved-item"]').animate({color: '#d50d3b', borderColor: '#d50d3b' }, 500)
+                                              .delay(1000)
+                                              .animate({color: '#1a3761', borderColor: '#d9d9d9' }, 500);
+
+                jq.ajax({
+
+                    type: 'post',
+                    url: save.toString(),
+                    success: function(data) {
+
+                        var count = jq('[data-role="searches-count"]');
+                        count.text(parseInt(count.text()) + 1);
+
+                        // show confirm message
+                        save_button.find('div').html( save_button.data('confirm-msg') + ' <i class="fi-check"></i>' );
+                        save_button.data('disabled', true).addClass('disabled');
+                    }
+                });
             },
 
-            search: function(page) {
+            search: function(page, pushHistory) {
 
                 ns.Search.actions.loader();
 
                 var url = ns.Search.actions.url(Routing.generate('search_' + ns.get('app')['locale']), page);
+
+                if (false !== pushHistory) {
+
+                    if (window.history.pushState) {
+                        window.history.pushState({path: url}, '', url);
+                    }
+                }
+
+                ns.Search.htmlBody.scrollTop(0);
 
                 jq.ajax({
 
@@ -287,12 +429,45 @@ window.Chalet = (function(ns, jq, _, undefined) {
                         ns.Search.container.replaceWith(data);
                         ns.Search.setContainer();
 
-                        if (window.history.pushState) {
-                            window.history.pushState({path: url}, '', url);
-                        }
+                        // recalculate checkboxes
+                        window.recalculateStyledInput();
+
+                        // reinit images
+                        window.initializeSlick();
+
+                        // rebind autocomplete events
+                        ns.Autocomplete.events.rebind();
                     }
                 });
+            },
+
+            MediaQueryBasedLayoutChanges: function() {
+
+                //
+                // layout changes based on media queries
+                //
+
+                // size: small
+                var smallSize = window.matchMedia( "(max-width: 40em)" );
+                if (smallSize.matches) {
+
+                    // show correct open/close icons (class 'closed') and set the correct status ('closed')
+                    jq('[data-role="closable-filter"]').data('status', 'closed').find('h2').addClass('closed');
+                    jq('[data-role="toggle-filters"]').data('status', 'closed').addClass('closed');
+
+                }
+
+                // size: medium
+                var mediumSize = window.matchMedia( "(min-width: 40.063em) and (max-width: 64em)" );
+                if (mediumSize.matches) {
+
+                    // show smaller placeholder text
+                    var first_option = jq('[data-role="choose-persons-home"] option:first, [data-role="change-persons"] option:first');
+                    first_option.html( first_option.data('smaller-text') );
+
+                }
             }
+
         },
 
         filters: {
@@ -307,9 +482,17 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
             accommodations: [],
 
+            types: [],
+
             bedrooms: null,
 
             bathrooms: null,
+
+            persons: null,
+
+            weekend: null,
+
+            sort: null,
 
             active: function() {
                 return ns.Search.filters.filters;
@@ -364,8 +547,11 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 ns.Search.filters.regions        = [];
                 ns.Search.filters.places         = [];
                 ns.Search.filters.accommodations = [];
+                ns.Search.filters.types          = [];
                 ns.Search.filters.bedrooms       = null;
                 ns.Search.filters.bathrooms      = null;
+                ns.Search.filters.persons        = null;
+                ns.Search.filters.weekend        = null;
             },
 
             addCountry: function(country) {
@@ -384,9 +570,8 @@ window.Chalet = (function(ns, jq, _, undefined) {
             addRegion: function(region) {
 
                 ns.Search.filters.removeRegion(region);
-                console.log(ns.Search.filters.regions);
                 ns.Search.filters.regions.push(region);
-                console.log(ns.Search.filters.regions);
+
                 return ns.Search.filters.regions;
             },
 
@@ -422,6 +607,19 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 return ns.Search.filters.accommodations;
             },
 
+            addType: function(type) {
+
+                ns.Search.filters.removeType(type);
+                ns.Search.filters.types.push(type);
+                return ns.Search.filters.types;
+            },
+
+            removeType: function(type) {
+
+                ns.Search.filters.types = _.reject(ns.Search.filters.types, function(item) { return parseInt(item, 10) === parseInt(type, 10); });
+                return ns.Search.filters.types;
+            },
+
             setBedrooms: function(bedrooms) {
 
                 ns.Search.filters.bedrooms = bedrooms;
@@ -440,6 +638,26 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
             removeBathrooms: function() {
                 ns.Search.filters.bathrooms = null;
+            },
+
+            removePersons: function() {
+                ns.Search.filters.persons = null;
+            },
+
+            setPersons: function(persons) {
+                ns.Search.filters.persons = persons;
+            },
+
+            removeWeekend: function() {
+                ns.Search.filters.weekend = null;
+            },
+
+            setWeekend: function(weekend) {
+                ns.Search.filters.weekend = weekend;
+            },
+
+            setSort: function(direction) {
+                ns.Search.filters.sort = direction;
             }
         },
     };

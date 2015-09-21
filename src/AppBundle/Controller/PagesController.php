@@ -7,6 +7,7 @@ use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterfac
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Autocomplete\AutocompleteService;
 use       AppBundle\Service\FilterService;
+use       AppBundle\Service\Api\Search\SearchBuilder;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -39,6 +40,10 @@ class PagesController extends Controller
         $placeService         = $this->get('app.api.place');
         $typeService          = $this->get('app.api.type');
         $priceService         = $this->get('app.api.price');
+        $seasonService        = $this->get('app.api.season');
+        $searchService        = $this->get('app.api.search');
+        $searchBuilder        = $searchService->build()
+                                              ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0);
 
         $regions              = $regionService->findHomepageRegions(['limit' => 1]);
         $places               = [];
@@ -62,7 +67,7 @@ class PagesController extends Controller
         }
 
         $homepageBlocks       = $homepageBlockService->published();
-        $highlights           = $highlightService->displayable(['limit' => $config['service']['api']['highlight']['limit']]);
+        $highlights           = $highlightService->displayable(['limit' => $config['service']['api']['highlight']['limit'], 'results_per_row' => $config['service']['api']['highlight']['results_per_row'] ]);
         $types                = [];
 
         foreach ($highlights as $highlight) {
@@ -84,17 +89,28 @@ class PagesController extends Controller
         }
 
         $groupedHomepageBlocks = ['left' => [], 'right' => []];
+        $homepageBlocks_left_counter = 0;
+        $homepageBlocks_right_counter = 0;
         foreach ($homepageBlocks as $block) {
 
             if ($block->getPosition() === HomepageBlockServiceEntityInterface::POSITION_LEFT) {
                 $groupedHomepageBlocks['left'][] = $block;
+                $homepageBlocks_left_counter++;
             }
 
             if ($block->getPosition() === HomepageBlockServiceEntityInterface::POSITION_RIGHT) {
                 $groupedHomepageBlocks['right'][] = $block;
+                $homepageBlocks_right_counter++;
             }
         }
 
+        // check if there are 1 left and 2 right homepageBlocks
+        // if not: empty the array
+        if( $homepageBlocks_left_counter<>1 or $homepageBlocks_right_counter<>2 ) {
+            $groupedHomepageBlocks['left'] = array();
+            $groupedHomepageBlocks['right'] = array();
+        }
+        
         return [
 
             'region'         => $region,
@@ -102,6 +118,9 @@ class PagesController extends Controller
             'highlights'     => $highlights,
             'homepageBlocks' => $groupedHomepageBlocks,
             'offers'         => $offers,
+            'weekends'       => $seasonService->weekends($seasonService->seasons()),
+            'accommodations' => $searchBuilder->count(),
+            'regions'        => $regionService->count(),
         ];
     }
 
@@ -273,5 +292,13 @@ class PagesController extends Controller
     public function header()
     {
         return $this->render('pages/header.html.twig');
+    }
+
+    /**
+     * @Route("/zooverawards2015", name="page_zooverawards")
+     */
+    public function zooverawards()
+    {
+        return $this->render('pages/zooverawards.html.twig');
     }
 }
