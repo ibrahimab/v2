@@ -1,6 +1,9 @@
 # Chalet.nl V2 VERSION
 ================================================
 
+## Release 0.0.8
+fixes parameters.yml syntax error (percent sign not allowed without escaping or quotes)
+
 ## Release 0.0.7
 hotfix of adding visual studio settings folder to gitignore
 
