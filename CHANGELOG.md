@@ -1,6 +1,9 @@
 # Chalet.nl V2 VERSION
 ================================================
 
+## Release 0.0.9
+adding htaccess files for every environment
+
 ## Release 0.0.8
 fixes parameters.yml syntax error (percent sign not allowed without escaping or quotes)
 
