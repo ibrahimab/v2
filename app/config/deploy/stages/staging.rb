@@ -7,7 +7,6 @@
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value
 # server 'db.example.com', user: 'deploy', roles: %w{db}
 server 'web01.chalet.nl', user: 'chalet01', roles: %w{app, web}
-set :default_env, { "SYMFONY_ENV" => "stag" }
 set :symfony_env, 'stag'
 
 # role-based syntax
