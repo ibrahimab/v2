@@ -12,13 +12,14 @@ set :app_config_path, fetch(:app_path) + '/config'
 set :application, 'chalet-v2'
 set :repo_url, 'git@github.com:Chalet/chalet-v2.git'
 
+
+set :deploy_to, -> { '/var/www/deploy.chalet.nl' }
+
 # Default branch is :master
 ask :branch, `git tag`.split("\n").last.strip
 
-# Default deploy_to directory is /var/www/my_app_name
-set :deploy_to, '/var/www/new.chalet.nl'
-
-set :tmp_dir, fetch(:deploy_to) + '/tmp'
+# set tmp dir
+set :tmp_dir, -> { fetch(:deploy_to) + '/tmp' }
 
 # Default value for :scm is :git
 # set :scm, :git
@@ -40,6 +41,7 @@ set :linked_dirs, [fetch(:log_path), fetch(:web_path) + '/uploads']
 
 set :file_permissions_paths, [fetch(:log_path), fetch(:cache_path)]
 set :file_permissions_users, ['www-data']
+set :file_permissions_groups, ['www-data']
 
 set :webserver_user, 'www-data'
 
@@ -53,13 +55,11 @@ set :assets_install_path, fetch(:web_path)
 set :assets_install_flags, '--symlink'
 set :assetic_dump_flags, ''
 
-set :composer_install_flags, '--no-dev --optimize-autoloader -vvv'
+set :composer_install_flags, '--no-dev --optimize-autoloader -v --no-interaction'
 set :composer_roles, :all
 set :composer_working_dir, -> { fetch(:release_path) }
 set :composer_dump_autoload_flags, '--optimize'
 set :composer_download_url, 'https://getcomposer.org/installer'
-
-SSHKit.config.command_map[:composer] = "COMPOSER_CACHE_DIR=#{fetch(:tmp_dir)}/.composer php #{shared_path.join('composer.phar')}"
 
 # Default value for default_env is {}
 # set :default_env, { "SYMFONY_ENV" => "stag" }
@@ -72,6 +72,8 @@ namespace :deploy do
   after :starting, 'composer:install_executable'
 
   after :updated, 'chalet:htaccess'
+  before "deploy:updated", "deploy:set_permissions:chgrp"
+  after :updated, 'chalet:symlink_old_classes'
 
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
