@@ -8,6 +8,7 @@
 # server 'db.example.com', user: 'deploy', roles: %w{db}
 server 'web01.chalet.nl', user: 'chalet01', roles: %w{app, web}
 set :symfony_env, 'stag'
+set :controllers_to_clear, ["app_dev.php", "app.php", ""]
 
 # role-based syntax
 # ==================

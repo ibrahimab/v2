@@ -8,7 +8,6 @@ set :web_path, 'web'
 set :log_path, fetch(:app_path) + '/logs'
 set :cache_path, fetch(:app_path) + '/cache'
 set :app_config_path, fetch(:app_path) + '/config'
-set :controllers_to_clear, ["app_*.php"]
 
 set :application, 'chalet-v2'
 set :repo_url, 'git@github.com:Chalet/chalet-v2.git'
@@ -71,7 +70,7 @@ set :keep_releases, 3
 namespace :deploy do
 
   after :starting, 'composer:install_executable'
-  
+
   after :updated, 'chalet:htaccess'
 
   after :restart, :clear_cache do
