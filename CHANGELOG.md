@@ -1,5 +1,8 @@
 # Chalet.nl V2 VERSION
 ================================================
+## Release 0.2.3
+moved assetic:dump and fos:js-routing:dump away from composer and into capistrano
+
 ## Release 0.2.2
 added assetic:dump and fos:js-routing to composer post install cmd
 
