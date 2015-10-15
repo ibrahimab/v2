@@ -13,6 +13,9 @@ namespace :chalet do
       end
     end
   end
+  task :dump_routes do
+    invoke 'symfony:console', 'fos:js-routing:dump', '--no-debug'
+  end
 end
 
 Rake::Task["deploy:cleanup"].clear_actions

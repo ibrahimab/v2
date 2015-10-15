@@ -71,9 +71,11 @@ namespace :deploy do
 
   after :starting, 'composer:install_executable'
 
-  after :updated, 'chalet:htaccess'
-  before "deploy:updated", "deploy:set_permissions:chgrp"
-  after :updated, 'chalet:symlink_old_classes'
+  after  :updated, 'chalet:htaccess'
+  before :updated, 'deploy:set_permissions:chgrp'
+  after  :updated, 'chalet:symlink_old_classes'
+  after  :updated, 'symfony:assetic:dump'
+  after  :updated, 'chalet:dump_routes'
 
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
