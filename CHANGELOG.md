@@ -1,5 +1,8 @@
 # Chalet.nl V2 VERSION
 ================================================
+## Release 0.2.1
+updated config file for staging environment to reflect new structure
+
 ## Release 0.2.0
 fixed bugs in deployment tool and now officially in use
 
