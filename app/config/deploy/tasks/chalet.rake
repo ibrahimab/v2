@@ -15,8 +15,9 @@ namespace :chalet do
   end
 end
 
+Rake::Task["deploy:cleanup"].clear_actions
 namespace :deploy do
-  # overriding default cleanup task
+  # overriding default cleanup task to use sudo
   task :cleanup do
     on release_roles :all do |host|
       releases = capture(:ls, '-xtr', releases_path).split
