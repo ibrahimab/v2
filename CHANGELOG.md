@@ -1,5 +1,8 @@
 # Chalet.nl V2 VERSION
 ================================================
+## Release 0.2.2
+added assetic:dump and fos:js-routing to composer post install cmd
+
 ## Release 0.2.1
 updated config file for staging environment to reflect new structure
 
