@@ -7,7 +7,8 @@
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value
 # server 'db.example.com', user: 'deploy', roles: %w{db}
 
-
+# because of a 'bug' in sshkit, we need to define this in each stage file
+SSHKit.config.command_map[:composer] = "COMPOSER_CACHE_DIR=#{fetch(:tmp_dir)}/.composer php #{shared_path.join('composer.phar')}"
 
 # role-based syntax
 # ==================
