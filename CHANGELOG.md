@@ -1,5 +1,8 @@
 # Chalet.nl V2 VERSION
 ================================================
+## Release 0.2.0
+fixed bugs in deployment tool and now officially in use
+
 ## Release 0.1.0
 this release now has an automated deploy tool, which currently only works for
 the staging environment at new.chalet.nl
