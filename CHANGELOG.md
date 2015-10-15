@@ -1,5 +1,8 @@
 # Chalet.nl V2 VERSION
 ================================================
+## Release 0.2.4
+composer update and moved leafphp to require
+
 ## Release 0.2.3
 moved assetic:dump and fos:js-routing:dump away from composer and into capistrano
 
