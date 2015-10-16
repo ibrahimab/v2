@@ -2,14 +2,21 @@ namespace :chalet do
   task :htaccess do
     on roles(:all) do
       within fetch(:release_path) do
-        execute :mv, "web/htaccess.#{fetch(:symfony_env)}.dist", "web/.htaccess"
+        execute :mv, "web/htaccess.#{fetch(:symfony_env)}.dist", 'web/.htaccess'
       end
     end
   end
   task :symlink_old_classes do
     on roles(:all) do
       within fetch(:release_path) do
-        execute :ln, "-s", fetch(:old_classes_path), fetch(:release_path) + 'src/old-classes'
+        execute :ln, '-s', fetch(:old_classes_path), fetch(:release_path) + 'src/old-classes'
+      end
+    end
+  end
+  task :symlink_old_site do
+    on roles(:all) do
+      within fetch(:release_path) do
+        execute :ln, '-s', fetch(:old_site_path), fetch(:web_path) + '/chalet'
       end
     end
   end
@@ -18,9 +25,9 @@ namespace :chalet do
   end
 end
 
-Rake::Task["deploy:cleanup"].clear_actions
+# overriding default cleanup task to use sudo
+Rake::Task['deploy:cleanup'].clear_actions
 namespace :deploy do
-  # overriding default cleanup task to use sudo
   task :cleanup do
     on release_roles :all do |host|
       releases = capture(:ls, '-xtr', releases_path).split
