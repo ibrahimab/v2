@@ -1,5 +1,8 @@
 # Chalet.nl V2 VERSION
 ================================================
+## Release 0.2.7
+forgot old_site_path from configuration
+
 ## Release 0.2.6
 added symlink to current site in web path
 
