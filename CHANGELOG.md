@@ -1,5 +1,8 @@
 # Chalet.nl V2 VERSION
 ================================================
+## Release 0.2.5
+fixed homepage block images
+
 ## Release 0.2.4
 composer update and moved leafphp to require
 
