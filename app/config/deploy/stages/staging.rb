@@ -23,6 +23,8 @@ set :controllers_to_clear, ["app_dev.php", "app.php", "htaccess.dev.dist", "htac
 # new website is dependent on old site, by using a symlink
 set :old_classes_path, "/var/www/chalet.nl/html_test/admin/siteclass"
 
+set :old_site_path, "/var/www/chalet.nl/html_test"
+
 # role-based syntax
 # ==================
 
