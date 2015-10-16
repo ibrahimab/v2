@@ -211,7 +211,7 @@ class AppExtension extends \Twig_Extension
      * @return []
      */
     public function getTypeImages(TypeServiceEntityInterface $type, $above_limit = 3, $below_limit = 2)
-    {   
+    {
         $accommodationFiles = $this->getFileService('accommodation')->getImages($type->getAccommodation()->getId());
         $typeFiles          = $this->getFileService('type')->getImages($type->getId());
         $images             = $this->getFileService('file')->parse($accommodationFiles);
@@ -364,15 +364,15 @@ class AppExtension extends \Twig_Extension
      */
     public function getHomepageBlockImage(HomepageBlockServiceEntityInterface $homepageBlock)
     {
-        // $homepageBlockId = $homepageBlock->getId();
-        // $file            = $this->getOldImageRoot() . '/cms/homepageblokken/' . $homepageBlockId . '.jpg';
-        // $filename        = 'homepageblokken/0.jpg';
-        //
-        // if (file_exists($file)) {
-        //     $filename = 'homepageblokken/' . $homepageBlockId . '.jpg';
-        // }
-        //
-        // return $this->getOldImageUrlPrefix() . '/' . $filename;
+        $homepageBlockId = $homepageBlock->getId();
+        $file            = $this->getOldImageRoot() . '/cms/homepageblokken/' . $homepageBlockId . '.jpg';
+        $filename        = 'homepageblokken/0.jpg';
+        
+        if (file_exists($file)) {
+            $filename = 'homepageblokken/' . $homepageBlockId . '.jpg';
+        }
+        
+        return $this->getOldImageUrlPrefix() . '/' . $filename;
     }
 
     public function getCountryImage($countryId)
