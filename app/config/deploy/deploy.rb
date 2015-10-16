@@ -74,6 +74,7 @@ namespace :deploy do
   after  :updated, 'chalet:htaccess'
   before :updated, 'deploy:set_permissions:chgrp'
   after  :updated, 'chalet:symlink_old_classes'
+  after  :updated, 'chalet:symlink_old_site'
   after  :updated, 'symfony:assetic:dump'
   after  :updated, 'chalet:dump_routes'
 

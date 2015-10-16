@@ -1,5 +1,8 @@
 # Chalet.nl V2 VERSION
 ================================================
+## Release 0.2.6
+added symlink to current site in web path
+
 ## Release 0.2.5
 fixed homepage block images
 
