@@ -138,17 +138,21 @@
 
                     <div id="extras" class="extras">
                         <div class="small-12 medium-8 large-9 columns">
-                            <h3>Extra opties winter 2014/2015</h3>
+                            <h3>Extra opties {{ currentSeason != null ? currentSeason['name'] }}</h3>
                         </div>
                         <div class="small-12 medium-4 large-3 columns">
                             <select class="radius" data-role="extra-options-week">
+                                <option value="0"{{ currentWeekend == null ? ' selected="selected"' }}>{{ 'choose-arrival-date'|trans }}</option>
                                 {% for timestamp, weekend in weekends %}
-                                <option value="{{ timestamp }}">{{ weekend }}</option>
+                                <option value="{{ timestamp }}"{{ currentWeekend == timestamp ? ' selected="selected"' }}>{{ weekend }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="table-wrapper">
                             {% for kind in options %}
+                            {% if loop.index == 2 %}
+                                </div><div class="table-wrapper hide" data-show-more-element="extra-options">
+                            {% endif %}
                             <table>
                                 <thead>
                                     <tr>
@@ -192,17 +196,25 @@
                                 </tbody>
                             </table>
                             {% endfor %}
-                            {% if website_concern.get() == constant('WEBSITE_CHALET_NL', website_concern) %}
+                            {% if show_sunny_cars() %}
                                 <table>
                                     <thead>
                                         <tr>
                                             <th><span class="price has-tip tip-left radius">Autohuur</span></th>
                                             <th></th>
-                                            <th>Een auto huren? <a href="#" data-role="external-popup" data-uri="{{ sunny_cars }}" data-width="1000" data-height="330">Boek dan direct bij Sunny Cars.</a></th>
+                                            <th>Een auto huren? <a href="#" data-role="external-popup" data-uri="{{ sunnyCars }}" data-width="1000" data-height="330">Boek dan direct bij Sunny Cars.</a></th>
                                         </tr>
                                     </thead>
                                 </table>
                             {% endif %}
+                        </div>
+                        <div class="readmore">
+                            <a href="#" class="button blank small radius" title="Toon alle extra opties" data-action="show-more" data-element="extra-options" data-open-title="Toon alle extra opties" data-close-title="Verberg extra opties">
+                                <i class="sprite sprite-icon-close-all"></i>Toon alle extra opties
+                            </a>
+                            <a href="#" class="button small radius right open" title="Prijs berekenen">
+                                Prijs berekenen
+                            </a>
                         </div>
                     </div>
                     <div id="types-other" class="table-wrapper">

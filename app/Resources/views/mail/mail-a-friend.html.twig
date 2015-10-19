@@ -39,7 +39,7 @@
 {% set offer         = offers is defined and offers[type.getId()] is defined %}
 {% set accommodation = type.getAccommodation() %}
 {% set place         = accommodation.getPlace() %}
-{% set region        = place.getRegion}
+{% set region        = place.getRegion %}
 {% set country       = place.getCountry() %}
 {% set link          = locale_path('show_type', { beginCode: country.getStartCode(), typeId: type.id }) %}
 

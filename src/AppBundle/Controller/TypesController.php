@@ -83,7 +83,8 @@ class TypesController extends Controller
 
         $seasonService = $this->get('app.api.season');
         $seasons       = $seasonService->seasons();
-        $seasonId      = (isset($seasons[0]) ? $seasons[0]['id'] : null);
+        $currentSeason = (isset($seasons[0]) ? $seasons[0] : null);
+        $seasonId      = (null !== $currentSeason ? $currentSeason['id'] : null);
 
         $optionService = $this->get('app.api.option');
         $options       = $optionService->options($type->getAccommodationId(), $seasonId, $request->query->get('w', null));
@@ -98,8 +99,9 @@ class TypesController extends Controller
             'offers'             => $offers,
             'options'            => $options,
             'weekends'           => $seasonService->weekends($seasons),
-            'sunny_cars'         => $this->container->getParameter('sunny_cars'),
-            'current_weekend'    => $request->query->get('w', null),
+            'sunnyCars'          => $this->container->getParameter('sunny_cars'),
+            'currentWeekend'     => $request->query->get('w', null),
+            'currentSeason'      => $currentSeason,
         ];
     }
 
