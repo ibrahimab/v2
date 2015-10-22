@@ -53,3 +53,12 @@ services:
     app.file.theme:
         class: AppBundle\Service\File\Theme
         arguments: [@app.mongo, %mongodb_files_database%]
+        
+    app.price_calculator.form:
+        class: AppBundle\Service\PriceCalculator\FormService
+        arguments: [@app.form.price_calculator.step_one]
+        
+    app.price_calculator.calculator:
+        class: AppBundle\Service\PriceCalculator\CalculatorService
+        arguments: [@app.api.type, @app.api.option, @app.price_calculator.form]
+        

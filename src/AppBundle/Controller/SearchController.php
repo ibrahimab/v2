@@ -43,20 +43,20 @@ class SearchController extends Controller
         $reroute       = $this->reroute($filterService, $request->query->all());
 
         if (count($reroute) > 0) {
-            return $this->redirect($this->generateUrl('search_' . $locale, $reroute), 301);
+            return $this->redirectToRoute('search_' . $locale, $reroute, 301);
         }
 
         $start    = microtime(true);
-        $c        = $request->query->get('c',  []);
-        $r        = $request->query->get('r',  []);
-        $pl       = $request->query->get('pl', []);
-        $a        = $request->query->get('a',  []);
-        $t        = $request->query->get('t',  []);
-        $be       = $request->query->get('be', null);
-        $ba       = $request->query->get('ba', null);
-        $w        = $request->query->get('w',  null);
-        $pe       = $request->query->get('pe', null);
-        $s        = $request->query->get('s',  Sorter::SORT_NORMAL);
+        $c        = $request->query->get('c',  []);   // country
+        $r        = $request->query->get('r',  []);   // region
+        $pl       = $request->query->get('pl', []);   // place
+        $a        = $request->query->get('a',  []);   // accommodation
+        $t        = $request->query->get('t',  []);   // type
+        $be       = $request->query->get('be', null); // bedrooms
+        $ba       = $request->query->get('ba', null); // bathrooms
+        $w        = $request->query->get('w',  null); // weekend
+        $pe       = $request->query->get('pe', null); // persons
+        $s        = $request->query->get('s',  Sorter::SORT_NORMAL); // sort
         $page     = intval($request->query->get('p'));
         $page     = ($page === 0 ? $page : ($page - 1));
         $per_page = intval($this->container->getParameter('app')['results_per_page']);

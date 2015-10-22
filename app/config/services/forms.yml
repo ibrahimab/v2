@@ -1,0 +1,5 @@
+services:
+    app.form.price_calculator.step_one:
+        class: AppBundle\Form\PriceCalculator\StepOneForm
+        tags:
+            - { name: form.type, alias: step_one_form }

@@ -1,0 +1,63 @@
+{% extends 'layouts/default.html.twig' %}
+
+{% set locale                 = get_locale() %}
+{% set accommodation          = type.getAccommodation() %}
+{% set country, region, place = accommodation.getPlace().getCountry(), accommodation.getPlace().getRegion(), accommodation.getPlace() %}
+
+{%
+    set localeData = {
+
+        name: {
+
+            country:       country.getLocaleName(locale),
+            region:        region.getLocaleName(locale),
+            place:         place.getLocaleName(locale),
+            accommodation: accommodation.getLocaleName(locale),
+            type:          type.getLocaleName(locale)
+        },
+        seo:  {
+
+            country: country.getLocaleName(locale),
+            region:  region.getLocaleSeoName(locale),
+            place:   place.getLocaleSeoName(locale)
+        }
+    }
+%}
+
+{% block breadcrumbs %}
+
+    {{
+        breadcrumbs({
+
+            countryName:       localeData['name']['country'],
+            regionName:        localeData['name']['region'],
+            placeName:         localeData['name']['place'],
+            accommodationName: localeData['name']['accommodation']
+
+        }, {
+
+            countrySlug: localeData['seo']['country'],
+            regionSlug:  localeData['seo']['region'],
+            placeSlug:   localeData['seo']['place'],
+            beginCode:   country.getStartCode(),
+            typeId:      type.getId()
+        })
+    }}
+
+{% endblock %}
+
+{% block body %}
+
+    {{ parent() }}
+
+    <h1>Prijs berekenen</h1>
+
+    {{ form_start(form) }}
+    <table>
+        <tr>
+            <td>{{ localeData['name']['type'] }}</td>
+        </tr>
+    </table>
+    {{ form_end(form) }}
+
+{% endblock body %}

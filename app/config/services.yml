@@ -10,3 +10,4 @@ imports:
     - { resource: services/app.yml }
     - { resource: services/mailers.yml }
     - { resource: services/security.yml }
+    - { resource: services/forms.yml }
