@@ -50,14 +50,47 @@
 
     {{ parent() }}
 
-    <h1>Prijs berekenen</h1>
+    <section class="price-calculator-page" id="price-calculator">
 
-    {{ form_start(form) }}
-    <table>
-        <tr>
-            <td>{{ localeData['name']['type'] }}</td>
-        </tr>
-    </table>
-    {{ form_end(form) }}
+        {{ form_start(form) }}
+
+        <div class="row">
+
+            {{ form_widget(form.type) }}
+            {{ form_widget(form.place) }}
+
+            <div class="small-12 medium-8 large-8 columns">
+
+                <h1>Prijs berekenen</h1>
+                <div class="row">
+                    <div class="large-12 columns">
+                        {{ ('type.kind.' ~ accommodation.getKindIdentifier() )|trans|capitalize ~ ' ' ~ localeData['name']['accommodation'] }} in {{ localeData['name']['place'] }}, {{ localeData['name']['country'] }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-12 columns">
+                        {{ form_label(form.person) }}
+                        {{ form_widget(form.person) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-12 columns">
+                        {{ form_label(form.weekend) }}
+                        {{ form_widget(form.weekend) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-12 columns">
+                        {{ form_widget(form.save) }}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        {{ form_end(form) }}
+
+    </section>
 
 {% endblock body %}

@@ -20,10 +20,10 @@ class StepOneForm extends AbstractType
     {
         $entity = $builder->getData();
 
-        $builder->add('type', 'form', ['label' => $entity->type])
-                ->add('place', 'form', ['label' => $entity->place])
-                ->add('person', 'choice', ['choices' => $entity->persons])
-                ->add('weekend', 'choice', ['choices' => $entity->weekends])
+        $builder->add('type', 'hidden', ['label' => $entity->type])
+                ->add('place', 'hidden', ['label' => $entity->place])
+                ->add('person', 'choice', ['choices' => $entity->persons, 'placeholder' => ''])
+                ->add('weekend', 'choice', ['choices' => $entity->weekends, 'placeholder' => ''])
                 ->add('save', 'submit', ['label' => 'Volgende']);
     }
 

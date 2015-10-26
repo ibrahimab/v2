@@ -1,5 +1,7 @@
 <?php
 namespace AppBundle\Entity\Price;
+
+use       AppBundle\Concern\WebsiteConcern;
 use       AppBundle\Entity\BaseRepository;
 use       AppBundle\Service\Api\Price\PriceServiceRepositoryInterface;
 use       Doctrine\ORM\Query;
@@ -8,7 +10,7 @@ use       Doctrine\ORM\Query;
  * PriceRepository
  *
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
- * @version 0.0.5
+ * @version 0.2.7
  * @since   0.0.5
  * @package Chalet
  */
@@ -281,12 +283,103 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
 
         return array_merge($arrangements, $accommodations);
     }
-
+    
+    /**
+     * @param  integer $weekend
+     * @param  integer $persons
+     * @return array
+     */
     public function getDataByWeekendAndPersons($weekend, $persons)
     {
         $arrangements   = $this->getArrangementDataBy($weekend, $persons);
         $accommodations = $this->getAccommodationDataByPersons($persons);
 
         return array_merge($arrangements, $accommodations);
+    }
+    
+    /**
+     * @param  TypeServiceEntityInterface $type
+     * @return array
+     */
+    public function getAvailableWeekends($type)
+    {
+        $qb     = $this->getEntityManager()->getConnection()->createQueryBuilder();
+        $expr   = $qb->expr();
+        $resale = $this->getWebsiteConcern()->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE);
+        
+        if ($type->getAccommodation()->getShow() === 3) {
+            
+            $qb->select('t.week, s.tonen, t.c_bruto, t.c_verkoop_site, t.beschikbaar, t.blokkeren_wederverkoop, t.wederverkoop_verkoopprijs, s.seizoen_id')
+               ->from('tarief t, seizoen s', '')
+               ->andWhere('t.seizoen_id = s.seizoen_id')
+               ->andWhere($expr->eq('t.type_id', ':typeId'))
+               ->setParameters([
+                   'typeId' => $type->getId(),
+               ]);
+               
+            $statement = $qb->execute();
+            $results   = $statement->fetchAll();
+            $weekends  = [];
+            
+            foreach ($results as $result) {
+                
+                if ($result['tonen'] > 1 && $result['c_bruto'] > 0 && $result['c_verkoop_site'] && intval($result['beschikbaar']) == 1 && ($result['blokkeren_wederverkoop'] == 0 || !$resale) && ($result['wederverkoop_verkoopprijs'] || !$resale)) {
+                    $weekends[] = intval($result['week']);
+                }
+            }
+            
+        } else {
+            
+            $qb->select('t.week, s.tonen, t.bruto, t.arrangementsprijs, t.beschikbaar, t.blokkeren_wederverkoop, t.wederverkoop_verkoopprijs, t.wederverkoop_opslag_percentage, s.seizoen_id')
+               ->from('tarief t, seizoen s', '')
+               ->andWhere('t.seizoen_id = s.seizoen_id')
+               ->andWhere($expr->eq('t.type_id', ':typeId'))
+               ->setParameters([
+                   'typeId' => $type->getId(),
+               ]);
+               
+            $statement = $qb->execute();
+            $results   = $statement->fetchAll();
+            $weekends  = [];
+            
+            foreach ($results as $result) {
+                
+                if ($result['tonen'] > 1 && ($result['bruto'] > 0 || $result['arrangementsprijs'] > 0) && $result['beschikbaar'] == 1 && ($result['blokkeren_wederverkoop'] == 0 || !$resale) && ($result['wederverkoop_verkoopprijs'] > 0 || !$resale)) {
+                    $weekends[] = intval($result['week']);
+                }
+            }
+        }
+        
+        return $weekends;
+    }
+    
+    /**
+     * @param  integer $typeId
+     * @return array
+     */
+    public function getBookablePersons($typeId, $weekends)
+    {
+        $connection = $this->getEntityManager()->getConnection();
+        $qb         = $connection->createQueryBuilder();
+        $expr       = $qb->expr();
+        
+        $qb->select('DISTINCT tp.personen')
+           ->from('tarief_personen', 'tp')
+           ->andWhere($expr->eq('tp.type_id', ':typeId'))
+           ->andWhere($expr->in('tp.week', $weekends))
+           ->orderBy('tp.personen')
+           ->setParameters([
+               'typeId'   => $typeId,
+           ]);
+           
+         $statement = $qb->execute();
+         $results   = $statement->fetchAll();
+         $persons   = [];
+         
+         foreach ($results as $result) {
+             $persons[] = intval($result['personen']);
+         }
+         
+         return $persons;
     }
 }

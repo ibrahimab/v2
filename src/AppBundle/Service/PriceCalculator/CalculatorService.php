@@ -1,9 +1,9 @@
 <?php
 namespace AppBundle\Service\PriceCalculator;
+
 use       AppBundle\Service\PriceCalculator\FormService;
-use       AppBundle\Service\Api\Type\TypeService;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
-use       AppBundle\Service\Api\Option\OptionService;
+use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
 
 /**
  * PriceCalculatorService
@@ -16,71 +16,155 @@ use       AppBundle\Service\Api\Option\OptionService;
  class CalculatorService
  {
      /**
+      * @var FormService
+      */
+     private $formService;
+
+     /**
       * @var TypeServiceEntityInterface
       */
      private $type;
      
      /**
+      * @var PlaceServiceEntityInterface
+      */
+     private $place;
+
+     /**
       * @var integer
       */
-     private $typeId;
-     
+     private $person;
+
      /**
-      * @var TypeService
+      * @var integer
       */
-     private $typeService;
-     
+     private $weekend;
+
+
      /**
-      * @var FormService
+      * Constructor
+      *
+      * @param FormService $formService
       */
-     private $formService;
-     
-     /**
-      * @param ContainerInterface $container
-      */
-     public function __construct(TypeService $typeService, OptionService $optionService, FormService $formService)
+     public function __construct(FormService $formService)
      {
-         $this->typeService   = $typeService;
-         $this->optionService = $optionService;
+         $this->formService = $formService;
      }
-     
+
      /**
-      * @param integer $typeId
-      * @return PriceCalculatorService
+      * @return FormService
       */
-     public function setTypeId($typeId)
+     public function getFormService()
      {
-         $this->typeId = $typeId;
+         if (null === $this->formService->getCalculatorService()) {
+             $this->formService->setCalculatorService($this);
+         }
+         
+         return $this->formService;
      }
-     
+
+     /**
+      * @param  integer           $typeId
+      * @return CalculatorService
+      */
+     public function setType(TypeServiceEntityInterface $type)
+     {
+         $this->type = $type;
+         return $this;
+     }
+
      /**
       * @return TypeServiceEntityInterface
       */
-     public function type()
+     public function getType()
      {
-         if (null === $this->type) {
-             $this->type = $this->typeService->find(['id' => $this->typeId]);
-         }
-         
          return $this->type;
      }
      
      /**
-      * @return array
+      * @param PlaceServiceEntityInterface $place
+      * @return CalculatorService
       */
-     public function options()
+     public function setPlace(PlaceServiceEntityInterface $place)
      {
-         if (null === $this->options) {
-             $this->options = $this->optionService->options($this->type()->getId());
-         }
-         
-         return $this->options;
+         $this->place = $place;
+         return $this;
      }
      
-     public function form()
+     /**
+      * @return PlaceServiceEntityInterface
+      */
+     public function getPlace()
      {
-         if (null === $this->form) {
-             $this->form = $this->formService->stepOneForm();
-         }
+         return $thiss;
      }
+
+     /**
+      * @param integer            $person
+      * @return CalculatorService
+      */
+     public function setPerson($person)
+     {
+         $this->person = $person;
+         return $this;
+     }
+
+     /**
+      * @return integer
+      */
+     public function getPerson()
+     {
+         return $this->person;
+     }
+     
+     /**
+      * @param  $persons
+      * @return CalculatorService
+      */
+     public function setPersons($persons)
+     {
+         $this->persons = $persons;
+         return $this;
+     }
+     
+     public function getPersons()
+     {
+         return $this->persons;
+     }
+
+	 /**
+	  * @param integer 			  $weekend
+	  * @return CalculatorService
+	  */
+	 public function setWeekend($weekend)
+	 {
+	 	$this->weekend = $weekend;
+		return $this;
+	 }
+
+	 /**
+	  * @return integer
+	  */
+	 public function getWeekend()
+	 {
+	 	return $this->weekend;
+    }
+    
+    /**
+     * @param  array       $weekends
+     * @return FormService
+     */
+    public function setWeekends($weekends)
+    {
+        $this->weekends = $weekends;
+        return $this;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getWeekends()
+    {
+        return $this->weekends;
+    }
  }

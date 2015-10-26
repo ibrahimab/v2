@@ -1,6 +1,8 @@
 <?php
 namespace AppBundle\Controller;
+
 use       AppBundle\Annotation\Breadcrumb;
+use       AppBundle\Service\PriceCalculator\FormService;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -25,53 +27,66 @@ class PriceCalculatorController extends Controller
      * @Route(name="calculate_price_form_nl", path="/types/{typeId}/prijs-berekenen", requirements={
      *     "typeId": "\d+"
      * })
+     * @Route(name="old_calculate_price_form", path="/calc.php")
      * @Breadcrumb(name="show_country",    title="{countryName}",         path="show_country", pathParams={"countrySlug"})
      * @Breadcrumb(name="show_region",     title="{regionName}",          path="show_region",  pathParams={"regionSlug"})
      * @Breadcrumb(name="show_place",      title="{placeName}",           path="show_place",   pathParams={"placeSlug"})
      * @Breadcrumb(name="show_type",       title="{accommodationName}",   path="show_type",    pathParams={"beginCode", "typeId"})
      * @Breadcrumb(name="calculate_price", title="calculate-price-title", translate=true,      active=true)
      */
-    public function create(Request $request, $typeId)
+    public function create(Request $request, $typeId = null)
     {
         // redirect old url to new one
         if (false !== ($response = $this->redirectOldRoute($request))) {
             return $response;
         }
 
-        $calculatorService = $this->get('app.price_calculator.calculator');
-        $calculatorService->setTypeId($typeId);
+        // get type
+        $type = $this->get('app.api.type')->findById($typeId);
 
-        if (null === $calculatorService->type()) {
+        if (null === $type) {
             throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found');
         }
+        
+        $priceService = $this->get('app.api.price');
+        $weekends     = $priceService->getAvailableWeekends($type);
+        $persons      = $priceService->getBookablePersons($type->getId(), $weekends);
+        
+        $weekendsFormatted = [];
+        $date              = new \DateTime();
+        $locale            = $request->getLocale();
+        $timezone          = $date->getTimezone()->getName();
+        $formatter         = new \IntlDateFormatter($locale, \IntlDateFormatter::FULL, \IntlDateFormatter::FULL, $timezone, \IntlDateFormatter::GREGORIAN);
+        $formatter->setPattern('eeee dd MMMM y');
+        
+        foreach ($weekends as $key => $weekend) {
+            $weekendsFormatted[$weekend] = $formatter->format($date->setTimestamp($weekend));
+        }
+        
+        $personsFormatted = [];
+        $translator       = $this->get('translator');
+        foreach ($persons as $person) {
+            $personsFormatted[$person] = $person . ' ' . strtolower($translator->trans('person' . ($person > 1 ? 's' : '')));
+        }
 
-        $locale   = $request->getLocale();
-        $type     = $calculatorService->type();
-        $place    = $type->getAccommodation()->getPlace();
-        $options  = $calculatorService->options();
-        $persons  = [];
-        $weekends = [];
-        $stepOne  = new \AppBundle\Entity\PriceCalculator\StepOne([
+        $calculatorService = $this->get('app.price_calculator.calculator');
+        $calculatorService->setType($type)
+                          ->setPerson($request->query->get('pe', null))
+                          ->setPersons($personsFormatted)
+                          ->setWeekend($request->query->get('w', null))
+                          ->setWeekends($weekendsFormatted);
+                        
+        return $this->render('price_calculator/create.html.twig', [
 
-            'type'     => $type->getLocaleName($locale),
-            'place'    => $place->getLocaleName($locale),
-            'person'   => $request->query->get('pe', null),
-            'persons'  => $persons,
-            'weekend'  => $request->query->get('w', null),
-            'weekends' => $weekends,
-        ]);
-
-        $form = $this->createForm($this->get('app.form.price_calculator.step_one'), $stepOne);
-
-        return $this->render('price_calculator/index.html.twig', [
-
-            'type'    => $type,
-            'options' => $options,
-            'form'    => $form->createView(),
+            'type'    => $calculatorService->getType(),
+            'form'    => $calculatorService->getFormService()->create(FormService::FORM_STEP_ONE)->createView(),
         ]);
     }
 
-    public function store()
+    /**
+     * @return JsonResponse
+     */
+    public function stepOne()
     {
         return new JsonResponse([
             'type' =>'success',
@@ -85,7 +100,7 @@ class PriceCalculatorController extends Controller
     public function redirectOldRoute(Request $request)
     {
         // checking if requested path is actually the old one
-        if (null !== ($path = $request->get('pathInfo', null)) && rtrim($path, '/calc.php') === '') {
+        if (rtrim($request->getPathInfo(), '/calc.php') === '') {
 
             $query  = $request->query;
             $params = ['typeId' => $query->get('tid', null)];
