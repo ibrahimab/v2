@@ -24,17 +24,18 @@ use       Symfony\Component\HttpFoundation\JsonResponse;
 class PriceCalculatorController extends Controller
 {
     /**
-     * @Route(name="calculate_price_form_nl", path="/types/{typeId}/prijs-berekenen", requirements={
+     * @Route(name="price_calculator_step_one_nl", path="/types/{typeId}/prijs-berekenen", requirements={
      *     "typeId": "\d+"
      * })
      * @Route(name="old_calculate_price_form", path="/calc.php")
+     * @Method("GET")
      * @Breadcrumb(name="show_country",    title="{countryName}",         path="show_country", pathParams={"countrySlug"})
      * @Breadcrumb(name="show_region",     title="{regionName}",          path="show_region",  pathParams={"regionSlug"})
      * @Breadcrumb(name="show_place",      title="{placeName}",           path="show_place",   pathParams={"placeSlug"})
      * @Breadcrumb(name="show_type",       title="{accommodationName}",   path="show_type",    pathParams={"beginCode", "typeId"})
      * @Breadcrumb(name="calculate_price", title="calculate-price-title", translate=true,      active=true)
      */
-    public function create(Request $request, $typeId = null)
+    public function stepOne(Request $request, $typeId = null)
     {
         // redirect old url to new one
         if (false !== ($response = $this->redirectOldRoute($request))) {
@@ -76,21 +77,61 @@ class PriceCalculatorController extends Controller
                           ->setWeekend($request->query->get('w', null))
                           ->setWeekends($weekendsFormatted);
                         
-        return $this->render('price_calculator/create.html.twig', [
+        return $this->render('price_calculator/step_one.html.twig', [
 
-            'type'    => $calculatorService->getType(),
+            'type'    => $type,
             'form'    => $calculatorService->getFormService()->create(FormService::FORM_STEP_ONE)->createView(),
         ]);
     }
 
     /**
-     * @return JsonResponse
+     * @Route(name="price_calculator_step_two_nl", path="/types/{typeId}/prijs-berekenen", requirements={
+     *     "typeId": "\d+"
+     * })
+     * @Method("POST")
+     * @Breadcrumb(name="show_country",    title="{countryName}",         path="show_country", pathParams={"countrySlug"})
+     * @Breadcrumb(name="show_region",     title="{regionName}",          path="show_region",  pathParams={"regionSlug"})
+     * @Breadcrumb(name="show_place",      title="{placeName}",           path="show_place",   pathParams={"placeSlug"})
+     * @Breadcrumb(name="show_type",       title="{accommodationName}",   path="show_type",    pathParams={"beginCode", "typeId"})
+     * @Breadcrumb(name="calculate_price", title="calculate-price-title", translate=true,      active=true)
      */
-    public function stepOne()
+    public function stepTwo(Request $request, $typeId)
     {
-        return new JsonResponse([
-            'type' =>'success',
+        // get type
+        $type = $this->get('app.api.type')->findById($typeId);
+        
+        if (null === $type) {
+            throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found');
+        }
+        
+        $optionService     = $this->get('app.api.option');
+        $options           = $optionService->options($type->getAccommodationId());
+        
+        $calculatorService = $this->get('app.price_calculator.calculator');
+        $calculatorService->setType($type)
+                          ->setOptions($options);
+        
+        return $this->render('price_calculator/step_two.html.twig', [
+            
+            'type' => $type,
+            'form' => $calculatorService->getFormService()->create(FormService::FORM_STEP_TWO)->createView(),
         ]);
+    }
+    
+    /**
+     * @Route(name="price_calculator_step_three_nl", path="/types/{typeId}/prijs-berekend", requirements={
+     *     "typeId": "\d+"
+     * })
+     * @Method("POST")
+     * @Breadcrumb(name="show_country",    title="{countryName}",          path="show_country", pathParams={"countrySlug"})
+     * @Breadcrumb(name="show_region",     title="{regionName}",           path="show_region",  pathParams={"regionSlug"})
+     * @Breadcrumb(name="show_place",      title="{placeName}",            path="show_place",   pathParams={"placeSlug"})
+     * @Breadcrumb(name="show_type",       title="{accommodationName}",    path="show_type",    pathParams={"beginCode", "typeId"})
+     * @Breadcrumb(name="calculate_price", title="price-calculated-title", translate=true,      active=true)
+     */
+    public function stepThree(Request $request, $typeId)
+    {
+        return $this->render('price_calculator/step_three.html.twig');
     }
 
     /**

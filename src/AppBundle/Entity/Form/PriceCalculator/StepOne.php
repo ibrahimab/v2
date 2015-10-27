@@ -10,15 +10,10 @@ namespace AppBundle\Entity\Form\PriceCalculator;
 class StepOne
 {
     /**
-     * @var string
+     * @var integer
      */
-    public $type;
-
-    /**
-     * @var string
-     */
-    public $place;
-
+    public $person;
+    
     /**
      * @var array
      */
@@ -27,15 +22,10 @@ class StepOne
     /**
      * @var integer
      */
-    public $person;
+    public $weekend;
 
     /**
      * @var array
      */
     public $weekends;
-
-    /**
-     * @var integer
-     */
-    public $weekend;
 }

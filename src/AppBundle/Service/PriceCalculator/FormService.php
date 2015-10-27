@@ -2,7 +2,9 @@
 namespace AppBundle\Service\PriceCalculator;
 
 use       AppBundle\Form\PriceCalculator\StepOneForm;
+use       AppBundle\Form\PriceCalculator\StepTwoForm;
 use       AppBundle\Entity\Form\PriceCalculator\StepOne as StepOneEntity;
+use       AppBundle\Entity\Form\PriceCalculator\StepTwo as StepTwoEntity;
 use       Symfony\Component\Form\FormFactoryInterface;
 use		  Symfony\Component\Form\FormTypeInterface;
 use		  Symfony\Component\Form\FormView;
@@ -20,6 +22,11 @@ class FormService
      * @const integer
      */
     const FORM_STEP_ONE = 1;
+    
+    /**
+     * @const integer
+     */
+    const FORM_STEP_TWO = 2;
     
     /**
      * @var FormFactoryInterface
@@ -94,6 +101,16 @@ class FormService
         $this->forms[self::FORM_STEP_ONE] = $form;
         return $this;
     }
+    
+    /**
+     * @param  StepTwoForm $form
+     * @return FormService
+     */
+    public function setStepTwoForm(StepTwoForm $form)
+    {
+        $this->forms[self::FORM_STEP_TWO] = $form;
+        return $this;
+    }
 
     /**
      * @param  integer     $formId
@@ -133,6 +150,10 @@ class FormService
                 $entity = $this->getStepOneEntity();
             break;
             
+            case self::FORM_STEP_TWO:
+                $entity = $this->getStepTwoEntity();
+            break;
+            
             default:
                 throw new EntityNotFoundException(sprintf('Could not found entity for form ID=%s', $formId));
         }
@@ -149,7 +170,6 @@ class FormService
 
             $entity           = new StepOneEntity();
             $entity->type     = $this->calculatorService->getType()->getLocaleName($this->locale);
-            $entity->place    = $this->calculatorService->getType()->getAccommodation()->getPlace()->getLocaleName($this->locale);
             $entity->person   = $this->calculatorService->getPerson();
             $entity->persons  = $this->calculatorService->getPersons();
             $entity->weekend  = $this->calculatorService->getWeekend();
@@ -159,5 +179,21 @@ class FormService
         }
         
         return $this->entities[self::FORM_STEP_ONE];
+    }
+    
+    /**
+     * @return StepTwoEntity
+     */
+    public function getStepTwoEntity()
+    {
+        if (!isset($this->entities[self::FORM_STEP_TWO])) {
+            
+            $entity          = new StepTwoEntity();
+            $entity->options = $this->calculatorService->getOptions();
+            
+            $this->entities[self::FORM_STEP_TWO] = $entity;
+        }
+        
+        return $this->entities[self::FORM_STEP_TWO];
     }
 }

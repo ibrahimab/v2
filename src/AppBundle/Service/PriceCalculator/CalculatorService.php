@@ -3,7 +3,6 @@ namespace AppBundle\Service\PriceCalculator;
 
 use       AppBundle\Service\PriceCalculator\FormService;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
-use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
 
 /**
  * PriceCalculatorService
@@ -24,11 +23,6 @@ use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
       * @var TypeServiceEntityInterface
       */
      private $type;
-     
-     /**
-      * @var PlaceServiceEntityInterface
-      */
-     private $place;
 
      /**
       * @var integer
@@ -39,6 +33,11 @@ use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
       * @var integer
       */
      private $weekend;
+     
+     /**
+      * @var array
+      */
+     private $options;
 
 
      /**
@@ -166,5 +165,23 @@ use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
     public function getWeekends()
     {
         return $this->weekends;
+    }
+    
+    /**
+     * @param  array             $options
+     * @return CalculatorService
+     */
+    public function setOptions($options)
+    {
+        $this->options = $options;
+        return $this;
+    }
+    
+    /**
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
     }
  }

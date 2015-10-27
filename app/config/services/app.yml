@@ -59,6 +59,7 @@ services:
         arguments: [@form.factory]
         calls:
             - [setStepOneForm, [@app.form.price_calculator.step_one]]
+            - [setStepTwoForm, [@app.form.price_calculator.step_two]]
             - [setLocale, [@=service('app.concern.locale').get()]]
 
     app.price_calculator.calculator:
