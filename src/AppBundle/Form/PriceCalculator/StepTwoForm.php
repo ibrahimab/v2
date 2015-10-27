@@ -2,6 +2,7 @@
 namespace AppBundle\Form\PriceCalculator;
 
 use       AppBundle\Form\PriceCalculator\Type\OptionGroup;
+use       AppBundle\Form\PriceCalculator\Type\CancellationInsurance;
 use       Symfony\Component\Form\AbstractType;
 use       Symfony\Component\Form\FormBuilderInterface;
 
@@ -21,12 +22,17 @@ class StepTwoForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $entity = $builder->getData();
-        
-        // $builder->add('emails', 'collection', [
-        //     'type' => 'email',
-        // ]);
+
         $builder->add('options', 'collection', [
-            'type' => new OptionGroup,
+            
+            'label' => false,
+            'type'  => new OptionGroup,
+        ]);
+        
+        $builder->add('cancellation_insurances', 'collection', [
+            
+            'label' => false,
+            'type'  => new CancellationInsurance,
         ]);
         
         $builder->add('save', 'submit', ['label' => 'Totaalbedrag berekenen']);

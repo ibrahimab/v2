@@ -187,7 +187,12 @@ class FormService
     public function getStepTwoEntity()
     {
         if (!isset($this->entities[self::FORM_STEP_TWO])) {
-            $this->entities[self::FORM_STEP_TWO] = new StepTwoEntity($this->calculatorService->getOptions(), $this->calculatorService->getPerson());
+            
+            $this->entities[self::FORM_STEP_TWO] = new StepTwoEntity($this->calculatorService->getOptions(),
+                                                                     $this->calculatorService->getPerson(),
+                                                                     $this->calculatorService->getCancellationInsurances(),
+                                                                     $this->calculatorService->getCancellationPercentages(),
+                                                                     $this->calculatorService->getPolicyCosts());
         }
         
         return $this->entities[self::FORM_STEP_TWO];

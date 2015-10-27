@@ -22,7 +22,9 @@ class OptionGroup extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('parts', 'collection', [
-            'type' => new Option(),
+            
+            'type'  => new Option(),
+            'label' => false,
         ]);
     }
     

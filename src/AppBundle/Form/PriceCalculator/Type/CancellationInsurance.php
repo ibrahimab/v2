@@ -2,10 +2,10 @@
 namespace AppBundle\Form\PriceCalculator\Type;
 
 use       Symfony\Component\Form\AbstractType;
-use       Symfony\Component\Form\FormBuilderInterface;
-use       Symfony\Component\OptionsResolver\OptionsResolver;
 use       Symfony\Component\Form\FormEvent;
 use       Symfony\Component\Form\FormEvents;
+use       Symfony\Component\Form\FormBuilderInterface;
+use       Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
@@ -13,7 +13,7 @@ use       Symfony\Component\Form\FormEvents;
  * @version 0.2.7
  * @since   0.2.7
  */
-class Option extends AbstractType
+class CancellationInsurance extends AbstractType
 {
     /**
      * @param  FormBuilderInterface $builder
@@ -25,12 +25,13 @@ class Option extends AbstractType
     {
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
             
-            $option = $event->getData();
+            $entity = $event->getData();
             $form   = $event->getForm();
             
             $form->add('amount', 'choice', [
-                'choices' => range(0, $option->person),
                 'label' => false,
+                'choices' => range(0, $entity->person),
+                'choice_label' => null,
             ]);
         });
     }
@@ -40,13 +41,18 @@ class Option extends AbstractType
      */
     public function getName()
     {
-        return 'part';
+        return 'cancellation_insurances';
     }
     
+    /**
+     * @param  OptionsResolver $resolver
+     *
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\Form\PriceCalculator\Option',
+            'data_class' => 'AppBundle\Entity\Form\PriceCalculator\CancellationInsurance',
         ]);
     }
 }

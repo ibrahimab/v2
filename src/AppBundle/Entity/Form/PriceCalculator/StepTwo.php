@@ -23,15 +23,24 @@ class StepTwo
      */
     public $person;
     
+    /**
+     * @var array
+     */
+    public $cancellation_insurances;
+    
     
     /**
      * Constructor
      *
      * @param array $options
      */
-    public function __construct($options, $person)
+    public function __construct($options, $person, $insurances, $percentages, $policyCosts)
     {
-        $this->options = new ArrayCollection();
+        $this->options                 = new ArrayCollection();
+        $this->person                  = $person;
+        $this->cancellation_insurances = new ArrayCollection();
+        $this->percentages             = $percentages;
+        $this->policyCosts             = $policyCosts;
         
         foreach ($options as $group) {
             
@@ -54,6 +63,18 @@ class StepTwo
             }
             
             $this->options->add($groupEntity);
+        }
+        
+        foreach ($insurances as $insurance) {
+            
+            $insuranceEntity              = new CancellationInsurance;
+            $insuranceEntity->id          = (int)$insurance['id'];
+            $insuranceEntity->name        = $insurance['name'];
+            $insuranceEntity->person      = (int)$person;
+            $insuranceEntity->percentages = $percentages;
+            $insuranceEntity->policyCosts = $policyCosts;
+            
+            $this->cancellation_insurances->add($insuranceEntity);
         }
     }
 }

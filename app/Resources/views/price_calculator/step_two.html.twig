@@ -6,18 +6,26 @@
 
     <div class="row">
 
-        <div class="small-12 medium-8 large-8 columns">
+        <div class="small-12 medium-12 large-12 columns">
 
             <h1>Prijs berekenen</h1>
             <div class="row">
                 <div class="large-12 columns">
-                    {{ ('type.kind.' ~ accommodation.getKindIdentifier() )|trans|capitalize ~ ' ' ~ localeData['name']['accommodation'] }} in {{ localeData['name']['place'] }}, {{ localeData['name']['country'] }}
+                    {{ ('type.kind.' ~ accommodation.getKindIdentifier() )|trans|capitalize ~ ' ' ~ localeData['name']['accommodation'] ~ ' ' ~ localeData['name']['type'] }} in {{ localeData['name']['place'] }}, {{ localeData['name']['country'] }}
                 </div>
             </div>
             
             <div class="row">
                 <div class="large-12 columns">
-                    {{ form_row(form.options) }}
+                    <table>
+                        {{ form_row(form.options) }}
+                        <tr>
+                            <td><strong>Annuleringsverzekering</strong></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {{ form_row(form.cancellation_insurances) }}
+                    </table>
                 </div>
             </div>
             

@@ -38,6 +38,21 @@ use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
       * @var array
       */
      private $options;
+     
+     /**
+      * @var array
+      */
+     private $insurances;
+     
+     /**
+      * @var array
+      */
+     private $percentages;
+     
+     /**
+      * @var float
+      */
+     private $policyCosts;
 
 
      /**
@@ -183,5 +198,62 @@ use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
     public function getOptions()
     {
         return $this->options;
+    }
+    
+    /**
+     * @param  array $insurances
+     * @return CalculatorService
+     */
+    public function setCancellationInsurances($insurances)
+    {
+        $this->insurances = array_filter($insurances, function($insurance) {
+            return (true === $insurance['active']);
+        });
+        
+        return $this;
+    }
+    
+    /**
+     * @return array
+     */
+    public function getCancellationInsurances()
+    {
+        return $this->insurances;
+    }
+    
+    /**
+     * @param  array             $percentages
+     * @return CalculatorService
+     */
+    public function setCancellationPercentages($percentages)
+    {
+        $this->percentages = $percentages;
+        return $this;
+    }
+    
+    /**
+     * @return array
+     */
+    public function getCancellationPercentages()
+    {
+        return $this->percentages;
+    }
+    
+    /**
+     * @param  float             $policyCosts
+     * @return CalculatorService
+     */
+    public function setPolicyCosts($policyCosts)
+    {
+        $this->policyCosts = $policyCosts;
+        return $this;
+    }
+    
+    /**
+     * @return float
+     */
+    public function getPolicyCosts()
+    {
+        return $this->policyCosts;
     }
  }

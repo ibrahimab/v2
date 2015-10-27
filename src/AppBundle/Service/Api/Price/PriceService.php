@@ -446,9 +446,9 @@ class PriceService
      * @param  TypeServiceEntityInterface $type
      * @return array
      */
-    public function getAvailableWeekends($type)
+    public function getAvailableData($type)
     {
-        return $this->priceServiceRepository->getAvailableWeekends($type);
+        return $this->priceServiceRepository->getAvailableData($type);
     }
     
     /**
