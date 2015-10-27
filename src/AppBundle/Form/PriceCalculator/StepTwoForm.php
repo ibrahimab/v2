@@ -1,7 +1,7 @@
 <?php
 namespace AppBundle\Form\PriceCalculator;
 
-use       AppBundle\Form\PriceCalculator\Type\Options;
+use       AppBundle\Form\PriceCalculator\Type\OptionGroup;
 use       Symfony\Component\Form\AbstractType;
 use       Symfony\Component\Form\FormBuilderInterface;
 
@@ -22,8 +22,14 @@ class StepTwoForm extends AbstractType
     {
         $entity = $builder->getData();
         
-        $builder->add('options', new Options)
-                ->add('save', 'submit', ['label' => 'Totaalbedrag berekenen']);
+        // $builder->add('emails', 'collection', [
+        //     'type' => 'email',
+        // ]);
+        $builder->add('options', 'collection', [
+            'type' => new OptionGroup,
+        ]);
+        
+        $builder->add('save', 'submit', ['label' => 'Totaalbedrag berekenen']);
     }
     
     /**

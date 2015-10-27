@@ -4,6 +4,8 @@ namespace AppBundle\Form\PriceCalculator\Type;
 use       Symfony\Component\Form\AbstractType;
 use       Symfony\Component\Form\FormBuilderInterface;
 use       Symfony\Component\OptionsResolver\OptionsResolver;
+use       Symfony\Component\Form\FormEvent;
+use       Symfony\Component\Form\FormEvents;
 
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
@@ -11,7 +13,7 @@ use       Symfony\Component\OptionsResolver\OptionsResolver;
  * @version 0.2.7
  * @since   0.2.7
  */
-class Options extends AbstractType
+class Option extends AbstractType
 {
     /**
      * @param  FormBuilderInterface $builder
@@ -21,15 +23,15 @@ class Options extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('options', 'collection', [
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
             
-            'type' => 'choice',
-            'options' => [
-                'choices' => [
-                    'male', 'female',
-                ],
-            ],
-        ]);
+            $option = $event->getData();
+            $form   = $event->getForm();
+            
+            $form->add('amount', 'choice', [
+                'choices' => range(0, $option->person)
+            ]);
+        });
     }
     
     /**
@@ -38,5 +40,12 @@ class Options extends AbstractType
     public function getName()
     {
         return 'part';
+    }
+    
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => 'AppBundle\Entity\Form\PriceCalculator\Option',
+        ]);
     }
 }

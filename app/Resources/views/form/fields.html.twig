@@ -1,0 +1,33 @@
+{% block _step_two_options_row %}
+    
+    <table>
+        <tr>
+            <th>Soort optie</th>
+            <th>Prijs</th>
+            <th>Aantal</th>
+        </tr>
+        {{ block('form_widget') }}
+    </table>
+    
+{% endblock %}
+
+{% block _step_two_options_entry_widget %}
+
+    <tr>
+        <td><strong>{{ value.name }}</strong></td>
+        <td></td>
+        <td></td>
+    </tr>
+    {{ block('form_widget') }}
+
+{% endblock %}
+
+{% block _step_two_options_entry_parts_entry_widget %}
+
+    <tr>
+        <td>{{ form_label(form, value.name) }}</td>
+        <td>&euro; {{ value.price|number_format(2, ',', '.') }}</td>
+        <td>{{ form_widget(form) }}</td>
+    </tr>
+
+{% endblock %}

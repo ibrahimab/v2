@@ -109,7 +109,8 @@ class PriceCalculatorController extends Controller
         
         $calculatorService = $this->get('app.price_calculator.calculator');
         $calculatorService->setType($type)
-                          ->setOptions($options);
+                          ->setOptions($options)
+                          ->setPerson((int)$request->request->get('step_one')['person']);
         
         return $this->render('price_calculator/step_two.html.twig', [
             

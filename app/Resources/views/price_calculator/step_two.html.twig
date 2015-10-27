@@ -17,9 +17,7 @@
             
             <div class="row">
                 <div class="large-12 columns">
-                    {% for option in form.options %}
-                        {{ form_row(option) }}
-                    {% endfor %}
+                    {{ form_row(form.options) }}
                 </div>
             </div>
             
