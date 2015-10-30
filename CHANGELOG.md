@@ -1,5 +1,8 @@
 # Chalet.nl V2 VERSION
 ================================================
+## Release 0.2.8
+preparing new git branching model + preparing for submodule integration
+
 ## Release 0.2.7
 forgot old_site_path from configuration
 
