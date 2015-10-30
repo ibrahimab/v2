@@ -32,6 +32,8 @@ twig:
     strict_variables: "%kernel.debug%"
     globals:
         chat_license: "%chat_license%"
+    form_themes:
+        - 'form/fields.html.twig'
 
 # Assetic Configuration
 assetic:

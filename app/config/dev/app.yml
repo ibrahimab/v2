@@ -346,3 +346,20 @@ parameters:
                 damage_insurance: 1
                 newsletter: true
                 newsletter_cancel: false
+        cancellation_insurances:
+            standard:
+                id: 1
+                active: true
+                name: standard
+            warranty:
+                id: 2
+                active: false
+                name: warranty
+            allrisk:
+                id: 3
+                active: true
+                name: allrisk
+            warranty_observation:
+                id: 4
+                active: false
+                name: warranty_observation

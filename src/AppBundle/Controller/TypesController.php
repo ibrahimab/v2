@@ -35,7 +35,6 @@ class TypesController extends Controller
      * @Breadcrumb(name="show_region",  title="{regionName}",        path="show_region",  pathParams={"regionSlug"})
      * @Breadcrumb(name="show_place",   title="{placeName}",         path="show_place",   pathParams={"placeSlug"})
      * @Breadcrumb(name="show_type",    title="{accommodationName}", active=true)
-     * @Template(":types:show.html.twig")
      */
     public function showAction($beginCode, $typeId, Request $request)
     {
@@ -83,12 +82,13 @@ class TypesController extends Controller
 
         $seasonService = $this->get('app.api.season');
         $seasons       = $seasonService->seasons();
-        $seasonId      = (isset($seasons[0]) ? $seasons[0]['id'] : null);
+        $currentSeason = (isset($seasons[0]) ? $seasons[0] : null);
+        $seasonId      = (null !== $currentSeason ? $currentSeason['id'] : null);
 
         $optionService = $this->get('app.api.option');
         $options       = $optionService->options($type->getAccommodationId(), $seasonId, $request->query->get('w', null));
 
-        return [
+        return $this->render('types/show.html.twig', [
 
             'type'               => $type,
             'surveyData'         => $surveyData,
@@ -98,9 +98,10 @@ class TypesController extends Controller
             'offers'             => $offers,
             'options'            => $options,
             'weekends'           => $seasonService->weekends($seasons),
-            'sunny_cars'         => $this->container->getParameter('sunny_cars'),
-            'current_weekend'    => $request->query->get('w', null),
-        ];
+            'sunnyCars'          => $this->container->getParameter('sunny_cars'),
+            'currentWeekend'     => $request->query->get('w', null),
+            'currentSeason'      => $currentSeason,
+        ]);
     }
 
     /**
@@ -159,19 +160,5 @@ class TypesController extends Controller
                 'message' => 'Could not remove type',
             ]);
         }
-    }
-
-    /**
-     * @Route("/options")
-     */
-    public function options()
-    {
-        $typeService   = $this->get('app.api.type');
-        $optionService = $this->get('app.api.option');
-
-        $type          = $typeService->find(['id' => 240]);
-        $options       = $optionService->options($type->getId());
-
-        return new Response();
     }
 }

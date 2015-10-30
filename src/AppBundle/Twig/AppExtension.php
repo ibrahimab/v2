@@ -128,6 +128,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('website', [$this, 'website']),
             new \Twig_SimpleFunction('is_favorite', [$this, 'isFavorite']),
             new \Twig_SimpleFunction('opened', [$this, 'opened']),
+            new \Twig_SimpleFunction('show_sunny_cars', [$this, 'showSunnyCars']),
         ];
     }
 
@@ -696,6 +697,14 @@ class AppExtension extends \Twig_Extension
         }
 
         return $this->generalSettingsService->opened();
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function showSunnyCars()
+    {
+        return $this->websiteConcern->get() === WebsiteConcern::WEBSITE_CHALET_NL;
     }
 
     /**

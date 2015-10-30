@@ -1,0 +1,41 @@
+{% extends 'price_calculator/base.html.twig' %}
+
+{% block price_calculator %}
+
+    {{ form_start(form, {'action': path('price_calculator_step_two_' ~ locale, {typeId: type.getId()})}) }}
+
+    <div class="row">
+
+        <div class="small-12 medium-8 large-8 columns">
+
+            <h1>Prijs berekenen</h1>
+            <div class="row">
+                <div class="large-12 columns">
+                    {{ ('type.kind.' ~ accommodation.getKindIdentifier() )|trans|capitalize ~ ' ' ~ localeData['name']['accommodation'] }} in {{ localeData['name']['place'] }}, {{ localeData['name']['country'] }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns">
+                    {{ form_label(form.person) }}
+                    {{ form_widget(form.person) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns">
+                    {{ form_label(form.weekend) }}
+                    {{ form_widget(form.weekend) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns">
+                    {{ form_widget(form.save) }}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    {{ form_end(form) }}
+
+{% endblock price_calculator %}

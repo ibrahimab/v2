@@ -26,30 +26,42 @@ services:
     app.github:
         class: AppBundle\Service\GithubService
         arguments: [@app.security.access.validator.github, @snc_redis.default]
-        
+
     app.file:
         class: AppBundle\Service\File\FileService
         arguments: [@app.mongo, %mongodb_files_database%]
 
     app.file.file:
         alias: app.file
-        
+
     app.file.accommodation:
         class: AppBundle\Service\File\Accommodation
         arguments: [@app.mongo, %mongodb_files_database%]
-        
+
     app.file.type:
         class: AppBundle\Service\File\Type
         arguments: [@app.mongo, %mongodb_files_database%]
-        
+
     app.file.region:
         class: AppBundle\Service\File\Region
         arguments: [@app.mongo, %mongodb_files_database%]
-        
+
     app.file.place:
         class: AppBundle\Service\File\Place
         arguments: [@app.mongo, %mongodb_files_database%]
-        
+
     app.file.theme:
         class: AppBundle\Service\File\Theme
         arguments: [@app.mongo, %mongodb_files_database%]
+
+    app.price_calculator.form:
+        class: AppBundle\Service\PriceCalculator\FormService
+        arguments: [@form.factory]
+        calls:
+            - [setStepOneForm, [@app.form.price_calculator.step_one]]
+            - [setStepTwoForm, [@app.form.price_calculator.step_two]]
+            - [setLocale, [@=service('app.concern.locale').get()]]
+
+    app.price_calculator.calculator:
+        class: AppBundle\Service\PriceCalculator\CalculatorService
+        arguments: [@app.price_calculator.form]

@@ -352,6 +352,30 @@
         <source>new-option</source>
         <target>Optie aanvragen</target>
       </trans-unit>
+      <trans-unit id="505eabdfb8082f91ed4a2fbaff9ecb5408d27baa" resname="calculate-price-title">
+        <source>calculate-price-title</source>
+        <target>Prijs berekenen</target>
+      </trans-unit>
+      <trans-unit id="505eabdfb8082f91ed4a2fbaff9ecb5408d27baa" resname="cancellation_insurances.standard">
+        <source>cancellation_insurances.standard</source>
+        <target>Europeesche Standaard</target>
+      </trans-unit>
+      <trans-unit id="505eabdfb8082f91ed4a2fbaff9ecb5408d27baa" resname="cancellation_insurances.warranty">
+        <source>cancellation_insurances.warranty</source>
+        <target>Europeesche Garantie</target>
+      </trans-unit>
+      <trans-unit id="505eabdfb8082f91ed4a2fbaff9ecb5408d27baa" resname="cancellation_insurances.allrisk">
+        <source>cancellation_insurances.allrisk</source>
+        <target>Europeesche Allrisk</target>
+      </trans-unit>
+      <trans-unit id="505eabdfb8082f91ed4a2fbaff9ecb5408d27baa" resname="cancellation_insurances.warranty_observation">
+        <source>cancellation_insurances.warranty_observation</source>
+        <target>Europeesche Garantie + Waarneming 1 persoon</target>
+      </trans-unit>
+      <trans-unit id="505eabdfb8082f91ed4a2fbaff9ecb5408d27baa" resname="cancellation_insurances.travel_costs.booking">
+        <source>cancellation_insurances.travelcosts.booking</source>
+        <target>%percentage%% reissom + € %costs% per boeking</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

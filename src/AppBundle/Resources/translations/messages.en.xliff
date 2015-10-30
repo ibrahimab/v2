@@ -348,6 +348,10 @@
         <source>new-option</source>
         <target>Optie aanvragen</target>
       </trans-unit>
+      <trans-unit id="505eabdfb8082f91ed4a2fbaff9ecb5408d27baa" resname="calculate-price-title">
+        <source>calculate-price-title</source>
+        <target>Calculate price</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

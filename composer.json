@@ -1,5 +1,5 @@
 {
-    "name": "root/v2-dev.chalet.nl",
+    "name": "Chalet V2",
     "license": "proprietary",
     "type": "project",
     "autoload": {
@@ -30,7 +30,8 @@
         "jms/serializer": "^0.16.0",
         "jms/serializer-bundle": "^0.13.0",
         "snc/redis-bundle": "1.1.x",
-        "leafo/lessphp": "~0.5"
+        "leafo/lessphp": "~0.5",
+        "ocramius/proxy-manager": "1.0.*"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
