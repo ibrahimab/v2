@@ -45,6 +45,3 @@ tests/_output/*
 
 # push file
 /github-push.txt
-
-# git submodule ignore
-old-app/ 
