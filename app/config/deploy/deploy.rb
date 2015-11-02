@@ -35,7 +35,7 @@ set :git_strategy, Capistrano::Git::SubmoduleStrategy
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, %w{app/config/parameters.yml app/config/.env}
+set :linked_files, %w{app/config/parameters.yml .env}
 
 # Default value for linked_dirs is []
 set :linked_dirs, [fetch(:log_path), fetch(:web_path) + '/uploads']
