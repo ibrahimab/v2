@@ -65,7 +65,9 @@ set :composer_download_url, 'https://getcomposer.org/installer'
 # setting up hipchat authentication
 set :hipchat_token, ENV['HIPCHAT_API_TOKEN']
 set :hipchat_room_name, ENV['HIPCHAT_ROOM_ID']
-set :hipchat_announce, false
+set :hipchat_deploy_user, ''
+set :hipchat_announce, true
+set :hipchat_options, api_version: 'v2'
 
 # Default value for default_env is {}
 # set :default_env, { "SYMFONY_ENV" => "stag" }
