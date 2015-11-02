@@ -37,14 +37,8 @@ tests/_output/*
 # cache
 /web/media/cache/
 
-# old classes
-/src/old-classes
-
 # assetic dumps
 /web/static
 
 # push file
 /github-push.txt
-
-# Visual Studio Code settings folder
-.vscode

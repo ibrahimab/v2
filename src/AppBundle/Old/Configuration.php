@@ -20,12 +20,12 @@ class Configuration
      * @var array
      */
     protected $config;
-    
+
     /**
      * @var ContainerInterface
      */
     protected $container;
-    
+
     /**
      * Constructor
      *
@@ -33,17 +33,14 @@ class Configuration
      */
     public function __construct(ContainerInterface $container)
     {
-        $path            = dirname(dirname(dirname(__FILE__))) . '/old-classes';
-        $realPath        = readlink($path);
-        $unixDir         = dirname(dirname($realPath));
-        
+        $unixDir         = $container->getParameter('kernel.root_dir') . '/../old-app';
         $website         = $container->get('app.concern.website');
         $locale          = $container->get('request')->getLocale();
         $this->container = $container;
         $translator      = $container->get('translator');
-        
+
         $this->config    = [
-            
+
             'path'                            => '/chalet/',
             'seizoentype'                     => $this->container->get('app.concern.season')->get(),
             'website'                         => $website->get(),
@@ -58,7 +55,7 @@ class Configuration
             'ttv'                             => $website->getLanguageField(),
             'unixdir'                         => $unixDir,
             'soortaccommodatie'               => [
-                
+
                 1  => $translator->trans('type.kind.chalet'),
                 2  => $translator->trans('type.kind.apartment'),
                 3  => $translator->trans('type.kind.hotel'),
@@ -74,19 +71,19 @@ class Configuration
             'wt_htmlentities_cp1252'          => false,
             'basehref'                        => (true === $container->getParameter('ssl_enabled') ? 'https://' : 'http://') . $website->domain(),
             'seizoentype_namen'               => [
-                
+
                 SeasonConcern::SEASON_WINTER => $translator->trans('season.winter'),
                 SeasonConcern::SEASON_SUMMER => $translator->trans('season.summer'),
             ],
             'aanbieding_soort'                => [
-                
+
                 OfferConcern::OFFER_NORMAL      => $translator->trans('offer.normal'),
                 OfferConcern::OFFER_LAST_MINUTE => $translator->trans('offer.last-minute'),
             ],
             'aanbiedinginfo_binnen_cms'       => false,
             'temp_error_geen_tarieven'        => null,
             'bk_borg_soort'                   => [
-                
+
                 AdditionalCostsConcern::ADDITIONAL_COSTS_CASH            => $translator->trans('additional.costs.cash'),
                 AdditionalCostsConcern::ADDITIONAL_COSTS_CREDITCARD      => $translator->trans('additional.costs.creditcard'),
                 AdditionalCostsConcern::ADDITIONAL_COSTS_CASH_CREDITCARD => $translator->trans('additional.costs.cash.creditcard'),
@@ -96,7 +93,7 @@ class Configuration
             ],
             'bk_borg_soort_cms'               => [],
             'bk_eenheid'                      => [
-                
+
                 AdditionalCostsConcern::UNIT_PER_STAY     => $translator->trans('additional.costs.unit.per.stay'),
                 AdditionalCostsConcern::UNIT_PER_PERSON   => $translator->trans('additional.costs.unit.per.person'),
                 AdditionalCostsConcern::UNIT_PER_DAY      => $translator->trans('additional.costs.unit.per.day'),
@@ -112,20 +109,20 @@ class Configuration
             ],
             'bk_eenheid_cms'                  => [],
             'bk_ter_plaatse'                  => [
-                
+
                 $translator->trans('additional.costs.paid.in.advance'),
                 $translator->trans('additional.costs.paid.locally'),
             ],
             'bk_ter_plaatse_cms'              => [],
             'bk_verplicht'                    => [
-                
+
                 $translator->trans('additional.costs.optional'),
                 $translator->trans('additional.costs.mandatory'),
                 $translator->trans('additional.costs.by.usage'),
                 $translator->trans('additional.costs.by.tenant'),
             ],
             'bk_inclusief'                    => [
-                
+
                 $translator->trans('additional.costs.excluding'),
                 $translator->trans('additional.costs.including'),
             ],
@@ -135,7 +132,7 @@ class Configuration
             'voorkant_cms'                    => false,
         ];
     }
-    
+
     /**
      * Magic getter function
      *
@@ -148,7 +145,7 @@ class Configuration
         if (array_key_exists($name, $this->config)) {
             return $this->config[$name];
         }
-        
+
         throw new \Exception(sprintf('Configuration key does not exist: (%s)', $name));
     }
 }
