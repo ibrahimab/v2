@@ -53,21 +53,17 @@ class AppKernel extends Kernel
 
     public function registerOldNamespace()
     {
-        if (is_link($path = __DIR__ . '/../src/old-classes')) {
-
-            // getting real path from symlink
-            $path = readlink($path);
-            $path = dirname($path);
+        if (file_exists($path = __DIR__ . '/../old-app/admin/siteclass')) {
 
             // backwards compatibility
-            require_once $path . '/class.mysql.php';
+            require_once $path . '/../class.mysql.php';
         }
 
         spl_autoload_register(function($class) {
 
-            if (file_exists($path = __DIR__ . '/../src/old-classes/siteclass.' . $class . '.php')) {
-                require_once $path;
-            }
+           if (file_exists($path = __DIR__ . '/../old-app/admin/siteclass/siteclass.' . $class . '.php')) {
+               require_once $path;
+           }
         });
     }
 

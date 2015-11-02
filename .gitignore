@@ -37,9 +37,6 @@ tests/_output/*
 # cache
 /web/media/cache/
 
-# old classes
-/src/old-classes
-
 # assetic dumps
 /web/static
 
