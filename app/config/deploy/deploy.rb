@@ -16,7 +16,7 @@ set :repo_url, 'git@github.com:Chalet/chalet-v2.git'
 set :deploy_to, -> { '/var/www/deploy.chalet.nl' }
 
 # Default branch is :master
-ask :branch, `git tag`.split("\n").last.strip
+ask :branch, 'master'
 
 # set tmp dir
 set :tmp_dir, -> { fetch(:deploy_to) + '/tmp' }
@@ -73,8 +73,6 @@ namespace :deploy do
 
   after  :updated, 'chalet:htaccess'
   before :updated, 'deploy:set_permissions:chgrp'
-  after  :updated, 'chalet:symlink_old_classes'
-  after  :updated, 'chalet:symlink_old_site'
   after  :updated, 'symfony:assetic:dump'
   after  :updated, 'chalet:dump_routes'
 
