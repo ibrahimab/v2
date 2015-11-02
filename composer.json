@@ -31,7 +31,8 @@
         "jms/serializer-bundle": "^0.13.0",
         "snc/redis-bundle": "1.1.x",
         "leafo/lessphp": "~0.5",
-        "ocramius/proxy-manager": "1.0.*"
+        "ocramius/proxy-manager": "1.0.*",
+        "vlucas/phpdotenv": "^2.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",

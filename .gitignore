@@ -42,3 +42,6 @@ tests/_output/*
 
 # push file
 /github-push.txt
+
+# environment variables
+.env

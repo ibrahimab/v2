@@ -10,6 +10,13 @@ require 'capistrano/deploy'
 # Include git submodule strategy
 require 'capistrano/git-submodule-strategy'
 
+# Include hipchat capistrano links
+require 'hipchat/capistrano'
+
+# loading environment variables
+require 'dotenv'
+Dotenv.load
+
 # Include tasks from other gems included in your Gemfile
 #
 # For documentation on these, see for example:

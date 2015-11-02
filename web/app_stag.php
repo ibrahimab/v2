@@ -7,6 +7,8 @@
  */
 use Symfony\Component\HttpFoundation\Request;
 
+Dotenv::load(__DIR__ . '/../');
+
 $loader = require_once __DIR__.'/../app/bootstrap.php.cache';
 
 require_once __DIR__.'/../app/AppKernel.php';
