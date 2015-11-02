@@ -6,20 +6,6 @@ namespace :chalet do
       end
     end
   end
-  task :symlink_old_classes do
-    on roles(:all) do
-      within fetch(:release_path) do
-        execute :ln, '-s', fetch(:old_classes_path), fetch(:release_path) + 'src/old-classes'
-      end
-    end
-  end
-  task :symlink_old_site do
-    on roles(:all) do
-      within fetch(:release_path) do
-        execute :ln, '-s', fetch(:old_site_path), fetch(:web_path) + '/chalet'
-      end
-    end
-  end
   task :dump_routes do
     invoke 'symfony:console', 'fos:js-routing:dump', '--no-debug'
   end
