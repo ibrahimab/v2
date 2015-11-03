@@ -6,10 +6,12 @@
  * @since   0.0.5
  */
 use Symfony\Component\HttpFoundation\Request;
-
-Dotenv::load(__DIR__ . '/../');
+use Dotenv\Dotenv;
 
 $loader = require_once __DIR__.'/../app/bootstrap.php.cache';
+
+$dotenv = new Dotenv(__DIR__ . '/../');
+$dotenv->load();
 
 require_once __DIR__.'/../app/AppKernel.php';
 

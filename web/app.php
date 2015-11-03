@@ -2,10 +2,12 @@
 
 use Symfony\Component\ClassLoader\ApcClassLoader;
 use Symfony\Component\HttpFoundation\Request;
-
-Dotenv::load(__DIR__ . '/../');
+use Dotenv\Dotenv;
 
 $loader = require_once __DIR__.'/../app/bootstrap.php.cache';
+
+$dotenv = new Dotenv(__DIR__ . '/../');
+$dotenv->load();
 
 // Enable APC for autoloading to improve performance.
 // You should change the ApcClassLoader first argument to a unique prefix
