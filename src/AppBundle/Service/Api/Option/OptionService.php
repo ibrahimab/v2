@@ -33,7 +33,7 @@ class OptionService
     {
         return $this->optionServiceRepository->getTravelInsurancesDescription();
     }
-    
+
     /**
      * @param integer $accommodationId
      * @param integer $weekend
@@ -43,7 +43,7 @@ class OptionService
     {
         return $this->optionServiceRepository->options($accommodationId, $season, $weekend);
     }
-    
+
     /**
      * @param integer $optionId
      * @return string
@@ -51,5 +51,17 @@ class OptionService
     public function option($optionId)
     {
         return $this->optionServiceRepository->option($optionId);
+    }
+
+    /**
+     * @param  integer $accommodationId
+     * @param  integer $season
+     * @param  integer $weekend
+     *
+     * @return integer
+     */
+    public function calculatorOptions($accommodationId, $season, $weekend)
+    {
+        return $this->optionServiceRepository->calculatorOptions($accommodationId, $season, $weekend);
     }
 }

@@ -48,22 +48,22 @@ class PriceCalculatorController extends Controller
         if (null === $type) {
             throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found');
         }
-        
+
         $priceService = $this->get('app.api.price');
         $weekends     = $priceService->getAvailableData($type)['weekends'];
         $persons      = $priceService->getBookablePersons($type->getId(), $weekends);
-        
+
         $weekendsFormatted = [];
         $date              = new \DateTime();
         $locale            = $request->getLocale();
         $timezone          = $date->getTimezone()->getName();
         $formatter         = new \IntlDateFormatter($locale, \IntlDateFormatter::FULL, \IntlDateFormatter::FULL, $timezone, \IntlDateFormatter::GREGORIAN);
         $formatter->setPattern('eeee dd MMMM y');
-        
+
         foreach ($weekends as $key => $weekend) {
             $weekendsFormatted[$weekend] = $formatter->format($date->setTimestamp($weekend));
         }
-        
+
         $personsFormatted = [];
         $translator       = $this->get('translator');
         foreach ($persons as $person) {
@@ -76,7 +76,7 @@ class PriceCalculatorController extends Controller
                           ->setPersons($personsFormatted)
                           ->setWeekend($request->query->get('w', null))
                           ->setWeekends($weekendsFormatted);
-                        
+
         return $this->render('price_calculator/step_one.html.twig', [
 
             'type'    => $type,
@@ -100,23 +100,23 @@ class PriceCalculatorController extends Controller
     {
         // get type
         $type = $this->get('app.api.type')->findById($typeId);
-        
+
         if (null === $type) {
             throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found');
         }
-        
+
         $seasonService     = $this->get('app.api.season');
         $seasons           = $seasonService->seasons();
         $season            = (isset($seasons[0]) ? $seasons[0]['id'] : null);
-        
+
         $weekend           = $request->request->get('step_one')['weekend'];
-        
+
         $optionService     = $this->get('app.api.option');
-        $options           = $optionService->options($type->getAccommodationId(), $seasonId, $weekend);
-        
+        $options           = $optionService->calculatorOptions($type->getAccommodationId(), $seasonId, $weekend);
+
         $priceService      = $this->get('app.api.price');
         $data              = $priceService->getAvailableData($type);
-        
+
         $calculatorService = $this->get('app.price_calculator.calculator');
         $calculatorService->setType($type)
                           ->setOptions($options)
@@ -124,14 +124,14 @@ class PriceCalculatorController extends Controller
                           ->setCancellationInsurances($this->getParameter('app')['cancellation_insurances'])
                           ->setCancellationPercentages($data['cancellation_insurances'])
                           ->setPolicyCosts($data['insurance_policy_costs']);
-        
+
         return $this->render('price_calculator/step_two.html.twig', [
-            
+
             'type' => $type,
             'form' => $calculatorService->getFormService()->create(FormService::FORM_STEP_TWO)->createView(),
         ]);
     }
-    
+
     /**
      * @Route(name="price_calculator_step_three_nl", path="/types/{typeId}/prijs-berekend", requirements={
      *     "typeId": "\d+"
