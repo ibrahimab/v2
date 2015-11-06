@@ -60,8 +60,15 @@ services:
         calls:
             - [setStepOneForm, [@app.form.price_calculator.step_one]]
             - [setStepTwoForm, [@app.form.price_calculator.step_two]]
-            - [setLocale, [@=service('app.concern.locale').get()]]
+            - [setLocale,      [@app.concern.locale]]
 
     app.price_calculator.calculator:
         class: AppBundle\Service\PriceCalculator\CalculatorService
         arguments: [@app.price_calculator.form]
+        calls:
+            - [setOptionService, [@app.api.option]]
+            - [setPriceService,  [@app.api.price]]
+            - [setSeasonService, [@app.api.season]]
+            - [setAppConfig,     [%app%]]
+            - [setLocale,        [@app.concern.locale]]
+            - [setTranslator,    [@translator]]

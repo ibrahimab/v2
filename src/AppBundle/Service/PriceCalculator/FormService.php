@@ -22,17 +22,17 @@ class FormService
      * @const integer
      */
     const FORM_STEP_ONE = 1;
-    
+
     /**
      * @const integer
      */
     const FORM_STEP_TWO = 2;
-    
+
     /**
      * @var FormFactoryInterface
      */
     private $factory;
-    
+
     /**
      * @var string
      */
@@ -47,7 +47,7 @@ class FormService
      * @var array
      */
     private $entities = [];
-    
+
     /**
      * @var CalculatorService
      */
@@ -64,7 +64,7 @@ class FormService
     {
         $this->factory = $factory;
     }
-    
+
     /**
      * @param  string      $locale
      * @return FormService
@@ -73,7 +73,7 @@ class FormService
     {
         $this->locale = $locale;
     }
-    
+
     /**
      * @param  CalculatorService $CalculatorService
      * @return FormService
@@ -83,7 +83,7 @@ class FormService
         $this->calculatorService = $calculatorService;
         return $this;
     }
-    
+
     /**
      * @return CalculatorServices
      */
@@ -101,7 +101,7 @@ class FormService
         $this->forms[self::FORM_STEP_ONE] = $form;
         return $this;
     }
-    
+
     /**
      * @param  StepTwoForm $form
      * @return FormService
@@ -121,7 +121,7 @@ class FormService
         if (!isset($this->forms[$formId])) {
             return null;
         }
-        
+
         return $this->forms[$formId];
     }
 
@@ -134,10 +134,10 @@ class FormService
         if (null === ($form = $this->getForm($formId))) {
             throw new FormNotFoundException(sprintf('Could not find form with ID=%s', $formId));
         }
-        
+
 		return $this->factory->create($form, $this->getEntity($formId));
 	}
-    
+
     /**
      * @param  integer       $formId
      * @return stepOneEntity
@@ -145,19 +145,19 @@ class FormService
     public function getEntity($formId)
     {
         switch ($formId) {
-            
+
             case self::FORM_STEP_ONE:
                 $entity = $this->getStepOneEntity();
             break;
-            
+
             case self::FORM_STEP_TWO:
                 $entity = $this->getStepTwoEntity();
             break;
-            
+
             default:
                 throw new EntityNotFoundException(sprintf('Could not found entity for form ID=%s', $formId));
         }
-        
+
         return $entity;
     }
 
@@ -169,32 +169,32 @@ class FormService
         if (!isset($this->entities[self::FORM_STEP_ONE])) {
 
             $entity           = new StepOneEntity();
-            $entity->type     = $this->calculatorService->getType()->getLocaleName($this->locale);
+            $entity->type     = $this->calculatorService->getType()->getLocaleName($this->locale->get());
             $entity->person   = $this->calculatorService->getPerson();
             $entity->persons  = $this->calculatorService->getPersons();
             $entity->weekend  = $this->calculatorService->getWeekend();
             $entity->weekends = $this->calculatorService->getWeekends();
-            
+
             $this->entities[self::FORM_STEP_ONE] = $entity;
         }
-        
+
         return $this->entities[self::FORM_STEP_ONE];
     }
-    
+
     /**
      * @return StepTwoEntity
      */
     public function getStepTwoEntity()
     {
         if (!isset($this->entities[self::FORM_STEP_TWO])) {
-            
+
             $this->entities[self::FORM_STEP_TWO] = new StepTwoEntity($this->calculatorService->getOptions(),
                                                                      $this->calculatorService->getPerson(),
                                                                      $this->calculatorService->getCancellationInsurances(),
                                                                      $this->calculatorService->getCancellationPercentages(),
                                                                      $this->calculatorService->getPolicyCosts());
         }
-        
+
         return $this->entities[self::FORM_STEP_TWO];
     }
 }

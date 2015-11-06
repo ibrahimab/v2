@@ -49,33 +49,10 @@ class PriceCalculatorController extends Controller
             throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found');
         }
 
-        $priceService = $this->get('app.api.price');
-        $weekends     = $priceService->getAvailableData($type)['weekends'];
-        $persons      = $priceService->getBookablePersons($type->getId(), $weekends);
-
-        $weekendsFormatted = [];
-        $date              = new \DateTime();
-        $locale            = $request->getLocale();
-        $timezone          = $date->getTimezone()->getName();
-        $formatter         = new \IntlDateFormatter($locale, \IntlDateFormatter::FULL, \IntlDateFormatter::FULL, $timezone, \IntlDateFormatter::GREGORIAN);
-        $formatter->setPattern('eeee dd MMMM y');
-
-        foreach ($weekends as $key => $weekend) {
-            $weekendsFormatted[$weekend] = $formatter->format($date->setTimestamp($weekend));
-        }
-
-        $personsFormatted = [];
-        $translator       = $this->get('translator');
-        foreach ($persons as $person) {
-            $personsFormatted[$person] = $person . ' ' . strtolower($translator->trans('person' . ($person > 1 ? 's' : '')));
-        }
-
         $calculatorService = $this->get('app.price_calculator.calculator');
         $calculatorService->setType($type)
                           ->setPerson($request->query->get('pe', null))
-                          ->setPersons($personsFormatted)
-                          ->setWeekend($request->query->get('w', null))
-                          ->setWeekends($weekendsFormatted);
+                          ->setWeekend($request->query->get('w', null));
 
         return $this->render('price_calculator/step_one.html.twig', [
 
@@ -105,25 +82,10 @@ class PriceCalculatorController extends Controller
             throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found');
         }
 
-        $seasonService     = $this->get('app.api.season');
-        $seasons           = $seasonService->seasons();
-        $season            = (isset($seasons[0]) ? $seasons[0]['id'] : null);
-
-        $weekend           = $request->request->get('step_one')['weekend'];
-
-        $optionService     = $this->get('app.api.option');
-        $options           = $optionService->calculatorOptions($type->getAccommodationId(), $seasonId, $weekend);
-
-        $priceService      = $this->get('app.api.price');
-        $data              = $priceService->getAvailableData($type);
-
         $calculatorService = $this->get('app.price_calculator.calculator');
         $calculatorService->setType($type)
-                          ->setOptions($options)
                           ->setPerson((int)$request->request->get('step_one')['person'])
-                          ->setCancellationInsurances($this->getParameter('app')['cancellation_insurances'])
-                          ->setCancellationPercentages($data['cancellation_insurances'])
-                          ->setPolicyCosts($data['insurance_policy_costs']);
+                          ->setWeekend((int)$request->request->get('step_one')['weekend']);
 
         return $this->render('price_calculator/step_two.html.twig', [
 

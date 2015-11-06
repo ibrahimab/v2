@@ -23,21 +23,26 @@ class StepTwoForm extends AbstractType
     {
         $entity = $builder->getData();
 
+        $builder->add('damage_insurance', 'choice', [
+            'label'   => 'form.price_calculator.step_two.damage_insurance',
+            'choices' => ['form.yes', 'form.no']
+        ]);
+
         $builder->add('options', 'collection', [
-            
+
             'label' => false,
             'type'  => new OptionGroup,
         ]);
-        
+
         $builder->add('cancellation_insurances', 'collection', [
-            
+
             'label' => false,
             'type'  => new CancellationInsurance,
         ]);
-        
-        $builder->add('save', 'submit', ['label' => 'Totaalbedrag berekenen']);
+
+        $builder->add('save', 'submit', ['label' => 'form.price_calculator.step_two.submit']);
     }
-    
+
     /**
      * @return string
      */

@@ -325,14 +325,15 @@ class OptionRepository implements OptionServiceRepositoryInterface
      */
     public function calculatorOptions($accommodationId, $season, $weekend)
     {
-        $connection     = $this->getEntityManager()->getConnection();
-        $qb             = $connection->createQueryBuilder();
-        $expr           = $qb->expr();
-        $locale         = $this->getLocale();
-        $localeField    = ($locale === 'nl' ? '' : ('_' . $locale));
-        $websiteConcern = $this->getWebsiteConcern();
-        $resale         = $websiteConcern->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE);
-        $resaleField    = ($resale ? 's.beschikbaar_wederverkoop = 1' : 's.beschikbaar_directeklanten = 1');
+        $connection      = $this->getEntityManager()->getConnection();
+        $qb              = $connection->createQueryBuilder();
+        $expr            = $qb->expr();
+        $locale          = $this->getLocale();
+        $localeField     = ($locale === 'nl' ? '' : ('_' . $locale));
+        $websiteConcern  = $this->getWebsiteConcern();
+        $resale          = $websiteConcern->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE);
+        $resaleField     = ($resale ? 's.beschikbaar_wederverkoop = 1' : 's.beschikbaar_directeklanten = 1');
+        $travelInsurance = $websiteConcern->getConfig(WebsiteConcern::WEBSITE_CONFIG_TRAVEL_INSURANCE);
 
         $qb->select("s.optie_soort_id, s.algemeneoptie, s.naam_enkelvoud" . $localeField . " AS naam_enkelvoud,
                      s.omschrijving" . $localeField . " AS omschrijving, s.annuleringsverzekering, s.reisverzekering, s.gekoppeld_id")
@@ -348,9 +349,82 @@ class OptionRepository implements OptionServiceRepositoryInterface
         $statement = $qb->execute();
         $results   = $statement->fetchAll();
 
-        $qb   = $connection->createQueryBuilder();
-        $expr = $qb->expr();
+        $qb        = $connection->createQueryBuilder();
+        $expr      = $qb->expr();
 
-        $qb->select('o.naam' . $localeField);
+        $options   = [];
+        $kinds     = [];
+
+        foreach ($results as $result) {
+
+            if (!$result['reisverzekering'] || $travelInsurance) {
+
+                $id           = $result['optie_soort_id'];
+                $kinds[]      = (int)$id;
+                $options[$id] = [
+
+                    'naam_enkelvoud'         => ucfirst($result['naam_enkelvoud']),
+                    'annuleringsverzekering' => $result['annuleringsverzekering'],
+                    'reisverzekering'        => $result['reisverzekering'],
+                    'onderdelen'             => [],
+                ];
+            }
+        }
+
+        $qb->select('o.naam' . $localeField . ' AS naam, s.optie_soort_id, o.optie_onderdeel_id, o.min_leeftijd, o.max_leeftijd, o.min_deelnemers,
+                     o.actief, g.optie_groep_id, g.omschrijving' . $localeField . ' AS omschrijving, t.verkoop, t.wederverkoop_commissie_agent')
+           ->from('optie_onderdeel o, optie_groep g, optie_tarief t, optie_soort s, optie_accommodatie a, seizoen sz', '')
+           ->andWhere($expr->neq('o.naam' . $localeField, ':empty'))
+           ->andWhere($expr->eq('o.te_selecteren', ':toSelect'))
+           ->andWhere($expr->eq('o.te_selecteren_door_klant', ':toSelectCustomer'))
+           ->andWhere($expr->eq('o.actief', ':active'))
+           ->andWhere($expr->eq('sz.seizoen_id', ':season'))
+           ->andWhere($expr->eq('a.accommodatie_id', ':accommodationId'))
+           ->andWhere('a.optie_soort_id = s.optie_soort_id')
+           ->andWhere('a.optie_groep_id = g.optie_groep_id')
+           ->andWhere('t.optie_onderdeel_id = o.optie_onderdeel_id')
+           ->andWhere('t.seizoen_id = sz.seizoen_id')
+           ->andWhere($expr->eq('t.week', ':weekend'))
+           ->andWhere($expr->eq('t.beschikbaar', ':available'))
+           ->andWhere($expr->in('g.optie_soort_id', $kinds))
+           ->andWhere('g.optie_soort_id = s.optie_soort_id')
+           ->andWhere('g.optie_groep_id = o.optie_groep_id')
+           ->orderBy('o.volgorde, o.naam')
+           ->setParameters([
+
+                'empty'            => '',
+                'toSelect'         => 1,
+                'toSelectCustomer' => 1,
+                'active'           => 1,
+                'season'           => $season,
+                'accommodationId'  => $accommodationId,
+                'weekend'          => $weekend,
+                'available'        => 1,
+           ]);
+
+        $statement = $qb->execute();
+        $results   = $statement->fetchAll();
+
+        foreach ($results as $result) {
+
+            $kindId = (int)$result['optie_soort_id'];
+            $id     = (int)$result['optie_onderdeel_id'];
+
+            $options[$kindId]['onderdelen'][$id] = [
+
+                'naam'           => $result['naam'],
+                'verkoop'        => $result['verkoop'],
+                'commissie'      => $result['wederverkoop_commissie_agent'],
+                'min_leeftijd'   => $result['min_leeftijd'],
+                'max_leeftijd'   => $result['max_leeftijd'],
+                'min_deelnemers' => $result['min_deelnemers'],
+            ];
+
+            if ($result['min_leeftijd'] || $result['max_leeftijd']) {
+                $options[$kindId]['onderdelen'][$id]['leeftijdsgebonden'];
+            }
+        }
+
+        return $options;
     }
 }
