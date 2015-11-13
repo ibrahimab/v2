@@ -1,6 +1,3 @@
-imports:
-    - { resource: "../dev/app.yml" }
-
 parameters:
     mailer_transport: mail
     app:
@@ -46,6 +43,7 @@ parameters:
             18: 28
             19: 28
             20: 50
+        reservation_costs: 22.50
         travel_insurance_possible: true
         ten_days_insurance_price_summer: 26.20
         ten_days_insurance_price_default: 36.20
@@ -347,3 +345,20 @@ parameters:
                 damage_insurance: 1
                 newsletter: true
                 newsletter_cancel: false
+        cancellation_insurances:
+            standard:
+                id: 1
+                active: true
+                name: standard
+            warranty:
+                id: 2
+                active: false
+                name: warranty
+            allrisk:
+                id: 3
+                active: true
+                name: allrisk
+            warranty_observation:
+                id: 4
+                active: false
+                name: warranty_observation

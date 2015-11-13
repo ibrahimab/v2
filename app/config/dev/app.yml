@@ -45,6 +45,7 @@ parameters:
             18: 28
             19: 28
             20: 50
+        reservation_costs: 22.50
         travel_insurance_possible: true
         ten_days_insurance_price_summer: 26.20
         ten_days_insurance_price_default: 36.20

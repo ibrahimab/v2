@@ -3,6 +3,7 @@ namespace AppBundle\Controller;
 
 use       AppBundle\Annotation\Breadcrumb;
 use       AppBundle\Service\PriceCalculator\FormService;
+use       AppBundle\Entity\Booking\Booking as BookingEntity;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -79,8 +80,21 @@ class PriceCalculatorController extends Controller
         $calculatorService->setType($type);
 
         $formService       = $calculatorService->getFormService();
-        $form              = $formService->getForm(FormService::FORM_STEP_ONE);
-        dump($form->getData());exit;
+        $form              = $formService->create(FormService::FORM_STEP_ONE);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+
+            $booking = new BookingEntity();
+
+            $bookingService = $this->get('app.booking');
+            $bookingService->setBooking($booking)
+                           ->create();
+
+        } else {
+
+            dump($form->getErrors());exit;
+        }
     }
 
     /**

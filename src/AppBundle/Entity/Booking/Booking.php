@@ -22,7 +22,14 @@ class Booking implements BookingServiceEntityInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="calc", type="integer")
+     */
+    private $calc;
+
     /**
      * @var SurveyServiceEntityInterface[]
      *
@@ -200,6 +207,24 @@ class Booking implements BookingServiceEntityInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setCalc($calc)
+    {
+        $this->calc = $calc;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getCalc()
+    {
+        return $this->calc;
     }
 
     /**

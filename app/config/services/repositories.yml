@@ -7,6 +7,7 @@ services:
         calls:
             - [setSeason,  [@app.concern.season]]
             - [setWebsite, [@app.concern.website]]
+            - [setConfig,  [%app%]]
 
     app.repository.odm:
         abstract:        true
