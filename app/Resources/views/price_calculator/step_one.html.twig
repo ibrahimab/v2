@@ -2,7 +2,7 @@
 
 {% block price_calculator %}
 
-    {{ form_start(form, {'action': path('price_calculator_step_two_' ~ locale, {typeId: type.getId()})}) }}
+    {{ form_start(form, {'action': path('price_calculator_process_step_one_' ~ locale, {typeId: type.getId()})}) }}
 
     <div class="row">
 

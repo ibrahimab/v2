@@ -24,7 +24,7 @@ use       Symfony\Component\HttpFoundation\JsonResponse;
 class PriceCalculatorController extends Controller
 {
     /**
-     * @Route(name="price_calculator_step_one_nl", path="/{typeId}/prijs-berekenen", requirements={
+     * @Route(name="price_calculator_step_one_nl", path="/prijs-berekenen/{typeId}", requirements={
      *     "typeId": "\d+"
      * })
      * @Route(name="old_calculate_price_form", path="/calc.php")
@@ -58,8 +58,29 @@ class PriceCalculatorController extends Controller
 
             'type'    => $type,
             'form'    => $calculatorService->getFormService()->create(FormService::FORM_STEP_ONE)->createView(),
-            ''
         ]);
+    }
+
+    /**
+     * @Route(name="price_calculator_process_step_one_nl", path="/prijs-berekenen/{typeId}", requirements={
+     *     "typeId": "\d+"
+     * })
+     * @Method("POST")
+     */
+    public function processStepOne(Request $request, $typeId)
+    {
+        $type = $this->get('app.api.type')->findById($typeId);
+
+        if (null === $type) {
+            throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found');
+        }
+
+        $calculatorService = $this->get('app.price_calculator.calculator');
+        $calculatorService->setType($type);
+
+        $formService       = $calculatorService->getFormService();
+        $form              = $formService->getForm(FormService::FORM_STEP_ONE);
+        dump($form->getData());exit;
     }
 
     /**
@@ -139,7 +160,7 @@ class PriceCalculatorController extends Controller
                 $params['p'] = $query->get('ap');
             }
 
-            return $this->redirectToRoute('calculate_price_form_' . $request->getLocale(), $params, 301);
+            return $this->redirectToRoute('price_calculator_step_one_' . $request->getLocale(), $params, 301);
         }
 
         return false;

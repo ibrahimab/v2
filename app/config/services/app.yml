@@ -56,7 +56,7 @@ services:
 
     app.booking:
         class: AppBundle\Service\Booking\BookingService
-        arguments: [@app.api.booking]
+        arguments: [@app.api.booking, @app.api.accommodation]
 
     app.price_calculator.form:
         class: AppBundle\Service\PriceCalculator\FormService

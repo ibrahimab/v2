@@ -1,8 +1,9 @@
 <?php
 namespace AppBundle\Service\Booking;
 
-use       AppBundle\Entity\Booking\Booking as BookingEntity;
-use       AppBundle\Service\Api\Booking\BookingService as BookingDataService;
+use       AppBundle\Entity\Booking\Booking                  as BookingEntity;
+use       AppBundle\Service\Api\Booking\BookingService      as BookingDataService;
+use       AppBundle\Service\Api\Accommodation\Accommodation as AccommodationService;
 
 /**
  * @author  Ibrahim Abdullah
@@ -16,13 +17,19 @@ class BookingService
     private $bookingDataService;
 
     /**
+     * @var AccommodationService
+     */
+    private $accommodationService;
+
+    /**
      * Constructor
      *
      * @param BookingDataService $bookingDataService
      */
-    public function __construct(BookingDataService $bookingDataService)
+    public function __construct(BookingDataService $bookingDataService, AccommodationService $accommodationService)
     {
-        $this->bookingDataService = $bookingDataService;
+        $this->bookingDataService   = $bookingDataService;
+        $this->accommodationService = $accommodationService;
     }
 
     /**
@@ -38,9 +45,8 @@ class BookingService
      */
     public function create(BookingEntity $booking)
     {
-        $accommodation = \accinfo($booking->getTypeId());
+        $accommodation = $this->accommodationService->accinfo($booking->getTypeId());
         dump($accommodation);exit;
-
         $this->bookingDataService->create($booking);
         // $this->bookingDataService->
     }
