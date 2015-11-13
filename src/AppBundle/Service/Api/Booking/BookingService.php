@@ -14,7 +14,7 @@ class BookingService
      * @var CountryServiceRepositoryInterface
      */
     private $bookingServiceRepository;
-    
+
     /**
      * Constructor
      *
@@ -24,7 +24,7 @@ class BookingService
     {
         $this->bookingServiceRepository = $bookingServiceRepository;
     }
-    
+
     /**
      * Find all the bookings
      *
@@ -35,7 +35,7 @@ class BookingService
     {
         return $this->bookingServiceRepository->all($options);
     }
-    
+
     /**
      * Find a single booking
      *
@@ -45,5 +45,14 @@ class BookingService
     public function find($by = [])
     {
         return $this->bookingServiceRepository->find($by);
+    }
+
+    /**
+     * @param BookingServiceEntityInterface $booking
+     * @return BookService
+     */
+    public function create($booking)
+    {
+        return $this->bookingServiceRepository->create($booking);
     }
 }

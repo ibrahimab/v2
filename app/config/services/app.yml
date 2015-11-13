@@ -54,6 +54,10 @@ services:
         class: AppBundle\Service\File\Theme
         arguments: [@app.mongo, %mongodb_files_database%]
 
+    app.booking:
+        class: AppBundle\Service\Booking\BookingService
+        arguments: [@app.api.booking]
+
     app.price_calculator.form:
         class: AppBundle\Service\PriceCalculator\FormService
         arguments: [@form.factory]

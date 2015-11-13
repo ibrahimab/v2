@@ -24,7 +24,7 @@ use       Symfony\Component\HttpFoundation\JsonResponse;
 class PriceCalculatorController extends Controller
 {
     /**
-     * @Route(name="price_calculator_step_one_nl", path="/types/{typeId}/prijs-berekenen", requirements={
+     * @Route(name="price_calculator_step_one_nl", path="/{typeId}/prijs-berekenen", requirements={
      *     "typeId": "\d+"
      * })
      * @Route(name="old_calculate_price_form", path="/calc.php")
@@ -63,7 +63,7 @@ class PriceCalculatorController extends Controller
     }
 
     /**
-     * @Route(name="price_calculator_step_two_nl", path="/types/{typeId}/prijs-berekenen", requirements={
+     * @Route(name="price_calculator_step_two_nl", path="/prijs-berekenen/{typeId}/stap-2", requirements={
      *     "typeId": "\d+"
      * })
      * @Method("POST")
@@ -95,7 +95,7 @@ class PriceCalculatorController extends Controller
     }
 
     /**
-     * @Route(name="price_calculator_step_three_nl", path="/types/{typeId}/prijs-berekend", requirements={
+     * @Route(name="price_calculator_step_three_nl", path="/prijs-berekenen/{typeId}/stap-3", requirements={
      *     "typeId": "\d+"
      * })
      * @Method("POST")
