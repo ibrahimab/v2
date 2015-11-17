@@ -127,6 +127,8 @@ class WebsiteConcern
     {
         $this->website  = $parameters['default_website'];
         $this->websites = $parameters['domain'];
+        $this->ssl      = $parameters['ssl_enabled'];
+        $this->protocol = ($parameters['ssl_enabled'] ? 'https://' : 'http://');
         $this->setType();
     }
 
@@ -182,6 +184,11 @@ class WebsiteConcern
     public function domain()
     {
         return $this->domain;
+    }
+
+    public function uri()
+    {
+        return $this->protocol . $this->domain() . '/';
     }
 
     public function getConfig($identifier)

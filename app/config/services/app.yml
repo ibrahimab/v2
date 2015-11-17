@@ -58,6 +58,10 @@ services:
         class: AppBundle\Service\Booking\BookingService
         arguments: [@app.api.booking, @app.api.accommodation]
 
+    app.accommodation:
+        class: AppBundle\Service\AccommodationService
+        arguments: [@app.concern.locale, @app.concern.website, @app.concern.season, @database_connection, @translator, @router]
+
     app.price_calculator.form:
         class: AppBundle\Service\PriceCalculator\FormService
         arguments: [@form.factory]
