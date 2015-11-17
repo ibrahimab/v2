@@ -44,7 +44,7 @@ class PriceCalculatorController extends Controller
         }
 
         $accommodationService = $this->get('app.accommodation');
-        $accommodationService->getType(240);
+        $accommodationService->getType($typeId);
 
         // get type
         $type = $this->get('app.api.type')->findById($typeId);

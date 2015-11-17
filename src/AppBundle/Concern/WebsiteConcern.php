@@ -191,13 +191,24 @@ class WebsiteConcern
         return $this->protocol . $this->domain() . '/';
     }
 
-    public function getConfig($identifier)
+    public function getConfig($identifier, $website = null)
     {
-        if (!isset($this->config[$identifier])) {
+        if (null !== $website && !isset($this->websites[$website])) {
+            throw new \Exception(sprintf('Website %s could not be found', $website));
+        }
+
+        $config = (null === $website ? $this->config : $this->websites[$website]);
+
+        if (!isset($config[$identifier])) {
             throw new \Exception(sprintf('Could not find WebsiteConcern config with identifier %s', $identifier));
         }
 
-        return $this->config[$identifier];
+        return $config[$identifier];
+    }
+
+    public function websites()
+    {
+        return $this->websites;
     }
 
     public function getLanguageField()
