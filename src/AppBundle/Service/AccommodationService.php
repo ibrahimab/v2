@@ -199,24 +199,42 @@ class AccommodationService
 
         foreach ($results as $result) {
 
-            $adjustments[$result['season_id']] = $result;
+            $result['season_id'] = (int)$result['season_id'];
+            $result['kind']      = (int)$result['kind'];
+            $result['start']     = (int)$result['start'];
+            $result['end']       = (int)$result['end'];
+
+            $adjustments[$result['season_id']]['name']        = $result['name'];
+            $adjustments[$result['season_id']]['description'] = $result['description'];
+            $adjustments[$result['season_id']]['id']          = $result['departure_day_type_id'];
 
             if ($result['kind'] === 2) {
 
-                $week = $weekDate->setTimestamp((int)$result['start']);
-                $end  = $endDate->setTimestamp((int)$result['end'])
+                $week = $weekDate->setTimestamp($result['start']);
+                $end  = $endDate->setTimestamp($result['end'])
                                 ->add($weekInterval)
                                 ->getTimestamp();
 
                 while ($week <= $end) {
 
-                    $adjustments[$result['season_id']][$weekDate->format('dm')] = 1;
+                    $adjustments[$result['season_id']][(int)$weekDate->format('dm')] = 1;
                     $week = $weekDate->add($weekInterval)
                                      ->getTimestamp();
+                }
+
+            } elseif ($result['kind'] === 1 && $result['deviation']) {
+
+                $data = explode("\n", $result['deviation']);
+
+                foreach ($data as $key => $value) {
+
+                    if (1 === preg_match('/(?P<key>[0-9]{4}) (?P<value>.[0-9])$/i', $value, $matches)) {
+                        $adjustments[$result['season_id']][$matches['key']] = (int)$matches['value'];
+                    }
                 }
             }
         }
 
-        dump($results);exit;
+        return $adjustments;
     }
 }
