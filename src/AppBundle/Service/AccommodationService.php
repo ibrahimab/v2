@@ -284,7 +284,7 @@ class AccommodationService
             $time                   = $result['week'];
             $result['season_id']    = (int)$result['season_id'];
             $result['display']      = (int)$result['display'];
-            $result['available']    = (int)$result['beschikbaar'];
+            $result['available']    = (int)$result['available'];
             $result['block_resale'] = (int)$result['block_resale'];
 
             $weekDate->setTimestamp($result['week']);
@@ -341,7 +341,7 @@ class AccommodationService
             $time                = $result['week'];
             $result['season_id'] = (int)$result['season_id'];
             $result['display']   = (int)$result['display'];
-            $result['available'] = (int)$result['beschikbaar'];
+            $result['available'] = (int)$result['available'];
 
             $weekDate->setTimestamp($result['week']);
 
@@ -352,6 +352,14 @@ class AccommodationService
                                      ->add($interval)
                                      ->getTimestamp();
             }
+
+            $arrivals['weekends'][$result['week']] = $time;
+
+            if ($result['display'] > 1 && ($result['gross'] > 0 || $result['arrangement_price'] > 0) && $result['available'] === 1 && ($result['block_resale'] === 0 || !$resale)) {
+                $arrivals['available'][$result['week']] = $time;
+            }
+
+            if (($result[''])
         }
 
         return $arrivals;
