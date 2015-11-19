@@ -174,10 +174,20 @@ class AccommodationService
         $result['departure_day_adjustments'] = $this->getDepartureDayAdjustments($result['type_id'], $result['accommodatie_id']);
 
         if ($result['show'] === 3) {
-            $result['arrival_dates'] = $this->getArrivalDates($result['type_id'], $result['arrival_plus_min'], $result['departure_day_adjustments']);
+            $result['arrival_dates'] = $this->getAccommodationArrivalDates($result['type_id'], $result['arrival_plus_min'], $result['departure_day_adjustments']);
+        } else {
+            $result['arival_dates']  = $this->getArrangementArrivalDates($result['type']);
         }
+
+        dump($result);exit;
     }
 
+    /**
+     * @param  integer $typeId
+     * @param  integer $accommodationId
+     *
+     * @return array
+     */
     public function getDepartureDayAdjustments($typeId, $accommodationId)
     {
         $connection  = $this->connection;
@@ -242,7 +252,14 @@ class AccommodationService
         return $adjustments;
     }
 
-    public function getArrivalDates($typeId, $arrivalPlusMin, $departureDayAdjustments)
+    /**
+     * @param  integer $typeId
+     * @param  integer $arrivalPlusMin
+     * @param  array   $departureDayAdjustments
+     *
+     * @return array
+     */
+    public function getAccommodationArrivalDates($typeId, $arrivalPlusMin, $departureDayAdjustments)
     {
         $connection = $this->connection;
         $qb         = $connection->createQueryBuilder();
@@ -258,16 +275,85 @@ class AccommodationService
 
         $results    = $statement->fetchAll();
         $weekDate   = new \DateTime();
+        $resale     = $this->websiteConcern->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE);
+        $arrivals   = ['weekends' => [], 'available' => [], 'known_price' => []];
 
         foreach ($results as $result) {
 
-            $result['week'] = (int)$result['week'];
+            $result['week']         = (int)$result['week'];
+            $time                   = $result['week'];
+            $result['season_id']    = (int)$result['season_id'];
+            $result['display']      = (int)$result['display'];
+            $result['available']    = (int)$result['beschikbaar'];
+            $result['block_resale'] = (int)$result['block_resale'];
 
             $weekDate->setTimestamp($result['week']);
 
-            if (isset($departureDayAdjustments[$result['season_id']][(int)$weekDate->format('dm')]) || $arrivalPlusMin) {
-                $time = $weekDate->getTimestamp() + $adjustments[$result['season_id']][(int)$weekDate->format('dm')] + $arrivalPlusMin
+            if (isset($departureDayAdjustments[$result['season_id']][$weekDate->format('dm')]) || $arrivalPlusMin) {
+
+                $interval = new \DateInterval('P' . ($departureDayAdjustments[$result['season_id']][$weekDate->format('dm')] + $arrivalPlusMin) . 'D');
+                $time     = $weekDate->setTimestamp($result['week'])
+                                     ->add($interval)
+                                     ->getTimestamp();
+            }
+
+            $arrivals['weekends'][$result['week']] = $time;
+
+            if ($result['display'] > 1 && $result['gross'] > 0 && $result['site_sale'] && $result['available'] === 1 && ($result['block_resale'] === 0 || !$resale) && ($result['resale_saleprice'] > 0 || !$resale)) {
+                $arrivals['available'][$result['week']] = $time;
+            }
+
+            if ($result['site_sale'] > 0 && ($result['resale_saleprice'] > 0 || !$resale)) {
+                $arrivals['known_price'][$result['week']] = $time;
             }
         }
+
+        return $arrivals;
+    }
+
+    /**
+     * @param  integer $typeId
+     *
+     * @return array
+     */
+    public function getArrangementArrivalDates($typeId, $arrivalPlusMin, $departureDayAdjustments)
+    {
+        $connection = $this->connection;
+        $qb         = $connection->createQueryBuilder();
+        $expr       = $qb->expr();
+
+        $statement  = $qb->select('t.week, s.tonen AS display, t.bruto AS gross, t.arrangementsprijs AS arrangement_price, t.beschikbaar AS available,
+                                   blokkeren_wederverkoop AS block_resale, t.wederverkoop_verkoopprijs AS resale_saleprice, s.seizoen_id AS season_id')
+                         ->from('tarief t, seizoen s', '')
+                         ->andWhere('t.seizoen_id = s.seizoen_id')
+                         ->andWhere($expr->eq('t.type_id', ':type_id'))
+                         ->setParameter('type_id', $typeId)
+                         ->execute();
+
+        $results    = $statement->fetchAll();
+        $weekDate   = new \DateTime();
+        $resale     = $this->websiteConcern->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE);
+        $arrivals   = ['weekends' => [], 'available' => [], 'known_price' => []];
+
+        foreach ($results as $result) {
+
+            $result['week']      = (int)$result['week'];
+            $time                = $result['week'];
+            $result['season_id'] = (int)$result['season_id'];
+            $result['display']   = (int)$result['display'];
+            $result['available'] = (int)$result['beschikbaar'];
+
+            $weekDate->setTimestamp($result['week']);
+
+            if (isset($departureDayAdjustments[$result['season_id']][$weekDate->format('dm')]) || $arrivalPlusMin) {
+
+                $interval = new \DateInterval('P' . ($departureDayAdjustments[$result['season_id']][$weekDate->format('dm')] + $arrivalPlusMin) . 'D');
+                $time     = $weekDate->setTimestamp($result['week'])
+                                     ->add($interval)
+                                     ->getTimestamp();
+            }
+        }
+
+        return $arrivals;
     }
 }
