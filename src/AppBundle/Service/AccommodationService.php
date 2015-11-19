@@ -102,7 +102,7 @@ class AccommodationService
         $statement   = $qb->select('a.wzt as season, a.naam AS name_accommodation, a.bestelnaam AS order_name,
                                     a.soortaccommodatie as accommodation_kind, a.toonper AS `show`, a.flexibel AS flexible,
                                     t.websites, a.vertrekinfo_seizoengoedgekeurd AS departure_info_season_approved, a.vertrekinfo_seizoengoedgekeurd_en AS departure_info_season_approved_en,
-                                    a.accommodatie_id AS accommodation_id, t.leverancier_id AS supplier_id, a.aankomst_plusmin AS arrival_plusmin, a.vertrek_plusmin AS departure_plus_min, a.receptie' . $localeField . ' AS reception,
+                                    a.accommodatie_id AS accommodation_id, t.leverancier_id AS supplier_id, a.aankomst_plusmin AS arrival_plus_min, a.vertrek_plusmin AS departure_plus_min, a.receptie' . $localeField . ' AS reception,
                                     a.telefoonnummer AS phone, a.voucherinfo' . $localeField . ' AS voucherinfo_accommodation, t.voucherinfo' . $localeField . ' AS voucherinfo_type, a.mailtekst_id AS mail_text_id, a.optiedagen_klanten_vorig_seizoen AS option_days_clients_last_season, a.korteomschrijving' . $localeField . ' AS short_description_accommodation,
                                     t.korteomschrijving' . $localeField . ' AS short_description_type, a.inclusief' . $localeField . ' AS including_accommodation, t.inclusief' . $localeField . ' AS including_type, a.exclusief' . $localeField . ' AS exclusive_accommodation, t.exclusief' . $localeField . ' AS exclusive_type,
                                     a.tonen AS display_accommodation, t.tonen AS display_type, t.type_id, t.naam' . $localeField . ' AS name_type, t.code, t.optimaalaantalpersonen AS optimal_persons, t.maxaantalpersonen AS max_persons, t.slaapkamers AS bedrooms, t.slaapkamersextra' . $localeField . ' AS bedrooms_extra, t.badkamers AS bathrooms, t.badkamersextra' . $localeField . ' AS bathrooms_extra,
@@ -172,6 +172,10 @@ class AccommodationService
         }
 
         $result['departure_day_adjustments'] = $this->getDepartureDayAdjustments($result['type_id'], $result['accommodatie_id']);
+
+        if ($result['show'] === 3) {
+            $result['arrival_dates'] = $this->getArrivalDates($result['type_id'], $result['arrival_plus_min'], $result['departure_day_adjustments']);
+        }
     }
 
     public function getDepartureDayAdjustments($typeId, $accommodationId)
@@ -236,5 +240,34 @@ class AccommodationService
         }
 
         return $adjustments;
+    }
+
+    public function getArrivalDates($typeId, $arrivalPlusMin, $departureDayAdjustments)
+    {
+        $connection = $this->connection;
+        $qb         = $connection->createQueryBuilder();
+        $expr       = $qb->expr();
+
+        $statement  = $qb->select('t.week, s.tonen AS display, t.c_bruto AS gross, t.c_verkoop_site AS site_sale, t.beschikbaar AS available,
+                                   t.blokkeren_wederverkoop AS block_resale, t.wederverkoop_verkoopprijs AS resale_saleprice, s.seizoen_id AS season_id')
+                         ->from('tarief t, seizoen s', '')
+                         ->andWhere('t.seizoen_id = s.seizoen_id')
+                         ->andWhere($expr->eq('t.type_id', ':type_id'))
+                         ->setParameter('type_id', $typeId)
+                         ->execute();
+
+        $results    = $statement->fetchAll();
+        $weekDate   = new \DateTime();
+
+        foreach ($results as $result) {
+
+            $result['week'] = (int)$result['week'];
+
+            $weekDate->setTimestamp($result['week']);
+
+            if (isset($departureDayAdjustments[$result['season_id']][(int)$weekDate->format('dm')]) || $arrivalPlusMin) {
+                $time = $weekDate->getTimestamp() + $adjustments[$result['season_id']][(int)$weekDate->format('dm')] + $arrivalPlusMin
+            }
+        }
     }
 }
