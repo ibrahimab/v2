@@ -44,7 +44,10 @@ class PriceCalculatorController extends Controller
         }
 
         $accommodationService = $this->get('app.accommodation');
-        $accommodationService->getType($typeId);
+        $arrival              = new \DateTime();
+        $arrival->modify('next saturday');
+
+        $accommodationService->get($typeId, $arrival->getTimestamp());
 
         // get type
         $type = $this->get('app.api.type')->findById($typeId);

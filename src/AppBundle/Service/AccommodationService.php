@@ -81,16 +81,6 @@ class AccommodationService
      */
     public function get($typeId, $weekend = null, $persons = null, $options = [])
     {
-        $accommodation = $this->getType($typeId);
-    }
-
-    /**
-     * @param  integer $typeId
-     *
-     * @return array
-     */
-    public function getType($typeId)
-    {
         $connection  = $this->connection;
         $qb          = $connection->createQueryBuilder();
         $expr        = $qb->expr();
@@ -176,7 +166,17 @@ class AccommodationService
         if ($result['show'] === 3) {
             $result['arrival_dates'] = $this->getAccommodationArrivalDates($result['type_id'], $result['arrival_plus_min'], $result['departure_day_adjustments']);
         } else {
-            $result['arival_dates']  = $this->getArrangementArrivalDates($result['type']);
+            $result['arrival_dates']  = $this->getArrangementArrivalDates($result['type']);
+        }
+
+        $result['departure'] = null;
+
+        if (null !== $weekend) {
+
+            $arrival = new \DateTime();
+            $arrival->setTimestamp($weekend);
+
+            $result['departure'] = $this->getDepartureDay($arrival, $result['arrival_dates']['weekends'], $result['arrival_plus_min'], $result['departure_plus_min']);
         }
 
         dump($result);exit;
@@ -359,9 +359,44 @@ class AccommodationService
                 $arrivals['available'][$result['week']] = $time;
             }
 
-            if (($result[''])
+            if (($result['gross'] > 0 || $result['arrangement_price']) && ($result['resale_saleprice']) > 0 || !$resale) {
+                $arrivals['date_prices'][$result['week']] = $week;
+            }
+
+            if ($result['resale_saleprice'] > 0) {
+
+                $arrivals['price_per_week'][$result['week']] = (($result['resale_saleprice'] / 100) * $result['gross']);
+                $arrivals['weekend_price'][$result['week']] = floor(($result['price_per_week']) / 5) * 5;
+            }
         }
 
         return $arrivals;
+    }
+
+    public function getDepartureDay(\DateTime $arrival, $arrivals, $arrivalPlusMin, $departurePlusMin)
+    {
+        $end       = $arrival->add(new \DateInterval('P7D'));
+        $timestamp = $arrival->getTimestamp();
+        $departure = null;
+
+        if (isset($arrivals[$timestamp])) {
+
+            $departure = $arrivals[$timestamp];
+
+        } elseif (!isset($arrivals[$timestamp]) && $arrivalPlusMin <> 0 && $arrivalPlusMin === $departurePlusMin) {
+
+            // sunday - sunday trips
+            $departure = $end->add(new \DateInterval('P' . $departurePlusMin . 'D'));
+
+        } else {
+
+            $departure = $timestamp;
+        }
+
+        if ($departurePlusMin <> 0){
+            $departure = $end->sub('P' . ($departurePlusMin + $arrivalPlusMin) . 'D');
+        }
+
+        return $departure;
     }
 }
