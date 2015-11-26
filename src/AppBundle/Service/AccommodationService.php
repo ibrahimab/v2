@@ -182,6 +182,29 @@ class AccommodationService
 
         if ($result['show'] <> 3 || false === $resale) {
             $result['skipas'] = $this->getSkiPas($result['accommodation_id']);
+        } else {
+            $result['skipas'] = null;
+        }
+
+        if (null !== $weekend && null !== $persons) {
+
+            if ($result['show'] === 3 || $resale) {
+
+                $data                 = $this->calculateAccommodationPrice($result['type_id'], $weekend, $persons);
+                $result['price']      = $data['price'];
+                $result['season_id']  = $data['season_id'];
+                $result['insurances'] = $data['insurances'];
+
+            } else {
+
+                $data                 = $this->calculateArrangementPrice($result['type_id'], $weekend, $persons);
+                $result['price']      = $data['price'];
+                $result['season_id']  = $data['season_id'];
+                $result['insurances'] = $data['insurances'];
+            }
+
+            $result['offer'] = $this->getOffers($result['type_id'], $result['season_id'], $weekend);
+            dump($result['offer']);exit;
         }
 
         dump($result);exit;
@@ -198,6 +221,7 @@ class AccommodationService
         $connection  = $this->connection;
         $qb          = $connection->createQueryBuilder();
         $expr        = $qb->expr();
+        $localeField = $this->localeField;
 
         $statement   = $qb->select('v.naam AS name, v.toelichting' . $localeField . ' AS description, v.vertrekdagtype_id AS departure_day_type_id,
                                     v.soort AS kind, v.afwijking AS deviation, UNIX_TIMESTAMP(s.begin) AS start, UNIX_TIMESTAMP(s.eind) AS end, asz.seizoen_id AS season_id')
@@ -434,5 +458,280 @@ class AccommodationService
         $skipas     = $statement->fetch();
 
         return (false === $skipas ? null : $skipas);
+    }
+
+    /**
+     * @param  integer $typeId
+     * @param  integer $weekend
+     * @param  integer $persons
+     *
+     * @return array|null
+     */
+    public function calculateAccommodationPrice($typeId, $weekend, $persons)
+    {
+        $connection = $this->connection;
+        $qb         = $connection->createQueryBuilder();
+        $expr       = $qb->expr();
+        $resale     = $this->websiteConcern->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE);
+
+        $statement  = $qb->select('t.c_verkoop_site AS sale_site, t.wederverkoop_verkoopprijs AS resale_saleprice, t.wederverkoop_commissie_agent AS resale_commision_agent, s.seizoen_id AS season_id,
+                                   s.annuleringsverzekering_poliskosten AS cancellation_insurance_policy_fee, s.annuleringsverzekering_percentage_1 AS cancellation_insurance_percentage_1, s.annuleringsverzekering_percentage_2 AS cancellation_insurance_percentage_2,
+                                   s.annuleringsverzekering_percentage_3 AS cancellation_insurance_percentage_3, s.annuleringsverzekering_percentage_4 AS cancellation_insurance_percentage_4, s.schadeverzekering_percentage AS damage_insurance_percentage,
+                                   s.reisverzekering_poliskosten AS travel_insurance_policy_fee, s.verzekeringen_poliskosten AS insurances_policy_fee')
+                         ->from('tarief t, seizoen s', '')
+                         ->andWhere($expr->eq('t.type_id', ':typeId'))
+                         ->andWhere('t.seizoen_id = s.seizoen_id')
+                         ->andWhere($expr->eq('t.week', ':weekend'))
+                         ->setParameter('typeId', $typeId)
+                         ->setParameter('weekend', $weekend)
+                         ->execute();
+
+        $result     = $statement->fetch();
+        $data       = [];
+
+        if (false !== $result) {
+
+            $data['price']      = (true === $resale ? $result['resale_saleprice'] : $result['sale_site']);
+            $data['season_id']  = $result['season_id'];
+            $data['insurances'] = [
+
+                'cancellation_percentages' => [
+
+                    1 => $result['cancellation_insurance_percentage_1'],
+                    2 => $result['cancellation_insurance_percentage_2'],
+                    3 => $result['cancellation_insurance_percentage_3'],
+                    4 => $result['cancellation_insurance_percentage_4'],
+                ],
+                'damage_insurance_percentage' => $result['damage_insurance_percentage'],
+                'insurances_policy_fee'       => $result['insurances_policy_fee'],
+                'commission'                  => (true === $resale ? $result['resale_commision_agent'] : null),
+            ];
+        }
+
+        return (false !== $result ? $data : null);
+    }
+
+    /**
+     * @param  integer $typeId
+     * @param  integer $weekend
+     * @param  integer $persons
+     *
+     * @return array|null
+     */
+    public function calculateArrangementPrice($typeId, $weekend, $persons)
+    {
+        $connection = $this->connection;
+        $qb         = $connection->createQueryBuilder();
+        $expr       = $qb->expr();
+
+        $statement  = $qb->select('tp.prijs AS price, s.seizoen_id AS season_id, s.annuleringsverzekering_poliskosten AS cancellation_insurance_policy_fee, s.annuleringsverzekering_percentage_1 AS cancellation_insurance_percentage_1,
+                                   s.annuleringsverzekering_percentage_2 AS cancellation_insurance_percentage_2, s.annuleringsverzekering_percentage_3 AS cancellation_insurance_percentage_3 AS s.annuleringsverzekering_percentage_4 AS cancellation_insurance_percentage_4,
+                                   schadeverzekering_percentage AS damage_insurance_percentage, s.reisverzekering_poliskosten AS travel_insurance_policy_fee, s.verzekeringen_poliskosten AS insurances_policy_fee')
+                         ->from('tarief_personen tp, seizoen s', '')
+                         ->andWhere($expr->eq('tp.type_id', ':typeId'))
+                         ->andWhere('tp.seizoen_id = s.seizoen_id')
+                         ->andWhere($expr->eq('tp.week', ':weekend'))
+                         ->andWhere($expr->eq('personen', ':persons'))
+                         ->setParameter('typeId', $typeId)
+                         ->setPArameter('weekend', $weekend)
+                         ->setParameter('persons', $persons)
+                         ->execute();
+
+        $result     = $statement->fetch();
+        $data       = [];
+
+        if (false !== $result) {
+
+            $data['price']      = $result['price'];
+            $data['season_id']  = $result['season_id'];
+            $data['insurances'] = [
+
+                'cancellation_percentages' => [
+
+                    1 => $result['cancellation_insurance_percentage_1'],
+                    2 => $result['cancellation_insurance_percentage_2'],
+                    3 => $result['cancellation_insurance_percentage_3'],
+                    4 => $result['cancellation_insurance_percentage_4'],
+                ],
+                'damage_insurance_percentage' => $result['damage_insurance_percentage'],
+                'insurances_policy_fee'       => $result['insurances_policy_fee'],
+            ];
+        }
+
+        return (false !== $result ? $data : null);
+    }
+
+    public function getOffers($typeId, $seasonId, $weekend = null)
+    {
+        $connection  = $this->connection;
+        $qb          = $connection->createQueryBuilder();
+        $expr        = $qb->expr();
+        $person      = $this->translator->trans('person');
+        $persons     = $this->translator->trans('persons');
+        $localeField = $this->localeField;
+        $now         = time();
+        $threshold   = ($now + (86400 * 21));
+        $results     = [];
+        $offerKinds  = [
+
+            'accommodations' => ['table' => 'aanbieding_accommodatie aa', 'where' => 'aa.aanbieding_id = a.aanbieding_id AND aa.accommodatie_id = ac.accommodatie_id'],
+            'types'          => ['table' => 'aanbieding_type at',         'where' => 'at.aanbieding_id = a.aanbieding_id AND at.type_id         = t.type_id']];
+
+        $whereSeason = $expr->orX(
+
+            $expr->eq('a.seizoen1_id', ':seasonId'),
+            $expr->eq('a.seizoen2_id', ':seasonId'),
+            $expr->eq('a.seizoen3_id', ':seasonId')
+        );
+
+        foreach ($offerKinds as $kind => $data) {
+
+            $query = $qb->select('a.aanbieding_id AS offer_id, a.naam, a.onlinenaam' . $localeField . ' AS online_name, a.omschrijving' . $localeField . ' AS description, a.tonen AS display,
+                                  a.archief AS archive, a.soort AS kind, a.toon_abpagina AS show_ab_page, a.bedrag AS price, a.bedrag_soort AS price_kind, UNIX_TIMESTAMP(a.begindatum) AS start_date,
+                                  UNIX_TIMESTAMP(a.einddatum) AS end_date, a.toonkorting AS show_discount, a.toon_als_aanbieding AS show_as_offer, ad.week, t.type_id, ac.naam AS accommodation_name, ac.tonen AS show_accommodation,
+                                  t.tonen AS show_type, t.websites AS websites, ac.soortaccommodatie AS kind_accommodation, t.naam' . $localeField . ' AS name_type, t.optimaalaantalpersonen AS optimal_persons,
+                                  t.maxaantalpersonen AS max_persons, p.naam' . $localeField . ' AS name_place, s.naam AS name_region, l.naam' . $localeField . ' AS name_country, l.begincode')
+                        ->from('aanbieding a, accommodatie ac, aanbieding_aankomstdatum ad, type t, tarief ta, plaats p, land l, skigebied s, aanbieding_accommodatie aa ', '')
+                        ->andWhere('ta.week = ad.week')
+                        ->andWhere('ta.type_id = t.type_id')
+                        ->andWhere($expr->eq('ta.beschikbaar', ':available'))
+                        ->andWhere('ac.plaats_id = p.plaats_id')
+                        ->andWhere('p.land_id = l.land_id')
+                        ->andWhere('p.skigebied_id = s.skigebied_id')
+                        ->andWhere('ad.aanbieding_id = a.aanbieding_id')
+                        ->andWhere('t.accommodatie_id = ac.accommodatie_id')
+                        ->andWhere($whereSeason)
+                        ->andWhere($expr->eq('t.type_id', ':typeId'))
+                        ->andWhere('aa.aanbieding_id = a.aanbieding_id')
+                        ->andWhere('aa.accommodatie_id = ac.accommodatie_id')
+                        ->orderBy('a.soort, a.onlinenaam' . $localeField . ', a.begindatum, ac.naam, t.optimaalaantalpersonen, t.maxaantalpersonen, ad.week, t.naam')
+                        ->setParameter('available', 1)
+                        ->setParameter('seasonId', $seasonId)
+                        ->setParameter('typeId', $typeId);
+
+            if (null !== $weekend) {
+
+                $query->andWhere($expr->eq('ta.week', ':weekend'))
+                      ->setParameter('weekend', $weekend);
+            }
+
+            $statement = $query->execute();
+            $rows      = $statement->fetchAll();
+
+            foreach ($rows as $row) {
+
+                if (!isset($results[$row['offer_id']])) {
+
+                    $results['offer'][$row['offer_id']] = [
+
+                        'id'            => (int)$row['offer_id'],
+                        'name'          => $row['online_name'],
+                        'description'   => $row['description'],
+                        'kind_id'       => (int)$row['kind_id'],
+                        'kind'          => (int)$row['kind'],
+                        'show_ab_page'  => $row['show_ab_page'],
+                        'price'         => (float)$row['price'],
+                        'price_kind'    => (int)$row['price_kind'],
+                        'start_date'    => (int)$row['start_date'],
+                        'end_date'      => (int)$row['end_date'],
+                        'arrival_date'  => (int)$row['week'],
+                        'show_discount' => (int)$row['show_discount'],
+                        'show_as_offer' => (int)$row['show_as_offer'],
+                        'show'          => (int)$row['show'],
+                        'archive'       => $row['archive'],
+                        'weeks'         => [],
+                        'accommodation' => [],
+                    ];
+                }
+
+                if (null !== $typeId) {
+                    $results['offer'][$row['offer_id']]['weeks'][$row['week']] = $row['price'];
+                } else {
+                    $results['offer'][$row['offer_id']]['accommodation'][$row['type_id']][$row['week']] = $row['price'];
+                }
+
+                if ($row['kind'] === 2 && $row['week'] > $now) {
+
+                    if (!isset($results[$row['offer_id']]['last_minute'])) {
+                        $results['offer'][$row['offer_id']]['last_minute'] = true;
+                    }
+
+                    if ($row['week'] > $threshold) {
+                        $results['offer'][$row['offer_id']]['last_minute'] = false;
+                    }
+                }
+
+                if (!isset($results['type'][$row['type_id']])) {
+
+                    $kind                             = $this->translator->trans('type.kind.' . $row['accommodation_kind']);
+                    $results['type'][$row['type_id']] = [
+
+                        'kind_accommodation' => $kind,
+                        'name_accommodation' => ucfirst($kind) . ' ' . $row['name_accommodation'] . ($row['name_type'] ? (' ' . $row['name_type']) : ''),
+                        'accommodation_id'   => (int)$row['accommodation_id'],
+                        'type_id'            => (int)$row['type_id'],
+                        'name_place'         => $row['name_place'],
+                        'name_region'        => $row['name_region'],
+                        'name_country'       => $row['name_country'],
+                        'url'                => $this->router->generate('show_type_' . $locale, [
+
+                            'beginCode' => $row['begincode'],
+                            'typeId'    => $result['type_id'],
+
+                        ], UrlGeneratorInterface::ABSOLUTE_URL),
+                        'show'               => (int)$row['show'],
+                        'optimal_persons'    => (int)$row['optimal_persons'],
+                        'max_persons'        => (int)$row['max_persons'],
+                        'persons'            => ($row['optimal_persons'] . ($row['max_persons'] > $row['optimal_persons'] ? (' - ' . $row['max_persons']) : '') . ' ' . ((int)$row['max_persons'] === 1 ? $person : $persons)),
+                        'display'            => ((int)$row['display_accommodation'] === 1 && (int)$row['display_type'] === 1),
+                        'websites'           => explode(',', $row['websites']),
+                        'show_discount'      => ((int)$row['show_discount'] === 1),
+                        'show_as_offer'      => ((int)$row['show_as_offer'] === 1),
+                        'prices'             => [],
+                    ];
+                }
+
+                if (!isset($results['type'][$row['type_id']]['prices'][$row['week']])) {
+                    $results['type'][$row['type_id']]['prices'][$row['week']] = 0;
+                }
+
+                $results['type'][$row['type_id']]['prices'][$row['week']] += $row['price'];
+
+                switch ((int)$row['price_kind']) {
+
+                    case 1:
+
+                        if (!isset($results['type'][$row['type_id']]['discount_euro'][$row['week']])) {
+                            $results['type'][$row['type_id']]['discount_euro'][$row['week']] = 0;
+                        }
+
+                        $results['type'][$row['type_id']]['discount_euro'][$row['week']] += $row['price'];
+
+                        break;
+
+                    case 2:
+
+                        if (!isset($results['type'][$row['type_id']]['discount_percentage'][$row['week']])) {
+                            $results['type'][$row['type_id']]['discount_percentage'][$row['week']] = 0;
+                        }
+
+                        $results['type'][$row['type_id']]['discount_percentage'][$row['week']] += $row['price'];
+
+                        break;
+
+                    case 3:
+
+                        if (!isset($results['type'][$row['type_id']]['exact_price'][$row['week']])) {
+                            $results['type'][$row['type_id']]['exact_price'][$row['week']] = 0;
+                        }
+
+                        $results['type'][$row['type_id']]['exact_price'][$row['week']] += $row['price'];
+
+                        break;
+                }
+            }
+        }
+
+        return $results;
     }
 }
