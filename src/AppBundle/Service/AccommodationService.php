@@ -88,6 +88,7 @@ class AccommodationService
         $localeField = $this->localeField;
         $person      = $this->translator->trans('person');
         $persons     = $this->translator->trans('persons');
+        $resale      = $this->websiteConcern->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE);
 
         $statement   = $qb->select('a.wzt as season, a.naam AS name_accommodation, a.bestelnaam AS order_name,
                                     a.soortaccommodatie as accommodation_kind, a.toonper AS `show`, a.flexibel AS flexible,
@@ -166,7 +167,7 @@ class AccommodationService
         if ($result['show'] === 3) {
             $result['arrival_dates'] = $this->getAccommodationArrivalDates($result['type_id'], $result['arrival_plus_min'], $result['departure_day_adjustments']);
         } else {
-            $result['arrival_dates']  = $this->getArrangementArrivalDates($result['type']);
+            $result['arrival_dates']  = $this->getArrangementArrivalDates($result['type'], $result['arrival_plus_min'], $result['departure_day_adjustments']);
         }
 
         $result['departure'] = null;
@@ -177,6 +178,10 @@ class AccommodationService
             $arrival->setTimestamp($weekend);
 
             $result['departure'] = $this->getDepartureDay($arrival, $result['arrival_dates']['weekends'], $result['arrival_plus_min'], $result['departure_plus_min']);
+        }
+
+        if ($result['show'] <> 3 || false === $resale) {
+            $result['skipas'] = $this->getSkiPas($result['accommodation_id']);
         }
 
         dump($result);exit;
@@ -373,6 +378,14 @@ class AccommodationService
         return $arrivals;
     }
 
+    /**
+     * @param  \DateTime $arrival
+     * @param  array     $arrivals
+     * @param  integer   $arrivalPlusMin
+     * @param  integer   $departurePlusMin
+     *
+     * @return \DateTime
+     */
     public function getDepartureDay(\DateTime $arrival, $arrivals, $arrivalPlusMin, $departurePlusMin)
     {
         $end       = $arrival->add(new \DateInterval('P7D'));
@@ -398,5 +411,28 @@ class AccommodationService
         }
 
         return $departure;
+    }
+
+    /**
+     * @param  integer $accommodationId
+     *
+     * @return array|boolean
+     */
+    public function getSkiPas($accommodationId)
+    {
+        $connection = $this->connection;
+        $qb         = $connection->createQueryBuilder();
+        $expr       = $qb->expr();
+
+        $statement  = $qb->select('s.skipas_id, s.naam AS name, s.naam_voorkant AS name_front, s.aantaldagen AS days')
+                         ->from('skipas s, accommodatie a', '')
+                         ->andWhere('a.skipas_id = s.skipas_id')
+                         ->andWhere($expr->eq('a.accommodatie_id', ':accommodationId'))
+                         ->setParameter('accommodationId', $accommodationId)
+                         ->execute();
+
+        $skipas     = $statement->fetch();
+
+        return (false === $skipas ? null : $skipas);
     }
 }
