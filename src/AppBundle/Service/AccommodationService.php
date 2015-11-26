@@ -86,8 +86,8 @@ class AccommodationService
         $expr        = $qb->expr();
         $locale      = $this->localeConcern->get();
         $localeField = $this->localeField;
-        $person      = $this->translator->trans('person');
-        $persons     = $this->translator->trans('persons');
+        $personText  = $this->translator->trans('person');
+        $personsText = $this->translator->trans('persons');
         $resale      = $this->websiteConcern->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE);
 
         $statement   = $qb->select('a.wzt as season, a.naam AS name_accommodation, a.bestelnaam AS order_name,
@@ -115,7 +115,7 @@ class AccommodationService
         $result['name']               = $result['name_accommodation'] . ($result['name_type'] ? (' ' . $result['name_type']) : '');
         $result['accommodation_kind'] = $this->translator->trans('type.kind.' . $result['accommodation_kind']);
         $result['name_accommodation'] = $result['accommodation_kind'] . ' ' . $result['name'];
-        $result['persons']            = ((int)$result['optimal_persons'] === 1 ? $person : $persons);
+        $result['persons']            = ((int)$result['optimal_persons'] === 1 ? $personText : $personsText);
         $result['number_of_persons']  = $result['optimal_persons'] . ($result['optimal_persons'] <> $result['max_persons'] ? (' - ' . $result['max_persons']) : '') . ' ' . $result['persons'];
         $result['name_persons']       = $result['name'] . ' (' . $result['optimal_persons'] . ($result['optimal_persons'] <> $result['max_persons'] ? (' - ' . $result['max_persons']) : '') . ' ' . $this->translator->trans('persons') . ')';
 
@@ -159,7 +159,7 @@ class AccommodationService
         }
 
         for ($i = $start; $i <= $result['max_persons']; $i++) {
-            $result['number_of_persons_list'][$i] = $i . ' ' . ($i === 1 ? $person : $persons);
+            $result['number_of_persons_list'][$i] = $i . ' ' . ($i === 1 ? $personText : $personsText);
         }
 
         $result['departure_day_adjustments'] = $this->getDepartureDayAdjustments($result['type_id'], $result['accommodatie_id']);
@@ -167,7 +167,7 @@ class AccommodationService
         if ($result['show'] === 3) {
             $result['arrival_dates'] = $this->getAccommodationArrivalDates($result['type_id'], $result['arrival_plus_min'], $result['departure_day_adjustments']);
         } else {
-            $result['arrival_dates']  = $this->getArrangementArrivalDates($result['type'], $result['arrival_plus_min'], $result['departure_day_adjustments']);
+            $result['arrival_dates']  = $this->getArrangementArrivalDates($result['type_id'], $result['arrival_plus_min'], $result['departure_day_adjustments']);
         }
 
         $result['departure'] = null;
@@ -203,11 +203,38 @@ class AccommodationService
                 $result['insurances'] = $data['insurances'];
             }
 
-            $result['offer'] = $this->getOffers($result['type_id'], $result['season_id'], $weekend);
-            dump($result['offer']);exit;
+            $offers = $this->getOffers($result['type_id'], $result['season_id'], $weekend);
+            $price  = $result['price'];
+
+            if (null !== $offers) {
+
+                $currentPrice = $result['price'];
+                $price        = $this->processOffer($result['price'], $offers, $weekend);
+
+                if ($currentPrice > $price) {
+                    $result['offer'] = true;
+                }
+            }
+
+            $result['price'] = $price;
+
+            if ($result['show'] === 3 || $resale) {
+
+                $result['accommodation_price'] = $result['price'];
+
+            } else {
+
+                if (null !== $offers && isset($offers['type'][$typeId]['prices'][$weekend])) {
+                    $accommodationPrice = $this->processOffer($result['arrival_dates']['price_per_week'][$weekend], $offers['type'][$typeId]['prices'], $weekend);
+                } else {
+                    $accommodationPrice = $result['arrival_dates']['price_per_week'][$weekend];
+                }
+
+                $result['accommodation_price'] = round($accommodationPrice, 2);
+            }
         }
 
-        dump($result);exit;
+        return $result;
     }
 
     /**
@@ -495,7 +522,8 @@ class AccommodationService
             $data['season_id']  = $result['season_id'];
             $data['insurances'] = [
 
-                'cancellation_percentages' => [
+                'cancellation_insurance_policy_fee' => $result['cancellation_insurance_policy_fee'],
+                'cancellation_percentages'          => [
 
                     1 => $result['cancellation_insurance_percentage_1'],
                     2 => $result['cancellation_insurance_percentage_2'],
@@ -505,6 +533,7 @@ class AccommodationService
                 'damage_insurance_percentage' => $result['damage_insurance_percentage'],
                 'insurances_policy_fee'       => $result['insurances_policy_fee'],
                 'commission'                  => (true === $resale ? $result['resale_commision_agent'] : null),
+                'travel_insurance_policy_fee' => $result['travel_insurance_policy_fee'],
             ];
         }
 
@@ -525,7 +554,7 @@ class AccommodationService
         $expr       = $qb->expr();
 
         $statement  = $qb->select('tp.prijs AS price, s.seizoen_id AS season_id, s.annuleringsverzekering_poliskosten AS cancellation_insurance_policy_fee, s.annuleringsverzekering_percentage_1 AS cancellation_insurance_percentage_1,
-                                   s.annuleringsverzekering_percentage_2 AS cancellation_insurance_percentage_2, s.annuleringsverzekering_percentage_3 AS cancellation_insurance_percentage_3 AS s.annuleringsverzekering_percentage_4 AS cancellation_insurance_percentage_4,
+                                   s.annuleringsverzekering_percentage_2 AS cancellation_insurance_percentage_2, s.annuleringsverzekering_percentage_3 AS cancellation_insurance_percentage_3, s.annuleringsverzekering_percentage_4 AS cancellation_insurance_percentage_4,
                                    schadeverzekering_percentage AS damage_insurance_percentage, s.reisverzekering_poliskosten AS travel_insurance_policy_fee, s.verzekeringen_poliskosten AS insurances_policy_fee')
                          ->from('tarief_personen tp, seizoen s', '')
                          ->andWhere($expr->eq('tp.type_id', ':typeId'))
@@ -546,7 +575,8 @@ class AccommodationService
             $data['season_id']  = $result['season_id'];
             $data['insurances'] = [
 
-                'cancellation_percentages' => [
+                'cancellation_insurance_policy_fee' => $result['cancellation_insurance_policy_fee'],
+                'cancellation_percentages'          => [
 
                     1 => $result['cancellation_insurance_percentage_1'],
                     2 => $result['cancellation_insurance_percentage_2'],
@@ -555,6 +585,7 @@ class AccommodationService
                 ],
                 'damage_insurance_percentage' => $result['damage_insurance_percentage'],
                 'insurances_policy_fee'       => $result['insurances_policy_fee'],
+                'travel_insurance_policy_fee' => $result['travel_insurance_policy_fee'],
             ];
         }
 
@@ -566,8 +597,8 @@ class AccommodationService
         $connection  = $this->connection;
         $qb          = $connection->createQueryBuilder();
         $expr        = $qb->expr();
-        $person      = $this->translator->trans('person');
-        $persons     = $this->translator->trans('persons');
+        $personText  = $this->translator->trans('person');
+        $personsText = $this->translator->trans('persons');
         $localeField = $this->localeField;
         $now         = time();
         $threshold   = ($now + (86400 * 21));
@@ -682,7 +713,7 @@ class AccommodationService
                         'show'               => (int)$row['show'],
                         'optimal_persons'    => (int)$row['optimal_persons'],
                         'max_persons'        => (int)$row['max_persons'],
-                        'persons'            => ($row['optimal_persons'] . ($row['max_persons'] > $row['optimal_persons'] ? (' - ' . $row['max_persons']) : '') . ' ' . ((int)$row['max_persons'] === 1 ? $person : $persons)),
+                        'persons'            => ($row['optimal_persons'] . ($row['max_persons'] > $row['optimal_persons'] ? (' - ' . $row['max_persons']) : '') . ' ' . ((int)$row['max_persons'] === 1 ? $personText : $personsText)),
                         'display'            => ((int)$row['display_accommodation'] === 1 && (int)$row['display_type'] === 1),
                         'websites'           => explode(',', $row['websites']),
                         'show_discount'      => ((int)$row['show_discount'] === 1),
@@ -733,5 +764,32 @@ class AccommodationService
         }
 
         return $results;
+    }
+
+    /**
+     * @param  float   $price
+     * @param  array   $offers
+     * @param  integer $weekend
+     *
+     * @return float
+     */
+    public function processOffer($price, $offers, $weekend)
+    {
+        if ($price > 0) {
+
+            if (isset($offers['exact_price']) && $offers['exact_price'][$weekend] > 0) {
+                $price = $offers['exact_price'][$weekend];
+            }
+
+            if (isset($offers['discount_percentage']) && $offers['discount_percentage'][$weekend] > 0) {
+                $price = floor(($price * (1 - $offers['discount_percentage'][$weekend] / 100)) / 5) * 5;
+            }
+
+            if (isset($offers['discount_euro']) && $offers['discount_euro'][$weekend] > 0) {
+                $price = $price - $offers['discount_euro'][$weekend];
+            }
+        }
+
+        return ($price > 0 ? $price : null);
     }
 }

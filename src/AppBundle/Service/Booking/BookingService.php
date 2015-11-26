@@ -44,11 +44,8 @@ class BookingService
     /**
      * @param BookingEntity
      */
-    public function create()
+    public function create($type)
     {
-        // $accommodation = $this->accommodationService->accinfo($this->booking->getTypeId());
-        // dump($accommodation);exit;
-        $this->bookingDataService->create($this->booking);
-        // $this->bookingDataService->
+        return $this->bookingDataService->create($this->booking, $type);
     }
 }

@@ -48,6 +48,7 @@ class WebsiteConcern
     const WEBSITE_CONFIG_DAMAGE_INSURANCE         = 'damage_insurance';
     const WEBSITE_CONFIG_NEWSLETTER               = 'newsletter';
     const WEBSITE_CONFIG_NEWSLETTER_CANCEL        = 'newsletter_cancel';
+    const WEBSITE_COMPANY                         = 'company';
 
     /**
      * @var string

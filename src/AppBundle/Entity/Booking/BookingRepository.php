@@ -15,47 +15,41 @@ use       AppBundle\Entity\Booking\Booking as BookingEntity;
  */
 class BookingRepository extends BaseRepository implements BookingServiceRepositoryInterface
 {
-    public function create(BookEntity $booking, $persons, $weekend)
+    public function create($booking, $type)
     {
-        // opslaan van `boeking`
-        // deleten van `boeking_persoon`
-        // deleten van `boeking_optie`
-        // opslaan van schadeverzekering (`boeking`)
-        // opslaan van `boeking_persoon`
-        // opslaan `boeking_optie`
-        // updaten van `boeking_persoon`
-        // insert boeking_optie
-
         $connection = $this->getEntityManager()->getConnection();
         $config     = $this->getConfig();
         $website    = $this->getWebsiteConcern();
 
-        $connection->insert('boeking', [
+        $booking    = $connection->insert('boeking', [
 
-            'calc'               => $booking->calc,
-            'type_id'            => $booking->typeId,
-            'seizoen_id'         => $booking->seasonId,
+            'calc'               => $booking->getCalc(),
+            'type_id'            => $booking->getTypeId(),
+            'seizoen_id'         => $type['season'],
             'taal'               => $this->getLocale(),
-            'aantalpersonen'     => $persons,
-            'reserveringskosten' => $config['reservation_costs']),
+            'aantalpersonen'     => $booking->getPersons(),
+            'reserveringskosten' => $config['reservation_costs'],
             'website'            => $website->get(),
-            'aankomstdatum'      => $weekend,
-            'annuleringsverzekering_poliskosten'  => ..,
-            'annuleringsverzekering_percentage_1' => ..,
-            'annuleringsverzekering_percentage_2' => ..,
-            'annuleringsverzekering_percentage_3' => ..,
-            'annuleringsverzekering_percentage_4' => ..,
-            'schadeverzekering_percentage'        => ..,
-            'reisverzekering_poliskosten'         => ..,
-            'verzekeringen_poliskosten'           => ..,
-            'toonper'                             => ..,
+            'aankomstdatum'      => $booking->getArrivalAt(),
+            'annuleringsverzekering_poliskosten'  => $type['insurances']['cancellation_insurance_policy_fee'],
+            'annuleringsverzekering_percentage_1' => $type['insurances']['cancellation_percentages'][1],
+            'annuleringsverzekering_percentage_2' => $type['insurances']['cancellation_percentages'][2],
+            'annuleringsverzekering_percentage_3' => $type['insurances']['cancellation_percentages'][3],
+            'annuleringsverzekering_percentage_4' => $type['insurances']['cancellation_percentages'][4],
+            'schadeverzekering_percentage'        => $type['insurances']['damage_insurance_percentage'],
+            'reisverzekering_poliskosten'         => $type['insurances']['travel_insurance_policy_fee'],
+            'verzekeringen_poliskosten'           => $type['insurances']['insurances_policy_fee'],
+            'toonper'                             => $type['show'],
             'wederverkoop'                        => ($website->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE) ? 1 : 0),
-            'naam_accommodatie'                   => begincode . $booking->typeId . '-' . plaats . '-' . ucfirst(soortaccommodatie) . ' ' . naam_ap,
-            'invuldatum'                          => new \DateTime()
-            'leverancier_id'                      => leverancier_id,
-            'valt_onder_bedrijf'                  => ..,
-            'aanbetaling1_dagennaboeken'          => ..,
-            'total_reissom_dagenvooraankomst'     => ..,
+            'naam_accommodatie'                   => $type['begincode'] . $type['type_id'] . ' - ' . $type['name_place'] . ' - ' . $type['name_persons'],
+            'invuldatum'                          => time(),
+            'leverancier_id'                      => $type['supplier_id'],
+            'valt_onder_bedrijf'                  => $website->getConfig(WebsiteConcern::WEBSITE_COMPANY),
+            'aanbetaling1_dagennaboeken'          => $config['deposit_days_after_booking'],
+            'totale_reissom_dagenvooraankomst'    => $config['total_travel_sum_days_before_arrival'],
+            'accprijs'                            => $type[''],
         ]);
+
+        return $connection->lastInsertId();
     }
 }

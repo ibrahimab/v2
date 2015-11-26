@@ -51,8 +51,8 @@ class BookingService
      * @param BookingServiceEntityInterface $booking
      * @return BookService
      */
-    public function create($booking)
+    public function create($booking, $type)
     {
-        return $this->bookingServiceRepository->create($booking);
+        return $this->bookingServiceRepository->create($booking, $type);
     }
 }

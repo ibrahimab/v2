@@ -43,12 +43,6 @@ class PriceCalculatorController extends Controller
             return $response;
         }
 
-        $accommodationService = $this->get('app.accommodation');
-        $arrival              = new \DateTime();
-        $arrival->modify('next saturday');
-
-        $accommodationService->get($typeId, $arrival->getTimestamp());
-
         // get type
         $type = $this->get('app.api.type')->findById($typeId);
 
@@ -91,15 +85,30 @@ class PriceCalculatorController extends Controller
 
         if ($form->isValid()) {
 
+            $accommodationService = $this->get('app.accommodation');
+            $data                 = $form->getData();
+            $type                 = $accommodationService->get($type->getId(), $data->weekend, $data->person);
+
             $booking = new BookingEntity();
+            $booking->setCalc(1)
+                    ->setTypeId($type['type_id'])
+                    ->setSeasonId($type['season'])
+                    ->setPersons($data->person)
+                    ->setArrivalAt($data->weekend);
 
             $bookingService = $this->get('app.booking');
-            $bookingService->setBooking($booking)
-                           ->create();
+            $result         = $bookingService->setBooking($booking)
+                                             ->create($type);
+
+            return $this->redirectToRoute('price_calculator_step_two_' . $this->get('app.concern.locale')->get(), [
+                'typeId' => $type['type_id'],
+            ]);
 
         } else {
 
-            dump($form->getErrors());exit;
+            return $this->redirectToRoute('price_calculator_step_one_' . $this->get('app.concern.locale')->get(), [
+                'typeId' => $type['type_id'],
+            ]);
         }
     }
 
@@ -107,7 +116,6 @@ class PriceCalculatorController extends Controller
      * @Route(name="price_calculator_step_two_nl", path="/prijs-berekenen/{typeId}/stap-2", requirements={
      *     "typeId": "\d+"
      * })
-     * @Method("POST")
      * @Breadcrumb(name="show_country",    title="{countryName}",         path="show_country", pathParams={"countrySlug"})
      * @Breadcrumb(name="show_region",     title="{regionName}",          path="show_region",  pathParams={"regionSlug"})
      * @Breadcrumb(name="show_place",      title="{placeName}",           path="show_place",   pathParams={"placeSlug"})
@@ -133,6 +141,10 @@ class PriceCalculatorController extends Controller
             'type' => $type,
             'form' => $calculatorService->getFormService()->create(FormService::FORM_STEP_TWO)->createView(),
         ]);
+    }
+
+    public function processStepTwo(Request $request, $typeId)
+    {
     }
 
     /**
