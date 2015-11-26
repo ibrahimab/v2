@@ -63,59 +63,10 @@ class PriceCalculatorController extends Controller
     }
 
     /**
-     * @Route(name="price_calculator_process_step_one_nl", path="/prijs-berekenen/{typeId}", requirements={
-     *     "typeId": "\d+"
-     * })
-     * @Method("POST")
-     */
-    public function processStepOne(Request $request, $typeId)
-    {
-        $type = $this->get('app.api.type')->findById($typeId);
-
-        if (null === $type) {
-            throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found');
-        }
-
-        $calculatorService = $this->get('app.price_calculator.calculator');
-        $calculatorService->setType($type);
-
-        $formService       = $calculatorService->getFormService();
-        $form              = $formService->create(FormService::FORM_STEP_ONE);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-
-            $accommodationService = $this->get('app.accommodation');
-            $data                 = $form->getData();
-            $type                 = $accommodationService->get($type->getId(), $data->weekend, $data->person);
-
-            $booking = new BookingEntity();
-            $booking->setCalc(1)
-                    ->setTypeId($type['type_id'])
-                    ->setSeasonId($type['season'])
-                    ->setPersons($data->person)
-                    ->setArrivalAt($data->weekend);
-
-            $bookingService = $this->get('app.booking');
-            $result         = $bookingService->setBooking($booking)
-                                             ->create($type);
-
-            return $this->redirectToRoute('price_calculator_step_two_' . $this->get('app.concern.locale')->get(), [
-                'typeId' => $type['type_id'],
-            ]);
-
-        } else {
-
-            return $this->redirectToRoute('price_calculator_step_one_' . $this->get('app.concern.locale')->get(), [
-                'typeId' => $type['type_id'],
-            ]);
-        }
-    }
-
-    /**
      * @Route(name="price_calculator_step_two_nl", path="/prijs-berekenen/{typeId}/stap-2", requirements={
      *     "typeId": "\d+"
      * })
+     * @Method("POST")
      * @Breadcrumb(name="show_country",    title="{countryName}",         path="show_country", pathParams={"countrySlug"})
      * @Breadcrumb(name="show_region",     title="{regionName}",          path="show_region",  pathParams={"regionSlug"})
      * @Breadcrumb(name="show_place",      title="{placeName}",           path="show_place",   pathParams={"placeSlug"})
@@ -124,11 +75,44 @@ class PriceCalculatorController extends Controller
      */
     public function stepTwo(Request $request, $typeId)
     {
-        // get type
         $type = $this->get('app.api.type')->findById($typeId);
 
         if (null === $type) {
             throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found');
+        }
+
+        if ($request->isMethod('POST')) {
+
+            $calculatorService = $this->get('app.price_calculator.calculator');
+            $calculatorService->setType($type);
+
+            $formService       = $calculatorService->getFormService();
+            $form              = $formService->create(FormService::FORM_STEP_ONE);
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+
+                $accommodationService = $this->get('app.accommodation');
+                $data                 = $form->getData();
+                $typeData             = $accommodationService->get($type->getId(), $data->weekend, $data->person);
+
+                $booking = new BookingEntity();
+                $booking->setCalc(1)
+                        ->setTypeId($typeData['type_id'])
+                        ->setSeasonId($typeData['season'])
+                        ->setPersons($data->person)
+                        ->setArrivalAt($data->weekend);
+
+                $bookingService = $this->get('app.booking');
+                $bookingId      = $bookingService->setBooking($booking)
+                                                 ->create($typeData);
+
+            } else {
+
+                return $this->redirectToRoute('price_calculator_step_one_' . $this->get('app.concern.locale')->get(), [
+                    'typeId' => $typeData['type_id'],
+                ]);
+            }
         }
 
         $calculatorService = $this->get('app.price_calculator.calculator');
@@ -141,10 +125,6 @@ class PriceCalculatorController extends Controller
             'type' => $type,
             'form' => $calculatorService->getFormService()->create(FormService::FORM_STEP_TWO)->createView(),
         ]);
-    }
-
-    public function processStepTwo(Request $request, $typeId)
-    {
     }
 
     /**
