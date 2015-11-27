@@ -23,8 +23,9 @@ class StepTwoForm extends AbstractType
     {
         $entity = $builder->getData();
 
-        $builder->add('person', 'hidden');
+        $builder->add('person',  'hidden');
         $builder->add('weekend', 'hidden');
+        $builder->add('booking', 'hidden');
 
         $builder->add('damage_insurance', 'choice', [
             'label'   => 'form.price_calculator.step_two.damage_insurance',

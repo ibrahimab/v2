@@ -93,6 +93,11 @@ class CalculatorService
      */
     private $policyCosts;
 
+    /**
+     * @var integer
+     */
+    private $bookingId;
+
 
     /**
      * Constructor
@@ -351,5 +356,21 @@ class CalculatorService
         }
 
         return $this->policyCosts;
+    }
+
+    /**
+     * @param  integer $bookingId
+     */
+    public function setBookingId($bookingId)
+    {
+        $this->bookingId = $bookingId;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getBookingId()
+    {
+        return $this->bookingId;
     }
 }

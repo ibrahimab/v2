@@ -81,44 +81,42 @@ class PriceCalculatorController extends Controller
             throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found');
         }
 
-        if ($request->isMethod('POST')) {
+        $calculatorService = $this->get('app.price_calculator.calculator');
+        $calculatorService->setType($type);
 
-            $calculatorService = $this->get('app.price_calculator.calculator');
-            $calculatorService->setType($type);
+        $formService       = $calculatorService->getFormService();
+        $form              = $formService->create(FormService::FORM_STEP_ONE);
+        $form->handleRequest($request);
 
-            $formService       = $calculatorService->getFormService();
-            $form              = $formService->create(FormService::FORM_STEP_ONE);
-            $form->handleRequest($request);
+        if ($form->isValid()) {
 
-            if ($form->isValid()) {
+            $accommodationService = $this->get('app.accommodation');
+            $data                 = $form->getData();
+            $typeData             = $accommodationService->get($type->getId(), $data->weekend, $data->person);
 
-                $accommodationService = $this->get('app.accommodation');
-                $data                 = $form->getData();
-                $typeData             = $accommodationService->get($type->getId(), $data->weekend, $data->person);
+            $booking = new BookingEntity();
+            $booking->setCalc(1)
+                    ->setTypeId($typeData['type_id'])
+                    ->setSeasonId($typeData['season'])
+                    ->setPersons($data->person)
+                    ->setArrivalAt($data->weekend);
 
-                $booking = new BookingEntity();
-                $booking->setCalc(1)
-                        ->setTypeId($typeData['type_id'])
-                        ->setSeasonId($typeData['season'])
-                        ->setPersons($data->person)
-                        ->setArrivalAt($data->weekend);
+            $bookingService = $this->get('app.booking');
+            $bookingId      = $bookingService->setBooking($booking)
+                                             ->create($typeData);
 
-                $bookingService = $this->get('app.booking');
-                $bookingId      = $bookingService->setBooking($booking)
-                                                 ->create($typeData);
+        } else {
 
-            } else {
-
-                return $this->redirectToRoute('price_calculator_step_one_' . $this->get('app.concern.locale')->get(), [
-                    'typeId' => $typeData['type_id'],
-                ]);
-            }
+            return $this->redirectToRoute('price_calculator_step_one_' . $this->get('app.concern.locale')->get(), [
+                'typeId' => $typeData['type_id'],
+            ]);
         }
 
         $calculatorService = $this->get('app.price_calculator.calculator');
         $calculatorService->setType($type)
                           ->setPerson((int)$request->request->get('step_one')['person'])
-                          ->setWeekend((int)$request->request->get('step_one')['weekend']);
+                          ->setWeekend((int)$request->request->get('step_one')['weekend'])
+                          ->setBookingId($bookingId);
 
         return $this->render('price_calculator/step_two.html.twig', [
 
@@ -140,6 +138,28 @@ class PriceCalculatorController extends Controller
      */
     public function stepThree(Request $request, $typeId)
     {
+        $type = $this->get('app.api.type')->findById($typeId);
+
+        if (null === $type) {
+            throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found');
+        }
+
+        $calculatorService = $this->get('app.price_calculator.calculator');
+        $calculatorService->setType($type)
+                          ->setPerson((int)$request->request->get('step_two')['person'])
+                          ->setWeekend((int)$request->request->get('step_two')['weekend']);
+
+        $formService       = $calculatorService->getFormService();
+        $form              = $formService->create(FormService::FORM_STEP_TWO);
+        $form->handleRequest($request);
+
+        $data           = $form->getData();
+        $insurances     = [
+            'damage' => $data->damage_insurance,
+        ];
+
+        $bookingService = $this->get('app.booking');
+        $bookingService->saveOptions($data->booking, $insurances, $data->persons, $form->getData()->options);
 
         return $this->render('price_calculator/step_three.html.twig');
     }

@@ -29,6 +29,11 @@ class StepTwo
     public $weekend;
 
     /**
+     * @var integer
+     */
+    public $booking;
+
+    /**
      * @var array
      */
     public $cancellation_insurances;
@@ -44,11 +49,12 @@ class StepTwo
      *
      * @param array $options
      */
-    public function __construct($options, $person, $weekend, $insurances, $percentages, $policyCosts)
+    public function __construct($options, $person, $weekend, $booking, $insurances, $percentages, $policyCosts)
     {
         $this->options                 = [];
         $this->person                  = $person;
         $this->weekend                 = $weekend;
+        $this->booking                 = $booking;
         $this->cancellation_insurances = [];
         $this->percentages             = $percentages;
         $this->policyCosts             = $policyCosts;

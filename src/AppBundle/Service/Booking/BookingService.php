@@ -48,4 +48,17 @@ class BookingService
     {
         return $this->bookingDataService->create($this->booking, $type);
     }
+
+    /**
+     * @param  integer $bookingId
+     * @param  array   $insurances
+     * @param  integer $persons
+     * @param  array   $options
+     *
+     * @return
+     */
+    public function saveOptions($bookingId, $insurances, $persons, $options)
+    {
+        return $this->bookingDataService->saveOptions($bookingId, $insurances, $persons, $options);
+    }
 }

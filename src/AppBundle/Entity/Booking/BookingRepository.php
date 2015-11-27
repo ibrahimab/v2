@@ -47,9 +47,62 @@ class BookingRepository extends BaseRepository implements BookingServiceReposito
             'valt_onder_bedrijf'                  => $website->getConfig(WebsiteConcern::WEBSITE_COMPANY),
             'aanbetaling1_dagennaboeken'          => $config['deposit_days_after_booking'],
             'totale_reissom_dagenvooraankomst'    => $config['total_travel_sum_days_before_arrival'],
-            'accprijs'                            => $type[''],
         ]);
 
         return $connection->lastInsertId();
+    }
+
+    /**
+     * @param  integer $bookingId
+     * @param  array   $insurances
+     * @param  array   $options
+     *
+     * @return
+     */
+    public function saveOptions($bookingId, $insurances, $persons, $options)
+    {
+        $connection      = $this->getEntityManager()->getConnection();
+        $bookingId       = (int)$bookingId;
+        $bookingIdClause = [
+            'boeking_id' => $bookingId,
+        ];
+
+        $connection->delete('boeking_persoon', $bookingIdClause);
+        $connection->delete('boeking_optie', $bookingIdClause);
+        $connection->update('boeking', ['schadeverzekering' => $insurances['damage']], $bookingIdClause);
+
+        for ($i = 1; $i <= $persons; $i++) {
+
+            $connection->insert('boeking_persoon', [
+
+                'boeking_id'    => $bookingId,
+                'persoonnummer' => $i,
+                'status'        => 2,
+            ]);
+        }
+
+        foreach ($options as $groupId => $optionGroup) {
+
+            $number = 0;
+            foreach ($optionGroup->parts as $partId => $option) {
+
+                if ($option->amount > 0) {
+
+                    for ($i = 1; $i <= $amount; $i++) {
+
+                        $number += 1;
+                        $connection->insert('boeking_optie', [
+
+                            'boeking_id'         => $bookingId,
+                            'optie_onderdeel_id' => $partId,
+                            'persoonnummer'      => $number,
+                            'status'             => 2,
+                            'verkoop'            => $option->price,
+                            'commissie'          => $option->commission,
+                        ]);
+                    }
+                }
+            }
+        }
     }
 }

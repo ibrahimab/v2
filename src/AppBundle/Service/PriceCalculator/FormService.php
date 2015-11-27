@@ -191,6 +191,7 @@ class FormService
             $this->entities[self::FORM_STEP_TWO] = new StepTwoEntity($this->calculatorService->getOptions(),
                                                                      $this->calculatorService->getPerson(),
                                                                      $this->calculatorService->getWeekend(),
+                                                                     $this->calculatorService->getBookingId(),
                                                                      $this->calculatorService->getCancellationInsurances(),
                                                                      $this->calculatorService->getCancellationPercentages(),
                                                                      $this->calculatorService->getPolicyCosts());
