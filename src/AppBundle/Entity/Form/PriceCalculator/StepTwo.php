@@ -61,6 +61,10 @@ class StepTwo
 
         foreach ($options as $groupId => $group) {
 
+            if (count($group['onderdelen']) === 0) {
+                continue;
+            }
+
             $groupEntity          = new OptionGroup;
             $groupEntity->groupId = $groupId;
             $groupEntity->name    = $group['naam_enkelvoud'];

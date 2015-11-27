@@ -53,6 +53,11 @@ class AccommodationService
     private $router;
 
     /**
+     * @var array
+     */
+    private $cache;
+
+    /**
      * Constructor
      *
      * @param  LocaleConcern  $localeConcern
@@ -69,6 +74,7 @@ class AccommodationService
         $this->connection     = $connection;
         $this->translator     = $translator;
         $this->router         = $router;
+        $this->cache          = [];
     }
 
     /**
@@ -79,8 +85,12 @@ class AccommodationService
      *
      * @return array
      */
-    public function get($typeId, $weekend = null, $persons = null, $options = [])
+    public function get($typeId, $weekend = null, $persons = null)
     {
+        if (isset($this->cache[$typeId . '-' . $weekend . '-' . $persons])) {
+            return $this->cache[$typeId];
+        }
+
         $connection  = $this->connection;
         $qb          = $connection->createQueryBuilder();
         $expr        = $qb->expr();
@@ -109,8 +119,7 @@ class AccommodationService
                          ->setParameter('type_id', $typeId)
                          ->execute();
 
-        $result = $statement->fetch();
-
+        $result                       = $statement->fetch();
         $result['show']               = (int)$result['show'];
         $result['name']               = $result['name_accommodation'] . ($result['name_type'] ? (' ' . $result['name_type']) : '');
         $result['accommodation_kind'] = $this->translator->trans('type.kind.' . $result['accommodation_kind']);

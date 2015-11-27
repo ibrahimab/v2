@@ -2,24 +2,77 @@
 
 {% block price_calculator %}
 
-    <table>
+    <table class="price-calculator-table">
         <tr>
-            <td colspan="3"><strong>Samenstelling reissom</strong></td>
+            <th><strong>Samenstelling reissom</strong></th>
+            <th width="15"></th>
+            <th width="125"></th>
+            <th width="75"></th>
+            <th width="15"></th>
+            <th width="15"></th>
+            <th width="125"></th>
+            <th></th>
         </tr>
+        {% set total = (show == 3 ? price : (price * persons)) %}
         <tr>
-            <td>Accommodatie + skipas</td>
-            <td>&euro; {{ price|number_format(2, ',', '.') }} x {{ persons }} = </td>
-            <td>&euro; {{ (price * persons)|number_format(2, ',', '.') }}</td>
+            <td>{{ show == 3 ? 'Accommodatie' : 'Accommodatie + skipas' }}</td>
+            <td>&euro;</td>
+            <td>{{ price|number_format(2, ',', '.') }}</td>
+            <td>x {{ (show == 3 ? 1 : persons) }}</td>
+            <td>=</td>
+            <td>&euro;</td>
+            <td>{{ (show == 3 ? price : (price * persons))|number_format(2, ',', '.') }}</td>
+            <td></td>
+        </tr>
+        {% set options_costs = 0 %}
+        {% for option_group in options %}
+            {% for option in option_group.parts %}
+                {% if option.amount > 0 %}
+                    <tr>
+                        <td>{{ option_group.name }}: {{ option.name }}</td>
+                        <td>&euro;</td>
+                        <td>{{ option.price|number_format(2, ',', '.') }}</td>
+                        <td>x 1</td>
+                        <td>=</td>
+                        <td>&euro;</td>
+                        <td>{{ option.price|number_format(2, ',', '.') }}</td>
+                        <td>{{ option.discount == true ? 'korting' }}</td>
+                    </tr>
+                    {% if option.discount %}
+                        {% set options_costs = options_costs - option.price %}
+                    {% else %}
+                        {% set options_costs = options_costs + option.price %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        {% set total = total + options_costs %}
+        <tr>
+            <td colspan="8"></td>
         </tr>
         <tr>
             <td>Reserveringskosten &amp; bijdrage calamiteitenfonds</td>
             <td></td>
-            <td>&euro; {{ reservation_costs|number_format(2, ',', '.') }}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>&euro;</td>
+            <td>{{ reservation_costs|number_format(2, ',', '.') }}</td>
+            <td></td>
+        </tr>
+        {% set total = total + reservation_costs %}
+        <tr>
+            <td colspan="8"></td>
         </tr>
         <tr>
             <td><strong>Totale reissom</strong></td>
             <td></td>
-            <td><strong>&euro; {{ ((price * persons) + reservation_costs)|number_format(2, ',', '.') }}</strong></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><strong>&euro;</strong></td>
+            <td><strong>{{ total|number_format(2, ',', '.') }}</strong></td>
+            <td></td>
         </tr>
     </table>
 

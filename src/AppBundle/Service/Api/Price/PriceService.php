@@ -441,7 +441,7 @@ class PriceService
 
         return $this->additionCache[$type] = ceil($addition);
     }
-    
+
     /**
      * @param  TypeServiceEntityInterface $type
      * @return array
@@ -450,13 +450,16 @@ class PriceService
     {
         return $this->priceServiceRepository->getAvailableData($type);
     }
-    
+
     /**
      * @param  integer $typeId
+     * @param  integer $show
+     * @param  array   $weekends
+     *
      * @return array
      */
-    public function getBookablePersons($typeId, $weekends)
+    public function getBookablePersons($typeId, $show, $weekends)
     {
-        return $this->priceServiceRepository->getBookablePersons($typeId, $weekends);
+        return $this->priceServiceRepository->getBookablePersons($typeId, $show, $weekends);
     }
 }

@@ -6,6 +6,7 @@ use       AppBundle\Concern\LocaleConcern;
 use       AppBundle\Service\Api\Price\PriceService;
 use       AppBundle\Service\Api\Option\OptionService;
 use       AppBundle\Service\Api\Season\SeasonService;
+use       AppBundle\Service\AccommodationService;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       Symfony\Component\Translation\TranslatorInterface;
 use       IntlDateFormatter;
@@ -18,6 +19,11 @@ use       IntlDateFormatter;
  */
 class CalculatorService
 {
+    /**
+     * @var AccommodationService
+     */
+    private $accommodationService;
+
     /**
      * @var FormService
      */
@@ -119,6 +125,25 @@ class CalculatorService
         }
 
         return $this->formService;
+    }
+
+    /**
+     * @param  AccommodationService $accommodationService
+     *
+     * @return CalculatorService
+     */
+    public function setAccommodationService(AccommodationService $accommodationService)
+    {
+        $this->accommodationService = $accommodationService;
+        return $this;
+    }
+
+    /**
+     * @return AccommodationService
+     */
+    public function getAccommodationService()
+    {
+        return $this->accommodationService;
     }
 
     /**
@@ -241,12 +266,14 @@ class CalculatorService
 
             $this->persons = [];
             $weekends      = $this->getWeekends();
-            $persons       = $this->priceService->getBookablePersons($this->type->getId(), array_keys($weekends));
+            $typeData      = $this->getAccommodationService()->get($this->type->getId(), $this->getWeekend(), $this->getPerson());
+            $persons       = $this->priceService->getBookablePersons($this->type->getId(), $typeData['show'], array_keys($weekends));
+            $persons       = (null === $persons ? $typeData['number_of_persons_list'] : $persons);
             $personLabel   = $this->translator->trans('person');
             $personsLabel  = $this->translator->trans('persons');
 
             foreach ($persons as $person) {
-                $this->persons[] = sprintf('%d %s', $person, strtolower($person > 1 ? $personsLabel : $personLabel));
+                $this->persons[$person] = sprintf('%d %s', $person, strtolower($person > 1 ? $personsLabel : $personLabel));
             }
         }
 

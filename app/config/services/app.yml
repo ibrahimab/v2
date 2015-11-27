@@ -74,9 +74,10 @@ services:
         class: AppBundle\Service\PriceCalculator\CalculatorService
         arguments: [@app.price_calculator.form]
         calls:
-            - [setOptionService, [@app.api.option]]
-            - [setPriceService,  [@app.api.price]]
-            - [setSeasonService, [@app.api.season]]
-            - [setAppConfig,     [%app%]]
-            - [setLocale,        [@app.concern.locale]]
-            - [setTranslator,    [@translator]]
+            - [setOptionService,        [@app.api.option]]
+            - [setPriceService,         [@app.api.price]]
+            - [setSeasonService,        [@app.api.season]]
+            - [setAppConfig,            [%app%]]
+            - [setLocale,               [@app.concern.locale]]
+            - [setTranslator,           [@translator]]
+            - [setAccommodationService, [@app.accommodation]]

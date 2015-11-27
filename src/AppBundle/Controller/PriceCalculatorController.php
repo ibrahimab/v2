@@ -167,9 +167,11 @@ class PriceCalculatorController extends Controller
         return $this->render('price_calculator/step_three.html.twig', [
 
             'type'              => $type,
+            'show'              => $typeData['show'],
             'price'             => $typeData['price'],
             'persons'           => $data->person,
             'reservation_costs' => $this->getParameter('app')['reservation_costs'],
+            'options'           => $data->options,
         ]);
     }
 
