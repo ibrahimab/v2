@@ -1,0 +1,26 @@
+{% extends 'price_calculator/base.html.twig' %}
+
+{% block price_calculator %}
+
+    <table>
+        <tr>
+            <td colspan="3"><strong>Samenstelling reissom</strong></td>
+        </tr>
+        <tr>
+            <td>Accommodatie + skipas</td>
+            <td>&euro; {{ price|number_format(2, ',', '.') }} x {{ persons }} = </td>
+            <td>&euro; {{ (price * persons)|number_format(2, ',', '.') }}</td>
+        </tr>
+        <tr>
+            <td>Reserveringskosten &amp; bijdrage calamiteitenfonds</td>
+            <td></td>
+            <td>&euro; {{ reservation_costs|number_format(2, ',', '.') }}</td>
+        </tr>
+        <tr>
+            <td><strong>Totale reissom</strong></td>
+            <td></td>
+            <td><strong>&euro; {{ ((price * persons) + reservation_costs)|number_format(2, ',', '.') }}</strong></td>
+        </tr>
+    </table>
+
+{% endblock price_calculator %}

@@ -161,7 +161,16 @@ class PriceCalculatorController extends Controller
         $bookingService = $this->get('app.booking');
         $bookingService->saveOptions($data->booking, $insurances, $data->persons, $form->getData()->options);
 
-        return $this->render('price_calculator/step_three.html.twig');
+        $accommodationService = $this->get('app.accommodation');
+        $typeData             = $accommodationService->get($typeId, $data->weekend, $data->person);
+
+        return $this->render('price_calculator/step_three.html.twig', [
+
+            'type'              => $type,
+            'price'             => $typeData['price'],
+            'persons'           => $data->person,
+            'reservation_costs' => $this->getParameter('app')['reservation_costs'],
+        ]);
     }
 
     /**
