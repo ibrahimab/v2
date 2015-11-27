@@ -4,6 +4,9 @@
 
     {{ form_start(form, {'action': path('price_calculator_step_three_' ~ locale, {typeId: type.getId()})}) }}
 
+        {{ form_row(form.person) }}
+        {{ form_row(form.weekend) }}
+
     <div class="row">
 
         <div class="small-12 medium-12 large-12 columns">

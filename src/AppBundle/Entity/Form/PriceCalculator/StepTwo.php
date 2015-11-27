@@ -24,6 +24,11 @@ class StepTwo
     public $person;
 
     /**
+     * @var integer
+     */
+    public $weekend;
+
+    /**
      * @var array
      */
     public $cancellation_insurances;
@@ -39,11 +44,12 @@ class StepTwo
      *
      * @param array $options
      */
-    public function __construct($options, $person, $insurances, $percentages, $policyCosts)
+    public function __construct($options, $person, $weekend, $insurances, $percentages, $policyCosts)
     {
-        $this->options                 = new ArrayCollection();
+        $this->options                 = [];
         $this->person                  = $person;
-        $this->cancellation_insurances = new ArrayCollection();
+        $this->weekend                 = $weekend;
+        $this->cancellation_insurances = [];
         $this->percentages             = $percentages;
         $this->policyCosts             = $policyCosts;
 
@@ -52,7 +58,7 @@ class StepTwo
             $groupEntity          = new OptionGroup;
             $groupEntity->groupId = $groupId;
             $groupEntity->name    = $group['naam_enkelvoud'];
-            $groupEntity->parts   = new ArrayCollection();
+            $groupEntity->parts   = [];
 
             foreach ($group['onderdelen'] as $partId => $part) {
 
@@ -68,10 +74,10 @@ class StepTwo
                 $partEntity->maxAge          = (int)$part['max_leeftijd'];
                 $partEntity->minParticipants = (int)$part['min_deelnemers'];
 
-                $groupEntity->parts->add($partEntity);
+                $groupEntity->parts[$partEntity->id] = $partEntity;
             }
 
-            $this->options->add($groupEntity);
+            $this->options[$groupEntity->groupId] = $groupEntity;
         }
 
         foreach ($insurances as $insurance) {
@@ -83,7 +89,7 @@ class StepTwo
             $insuranceEntity->percentages = $percentages;
             $insuranceEntity->policyCosts = $policyCosts;
 
-            $this->cancellation_insurances->add($insuranceEntity);
+            $this->cancellation_insurances[$insuranceEntity->id] = $insuranceEntity;
         }
     }
 }

@@ -140,6 +140,7 @@ class PriceCalculatorController extends Controller
      */
     public function stepThree(Request $request, $typeId)
     {
+
         return $this->render('price_calculator/step_three.html.twig');
     }
 
