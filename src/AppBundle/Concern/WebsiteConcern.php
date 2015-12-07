@@ -124,12 +124,12 @@ class WebsiteConcern
     /**
      * @param array $parameters
      */
-    public function __construct($parameters)
+    public function __construct($parameters, $ssl_enabled)
     {
         $this->website  = $parameters['default_website'];
         $this->websites = $parameters['domain'];
-        $this->ssl      = $parameters['ssl_enabled'];
-        $this->protocol = ($parameters['ssl_enabled'] ? 'https://' : 'http://');
+        $this->ssl      = $ssl_enabled;
+        $this->protocol = ($ssl_enabled ? 'https://' : 'http://');
         $this->setType();
     }
 

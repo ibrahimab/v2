@@ -6,7 +6,7 @@ services:
 
     app.concern.website:
         class: AppBundle\Concern\WebsiteConcern
-        arguments: ["%app%"]
+        arguments: ["%app%", "%ssl_enabled"]
 
     app.concern.locale:
         class: AppBundle\Concern\LocaleConcern

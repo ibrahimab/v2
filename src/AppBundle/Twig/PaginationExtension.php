@@ -1,5 +1,7 @@
 <?php
 namespace AppBundle\Twig;
+
+use       AppBundle\Concern\LocaleConcern;
 use       AppBundle\Service\Api\Search\Result\Paginator\Paginator;
 use       Symfony\Component\DependencyInjection\ContainerInterface;
 use       Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -56,13 +58,17 @@ class PaginationExtension extends \Twig_Extension
      * @param ContainerInterface $container
      * @param UrlGeneratorInterface $generator
      */
-    public function __construct(ContainerInterface $container, UrlGeneratorInterface $generator)
+    public function __construct(ContainerInterface $container, LocaleConcern $locale, UrlGeneratorInterface $generator)
     {
         $this->container = $container;
         $this->generator = $generator;
-        $this->request   = $this->container->get('request');
-        $this->locale    = $this->request->getLocale();
-        $this->filters   = $this->request->query->get('f', []);
+        $this->request   = $this->container->get('request_stack')->getCurrentRequest();
+
+        if (null !== $this->request) {
+
+            $this->locale    = $locale->get();
+            $this->filters   = $this->request->query->get('f', []);
+        }
     }
 
     /**
