@@ -376,6 +376,18 @@
         <source>cancellation_insurances.travelcosts.booking</source>
         <target>%percentage%% reissom + € %costs% per boeking</target>
       </trans-unit>
+      <trans-unit resname="form.price_calculator.step_three.email">
+        <source>form.price_calculator.step_three.email</source>
+        <target>Mail dit overzicht naar het volgende mailadres: </target>
+      </trans-unit>
+      <trans-unit resname="form.price_calculator.step_three.submit">
+        <source>form.price_calculator.step_three.submit</source>
+        <target>VERZENDEN</target>
+      </trans-unit>
+      <trans-unit resname="mail.price_calculator.subject">
+        <source>mail.price_calculator.subject</source>
+        <target>Prijsberekening</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

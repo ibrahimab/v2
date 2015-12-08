@@ -460,12 +460,12 @@
                 });
             }
         });
-        
+
         body.on('click', '[data-action="show-more"]', function(event) {
-            
+
             event.preventDefault();
             var element = jq('[data-show-more-element="' + jq(this).data('element') + '"]');
-            
+
             if (true === element.data('opened')) {
                 // element.removeClass('shorten-for-mobile').data('opened', false);
                 element.animate({height: '100px'}).data('opened', false);
@@ -473,6 +473,43 @@
                 // element.removeClass('shorten-for-mobile').data('opened', true);
                 element.animate({height: element.prop('scrollHeight')}).data('opened', true);
             }
+        });
+
+        body.on('click', '[data-action="price-calculator-send-mail"]', function(event) {
+
+            event.preventDefault();
+
+            var displaySuccess = function() {
+
+                jq('[data-role="error-message"][data-id="price-calculator"]').hide();
+                jq('[data-role="success-message"][data-id="price-calculator"]').show();
+                jq('[data-action="price-calculator-send-mail"]').hide();
+            };
+
+            var displayError   = function() {
+
+                jq('[data-role="success-message"][data-id="price-calculator"]').hide();
+                jq('[data-role="error-message"][data-id="price-calculator"]').show();
+                jq('[data-action="price-calculator-send-mail"]').hide();
+            };
+
+            jq.ajax({
+
+                type: 'post',
+                url:  jq('form[name="step_three"]').attr('action'),
+                data: jq('form[name="step_three"]').serialize(),
+                success: function(data) {
+
+                    if (data.type === 'success') {
+                        displaySuccess();
+                    } else {
+                        displayError();
+                    }
+                },
+                error: function() {
+                    displayError();
+                }
+            });
         });
 
         /**

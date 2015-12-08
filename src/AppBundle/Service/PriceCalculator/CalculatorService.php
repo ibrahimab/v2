@@ -82,6 +82,16 @@ class CalculatorService
     /**
      * @var array
      */
+    private $optionsAmount;
+
+    /**
+     * @var array
+     */
+    private $cancellationInsurancesAmount;
+
+    /**
+     * @var array
+     */
     private $options;
 
     /**
@@ -307,6 +317,7 @@ class CalculatorService
 
             $this->weekends = [];
             $weekends       = $this->priceService->getAvailableData($this->type)['weekends'];
+            $timezone       = new \DateTimeZone(date_default_timezone_get());
             $formatter      = new IntlDateFormatter($locale, IntlDateFormatter::FULL, IntlDateFormatter::FULL, $timezone, IntlDateFormatter::GREGORIAN);
             $date           = new \DateTime();
 
@@ -321,6 +332,28 @@ class CalculatorService
     }
 
     /**
+     * @param array $optionsAmount
+     *
+     * @return CalculatorService
+     */
+    public function setOptionsAmount($optionsAmount)
+    {
+        $this->optionsAmount = $optionsAmount;
+        return $this;
+    }
+
+    /**
+     * @param array $cancellationInsurancesAmount
+     *
+     * @return CalculatorService
+     */
+    public function setCancellationInsurancesAmount($cancellationInsurancesAmount)
+    {
+        $this->cancellationInsurancesAmount = $cancellationInsurancesAmount;
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getOptions()
@@ -329,6 +362,16 @@ class CalculatorService
 
             $season        = (false !== $this->getSeason() ? $this->getSeason()['id'] : null);
             $this->options = $this->optionService->calculatorOptions($this->type->getAccommodationId(), $season, $this->getWeekend());
+
+            if (null !== $this->optionsAmount) {
+
+                foreach ($this->options as $groupId => $group) {
+
+                    foreach ($group['onderdelen'] as $partId => $part) {
+                        $this->options[$groupId]['onderdelen'][$partId]['amount'] = $this->optionsAmount[$groupId]['parts'][$partId]['amount'];
+                    }
+                }
+            }
         }
 
         return $this->options;
@@ -356,6 +399,16 @@ class CalculatorService
             $this->insurances = array_filter($this->getAppConfig()['cancellation_insurances'], function($insurance) {
                 return (true === $insurance['active']);
             });
+
+            if (null !== $this->cancellationInsurancesAmount) {
+
+                foreach ($this->insurances as $identifier => $insurance) {
+
+                    if (isset($this->cancellationInsurancesAmount[$insurance['id']])) {
+                        $this->insurances[$identifier]['amount'] = $this->cancellationInsurancesAmount[$insurance['id']]['amount'];
+                    }
+                }
+            }
         }
 
         return $this->insurances;

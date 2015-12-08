@@ -330,6 +330,7 @@ class OptionRepository implements OptionServiceRepositoryInterface
         $expr            = $qb->expr();
         $locale          = $this->getLocale();
         $localeField     = ($locale === 'nl' ? '' : ('_' . $locale));
+        dump($locale);dump($localeField);
         $websiteConcern  = $this->getWebsiteConcern();
         $resale          = $websiteConcern->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE);
         $resaleField     = ($resale ? 's.beschikbaar_wederverkoop = 1' : 's.beschikbaar_directeklanten = 1');

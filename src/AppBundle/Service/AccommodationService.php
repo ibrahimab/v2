@@ -139,7 +139,7 @@ class AccommodationService
 
         ], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        $result['plaats_url'] = $this->router->generate('show_place_' . $locale, [
+        $result['place_url'] = $this->router->generate('show_place_' . $locale, [
 
             'placeSlug' => UtilsService::seo($result['name_place']),
 
@@ -186,6 +186,7 @@ class AccommodationService
             $arrival = new \DateTime();
             $arrival->setTimestamp($weekend);
 
+            $result['arrival']   = $weekend;
             $result['departure'] = $this->getDepartureDay($arrival, $result['arrival_dates']['weekends'], $result['arrival_plus_min'], $result['departure_plus_min']);
         }
 

@@ -2,7 +2,7 @@
 namespace AppBundle\Form\PriceCalculator;
 
 use       AppBundle\Form\PriceCalculator\Type\HiddenOptionGroup;
-use       AppBundle\Form\PriceCalculator\Type\CancellationInsurance;
+use       AppBundle\Form\PriceCalculator\Type\HiddenCancellationInsurance;
 use       Symfony\Component\Form\AbstractType;
 use       Symfony\Component\Form\FormBuilderInterface;
 
@@ -34,9 +34,14 @@ class StepThreeForm extends AbstractType
             'type'  => new HiddenOptionGroup,
         ]);
 
-        $builder->add('cancellation_insurances', 'hidden');
+        $builder->add('cancellation_insurances', 'collection', [
 
-        $builder->add('save', 'submit', ['label' => 'form.price_calculator.step_three.submit']);
+            'label' => false,
+            'type'  => new HiddenCancellationInsurance,
+        ]);
+
+        $builder->add('email', 'email', ['label' => 'form.price_calculator.step_three.email']);
+        $builder->add('save', 'submit', ['label' => 'form.price_calculator.step_three.submit', 'attr' => ['data-action' => 'price-calculator-send-mail']]);
     }
 
     /**

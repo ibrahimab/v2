@@ -116,8 +116,12 @@ trait MailTrait
                 ->setFrom($this->from_email, $this->from_name)
                 ->setTo($this->to);
 
-        foreach ($this->templates as $multipart => $template) {
-            $message->setBody($this->engine->render($template, $data), $multipart);
+        if (isset($this->templates['text/plain'])) {
+            $message->setBody($this->engine->render($this->templates['text/plain'], $data), 'text/plain');
+        }
+
+        if (isset($this->templates['text/html'])) {
+            $message->addPart($this->engine->render($this->templates['text/html'], $data), 'text/html');
         }
 
         return $this->mailer->send($message);

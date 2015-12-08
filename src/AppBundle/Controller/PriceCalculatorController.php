@@ -10,6 +10,7 @@ use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use       Symfony\Component\HttpFoundation\Request;
 use       Symfony\Component\HttpFoundation\Response;
 use       Symfony\Component\HttpFoundation\JsonResponse;
+use       IntlDateFormatter;
 
 /**
  * CountriesController
@@ -147,7 +148,9 @@ class PriceCalculatorController extends Controller
         $calculatorService = $this->get('app.price_calculator.calculator');
         $calculatorService->setType($type)
                           ->setPerson((int)$request->request->get('step_two')['person'])
-                          ->setWeekend((int)$request->request->get('step_two')['weekend']);
+                          ->setWeekend((int)$request->request->get('step_two')['weekend'])
+                          ->setOptionsAmount($request->request->get('step_two')['options'])
+                          ->setCancellationInsurancesAmount($request->request->get('step_two')['cancellation_insurances']);
 
         $formService       = $calculatorService->getFormService();
         $form              = $formService->create(FormService::FORM_STEP_TWO);
@@ -163,13 +166,26 @@ class PriceCalculatorController extends Controller
 
         $accommodationService = $this->get('app.accommodation');
         $typeData             = $accommodationService->get($typeId, $data->weekend, $data->person);
-        dump($request);exit;
+
+        $formatter            = new IntlDateFormatter($request->getLocale(), IntlDateFormatter::FULL, IntlDateFormatter::FULL, new \DateTimeZone(date_default_timezone_get()), IntlDateFormatter::GREGORIAN);
+        $formatter->setPattern('eeee dd MMMM y');
+
+        $arrivalDate          = new \DateTime();
+        $arrivalDate->setTimestamp($typeData['arrival']);
+
+        $departureDate        = new \DateTime();
+        $departureDate->setTimestamp($typeData['departure']);
+
         return $this->render('price_calculator/step_three.html.twig', [
 
             'type'              => $type,
             'show'              => $typeData['show'],
             'price'             => $typeData['price'],
+            'name_type'         => $typeData['name'],
+            'name_place'        => $typeData['name_place'],
             'persons'           => $data->person,
+            'arrival_date'      => $formatter->format($arrivalDate),
+            'departure_date'    => $formatter->format($departureDate),
             'reservation_costs' => $this->getParameter('app')['reservation_costs'],
             'options'           => $data->options,
             'form'              => $calculatorService->getFormService()->create(FormService::FORM_STEP_THREE)->createView(),
@@ -197,14 +213,59 @@ class PriceCalculatorController extends Controller
 
         $calculatorService = $this->get('app.price_calculator.calculator');
         $calculatorService->setType($type)
-                          ->setPerson((int)$request->request->get('step_two')['person'])
-                          ->setWeekend((int)$request->request->get('step_two')['weekend']);
+                          ->setPerson((int)$request->request->get('step_three')['person'])
+                          ->setWeekend((int)$request->request->get('step_three')['weekend'])
+                          ->setOptionsAmount($request->request->get('step_three')['options'])
+                          ->setCancellationInsurancesAmount($request->request->get('step_three')['cancellation_insurances']);
 
-        $formService       = $calculatorService->getFormService();
-        $form              = $formService->create(FormService::FORM_STEP_THREE);
+        $form = $calculatorService->getFormService()->create(FormService::FORM_STEP_THREE);
         $form->handleRequest($request);
+        $data = $form->getData();
 
-        dump($form);exit;
+        $accommodationService = $this->get('app.accommodation');
+        $typeData             = $accommodationService->get($typeId, $data->weekend, $data->person);
+
+        $formatter            = new IntlDateFormatter($request->getLocale(), IntlDateFormatter::FULL, IntlDateFormatter::FULL, new \DateTimeZone(date_default_timezone_get()), IntlDateFormatter::GREGORIAN);
+        $formatter->setPattern('eeee dd MMMM y');
+
+        $arrivalDate          = new \DateTime();
+        $arrivalDate->setTimestamp($typeData['arrival']);
+
+        $departureDate        = new \DateTime();
+        $departureDate->setTimestamp($typeData['departure']);
+
+        $table                = $this->renderView('price_calculator/table.html.twig', [
+
+            'type_id'           => $typeData['type_id'],
+            'begin_code'        => $typeData['begincode'],
+            'arrival_date'      => $formatter->format($arrivalDate),
+            'departure_date'    => $formatter->format($departureDate),
+            'name_type'         => $typeData['name'],
+            'name_place'        => $typeData['name_place'],
+            'show'              => $typeData['show'],
+            'price'             => $typeData['price'],
+            'persons'           => $data->person,
+            'reservation_costs' => $this->getParameter('app')['reservation_costs'],
+            'options'           => $data->options,
+        ]);
+
+        $mailer = $this->get('app.mailer.price_calculator');
+        $result = $mailer->setSubject($this->get('translator')->trans('mail.price_calculator.subject'))
+                         ->setFrom($this->container->getParameter('mailer_from'))
+                         ->setTo($data->email)
+                         ->setTemplate('mail/price_calculator.html.twig', 'text/html')
+                         ->setTemplate('mail/price_calculator.txt.twig', 'text/plain')
+                         ->send([
+
+                             'email' => $data->email,
+                             'table' => $table,
+                         ]);
+
+        return new JsonResponse([
+
+            'type'    => 'success',
+            'message' => 'Message has successfully been sent',
+        ]);
     }
 
     /**

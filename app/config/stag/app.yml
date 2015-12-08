@@ -1,5 +1,6 @@
 parameters:
-    mailer_transport: mail
+    mailer_from: info@chalet.nl
+    mailer_to: ibrahim@chalet.nl
     app:
         maximum_persons_map:
             1: 8

@@ -1,6 +1,5 @@
 parameters:
-    mailer_user: abdul.ibrahim16@gmail.com
-    mailer_password: ibietje24!
+    mailer_from: info@chalet.nl
     mailer_to: abdul.ibrahim16@gmail.com
     app:
         maximum_persons_map:

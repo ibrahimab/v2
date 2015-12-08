@@ -2,6 +2,8 @@
 namespace AppBundle\Form\PriceCalculator\Type;
 
 use       Symfony\Component\Form\AbstractType;
+use       Symfony\Component\Form\FormEvent;
+use       Symfony\Component\Form\FormEvents;
 use       Symfony\Component\Form\FormBuilderInterface;
 use       Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -11,7 +13,7 @@ use       Symfony\Component\OptionsResolver\OptionsResolver;
  * @version 0.2.7
  * @since   0.2.7
  */
-class HiddenOptionGroup extends AbstractType
+class HiddenCancellationInsurance extends AbstractType
 {
     /**
      * @param  FormBuilderInterface $builder
@@ -21,13 +23,15 @@ class HiddenOptionGroup extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('parts', 'collection', [
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
 
-            'type'  => new HiddenOption(),
-            'options' => [
-                'label' => false
-            ],
-        ]);
+            $entity = $event->getData();
+            $form   = $event->getForm();
+
+            $form->add('amount', 'hidden', [
+                'label' => false,
+            ]);
+        });
     }
 
     /**
@@ -35,13 +39,18 @@ class HiddenOptionGroup extends AbstractType
      */
     public function getName()
     {
-        return 'part';
+        return 'cancellation_insurances';
     }
 
+    /**
+     * @param  OptionsResolver $resolver
+     *
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\Form\PriceCalculator\OptionGroup',
+            'data_class' => 'AppBundle\Entity\Form\PriceCalculator\CancellationInsurance',
         ]);
     }
 }

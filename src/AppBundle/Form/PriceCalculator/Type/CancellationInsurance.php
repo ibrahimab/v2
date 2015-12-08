@@ -24,10 +24,10 @@ class CancellationInsurance extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
-            
+
             $entity = $event->getData();
             $form   = $event->getForm();
-            
+
             $form->add('amount', 'choice', [
                 'label' => false,
                 'choices' => range(0, $entity->person),
@@ -35,7 +35,7 @@ class CancellationInsurance extends AbstractType
             ]);
         });
     }
-    
+
     /**
      * @return string
      */
@@ -43,7 +43,7 @@ class CancellationInsurance extends AbstractType
     {
         return 'cancellation_insurances';
     }
-    
+
     /**
      * @param  OptionsResolver $resolver
      *

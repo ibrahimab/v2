@@ -83,6 +83,7 @@ class StepTwo
                 $partEntity->minAge          = (int)$part['min_leeftijd'];
                 $partEntity->maxAge          = (int)$part['max_leeftijd'];
                 $partEntity->minParticipants = (int)$part['min_deelnemers'];
+                $partEntity->amount          = (isset($part['amount']) ? $part['amount'] : null);
 
                 $groupEntity->parts[$partEntity->id] = $partEntity;
             }
@@ -98,6 +99,7 @@ class StepTwo
             $insuranceEntity->person      = (int)$person;
             $insuranceEntity->percentages = $percentages;
             $insuranceEntity->policyCosts = $policyCosts;
+            $insuranceEntity->amount      = (isset($insurance['amount']) ? $insurance['amount'] : null);
 
             $this->cancellation_insurances[$insuranceEntity->id] = $insuranceEntity;
         }

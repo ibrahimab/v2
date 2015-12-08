@@ -26,12 +26,9 @@ class HiddenOption extends AbstractType
             $option = $event->getData();
             $form   = $event->getForm();
 
-            if ($option->id == 66) {
-                dump($option);
-                dump($option->amount);exit;
-            }
-
-            $form->add('amount', 'hidden');
+            $form->add('amount', 'hidden', [
+                'label' => false,
+            ]);
         });
     }
 
