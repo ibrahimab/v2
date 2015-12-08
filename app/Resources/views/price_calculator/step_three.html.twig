@@ -2,6 +2,13 @@
 
 {% block price_calculator %}
 
+    {{ form_start(form, {'action': path('price_calculator_step_four_' ~ locale, {typeId: type.getId()})}) }}
+
+        {{ form_row(form.person) }}
+        {{ form_row(form.weekend) }}
+        {{ form_row(form.booking) }}
+        {{ form_row(form.options) }}
+
     <table class="price-calculator-table">
         <tr>
             <th><strong>Samenstelling reissom</strong></th>
@@ -75,5 +82,7 @@
             <td></td>
         </tr>
     </table>
+
+    {{ form_end(form) }}
 
 {% endblock price_calculator %}

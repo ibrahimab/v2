@@ -66,9 +66,10 @@ services:
         class: AppBundle\Service\PriceCalculator\FormService
         arguments: [@form.factory]
         calls:
-            - [setStepOneForm, [@app.form.price_calculator.step_one]]
-            - [setStepTwoForm, [@app.form.price_calculator.step_two]]
-            - [setLocale,      [@app.concern.locale]]
+            - [setStepOneForm,   [@app.form.price_calculator.step_one]]
+            - [setStepTwoForm,   [@app.form.price_calculator.step_two]]
+            - [setStepThreeForm, [@app.form.price_calculator.step_three]]
+            - [setLocale,        [@app.concern.locale]]
 
     app.price_calculator.calculator:
         class: AppBundle\Service\PriceCalculator\CalculatorService

@@ -163,7 +163,7 @@ class PriceCalculatorController extends Controller
 
         $accommodationService = $this->get('app.accommodation');
         $typeData             = $accommodationService->get($typeId, $data->weekend, $data->person);
-
+        dump($request);exit;
         return $this->render('price_calculator/step_three.html.twig', [
 
             'type'              => $type,
@@ -172,7 +172,39 @@ class PriceCalculatorController extends Controller
             'persons'           => $data->person,
             'reservation_costs' => $this->getParameter('app')['reservation_costs'],
             'options'           => $data->options,
+            'form'              => $calculatorService->getFormService()->create(FormService::FORM_STEP_THREE)->createView(),
         ]);
+    }
+
+    /**
+     * @Route(name="price_calculator_step_four_nl", path="/prijs-berekenen/{typeId}/stap-4", requirements={
+     *     "typeId": "\d+"
+     * })
+     * @Method("POST")
+     * @Breadcrumb(name="show_country",    title="{countryName}",          path="show_country", pathParams={"countrySlug"})
+     * @Breadcrumb(name="show_region",     title="{regionName}",           path="show_region",  pathParams={"regionSlug"})
+     * @Breadcrumb(name="show_place",      title="{placeName}",            path="show_place",   pathParams={"placeSlug"})
+     * @Breadcrumb(name="show_type",       title="{accommodationName}",    path="show_type",    pathParams={"beginCode", "typeId"})
+     * @Breadcrumb(name="calculate_price", title="price-calculated-title", translate=true,      active=true)
+     */
+    public function stepFour(Request $request, $typeId)
+    {
+        $type = $this->get('app.api.type')->findById($typeId);
+
+        if (null === $type) {
+            throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found');
+        }
+
+        $calculatorService = $this->get('app.price_calculator.calculator');
+        $calculatorService->setType($type)
+                          ->setPerson((int)$request->request->get('step_two')['person'])
+                          ->setWeekend((int)$request->request->get('step_two')['weekend']);
+
+        $formService       = $calculatorService->getFormService();
+        $form              = $formService->create(FormService::FORM_STEP_THREE);
+        $form->handleRequest($request);
+
+        dump($form);exit;
     }
 
     /**
