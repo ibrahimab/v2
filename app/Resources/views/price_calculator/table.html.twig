@@ -46,16 +46,16 @@
                         <td>{{ option_group.name }}: {{ option.name }}</td>
                         <td>&euro;</td>
                         <td>{{ option.price|number_format(2, ',', '.') }}</td>
-                        <td>x 1</td>
+                        <td>x {{ option.amount }}</td>
                         <td>=</td>
                         <td>&euro;</td>
-                        <td>{{ option.price|number_format(2, ',', '.') }}</td>
+                        <td>{{ (option.price * option.amount)|number_format(2, ',', '.') }}</td>
                         <td>{{ option.discount == true ? 'korting' }}</td>
                     </tr>
                     {% if option.discount %}
-                        {% set options_costs = options_costs - option.price %}
+                        {% set options_costs = options_costs - (option.price * option.amount) %}
                     {% else %}
-                        {% set options_costs = options_costs + option.price %}
+                        {% set options_costs = options_costs + (option.price * option.amount) %}
                     {% endif %}
                 {% endif %}
             {% endfor %}
