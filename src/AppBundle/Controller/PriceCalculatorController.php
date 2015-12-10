@@ -3,12 +3,14 @@ namespace AppBundle\Controller;
 
 use       AppBundle\Annotation\Breadcrumb;
 use       AppBundle\Service\PriceCalculator\FormService;
+use       AppBundle\Entity\Booking\Booking as BookingEntity;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use       Symfony\Component\HttpFoundation\Request;
 use       Symfony\Component\HttpFoundation\Response;
 use       Symfony\Component\HttpFoundation\JsonResponse;
+use       IntlDateFormatter;
 
 /**
  * CountriesController
@@ -24,7 +26,7 @@ use       Symfony\Component\HttpFoundation\JsonResponse;
 class PriceCalculatorController extends Controller
 {
     /**
-     * @Route(name="price_calculator_step_one_nl", path="/types/{typeId}/prijs-berekenen", requirements={
+     * @Route(name="price_calculator_step_one_nl", path="/prijs-berekenen/{typeId}", requirements={
      *     "typeId": "\d+"
      * })
      * @Route(name="old_calculate_price_form", path="/calc.php")
@@ -48,45 +50,21 @@ class PriceCalculatorController extends Controller
         if (null === $type) {
             throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found');
         }
-        
-        $priceService = $this->get('app.api.price');
-        $weekends     = $priceService->getAvailableData($type)['weekends'];
-        $persons      = $priceService->getBookablePersons($type->getId(), $weekends);
-        
-        $weekendsFormatted = [];
-        $date              = new \DateTime();
-        $locale            = $request->getLocale();
-        $timezone          = $date->getTimezone()->getName();
-        $formatter         = new \IntlDateFormatter($locale, \IntlDateFormatter::FULL, \IntlDateFormatter::FULL, $timezone, \IntlDateFormatter::GREGORIAN);
-        $formatter->setPattern('eeee dd MMMM y');
-        
-        foreach ($weekends as $key => $weekend) {
-            $weekendsFormatted[$weekend] = $formatter->format($date->setTimestamp($weekend));
-        }
-        
-        $personsFormatted = [];
-        $translator       = $this->get('translator');
-        foreach ($persons as $person) {
-            $personsFormatted[$person] = $person . ' ' . strtolower($translator->trans('person' . ($person > 1 ? 's' : '')));
-        }
 
         $calculatorService = $this->get('app.price_calculator.calculator');
         $calculatorService->setType($type)
                           ->setPerson($request->query->get('pe', null))
-                          ->setPersons($personsFormatted)
-                          ->setWeekend($request->query->get('w', null))
-                          ->setWeekends($weekendsFormatted);
-                        
+                          ->setWeekend($request->query->get('w', null));
+
         return $this->render('price_calculator/step_one.html.twig', [
 
             'type'    => $type,
             'form'    => $calculatorService->getFormService()->create(FormService::FORM_STEP_ONE)->createView(),
-            ''
         ]);
     }
 
     /**
-     * @Route(name="price_calculator_step_two_nl", path="/types/{typeId}/prijs-berekenen", requirements={
+     * @Route(name="price_calculator_step_two_nl", path="/prijs-berekenen/{typeId}/stap-2", requirements={
      *     "typeId": "\d+"
      * })
      * @Method("POST")
@@ -98,42 +76,58 @@ class PriceCalculatorController extends Controller
      */
     public function stepTwo(Request $request, $typeId)
     {
-        // get type
         $type = $this->get('app.api.type')->findById($typeId);
-        
+
         if (null === $type) {
             throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found');
         }
-        
-        $seasonService     = $this->get('app.api.season');
-        $seasons           = $seasonService->seasons();
-        $season            = (isset($seasons[0]) ? $seasons[0]['id'] : null);
-        
-        $weekend           = $request->request->get('step_one')['weekend'];
-        
-        $optionService     = $this->get('app.api.option');
-        $options           = $optionService->options($type->getAccommodationId(), $seasonId, $weekend);
-        
-        $priceService      = $this->get('app.api.price');
-        $data              = $priceService->getAvailableData($type);
-        
+
+        $calculatorService = $this->get('app.price_calculator.calculator');
+        $calculatorService->setType($type);
+
+        $formService       = $calculatorService->getFormService();
+        $form              = $formService->create(FormService::FORM_STEP_ONE);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+
+            $accommodationService = $this->get('app.accommodation');
+            $data                 = $form->getData();
+            $typeData             = $accommodationService->get($type->getId(), $data->weekend, $data->person);
+
+            $booking = new BookingEntity();
+            $booking->setCalc(1)
+                    ->setTypeId($typeData['type_id'])
+                    ->setSeasonId($typeData['season'])
+                    ->setPersons($data->person)
+                    ->setArrivalAt($data->weekend);
+
+            $bookingService = $this->get('app.booking');
+            $bookingId      = $bookingService->setBooking($booking)
+                                             ->create($typeData);
+
+        } else {
+
+            return $this->redirectToRoute('price_calculator_step_one_' . $this->get('app.concern.locale')->get(), [
+                'typeId' => $typeData['type_id'],
+            ]);
+        }
+
         $calculatorService = $this->get('app.price_calculator.calculator');
         $calculatorService->setType($type)
-                          ->setOptions($options)
                           ->setPerson((int)$request->request->get('step_one')['person'])
-                          ->setCancellationInsurances($this->getParameter('app')['cancellation_insurances'])
-                          ->setCancellationPercentages($data['cancellation_insurances'])
-                          ->setPolicyCosts($data['insurance_policy_costs']);
-        
+                          ->setWeekend((int)$request->request->get('step_one')['weekend'])
+                          ->setBookingId($bookingId);
+
         return $this->render('price_calculator/step_two.html.twig', [
-            
+
             'type' => $type,
             'form' => $calculatorService->getFormService()->create(FormService::FORM_STEP_TWO)->createView(),
         ]);
     }
-    
+
     /**
-     * @Route(name="price_calculator_step_three_nl", path="/types/{typeId}/prijs-berekend", requirements={
+     * @Route(name="price_calculator_step_three_nl", path="/prijs-berekenen/{typeId}/stap-3", requirements={
      *     "typeId": "\d+"
      * })
      * @Method("POST")
@@ -145,7 +139,133 @@ class PriceCalculatorController extends Controller
      */
     public function stepThree(Request $request, $typeId)
     {
-        return $this->render('price_calculator/step_three.html.twig');
+        $type = $this->get('app.api.type')->findById($typeId);
+
+        if (null === $type) {
+            throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found');
+        }
+
+        $calculatorService = $this->get('app.price_calculator.calculator');
+        $calculatorService->setType($type)
+                          ->setPerson((int)$request->request->get('step_two')['person'])
+                          ->setWeekend((int)$request->request->get('step_two')['weekend'])
+                          ->setOptionsAmount($request->request->get('step_two')['options'])
+                          ->setCancellationInsurancesAmount($request->request->get('step_two')['cancellation_insurances']);
+
+        $formService       = $calculatorService->getFormService();
+        $form              = $formService->create(FormService::FORM_STEP_TWO);
+        $form->handleRequest($request);
+
+        $data           = $form->getData();
+        $insurances     = [
+            'damage' => $data->damage_insurance,
+        ];
+
+        $bookingService = $this->get('app.booking');
+        $bookingService->saveOptions($data->booking, $insurances, $data->persons, $form->getData()->options);
+
+        $accommodationService = $this->get('app.accommodation');
+        $typeData             = $accommodationService->get($typeId, $data->weekend, $data->person);
+
+        $formatter            = new IntlDateFormatter($request->getLocale(), IntlDateFormatter::FULL, IntlDateFormatter::FULL, new \DateTimeZone(date_default_timezone_get()), IntlDateFormatter::GREGORIAN);
+        $formatter->setPattern('eeee dd MMMM y');
+
+        $arrivalDate          = new \DateTime();
+        $arrivalDate->setTimestamp($typeData['arrival']);
+
+        $departureDate        = new \DateTime();
+        $departureDate->setTimestamp($typeData['departure']);
+
+        return $this->render('price_calculator/step_three.html.twig', [
+
+            'type'              => $type,
+            'show'              => $typeData['show'],
+            'price'             => $typeData['price'],
+            'name_type'         => $typeData['name'],
+            'name_place'        => $typeData['name_place'],
+            'persons'           => $data->person,
+            'arrival_date'      => $formatter->format($arrivalDate),
+            'departure_date'    => $formatter->format($departureDate),
+            'reservation_costs' => $this->getParameter('app')['reservation_costs'],
+            'options'           => $data->options,
+            'form'              => $calculatorService->getFormService()->create(FormService::FORM_STEP_THREE)->createView(),
+        ]);
+    }
+
+    /**
+     * @Route(name="price_calculator_step_four_nl", path="/prijs-berekenen/{typeId}/stap-4", requirements={
+     *     "typeId": "\d+"
+     * })
+     * @Method("POST")
+     * @Breadcrumb(name="show_country",    title="{countryName}",          path="show_country", pathParams={"countrySlug"})
+     * @Breadcrumb(name="show_region",     title="{regionName}",           path="show_region",  pathParams={"regionSlug"})
+     * @Breadcrumb(name="show_place",      title="{placeName}",            path="show_place",   pathParams={"placeSlug"})
+     * @Breadcrumb(name="show_type",       title="{accommodationName}",    path="show_type",    pathParams={"beginCode", "typeId"})
+     * @Breadcrumb(name="calculate_price", title="price-calculated-title", translate=true,      active=true)
+     */
+    public function stepFour(Request $request, $typeId)
+    {
+        $type = $this->get('app.api.type')->findById($typeId);
+
+        if (null === $type) {
+            throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found');
+        }
+
+        $calculatorService = $this->get('app.price_calculator.calculator');
+        $calculatorService->setType($type)
+                          ->setPerson((int)$request->request->get('step_three')['person'])
+                          ->setWeekend((int)$request->request->get('step_three')['weekend'])
+                          ->setOptionsAmount($request->request->get('step_three')['options'])
+                          ->setCancellationInsurancesAmount($request->request->get('step_three')['cancellation_insurances']);
+
+        $form = $calculatorService->getFormService()->create(FormService::FORM_STEP_THREE);
+        $form->handleRequest($request);
+        $data = $form->getData();
+
+        $accommodationService = $this->get('app.accommodation');
+        $typeData             = $accommodationService->get($typeId, $data->weekend, $data->person);
+
+        $formatter            = new IntlDateFormatter($request->getLocale(), IntlDateFormatter::FULL, IntlDateFormatter::FULL, new \DateTimeZone(date_default_timezone_get()), IntlDateFormatter::GREGORIAN);
+        $formatter->setPattern('eeee dd MMMM y');
+
+        $arrivalDate          = new \DateTime();
+        $arrivalDate->setTimestamp($typeData['arrival']);
+
+        $departureDate        = new \DateTime();
+        $departureDate->setTimestamp($typeData['departure']);
+
+        $table                = $this->renderView('price_calculator/table.html.twig', [
+
+            'type_id'           => $typeData['type_id'],
+            'begin_code'        => $typeData['begincode'],
+            'arrival_date'      => $formatter->format($arrivalDate),
+            'departure_date'    => $formatter->format($departureDate),
+            'name_type'         => $typeData['name'],
+            'name_place'        => $typeData['name_place'],
+            'show'              => $typeData['show'],
+            'price'             => $typeData['price'],
+            'persons'           => $data->person,
+            'reservation_costs' => $this->getParameter('app')['reservation_costs'],
+            'options'           => $data->options,
+        ]);
+
+        $mailer = $this->get('app.mailer.price_calculator');
+        $result = $mailer->setSubject($this->get('translator')->trans('mail.price_calculator.subject'))
+                         ->setFrom($this->container->getParameter('mailer_from'))
+                         ->setTo($data->email)
+                         ->setTemplate('mail/price_calculator.html.twig', 'text/html')
+                         ->setTemplate('mail/price_calculator.txt.twig', 'text/plain')
+                         ->send([
+
+                             'email' => $data->email,
+                             'table' => $table,
+                         ]);
+
+        return new JsonResponse([
+
+            'type'    => 'success',
+            'message' => 'Message has successfully been sent',
+        ]);
     }
 
     /**
@@ -177,7 +297,7 @@ class PriceCalculatorController extends Controller
                 $params['p'] = $query->get('ap');
             }
 
-            return $this->redirectToRoute('calculate_price_form_' . $request->getLocale(), $params, 301);
+            return $this->redirectToRoute('price_calculator_step_one_' . $request->getLocale(), $params, 301);
         }
 
         return false;

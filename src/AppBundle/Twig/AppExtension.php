@@ -82,7 +82,7 @@ class AppExtension extends \Twig_Extension
         $this->container      = $container;
         $this->generator      = $generator;
         $this->currentUser    = null;
-        $this->locale         = $this->container->get('request')->getLocale();
+        $this->locale         = $this->container->get('app.concern.locale')->get();
         $this->filterService  = $this->container->get('app.filter');
         $this->websiteConcern = $this->container->get('app.concern.website');
         $this->fileServices   = [];

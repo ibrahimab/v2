@@ -13,7 +13,7 @@ use       Symfony\Component\OptionsResolver\OptionsResolver;
  * @version 0.2.7
  * @since   0.2.7
  */
-class CancellationInsurance extends AbstractType
+class HiddenCancellationInsurance extends AbstractType
 {
     /**
      * @param  FormBuilderInterface $builder
@@ -28,10 +28,8 @@ class CancellationInsurance extends AbstractType
             $entity = $event->getData();
             $form   = $event->getForm();
 
-            $form->add('amount', 'choice', [
+            $form->add('amount', 'hidden', [
                 'label' => false,
-                'choices' => range(0, $entity->person),
-                'choice_label' => null,
             ]);
         });
     }

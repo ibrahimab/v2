@@ -3,8 +3,10 @@ namespace AppBundle\Service\PriceCalculator;
 
 use       AppBundle\Form\PriceCalculator\StepOneForm;
 use       AppBundle\Form\PriceCalculator\StepTwoForm;
-use       AppBundle\Entity\Form\PriceCalculator\StepOne as StepOneEntity;
-use       AppBundle\Entity\Form\PriceCalculator\StepTwo as StepTwoEntity;
+use       AppBundle\Form\PriceCalculator\StepThreeForm;
+use       AppBundle\Entity\Form\PriceCalculator\StepOne   as StepOneEntity;
+use       AppBundle\Entity\Form\PriceCalculator\StepTwo   as StepTwoEntity;
+use       AppBundle\Entity\Form\PriceCalculator\StepThree as StepThreeEntity;
 use       Symfony\Component\Form\FormFactoryInterface;
 use		  Symfony\Component\Form\FormTypeInterface;
 use		  Symfony\Component\Form\FormView;
@@ -22,17 +24,22 @@ class FormService
      * @const integer
      */
     const FORM_STEP_ONE = 1;
-    
+
     /**
      * @const integer
      */
     const FORM_STEP_TWO = 2;
-    
+
+    /**
+     * @const integer
+     */
+    const FORM_STEP_THREE = 3;
+
     /**
      * @var FormFactoryInterface
      */
     private $factory;
-    
+
     /**
      * @var string
      */
@@ -47,7 +54,7 @@ class FormService
      * @var array
      */
     private $entities = [];
-    
+
     /**
      * @var CalculatorService
      */
@@ -64,7 +71,7 @@ class FormService
     {
         $this->factory = $factory;
     }
-    
+
     /**
      * @param  string      $locale
      * @return FormService
@@ -73,7 +80,7 @@ class FormService
     {
         $this->locale = $locale;
     }
-    
+
     /**
      * @param  CalculatorService $CalculatorService
      * @return FormService
@@ -83,7 +90,7 @@ class FormService
         $this->calculatorService = $calculatorService;
         return $this;
     }
-    
+
     /**
      * @return CalculatorServices
      */
@@ -101,7 +108,7 @@ class FormService
         $this->forms[self::FORM_STEP_ONE] = $form;
         return $this;
     }
-    
+
     /**
      * @param  StepTwoForm $form
      * @return FormService
@@ -109,6 +116,16 @@ class FormService
     public function setStepTwoForm(StepTwoForm $form)
     {
         $this->forms[self::FORM_STEP_TWO] = $form;
+        return $this;
+    }
+
+    /**
+     * @param  StepTwoForm $form
+     * @return FormService
+     */
+    public function setStepThreeForm(StepThreeForm $form)
+    {
+        $this->forms[self::FORM_STEP_THREE] = $form;
         return $this;
     }
 
@@ -121,7 +138,7 @@ class FormService
         if (!isset($this->forms[$formId])) {
             return null;
         }
-        
+
         return $this->forms[$formId];
     }
 
@@ -134,10 +151,10 @@ class FormService
         if (null === ($form = $this->getForm($formId))) {
             throw new FormNotFoundException(sprintf('Could not find form with ID=%s', $formId));
         }
-        
+
 		return $this->factory->create($form, $this->getEntity($formId));
 	}
-    
+
     /**
      * @param  integer       $formId
      * @return stepOneEntity
@@ -145,19 +162,23 @@ class FormService
     public function getEntity($formId)
     {
         switch ($formId) {
-            
+
             case self::FORM_STEP_ONE:
                 $entity = $this->getStepOneEntity();
             break;
-            
+
             case self::FORM_STEP_TWO:
                 $entity = $this->getStepTwoEntity();
             break;
-            
+
+            case self::FORM_STEP_THREE:
+                $entity = $this->getStepThreeEntity();
+            break;
+
             default:
                 throw new EntityNotFoundException(sprintf('Could not found entity for form ID=%s', $formId));
         }
-        
+
         return $entity;
     }
 
@@ -169,32 +190,53 @@ class FormService
         if (!isset($this->entities[self::FORM_STEP_ONE])) {
 
             $entity           = new StepOneEntity();
-            $entity->type     = $this->calculatorService->getType()->getLocaleName($this->locale);
+            $entity->type     = $this->calculatorService->getType()->getLocaleName($this->locale->get());
             $entity->person   = $this->calculatorService->getPerson();
             $entity->persons  = $this->calculatorService->getPersons();
             $entity->weekend  = $this->calculatorService->getWeekend();
             $entity->weekends = $this->calculatorService->getWeekends();
-            
+
             $this->entities[self::FORM_STEP_ONE] = $entity;
         }
-        
+
         return $this->entities[self::FORM_STEP_ONE];
     }
-    
+
     /**
      * @return StepTwoEntity
      */
     public function getStepTwoEntity()
     {
         if (!isset($this->entities[self::FORM_STEP_TWO])) {
-            
+
             $this->entities[self::FORM_STEP_TWO] = new StepTwoEntity($this->calculatorService->getOptions(),
                                                                      $this->calculatorService->getPerson(),
+                                                                     $this->calculatorService->getWeekend(),
+                                                                     $this->calculatorService->getBookingId(),
                                                                      $this->calculatorService->getCancellationInsurances(),
                                                                      $this->calculatorService->getCancellationPercentages(),
                                                                      $this->calculatorService->getPolicyCosts());
         }
-        
+
         return $this->entities[self::FORM_STEP_TWO];
+    }
+
+    /**
+     * @return StepThreeEntity
+     */
+    public function getStepThreeEntity()
+    {
+        if (!isset($this->entities[self::FORM_STEP_THREE])) {
+
+            $this->entities[self::FORM_STEP_THREE] = new StepThreeEntity($this->calculatorService->getOptions(),
+                                                                         $this->calculatorService->getPerson(),
+                                                                         $this->calculatorService->getWeekend(),
+                                                                         $this->calculatorService->getBookingId(),
+                                                                         $this->calculatorService->getCancellationInsurances(),
+                                                                         $this->calculatorService->getCancellationPercentages(),
+                                                                         $this->calculatorService->getPolicyCosts());
+        }
+
+        return $this->entities[self::FORM_STEP_THREE];
     }
 }

@@ -20,7 +20,7 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
     const CANCELLATION_PERCENTAGE_2 = 2;
     const CANCELLATION_PERCENTAGE_3 = 3;
     const CANCELLATION_PERCENTAGE_4 = 4;
-    
+
     /**
      * @param array $types
      * @return array
@@ -288,7 +288,7 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
 
         return array_merge($arrangements, $accommodations);
     }
-    
+
     /**
      * @param  integer $weekend
      * @param  integer $persons
@@ -301,7 +301,7 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
 
         return array_merge($arrangements, $accommodations);
     }
-    
+
     /**
      * @param  TypeServiceEntityInterface $type
      * @return array
@@ -311,9 +311,9 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
         $qb     = $this->getEntityManager()->getConnection()->createQueryBuilder();
         $expr   = $qb->expr();
         $resale = $this->getWebsiteConcern()->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE);
-        
+
         if ($type->getAccommodation()->getShow() === 3) {
-            
+
             $qb->select('t.week, s.tonen, t.c_bruto, t.c_verkoop_site, t.beschikbaar, t.blokkeren_wederverkoop, t.wederverkoop_verkoopprijs, s.seizoen_id,
                          s.annuleringsverzekering_percentage_1, s.annuleringsverzekering_percentage_2, s.annuleringsverzekering_percentage_3, s.annuleringsverzekering_percentage_4,
                          s.schadeverzekering_percentage, s.verzekeringen_poliskosten, t.wederverkoop_commissie_agent')
@@ -323,29 +323,29 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
                ->setParameters([
                    'typeId' => $type->getId(),
                ]);
-               
+
             $statement = $qb->execute();
             $results   = $statement->fetchAll();
             $data      = ['weekends' => [], 'cancellation_insurances' => []];
-            
+
             foreach ($results as $result) {
-                
+
                 $data['cancellation_insurances'][self::CANCELLATION_PERCENTAGE_1] = $result['annuleringsverzekering_percentage_1'];
                 $data['cancellation_insurances'][self::CANCELLATION_PERCENTAGE_2] = $result['annuleringsverzekering_percentage_2'];
                 $data['cancellation_insurances'][self::CANCELLATION_PERCENTAGE_3] = $result['annuleringsverzekering_percentage_3'];
                 $data['cancellation_insurances'][self::CANCELLATION_PERCENTAGE_4] = $result['annuleringsverzekering_percentage_4'];
-                
+
                 $data['damage_percentage']      = $result['schadeverzekering_percentage'];
                 $data['insurance_policy_costs'] = $result['verzekeringen_poliskosten'];
                 $data['commision']              = $result['wederverkoop_commissie_agent'];
-                
+
                 if ($result['tonen'] > 1 && $result['c_bruto'] > 0 && $result['c_verkoop_site'] && intval($result['beschikbaar']) == 1 && ($result['blokkeren_wederverkoop'] == 0 || !$resale) && ($result['wederverkoop_verkoopprijs'] || !$resale)) {
                     $data['weekends'][] = intval($result['week']);
                 }
             }
-            
+
         } else {
-            
+
             $qb->select('t.week, s.tonen, t.bruto, t.arrangementsprijs, t.beschikbaar, t.blokkeren_wederverkoop, t.wederverkoop_verkoopprijs, t.wederverkoop_opslag_percentage, s.seizoen_id,
                          s.annuleringsverzekering_percentage_1, s.annuleringsverzekering_percentage_2, s.annuleringsverzekering_percentage_3, s.annuleringsverzekering_percentage_4,
                          s.schadeverzekering_percentage, verzekeringen_poliskosten')
@@ -355,57 +355,67 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
                ->setParameters([
                    'typeId' => $type->getId(),
                ]);
-               
+
             $statement = $qb->execute();
             $results   = $statement->fetchAll();
             $data      = ['weekends' => [],'cancellation_insurances' => []];
-            
+
             foreach ($results as $result) {
-                
+
                 $data['cancellation_insurances'][1] = $result['annuleringsverzekering_percentage_1'];
                 $data['cancellation_insurances'][2] = $result['annuleringsverzekering_percentage_2'];
                 $data['cancellation_insurances'][3] = $result['annuleringsverzekering_percentage_3'];
                 $data['cancellation_insurances'][4] = $result['annuleringsverzekering_percentage_4'];
-                
+
                 $data['damage_percentage']      = $result['schadeverzekering_percentage'];
                 $data['insurance_policy_costs'] = $result['verzekeringen_poliskosten'];
-                
+
                 if ($result['tonen'] > 1 && ($result['bruto'] > 0 || $result['arrangementsprijs'] > 0) && $result['beschikbaar'] == 1 && ($result['blokkeren_wederverkoop'] == 0 || !$resale) && ($result['wederverkoop_verkoopprijs'] > 0 || !$resale)) {
                     $data['weekends'][] = intval($result['week']);
                 }
             }
         }
-        
+
         return $data;
     }
-    
+
     /**
      * @param  integer $typeId
-     * @return array
+     * @param  integer $show
+     * @param  array   $weekends
+     *
+     * @return array|null
      */
-    public function getBookablePersons($typeId, $weekends)
+    public function getBookablePersons($typeId, $show, $weekends)
     {
-        $connection = $this->getEntityManager()->getConnection();
-        $qb         = $connection->createQueryBuilder();
-        $expr       = $qb->expr();
-        
-        $qb->select('DISTINCT tp.personen')
-           ->from('tarief_personen', 'tp')
-           ->andWhere($expr->eq('tp.type_id', ':typeId'))
-           ->andWhere($expr->in('tp.week', $weekends))
-           ->orderBy('tp.personen')
-           ->setParameters([
-               'typeId'   => $typeId,
-           ]);
-           
-         $statement = $qb->execute();
-         $results   = $statement->fetchAll();
-         $persons   = [];
-         
-         foreach ($results as $result) {
-             $persons[] = intval($result['personen']);
+        $resale = $this->getWebsiteConcern()->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE);
+
+        if ($show <> 3 && false === $resale) {
+
+            $connection = $this->getEntityManager()->getConnection();
+            $qb         = $connection->createQueryBuilder();
+            $expr       = $qb->expr();
+
+            $qb->select('DISTINCT tp.personen')
+               ->from('tarief_personen', 'tp')
+               ->andWhere($expr->eq('tp.type_id', ':typeId'))
+               ->andWhere($expr->in('tp.week', $weekends))
+               ->orderBy('tp.personen')
+               ->setParameters([
+                   'typeId'   => $typeId,
+               ]);
+
+             $statement = $qb->execute();
+             $results   = $statement->fetchAll();
+             $persons   = [];
+
+             foreach ($results as $result) {
+                 $persons[] = intval($result['personen']);
+             }
+
+             return $persons;
          }
-         
-         return $persons;
+
+         return null;
     }
 }

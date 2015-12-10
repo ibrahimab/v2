@@ -51,8 +51,5 @@ assetic:
         lessphp:
             apply_to: "\.less$"
 
-swiftmailer:
-    transport: gmail
-
 doctrine_mongodb:
     default_database: %mongodb_database%

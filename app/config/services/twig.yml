@@ -5,12 +5,12 @@ services:
         tags:
             - { name: twig.extension }
         arguments: [@service_container, @router]
-        
+
     twig.extension.pagination:
         class: AppBundle\Twig\PaginationExtension
         tags:
             - { name: twig.extension }
-        arguments: [@service_container, @router]
+        arguments: [@service_container, @app.concern.locale, @router]
 
     twig.extension.text:
         class: Twig_Extensions_Extension_Text

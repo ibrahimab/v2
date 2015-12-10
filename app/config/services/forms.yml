@@ -10,3 +10,9 @@ services:
         lazy: true
         tags:
             - { name: form.type, alias: step_two_form }
+
+    app.form.price_calculator.step_three:
+        class: AppBundle\Form\PriceCalculator\StepThreeForm
+        lazy: true
+        tags:
+            - { name: form.type, alias: step_three_form }

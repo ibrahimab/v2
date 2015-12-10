@@ -4,6 +4,10 @@
 
     {{ form_start(form, {'action': path('price_calculator_step_three_' ~ locale, {typeId: type.getId()})}) }}
 
+        {{ form_row(form.person) }}
+        {{ form_row(form.weekend) }}
+        {{ form_row(form.booking) }}
+
     <div class="row">
 
         <div class="small-12 medium-12 large-12 columns">
@@ -14,10 +18,27 @@
                     {{ ('type.kind.' ~ accommodation.getKindIdentifier() )|trans|capitalize ~ ' ' ~ localeData['name']['accommodation'] ~ ' ' ~ localeData['name']['type'] }} in {{ localeData['name']['place'] }}, {{ localeData['name']['country'] }}
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="large-12 columns">
                     <table>
+                        <tr>
+                            <th>Soort optie</th>
+                            <th>Prijs</th>
+                            <th>Aantal</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Algemene opties</strong></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">{{ form_label(form.damage_insurance) }}</td>
+                            <td>{{ form_widget(form.damage_insurance) }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">&nbsp;</td>
+                        </tr>
                         {{ form_row(form.options) }}
                         <tr>
                             <td><strong>Annuleringsverzekering</strong></td>
@@ -28,7 +49,7 @@
                     </table>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="large-12 columns">
                     {{ form_widget(form.save) }}

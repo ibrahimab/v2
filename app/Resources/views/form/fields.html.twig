@@ -1,14 +1,9 @@
 {% block _step_two_options_entry_label %}
 {% endblock %}
 {% block _step_two_options_row %}
-    
-    <tr>
-        <th>Soort optie</th>
-        <th>Prijs</th>
-        <th>Aantal</th>
-    </tr>
+
     {{ block('form_row') }}
-    
+
 {% endblock %}
 
 {% block _step_two_options_entry_row %}
@@ -36,7 +31,7 @@
 {% endblock %}
 
 {% block _step_two_cancellation_insurances_entry_row %}
-    
+
     <tr>
         <td colspan="2">{{ ('cancellation_insurances.' ~ value.name)|trans }}: {{ 'cancellation_insurances.travel_costs.booking'|trans({ '%percentage%': value.percentages[value.id], '%costs%': value.policyCosts }) }}</td>
         <td>{{ block('form_widget') }}</td>

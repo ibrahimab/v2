@@ -48,6 +48,7 @@ class WebsiteConcern
     const WEBSITE_CONFIG_DAMAGE_INSURANCE         = 'damage_insurance';
     const WEBSITE_CONFIG_NEWSLETTER               = 'newsletter';
     const WEBSITE_CONFIG_NEWSLETTER_CANCEL        = 'newsletter_cancel';
+    const WEBSITE_COMPANY                         = 'company';
 
     /**
      * @var string
@@ -123,10 +124,12 @@ class WebsiteConcern
     /**
      * @param array $parameters
      */
-    public function __construct($parameters)
+    public function __construct($parameters, $ssl_enabled)
     {
         $this->website  = $parameters['default_website'];
         $this->websites = $parameters['domain'];
+        $this->ssl      = $ssl_enabled;
+        $this->protocol = ($ssl_enabled ? 'https://' : 'http://');
         $this->setType();
     }
 
@@ -184,13 +187,29 @@ class WebsiteConcern
         return $this->domain;
     }
 
-    public function getConfig($identifier)
+    public function uri()
     {
-        if (!isset($this->config[$identifier])) {
+        return $this->protocol . $this->domain() . '/';
+    }
+
+    public function getConfig($identifier, $website = null)
+    {
+        if (null !== $website && !isset($this->websites[$website])) {
+            throw new \Exception(sprintf('Website %s could not be found', $website));
+        }
+
+        $config = (null === $website ? $this->config : $this->websites[$website]);
+
+        if (!isset($config[$identifier])) {
             throw new \Exception(sprintf('Could not find WebsiteConcern config with identifier %s', $identifier));
         }
 
-        return $this->config[$identifier];
+        return $config[$identifier];
+    }
+
+    public function websites()
+    {
+        return $this->websites;
     }
 
     public function getLanguageField()

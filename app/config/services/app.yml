@@ -54,14 +54,31 @@ services:
         class: AppBundle\Service\File\Theme
         arguments: [@app.mongo, %mongodb_files_database%]
 
+    app.booking:
+        class: AppBundle\Service\Booking\BookingService
+        arguments: [@app.api.booking, @app.api.accommodation]
+
+    app.accommodation:
+        class: AppBundle\Service\AccommodationService
+        arguments: [@app.concern.locale, @app.concern.website, @app.concern.season, @database_connection, @translator, @router]
+
     app.price_calculator.form:
         class: AppBundle\Service\PriceCalculator\FormService
         arguments: [@form.factory]
         calls:
-            - [setStepOneForm, [@app.form.price_calculator.step_one]]
-            - [setStepTwoForm, [@app.form.price_calculator.step_two]]
-            - [setLocale, [@=service('app.concern.locale').get()]]
+            - [setStepOneForm,   [@app.form.price_calculator.step_one]]
+            - [setStepTwoForm,   [@app.form.price_calculator.step_two]]
+            - [setStepThreeForm, [@app.form.price_calculator.step_three]]
+            - [setLocale,        [@app.concern.locale]]
 
     app.price_calculator.calculator:
         class: AppBundle\Service\PriceCalculator\CalculatorService
         arguments: [@app.price_calculator.form]
+        calls:
+            - [setOptionService,        [@app.api.option]]
+            - [setPriceService,         [@app.api.price]]
+            - [setSeasonService,        [@app.api.season]]
+            - [setAppConfig,            [%app%]]
+            - [setLocale,               [@app.concern.locale]]
+            - [setTranslator,           [@translator]]
+            - [setAccommodationService, [@app.accommodation]]

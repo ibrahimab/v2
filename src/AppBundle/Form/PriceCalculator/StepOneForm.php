@@ -22,7 +22,7 @@ class StepOneForm extends AbstractType
 
         $builder->add('person', 'choice', ['choices' => $entity->persons, 'placeholder' => ''])
                 ->add('weekend', 'choice', ['choices' => $entity->weekends, 'placeholder' => ''])
-                ->add('save', 'submit', ['label' => 'Volgende']);
+                ->add('save', 'submit', ['label' => 'form.price_calculator.step_one.submit']);
     }
 
     /**

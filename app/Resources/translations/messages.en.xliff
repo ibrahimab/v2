@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2015-10-19T14:41:29Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
+  <file date="2015-11-06T11:48:38Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -51,128 +51,128 @@
       <trans-unit id="2c89493066deb74af27d753d584b5d7673555bc8" resname="additional.costs.amount.unknown">
         <source>additional.costs.amount.unknown</source>
         <target>amount unknown</target>
-        <jms:reference-file line="94">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="91">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="7147bef8cd140fc77f9106b06989de2593c19400" resname="additional.costs.by.tenant">
         <source>additional.costs.by.tenant</source>
         <target>by tenant</target>
-        <jms:reference-file line="125">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="122">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="f4208aa546a3270e7dc6d60a9989f61ab5c1d28e" resname="additional.costs.by.usage">
         <source>additional.costs.by.usage</source>
         <target>by usage</target>
-        <jms:reference-file line="124">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="121">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="5f490be687b5d11b944a56e8ce40096df41cd6dc" resname="additional.costs.cash">
         <source>additional.costs.cash</source>
         <target>in cash, paid locally</target>
-        <jms:reference-file line="90">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="87">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="7acfbaea06183fe6af4bafd93fd7e6fb4c372b87" resname="additional.costs.cash.creditcard">
         <source>additional.costs.cash.creditcard</source>
         <target>in cash or via credit card, paid locally</target>
-        <jms:reference-file line="92">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="89">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="123a57612d65d6878448d941254cc3c53b90248b" resname="additional.costs.creditcard">
         <source>additional.costs.creditcard</source>
         <target>via credit card, paid locally</target>
-        <jms:reference-file line="91">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="88">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="99a8a6004d2993f3a251ec5a996e07afe1ec7ae1" resname="additional.costs.excluding">
         <source>additional.costs.excluding</source>
         <target>excluding</target>
-        <jms:reference-file line="129">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="126">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="655e338f1302a91a5cd11cfcb4d11357bb9e7390" resname="additional.costs.including">
         <source>additional.costs.including</source>
         <target>including</target>
-        <jms:reference-file line="130">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="127">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="c3974618aab63ee36d094e105a7abd7b5f7ab00a" resname="additional.costs.mandatory">
         <source>additional.costs.mandatory</source>
         <target>mandatory</target>
-        <jms:reference-file line="123">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="120">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="9e2971c5b320346a457b9c574d0aa0df48c62f1b" resname="additional.costs.not.applicable">
         <source>additional.costs.not.applicable</source>
         <target>not applicable</target>
-        <jms:reference-file line="93">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="90">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="31cf4c641654b0b27b45afb22f8638bc968249b1" resname="additional.costs.optional">
         <source>additional.costs.optional</source>
         <target>optional</target>
-        <jms:reference-file line="122">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="119">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="f9a66fd0e97e82355d4ecd6355dabe59ddd63e26" resname="additional.costs.paid.in.advance">
         <source>additional.costs.paid.in.advance</source>
         <target>paid in advance</target>
-        <jms:reference-file line="95">AppBundle/Old/Configuration.php</jms:reference-file>
-        <jms:reference-file line="116">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="92">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="113">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="1781e04b14f7c55aea804d8edd91ef950e3915b8" resname="additional.costs.paid.locally">
         <source>additional.costs.paid.locally</source>
         <target>paid locally</target>
-        <jms:reference-file line="117">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="114">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="8540f50d99dbbe17f84d09675ae0761a83006821" resname="additional.costs.unit.each">
         <source>additional.costs.unit.each</source>
         <target>each</target>
-        <jms:reference-file line="103">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="100">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="6aa8e6b4e65fe3368dd391e3fcdadb764940ea9b" resname="additional.costs.unit.per.bag">
         <source>additional.costs.unit.per.bag</source>
         <target>per bag</target>
-        <jms:reference-file line="108">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="105">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="cda539c7a6b3bad98a3908fe228edaa0f2e391c8" resname="additional.costs.unit.per.cubic.meters">
         <source>additional.costs.unit.per.cubic.meters</source>
         <target>per cubic meter</target>
-        <jms:reference-file line="111">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="108">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="a5ad251e1a12bd8dc3fd3aaa67f3bf6c5bf7eb8c" resname="additional.costs.unit.per.day">
         <source>additional.costs.unit.per.day</source>
         <target>per day</target>
-        <jms:reference-file line="102">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="99">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="edf2edaa517b5df22a7c8da4b3671d954586ed1e" resname="additional.costs.unit.per.hour">
         <source>additional.costs.unit.per.hour</source>
         <target>per hour</target>
-        <jms:reference-file line="110">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="107">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="547a2b7f2659a3be44646fa0d60d0ea0ab873399" resname="additional.costs.unit.per.kwh">
         <source>additional.costs.unit.per.kwh</source>
         <target>per kWh</target>
-        <jms:reference-file line="104">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="101">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="1358be45d17fb1d7bbe7e17a4e248c873189a117" resname="additional.costs.unit.per.liter">
         <source>additional.costs.unit.per.liter</source>
         <target>per liter</target>
-        <jms:reference-file line="105">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="102">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="22408be694826b412a51d1ea978e380e07220e08" resname="additional.costs.unit.per.person">
         <source>additional.costs.unit.per.person</source>
         <target>p.p.</target>
-        <jms:reference-file line="101">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="98">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="beef64dec34e6adbc3911de3de1ec4eff88bc836" resname="additional.costs.unit.per.set">
         <source>additional.costs.unit.per.set</source>
         <target>per set</target>
-        <jms:reference-file line="106">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="103">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="aed0f8ffbe7cdafe98eb8ce5bfb4fd38cf0f319b" resname="additional.costs.unit.per.stay">
         <source>additional.costs.unit.per.stay</source>
         <target>per stay</target>
-        <jms:reference-file line="100">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="97">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="c3d54a22106e0ebe048a214da0c13c9e5f81bd8d" resname="additional.costs.unit.per.time">
         <source>additional.costs.unit.per.time</source>
         <target>each time</target>
-        <jms:reference-file line="109">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="106">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="a2fa844479fbe0ec7e986aba3f3659e363878dc9" resname="additional.costs.unit.per.week">
         <source>additional.costs.unit.per.week</source>
         <target>per week</target>
-        <jms:reference-file line="107">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="104">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="7eb0aeee6b88d54f8e4929cb1b2a30ac93308bf4" resname="address-title">
         <source>address-title</source>
@@ -258,6 +258,11 @@
         <source>by-price-normal</source>
         <target>Standard</target>
         <jms:reference-file line="28">views/search/results.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="9428950259f6250f86587f7eaf135f1c6358285e" resname="cancellation_insurances.travel_costs.booking">
+        <source>cancellation_insurances.travel_costs.booking</source>
+        <target>%percentage%% Total cost of holiday + € %costs% per reservation</target>
+        <jms:reference-file line="36">views/form/fields.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="d03c556c6ef07e9a840e96a7500cb85bf939e079" resname="car-rental">
         <source>car-rental</source>
@@ -363,6 +368,11 @@
         <target>Disclaimer for</target>
         <jms:reference-file line="18">pages/disclaimer/en.html.twig</jms:reference-file>
         <jms:reference-file line="18">pages/disclaimer/nl.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c467ca0fa21477fee3cde75a140b2963307388a7" resname="discount">
+        <source>discount</source>
+        <target>discount</target>
+        <jms:reference-file line="27">views/form/fields.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="1a33cf6d0e44ab72aec6ac74cc8fb7797ea8ca16" resname="distance-to-slopes">
         <source>distance-to-slopes</source>
@@ -612,6 +622,36 @@
         <target>To: (use a comma as a separation for the e-mails)</target>
         <jms:reference-file line="41">views/mail-a-friend/new.html.twig</jms:reference-file>
       </trans-unit>
+      <trans-unit id="23bd98fc202cce51c093019429e3b76ed40c2272" resname="form.damage.insurance">
+        <source>form.damage.insurance</source>
+        <target>Verzekering Schade Logies Verblijven</target>
+        <jms:reference-file line="32">views/price_calculator/step_two.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="2cabdffcb70c301c2aa70e846de38d13fc166218" resname="form.no">
+        <source>form.no</source>
+        <target>No</target>
+        <jms:reference-file line="28">Form/PriceCalculator/StepTwoForm.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4f94f986222035c5e97707e6d4c4b1124a02e2e0" resname="form.price_calculator.step_one.submit">
+        <source>form.price_calculator.step_one.submit</source>
+        <target>Next</target>
+        <jms:reference-file line="25">Form/PriceCalculator/StepOneForm.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5d2d7b59e42c34e7fb57aa4c98285c5cf9998a61" resname="form.price_calculator.step_two.damage_insurance">
+        <source>form.price_calculator.step_two.damage_insurance</source>
+        <target>Verzekering Schade Logies Verblijven</target>
+        <jms:reference-file line="27">Form/PriceCalculator/StepTwoForm.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3eb79cdcd84e6491bcb4fe4c4e9370b0f36a01f7" resname="form.price_calculator.step_two.submit">
+        <source>form.price_calculator.step_two.submit</source>
+        <target>Calculate total amount</target>
+        <jms:reference-file line="43">Form/PriceCalculator/StepTwoForm.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f086015cccede5ddbc419e80fd62ffc291429fd0" resname="form.yes">
+        <source>form.yes</source>
+        <target>Yes</target>
+        <jms:reference-file line="28">Form/PriceCalculator/StepTwoForm.php</jms:reference-file>
+      </trans-unit>
       <trans-unit id="23e591e8c36dda987970603ad0fdd031b7dff9f9" resname="france">
         <source>france</source>
         <target>France</target>
@@ -749,12 +789,12 @@
       <trans-unit id="708f272a1566593c190e7f029c3938dc9cafc1d2" resname="offer.last-minute">
         <source>offer.last-minute</source>
         <target>Last Minute Offer</target>
-        <jms:reference-file line="84">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="81">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="05d11edca6cb5acbab28e66abcb35c893095be8f" resname="offer.normal">
         <source>offer.normal</source>
         <target>Normal offer</target>
-        <jms:reference-file line="83">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="80">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="59214f702ffc81c6690b1ca58ad96be6383d2b20" resname="opening-times-week">
         <source>opening-times-week</source>
@@ -780,12 +820,14 @@
         <source>person</source>
         <target>person</target>
         <jms:reference-file line="29">search/form/input.html.twig</jms:reference-file>
+        <jms:reference-file line="70">AppBundle/Controller/PriceCalculatorController.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="123349a8c97443b33169a4de5e7eb0e2005c7f80" resname="persons">
         <source>persons</source>
         <target>Persons</target>
         <jms:reference-file line="1">search/form/input.html.twig</jms:reference-file>
         <jms:reference-file line="7">partials/search/types.html.twig</jms:reference-file>
+        <jms:reference-file line="70">AppBundle/Controller/PriceCalculatorController.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="c7956d3166e20ad1149f47485686a1a5a338c51f" resname="phonenumber">
         <source>phonenumber</source>
@@ -880,12 +922,12 @@
       <trans-unit id="99aca1fe5c392a6a73ebd0ee0cdde38991078476" resname="season.summer">
         <source>season.summer</source>
         <target>summer</target>
-        <jms:reference-file line="79">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="76">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="5b6010aee6f2a3e985a0f6b3dd90b1ad46733ebe" resname="season.winter">
         <source>season.winter</source>
         <target>winter</target>
-        <jms:reference-file line="78">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="75">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="f4a301e0b0591f9929a3ead5be56e52074404538" resname="select-bathrooms">
         <source>select-bathrooms</source>
@@ -1056,57 +1098,57 @@
       <trans-unit id="4f0935d080bd6f97eb1ad5b8e51e0546a0d7b8f2" resname="type.kind.agriturismo">
         <source>type.kind.agriturismo</source>
         <target>agriturismo</target>
-        <jms:reference-file line="70">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="67">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="3d7f32f51d640d7727581fafa924b201bcc195de" resname="type.kind.apartment">
         <source>type.kind.apartment</source>
         <target>apartment</target>
-        <jms:reference-file line="63">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="60">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="6b40f1b39d1300f22f7d5d34bce9a705893a84ff" resname="type.kind.castle">
         <source>type.kind.castle</source>
         <target>castle</target>
-        <jms:reference-file line="68">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="65">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="8468bc454393a076a23bf3ea2bf1bfbc96802b48" resname="type.kind.chalet">
         <source>type.kind.chalet</source>
         <target>chalet</target>
-        <jms:reference-file line="62">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="59">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="d8a60826b345ff617407dcfd5411922c055770d1" resname="type.kind.chalet-apartment">
         <source>type.kind.chalet-apartment</source>
         <target>chalet-apartment</target>
-        <jms:reference-file line="65">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="62">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="dec39371a773725f8f0ba96a4b756df669848043" resname="type.kind.domain">
         <source>type.kind.domain</source>
         <target>domain</target>
-        <jms:reference-file line="71">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="68">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="6473fad5ec30d9783056b1aa470372e863236f56" resname="type.kind.holiday-house">
         <source>type.kind.holiday-house</source>
         <target>holiday home</target>
-        <jms:reference-file line="66">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="63">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="2a3a4b3a7636f6e6ac5e608c50bdc014e076ff42" resname="type.kind.holiday-park">
         <source>type.kind.holiday-park</source>
         <target>holiday park</target>
-        <jms:reference-file line="69">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="66">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="f061b8409f43ab9a5c36491ddc8873eefa2d21b1" resname="type.kind.hotel">
         <source>type.kind.hotel</source>
         <target>hotel</target>
-        <jms:reference-file line="64">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="61">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="b1ac8a7c0c6ccd79d5b3d66525a5df11ad3faaab" resname="type.kind.pension">
         <source>type.kind.pension</source>
         <target>pension</target>
-        <jms:reference-file line="72">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="69">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="a8140dcefb9288749da63623671eff0db8bbdc61" resname="type.kind.villa">
         <source>type.kind.villa</source>
         <target>villa</target>
-        <jms:reference-file line="67">AppBundle/Old/Configuration.php</jms:reference-file>
+        <jms:reference-file line="64">AppBundle/Old/Configuration.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="6a1954a9e20cbe619e901a94b93b26c4e6e3b42d" resname="viewed-title">
         <source>viewed-title</source>

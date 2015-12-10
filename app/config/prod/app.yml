@@ -3,7 +3,6 @@ imports:
 
 # App configuration
 parameters:
-    mailer_transport: mail
     app:
         maximum_persons_map:
             1: 8

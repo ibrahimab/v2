@@ -31,6 +31,11 @@ trait BaseRepositoryTrait
     protected $websiteConcern;
 
     /**
+     * @var array
+     */
+    protected $config;
+
+    /**
      * Setting season
      *
      * @param SeasonConcern $seasonConcern
@@ -120,5 +125,21 @@ trait BaseRepositoryTrait
         }
 
         return $localeField;
+    }
+
+    /**
+     * @param array $config
+     */
+    public function setConfig(array $config)
+    {
+        $this->config = $config;
+    }
+
+    /**
+     * @return array
+     */
+    public function getConfig()
+    {
+        return $this->config;
     }
 }

@@ -1,0 +1,42 @@
+{% extends 'price_calculator/base.html.twig' %}
+
+{% block price_calculator %}
+
+    {{ form_start(form, {'action': path('price_calculator_step_four_' ~ locale, {typeId: type.getId()})}) }}
+
+        {{ form_row(form.person) }}
+        {{ form_row(form.weekend) }}
+        {{ form_row(form.booking) }}
+        {{ form_row(form.damage_insurance) }}
+
+        {% block _step_three_options_widget %}
+        {% spaceless %}
+            {% for option_group in form.options %}
+                {% for option_part in option_group.parts %}
+                    {{ form_widget(option_part) }}
+                {% endfor %}
+            {% endfor %}
+        {% endspaceless %}
+        {% endblock %}
+
+        {% for insurance in form.cancellation_insurances %}
+            {{ form_widget(insurance) }}
+        {% endfor %}
+
+    {% include 'price_calculator/table.html.twig' with {begin_code: type.getAccommodation().getPlace().getCountry().getStartCode(), type_id: type.getId(), name_type: name_type, name_place: name_place, arrival_date: arrival_date, departure_date: departure_date, price: price, show: show, persons: persons, options: options, reservation_costs: reservation_costs} %}
+
+    {{ form_row(form.email) }}
+
+    {{ form_end(form) }}
+
+    <div data-alert class="alert-box success radius hidden" data-role="success-message" data-id="price-calculator">
+        E-mail is succesvol verzonden!
+        <a href="#" class="close">&times;</a>
+    </div>
+
+    <div data-alert class="alert-box alert radius hidden" data-role="error-message" data-id="price-calculator">
+        E-mail kon niet verzonden worden, probeer het later opnieuw!
+        <a href="#" class="close">&times;</a>
+    </div>
+
+{% endblock price_calculator %}

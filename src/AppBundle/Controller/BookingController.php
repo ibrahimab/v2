@@ -1,6 +1,8 @@
 <?php
 namespace AppBundle\Controller;
+
 use       AppBundle\Annotation\Breadcrumb;
+use       AppBundle\Entity\Booking\Booking;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use       Symfony\Component\HttpFoundation\Request;
@@ -19,6 +21,19 @@ use       Symfony\Component\HttpFoundation\Request;
  */
 class BookingController extends Controller
 {
+    /**
+     * @Route("/boeken")
+     */
+    public function test()
+    {
+        $bookingService = $this->get('app.booking');
+        $booking        = new Booking();
+        $booking->setTypeId(240);
+
+        $bookingService->create($booking);
+        exit;
+    }
+
     /**
      * @Route("/boeken.php", name="booking_nl")
      * @Breadcrumb(name="theme", title="theme", translate=true, active=true)

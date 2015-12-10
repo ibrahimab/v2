@@ -49,11 +49,15 @@
 {% block body %}
 
     {{ parent() }}
-    
+
     <section class="price-calculator-page landing" id="price-calculator">
-        
-        {% block price_calculator %}{% endblock price_calculator %}
-        
+
+        <div class="row">
+            <div class="small-12 medium-12 large-12 columns">
+                {% block price_calculator %}{% endblock price_calculator %}
+            </div>
+        </div>
+
     </section>
 
 {% endblock body %}
