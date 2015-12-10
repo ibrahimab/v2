@@ -66,19 +66,24 @@ $('.table-explain .button').click(function() {
 //     if ($(this).hasClass('closed')){
 //         $('#search-filter .title').removeClass('closed');
 //         $('#search-filter .search-filter-default .fields').slideDown();
-//         $('#search-filter .search-filter-default h2').removeClass('closed');        
+//         $('#search-filter .search-filter-default h2').removeClass('closed');
 //     }else{
 //         $('#search-filter .title').addClass('closed');
 //         $('#search-filter .search-filter-default .fields').slideUp();
-//         $('#search-filter .search-filter-default h2').addClass('closed');  
+//         $('#search-filter .search-filter-default h2').addClass('closed');
 //     }
 //     return false;
 // });
 $('.readmore a').on('click', function(event) {//open close div (class=readmore)
-    
-    event.preventDefault();
 
     var el = $(this);
+
+    if (el.data('ignore') === true) {
+        return;
+    }
+
+    event.preventDefault();
+
     var state = el.data('state');
 
     if (state === 'open') {

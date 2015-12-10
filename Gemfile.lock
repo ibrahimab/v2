@@ -55,6 +55,3 @@ DEPENDENCIES
   capistrano-symfony (~> 0.1)!
   dotenv (~> 2.0)
   hipchat (~> 1.5)
-
-BUNDLED WITH
-   1.10.6
