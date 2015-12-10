@@ -80,6 +80,7 @@ parameters:
                 damage_insurance: 1
                 newsletter: true
                 newsletter_cancel: false
+                company: 1
 
             new.chalet.eu:
                 locale:  en
@@ -99,6 +100,7 @@ parameters:
                 damage_insurance: 0
                 newsletter: false
                 newsletter_cancel: false
+                company: 1
 
             new.chalettour.nl:
                 locale:  nl
@@ -118,6 +120,7 @@ parameters:
                 damage_insurance: 1
                 newsletter: false
                 newsletter_cancel: false
+                company: 1
 
             new.chalet.be:
                 locale:  nl
@@ -137,6 +140,7 @@ parameters:
                 damage_insurance: 1
                 newsletter: true
                 newsletter_cancel: false
+                company: 1
 
             new.chaletonline.de:
                 locale:  de
@@ -175,6 +179,7 @@ parameters:
                 damage_insurance: 1
                 newsletter: false
                 newsletter_cancel: false
+                company: 1
 
             new.chaletsinvallandry.com:
                 locale:  en
@@ -194,6 +199,7 @@ parameters:
                 damage_insurance: 0
                 newsletter: false
                 newsletter_cancel: false
+                company: 1
 
             new.venturasol.nl:
                 locale:  nl
@@ -213,6 +219,7 @@ parameters:
                 damage_insurance: 1
                 newsletter: false
                 newsletter_cancel: false
+                company: 1
 
             new.venturasolvacances.nl:
                 locale:  nl
@@ -232,6 +239,7 @@ parameters:
                 damage_insurance: 1
                 newsletter: false
                 newsletter_cancel: false
+                company: 2
 
             new.zomerhuisje.nl:
                 locale:  nl
@@ -251,6 +259,7 @@ parameters:
                 damage_insurance: 1
                 newsletter: false
                 newsletter_cancel: false
+                company: 1
 
             new.italissima.nl:
                 locale:  nl
@@ -270,6 +279,7 @@ parameters:
                 damage_insurance: 1
                 newsletter: true
                 newsletter_cancel: false
+                company: 1
 
             new.italissima.be:
                 locale:  nl
@@ -289,6 +299,7 @@ parameters:
                 damage_insurance: 1
                 newsletter: false
                 newsletter_cancel: false
+                company: 1
 
             new.italyhomes.eu:
                 locale:  en
@@ -308,6 +319,7 @@ parameters:
                 damage_insurance: 0
                 newsletter: false
                 newsletter_cancel: false
+                company: 1
 
             new.superski.nl:
                 locale:  nl
@@ -327,6 +339,7 @@ parameters:
                 damage_insurance: 1
                 newsletter: false
                 newsletter_cancel: false
+                company: 1
 
             chalet.webtastic.nl:
                 locale:  nl
