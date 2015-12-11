@@ -176,9 +176,13 @@ class PriceCalculatorController extends Controller
         $departureDate        = new \DateTime();
         $departureDate->setTimestamp($typeData['departure']);
 
+        dump($typeData);
+        dump($form->getData());
+
         return $this->render('price_calculator/step_three.html.twig', [
 
             'type'              => $type,
+            'type_data'         => $typeData,
             'show'              => $typeData['show'],
             'price'             => $typeData['price'],
             'name_type'         => $typeData['name'],
@@ -189,6 +193,7 @@ class PriceCalculatorController extends Controller
             'reservation_costs' => $this->getParameter('app')['reservation_costs'],
             'options'           => $data->options,
             'form'              => $calculatorService->getFormService()->create(FormService::FORM_STEP_THREE)->createView(),
+            'form_data'         => $form->getData(),
         ]);
     }
 

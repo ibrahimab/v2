@@ -52,12 +52,12 @@ class StepTwo
     public function __construct($options, $person, $weekend, $booking, $insurances, $percentages, $policyCosts)
     {
         $this->options                 = [];
-        $this->person                  = $person;
-        $this->weekend                 = $weekend;
-        $this->booking                 = $booking;
+        $this->person                  = (int)$person;
+        $this->weekend                 = (int)$weekend;
+        $this->booking                 = (int)$booking;
         $this->cancellation_insurances = [];
-        $this->percentages             = $percentages;
-        $this->policyCosts             = $policyCosts;
+        $this->percentages             = array_map('floatval', $percentages);
+        $this->policyCosts             = (float)$policyCosts;
 
         foreach ($options as $groupId => $group) {
 
@@ -97,8 +97,9 @@ class StepTwo
             $insuranceEntity->id          = (int)$insurance['id'];
             $insuranceEntity->name        = $insurance['name'];
             $insuranceEntity->person      = (int)$person;
-            $insuranceEntity->percentages = $percentages;
-            $insuranceEntity->policyCosts = $policyCosts;
+            $insuranceEntity->percentages = $this->percentages;
+            $insuranceEntity->percentage  = (isset($this->percentages[$insuranceEntity->id]) ? $this->percentages[$insuranceEntity->id] : 0);
+            $insuranceEntity->policyCosts = (float)$policyCosts;
             $insuranceEntity->amount      = (isset($insurance['amount']) ? $insurance['amount'] : null);
 
             $this->cancellation_insurances[$insuranceEntity->id] = $insuranceEntity;

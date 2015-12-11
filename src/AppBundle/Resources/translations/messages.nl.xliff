@@ -388,6 +388,10 @@
         <source>mail.price_calculator.subject</source>
         <target>Prijsberekening</target>
       </trans-unit>
+      <trans-unit resname="form.price_calculator.step_three.policy_costs">
+        <source>form.price_calculator.step_three.policy_costs</source>
+        <target>Poliskosten verzekering(en)</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

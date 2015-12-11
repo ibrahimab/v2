@@ -389,7 +389,8 @@ class AccommodationService
         $expr       = $qb->expr();
 
         $statement  = $qb->select('t.week, s.tonen AS display, t.bruto AS gross, t.arrangementsprijs AS arrangement_price, t.beschikbaar AS available,
-                                   blokkeren_wederverkoop AS block_resale, t.wederverkoop_verkoopprijs AS resale_saleprice, s.seizoen_id AS season_id')
+                                   blokkeren_wederverkoop AS block_resale, t.wederverkoop_verkoopprijs AS resale_saleprice,
+                                   t.wederverkoop_opslag_percentage AS resale_addition_percentage, s.seizoen_id AS season_id')
                          ->from('tarief t, seizoen s', '')
                          ->andWhere('t.seizoen_id = s.seizoen_id')
                          ->andWhere($expr->eq('t.type_id', ':type_id'))
@@ -399,7 +400,7 @@ class AccommodationService
         $results    = $statement->fetchAll();
         $weekDate   = new \DateTime();
         $resale     = $this->websiteConcern->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE);
-        $arrivals   = ['weekends' => [], 'available' => [], 'known_price' => []];
+        $arrivals   = ['weekends' => [], 'price_per_week' => [], 'available' => [], 'known_price' => []];
 
         foreach ($results as $result) {
 
@@ -431,8 +432,13 @@ class AccommodationService
 
             if ($result['resale_saleprice'] > 0) {
 
-                $arrivals['price_per_week'][$result['week']] = (($result['resale_saleprice'] / 100) * $result['gross']);
-                $arrivals['weekend_price'][$result['week']] = floor(($result['price_per_week']) / 5) * 5;
+                $arrivals['price_per_week'][$result['week']] = $result['resale_saleprice'];
+
+                if ($result['resale_addition_percentage'] > 0 && $result['gross']) {
+
+                    $arrivals['price_per_week'][$result['week']] -= (($result['resale_addition_percentage'] / 100) * $result['gross']);
+                    $arrivals['price_per_week'][$result['week']]  = floor(($result['price_per_week'][$result['week']]) / 5) * 5;
+                }
             }
         }
 
@@ -532,18 +538,18 @@ class AccommodationService
             $data['season_id']  = $result['season_id'];
             $data['insurances'] = [
 
-                'cancellation_insurance_policy_fee' => $result['cancellation_insurance_policy_fee'],
+                'cancellation_insurance_policy_fee' => (float)$result['cancellation_insurance_policy_fee'],
                 'cancellation_percentages'          => [
 
-                    1 => $result['cancellation_insurance_percentage_1'],
-                    2 => $result['cancellation_insurance_percentage_2'],
-                    3 => $result['cancellation_insurance_percentage_3'],
-                    4 => $result['cancellation_insurance_percentage_4'],
+                    1 => (float)$result['cancellation_insurance_percentage_1'],
+                    2 => (float)$result['cancellation_insurance_percentage_2'],
+                    3 => (float)$result['cancellation_insurance_percentage_3'],
+                    4 => (float)$result['cancellation_insurance_percentage_4'],
                 ],
-                'damage_insurance_percentage' => $result['damage_insurance_percentage'],
-                'insurances_policy_fee'       => $result['insurances_policy_fee'],
-                'commission'                  => (true === $resale ? $result['resale_commision_agent'] : null),
-                'travel_insurance_policy_fee' => $result['travel_insurance_policy_fee'],
+                'damage_insurance_percentage' => (float)$result['damage_insurance_percentage'],
+                'insurances_policy_fee'       => (float)$result['insurances_policy_fee'],
+                'commission'                  => (true === $resale ? (float)$result['resale_commision_agent'] : null),
+                'travel_insurance_policy_fee' => (float)$result['travel_insurance_policy_fee'],
             ];
         }
 
@@ -585,17 +591,17 @@ class AccommodationService
             $data['season_id']  = $result['season_id'];
             $data['insurances'] = [
 
-                'cancellation_insurance_policy_fee' => $result['cancellation_insurance_policy_fee'],
+                'cancellation_insurance_policy_fee' => (float)$result['cancellation_insurance_policy_fee'],
                 'cancellation_percentages'          => [
 
-                    1 => $result['cancellation_insurance_percentage_1'],
-                    2 => $result['cancellation_insurance_percentage_2'],
-                    3 => $result['cancellation_insurance_percentage_3'],
-                    4 => $result['cancellation_insurance_percentage_4'],
+                    1 => (float)$result['cancellation_insurance_percentage_1'],
+                    2 => (float)$result['cancellation_insurance_percentage_2'],
+                    3 => (float)$result['cancellation_insurance_percentage_3'],
+                    4 => (float)$result['cancellation_insurance_percentage_4'],
                 ],
-                'damage_insurance_percentage' => $result['damage_insurance_percentage'],
-                'insurances_policy_fee'       => $result['insurances_policy_fee'],
-                'travel_insurance_policy_fee' => $result['travel_insurance_policy_fee'],
+                'damage_insurance_percentage' => (float)$result['damage_insurance_percentage'],
+                'insurances_policy_fee'       => (float)$result['insurances_policy_fee'],
+                'travel_insurance_policy_fee' => (float)$result['travel_insurance_policy_fee'],
             ];
         }
 
