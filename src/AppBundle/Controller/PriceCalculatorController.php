@@ -135,7 +135,7 @@ class PriceCalculatorController extends Controller
      * @Breadcrumb(name="show_region",     title="{regionName}",           path="show_region",  pathParams={"regionSlug"})
      * @Breadcrumb(name="show_place",      title="{placeName}",            path="show_place",   pathParams={"placeSlug"})
      * @Breadcrumb(name="show_type",       title="{accommodationName}",    path="show_type",    pathParams={"beginCode", "typeId"})
-     * @Breadcrumb(name="calculate_price", title="price-calculated-title", translate=true,      active=true)
+     * @Breadcrumb(name="calculate_price", title="calculate-price-title",  translate=true,      active=true)
      */
     public function stepThree(Request $request, $typeId)
     {
@@ -206,7 +206,7 @@ class PriceCalculatorController extends Controller
      * @Breadcrumb(name="show_region",     title="{regionName}",           path="show_region",  pathParams={"regionSlug"})
      * @Breadcrumb(name="show_place",      title="{placeName}",            path="show_place",   pathParams={"placeSlug"})
      * @Breadcrumb(name="show_type",       title="{accommodationName}",    path="show_type",    pathParams={"beginCode", "typeId"})
-     * @Breadcrumb(name="calculate_price", title="price-calculated-title", translate=true,      active=true)
+     * @Breadcrumb(name="calculate_price", title="calculate-price-title",  translate=true,      active=true)
      */
     public function stepFour(Request $request, $typeId)
     {

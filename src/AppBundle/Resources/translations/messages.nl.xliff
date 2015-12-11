@@ -400,6 +400,10 @@
         <source>form.price_calculator.step_one.yes</source>
         <target>ja</target>
       </trans-unit>
+      <trans-unit resname="form.price_calculator.step_two.submit">
+        <source>form.price_calculator.step_two.submit</source>
+        <target>VOLGENDE</target>
+      </trans-unit>
       <trans-unit resname="form.price_calculator.step_three.email">
         <source>form.price_calculator.step_three.email</source>
         <target>Mail dit overzicht naar het volgende mailadres: </target>

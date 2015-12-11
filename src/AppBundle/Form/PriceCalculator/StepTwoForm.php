@@ -32,8 +32,8 @@ class StepTwoForm extends AbstractType
             'label'   => 'form.price_calculator.step_two.damage_insurance',
             'choices' => [
 
-                'form.no'  => 0,
-                'form.yes' => 1,
+                'form.price_calculator.step_two.no'  => 0,
+                'form.price_calculator.step_two.yes' => 1,
             ],
             'choices_as_values' => true,
         ]);
