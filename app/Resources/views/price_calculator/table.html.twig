@@ -46,24 +46,70 @@
                         <td>{{ option_group.name }}: {{ option.name }}</td>
                         <td>&euro;</td>
                         <td>{{ option.price|number_format(2, ',', '.') }}</td>
-                        <td>x 1</td>
+                        <td>x {{ option.amount }}</td>
                         <td>=</td>
                         <td>&euro;</td>
-                        <td>{{ option.price|number_format(2, ',', '.') }}</td>
+                        <td>{{ (option.price * option.amount)|number_format(2, ',', '.') }}</td>
                         <td>{{ option.discount == true ? 'korting' }}</td>
                     </tr>
                     {% if option.discount %}
-                        {% set options_costs = options_costs - option.price %}
+                        {% set options_costs = options_costs - (option.price * option.amount) %}
                     {% else %}
-                        {% set options_costs = options_costs + option.price %}
+                        {% set options_costs = options_costs + (option.price * option.amount) %}
                     {% endif %}
                 {% endif %}
             {% endfor %}
         {% endfor %}
         {% set total = total + options_costs %}
+        {% set has_insurance = false %}
         <tr>
             <td colspan="8"></td>
         </tr>
+        {% for cancellation_insurance in form_data.cancellation_insurances %}
+            {% if cancellation_insurance.amount > 0 %}
+                {% set cancellation_insurance_costs = ((price * cancellation_insurance.amount) * (cancellation_insurance.percentage / 100)) %}
+                <tr>
+                    <td>{{ ('cancellation_insurances.' ~ cancellation_insurance.name)|trans }}</td>
+                    <td>&euro;</td>
+                    <td>{{ (price * cancellation_insurance.amount)|number_format(2, ',', '.') }}</td>
+                    <td>x {{ cancellation_insurance.percentage|number_format(2, ',', '.') }}%</td>
+                    <td>=</td>
+                    <td>&euro;</td>
+                    <td>{{ cancellation_insurance_costs|number_format(2, ',', '.') }}</td>
+                    <td></td>
+                </tr>
+                {% set total = total + cancellation_insurance_costs %}
+            {% endif %}
+        {% endfor %}
+        {% if form_data.damage_insurance == 1 %}
+            {% set damage_insurance_costs = type_data.accommodation_price * (type_data.insurances.damage_insurance_percentage / 100) %}
+            <tr>
+                <td>{{ 'form.price_calculator.step_two.damage_insurance'|trans }}</td>
+                <td>&euro;</td>
+                <td>{{ type_data.accommodation_price|number_format(2, ',', '.') }}</td>
+                <td>x {{ type_data.insurances.damage_insurance_percentage|number_format(2, ',', '.') }}%</td>
+                <td>=</td>
+                <td>&euro;</td>
+                <td>{{ damage_insurance_costs|number_format(2, ',', '.') }}</td>
+                <td></td>
+            </tr>
+            {% set total         = total + damage_insurance_costs %}
+            {% set has_insurance = true %}
+        {% endif %}
+        {% if has_insurance == true and form_data.policyCosts > 0 %}
+            {% set policy_costs = form_data.policyCosts %}
+            <tr>
+                <td>{{ 'form.price_calculator.step_three.policy_costs'|trans }}</td>
+                <td>&euro;</td>
+                <td>{{ form_data.policyCosts|number_format(2, ',', '.') }}</td>
+                <td>x 1</td>
+                <td>=</td>
+                <td>&euro;</td>
+                <td>{{ policy_costs|number_format(2, ',', '.') }}</td>
+                <td></td>
+            </tr>
+            {% set total = total + policy_costs %}
+        {% endif %}
         <tr>
             <td>Reserveringskosten &amp; bijdrage calamiteitenfonds</td>
             <td></td>

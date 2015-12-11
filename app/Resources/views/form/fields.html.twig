@@ -33,7 +33,7 @@
 {% block _step_two_cancellation_insurances_entry_row %}
 
     <tr>
-        <td colspan="2">{{ ('cancellation_insurances.' ~ value.name)|trans }}: {{ 'cancellation_insurances.travel_costs.booking'|trans({ '%percentage%': value.percentages[value.id], '%costs%': value.policyCosts }) }}</td>
+        <td colspan="2">{{ ('cancellation_insurances.' ~ value.name)|trans }}: {{ 'cancellation_insurances.travel_costs.booking'|trans({ '%percentage%': value.percentage, '%costs%': value.policyCosts }) }}</td>
         <td>{{ block('form_widget') }}</td>
     </tr>
 

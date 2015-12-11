@@ -427,4 +427,41 @@ class OptionRepository implements OptionServiceRepositoryInterface
 
         return $options;
     }
+
+    /**
+     * @param integer $typeId
+     *
+     * @return array
+     */
+    public function datesOptions($typeId)
+    {
+        $connection = $this->getEntityManager()->getConnection();
+        $qb         = $connection->createQueryBuilder();
+        $expr       = $qb->expr();
+
+        $statement  = $qb->select('DISTINCT ta.week AS weekend, s.optie_soort_id AS option_kind_id')
+                         ->from('optie_tarief ta, optie_onderdeel o, optie_accommodatie a, optie_soort s, type t', '')
+                         ->andWhere('a.optie_soort_id = s.optie_soort_id')
+                         ->andWhere('ta.optie_onderdeel_id = o.optie_onderdeel_id')
+                         ->andWhere('t.accommodatie_id = a.accommodatie_id')
+                         ->andWhere($expr->eq('t.type_id', ':typeId'))
+                         ->andWhere('a.optie_groep_id = o.optie_groep_id')
+                         ->setParameter('typeId', $typeId)
+                         ->execute();
+
+        $results    = $statement->fetchAll();
+        $options    = [];
+
+        foreach ($results as $result) {
+
+            if (!isset($options[$result['weekend']])) {
+                $options[$result['weekend']] = 0;
+            }
+
+            $options[$result['weekend']] += 1;
+        }
+
+        return $options;
+
+    }
 }

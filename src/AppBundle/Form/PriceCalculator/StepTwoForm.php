@@ -28,8 +28,14 @@ class StepTwoForm extends AbstractType
         $builder->add('booking', 'hidden');
 
         $builder->add('damage_insurance', 'choice', [
+
             'label'   => 'form.price_calculator.step_two.damage_insurance',
-            'choices' => ['form.yes', 'form.no']
+            'choices' => [
+
+                'form.price_calculator.step_two.no'  => 0,
+                'form.price_calculator.step_two.yes' => 1,
+            ],
+            'choices_as_values' => true,
         ]);
 
         $builder->add('options', 'collection', [
@@ -44,7 +50,9 @@ class StepTwoForm extends AbstractType
             'type'  => new CancellationInsurance,
         ]);
 
-        $builder->add('save', 'submit', ['label' => 'form.price_calculator.step_two.submit']);
+        $builder->add('save', 'submit', [
+            'label' => 'form.price_calculator.step_two.submit',
+        ]);
     }
 
     /**

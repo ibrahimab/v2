@@ -29,6 +29,7 @@ class CancellationInsurance extends AbstractType
             $form   = $event->getForm();
 
             $form->add('amount', 'choice', [
+
                 'label' => false,
                 'choices' => range(0, $entity->person),
                 'choice_label' => null,

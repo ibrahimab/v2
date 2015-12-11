@@ -13,27 +13,32 @@ class CancellationInsurance
      * @var integer
      */
     public $id;
-    
+
     /**
      * @var string
      */
     public $name;
-    
+
     /**
      * @var integer
      */
     public $person;
-    
+
     /**
      * @var integer
      */
     public $amount;
-    
+
     /**
      * @var array
      */
     public $percentages;
-    
+
+    /**
+     * @var float
+     */
+    public $percentage;
+
     /**
      * @var float
      */

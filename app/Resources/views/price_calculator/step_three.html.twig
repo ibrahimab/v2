@@ -23,7 +23,23 @@
             {{ form_widget(insurance) }}
         {% endfor %}
 
-    {% include 'price_calculator/table.html.twig' with {begin_code: type.getAccommodation().getPlace().getCountry().getStartCode(), type_id: type.getId(), name_type: name_type, name_place: name_place, arrival_date: arrival_date, departure_date: departure_date, price: price, show: show, persons: persons, options: options, reservation_costs: reservation_costs} %}
+    {% include 'price_calculator/table.html.twig' with {
+
+        begin_code: type.getAccommodation().getPlace().getCountry().getStartCode(),
+        type_id: type.getId(),
+        name_type: name_type,
+        name_place: name_place,
+        arrival_date: arrival_date,
+        departure_date: departure_date,
+        price: price,
+        show: show,
+        persons: persons,
+        options: options,
+        reservation_costs: reservation_costs,
+        type_data: type_data,
+        form_data: form_data,
+
+    } %}
 
     {{ form_row(form.email) }}
 

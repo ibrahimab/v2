@@ -622,36 +622,6 @@
         <target>Naar: (meerdere e-mailadressen scheiden met een komma)</target>
         <jms:reference-file line="41">views/mail-a-friend/new.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="23bd98fc202cce51c093019429e3b76ed40c2272" resname="form.damage.insurance">
-        <source>form.damage.insurance</source>
-        <target>Verzekering Schade Logies Verblijven</target>
-        <jms:reference-file line="32">views/price_calculator/step_two.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="2cabdffcb70c301c2aa70e846de38d13fc166218" resname="form.no">
-        <source>form.no</source>
-        <target>nee</target>
-        <jms:reference-file line="28">Form/PriceCalculator/StepTwoForm.php</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="4f94f986222035c5e97707e6d4c4b1124a02e2e0" resname="form.price_calculator.step_one.submit">
-        <source>form.price_calculator.step_one.submit</source>
-        <target>Volgende</target>
-        <jms:reference-file line="25">Form/PriceCalculator/StepOneForm.php</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="5d2d7b59e42c34e7fb57aa4c98285c5cf9998a61" resname="form.price_calculator.step_two.damage_insurance">
-        <source>form.price_calculator.step_two.damage_insurance</source>
-        <target>Verzekering Schade Logies Verblijven</target>
-        <jms:reference-file line="27">Form/PriceCalculator/StepTwoForm.php</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="3eb79cdcd84e6491bcb4fe4c4e9370b0f36a01f7" resname="form.price_calculator.step_two.submit">
-        <source>form.price_calculator.step_two.submit</source>
-        <target>Totaalbedrag berekenen</target>
-        <jms:reference-file line="43">Form/PriceCalculator/StepTwoForm.php</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="f086015cccede5ddbc419e80fd62ffc291429fd0" resname="form.yes">
-        <source>form.yes</source>
-        <target>ja</target>
-        <jms:reference-file line="28">Form/PriceCalculator/StepTwoForm.php</jms:reference-file>
-      </trans-unit>
       <trans-unit id="23e591e8c36dda987970603ad0fdd031b7dff9f9" resname="france">
         <source>france</source>
         <target>Frankrijk</target>
