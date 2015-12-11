@@ -82,6 +82,11 @@ class CalculatorService
     /**
      * @var array
      */
+    private $datesOptions;
+
+    /**
+     * @var array
+     */
     private $optionsAmount;
 
     /**
@@ -315,20 +320,41 @@ class CalculatorService
     {
         if (null === $this->weekends) {
 
-            $this->weekends = [];
-            $weekends       = $this->priceService->getAvailableData($this->type)['weekends'];
-            $timezone       = new \DateTimeZone(date_default_timezone_get());
-            $formatter      = new IntlDateFormatter($locale, IntlDateFormatter::FULL, IntlDateFormatter::FULL, $timezone, IntlDateFormatter::GREGORIAN);
-            $date           = new \DateTime();
+            $this->weekends  = [];
+            $typeData        = $this->getAccommodationService()->get($this->type->getId(), $this->getWeekend(), $this->getPerson());
+            $datesOptions    = $this->getDatesOptions($this->type->getId());
+            $maxDatesOptions = max($datesOptions);
+            $weekends        = $typeData['arrival_dates']['available'];
+            $timezone        = new \DateTimeZone(date_default_timezone_get());
+            $formatter       = new IntlDateFormatter($locale, IntlDateFormatter::FULL, IntlDateFormatter::FULL, $timezone, IntlDateFormatter::GREGORIAN);
+            $date            = new \DateTime();
+            $time            = time();
 
             $formatter->setPattern('eeee dd MMMM y');
 
             foreach ($weekends as $weekend) {
-                $this->weekends[$weekend] = $formatter->format($date->setTimestamp($weekend));
+
+                if ($weekend > $time && isset($datesOptions[$weekend]) && ($datesOptions[$weekend] > 1 || $datesOptions[$weekend] === $maxDatesOptions)) {
+                    $this->weekends[$weekend] = $formatter->format($date->setTimestamp($weekend));
+                }
             }
         }
 
         return $this->weekends;
+    }
+
+    /**
+     * @param integer $typeId
+     *
+     * @return array
+     */
+    public function getDatesOptions($typeId)
+    {
+        if (null === $this->optionsPrices) {
+            $this->datesOptions = $this->optionService->datesOptions($typeId);
+        }
+
+        return $this->datesOptions;
     }
 
     /**

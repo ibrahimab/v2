@@ -20,9 +20,23 @@ class StepOneForm extends AbstractType
     {
         $entity = $builder->getData();
 
-        $builder->add('person', 'choice', ['choices' => $entity->persons, 'placeholder' => ''])
-                ->add('weekend', 'choice', ['choices' => $entity->weekends, 'placeholder' => ''])
-                ->add('save', 'submit', ['label' => 'form.price_calculator.step_one.submit']);
+        $builder->add('person', 'choice', [
+
+            'choices'     => $entity->persons,
+            'placeholder' => '',
+            'label'       => 'form.price_calculator.step_one.person',
+        ]);
+
+        $builder->add('weekend', 'choice', [
+
+            'choices'     => $entity->weekends,
+            'placeholder' => '',
+            'label'       => 'form.price_calculator.step_one.weekend',
+        ]);
+
+        $builder->add('save', 'submit', [
+            'label' => 'form.price_calculator.step_one.submit',
+        ]);
     }
 
     /**

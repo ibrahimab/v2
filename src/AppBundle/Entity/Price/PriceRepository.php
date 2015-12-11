@@ -374,6 +374,8 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
                     $data['weekends'][] = intval($result['week']);
                 }
             }
+
+            dump($data['weekends']);exit;
         }
 
         return $data;

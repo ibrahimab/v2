@@ -422,7 +422,7 @@ class AccommodationService
 
             $arrivals['weekends'][$result['week']] = $time;
 
-            if ($result['display'] > 1 && ($result['gross'] > 0 || $result['arrangement_price'] > 0) && $result['available'] === 1 && ($result['block_resale'] === 0 || !$resale)) {
+            if ($result['display'] > 1 && ($result['gross'] > 0 || $result['arrangement_price'] > 0) && $result['available'] === 1 && ($result['block_resale'] === 0 || !$resale) && ($result['resale_saleprice'] > 0 || !$resale)) {
                 $arrivals['available'][$result['week']] = $time;
             }
 

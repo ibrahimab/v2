@@ -64,4 +64,14 @@ class OptionService
     {
         return $this->optionServiceRepository->calculatorOptions($accommodationId, $season, $weekend);
     }
+
+    /**
+     * @param integer $typeId
+     *
+     * @return array
+     */
+    public function datesOptions($typeId)
+    {
+        return $this->optionServiceRepository->datesOptions($typeId);
+    }
 }

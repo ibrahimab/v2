@@ -50,7 +50,9 @@ class StepTwoForm extends AbstractType
             'type'  => new CancellationInsurance,
         ]);
 
-        $builder->add('save', 'submit', ['label' => 'form.price_calculator.step_two.submit']);
+        $builder->add('save', 'submit', [
+            'label' => 'form.price_calculator.step_two.submit',
+        ]);
     }
 
     /**
