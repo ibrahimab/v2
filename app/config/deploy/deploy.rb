@@ -83,6 +83,7 @@ namespace :deploy do
   before :updated, 'deploy:set_permissions:chgrp'
   after  :updated, 'symfony:assetic:dump'
   after  :updated, 'chalet:dump_routes'
+  after  :updated, 'composer:self_update'
 
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
