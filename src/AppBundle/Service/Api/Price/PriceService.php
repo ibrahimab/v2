@@ -276,7 +276,7 @@ class PriceService
 
         foreach ($results as $key => $result) {
 
-            $this->types[] = $result['id'];
+            $this->types[] = (int)$result['id'];
 
             if (true === $result['offer']) {
                 $this->offers[$result['id']] = $result['offer'];
@@ -287,7 +287,7 @@ class PriceService
             }
 
             if (isset($result['price'])) {
-                $this->prices[$result['id']] = $result['price'];
+                $this->prices[$result['id']] = (float)$result['price'];
             }
 
             if (isset($result['prices'])) {
