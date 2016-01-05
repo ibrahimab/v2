@@ -393,11 +393,11 @@
         <target>Verzekering Schade Logies Verblijven</target>
       </trans-unit>
       <trans-unit resname="form.price_calculator.step_two.no">
-        <source>form.price_calculator.step_one.no</source>
+        <source>form.price_calculator.step_two.no</source>
         <target>nee</target>
       </trans-unit>
       <trans-unit resname="form.price_calculator.step_two.yes">
-        <source>form.price_calculator.step_one.yes</source>
+        <source>form.price_calculator.step_two.yes</source>
         <target>ja</target>
       </trans-unit>
       <trans-unit resname="form.price_calculator.step_two.submit">
@@ -419,6 +419,14 @@
       <trans-unit resname="form.price_calculator.step_three.policy_costs">
         <source>form.price_calculator.step_three.policy_costs</source>
         <target>Poliskosten verzekering(en)</target>
+      </trans-unit>
+      <trans-unit resname="pay.safely">
+        <source>pay.safely</source>
+        <target>Veilig betalen</target>
+      </trans-unit>
+      <trans-unit resname="affiliated.with">
+        <source>affiliated.with</source>
+        <target>Aangesloten bij</target>
       </trans-unit>
     </body>
   </file>

@@ -352,6 +352,78 @@
         <source>calculate-price-title</source>
         <target>Calculate price</target>
       </trans-unit>
+      <trans-unit id="505eabdfb8082f91ed4a2fbaff9ecb5408d27baa" resname="cancellation_insurances.standard">
+        <source>cancellation_insurances.standard</source>
+        <target>Europeesche Standaard</target>
+      </trans-unit>
+      <trans-unit id="505eabdfb8082f91ed4a2fbaff9ecb5408d27baa" resname="cancellation_insurances.warranty">
+        <source>cancellation_insurances.warranty</source>
+        <target>Europeesche Garantie</target>
+      </trans-unit>
+      <trans-unit id="505eabdfb8082f91ed4a2fbaff9ecb5408d27baa" resname="cancellation_insurances.allrisk">
+        <source>cancellation_insurances.allrisk</source>
+        <target>Europeesche Allrisk</target>
+      </trans-unit>
+      <trans-unit id="505eabdfb8082f91ed4a2fbaff9ecb5408d27baa" resname="cancellation_insurances.warranty_observation">
+        <source>cancellation_insurances.warranty_observation</source>
+        <target>Europeesche Garantie + Waarneming 1 persoon</target>
+      </trans-unit>
+      <trans-unit id="505eabdfb8082f91ed4a2fbaff9ecb5408d27baa" resname="cancellation_insurances.travel_costs.booking">
+        <source>cancellation_insurances.travelcosts.booking</source>
+        <target>%percentage%% reissom + € %costs% per boeking</target>
+      </trans-unit>
+      <trans-unit resname="form.price_calculator.step_one.person">
+        <source>form.price_calculator.step_one.person</source>
+        <target>Aantal personen</target>
+      </trans-unit>
+      <trans-unit resname="form.price_calculator.step_one.weekend">
+        <source>form.price_calculator.step_one.weekend</source>
+        <target>Aankomstdatum</target>
+      </trans-unit>
+      <trans-unit resname="form.price_calculator.step_one.submit">
+        <source>form.price_calculator.step_one.submit</source>
+        <target>VOLGENDE</target>
+      </trans-unit>
+      <trans-unit resname="form.price_calculator.step_two.damage_insurance">
+        <source>form.price_calculator.step_one.damage_insurance</source>
+        <target>Verzekering Schade Logies Verblijven</target>
+      </trans-unit>
+      <trans-unit resname="form.price_calculator.step_two.no">
+        <source>form.price_calculator.step_two.no</source>
+        <target>nee</target>
+      </trans-unit>
+      <trans-unit resname="form.price_calculator.step_two.yes">
+        <source>form.price_calculator.step_two.yes</source>
+        <target>ja</target>
+      </trans-unit>
+      <trans-unit resname="form.price_calculator.step_two.submit">
+        <source>form.price_calculator.step_two.submit</source>
+        <target>VOLGENDE</target>
+      </trans-unit>
+      <trans-unit resname="form.price_calculator.step_three.email">
+        <source>form.price_calculator.step_three.email</source>
+        <target>Mail dit overzicht naar het volgende mailadres: </target>
+      </trans-unit>
+      <trans-unit resname="form.price_calculator.step_three.submit">
+        <source>form.price_calculator.step_three.submit</source>
+        <target>VERZENDEN</target>
+      </trans-unit>
+      <trans-unit resname="mail.price_calculator.subject">
+        <source>mail.price_calculator.subject</source>
+        <target>Prijsberekening</target>
+      </trans-unit>
+      <trans-unit resname="form.price_calculator.step_three.policy_costs">
+        <source>form.price_calculator.step_three.policy_costs</source>
+        <target>Poliskosten verzekering(en)</target>
+      </trans-unit>
+      <trans-unit resname="pay.safely">
+        <source>pay.safely</source>
+        <target>Veilig betalen</target>
+      </trans-unit>
+      <trans-unit resname="affiliated.with">
+        <source>affiliated.with</source>
+        <target>Aangesloten bij</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
