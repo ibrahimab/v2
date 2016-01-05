@@ -462,4 +462,14 @@ class PriceService
     {
         return $this->priceServiceRepository->getBookablePersons($typeId, $show, $weekends);
     }
+
+    /**
+     * @param integer $weekend
+     *
+     * @return array
+     */
+    public function availableTypes($weekend)
+    {
+        return $this->priceServiceRepository->availableTypes($weekend);
+    }
 }
