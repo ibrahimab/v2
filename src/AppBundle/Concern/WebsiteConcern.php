@@ -42,6 +42,7 @@ class WebsiteConcern
     const WEBSITE_CONFIG_FACEBOOK                 = 'facebook';
     const WEBSITE_CONFIG_TWITTER                  = 'twitter';
     const WEBSITE_CONFIG_GOOGLE                   = 'google';
+    const WEBSITE_CONFIG_PINTEREST                = 'pinterest';
     const WEBSITE_CONFIG_GA                       = 'ga';
     const WEBSITE_CONFIG_CANCEL_INSURANCE         = 'cancel_insurance';
     const WEBSITE_CONFIG_TRAVEL_INSURANCE         = 'travel_insurance';

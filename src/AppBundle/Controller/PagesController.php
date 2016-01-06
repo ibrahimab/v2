@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Controller;
+
 use       AppBundle\Concern\SeasonConcern;
 use       AppBundle\Concern\WebsiteConcern;
 use       AppBundle\Annotation\Breadcrumb;
@@ -110,7 +111,7 @@ class PagesController extends Controller
             $groupedHomepageBlocks['left'] = array();
             $groupedHomepageBlocks['right'] = array();
         }
-        
+
         return [
 
             'region'         => $region,
