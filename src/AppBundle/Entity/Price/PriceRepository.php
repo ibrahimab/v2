@@ -418,42 +418,4 @@ class PriceRepository extends BaseRepository implements PriceServiceRepositoryIn
 
          return null;
     }
-
-    /**
-     * @param integer $weekend
-     *
-     * @return array
-     */
-    public function availableTypes($weekend)
-    {
-        $connection = $this->getEntityManager()->getConnection();
-        $qb         = $connection->createQueryBuilder();
-        $expr       = $qb->expr();
-
-        $qb->select('t.type_id AS id, t.kortingactief as discountActive, t.aanbiedingskleur_korting AS offerDiscountColor')
-           ->from('tarief', 't')
-           ->andWhere($expr->eq('t.week', ':weekend'))
-           ->andWhere($expr->eq('t.beschikbaar', ':available'))
-           ->andWhere($bruto)
-           ->setParameters([
-
-                'weekend'   => $weekend,
-                'available' => 1,
-           ]);
-
-        $statement = $qb->execute();
-        $results   = $statement->fetchAll();
-        $types     = [];
-
-        foreach ($results as $result) {
-
-            $types[$result['id']] = [
-
-                'id'    => (int)$result['id'],
-                'offer' => (1 === (int)$result['discountActive'] && 1 === (int)$result['offerDiscountColor']),
-            ];
-        }
-
-        return $types;
-    }
 }

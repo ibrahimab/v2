@@ -298,6 +298,7 @@ class SearchController extends Controller
      */
     public function count(Request $request)
     {
+        $priceService  = $this->get('app.api.price');
         $searchService = $this->get('app.api.search');
         $searchBuilder = $searchService->build()
                                        ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0);
@@ -332,16 +333,31 @@ class SearchController extends Controller
 
         if ($request->query->has('w') && !$request->query->has('pe')) {
 
-            $priceService = $this->get('app.api.price');
-            $types        = $priceService->availableTypes($request->query->get('w'));
+            /**
+             * weekend is known
+             * persons is not known
+             *
+             * get available types for selected weekend
+             * and set offers and type ids
+             */
+            $priceService->setWeekend($request->query->get('w'));
+            $priceService->getDataWithWeekendAndOrPersons();
 
-            $searchBuilder->where(SearchBuilder::WHERE_TYPES, array_keys($types));
+            $searchBuilder->where(SearchBuilder::WHERE_TYPES, $priceService->getTypes());
         }
 
         if ($request->query->has('w') && $request->query->has('pe')) {
 
-            $priceService = $this->get('app.api.price');
-            $priceService->getDataByWeekendAndPersons($request->query->get('w'), $request->query->get('pe'));
+            /**
+             * weekend is known
+             * persons is known
+             *
+             * get prices and offers with weekend and persons
+             */
+            $priceService->setWeekend($request->query->get('w'));
+            $priceService->setPersons($request->query->get('pe'));
+            $priceService->getDataWithWeekendAndOrPersons();
+
             $searchBuilder->where(SearchBuilder::WHERE_TYPES, $priceService->getTypes());
         }
 
