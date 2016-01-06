@@ -299,6 +299,7 @@ class SearchController extends Controller
     public function count(Request $request)
     {
         $priceService  = $this->get('app.api.price');
+        $seasonService = $this->get('app.api.season');
         $searchService = $this->get('app.api.search');
         $searchBuilder = $searchService->build()
                                        ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0);
@@ -331,6 +332,10 @@ class SearchController extends Controller
             $searchBuilder->where(SearchBuilder::WHERE_BATHROOMS, $request->query->get('ba'));
         }
 
+        if ($request->query->has('pe')) {
+            $searchBuilder->where(SearchBuilder::WHERE_PERSONS, $request->query->get('pe'));
+        }
+
         if ($request->query->has('w') && !$request->query->has('pe')) {
 
             /**
@@ -361,8 +366,40 @@ class SearchController extends Controller
             $searchBuilder->where(SearchBuilder::WHERE_TYPES, $priceService->getTypes());
         }
 
+        $resultset = $searchBuilder->search();
+        $seasons   = $seasonService->seasons();
+        $seasonId  = (isset($seasons[0]) ? $seasons[0]['id'] : 0);
+        $typeIds   = $resultset->allTypeIds();
+
+        $priceService->setAdditionalCostsSeasonId($seasonId);
+
+        if (!$request->query->has('w') && !$request->query->has('pe')) {
+
+            /**
+             * no weekend
+             * no persons
+             */
+            $priceService->setTypes($typeIds);
+            $priceService->getDataWithWeekendAndOrPersons();
+        }
+
+        if (!$request->query->has('w') && $request->query->has('pe')) {
+
+            /**
+             * no weekend
+             * persons
+             */
+            $priceService->setPersons($request->query->get('pe'));
+            $priceService->setTypes($typeIds);
+            $priceService->getDataWithWeekendAndOrPersons();
+        }
+
+        $resultset->setPriceService($priceService);
+        $resultset->setMetadata();
+        $resultset->setResale($this->get('app.concern.website')->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE));
+
         return new JsonResponse([
-            'count' => $searchBuilder->count(),
+            'count' => $resultset->paginator()->total(),
         ]);
     }
 

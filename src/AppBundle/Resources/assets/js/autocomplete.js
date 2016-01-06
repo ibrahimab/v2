@@ -131,10 +131,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         event.preventDefault();
 
                         var weekend = event.target.value;
-
-                        if (weekend !== '') {
-                            ns.Autocomplete.actions.home.weekend(weekend);
-                        }
+                        ns.Autocomplete.actions.home.weekend(weekend);
                     });
 
                     jq('body').on('change', '[data-role="choose-persons-home"]', function(event) {
@@ -142,10 +139,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         event.preventDefault();
 
                         var persons = event.target.value;
-
-                        if (persons !== '') {
-                            ns.Autocomplete.actions.home.persons(persons);
-                        }
+                        ns.Autocomplete.actions.home.persons(persons);
                     });
                 }
             },
@@ -323,7 +317,10 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     var uri  = URI(link.attr('href'));
 
                     uri.removeQuery('w');
-                    uri.setQuery('w', weekend);
+
+                    if (weekend != '') {
+                        uri.setQuery('w', weekend);
+                    }
 
                     link.attr('href', uri.toString());
                     ns.Autocomplete.count(uri.query());
@@ -335,13 +332,13 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     var uri  = URI(link.attr('href'));
 
                     uri.removeQuery('pe');
-                    uri.setQuery('pe', persons);
+
+                    if (persons != '') {
+                        uri.setQuery('pe', persons);
+                    }
 
                     link.attr('href', uri.toString());
-
-                    if (uri.hasQuery('w')) {
-                        ns.Autocomplete.count(uri.query());
-                    }
+                    ns.Autocomplete.count(uri.query());
                 }
             },
 
