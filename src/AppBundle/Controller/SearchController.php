@@ -341,9 +341,8 @@ class SearchController extends Controller
         if ($request->query->has('w') && $request->query->has('pe')) {
 
             $priceService = $this->get('app.api.price');
-            $types        = $priceService->pricesWithWeekendAndPersons($request->query->get('w'), $request->query->get('pe'));
-
-            $searchBuilder->where(SearchBuilder::WHERE_TYPES, array_keys($types));
+            $priceService->getDataByWeekendAndPersons($request->query->get('w'), $request->query->get('pe'));
+            $searchBuilder->where(SearchBuilder::WHERE_TYPES, $priceService->getTypes());
         }
 
         return new JsonResponse([

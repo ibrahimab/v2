@@ -276,7 +276,7 @@ class PriceService
 
         foreach ($results as $key => $result) {
 
-            $this->types[] = $result['id'];
+            $this->types[] = (int)$result['id'];
 
             if (true === $result['offer']) {
                 $this->offers[$result['id']] = $result['offer'];
@@ -287,7 +287,7 @@ class PriceService
             }
 
             if (isset($result['price'])) {
-                $this->prices[$result['id']] = $result['price'];
+                $this->prices[$result['id']] = (float)$result['price'];
             }
 
             if (isset($result['prices'])) {
@@ -461,5 +461,15 @@ class PriceService
     public function getBookablePersons($typeId, $show, $weekends)
     {
         return $this->priceServiceRepository->getBookablePersons($typeId, $show, $weekends);
+    }
+
+    /**
+     * @param integer $weekend
+     *
+     * @return array
+     */
+    public function availableTypes($weekend)
+    {
+        return $this->priceServiceRepository->availableTypes($weekend);
     }
 }
