@@ -339,9 +339,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                     link.attr('href', uri.toString());
 
-                    if (uri.hasQuery('w')) {
-                        ns.Autocomplete.count(uri.query());
-                    }
+                    ns.Autocomplete.count(uri.query());
                 }
             },
 
