@@ -21,10 +21,11 @@ use       Symfony\Component\Finder\Finder;
  *
  * Global application extensions for twig templates inside AppBundle
  *
- * @author  Ibrahim Abdullah
+ * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
+ * @author  Jeroen Boschman <jeroen@webtastic.nl>
  * @package Chalet
- * @version 0.0.2
- * @since   0.0.2
+ * @version 0.0.3
+ * @since   0.0.3
  */
 class AppExtension extends \Twig_Extension
 {
@@ -53,6 +54,11 @@ class AppExtension extends \Twig_Extension
      * @var string
      */
     private $oldImageRoot;
+
+    /**
+     * @var string
+     */
+    private $oldSitePrefix;
 
     /**
      * @var UserServiceDocumentInterface
@@ -141,6 +147,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFilter('seo', [$this, 'seo']),
             new \Twig_SimpleFilter('array_replace', [$this, 'replace']),
             new \Twig_SimpleFilter('tokenize', [$this, 'tokenize']),
+            new \Twig_SimpleFilter('thumbnail', [$this, 'generateThumbnailPath']),
         ];
     }
 
