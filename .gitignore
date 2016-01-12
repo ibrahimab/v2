@@ -45,3 +45,6 @@ tests/_output/*
 
 # environment variables
 .env
+
+# PhpStorm files
+.idea
