@@ -61,8 +61,22 @@ class AppKernel extends Kernel
 
         spl_autoload_register(function($class) {
 
+            if (substr($class, 0, 7) === 'Chalet\\') {
+
+                $path      = __DIR__ . '/../old-app/';
+                $classFile = str_replace('\\', DIRECTORY_SEPARATOR, substr($class, 7)) . '.php';
+
+                if (file_exists($path . 'admin/siteclass/'  . $classFile)) {
+
+                    require_once $path . 'admin/siteclass/' . $classFile;
+                    return true;
+                }
+            }
+
            if (file_exists($path = __DIR__ . '/../old-app/admin/siteclass/siteclass.' . $class . '.php')) {
+
                require_once $path;
+               return true;
            }
         });
     }
