@@ -39,8 +39,8 @@
                         </div>
                         <div class="large-3 medium-3 columns">
                             <select class="radius" data-role="choose-weekend-home">
-                                <option value="">Wanneer wil je gaan?</option>
-                                {% set weekend_label = 'weekend'|trans %}
+                                <option value="" data-smaller-text="Aankomstdatum">Wanneer wil je aankomen?</option>
+                                {% set weekend_label = 'zaterdag'|trans %}
                                 {% for timestamp, weekend in weekends %}
                                     <option value="{{ timestamp }}">{{weekend_label}} {{ weekend }}</option>
                                 {% endfor %}
