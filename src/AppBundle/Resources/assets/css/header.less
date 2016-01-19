@@ -228,9 +228,21 @@ body.smaller {
     }
 }
 
-@media all and (max-width: 40em) {
+@media all and (min-width: 40.063em) and (max-width: 64em) {
+
+    // tablet
 
     .landing-page header {
-        background: url('/bundles/app/img/headers/header-sub-mobile.jpg') repeat-x bottom center #f0f3fa !important;
+        background: url('/bundles/app/img/headers/header-sub-tablet.png') no-repeat bottom center #f0f3fa !important;
+    }
+}
+
+@media all and (max-width: 40.063em) {
+
+    // mobile
+    .landing-page header {
+
+        background: url('/bundles/app/img/headers/header-sub-mobile.png') no-repeat bottom center #f0f3fa !important;
+        height: auto;
     }
 }
