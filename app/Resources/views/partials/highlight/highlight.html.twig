@@ -1,3 +1,12 @@
+{#
+
+create div with accommodation highlight
+
+called from:
+- highlights.html.twig
+
+#}
+
 {% set locale = get_locale() %}
 {% set offer  = offers is defined and offers[highlight.type.getId()] is defined %}
 {% set link   = locale_path('show_type', { beginCode: place.getCountry().getStartCode(), typeId: highlight.type.id }) %}
@@ -5,7 +14,7 @@
 <div class="small-{{ small_size|default(12) }} medium-{{ medium_size|default(4) }} large-{{ large_size|default(4) }} columns {% if end == true %}end{% endif %}">
     <article class="overview{% if offer %} sale{% endif %}" data-equalizer-watch>
         <div class="accom-img">
-            <a href="{{ link }}"><img src="{{ generate_image_path(type_image(highlight.type)) }}" alt="{{ highlight.type.accommodation.getLocaleName(locale) }}" /></a>
+            <a href="{{ link }}"><img src="{{ generate_image_path(type_image(highlight.type))|thumbnail(365, 274) }}" alt="{{ highlight.type.accommodation.getLocaleName(locale) }}" /></a>
             {% if offer %}
                 <a href="{{ link }}">
                     <div class="circle"><span>Aan-</span><span>bieding</span></div>
