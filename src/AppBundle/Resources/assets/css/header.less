@@ -136,7 +136,16 @@ div.home-menu {
             &.home { margin-left: 0; font-size: 22px; line-height: 0; width: 25px;  }
 
             &:hover, &.active { border-bottom: 3px solid #193761; }
-            a, a:active, a:hover, a:visited { text-decoration: none; color: #193761; }
+
+            a {
+                display: inline-block;
+                position: relative;
+                z-index: 1;
+                padding: 9px;
+                margin: -9px;
+            }
+
+            a, a:active, a:hover, a:visited { text-decoration: none; color: #193761;}
         }
     }
 }
