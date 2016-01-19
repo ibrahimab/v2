@@ -240,7 +240,7 @@
                                     <td><i class="sprite sprite-icon-sleep"></i>{{ t.getBedrooms() ~ (t.getLocaleBedroomsExtra(locale) != '' ? (' ' ~ t.getLocaleBedroomsExtra(locale)) : '') }}</td>
                                     <td><i class="sprite sprite-icon-bath"></i>{{ t.getBathrooms() ~ (t.getLocaleBathroomsExtra(locale) != '' ? (' ' ~ t.getLocaleBathroomsExtra(locale)) : '') }}</td>
                                     <td>{{ t.getLocaleName(locale) }}</td>
-                                    <td><span>8,5</span>(11)</td>
+                                    <td><span class="table-ratings">8,5</span>(11)</td>
                                     <td>{% if offers[t.getId()] is defined %}<i class="sprite sprite-icon-discount"></i>{% endif %}</td>
                                     <td>{% if prices[t.getId()] is defined %}&euro; {{ prices[t.getId()]|number_format(0, ',', '.') }},-<i class="fi-info"></i>{% endif %}</td>
                                 </tr>
@@ -339,7 +339,7 @@
                             <li>Badkamers<span>{{ type.getBathrooms() }}<i class="sprite sprite-icon-bath"></i></span>{% if type.getLocaleBathroomsExtra(locale) != '' %}<span class="extra">({{ type.getLocaleBathroomsExtra(locale) }})</span>{% endif %}</li>
                             <li>Oppervlakte<span>{{ type.getSurface() }} m&sup2;{% if type.getLocaleSurfaceExtra(locale) != '' %} - {{ type.getLocaleSurfaceExtra(locale) }}&sup2;{% endif %}<i class="sprite sprite-icon-surface"></i></span></li>
                         </ul>
-                        <a href="#types-other" class="button goto blank small radius" title="Bekijk alle foto's">Alle types van deze accommodatie</a>
+                        <a href="#types-other" class="button goto blank small radius" title="Bekijk alle types's">Alle types van deze accommodatie</a>
                         <div class="rating">
                             <span class="stars has-tip tip-left radius" data-tooltip aria-haspopup="true" title="<h4>Klassering Chalet.nl</h4><p>Onze accommodaties worden ingedeeld in verschillende kwaliteitscategorieën. Het vermelde aantal sterren is een indicatie van de kwaliteit van de accommodatie.</p><p>Toekenning van het aantal sterren gebeurt op basis van onder andere de volgende punten: inrichting, uiterlijk, aantal vierkante meters, ligging, staat van onderhoud, enz. Het aantal toegekende sterren ligt tussen 1 en 5.</p>">{% include 'partials/quality_stars.html.twig' with {quality: (type.getQuality() > 0 ? type.getQuality() : accommodation.getQuality())} only %}<i class="fi-info"></i></span>
                             {% if surveyCount > minimalSurveyCount %}

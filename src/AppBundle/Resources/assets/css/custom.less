@@ -536,6 +536,12 @@ div.tb {
                 margin-right: 0.5rem;
                 padding: 0.2rem;
             }
+
+            span.table-ratings {
+
+                background-color: @ratings-bg-color;
+                color: @ratings-color;
+            }
         }
 
         &:nth-child(odd) {
@@ -545,7 +551,15 @@ div.tb {
         &:hover {
 
             background-color: #e9edf8;
-            div.tb-c span { background-color: white; }
+
+            div.tb-c span {
+
+                background-color: white;
+
+                &.table-ratings {
+                    color: @ratings-color-hover;
+                }
+            }
         }
 
         &.sale-type {
@@ -917,4 +931,25 @@ a.wa i { position: relative; top: 1px; }
     }
 }
 
+.overview .accom-img .rating, #accom .reviews .rating, #accom-main-box .rating span.rate, #accom .reviews h3 span {
+    background-color: @ratings-bg-color;
+    color: @ratings-color;
+}
+
+table tbody tr:hover {
+
+    span.table-ratings {
+        color: @ratings-color-hover;
+    }
+}
+
+span.table-ratings {
+
+    background-color: @ratings-bg-color;
+    color: @ratings-color;
+
+    &:hover {
+        color: @ratings-color-hover;
+    }
+}
 img.anvr-sgr-calamities { height: 1.7rem; }
