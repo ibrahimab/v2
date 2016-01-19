@@ -59,6 +59,19 @@ div.header-container {
 
         i.fi-clock { color: #193761; }
 
+        // mobile version: bigger margins to prevent mis-tapping
+        @media only screen and (max-width: 40em) {
+
+            .phone {
+                display: inline-block;
+                padding-top: 0.5rem;
+            }
+
+            #link-saved {
+                margin-top: 0.5rem;
+            }
+        }
+
         #link-saved a {
 
             border: thin solid #818181;
