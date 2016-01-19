@@ -31,7 +31,7 @@
                     <div class="tb-c">
                         {{ type.localeName }}
                     </div>
-                    <div class="tb-c">{% if type.surveyCount > 0 %}<span class="table-price">{{ type.surveyAverageOverallRating|number_format(1, ',', '') }}</span>{% endif %}</div>
+                    <div class="tb-c">{% if type.surveyCount > 0 %}<span class="table-price table-ratings">{{ type.surveyAverageOverallRating|number_format(1, ',', '') }}</span>{% endif %}</div>
                     <div class="tb-c tb-c-6">
                         {% if type.offer %}
                             <div class="types_circle"><div>Aan-</div><div>bieding</div></div>
