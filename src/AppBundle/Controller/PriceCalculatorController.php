@@ -176,9 +176,6 @@ class PriceCalculatorController extends Controller
         $departureDate        = new \DateTime();
         $departureDate->setTimestamp($typeData['departure']);
 
-        dump($typeData);
-        dump($form->getData());
-
         return $this->render('price_calculator/step_three.html.twig', [
 
             'type'              => $type,
