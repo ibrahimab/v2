@@ -19,9 +19,11 @@ use       AppBundle\Document\File\Place                                         
 use       AppBundle\Service\Api\File\Theme\ThemeService                             as ThemeFileService;
 use       AppBundle\Document\File\Theme                                             as ThemeFileDocument;
 use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterface;
+use       \InvalidArgumentException;
 
 /**
- * @author  Ibrahim Abdullah
+ * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
+ * @author  Jeroen Boschman <jeroen@webtastic.nl>
  * @package Chalet
  */
 trait Image
@@ -46,6 +48,20 @@ trait Image
     public function getOldImageUrlPrefix()
     {
         return '/chalet-pic';
+    }
+
+    /**
+     * Returns old website prefix
+     *
+     * @return string
+     */
+    public function getOldSitePrefix()
+    {
+        if (null === $this->oldSitePrefix) {
+            $this->oldSitePrefix = $this->container->getParameter('old_site_url_prefix');
+        }
+
+        return $this->oldSitePrefix;
     }
 
     /**
@@ -278,5 +294,56 @@ trait Image
     public function generateImagePath($file)
     {
         return $this->getOldImageUrlPrefix() . '/' . (null === $file ? 'accommodaties/0.jpg' : $file['directory'] . '/' . $file['filename']);
+    }
+
+    /**
+     * Generate path to thumbnail
+     *
+     * @param string $file
+     * @param int $width
+     * @param int $height
+     * @return string
+     */
+    public function generateThumbnailPath($file, $width, $height = 0)
+    {
+
+        if (strpos($file, $this->getOldImageUrlPrefix()) !== 0) {
+            throw new InvalidArgumentException('thumbnails can only be generated for files located in ' . $this->getOldImageUrlPrefix());
+        }
+        if (!is_int($width) || $width < 1) {
+            throw new InvalidArgumentException('width must be an integer higher than 0');
+        }
+        if (!is_int($height)) {
+            throw new InvalidArgumentException('height must be an integer');
+        }
+
+        $sourceFile         = str_replace($this->getOldImageUrlPrefix() . '/', '', $file);
+        $sourceFileFullPath = $this->getOldImageRoot() . '/cms/' . $sourceFile;
+
+        if ($height === 0) {
+
+            // calculate the height based on the width
+
+            $imgSize = getimagesize($sourceFileFullPath);
+
+            $sourceWidth  = $imgSize[0];
+            $sourceHeight = $imgSize[1];
+
+            $height = round($width * $sourceHeight / $sourceWidth);
+
+        }
+
+        $thumbnailFile = '_imgcache/' . $width . 'x' . $height . '-' . str_replace('/', '-', $sourceFile);
+
+        $thumbnailFileFullPath = $this->getOldImageRoot() . '/cms/' . $thumbnailFile;
+
+        if (file_exists($thumbnailFileFullPath)) {
+            return $this->getOldImageUrlPrefix() . '/' . $thumbnailFile;
+        } else {
+
+            // no thumbnail found: have the old website create it
+            return $this->getOldSitePrefix() . 'thumbnail.php?file=' . urlencode($sourceFile) . '&w=' . $width . '&h=' . $height;
+
+        }
     }
 }
