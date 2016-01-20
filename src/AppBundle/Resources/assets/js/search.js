@@ -140,26 +140,26 @@ window.Chalet = (function(ns, jq, _, undefined) {
                     ns.Search.actions.search();
                 },
                 bedrooms: function(event) {
-                    
+
                     event.preventDefault();
                     var element = jq(this);
-                    
+
                     ns.Search.filters.removeBedrooms();
                     ns.Search.actions.search();
                 },
                 bathrooms: function(event) {
-                    
+
                     event.preventDefault();
                     var element = jq(this);
-                    
+
                     ns.Search.filters.removeBathrooms();
                     ns.Search.actions.search();
                 },
                 persons: function(event) {
-                    
+
                     event.preventDefault();
                     var element = jq(this);
-                    
+
                     ns.Search.filters.removePersons();
                     ns.Search.actions.search();
                 },
@@ -167,7 +167,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                     event.preventDefault();
                     var element = jq(this);
-                    
+
                     ns.Search.filters.removeWeekend();
                     ns.Search.actions.search();
                 }
@@ -461,8 +461,12 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 var mediumSize = window.matchMedia( "(min-width: 40.063em) and (max-width: 64em)" );
                 if (mediumSize.matches) {
 
-                    // show smaller placeholder text
-                    var first_option = jq('[data-role="choose-persons-home"] option:first, [data-role="change-persons"] option:first');
+                    // show smaller placeholder text: arrival date
+                    var first_option = jq('[data-role="choose-weekend-home"] option:first, [data-role="change-persons"] option:first');
+                    first_option.html( first_option.data('smaller-text') );
+
+                    // show smaller placeholder text: number of persons
+                    first_option = jq('[data-role="choose-persons-home"] option:first, [data-role="change-persons"] option:first');
                     first_option.html( first_option.data('smaller-text') );
 
                 }
