@@ -108,9 +108,9 @@
                             </div>
                         </div>
                         <h2>{{ type.getLocaleShortDescription(locale) ? type.getLocaleShortDescription(locale) : accommodation.getLocaleShortDescription(locale) }}</h2>
-                        <ul class="inline-list">
+                        <ul class="inline-list feature-list">
                             {% for feature in features %}
-                                <li>{{ feature|trans }}</li>
+                                <li><i class="sprite sprite-blue-checked feature-list-checked"></i>{{ feature|trans }}</li>
                             {% endfor %}
                         </ul>
                         <h3>Algemene omschrijving</h3>
