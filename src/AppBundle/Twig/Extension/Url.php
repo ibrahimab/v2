@@ -19,10 +19,10 @@ trait Url
      */
     public function getPath($name, $parameters = array(), $relative = false)
     {
-        $exists = $this->generator->getRouteCollection()->get($name . '_' . $this->locale) !== null;
+        $locale = $this->localeConcern->get();
+        $exists = $this->generator->getRouteCollection()->get($name . '_' . $locale) !== null;
 
-        return $this->generator->generate(($name . ($exists ? ('_' . $this->locale) : '')), $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
-        // return (false === $exists && null === $this->locale ? '' : $this->generator->generate(($name . ($exists ? ('_' . $this->locale) : '')), $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH));
+        return $this->generator->generate(($name . ($exists ? ('_' . $locale) : '')), $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
     }
 
     /**
@@ -35,10 +35,10 @@ trait Url
      */
     public function getUrl($name, $parameters = array(), $schemeRelative = false)
     {
-        $exists = $this->generator->getRouteCollection()->get($name . '_' . $this->locale) !== null;
+        $locale = $this->localeConcern->get();
+        $exists = $this->generator->getRouteCollection()->get($name . '_' . $locale) !== null;
 
-        return $this->generator->generate(($name . ($exists ? ('_' . $this->locale) : '')), $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
-        // return (false === $exists && null === $exists ? '' : $this->generator->generate(($name . ($exists ? ('_' . $this->locale) : '')), $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL));
+        return $this->generator->generate(($name . ($exists ? ('_' . $locale) : '')), $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
     /**

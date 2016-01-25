@@ -16,7 +16,7 @@ trait Utils
      */
     public function getLocale()
     {
-        return $this->locale;
+        return $this->localeConcern->get();
     }
 
     /**

@@ -45,9 +45,9 @@ class AppExtension extends \Twig_Extension
     private $rateTableWrapper;
 
     /**
-     * @var string
+     * @var LocaleConcern
      */
-    private $locale;
+    private $localeConcern;
 
     /**
      * @var UrlGeneratorInterface

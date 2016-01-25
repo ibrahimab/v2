@@ -5,7 +5,7 @@ services:
         tags:
             - { name: twig.extension }
         calls:
-            - [setLocale, ["@app.concern.locale"]]
+            - [setLocaleConcern, ["@app.concern.locale"]]
             - [setFilterService, ["@app.filter"]]
             - [setWebsiteConcern, ["@app.concern.website"]]
             - [setUrlGenerator, ["@router"]]

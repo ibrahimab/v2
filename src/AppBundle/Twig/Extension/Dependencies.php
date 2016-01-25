@@ -27,9 +27,9 @@ trait Dependencies
     /**
      * @param LocaleConcern $localeConcern
      */
-    public function setLocale(LocaleConcern $localeConcern)
+    public function setLocaleConcern(LocaleConcern $localeConcern)
     {
-        $this->locale = $localeConcern->get();
+        $this->localeConcern = $localeConcern;
     }
 
     /**
