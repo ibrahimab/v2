@@ -4,13 +4,41 @@
 header {
     height: 370px;
     margin-top: 0;
+    z-index: 0;
 }
 
 div.header-space { height: 110px; }
-#home div.header-space { height: 0; }
-body.smaller {
 
+#home div.header-space { height: 0; }
+
+body.smaller {
     div.header-space { height: 65px; }
+}
+
+@media all and (min-width: 64em) {
+
+    div.header-container {
+
+        -webkit-transition: height 0.5s;
+        -moz-transition: height 0.5s;
+        -ms-transition: height 0.5s;
+        -o-transition: height 0.5s;
+        transition: height 0.5s;
+        -webkit-backface-visibility: hidden;
+    }
+
+    div.column-logo {
+
+        img {
+
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+            -ms-transition: all 0.5s;
+            -o-transition: all 0.5s;
+            transition: all 0.5s;
+            -webkit-backface-visibility: hidden;
+        }
+    }
 }
 
 div.header-container {
@@ -22,12 +50,6 @@ div.header-container {
     left:     0;
     background: #fff;
     z-index: 100;
-    -webkit-transition: height 0.5s;
-    -moz-transition: height 0.5s;
-    -ms-transition: height 0.5s;
-    -o-transition: height 0.5s;
-    transition: height 0.5s;
-    -webkit-backface-visibility: hidden;
 
     div.column-logo {
 
@@ -38,14 +60,6 @@ div.header-container {
             margin: 1rem 0 0 0;
             height: 162px;
             width: 206px;
-
-
-            -webkit-transition: all 0.5s;
-            -moz-transition: all 0.5s;
-            -ms-transition: all 0.5s;
-            -o-transition: all 0.5s;
-            transition: all 0.5s;
-            -webkit-backface-visibility: hidden;
         }
 
         &:hover { opacity: 0.9; }
