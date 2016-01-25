@@ -16,10 +16,6 @@ trait Utils
      */
     public function getLocale()
     {
-        if (null === $this->locale) {
-            $this->locale = $this->container->get('request')->getLocale();
-        }
-
         return $this->locale;
     }
 
@@ -30,7 +26,7 @@ trait Utils
      */
     public function getJavascriptObject()
     {
-        return $this->container->get('app.javascript')->toArray();
+        return $this->javascriptService->toArray();
     }
 
     /**

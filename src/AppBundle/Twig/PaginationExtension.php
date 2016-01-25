@@ -1,11 +1,11 @@
 <?php
+
 namespace AppBundle\Twig;
 
-use       AppBundle\Concern\LocaleConcern;
-use       AppBundle\Service\Api\Search\Result\Paginator\Paginator;
-use       Symfony\Component\DependencyInjection\ContainerInterface;
-use       Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use       Symfony\Component\HttpFoundation\Request;
+use AppBundle\Concern\LocaleConcern;
+use AppBundle\Service\Api\Search\Result\Paginator\Paginator;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * PaginationExtension
@@ -19,11 +19,6 @@ use       Symfony\Component\HttpFoundation\Request;
  */
 class PaginationExtension extends \Twig_Extension
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
     /**
      * @var UrlGeneratorInterface
      */
@@ -55,18 +50,17 @@ class PaginationExtension extends \Twig_Extension
     private $filters;
 
     /**
-     * @param ContainerInterface $container
+     * @param LocaleConcern $localeConcern
      * @param UrlGeneratorInterface $generator
      */
-    public function __construct(ContainerInterface $container, LocaleConcern $locale, UrlGeneratorInterface $generator)
+    public function __construct(LocaleConcern $localeConcern, UrlGeneratorInterface $generator)
     {
-        $this->container = $container;
         $this->generator = $generator;
-        $this->request   = $this->container->get('request_stack')->getCurrentRequest();
+        $this->request   = $this->requestStack->getCurrentRequest();
 
         if (null !== $this->request) {
 
-            $this->locale    = $locale->get();
+            $this->locale    = $localeConcern->get();
             $this->filters   = $this->request->query->get('f', []);
         }
     }

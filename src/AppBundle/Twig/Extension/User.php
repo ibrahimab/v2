@@ -65,10 +65,6 @@ trait User
      */
     protected function getUser()
     {
-        if (null === $this->currentUser) {
-            $this->currentUser = $this->container->get('app.api.user')->user();
-        }
-
         return $this->currentUser;
     }
 }

@@ -4,13 +4,25 @@ services:
         class: AppBundle\Twig\AppExtension
         tags:
             - { name: twig.extension }
-        arguments: [@service_container, @router]
+        calls:
+            - [setLocale, [@app.concern.locale]]
+            - [setFilterService, [@app.filter]]
+            - [setWebsiteConcern, [@app.concern.website]]
+            - [setUrlGenerator, [@router]]
+            - [setRateTableWrapper, [@old.rate.table.wrapper]]
+            - [setJavascriptService, [@app.javascript]]
+            - [setGeneralSettingsService, [@app.api.general.settings]]
+            - [setOldImageRoot, [%old_image_root%]]
+            - [setOldSiteUrlPrefix, [%old_site_url_prefix%]]
+            - [setFileServices, [@app.file.file, @app.file.type, @app.file.accommodation, @app.file.region, @app.file.place, @app.file.theme]]
+            - [setRequestStack, [@request_stack]]
+            - [setUser, [@app.api.user]]
 
     twig.extension.pagination:
         class: AppBundle\Twig\PaginationExtension
         tags:
             - { name: twig.extension }
-        arguments: [@service_container, @app.concern.locale, @router]
+        arguments: [@app.concern.locale, @router]
 
     twig.extension.text:
         class: Twig_Extensions_Extension_Text
