@@ -21,5 +21,6 @@ parameters:
     allowed_ips: []
     github_secret: null
     github_dir: "%kernel.cache_dir%/github"
-    old_image_root: 
-    sunny_cars: 
+    old_image_root:
+    old_site_url_prefix: /version1/
+    sunny_cars:
