@@ -10,4 +10,4 @@ services:
 
     app.concern.locale:
         class: AppBundle\Concern\LocaleConcern
-        arguments: [@request_stack]
+        arguments: ["%locale%"]

@@ -18,11 +18,9 @@ class LocaleConcern
     /**
      * @param RequestStack
      */
-    public function __construct(RequestStack $requestStack)
+    public function __construct($default)
     {
-        if (null !== ($request = $requestStack->getCurrentRequest())) {
-            $this->locale = $request->getLocale();
-        }
+        $this->locale = $default;
     }
 
     /**
@@ -31,5 +29,13 @@ class LocaleConcern
     public function get()
     {
         return $this->locale;
+    }
+
+    /**
+     * @param string $locale
+     */
+    public function set($locale)
+    {
+        $this->locale = $locale;
     }
 }

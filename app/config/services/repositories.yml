@@ -5,9 +5,9 @@ services:
         factory_service: doctrine.orm.entity_manager
         factory_method:  getRepository
         calls:
-            - [setSeason,  [@app.concern.season]]
-            - [setWebsite, [@app.concern.website]]
-            - [setConfig,  [%app%]]
+            - [setSeason,  ["@app.concern.season"]]
+            - [setWebsite, ["@app.concern.website"]]
+            - [setConfig,  ["%app%"]]
 
     app.repository.odm:
         abstract:        true
@@ -49,7 +49,7 @@ services:
         arguments: [AppBundle\Entity\Booking\Booking]
         parent:    app.repository.orm
         calls:
-            - [setLocale,  [@=service('app.concern.locale').get()]]
+            - [setLocale,  ["@=service('app.concern.locale').get()"]]
 
     app.repository.booking.survey:
         class:     AppBundle\Entity\Boooking\Survey\SurveyRepository
@@ -66,29 +66,29 @@ services:
         arguments: [AppBundle\Entity\Season\Season]
         parent:    app.repository.orm
         calls:
-            - [setSeason,  [@app.concern.season]]
+            - [setSeason,  ["@app.concern.season"]]
 
     app.repository.option:
         class:     AppBundle\Entity\Option\OptionRepository
         arguments: ["@doctrine.orm.entity_manager"]
         calls:
-            - [setSeason,  [@app.concern.season]]
-            - [setWebsite, [@app.concern.website]]
-            - [setLocale,  [@=service('app.concern.locale').get()]]
+            - [setSeason,  ["@app.concern.season"]]
+            - [setWebsite, ["@app.concern.website"]]
+            - [setLocale,  ["@=service('app.concern.locale').get()"]]
 
     app.repository.faq:
         class:     AppBundle\Entity\Faq\FaqRepository
         arguments: [AppBundle\Entity\Faq\Faq]
         parent:    app.repository.orm
         calls:
-            - [setWebsite, [@app.concern.website]]
+            - [setWebsite, ["@app.concern.website"]]
 
     app.repository.theme:
         class:     AppBundle\Entity\Theme\ThemeRepository
         arguments: [AppBundle\Entity\Theme\Theme]
         parent:    app.repository.orm
         calls:
-            - [setSeason, [@app.concern.season]]
+            - [setSeason, ["@app.concern.season"]]
 
     app.repository.price:
         class:     AppBundle\Entity\Price\PriceRepository
@@ -139,17 +139,17 @@ services:
         class:     AppBundle\Entity\Search\SearchRepository
         arguments: ["@doctrine.orm.entity_manager"]
         calls:
-            - [setSeason, [@app.concern.season]]
-            - [setWebsite, [@app.concern.website]]
-            - [setLocale, [@=service('app.concern.locale').get()]]
-            - [setMaximumPersonsMap, [%app%]]
+            - [setSeason, ["@app.concern.season"]]
+            - [setWebsite, ["@app.concern.website"]]
+            - [setLocale, ["@=service('app.concern.locale').get()"]]
+            - [setMaximumPersonsMap, ["%app%"]]
 
     app.repository.autocomplete:
         class:     AppBundle\Document\Autocomplete\AutocompleteRepository
         arguments: [AppBundle\Document\Autocomplete\Autocomplete]
         parent:    app.repository.odm
         calls:
-            - [setSeason,        [@app.concern.season]]
-            - [setWebsite,       [@app.concern.website]]
-            - [setLocale,        [@service_container]]
-            - [setMongoDatabase, [%mongodb_database%]]
+            - [setSeason,        ["@app.concern.season"]]
+            - [setWebsite,       ["@app.concern.website"]]
+            - [setLocale,        ["@service_container"]]
+            - [setMongoDatabase, ["%mongodb_database%"]]
