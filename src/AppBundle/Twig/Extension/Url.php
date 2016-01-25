@@ -19,9 +19,10 @@ trait Url
      */
     public function getPath($name, $parameters = array(), $relative = false)
     {
-        $exists = $this->generator->getRouteCollection()->get($name . '_' . $this->locale) !== null;
+        $locale = $this->localeConcern->get();
+        $exists = $this->generator->getRouteCollection()->get($name . '_' . $locale) !== null;
 
-        return $this->generator->generate(($name . ($exists ? ('_' . $this->locale) : '')), $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
+        return $this->generator->generate(($name . ($exists ? ('_' . $locale) : '')), $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
     }
 
     /**
@@ -34,9 +35,10 @@ trait Url
      */
     public function getUrl($name, $parameters = array(), $schemeRelative = false)
     {
-        $exists = $this->generator->getRouteCollection()->get($name . '_' . $this->locale) !== null;
+        $locale = $this->localeConcern->get();
+        $exists = $this->generator->getRouteCollection()->get($name . '_' . $locale) !== null;
 
-        return $this->generator->generate(($name . ($exists ? ('_' . $this->locale) : '')), $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->generator->generate(($name . ($exists ? ('_' . $locale) : '')), $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
     /**
@@ -87,7 +89,11 @@ trait Url
      */
     public function breadcrumbs(\Twig_Environment $twig, $placeholders = [], $params = [])
     {
-        $annotations  = $this->container->get('request')->attributes->get('_breadcrumbs');
+        if (null === $request = $this->requestStack->getCurrentRequest()) {
+            return '';
+        }
+
+        $annotations  = $request->attributes->get('_breadcrumbs');
         $breadcrumbs  = [];
         $replacements = array_values($placeholders);
         $placeholders = array_map(function($placeholder) { return '{' . $placeholder .'}'; }, array_keys($placeholders));

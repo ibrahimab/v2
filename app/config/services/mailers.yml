@@ -1,12 +1,12 @@
 services:
     app.mailer.contact:
         class: AppBundle\Mail\Contact
-        arguments: [@templating, @mailer]
+        arguments: ["@templating", "@mailer"]
 
     app.mailer.mail.a.friend:
         class: AppBundle\Mail\MailAFriend
-        arguments: [@templating, @mailer]
+        arguments: ["@templating", "@mailer"]
 
     app.mailer.price_calculator:
         class: AppBundle\Mail\PriceCalculator
-        arguments: [@templating, @mailer]
+        arguments: ["@templating", "@mailer"]

@@ -31,10 +31,6 @@ trait Helper
      */
     public function opened()
     {
-        if (null === $this->generalSettingsService) {
-            $this->generalSettingsService = $this->container->get('app.api.general.settings');
-        }
-
         return $this->generalSettingsService->opened();
     }
 

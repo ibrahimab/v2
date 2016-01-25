@@ -46,7 +46,7 @@ class UserService
     public function user()
     {
         // check if user cache is empty and if an actual user token is active
-        if (null === $this->user && null !== ($token = $this->tokenStorage->getToken())) {
+        if (null === $this->user && null !== ($token = $this->tokenStorage->getToken()) && true === $token->hasAttribute('_anon_tk')) {
             $this->user = $this->get($token->getAttribute('_anon_tk'));
         }
 

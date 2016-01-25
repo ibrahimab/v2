@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Twig;
+
 use       AppBundle\Concern\WebsiteConcern;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
@@ -12,7 +13,9 @@ use       AppBundle\Service\FilterService;
 use       AppBundle\Old\Service\PageService;
 use       AppBundle\Service\Api\GeneralSettings\GeneralSettingsService;
 use       AppBundle\Service\UtilsService;
-use       Symfony\Component\DependencyInjection\ContainerInterface;
+use       AppBundle\Old\RateTableWrapper;
+use       AppBundle\Service\Javascript\JavascriptService;
+use       AppBundle\Concern\LocaleConcern;
 use       Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use       Symfony\Component\Finder\Finder;
 
@@ -29,6 +32,7 @@ use       Symfony\Component\Finder\Finder;
  */
 class AppExtension extends \Twig_Extension
 {
+    use Extension\Dependencies;
     use Extension\Helper;
     use Extension\Image;
     use Extension\Url;
@@ -36,14 +40,14 @@ class AppExtension extends \Twig_Extension
     use Extension\Utils;
 
     /**
-     * @var ContainerInterface
+     * @var RateTableWrapper
      */
-    private $container;
+    private $rateTableWrapper;
 
     /**
-     * @var string
+     * @var LocaleConcern
      */
-    private $locale;
+    private $localeConcern;
 
     /**
      * @var UrlGeneratorInterface
@@ -81,17 +85,12 @@ class AppExtension extends \Twig_Extension
     private $generalSettingsService;
 
     /**
-     * @param ContainerInterface $container
+     * Constructor
      */
-    public function __construct(ContainerInterface $container, UrlGeneratorInterface $generator)
+    public function __construct()
     {
-        $this->container      = $container;
-        $this->generator      = $generator;
-        $this->currentUser    = null;
-        $this->locale         = $this->container->get('app.concern.locale')->get();
-        $this->filterService  = $this->container->get('app.filter');
-        $this->websiteConcern = $this->container->get('app.concern.website');
-        $this->fileServices   = [];
+        $this->currentUser       = null;
+        $this->fileServices      = [];
     }
 
     /**
@@ -157,8 +156,7 @@ class AppExtension extends \Twig_Extension
      */
     public function renderRateTable(TypeServiceEntityInterface $type)
     {
-        $wrapper = $this->container->get('old.rate.table.wrapper');
-        $wrapper->setType($type);
+        $this->rateTableWrapper->setType($type);
 
         return $wrapper->render();
     }

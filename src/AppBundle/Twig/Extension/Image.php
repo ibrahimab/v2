@@ -5,9 +5,8 @@ namespace AppBundle\Twig\Extension;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
-// use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
-// use       AppBundle\Service\Api\Theme\ThemeServiceEntityInterface;
-
+use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
+use       AppBundle\Service\Api\Theme\ThemeServiceEntityInterface;
 use       AppBundle\Document\File\Country\CountryFileDocument;
 use       AppBundle\Service\Api\File\Type\TypeService                               as TypeFileService;
 use       AppBundle\Document\File\Type                                              as TypeFileDocument;
@@ -35,10 +34,6 @@ trait Image
      */
     public function getOldImageRoot()
     {
-        if (null === $this->oldImageRoot) {
-            $this->oldImageRoot = $this->container->getParameter('old_image_root');
-        }
-
         return $this->oldImageRoot;
     }
 
@@ -57,10 +52,6 @@ trait Image
      */
     public function getOldSitePrefix()
     {
-        if (null === $this->oldSitePrefix) {
-            $this->oldSitePrefix = $this->container->getParameter('old_site_url_prefix');
-        }
-
         return $this->oldSitePrefix;
     }
 
@@ -70,10 +61,6 @@ trait Image
      */
     public function getFileService($kind)
     {
-        if (!isset($this->fileServices[$kind])) {
-            $this->fileServices[$kind] = $this->container->get('app.file.' . $kind);
-        }
-
         return $this->fileServices[$kind];
     }
 
