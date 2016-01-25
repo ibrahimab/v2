@@ -22,7 +22,7 @@ services:
         class: AppBundle\Twig\PaginationExtension
         tags:
             - { name: twig.extension }
-        arguments: [@app.concern.locale, @router]
+        arguments: [@request_stack, @app.concern.locale, @router]
 
     twig.extension.text:
         class: Twig_Extensions_Extension_Text

@@ -6,6 +6,7 @@ use AppBundle\Concern\LocaleConcern;
 use AppBundle\Service\Api\Search\Result\Paginator\Paginator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * PaginationExtension
@@ -53,10 +54,10 @@ class PaginationExtension extends \Twig_Extension
      * @param LocaleConcern $localeConcern
      * @param UrlGeneratorInterface $generator
      */
-    public function __construct(LocaleConcern $localeConcern, UrlGeneratorInterface $generator)
+    public function __construct(RequestStack $requestStack, LocaleConcern $localeConcern, UrlGeneratorInterface $generator)
     {
         $this->generator = $generator;
-        $this->request   = $this->requestStack->getCurrentRequest();
+        $this->request   = $requestStack->getCurrentRequest();
 
         if (null !== $this->request) {
 
