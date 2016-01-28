@@ -12,8 +12,8 @@
                        'bundles/app/css/slick.css'
                        'bundles/app/css/jqvmap.css'
                        'bundles/app/foundation-icons/foundation-icons.css'
-					   'bundles/app/css/jquery.fancybox.css'
-					   'bundles/app/css/tooltipster.css'
+                       'bundles/app/css/jquery.fancybox.css'
+                       'bundles/app/css/tooltipster.css'
                        '@AppBundle/Resources/assets/css/faq.less'
                        '@AppBundle/Resources/assets/css/rate-table.less'
                        '@AppBundle/Resources/assets/css/header.less'
@@ -21,6 +21,7 @@
                        '@AppBundle/Resources/assets/css/tooltip.less'
                        '@AppBundle/Resources/assets/css/search-and-book.less'
                        '@AppBundle/Resources/assets/css/price-calculator.less'
+                       '@AppBundle/Resources/assets/css/mobile-menu.less'
                        '@AppBundle/Resources/assets/css/custom.less' filter='cssrewrite' %}
             <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
@@ -44,9 +45,31 @@
     {% set _body_class = block('bodyClass') %}
     <body{% if _body_id is not empty %} id="{{ _body_id }}"{% endif %}{% if _body_class is not empty %} class="{{ _body_class }}"{%endif %}>
 
-        {% include 'partials/header.html.twig' %}
-        {% block body %}{% endblock %}
-        {% include 'partials/footer.html.twig' %}
+        <!-- mobile menu -->
+        <a class="left-off-canvas-toggle show-for-small" href="#"><i class="fi-list"></i></a>
+        <div class="menu-mobile show-for-small">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="zoekboek.html">Zoek &amp; boek</a></li>
+                <li><a href="landen.html">Skigebieden</a></li>
+                <li><a href="detail.html">Aanbiedingen</a></li>
+                <li><a href="detail.html">Vraag ons advies</a></li>
+                <li><a href="detail.html">Contact</a></li>
+                <li><a href="detail.html">Gezien &amp; bewaard</a></li>
+                <li><a href="detail.html">Mijn boeking</a></li>
+            </ul>
+            <a href="#"><i class="fi-comments"></i>Chat</a>
+            <a href="tel:+31-348-434649"><i class="fi-telephone"></i>0348 - 43 46 49</a>
+        </div>
+        <div class="off-canvas-wrap" data-offcanvas>
+            <div class="inner-wrap">
+
+                {% include 'partials/header.html.twig' %}
+                {% block body %}{% endblock %}
+                {% include 'partials/footer.html.twig' %}
+
+            </div>
+        </div>
 
         {% javascripts 'bundles/app/js/vendor/jquery.js'
                        'bundles/app/js/vendor/underscore.js'
@@ -61,17 +84,17 @@
                        'bundles/app/js/vendor/foundation/responsive-tables.js'
                        'bundles/app/js/vendor/foundation/foundation.abide.js'
                        'bundles/app/js/vendor/slick.min.js'
-					   'bundles/app/js/vendor/jquery.fancybox.js'
-					   'bundles/app/js/vendor/jquery.fancybox-media.js'
+                       'bundles/app/js/vendor/jquery.fancybox.js'
+                       'bundles/app/js/vendor/jquery.fancybox-media.js'
                        'bundles/app/js/vendor/jquery.tooltip.js'
-					   'bundles/app/js/vendor/uri.js'
+                       'bundles/app/js/vendor/uri.js'
                        'bundles/fosjsrouting/js/router.js'
                        'js/fos_js_routes.js'
                        'bundles/app/js/layout.js'
                        '@AppBundle/Resources/assets/js/app.js'
-					   '@AppBundle/Resources/assets/js/maps/italy.js'
-					   '@AppBundle/Resources/assets/js/autocomplete.js'
-					   '@AppBundle/Resources/assets/js/search.js'
+                       '@AppBundle/Resources/assets/js/maps/italy.js'
+                       '@AppBundle/Resources/assets/js/autocomplete.js'
+                       '@AppBundle/Resources/assets/js/search.js'
                        '@AppBundle/Resources/assets/js/favorite.js'
                        '@AppBundle/Resources/assets/js/social.js' %}
 
@@ -95,9 +118,9 @@
             };
 
             (function() {
-            	var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
-            	lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
-            	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
+                var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
+                lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
             })();
             </script>
 
