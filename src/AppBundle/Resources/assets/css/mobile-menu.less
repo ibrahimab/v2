@@ -1,0 +1,19 @@
+/*mobile menu fix*/
+@media only screen and (min-width:40em) {
+    .move-right > .inner-wrap {
+        -ms-transform: translate(0, 0);
+        -webkit-transform: translate3d(0, 0, 0);
+        -moz-transform: translate3d(0, 0, 0);
+        -ms-transform: translate3d(0, 0, 0);
+        -o-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+/*mobilemenu change*/
+
+/*replace following rule*/
+.left-off-canvas-toggle {background-color: transparent; border: none; bottom:1px; opacity:1; padding:20px 20px 20px 0; position:fixed;z-index:3;transition:transform 500ms ease;-webkit-transition:transform 500ms ease;-moz-transition:transform 500ms ease;-o-transition:transform 500ms ease;}
+
+/*add following*/
+.left-off-canvas-toggle i {background-color:white; border-radius:0 3px 3px 0;-moz-border-radius:0 3px 3px 0;-webkit-border-radius:0 3px 3px 0;  padding: 20px 20px 20px 0;}
