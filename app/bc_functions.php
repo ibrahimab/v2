@@ -165,3 +165,7 @@ function wt_he($text) {
 		return htmlentities($text,ENT_COMPAT,'cp1252');
 	}
 }
+
+function wt_as($string) {
+	return addslashes($string);
+}

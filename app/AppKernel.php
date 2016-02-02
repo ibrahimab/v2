@@ -1,4 +1,5 @@
 <?php
+use AppBundle\Old\Loader as OldLoader;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -85,6 +86,8 @@ class AppKernel extends Kernel
     {
         parent::initializeContainer();
 
+        $this->bootstrapBCFunctions();
+
         if (PHP_SAPI === 'cli') {
 
             // cli is being used, lets create a mock request
@@ -98,5 +101,14 @@ class AppKernel extends Kernel
             $this->getContainer()->enterScope('request');
             $this->getContainer()->set('request', $request, 'request');
         }
+    }
+
+    public function bootstrapBCFunctions()
+    {
+        $locale = $this->getContainer()->get('app.concern.locale');
+        $website = $this->getContainer()->get('app.concern.website');
+        $rootDir = $this->getRootDir();
+
+        OldLoader::loadBCFunctions($website, $locale->get(), $rootDir);
     }
 }
