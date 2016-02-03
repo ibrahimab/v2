@@ -1,6 +1,8 @@
 <?php
 namespace AppBundle\Service\Api\Legacy;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
  * @package Chalet
@@ -23,17 +25,16 @@ class PriceTable extends LegacyService
      */
     public function getTable($typeId, $seasonId)
     {
-        $this->method = self::API_METHOD_GET_TABLE;
-
-        $response = $this->client->get($this->uri, [
-
-            'query' => [
-
-                'type_id'   => $typeId,
-                'season_id' => $seasonId,
-            ],
+        $this->setParams([
+            'method'     => self::API_METHOD_GET_TABLE,
+             'type_id'   => $typeId,
+             'season_id' => $seasonId,
         ]);
 
-        return json_decode($response->getBody(), true);
+        $response = $this->client->get($this->uri, [
+            'query' => $this->params,
+        ]);
+
+        return new JsonResponse(json_decode((string)$response->getBody(), true));
     }
 }

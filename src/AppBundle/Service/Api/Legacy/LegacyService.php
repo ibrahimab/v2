@@ -55,4 +55,17 @@ abstract class LegacyService
         $this->uri      = $website->getConfig(WebsiteConcern::WEBSITE_LEGACY_API_URI);
         $this->params   = [];
     }
+
+    /**
+     * @param string $param
+     * @param mixed  $value
+     *
+     * @return self
+     */
+    public function setParams(array $params)
+    {
+        $this->params = array_merge(['endpoint' => $this->endpoint], $params);
+
+        return $this;
+    }
 }
