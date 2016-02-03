@@ -1,0 +1,4 @@
+services:
+    app.http.client.guzzle:
+        class: AppBundle\Service\Http\Client\Guzzle
+        arguments: ["@app.vendor.guzzle.client"]

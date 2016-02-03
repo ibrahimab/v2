@@ -32,7 +32,9 @@
         "snc/redis-bundle": "1.1.x",
         "leafo/lessphp": "~0.5",
         "ocramius/proxy-manager": "1.0.*",
-        "vlucas/phpdotenv": "^2.1"
+        "vlucas/phpdotenv": "^2.1",
+        "guzzlehttp/guzzle": "~6.0",
+        "psr/http-message": "^1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
