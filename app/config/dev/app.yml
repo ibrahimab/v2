@@ -84,6 +84,7 @@ parameters:
                 newsletter: true
                 newsletter_cancel: false
                 company: 1
+                legacy_api_uri: "http://old.chalet.nl/api.php"
 
             local.chalet.eu:
                 locale:  en
@@ -105,6 +106,7 @@ parameters:
                 newsletter: false
                 newsletter_cancel: false
                 company: 1
+                legacy_api_uri: "http://old.chalet.eu/api.php"
 
             local.chalettour.nl:
                 locale:  nl
@@ -126,6 +128,7 @@ parameters:
                 newsletter: false
                 newsletter_cancel: false
                 company: 1
+                legacy_api_uri: "http://old.chalettour.nl/api.php"
 
             local.chalet.be:
                 locale:  nl
@@ -147,6 +150,7 @@ parameters:
                 newsletter: true
                 newsletter_cancel: false
                 company: 1
+                legacy_api_uri: "http://old.chalet.be/api.php"
 
             local.chaletonline.de:
                 locale:  de
@@ -167,6 +171,7 @@ parameters:
                 damage_insurance: 0
                 newsletter: false
                 newsletter_cancel: false
+                legacy_api_uri: "http://old.chaletonline.de/api.php"
 
             local.chaletsinvallandry.nl:
                 locale:  nl
@@ -188,6 +193,7 @@ parameters:
                 newsletter: false
                 newsletter_cancel: false
                 company: 1
+                legacy_api_uri: "http://old.chaletsinvallandry.nl/api.php"
 
             local.chaletsinvallandry.com:
                 locale:  en
@@ -209,6 +215,7 @@ parameters:
                 newsletter: false
                 newsletter_cancel: false
                 company: 1
+                legacy_api_uri: "http://old.chaletsinvallandry.com/api.php"
 
             local.venturasol.nl:
                 locale:  nl
@@ -230,6 +237,7 @@ parameters:
                 newsletter: false
                 newsletter_cancel: false
                 company: 1
+                legacy_api_uri: "http://old.venturasol.nl/api.php"
 
             local.venturasolvacances.nl:
                 locale:  nl
@@ -251,6 +259,7 @@ parameters:
                 newsletter: false
                 newsletter_cancel: false
                 company: 2
+                legacy_api_uri: "http://old.venturasolvacances.nl/api.php"
 
             local.zomerhuisje.nl:
                 locale:  nl
@@ -272,6 +281,7 @@ parameters:
                 newsletter: false
                 newsletter_cancel: false
                 company: 1
+                legacy_api_uri: "http://old.zomerhuisje.nl/api.php"
 
             local.italissima.nl:
                 locale:  nl
@@ -293,6 +303,7 @@ parameters:
                 newsletter: true
                 newsletter_cancel: false
                 company: 1
+                legacy_api_uri: "http://old.italissima.nl/api.php"
 
             local.italissima.be:
                 locale:  nl
@@ -314,6 +325,7 @@ parameters:
                 newsletter: false
                 newsletter_cancel: false
                 company: 1
+                legacy_api_uri: "http://old.italissima.be/api.php"
 
             local.italyhomes.eu:
                 locale:  en
@@ -335,6 +347,7 @@ parameters:
                 newsletter: false
                 newsletter_cancel: false
                 company: 1
+                legacy_api_uri: "http://old.italyhomes.eu/api.php"
 
             local.superski.nl:
                 locale:  nl
@@ -356,6 +369,7 @@ parameters:
                 newsletter: false
                 newsletter_cancel: false
                 company: 1
+                legacy_api_uri: "http://old.superski.nl/api.php"
 
             chalet.webtastic.nl:
                 locale:  nl
@@ -376,6 +390,9 @@ parameters:
                 damage_insurance: 1
                 newsletter: true
                 newsletter_cancel: false
+                company: 1
+                legacy_api_uri: "http://chalet.webtastic.nl/api.php"
+
         cancellation_insurances:
             standard:
                 id: 1

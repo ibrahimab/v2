@@ -1,6 +1,10 @@
 <?php
 namespace AppBundle\Concern;
 
+/**
+ * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
+ * @package Chalet
+ */
 class WebsiteConcern
 {
     const WEBSITE_CHALET_NL                       = 'C';
@@ -50,6 +54,7 @@ class WebsiteConcern
     const WEBSITE_CONFIG_NEWSLETTER               = 'newsletter';
     const WEBSITE_CONFIG_NEWSLETTER_CANCEL        = 'newsletter_cancel';
     const WEBSITE_COMPANY                         = 'company';
+    const WEBSITE_LEGACY_API_URI                  = 'legacy_api_uri';
 
     /**
      * @var string
@@ -124,6 +129,7 @@ class WebsiteConcern
 
     /**
      * @param array $parameters
+     * @param bool  $ssl_enabled
      */
     public function __construct($parameters, $ssl_enabled)
     {
@@ -136,6 +142,8 @@ class WebsiteConcern
 
     /**
      * activate website
+     *
+     * @param string $website
      */
     public function set($website)
     {
@@ -151,16 +159,25 @@ class WebsiteConcern
         }
     }
 
+    /**
+     * @return string
+     */
     public function get()
     {
         return $this->website;
     }
 
+    /**
+     * @return string
+     */
     public function type()
     {
         return $this->type;
     }
 
+    /**
+     * @return void
+     */
     public function setType()
     {
         foreach ($this->types as $type => $websites) {
@@ -173,26 +190,45 @@ class WebsiteConcern
         }
     }
 
+    /**
+     * @return string
+     */
     public function country()
     {
         return $this->country;
     }
 
+    /**
+     * @return string
+     */
     public function name()
     {
         return $this->name;
     }
 
+    /**
+     * @return string
+     */
     public function domain()
     {
         return $this->domain;
     }
 
+    /**
+     * @return string
+     */
     public function uri()
     {
         return $this->protocol . $this->domain() . '/';
     }
 
+    /**
+     * @param string      $identifier
+     * @param string|null $website
+     *
+     * @return string|integer|bool
+     * @throws \Exception
+     */
     public function getConfig($identifier, $website = null)
     {
         if (null !== $website && !isset($this->websites[$website])) {
@@ -208,14 +244,21 @@ class WebsiteConcern
         return $config[$identifier];
     }
 
+    /**
+     * @return array
+     */
     public function websites()
     {
         return $this->websites;
     }
 
+    /**
+     * @return string
+     */
     public function getLanguageField()
     {
         $locale = $this->getConfig(self::WEBSITE_CONFIG_LOCALE);
+
         return ($locale === 'nl' ? '' : '_' . $locale);
     }
 }
