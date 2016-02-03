@@ -35,6 +35,6 @@ class PriceTable extends LegacyService
             'query' => $this->params,
         ]);
 
-        return new JsonResponse(json_decode((string)$response->getBody(), true));
+        return json_decode((string)$response->getBody(), true);
     }
 }
