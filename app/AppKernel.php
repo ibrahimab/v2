@@ -52,36 +52,6 @@ class AppKernel extends Kernel
         $loader->load(__DIR__.'/config/' . $this->getEnvironment() . '/app.yml');
     }
 
-    public function registerOldNamespace()
-    {
-        if (file_exists($path = __DIR__ . '/../old-app/admin/siteclass')) {
-
-            // backwards compatibility
-            require_once $path . '/../class.mysql.php';
-        }
-
-        spl_autoload_register(function($class) {
-
-            if (substr($class, 0, 7) === 'Chalet\\') {
-
-                $path      = __DIR__ . '/../old-app/';
-                $classFile = str_replace('\\', DIRECTORY_SEPARATOR, substr($class, 7)) . '.php';
-
-                if (file_exists($path . 'admin/siteclass/'  . $classFile)) {
-
-                    require_once $path . 'admin/siteclass/' . $classFile;
-                    return true;
-                }
-            }
-
-           if (file_exists($path = __DIR__ . '/../old-app/admin/siteclass/siteclass.' . $class . '.php')) {
-
-               require_once $path;
-               return true;
-           }
-        });
-    }
-
     public function initializeContainer()
     {
         parent::initializeContainer();
@@ -101,14 +71,5 @@ class AppKernel extends Kernel
             $this->getContainer()->enterScope('request');
             $this->getContainer()->set('request', $request, 'request');
         }
-    }
-
-    public function bootstrapBCFunctions()
-    {
-        $locale = $this->getContainer()->get('app.concern.locale');
-        $website = $this->getContainer()->get('app.concern.website');
-        $rootDir = $this->getRootDir();
-
-        OldLoader::loadBCFunctions($website, $locale->get(), $rootDir);
     }
 }
