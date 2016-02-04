@@ -1,4 +1,4 @@
 services:
     app.api.legacy.price_table:
         class:      AppBundle\Service\Api\Legacy\PriceTable
-        arguments: ["@app.http.client.guzzle", "@app.concern.website"]
+        arguments: ["@app.http.client.guzzle", "@app.concern.website", "@snc_redis.default"]

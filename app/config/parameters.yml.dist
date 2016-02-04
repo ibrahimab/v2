@@ -24,3 +24,4 @@ parameters:
     old_image_root:
     old_site_url_prefix: /version1/
     sunny_cars:
+    redis_prefix: chalettest_

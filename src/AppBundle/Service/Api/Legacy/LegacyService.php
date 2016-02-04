@@ -3,6 +3,7 @@ namespace AppBundle\Service\Api\Legacy;
 
 use AppBundle\Service\Http\Client\ClientInterface;
 use AppBundle\Concern\WebsiteConcern;
+use Psr7\Http\Message\ResponseInterface;
 
 /**
  * LegacyService
@@ -48,10 +49,11 @@ abstract class LegacyService
      * @param ClientInterface $client
      * @param string          $apiUrl
      */
-    public function __construct(ClientInterface $client, WebsiteConcern $website)
+    public function __construct(ClientInterface $client, WebsiteConcern $website, $redis)
     {
         $this->client   = $client;
         $this->website  = $website;
+        $this->redis    = $redis;
         $this->uri      = $website->getConfig(WebsiteConcern::WEBSITE_LEGACY_API_URI);
         $this->params   = [];
     }
@@ -64,7 +66,7 @@ abstract class LegacyService
      */
     public function setParams(array $params)
     {
-        $this->params = array_merge(['endpoint' => $this->endpoint], $params);
+        $this->params = array_merge(['endpoint' => $this->endpoint, 'token' => $this->redis->get('api:legacy:token')], $params);
 
         return $this;
     }
