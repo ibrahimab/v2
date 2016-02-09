@@ -38,11 +38,6 @@ abstract class LegacyService
     /**
      * @var string
      */
-    protected $method;
-
-    /**
-     * @var string
-     */
     protected $params;
 
     /**
@@ -64,10 +59,30 @@ abstract class LegacyService
      *
      * @return self
      */
-    public function setParams(array $params)
+    protected function setParams(array $params)
     {
         $this->params = array_merge(['endpoint' => $this->endpoint, 'token' => $this->redis->get('api:legacy:token')], $params);
 
         return $this;
+    }
+
+    /**
+     * @param integer $method
+     * @param array   $params
+     *
+     * @return array
+     */
+    public function get($method, array $params = [])
+    {
+        $params['method'] = $method;
+        $this->setParams($params);
+
+        $response = $this->client->get($this->uri, [
+            'query' => $this->params,
+        ]);
+
+        echo ((string)$response->getBody());exit;
+
+        return json_decode((string)$response->getBody(), true);
     }
 }

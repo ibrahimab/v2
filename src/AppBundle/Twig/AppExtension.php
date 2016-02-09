@@ -10,10 +10,8 @@ use       AppBundle\Service\Api\Theme\ThemeServiceEntityInterface;
 use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterface;
 use       AppBundle\Service\Api\User\UserServiceDocumentInterface;
 use       AppBundle\Service\FilterService;
-use       AppBundle\Old\Service\PageService;
 use       AppBundle\Service\Api\GeneralSettings\GeneralSettingsService;
 use       AppBundle\Service\UtilsService;
-use       AppBundle\Old\RateTableWrapper;
 use       AppBundle\Service\Javascript\JavascriptService;
 use       AppBundle\Concern\LocaleConcern;
 use       Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -40,9 +38,9 @@ class AppExtension extends \Twig_Extension
     use Extension\Utils;
 
     /**
-     * @var RateTableWrapper
+     * @var PriceTable
      */
-    private $rateTableWrapper;
+    private $priceTable;
 
     /**
      * @var LocaleConcern
@@ -121,7 +119,6 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('region_skimap_image', [$this, 'getRegionSkimapImage']),
             new \Twig_SimpleFunction('favorites_count', [$this, 'favoritesCount']),
             new \Twig_SimpleFunction('viewed_count', [$this, 'viewedCount']),
-            new \Twig_SimpleFunction('render_rate_table', [$this, 'renderRateTable']),
             new \Twig_SimpleFunction('searches_count', [$this, 'searchesCount']),
             new \Twig_SimpleFunction('is_checked', [$this, 'isChecked']),
             new \Twig_SimpleFunction('pdf_link', [$this, 'pdfLink']),
@@ -148,17 +145,6 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFilter('tokenize', [$this, 'tokenize']),
             new \Twig_SimpleFilter('thumbnail', [$this, 'generateThumbnailPath']),
         ];
-    }
-
-    /**
-     * @param TypeServiceEntityInterface $type
-     * @return string
-     */
-    public function renderRateTable(TypeServiceEntityInterface $type)
-    {
-        $this->rateTableWrapper->setType($type);
-
-        return $wrapper->render();
     }
 
     /**

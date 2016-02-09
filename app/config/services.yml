@@ -6,7 +6,6 @@ imports:
     - { resource: services/repositories.yml }
     - { resource: services/api/api.yml }
     - { resource: services/api/legacy.yml }
-    - { resource: services/old.yml }
     - { resource: services/twig.yml }
     - { resource: services/app.yml }
     - { resource: services/mailers.yml }

@@ -9,7 +9,6 @@ services:
             - [setFilterService, ["@app.filter"]]
             - [setWebsiteConcern, ["@app.concern.website"]]
             - [setUrlGenerator, ["@router"]]
-            - [setRateTableWrapper, ["@old.rate.table.wrapper"]]
             - [setJavascriptService, ["@app.javascript"]]
             - [setGeneralSettingsService, ["@app.api.general.settings"]]
             - [setOldImageRoot, ["%old_image_root%"]]

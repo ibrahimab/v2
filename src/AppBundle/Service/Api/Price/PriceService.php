@@ -1,7 +1,9 @@
 <?php
 namespace AppBundle\Service\Api\Price;
+
 use       AppBundle\Concern\SeasonConcern;
-use       AppBundle\Old\PricesWrapper;
+use       AppBundle\Service\Api\Legacy\AdditionalCosts;
+use       AppBundle\Service\Api\Legacy\StartingPrice;
 
 /**
  * This is the PriceService, with this service you can select prices
@@ -19,12 +21,12 @@ class PriceService
     private $priceServiceRepository;
 
     /**
-     * @var PricesWrapper
+     * @var StartingPrice
      */
-    private $oldPricesWrapper;
+    private $startingPrice;
 
     /**
-     * @var \bijkomendekosten
+     * @var AdditionalCosts
      */
     private $additionalCosts;
 
@@ -102,11 +104,15 @@ class PriceService
         $this->additionalCostsPersonsCache = null;
         $this->additionCache               = [];
         $this->additionalCostsSeasonId     = null;
+        $this->startingPrice               = null;
     }
 
-    public function setOldPricesWrapper($oldPricesWrapper)
+    /**
+     * @param StartingPrice $startingPrice
+     */
+    public function setStartingPrice(StartingPrice $startingPrice)
     {
-        $this->oldPricesWrapper = $oldPricesWrapper;
+        $this->startingPrice = $startingPrice;
     }
 
     /**
@@ -120,9 +126,9 @@ class PriceService
     /**
      * @param \bijkomendekosten $additionalCosts
      */
-    public function setAdditionalCosts($additionalCosts)
+    public function setAdditionalCostsFetcher(AdditionalCosts $additionalCostsFetcher)
     {
-        $this->additionalCosts = $additionalCosts;
+        $this->additionalCosts = $additionalCostsFetcher;
     }
 
     /**
@@ -212,7 +218,7 @@ class PriceService
     public function getAdditionalCostsCache()
     {
         if (null === $this->additionalCostsCache) {
-            $this->additionalCostsCache = $this->additionalCosts->get_complete_cache($this->season->get());
+            $this->additionalCostsCache = $this->additionalCosts->getCompleteCache($this->season->get());
         }
 
         return $this->additionalCostsCache;
@@ -224,7 +230,7 @@ class PriceService
     public function getAdditionalCostsPersonsCache()
     {
         if (null === $this->additionalCostsCache) {
-            $this->additionalCostsPersonsCache = $this->additionalCosts->get_complete_cache_per_persons($this->season->get(), $this->persons);
+            $this->additionalCostsPersonsCache = $this->additionalCosts->getCompleteCachePerPersons($this->season->get(), $this->persons);
         }
 
         return $this->additionalCostsPersonsCache;
@@ -367,7 +373,7 @@ class PriceService
             /**
              * No weekend and persons are selected, so we need to select prices from the cache
              */
-            $this->prices = $this->oldPricesWrapper->get($this->types);
+            $this->prices = $this->startingPrices->getStartingPrices($this->types);
             $this->offers = $this->priceServiceRepository->offers($this->types);
         }
 

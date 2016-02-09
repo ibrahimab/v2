@@ -1,5 +1,5 @@
 <?php
-use AppBundle\Old\Loader as OldLoader;
+
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,8 +41,6 @@ class AppKernel extends Kernel
             $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
         }
 
-        $this->registerOldNamespace();
-
         return $bundles;
     }
 
@@ -55,8 +53,6 @@ class AppKernel extends Kernel
     public function initializeContainer()
     {
         parent::initializeContainer();
-
-        $this->bootstrapBCFunctions();
 
         if (PHP_SAPI === 'cli') {
 
