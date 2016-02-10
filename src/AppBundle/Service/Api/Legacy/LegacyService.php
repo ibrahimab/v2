@@ -81,8 +81,6 @@ abstract class LegacyService
             'query' => $this->params,
         ]);
 
-        echo ((string)$response->getBody());exit;
-
         return json_decode((string)$response->getBody(), true);
     }
 }
