@@ -64,7 +64,7 @@ parameters:
             I: 5
             K: 5
         domain:
-             new.chalet.nl:
+            new.chalet.nl:
                 locale:  nl
                 website: C
                 season:  1
