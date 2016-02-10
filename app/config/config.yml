@@ -56,7 +56,7 @@ snc_redis:
             alias: default
             dsn: redis://%redis_server%
             options:
-                prefix: "%kernel.environment%:"
+                prefix: "%redis_prefix%"
 
 # Doctrine Configuration
 doctrine:

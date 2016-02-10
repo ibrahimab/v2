@@ -1,4 +1,0 @@
-[submodule "old-app"]
-	path = old-app
-	url = git@github.com:Chalet/Website-Chalet.nl
-	branch = res-52

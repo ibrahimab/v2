@@ -25,16 +25,10 @@ class PriceTable extends LegacyService
      */
     public function getTable($typeId, $seasonId)
     {
-        $this->setParams([
-            'method'     => self::API_METHOD_GET_TABLE,
-             'type_id'   => $typeId,
+        return $this->get(self::API_METHOD_GET_TABLE, [
+
+             'type_id' => $typeId,
              'season_id' => $seasonId,
         ]);
-
-        $response = $this->client->get($this->uri, [
-            'query' => $this->params,
-        ]);
-
-        return json_decode((string)$response->getBody(), true);
     }
 }

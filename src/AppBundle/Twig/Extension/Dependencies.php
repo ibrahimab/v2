@@ -5,7 +5,6 @@ namespace AppBundle\Twig\Extension;
 use AppBundle\Service\FilterService;
 use AppBundle\Concern\WebsiteConcern;
 use AppBundle\Concern\LocaleConcern;
-use AppBundle\Old\RateTableWrapper;
 use AppBundle\Service\Javascript\JavascriptService;
 use AppBundle\Service\Api\File\FileService;
 use AppBundle\Service\Api\File\Type\TypeService as TypeFileService;
@@ -54,14 +53,6 @@ trait Dependencies
     public function setUrlGenerator(UrlGeneratorInterface $generator)
     {
         $this->generator = $generator;
-    }
-
-    /**
-     * @param RateTableWrapper $rateTableWrapper
-     */
-    public function setRateTableWrapper(RateTableWrapper $rateTableWrapper)
-    {
-        $this->rateTableWrapper = $rateTableWrapper;
     }
 
     /**

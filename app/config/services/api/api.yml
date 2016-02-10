@@ -98,6 +98,6 @@ services:
         class:      AppBundle\Service\Api\Price\PriceService
         arguments: ["@app.repository.price"]
         calls:
-            - [setOldPricesWrapper, ["@old.prices.wrapper"]]
+            - [setStartingPrice, ["@app.api.legacy.starting_price"]]
             - [setSeason, ["@app.concern.season"]]
-            - [setAdditionalCosts, ["@old.additional.costs"]]
+            - [setAdditionalCostsFetcher, ["@app.api.legacy.additional_costs"]]
