@@ -8,7 +8,7 @@ namespace AppBundle\Service\Api\Legacy;
 class StartingPrice extends LegacyService
 {
 	/** @var integer */
-	const API_METHOD_GET = 1;
+	const API_METHOD_GET_STARTING_PRICES = 1;
 
 	/**
 	 * @var integer
@@ -22,7 +22,7 @@ class StartingPrice extends LegacyService
 	 */
 	public function getStartingPrices(array $typeIds)
 	{
-		return $this->get(self::API_METHOD_GET, [
+		return $this->get(self::API_METHOD_GET_STARTING_PRICES, [
              'type_id' => $typeIds,
         ]);
 	}

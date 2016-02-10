@@ -41,7 +41,7 @@ class TypesController extends Controller
         $typeService    = $this->get('app.api.type');
         $surveyService  = $this->get('app.api.booking.survey');
         $season         = $this->get('app.concern.season');
-        $featureService = $this->get('old.feature');
+        $featureService = $this->get('app.api.legacy.features');
 
         try {
 
@@ -59,7 +59,7 @@ class TypesController extends Controller
                 'toonper'      => $accommodation->getShow(),
             ];
 
-            $features = $featureService->get_kenmerken($type->getId(), $data);
+            $features = $featureService->all($type->getId(), $data);
 
         } catch (\Exception $e) {
             throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found: (' . $e->getMessage() . ')');
@@ -71,8 +71,8 @@ class TypesController extends Controller
             $typeIds[] = $accommodationType->getId();
         }
 
-        $pricesService = $this->get('old.prices.wrapper');
-        $prices        = $pricesService->get($typeIds);
+        $startingPrice = $this->get('app.api.legacy.starting_price');
+        $prices        = $startingPrice->getStartingPrices($typeIds);
 
         $priceService  = $this->get('app.api.price');
         $offers        = $priceService->offers($typeIds);

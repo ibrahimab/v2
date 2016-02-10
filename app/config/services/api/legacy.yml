@@ -10,3 +10,7 @@ services:
     app.api.legacy.additional_costs:
         class:      AppBundle\Service\Api\Legacy\AdditionalCosts
         arguments: ["@app.http.client.guzzle", "@app.concern.website", "@snc_redis.default"]
+
+    app.api.legacy.features:
+        class:      AppBundle\Service\Api\Legacy\Features
+        arguments: ["@app.http.client.guzzle", "@app.concern.website", "@snc_redis.default"]
