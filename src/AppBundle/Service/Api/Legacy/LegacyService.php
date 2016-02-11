@@ -83,4 +83,23 @@ abstract class LegacyService
 
         return json_decode((string)$response->getBody(), true);
     }
+
+    /**
+     * @param integer $method
+     * @param array   $params
+     *
+     * @return array
+     */
+    public function json($method, array $data = [])
+    {
+        $this->setParams(['method' => $method]);
+
+        $response = $this->client->post($this->uri, [
+
+            'query' => $this->params,
+            'json'  => $data,
+        ]);
+
+        return json_decode((string)$response->getBody(), true);
+    }
 }
