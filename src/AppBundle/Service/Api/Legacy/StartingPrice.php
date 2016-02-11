@@ -22,8 +22,8 @@ class StartingPrice extends LegacyService
 	 */
 	public function getStartingPrices(array $typeIds)
 	{
-		return $this->get(self::API_METHOD_GET_STARTING_PRICES, [
-             'type_id' => $typeIds,
+		return $this->json(self::API_METHOD_GET_STARTING_PRICES, [
+             'type_id' => array_unique($typeIds),
         ]);
 	}
 }

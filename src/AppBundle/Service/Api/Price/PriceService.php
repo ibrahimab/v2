@@ -373,7 +373,7 @@ class PriceService
             /**
              * No weekend and persons are selected, so we need to select prices from the cache
              */
-            $this->prices = $this->startingPrices->getStartingPrices($this->types);
+            $this->prices = $this->startingPrice->getStartingPrices($this->types);
             $this->offers = $this->priceServiceRepository->offers($this->types);
         }
 
