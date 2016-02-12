@@ -1,4 +1,4 @@
-{% macro table(types, accommodation) %}
+{% macro table(types, accommodation, season) %}
     <div class="table-wrapper">
 
         <div class="tb">
@@ -39,7 +39,7 @@
                         </div>
                     <div class="tb-c tb-c-7">
                         {% if type.price > 0 %}
-                            <div class="chalet-tooltip" data-role="ajax-tooltip" data-id="{{ type.id }}" data-season="{{ 27 }}">
+                            <div class="chalet-tooltip loading" data-role="ajax-tooltip" data-url="{{ path('additional_costs_type', {typeId: accommodation.cheapest.id, seasonId: season}) }}">
                                 <div class="chalet-tooltip-content" data-role="tooltip-wrapper">
                                     <div data-role="tooltip-content">Bezig met laden...</div>
                                     <span class="nub rtl"></span>
