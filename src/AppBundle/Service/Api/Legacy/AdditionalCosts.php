@@ -10,7 +10,10 @@ class AdditionalCosts extends LegacyService
     const API_METHOD_GET_COMPLETE_CACHE = 2;
 
     /** @var integer */
-    const API_METHOD_GET_COMPLETE_CACHE_PER_PERSONS = 2;
+    const API_METHOD_GET_COMPLETE_CACHE_PER_PERSONS = 3;
+
+    /** @var integer */
+    const API_METHOD_GET_COSTS = 4;
 
     /**
      * @var integer
@@ -41,6 +44,24 @@ class AdditionalCosts extends LegacyService
 
             'season_type' => $seasonType,
             'persons'     => $persons,
+        ]);
+    }
+
+    /**
+     * @param integer $id
+     * @param string $type
+     *
+     * @return array
+     */
+    public function getCosts($id, $type, $seasonId, $popup = false, $arrangement = false)
+    {
+        return $this->get(self::API_METHOD_GET_COSTS, [
+
+            'id'          => $id,
+            'type'        => $type,
+            'season_id'   => $seasonId,
+            'popup'       => $popup,
+            'arrangement' => $arrangement,
         ]);
     }
 }
