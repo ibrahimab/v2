@@ -10,11 +10,12 @@ use       Symfony\Component\HttpFoundation\Response;
 use       Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * CountriesController
+ * TypesController
  *
- * This controller handles all the country specific pages
+ * This controller handles the accommodation page (which shows one type)
  *
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
+ * @author  Jeroen Boschman <jeroen@webtastic.nl>
  * @package Chalet
  * @since   0.0.1
  *
@@ -71,22 +72,25 @@ class TypesController extends Controller
             $typeIds[] = $accommodationType->getId();
         }
 
-        $startingPrice = $this->get('app.api.legacy.starting_price');
-        $prices        = $startingPrice->getStartingPrices($typeIds);
+        $startingPrice     = $this->get('app.api.legacy.starting_price');
+        $prices            = $startingPrice->getStartingPrices($typeIds);
 
-        $priceService  = $this->get('app.api.price');
-        $offers        = $priceService->offers($typeIds);
+        $priceService      = $this->get('app.api.price');
+        $offers            = $priceService->offers($typeIds);
 
-        $userService   = $this->get('app.api.user');
+        $userService       = $this->get('app.api.user');
         $userService->addViewedAccommodation($type);
 
-        $seasonService = $this->get('app.api.season');
-        $seasons       = $seasonService->seasons();
-        $currentSeason = (isset($seasons[0]) ? $seasons[0] : null);
-        $seasonId      = (null !== $currentSeason ? $currentSeason['id'] : null);
+        $seasonService     = $this->get('app.api.season');
+        $seasons           = $seasonService->seasons();
+        $currentSeason     = (isset($seasons[0]) ? $seasons[0] : null);
+        $seasonId          = (null !== $currentSeason ? $currentSeason['id'] : null);
 
-        $optionService = $this->get('app.api.option');
-        $options       = $optionService->options($type->getAccommodationId(), $seasonId, $request->query->get('w', null));
+        $priceTableService = $this->get('app.api.legacy.price_table');
+        $priceTable        = $priceTableService->getTable($typeId, $seasonId);
+
+        $optionService     = $this->get('app.api.option');
+        $options           = $optionService->options($type->getAccommodationId(), $seasonId, $request->query->get('w', null));
 
         return $this->render('types/show.html.twig', [
 
@@ -101,6 +105,7 @@ class TypesController extends Controller
             'sunnyCars'          => $this->container->getParameter('sunny_cars'),
             'currentWeekend'     => $request->query->get('w', null),
             'currentSeason'      => $currentSeason,
+            'priceTable'         => $priceTable['html'],
         ]);
     }
 
