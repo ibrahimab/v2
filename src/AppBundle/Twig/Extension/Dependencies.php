@@ -82,9 +82,9 @@ trait Dependencies
     /**
      * @param string $urlSiteUrlPrefix
      */
-    public function setOldSiteUrlPrefix($urlSiteUrlPrefix)
+    public function setOldSiteUrlPrefix($oldSiteUrlPrefix)
     {
-        $this->urlSiteUrlPrefix = $urlSiteUrlPrefix;
+        $this->oldSiteUrlPrefix = $oldSiteUrlPrefix;
     }
 
     /**

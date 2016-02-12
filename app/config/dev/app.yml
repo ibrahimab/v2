@@ -84,7 +84,7 @@ parameters:
                 newsletter: true
                 newsletter_cancel: false
                 company: 1
-                legacy_api_uri: "http://old.chalet.nl/api.php"
+                legacy_api_uri: "http://dev.chalet.nl/api.php"
 
             local.chalet.eu:
                 locale:  en
