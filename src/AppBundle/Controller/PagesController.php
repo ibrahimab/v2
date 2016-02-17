@@ -28,16 +28,6 @@ use       Symfony\Component\HttpFoundation\Request;
 class PagesController extends Controller
 {
     /**
-     * @Route("/test")
-     */
-    public function test()
-    {
-        $startingPrice = $this->get('app.api.legacy.starting_price');
-        $data = $startingPrice->getStartingPrices([1, 3]);
-
-        dump($data);exit;
-    }
-    /**
      * @Route("/", name="home")
      * @Template(":pages:home.html.twig")
      */

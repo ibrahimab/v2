@@ -50,9 +50,9 @@ trait Image
      *
      * @return string
      */
-    public function getOldSitePrefix()
+    public function getOldSiteUrlPrefix()
     {
-        return $this->oldSitePrefix;
+        return $this->oldSiteUrlPrefix;
     }
 
     /**
@@ -329,7 +329,7 @@ trait Image
         } else {
 
             // no thumbnail found: have the old website create it
-            return $this->getOldSitePrefix() . 'thumbnail.php?file=' . urlencode($sourceFile) . '&w=' . $width . '&h=' . $height;
+            return $this->getOldSiteUrlPrefix() . 'thumbnail.php?file=' . urlencode($sourceFile) . '&w=' . $width . '&h=' . $height;
 
         }
     }
