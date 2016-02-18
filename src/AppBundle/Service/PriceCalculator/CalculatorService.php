@@ -282,7 +282,7 @@ class CalculatorService
             $this->persons = [];
             $weekends      = $this->getWeekends();
             $typeData      = $this->getAccommodationService()->getInfo($this->type->getId(), $this->getWeekend(), $this->getPerson());
-            $persons       = $this->priceService->getBookablePersons($this->type->getId(), $typeData['show'], array_keys($weekends));
+            $persons       = $this->priceService->getBookablePersons($this->type->getId(), $typeData['toonper'], array_keys($weekends));
             $persons       = (null === $persons ? array_keys($typeData['aantalpersonen_array']) : $persons);
             $personLabel   = $this->translator->trans('person');
             $personsLabel  = $this->translator->trans('persons');
