@@ -9,7 +9,7 @@ class SeasonService
      * @const integer (8 days: 60 * 60 * 24 * 8)
      */
     const WEEKEND_MAX_DIFFERENCE = 691200;
-    
+
     /**
      * @var SeasonServiceRepositoryInterface
      */
@@ -24,7 +24,7 @@ class SeasonService
     {
         $this->seasonServiceRepository = $seasonServiceRepository;
     }
-    
+
     /**
      * @return float
      */
@@ -32,7 +32,7 @@ class SeasonService
     {
         return $this->seasonServiceRepository->getInsurancesPolicyCosts();
     }
-    
+
     /**
      * @return array
      */
@@ -40,7 +40,18 @@ class SeasonService
     {
         return $this->seasonServiceRepository->seasons();
     }
-    
+
+    /**
+     * @return array
+     */
+    public function current()
+    {
+        $seasons = $this->seasons();
+        $season  = current($seasons);
+
+        return $season;
+    }
+
     /**
      * @return array
      */
@@ -50,20 +61,20 @@ class SeasonService
         $nextWeek = new \DateInterval('P7D');
 
         foreach ($seasons as $season) {
-            
+
             $begin = (new \DateTime())->setTimestamp(intval($season['weekend_start']));
             $end   = intval($season['weekend_end']);
-            
+
             while ($begin->getTimestamp() <= $end) {
-                
+
                 if ($begin->getTimestamp() >= (time() - self::WEEKEND_MAX_DIFFERENCE)) {
                     $weekends[$begin->getTimestamp()] = strftime('%e %B %Y', $begin->getTimestamp());
                 }
-                
+
                 $begin->add($nextWeek);
             }
         }
-        
+
         return $weekends;
     }
 }

@@ -91,14 +91,16 @@ class PriceCalculatorController extends Controller
 
         if ($form->isValid()) {
 
-            $accommodationService = $this->get('app.accommodation');
+            $accommodationService = $this->get('app.api.legacy.accommodation');
+            $seasonService        = $this->get('app.api.season');
+            $currentSeason        = $seasonService->current();
             $data                 = $form->getData();
-            $typeData             = $accommodationService->get($type->getId(), $data->weekend, $data->person);
+            $typeData             = $accommodationService->getInfo($type->getId(), $data->weekend, $data->person);
 
             $booking = new BookingEntity();
             $booking->setCalc(1)
-                    ->setTypeId($typeData['type_id'])
-                    ->setSeasonId($typeData['season'])
+                    ->setTypeId($typeData['typeid'])
+                    ->setSeasonId($currentSeason['id'])
                     ->setPersons($data->person)
                     ->setArrivalAt($data->weekend);
 
@@ -109,7 +111,7 @@ class PriceCalculatorController extends Controller
         } else {
 
             return $this->redirectToRoute('price_calculator_step_one_' . $this->get('app.concern.locale')->get(), [
-                'typeId' => $typeData['type_id'],
+                'typeId' => $typeData['typeid'],
             ]);
         }
 
@@ -149,6 +151,7 @@ class PriceCalculatorController extends Controller
         $calculatorService->setType($type)
                           ->setPerson((int)$request->request->get('step_two')['person'])
                           ->setWeekend((int)$request->request->get('step_two')['weekend'])
+                          ->setBookingId((int)$request->request->get('step_two')['booking'])
                           ->setOptionsAmount($request->request->get('step_two')['options'])
                           ->setCancellationInsurancesAmount($request->request->get('step_two')['cancellation_insurances']);
 
@@ -164,31 +167,34 @@ class PriceCalculatorController extends Controller
         $bookingService = $this->get('app.booking');
         $bookingService->saveOptions($data->booking, $insurances, $data->persons, $form->getData()->options);
 
-        $accommodationService = $this->get('app.accommodation');
-        $typeData             = $accommodationService->get($typeId, $data->weekend, $data->person);
+        $accommodationService = $this->get('app.api.legacy.accommodation');
+        $typeData             = $accommodationService->getInfo($typeId, $data->weekend, $data->person);
 
         $formatter            = new IntlDateFormatter($request->getLocale(), IntlDateFormatter::FULL, IntlDateFormatter::FULL, new \DateTimeZone(date_default_timezone_get()), IntlDateFormatter::GREGORIAN);
         $formatter->setPattern('eeee dd MMMM y');
 
         $arrivalDate          = new \DateTime();
-        $arrivalDate->setTimestamp($typeData['arrival']);
+        $arrivalDate->setTimestamp($calculatorService->getWeekend());
 
         $departureDate        = new \DateTime();
-        $departureDate->setTimestamp($typeData['departure']);
+        $departureDate->setTimestamp($typeData['vertrekdatum']);
+
+        $travelsum = $this->get('app.api.legacy.travelsum');
 
         return $this->render('price_calculator/step_three.html.twig', [
 
             'type'              => $type,
             'type_data'         => $typeData,
-            'show'              => $typeData['show'],
-            'price'             => $typeData['price'],
-            'name_type'         => $typeData['name'],
-            'name_place'        => $typeData['name_place'],
+            'show'              => $typeData['toonper'],
+            'price'             => $typeData['tarief'],
+            'name_type'         => $typeData['naam_ap'],
+            'name_place'        => $typeData['plaats'] . ', ' . $typeData['land'],
             'persons'           => $data->person,
             'arrival_date'      => $formatter->format($arrivalDate),
             'departure_date'    => $formatter->format($departureDate),
             'reservation_costs' => $this->getParameter('app')['reservation_costs'],
             'options'           => $data->options,
+            'travelsum_table'   => $travelsum->table($data->booking, $type->getId(), $calculatorService->getWeekend(), $calculatorService->getPerson())['table'],
             'form'              => $calculatorService->getFormService()->create(FormService::FORM_STEP_THREE)->createView(),
             'form_data'         => $form->getData(),
         ]);
@@ -217,6 +223,7 @@ class PriceCalculatorController extends Controller
         $calculatorService->setType($type)
                           ->setPerson((int)$request->request->get('step_three')['person'])
                           ->setWeekend((int)$request->request->get('step_three')['weekend'])
+                          ->setBookingId((int)$request->request->get('step_three')['booking'])
                           ->setOptionsAmount($request->request->get('step_three')['options'])
                           ->setCancellationInsurancesAmount($request->request->get('step_three')['cancellation_insurances']);
 
@@ -224,31 +231,34 @@ class PriceCalculatorController extends Controller
         $form->handleRequest($request);
         $data = $form->getData();
 
-        $accommodationService = $this->get('app.accommodation');
-        $typeData             = $accommodationService->get($typeId, $data->weekend, $data->person);
+        $accommodationService = $this->get('app.api.legacy.accommodation');
+        $typeData             = $accommodationService->getInfo($typeId, $data->weekend, $data->person);
 
         $formatter            = new IntlDateFormatter($request->getLocale(), IntlDateFormatter::FULL, IntlDateFormatter::FULL, new \DateTimeZone(date_default_timezone_get()), IntlDateFormatter::GREGORIAN);
         $formatter->setPattern('eeee dd MMMM y');
 
         $arrivalDate          = new \DateTime();
-        $arrivalDate->setTimestamp($typeData['arrival']);
+        $arrivalDate->setTimestamp($data->weekend);
 
         $departureDate        = new \DateTime();
-        $departureDate->setTimestamp($typeData['departure']);
+        $departureDate->setTimestamp($typeData['vertrekdatum']);
+
+        $travelsum = $this->get('app.api.legacy.travelsum');
 
         $table                = $this->renderView('price_calculator/table.html.twig', [
 
-            'type_id'           => $typeData['type_id'],
+            'type_id'           => $typeData['typeid'],
             'begin_code'        => $typeData['begincode'],
             'arrival_date'      => $formatter->format($arrivalDate),
             'departure_date'    => $formatter->format($departureDate),
-            'name_type'         => $typeData['name'],
-            'name_place'        => $typeData['name_place'],
-            'show'              => $typeData['show'],
-            'price'             => $typeData['price'],
+            'name_type'         => $typeData['naam_ap'],
+            'name_place'        => $typeData['plaats'],
+            'show'              => $typeData['toonper'],
+            'price'             => $typeData['tarief'],
             'persons'           => $data->person,
             'reservation_costs' => $this->getParameter('app')['reservation_costs'],
             'options'           => $data->options,
+            'travelsum_table'   => $travelsum->table($data->booking, $typeId, $data->weekend, $data->person)['table'],
         ]);
 
         $mailer = $this->get('app.mailer.price_calculator');

@@ -81,4 +81,4 @@ services:
             - [setAppConfig,            ["%app%"]]
             - [setLocale,               ["@app.concern.locale"]]
             - [setTranslator,           ["@translator"]]
-            - [setAccommodationService, ["@app.accommodation"]]
+            - [setAccommodationService, ["@app.api.legacy.accommodation"]]

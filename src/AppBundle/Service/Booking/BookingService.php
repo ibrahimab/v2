@@ -17,19 +17,13 @@ class BookingService
     private $bookingDataService;
 
     /**
-     * @var AccommodationService
-     */
-    private $accommodationService;
-
-    /**
      * Constructor
      *
      * @param BookingDataService $bookingDataService
      */
-    public function __construct(BookingDataService $bookingDataService, AccommodationService $accommodationService)
+    public function __construct(BookingDataService $bookingDataService)
     {
-        $this->bookingDataService   = $bookingDataService;
-        $this->accommodationService = $accommodationService;
+        $this->bookingDataService = $bookingDataService;
     }
 
     /**

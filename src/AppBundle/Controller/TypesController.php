@@ -82,9 +82,8 @@ class TypesController extends Controller
         $userService->addViewedAccommodation($type);
 
         $seasonService     = $this->get('app.api.season');
-        $seasons           = $seasonService->seasons();
-        $currentSeason     = (isset($seasons[0]) ? $seasons[0] : null);
-        $seasonId          = (null !== $currentSeason ? $currentSeason['id'] : null);
+        $currentSeason     = $seasonService->current();
+        $seasonId          = $currentSeason['id'];
 
         $priceTableService = $this->get('app.api.legacy.price_table');
         $priceTable        = $priceTableService->getTable($typeId, $seasonId);
