@@ -44,11 +44,10 @@ abstract class LegacyService
      * @param ClientInterface $client
      * @param string          $apiUrl
      */
-    public function __construct(ClientInterface $client, WebsiteConcern $website, $redis)
+    public function __construct(ClientInterface $client, WebsiteConcern $website)
     {
         $this->client   = $client;
         $this->website  = $website;
-        $this->redis    = $redis;
         $this->uri      = $website->getConfig(WebsiteConcern::WEBSITE_LEGACY_API_URI);
         $this->params   = [];
     }
@@ -61,7 +60,7 @@ abstract class LegacyService
      */
     protected function setParams(array $params)
     {
-        $this->params = array_merge(['endpoint' => $this->endpoint, 'token' => $this->redis->get('api:legacy:token')], $params);
+        $this->params = array_merge(['endpoint' => $this->endpoint], $params);
 
         return $this;
     }

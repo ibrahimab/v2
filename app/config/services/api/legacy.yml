@@ -1,16 +1,24 @@
 services:
     app.api.legacy.price_table:
         class:      AppBundle\Service\Api\Legacy\PriceTable
-        arguments: ["@app.http.client.guzzle", "@app.concern.website", "@snc_redis.default"]
+        arguments: ["@app.http.client.guzzle", "@app.concern.website"]
 
     app.api.legacy.starting_price:
         class:      AppBundle\Service\Api\Legacy\StartingPrice
-        arguments: ["@app.http.client.guzzle", "@app.concern.website", "@snc_redis.default"]
+        arguments: ["@app.http.client.guzzle", "@app.concern.website"]
 
     app.api.legacy.additional_costs:
         class:      AppBundle\Service\Api\Legacy\AdditionalCosts
-        arguments: ["@app.http.client.guzzle", "@app.concern.website", "@snc_redis.default"]
+        arguments: ["@app.http.client.guzzle", "@app.concern.website"]
 
     app.api.legacy.features:
         class:      AppBundle\Service\Api\Legacy\Features
-        arguments: ["@app.http.client.guzzle", "@app.concern.website", "@snc_redis.default"]
+        arguments: ["@app.http.client.guzzle", "@app.concern.website"]
+
+    app.api.legacy.accommodation:
+        class:      AppBundle\Service\Api\Legacy\Accommodation
+        arguments: ["@app.http.client.guzzle", "@app.concern.website"]
+
+    app.api.legacy.travelsum:
+        class:      AppBundle\Service\Api\Legacy\Travelsum
+        arguments: ["@app.http.client.guzzle", "@app.concern.website"]

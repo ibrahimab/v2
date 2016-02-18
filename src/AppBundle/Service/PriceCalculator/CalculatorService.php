@@ -6,7 +6,7 @@ use       AppBundle\Concern\LocaleConcern;
 use       AppBundle\Service\Api\Price\PriceService;
 use       AppBundle\Service\Api\Option\OptionService;
 use       AppBundle\Service\Api\Season\SeasonService;
-use       AppBundle\Service\AccommodationService;
+use       AppBundle\Service\Api\Legacy\Accommodation;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       Symfony\Component\Translation\TranslatorInterface;
 use       IntlDateFormatter;
@@ -20,7 +20,7 @@ use       IntlDateFormatter;
 class CalculatorService
 {
     /**
-     * @var AccommodationService
+     * @var Accommodation
      */
     private $accommodationService;
 
@@ -143,11 +143,11 @@ class CalculatorService
     }
 
     /**
-     * @param  AccommodationService $accommodationService
+     * @param  Accommodation $accommodationService
      *
      * @return CalculatorService
      */
-    public function setAccommodationService(AccommodationService $accommodationService)
+    public function setAccommodationService(Accommodation $accommodationService)
     {
         $this->accommodationService = $accommodationService;
         return $this;
@@ -281,9 +281,9 @@ class CalculatorService
 
             $this->persons = [];
             $weekends      = $this->getWeekends();
-            $typeData      = $this->getAccommodationService()->get($this->type->getId(), $this->getWeekend(), $this->getPerson());
+            $typeData      = $this->getAccommodationService()->getInfo($this->type->getId(), $this->getWeekend(), $this->getPerson());
             $persons       = $this->priceService->getBookablePersons($this->type->getId(), $typeData['show'], array_keys($weekends));
-            $persons       = (null === $persons ? $typeData['number_of_persons_list'] : $persons);
+            $persons       = (null === $persons ? array_keys($typeData['aantalpersonen_array']) : $persons);
             $personLabel   = $this->translator->trans('person');
             $personsLabel  = $this->translator->trans('persons');
 
@@ -321,21 +321,16 @@ class CalculatorService
         if (null === $this->weekends) {
 
             $this->weekends  = [];
-            $typeData        = $this->getAccommodationService()->get($this->type->getId(), $this->getWeekend(), $this->getPerson());
+            $typeData        = $this->getAccommodationService()->getInfo($this->type->getId(), $this->getWeekend(), $this->getPerson());
             $datesOptions    = $this->getDatesOptions($this->type->getId());
             $maxDatesOptions = max($datesOptions);
-            $weekends        = $typeData['arrival_dates']['available'];
-            $timezone        = new \DateTimeZone(date_default_timezone_get());
-            $formatter       = new IntlDateFormatter($locale, IntlDateFormatter::FULL, IntlDateFormatter::FULL, $timezone, IntlDateFormatter::GREGORIAN);
-            $date            = new \DateTime();
+            $weekends        = $typeData['aankomstdatum_beschikbaar'];
             $time            = time();
 
-            $formatter->setPattern('eeee dd MMMM y');
-
-            foreach ($weekends as $weekend) {
+            foreach ($weekends as $weekend => $formatted) {
 
                 if ($weekend > $time && isset($datesOptions[$weekend]) && ($datesOptions[$weekend] > 1 || $datesOptions[$weekend] === $maxDatesOptions)) {
-                    $this->weekends[$weekend] = $formatter->format($date->setTimestamp($weekend));
+                    $this->weekends[$weekend] = $formatted;
                 }
             }
         }
@@ -470,6 +465,7 @@ class CalculatorService
     public function setBookingId($bookingId)
     {
         $this->bookingId = $bookingId;
+        return $this;
     }
 
     /**
