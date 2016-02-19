@@ -93,6 +93,7 @@ class PriceCalculatorController extends Controller
 
             $accommodationService = $this->get('app.api.legacy.accommodation');
             $seasonService        = $this->get('app.api.season');
+
             $currentSeason        = $seasonService->current();
             $data                 = $form->getData();
             $typeData             = $accommodationService->getInfo($type->getId(), $data->weekend, $data->person);

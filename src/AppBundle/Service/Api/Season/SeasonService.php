@@ -28,6 +28,7 @@ class SeasonService
     public function __construct(SeasonServiceRepositoryInterface $seasonServiceRepository)
     {
         $this->seasonServiceRepository = $seasonServiceRepository;
+        $this->seasons                 = [];
     }
 
     /**
