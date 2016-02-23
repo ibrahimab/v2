@@ -82,6 +82,7 @@ class TypesController extends Controller
         $userService->addViewedAccommodation($type);
 
         $seasonService     = $this->get('app.api.season');
+        $seasons           = $seasonService->seasons();
         $currentSeason     = $seasonService->current();
         $seasonId          = $currentSeason['id'];
 

@@ -16,6 +16,11 @@ class SeasonService
     private $seasonServiceRepository;
 
     /**
+     * @var array
+     */
+    private $seasons;
+
+    /**
      * Constructor
      *
      * @param SeasonServiceRepositoryInterface $seasonServiceRepository
@@ -38,7 +43,11 @@ class SeasonService
      */
     public function seasons()
     {
-        return $this->seasonServiceRepository->seasons();
+        if (null === $this->seasons) {
+            $this->seasons = $this->seasonServiceRepository->seasons();
+        }
+
+        return $this->seasons;
     }
 
     /**
