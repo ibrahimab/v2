@@ -22,7 +22,7 @@ class Staging implements AccessHandlerInterface
      * @var array
      * @static
      */
-    private static $_ALLOWED_IPS = ['62.194.208.250', '213.125.152.154', '31.223.173.113'];
+    private static $_ALLOWED_IPS = ['62.194.208.250', '213.125.152.154', '31.223.173.113', '37.34.56.191'];
 
     /**
      * Adding github validator in constructor
