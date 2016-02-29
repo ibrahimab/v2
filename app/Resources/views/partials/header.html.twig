@@ -1,59 +1,100 @@
-
-        <div class="header-container hide-on-load">
-            <div class="row header">
-                <div class="large-3 medium-3 small-6 columns column-logo">
-                    <a href="{{ path('home') }}">
-                        {% image 'bundles/app/img/logos/chalet.svg' %}<img id="logo" src="{{ asset_url }}" alt="Chalet home" />{% endimage %}
+{% set website_concern = website() %}
+{% set chat            = website_concern.getConfig(constant('WEBSITE_CONFIG_CHAT', website_concern)) %}
+{% if chat != false %}
+    {% set chat = chat|split('-')[1] %}
+{% endif %}
+<div class="header-block-wrapper">
+    <div class="row header-block">
+        <div class="small-12 small-centered columns">
+            <div class="row">
+                <div class="small-6 medium-3 large-3 columns">
+                    <a href="{{ path('home') }}" class="logo-link">
+                        {% image 'bundles/app/img/logos/chalet.svg' %}
+                            <img id="logo" src="{{ asset_url }}" alt="Chalet home" class="logo" />
+                        {% endimage %}
                     </a>
                 </div>
-                <div class="large-5 medium-5 small-6 columns column-contact">
-                    <div>
-                        <span class="small-up">
-                            {% set website_concern = website() %}
-                            {% set chat            = website_concern.getConfig(constant('WEBSITE_CONFIG_CHAT', website_concern)) %}
+                <div class="small-6 medium-5 large-5 contact-block columns">
+                    <ul class="contact-info hide-for-small-only">
+                        <li>
                             {% if chat != false %}
-                                {% set chat = chat|split('-')[1] %}
                                 <a href="#" data-role="chat-button" data-id="{{ chat }}" id="contact-chat"><i class="{{ opened() ? 'fi-comments' : 'sprite sprite-chat-closed chalets-icon-box' }}"></i>Chat</a>
-                                <span class="show-for-medium-up">{{ "general.or"|trans }}</span>
+                                {{ "general.or"|trans }}
                             {% endif %}
-                            <a href="tel:+31-348-434649" class="phone"><i class="fi-telephone"></i>0348 - 43 46 49</a>
-                        </span>
-                        <span class="show-for-medium-up"><i class="fi-clock"></i> <a href="{{ locale_path('contact') }}" id="opening-hours-contact">{{ "header.bar.opening-hours-contact"|trans }}</a></span>
-                    </div>
-                    <div class="show-for-small" id="link-saved">
-                        <a href="#" data-role="saved-item"><i class="fi-heart"></i>{{ 'header.bar.seen-and-saved'|trans }}</a>
-                    </div>
+                            <a id="phone-contact" href="tel:+31-348-434649" class="phone"><i class="fi-telephone"></i>0348 - 43 46 49</a>
+                        </li>
+                        <li>
+                            <a href="{{ locale_path('contact') }}" id="opening-hours-contact">
+                                <i class="fi-clock"></i>{{ "header.bar.opening-hours-contact"|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="contact-info show-for-small-only">
+                        {% if chat != false %}
+                        <li>
+                            <a href="#" data-role="chat-button" data-id="{{ chat }}" id="contact-chat"><i class="{{ opened() ? 'fi-comments' : 'sprite sprite-chat-closed chalets-icon-box' }}"></i>Chat</a>
+                        </li>
+                        {% endif %}
+                        <li>
+                            <a id="phone-contact" href="tel:+31-348-434649" class="phone"><i class="fi-telephone"></i>0348 - 43 46 49</a>
+                        </li>
+                        <li>
+                            <a href="#" class="seen-and-saved"><i class="fi-heart"></i>Gezien en bewaard</a>
+                        </li>
+                    </ul>
                 </div>
-                <div class="large-4 medium-4 hide-for-small columns column-lists">
-
-                    <div class="right">
-
-                        <div class="row zoover">
-
-                            <div class="small-12">
-                                <a href="{{ path('page_zooverawards') }}">
-                                    {% image 'bundles/app/img/logos/logo-zoover-awards.png' %}<img id="logo" src="{{ asset_url }}" alt="Chalet home" />{% endimage %}
-                                </a>
+                <div class="hide-for-small-only medium-4 large-4 columns">
+                    <div class="row">
+                        <div class="small-12 columns">
+                            <a href="{{ path('page_zooverawards') }}" class="right zoover-awards">
+                                {% image 'bundles/app/img/logos/logo-zoover-awards.png' %}
+                                    <img id="zoover-logo" src="{{ asset_url }}" alt="Chalet Zoover awards" />
+                                {% endimage %}
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="small-12 columns">
+                            <div class="lists-container" id="dropdown-container" data-role="saved-item">
+                                <button id="dropdown-saved" data-role="saved-item" class="button dropdown radius right" href="#" data-dropdown="dropdown-saved-list" aria-controls="dropdown-saved-list" aria-expanded="false">
+                                    <i class="fi-heart"></i>{{ "header.bar.seen-and-saved"|trans }}<i class="fi-play"></i>
+                                </button>
+                                <br />
+                                <ul id="dropdown-saved-list" data-dropdown-content class="f-dropdown" aria-hidden="true" tabindex="-1">
+                                    <li><a href="{{ locale_path('page_viewed') }}">Bekeken vakanties (<span data-role="viewed-count">{{ viewed_count() }}</span>)</a></li>
+                                    <li><a href="{{ locale_path('page_searches') }}">Zoekopdrachten (<span data-role="searches-count">{{ searches_count() }}</span>)</a></li>
+                                    <li><a href="{{ locale_path('page_saved') }}">Bewaarde vakanties (<span data-role="favorites-count">{{ favorites_count() }}</span>)</a></li>
+                                    <li><a href="zoekboek.html">Mijn boekingen</a></li>
+                                </ul>
                             </div>
-
                         </div>
-
-                        <div class="lists-container" id="dropdown-container" data-role="saved-item">
-                            <button id="dropdown-saved" data-role="saved-item" class="button dropdown radius right" href="#" data-dropdown="dropdown-saved-list" aria-controls="dropdown-saved-list" aria-expanded="false">
-                                <i class="fi-heart"></i>{{ "header.bar.seen-and-saved"|trans }}<i class="fi-play"></i>
-                            </button>
-                            <br />
-                            <ul id="dropdown-saved-list" data-dropdown-content class="f-dropdown" aria-hidden="true" tabindex="-1">
-                                <li><a href="{{ locale_path('page_viewed') }}">Bekeken vakanties (<span data-role="viewed-count">{{ viewed_count() }}</span>)</a></li>
-                                <li><a href="{{ locale_path('page_searches') }}">Zoekopdrachten (<span data-role="searches-count">{{ searches_count() }}</span>)</a></li>
-                                <li><a href="{{ locale_path('page_saved') }}">Bewaarde vakanties (<span data-role="favorites-count">{{ favorites_count() }}</span>)</a></li>
-                                <li><a href="zoekboek.html">Mijn boekingen</a></li>
-                            </ul>
-                        </div>
-
                     </div>
-
                 </div>
-
             </div>
         </div>
+    </div>
+</div>
+<div class="header-block-push"></div>
+<div class="menu-block hide-for-small-only">
+    <div class="row">
+        <div class="small-8 small-offset-3 columns">
+            {% set route = app.request.attributes.get('_route') %}
+            <ul class="main-menu">
+                <li class="home{% if route == 'frontpage' %} active{% endif %}">
+                    <a href="{{ path('home') }}">
+                        <i class="fi-home"></i>
+                    </a>
+                </li>
+                <li{% if route in ['search_nl', 'search_en'] %} class="active"{% endif %}>
+                    <a href="{{ locale_path('search') }}">zoek en boek</a>
+                </li>
+                <li{% if route in ['all_regions_nl', 'all_regions_en'] %} class="active"{% endif %}>
+                    <a href="{{ locale_path('all_regions') }}">skigebieden</a>
+                </li>
+                <li>
+                    <a href="#">aanbiedingen</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

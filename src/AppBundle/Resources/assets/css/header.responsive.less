@@ -1,0 +1,49 @@
+/* responsive header */
+
+/** tablet changes */
+@media only screen and (min-width: 40.063em) and (max-width: 64em) {
+
+    .header-block {
+
+        .lists-container#dropdown-container {
+            padding-top: 0.3rem;
+        }
+
+        .zoover-awards {
+            margin: 1rem 0 0.5rem 0;
+        }
+    }
+}
+
+/** phone changes */
+@media (max-width: 40em) {
+
+    .header-block {
+
+        .logo {
+
+            width: 135px;
+            height: 141px;
+        }
+
+        .contact-block {
+
+            padding-left: 0;
+            padding-right: 0;
+
+            ul.contact-info {
+
+                padding-top: 1.5rem;
+
+                li a.seen-and-saved {
+
+                    border: thin solid @seen-and-saved-border-color;
+                    color: @seen-and-saved-color;
+                    border-radius: 3px;
+                    padding: 0.2rem 0.4rem;
+                    font-size: 0.72rem;
+                }
+            }
+        }
+    }
+}

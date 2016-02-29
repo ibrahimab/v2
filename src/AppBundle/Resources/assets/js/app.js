@@ -10,21 +10,27 @@
         /**
          * fixed header scroll effects
          */
+        var body         = jq('body');
+        var menu         = jq('div.home-menu ul');
         var stickyHeader = function() {
 
             if (window.innerWidth <= 641) {
 
                 // mobile does not have sticky header!
-                jq('body').removeClass('smaller');
+                body.removeClass('smaller');
                 return;
             }
 
             var distanceY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-            var body      = jq('body');
 
             if (distanceY > 10) {
+
+                menu.css('z-index', 0);
                 body.addClass('smaller');
+
             } else {
+
+                menu.css('z-index', 999);
                 body.removeClass('smaller');
             }
         };
