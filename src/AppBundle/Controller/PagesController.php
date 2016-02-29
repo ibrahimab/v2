@@ -28,6 +28,18 @@ use       Symfony\Component\HttpFoundation\Request;
 class PagesController extends Controller
 {
     /**
+     * @Route("/test", name="test")
+     */
+    public function test()
+    {
+        return $this->render('pages/test.html.twig', [
+            'accommodations' => 1,
+            'regions' => 1,
+            'weekends' => [],
+        ]);
+    }
+
+    /**
      * @Route("/", name="home")
      * @Template(":pages:home.html.twig")
      */

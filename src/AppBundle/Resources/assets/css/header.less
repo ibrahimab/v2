@@ -1,282 +1,121 @@
-
 @import "globals.less";
 
-header {
-    height: 370px;
-    margin-top: 0;
-    z-index: 0;
-}
+/* remove BuroDMG header hack */
+#home header { margin-top: 0; }
 
-div.header-space { height: 110px; }
-
-#home div.header-space { height: 0; }
-
-body.smaller {
-    div.header-space { height: 65px; }
-}
-
-@media all and (min-width: 64em) {
-
-    div.header-container {
-
-        -webkit-transition: height 0.5s;
-        -moz-transition: height 0.5s;
-        -ms-transition: height 0.5s;
-        -o-transition: height 0.5s;
-        transition: height 0.5s;
-        -webkit-backface-visibility: hidden;
-    }
-
-    div.column-logo {
-
-        img {
-
-            -webkit-transition: all 0.5s;
-            -moz-transition: all 0.5s;
-            -ms-transition: all 0.5s;
-            -o-transition: all 0.5s;
-            transition: all 0.5s;
-            -webkit-backface-visibility: hidden;
-        }
-    }
-}
-
-div.header-container {
+.header-block-wrapper {
 
     position: fixed;
-    height:   110px;
-    width:    100%;
-    top:      0;
-    left:     0;
-    background: #fff;
-    z-index: 100;
-
-    div.column-logo {
-
-        padding-right: 0.9375em;
-
-        img {
-
-            margin: 1rem 0 0 0;
-            height: 162px;
-            width: 206px;
-        }
-
-        &:hover { opacity: 0.9; }
-    }
-
-    div.column-contact {
-
-        padding-top: 2.7rem;
-
-        i.fi-clock { color: #193761; }
-
-        // mobile version: bigger margins to prevent mis-tapping
-        @media only screen and (max-width: 40em) {
-
-            .phone {
-                display: inline-block;
-                padding-top: 0.5rem;
-            }
-
-            #link-saved {
-                margin-top: 0.5rem;
-            }
-        }
-
-        #link-saved a {
-
-            border: thin solid #818181;
-            color: #818181;
-            border-radius: 3px;
-            padding: 0.2rem 0.4rem;
-            font-size: 0.72rem;
-        }
-    }
-
-    div.column-lists {
-
-        div.zoover {
-
-            padding-top: 10px;
-            margin: 0;
-
-            &:hover { opacity: 0.8; }
-        }
-
-        div.lists-container {
-            padding-top: 10px;
-        }
-    }
-}
-
-div.header-fill { height: 114px; }
-
-div.header {
-
+    z-index: 1;
     width: 100%;
-    margin: 0 auto;
+    background-color: #FFF;
 }
 
-div.home-menu {
+.header-block-push {
+    height: 110px;
+}
 
-    /* IE8 */
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#E8D5E1F9, endColorstr=#E8D5E1F9)";
-    /* IE9+ */
-    filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#E8D5E1F9, endColorstr=#E8D5E1F9)";
-    background-color: rgba(213, 225, 249, 0.91);
-    padding-top: 20px;
+.header-block {
 
-    ul {
+    background-color: #FFFFFF;
 
-        position: relative;
-        z-index: 101;
+    a.logo-link {
+        display: inline-block;
+    }
+
+    .logo {
+
+        width: 206px;
+        height: 162px;
+        margin: 1rem 0 0 0;
+        position: absolute;
+        top: 0;
+        z-index: 2; /* floating logo above the menu */
+
+        &:hover {
+            opacity: 0.9;
+        }
+    }
+
+    .zoover-awards {
+        margin: 1rem 1rem 0.5rem 0;
+    }
+
+    a#contact-chat, a#opening-hours-contact {
+
+        border-bottom: 1px dotted @header-link-color;
+        text-decoration: none;
+
+        &:active, &:hover, &:visited {
+            border-bottom-style: solid;
+        }
+    }
+
+    ul.contact-info {
+
         list-style: none;
-        margin: 0 0.875rem;
-        padding: 0;
+        padding-top: 2.5rem;
+    }
+}
+
+.menu-block {
+
+    /* IE9+ */
+    filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=@menu-bg-gradient-start, endColorstr=@menu-bg-gradient-end)";
+    /* Rest */
+    background-color: @menu-bg-color;
+
+    /* fix max-width issue foundation that maxes out on 74em */
+    max-width: 100%;
+
+    /* lower menu block when on a certain page */
+    margin-top: 30px;
+
+    ul.main-menu {
+
+        list-style: none;
+        height: 15px;
 
         li {
 
             float: left;
-            list-style: none;
-            font-size: 1.2rem;
-            line-height: 1rem;
-            height: 25px;
-            padding-left: 6px;
             margin-left: 30px;
+            padding-top: 8px;
+            font-size: 1.2rem;
+            line-height: 1.5rem;
 
-            &.home { margin-left: 0; font-size: 22px; line-height: 0; width: 25px;  }
+            &.home {
 
-            &:hover, &.active { border-bottom: 3px solid #193761; }
+                margin-left: 0;
+                font-size: 1.375rem;
+                width: 25px;
+                padding-left: 0.25rem;
+            }
+
+            &:hover, &:active {
+                border-bottom: 3px solid @menu-hover-border-color;
+            }
+
+            a:active, a:hover, a:visited {
+
+                text-decoration: none;
+                color: @menu-link-color;
+            }
 
             a {
                 display: inline-block;
-                position: relative;
-                z-index: 1;
-                padding: 9px;
-                margin: -9px;
-            }
-
-            a, a:active, a:hover, a:visited { text-decoration: none; color: #193761;}
-        }
-    }
-}
-
-.not-home {
-    div.home-menu { padding-top: 10px; }
-}
-
-@media all and (max-width: 64em) {
-
-    div.header-container {
-
-        div.column-logo img { height: 152px; width: 206px; }
-        div.column-contact { padding-top: 2rem; }
-    }
-
-    #dropdown-container { padding-top: 0.8rem; }
-
-    div.home-menu {
-
-        padding-top: 2px;
-
-        ul li {
-
-            font-size: 1rem;
-            padding-top: 4px;
-            &.home { padding-top: 2px; }
-        }
-    }
-}
-
-@media all and (max-width: 64em) and (orientation: portrait) {
-
-    div.header-container {
-
-        div.column-logo img { height: 166px; }
-    }
-}
-
-@media all and (max-width: 40em) {
-
-    div.header-container {
-
-        position: inherit;
-        div.column-logo img { height: 117px; }
-        div.column-contact { padding-top: 1rem; a.phone { font-size: 0.98rem; } }
-    }
-
-    div.home-menu { display: none; }
-}
-
-body.smaller {
-
-    div.header-container {
-
-        box-shadow: 0 1px 3px #193761;
-        -webkit-box-shadow: 1px 1px 3px #193761 #193761;
-        height: 51px;
-
-        div.column-logo {
-
-            img {
-                margin-top: 0.1rem;
-                height: 50px;
-            }
-        }
-
-        div.column-contact { padding-top: 0; }
-
-        div.column-lists {
-
-            div.zoover { margin-top: -4px; padding-top: 0; width: 174px; height: 17px; }
-
-            div.lists-container {
-
-                padding-top: 6px;
-                button#dropdown-saved { padding: 0.4rem 0.2rem 0.4rem 1rem; font-size: 0.8rem; }
             }
         }
     }
-
-    header {
-        height: 359px;
-    }
-
-    div.home-menu {
-
-        ul {
-            z-index: 1;
-        }
-    }
 }
 
-@media all and (min-width: 40.063em) and (max-width: 64em) {
-
-    body.smaller {
-
-        div.zoover img { height: 13px; }
-        div.column-lists {
-            div#dropdown-container { padding-top: 0.3rem; }
-        }
-    }
+/* fixing menu block for home only */
+#home .menu-block {
+    margin-top: 0;
 }
 
-@media all and (min-width: 40.063em) and (max-width: 64em) {
+/* include on scroll rules */
+@import "header.small.less";
 
-    // tablet
-
-    .landing-page header {
-        background: url('/bundles/app/img/headers/header-sub-tablet.png') no-repeat bottom center #f0f3fa !important;
-    }
-}
-
-@media all and (max-width: 40.063em) {
-
-    // mobile
-    .landing-page header {
-
-        background: url('/bundles/app/img/headers/header-sub-mobile.png') no-repeat bottom center #f0f3fa !important;
-        height: auto;
-    }
-}
+/* include responsive rules */
+@import "header.responsive.less";
