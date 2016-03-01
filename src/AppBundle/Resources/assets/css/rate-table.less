@@ -1,7 +1,11 @@
 
 @import "globals.less";
 
-.tarieventabel_wrapper {
+
+.tarieventabel_tables_wrapper {
+
+    border-left: 1px solid #bfbfbf;
+    border-right: 1px solid #bfbfbf;
 
     table, caption, tbody, tfoot, thead, tr, th, td {
 
@@ -15,12 +19,6 @@
         text-align: inherit;
     }
 
-    td:last-child {
-
-        color: inherit;
-        text-align: inherit;
-    }
-
     table {
 
         border-collapse: collapse;
@@ -29,108 +27,195 @@
         width: auto;
         height: auto;
     }
+
+
+    tr:nth-of-type(2n) {
+        background-color: #fff;
+    }
+
+    tr.number-of-persons td:first-child {
+        color: #193761;
+        font-weight: bold;
+
+        border-right: 1px solid #bfbfbf;
+
+    }
+
+    .tarieventabel_titels_links {
+
+        td:first-child {
+            text-align: left;
+            color: #818181;
+            font-weight: normal;
+
+            border-right: 1px solid #bfbfbf;
+        }
+
+    }
+
+    tr.tarieventabel_datumbalk {
+
+        td {
+            text-align: center;
+        }
+
+    }
+
+
+    td:last-child {
+
+        // color: inherit;
+        // text-align: inherit;
+    }
+
 }
 
 .tarieventabel_hulp_bij_online_boeken {
-	width: 664px;
-	text-align: right;
-	margin-bottom: 5px;
+    width: 664px;
+    text-align: right;
+    margin-bottom: 5px;
 }
 
 .tarieventabel_wrapper {
-	width: 660px;
-	position: relative;
-	z-index: 1;
-	border-right: 2px solid #d5e1f9;
-	border-left: 2px solid #d5e1f9;
-	border-bottom: 2px solid #d5e1f9;
+    position: relative;
+    z-index: 1;
+    background-color: #e9edf8;
+    padding: 7px;
 }
 
 .tarieventabel_top {
-	padding: 5px;
-	background-color: #d5e1f9;
-	color: #003366;
-	min-height: 38px;
+    padding: 5px;
+    color: #222222;
+    min-height: 38px;
 }
-
 .tarieventabel_top h1 {
-	color: #003366;
-	font-size: 13.3px;
-	font-weight: bold;
+    color: #193761;
+    font-size: 24px !important;
 }
 
 .tarieventabel_top_left {
-	float: left;
+    float: left;
 }
 
 .tarieventabel_top_right {
-	float: right;
-	text-align: right;
+    float: right;
+    text-align: right;
 }
 
 .tarieventabel_top_interne_link {
-	float: right;
-	margin-bottom: 3px;
+    float: right;
+    margin-bottom: 3px;
 }
 
 .tarieventabel_top_valuta {
-	float: right;
-	height: 65px;
-	overflow: hidden;
+    float: right;
+    height: 65px;
+    overflow: hidden;
 }
 
 .tarieventabel_top_valuta_select {
-	text-align: left;
-	display: inline;
+    text-align: left;
+    display: inline;
 }
 
 .tarieventabel_top_valuta select {
-	width: 100px;
+    width: 100px;
 }
 
 .tarieventabel_top_valuta_toelichting1 {
-	margin-top: 5px;
-	font-style: italic;
-	font-size: 0.8em;
-	height: 14px;
+    margin-top: 5px;
+    font-style: italic;
+    font-size: 0.8em;
+    height: 14px;
 }
 
 .tarieventabel_top_valuta_toelichting2 {
-	margin-top: 2px;
-	font-style: italic;
-	font-size: 0.8em;
-	height: 14px;
+    margin-top: 2px;
+    font-style: italic;
+    font-size: 0.8em;
+    height: 14px;
 }
 
+
 .tarieventabel_toelichting_inner {
-	position: relative;
-	overflow: auto;
-	overflow-x: hidden;
+
+    margin: 15px 0 0 0;
+
+    position: relative;
+    overflow: auto;
+    overflow-x: hidden;
+
+    h1 {
+        color: #193761;
+        font-size: 16px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    ul {
+        margin-bottom: 0;
+    }
+
+    .tarieventabel_bkk_groups {
+
+        -webkit-column-count: 2;
+        -webkit-column-gap: 20px;
+
+        -moz-column-count: 2;
+        -moz-column-gap: 20px;
+
+        column-count: 2;
+        column-gap: 20px;
+    }
+
+    .tarieventabel_bkk_group {
+        -moz-column-break-inside: avoid;
+        -webkit-column-break-inside: avoid;
+        break-inside: avoid;
+        margin: 0 0 15px 0;
+        display: table;
+    }
+}
+
+.button_to_other_website {
+    display: none;
+}
+
+@media screen and (max-width: 900px) {
+
+    .tarieventabel_toelichting_inner {
+
+        .tarieventabel_bkk_groups {
+            -webkit-column-count: auto;
+            -moz-column-count: auto;
+            column-count: auto;
+        }
+    }
+}
+
+.tarieventabel_kosten_ter_plaatse_indicatief {
+    font-style: italic;
 }
 
 .tarieventabel_toelichting {
-	background-color: #d5e1f9;
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-bottom: 15px;
-	overflow: auto;
-	overflow-x: hidden;
+    overflow: auto;
+    overflow-x: hidden;
 }
 
 .tarieventabel_toelichting h1 {
-	font-size: 12px;
-	font-weight: bold;
-	margin: 0;
-	padding: 0;
-	padding-bottom: 0.3em;
-	padding-top: 20px;
-	color: #003366;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    padding-bottom: 0.3em;
+    padding-top: 20px;
+    color: #003366;
 }
 
 .tarieventabel_toelichting_switch_seasons {
-	position: absolute;
-	right: 10px;
-	top: 10px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
 }
 
 .tarieventabel_toelichting_all_seasons {
@@ -138,197 +223,258 @@
 }
 
 .tarieventabel_toelichting_one_season {
-	display: none;
+    display: none;
 }
 
 .tarieventabel_toelichting_active_season {
-	display: block;
+    display: block;
 }
 
+.tarieventabel_totaalprijs_wrapper {
+    // display: none;
+}
+
+
 .tarieventabel_totaalprijs {
-	border: 1px solid #003366;
-	margin-top: 15px;
-	margin-bottom: 5px;
-	padding: 5px;
-	font-weight: bold;
-	color: #003366;
+
+    // display: none;
+    // background-color: #e9edf8;
+    // background-color: red;
+    margin: 15px auto 15px auto;
+    // margin-top: 15px;
+    // margin-bottom: 5px;
+    padding: 5px;
+    color: #003366;
+
+    border: 1px solid #036;
+
+    box-sizing: border-box;
+    max-width: 640px;
+
+    table {
+        background-color: #e9edf8;
+        border: 0;
+        margin: 0;
+
+        border-spacing: 5px;
+        border-collapse: separate;
+
+        .header {
+            font-weight: bold;
+        }
+
+        td {
+            padding: 0;
+            color: #036;
+        }
+
+        tr:nth-of-type(2n) {
+            background-color: #e9edf8;
+        }
+
+        tr.tarieventabel_totaalprijs_exclude_bkk_show_bkk td {
+            color: #777777;
+        }
+
+    }
+
+    .button {
+        font-size: 13px;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .button-book {
+        background-color: #fb6703;
+        border-color: #fb6703;
+    }
+
+    .button-option-request {
+        background-color: #2285a2;
+        border-color: #2285a2;
+    }
+
+
 }
 
 .tarieventabel_totaalprijs_white {
-	background-color: #ffffff !important;
+    // background-color: #ffffff !important;
 }
 
 .tarieventabel_totaalprijs_left {
-	display:inline-block;
-	width: 290px;
-	margin-bottom: 10px;
+    display:inline-block;
+    width: 290px;
+    margin-bottom: 10px;
 }
 
 .tarieventabel_totaalprijs_right {
-	color: #000000;
-	display: inline-block;
-	text-align: right;
-	width: 200px;
+    color: #000000;
+    display: inline-block;
+    text-align: right;
+    width: 200px;
 }
 
 .tarieventabel_totaalprijs_right.datum {
-	font-weight: normal;
+    font-weight: normal;
 }
 
 .tarieventabel_totaalprijs .copy-to-clipboard-icon {
-	display: inline-block;
-	background: url("../pic/icons/copy.png") top left no-repeat;
-	height: 16px;
-	width: 16px;
-	cursor: pointer;
-	margin: 0 0 -4px 3px;
+    display: inline-block;
+    background: url("../pic/icons/copy.png") top left no-repeat;
+    height: 16px;
+    width: 16px;
+    cursor: pointer;
+    margin: 0 0 -4px 3px;
 }
 
 .tarieventabel_totaalprijs .copy-to-clipboard-text {
-	position: absolute;
-	top: -1000px;
-	left: -1000px;
+    position: absolute;
+    top: -1000px;
+    left: -1000px;
 }
 
 .tarieventabel_totaalprijs button {
-	border: 1px solid #fb6703;
-	display: inline-block;
-	background-color: #fb6703;
-	color: #ffffff;
-	margin-left: 25px;
-	cursor: pointer;
+    border: 1px solid #fb6703;
+    display: inline-block;
+    background-color: #fb6703;
+    color: #ffffff;
+    margin-left: 25px;
+    cursor: pointer;
 }
 
 .tarieventabel_totaalprijs button:hover {
-	border: 1px solid #003366;
+    border: 1px solid #003366;
 }
 
 .tarieventabel_totaalprijs_commissie {
-	font-weight: normal;
-	display: none;
+    font-weight: normal;
+    display: none;
 }
 
 .tarieventabel_totaalprijs_toggle_commissie {
-	margin:0;
-	display: block;
-	font-weight: normal;
+    margin:0;
+    display: block;
+    font-weight: normal;
 }
 
 .tarieventabel_totaalprijs_specificatie {
-	display: inline-block;
-	background: url("../pic/information_icon_with_padding.png") top left no-repeat;
-	width: 18px;
-	height:18px;
-	margin-left: 5px;
-	cursor: pointer;
+    display: inline-block;
+    background: url("../pic/information_icon_with_padding.png") top left no-repeat;
+    width: 18px;
+    height:18px;
+    margin-left: 5px;
+    cursor: pointer;
 }
 
 .tarieventabel_totaalprijs_specificatie:hover {
-	opacity: 0.6;
+    opacity: 0.6;
 }
 
 .tarieventabel_totaalprijs_specificatie_popup {
-	position: absolute;
-	z-index: 500;
-	font-size: 0.9em;
-	top: -100px;
-	left: -1000px;
-	width: 530px;
-	min-height: 100px;
-	border: 1px solid #003366;
-	background-color: #d5e1f9;
-	-moz-box-shadow: 5px 5px 5px #888;
-	-webkit-box-shadow: 5px 5px 5px #888;
-	box-shadow: 5px 5px 5px #888;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=135, Color='#888888')";
-	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=135, Color='#888888');
-	display: none;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-		box-sizing: border-box;
-	padding: 10px;
+    position: absolute;
+    z-index: 500;
+    font-size: 0.9em;
+    top: -100px;
+    left: -1000px;
+    width: 530px;
+    min-height: 100px;
+    border: 1px solid #003366;
+    background-color: #d5e1f9;
+    -moz-box-shadow: 5px 5px 5px #888;
+    -webkit-box-shadow: 5px 5px 5px #888;
+    box-shadow: 5px 5px 5px #888;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=135, Color='#888888')";
+    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=135, Color='#888888');
+    display: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    padding: 10px;
 }
 
 .tarieventabel_totaalprijs_specificatie_popup table {
-	width: 100%;
+    width: 100%;
 }
 
 .tarieventabel_totaalprijs_specificatie_popup table td {
-	vertical-align: top;
+    vertical-align: top;
 }
 
 .tarieventabel_totaalprijs_specificatie_aantal {
-	text-align: right;
+    text-align: right;
 }
 
 .tarieventabel_totaalprijs_specificatie_naam {
-	width: 99%;
+    width: 99%;
 }
 
 .tarieventabel_totaalprijs_specificatie_popup_bold {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 .tarieventabel_totaalprijs_specificatie_popup_bedrag {
-	text-align: right;
+    text-align: right;
 }
 
 .tarieventabel_totaalprijs_specificatie_popup img.close {
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
 }
 
 .tarieventabel_totaalprijs_specificatie_popup img.close:hover {
-	opacity: 0.6;
+    opacity: 0.6;
 }
 
 .tarieventabel_totaalprijs_opmerking1 {
-	font-weight: normal;
-	font-style: normal;
-	margin-bottom: 16px;
+    font-weight: normal;
+    font-style: normal;
+    margin-bottom: 16px;
 }
 
 .tarieventabel_totaalprijs_opmerking2 {
-	font-weight: normal;
-	font-style: italic;
+    font-weight: normal;
+    font-style: italic;
 }
 
 .toelichting_onderdeel {
-	margin-left: 20px;
+    margin-left: 20px;
 }
 
 .toelichting_bereken_totaalbedrag {
-	padding-top: 20px;
+    padding-top: 20px;
 }
 
 .tarieventabel_toelichting table {
-	width: 100%;
+    width: 100%;
 }
 
 .tarieventabel_border {
-	border: 1px solid #d5e1f9;
+    border: 1px solid #bfbfbf;
 }
 
 .tarieventabel_border td {
-	border: 1px solid #d5e1f9;
+    border: 1px solid #bfbfbf;
 }
 
 .tarieventabel_titels_links {
-	float: left;
-	border-top-width: 0px;
-	border-left-width: 0px;
-	border-right: 2px solid #d5e1f9;
+    float: left;
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-right: 2px solid #bfbfbf;
 }
 
 .tarieventabel_titels_links td {
-	border-right-width: 0px;
-	border-left-width: 0px;
+    border-right-width: 0px;
+    border-left-width: 0px;
 }
 
 .tarieventabel_wrapper_rechts {
-	overflow-x: scroll;
+    overflow-x: scroll;
+    // border: 1px solid #bfbfbf;
 }
 
 
@@ -348,339 +494,349 @@
 
 /*scrollbar tarieventabel*/
 .mac-osx .tarieventabel_wrapper_rechts::-webkit-scrollbar, .mobile .tarieventabel_wrapper_rechts::-webkit-scrollbar {
-	-webkit-appearance: none;
+    -webkit-appearance: none;
 }
 
 .mac-osx .tarieventabel_wrapper_rechts::-webkit-scrollbar:horizontal, .mobile .tarieventabel_wrapper_rechts::-webkit-scrollbar:horizontal {
-	height: 13px;
+    height: 13px;
 }
 
 .mac-osx .tarieventabel_wrapper_rechts::-webkit-scrollbar-thumb, .mobile .tarieventabel_wrapper_rechts::-webkit-scrollbar-thumb {
-	border-radius: 8px;
-	border: 2px solid white;
-	background-color: rgba(0, 0, 0, .5);
+    border-radius: 8px;
+    border: 2px solid white;
+    background-color: rgba(0, 0, 0, .5);
 }
 
 
 .tarieventabel_content {
-	float: left;
-	border-top-width: 0px;
-	border-left-width: 0px;
-	border-right-width: 0px;
+    float: left;
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
 }
 
 .tarieventabel_content td {
-	font-size: 12.283px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	padding: 5px;
+    font-size: 12.283px;
+    font-family: "Roboto", sans-serif;
+    padding: 5px;
 }
 
 .tarieventabel_titels_links td {
-	font-size: 12.283px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	padding: 5px;
+    font-size: 12.283px;
+    font-family: "Roboto", sans-serif;
+    padding: 5px;
 }
 
 .tarieventabel_maanden_leeg {
-	width: 150px !important;
+    width: 150px !important;
 }
 
 .tarieventabel_maanden td {
-	text-align: center;
-	font-size: 14px;
-	white-space: nowrap;
-	border-top-width: 0px;
-	height: 19px !important;
+    text-align: center;
+    white-space: nowrap;
+    height: 19px !important;
+    font-size: 16px;
+    color: #193761;
+    font-weight: bold;
 }
 
 .tarieventabel_datumbalk {
-	background-color: #e6f0fc;
-	height: 26px !important;
-}
+    height: 26px !important;
 
-.tarieventabel_datumbalk td {
-	font-size: 11px;
-	border-width: 0px;
-	height: 15px !important;
-	overflow: hidden;
+    tr {
+        font-size: 11px;
+        border-width: 0px;
+        height: 15px !important;
+        overflow: hidden;
+    }
+
 }
 
 .tarieventabel_korting_tr td {
-	text-align: center;
+    text-align: center;
 }
 
 .tarieventabel_beschikbaarheid_tr {
-	text-align: center;
+    text-align: center;
 }
 
 .tarieventabel_commissie {
-	/*display: none;*/
+    /*display: none;*/
 }
 
 .tarieventabel_commissie_tr {
-	text-align: center;
+    text-align: center;
 }
 
 .tarieventabel_datumbalk_content {
-	text-align: center;
+    text-align: center;
+
+    td:last-child {
+        border-right: 0;
+    }
 }
 
 .tarieventabel_datumbalk_minder_opvallend td {
-	color: #777777;
+    color: #777777;
 }
 
 .tarieventabel_datumbalk_opvallend {
-	color: #000000 !important;
-	font-weight: bold;
+    color: #000000 !important;
+    font-weight: bold;
 }
 
 .tarieventabel_tarieven_beschikbaarheid_1 {
-	background-color: #00ff00;
-	width: 40px;
-	margin-left: auto;
-	margin-right: auto;
-	border-radius: 4px;
+    background-color: #00ff00;
+    width: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 4px;
 }
 
 .tarieventabel_tarieven_beschikbaarheid_2 {
-	background-color: #ffcc99;
-	width: 40px;
-	margin-left: auto;
-	margin-right: auto;
-	border-radius: 4px;
+    background-color: #ffcc99;
+    width: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 4px;
 }
 
 .tarieventabel_tarieven_beschikbaarheid_3 {
-	background-color: #c0c0c0;
-	width: 40px;
-	margin-left: auto;
-	margin-right: auto;
-	border-radius: 4px;
+    background-color: #c0c0c0;
+    width: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 4px;
 }
 
 .tarieventabel_tarieven_niet_beschikbaar {
-	border-radius: 0;
-	width: auto;
-	background-color: #bababa;
-	margin-left: auto;
-	margin-right: auto;
+    border-radius: 0;
+    width: auto;
+    background-color: #e7e7e7;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .tarieventabel_tarieven_gekozen {
-	background-color: #a8f4f0;
+    background-color: #a8f4f0;
 }
 
 .tarieventabel_tarieven td {
-	text-align: center;
-	width: 60px;
+    text-align: center;
+    width: 60px;
 }
 
 .tarieventabel_tarieven td.tarieventabel_tarieven_beschikbaar {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .tarieventabel_tarieven td.tarieventabel_tarieven_beschikbaar:hover {
-	background-color: #fb6703;
+    background-color: #fb6703;
 }
 
 .tarieventabel_tarieven td:hover .tarieventabel_tarieven_aanbieding {
-	background-color: #fb6703;
+    background-color: #fb6703;
 }
 
 .tarieventabel_tarieven_div {
-	width: 55px;
+    width: 55px;
 }
 
 .tarieventabel_pijl {
-	font-size: 12px;
-	position: absolute;
-	top: 77px;
-	height: 15px;
-	padding-top: 32px;
-	padding-bottom: 32px;
-	background-color: #5e7e9e;
-	cursor: pointer;
-	color: #ffffff;
-	text-align: center;
-	width: 8px;
-	z-index: 10;
-	overflow: hidden;
+    font-size: 12px;
+    position: absolute;
+    top: 77px;
+    height: 15px;
+    padding-top: 32px;
+    padding-bottom: 32px;
+    background-color: #5e7e9e;
+    cursor: pointer;
+    color: #ffffff;
+    text-align: center;
+    width: 8px;
+    z-index: 10;
+    overflow: hidden;
 
-	display: none;
+    display: none;
 }
 
 /*zorgen dat bij vaak klikken div niet blauw wordt*/
 .tarieventabel_pijl:focus, .tarieventabel_pijl:active {
-	outline: none !important;
-	-moz-outline-style: none !important;
-	-webkit-tap-highlight-color: rgba(0,0,0,0);
-	-webkit-user-select: none;
+    outline: none !important;
+    -moz-outline-style: none !important;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-user-select: none;
 }
 
 .tarieventabel_pijl:hover {
-	background-color: #003366;
+    background-color: #003366;
 }
 
 .tarieventabel_pijl_rechts {
-	right: -2px;
+    right: -2px;
 }
 
 .tarieventabel_pijl_links {
-	left: 160px;
+    left: 160px;
 }
 
 .tarieventabel_pijl_scroll_greyed_out, .tarieventabel_pijl_scroll_greyed_out:hover {
-	background-color: #cccccc;
-	cursor: default;
+    background-color: #cccccc;
+    cursor: default;
 }
 
 .tarieventabel_pijl_scrollstop, .tarieventabel_pijl_scrollstop:hover {
-	background-color: red;
+    background-color: red;
 }
 
 .mobile .tarieventabel_pijl {
-	width: 16px;
+    width: 16px;
 }
 
 .tarieventabel_tarieven_kolom_links {
-	border-left-width: 0px !important;
+    border-left-width: 0px !important;
 }
 
 .tarieventabel_tarieven_kolom_rechts {
-	border-right-width: 0px !important;
+    border-right-width: 0px !important;
 }
 
 .tarieventabel_tarieven_kolom_begin_seizoen {
-	border-left: 1px solid red !important;
+    border-left: 1px solid red !important;
 }
 
 .tarieventabel_tarieven_kolom_eind_seizoen {
-	border-right: 1px solid red !important;
+    border-right: 1px solid red !important;
 }
 
 .tarieventabel_verbergen {
-	display: none;
+    display: none;
 }
 
 .tarieventabel_toggle_toon_verberg {
-	margin-left: 3px;
-	margin-top: -12px;
-	margin-bottom: 10px;
-	width: 145px;
-	font-size:10px;
+    margin-left: 3px;
+    margin-top: -12px;
+    margin-bottom: 10px;
+    width: 145px;
+    font-size:10px;
 }
 
 .tarieventabel_toggle_toon_verberg a {
-	text-decoration: none;
+    text-decoration: none;
 }
 
 .tarieventabel_toggle_toon_verberg span {
-	text-decoration: underline !important;
+    text-decoration: underline !important;
 }
 
 .tarieventabel_redis_error_message {
-	margin: 10px 0 15px 162px;
-	padding: 5px;
-	background-color: yellow;
+    margin: 10px 0 15px 162px;
+    padding: 5px;
+    background-color: yellow;
 }
 
 .tarieventabel_totaal_message {
-	margin: 10px 0 15px 162px;
+    margin: 10px 0 15px 162px;
 }
 
 .tarieventabel_legenda {
-	margin-top: 10px;
-	margin-left: 162px;
+    margin-top: 10px;
+    margin-left: 162px;
 }
 
 .tarieventabel_legenda > div {
-	margin-bottom: 7px;
+    margin-bottom: 7px;
+    line-height: 15px;
+    font-style: italic;
+    font-size: 12.8px;
+    color: #222222;
 }
 
 .tarieventabel_legenda span {
-	font-size: 10px;
+    font-size: 10px;
+    display: inline-block;
 }
 
 .tarieventabel_voorraad_content_tr {
-	text-align: center;
+    text-align: center;
 }
 
 .tarieventabel_voorraad_tr td {
-	font-size: 9px !important;
-	padding: 0px;
-	padding-left: 2px;
-	padding-right: 2px;
+    font-size: 9px !important;
+    padding: 0px;
+    padding-left: 2px;
+    padding-right: 2px;
 }
 
 .tarieventabel_voorraad_tr td img {
-	margin-top: 3px;
+    margin-top: 3px;
 }
 
 .tarieventabel_voorraad_garantie {
-	background-color: #00ff00;
+    background-color: #00ff00;
 }
 
 .tarieventabel_voorraad_allotment {
-	background-color: #ccffcc;
+    background-color: #ccffcc;
 }
 
 .tarieventabel_voorraad_aflopen_allotment {
-	background-color: #ccffcc;
+    background-color: #ccffcc;
 }
 
 .tarieventabel_voorraad_vervallen_allotment {
-	background-color: #f88912;
+    background-color: #f88912;
 }
 
 .tarieventabel_voorraad_optie_leverancier {
-	background-color: #ccffcc;
+    background-color: #ccffcc;
 }
 
 .tarieventabel_voorraad_xml {
-	background-color: #ff99cc;
+    background-color: #ff99cc;
 }
 
 .tarieventabel_voorraad_request {
-	background-color: #ffcc99;
+    background-color: #ffcc99;
 }
 
 .tarieventabel_voorraad_optie_klant {
-	background-color: #ccffff;
+    background-color: #ccffff;
 }
 
 .tarieventabel_voorraad_totaal {
-	background-color: #ffff99;
+    background-color: #ffff99;
 }
 
 .tarieventabel_voorraad_aantal_geboekt {
-	background-color: #ebebeb;
+    background-color: #ebebeb;
 }
 
 .tarieventabel_voorraad_korting {
-	background-color: #d6d6d6;
+    background-color: #d6d6d6;
 }
 
 .tarieventabel_tr_leeg {
-	background-color: #ffffff;
+    background-color: #ffffff;
 }
 
 .tarieventabel_nextseason {
-	text-align: right;
-	margin-right: 24px;
+    text-align: right;
+    margin-right: 24px;
 }
 
 .tarieventabel_nextseason a {
-	background-color: #003366;
-	color: #ffffff;
-	display: inline-block;
-	padding: 7px;
-	margin-bottom: 15px;
-	text-decoration: none;
+    background-color: #003366;
+    color: #ffffff;
+    display: inline-block;
+    padding: 7px;
+    margin-bottom: 15px;
+    text-decoration: none;
 }
 
 .tarieventabel_nextseason a:hover {
-	background-color: #d5e1f9;
-	color: #003366;
+    background-color: #d5e1f9;
+    color: #003366;
 }
 
 
@@ -689,78 +845,79 @@
 /**/
 
 .tarieventabel_newpricesmail {
-	text-align: right;
-	margin-right: 24px;
+    text-align: right;
+    margin-right: 24px;
 }
 
 .tarieventabel_newpricesmail a {
-	background-color: #003366;
-	color: #ffffff;
-	display: inline-block;
-	padding: 7px;
-	margin-bottom: 15px;
-	text-decoration: none;
+    background-color: #003366;
+    color: #ffffff;
+    display: inline-block;
+    padding: 7px;
+    margin-bottom: 15px;
+    text-decoration: none;
 }
 
 .tarieventabel_newpricesmail a:hover {
-	background-color: #d5e1f9;
-	color: #003366;
+    background-color: #d5e1f9;
+    color: #003366;
 }
 
 .tarieventabel_newpricesmail_form {
-	display: none;
-	background-color: #d5e1f9;
-	padding: 10px;
-	border: 1px solid #003366;
-	color: #003366;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	width: 660px;
-	margin-bottom: 20px;
+    display: none;
+    background-color: #d5e1f9;
+    padding: 10px;
+    border: 1px solid #003366;
+    color: #003366;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 660px;
+    margin-bottom: 20px;
 }
 
 .tarieventabel_newpricesmail_form h1 {
-	font-size: 1.1em;
-	font-weight: bold;
-	color: #003366;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #003366;
 }
 
 .tarieventabel_newpricesmail_form label {
-	display: block;
-	margin-top: 1em;
+    display: block;
+    margin-top: 1em;
 }
 
 .tarieventabel_newpricesmail_form input[type=email] {
-	margin-top: 3px;
-	width: 250px;
+    margin-top: 3px;
+    width: 250px;
 }
 
 .tarieventabel_newpricesmail_form img {
-	margin-top: 4px;
-	margin-left: 15px;
-	display: none;
+    margin-top: 4px;
+    margin-left: 15px;
+    display: none;
 }
 
 
 
 /*voor Selina*/
 .tarieventabel_tarieven_aanbieding {
-	background-color: transparent;
-	color: #d40139;
-	font-weight: bold;
+    background-color: transparent;
+    color: #d40139;
+    font-weight: bold;
 }
 
 .tarieventabel_legenda_kleurenblokje {
-	display: inline-block;
-	width: 28px;
-	text-align: center;
-	border-radius: 0px;
-	font-weight: bold;
+    display: inline-block;
+    width: 28px;
+    text-align: center;
+    border-radius: 0px;
+    font-weight: bold;
+    border: 1px solid #bfbfbf;
 }
 
 .tarieventabel_legenda_vertrekdagaanpassing {
-	margin-top: -6px;
-	margin-left: 48px;
+    margin-top: -6px;
+    margin-left: 48px;
 }
 
 .tarieventabel_legenda_vertrekdagaanpassing div {
@@ -768,33 +925,33 @@
 }
 
 .tarieventabel_legenda_vertrekdagaanpassing_div span {
-	font-size: 1.0em !important;
-	display: table-cell;
+    font-size: 1.0em !important;
+    display: table-cell;
 }
 
 .tarieventabel_legenda_vertrekdagaanpassing_div .tarieventabel_legenda_kleurenblokje {
-	font-weight: normal;
+    font-weight: normal;
 }
 
 .tarieventabel_legenda_kleurenblokje_aanbieding {
-	background-color: #d40139;
-	font-weight: normal;
+    background-color: #d40139;
+    font-weight: normal;
 }
 
 .tarieventabel_tarieven td.tarieventabel_tarieven_beschikbaar:hover {
-	background-color: #fb6703;
-	color: #ffffff;
+    background-color: #fb6703;
+    color: #ffffff;
 }
 
 .tarieventabel_tarieven td:hover .tarieventabel_tarieven_aanbieding {
-	background-color: #fb6703;
-	color: #ffffff;
+    background-color: #fb6703;
+    color: #ffffff;
 }
 
 .tarieventabel_tarieven_niet_beschikbaar_td {
-	background-color: #bababa !important;
+    background-color: #e7e7e7 !important;
 }
 
 .clear {
-	clear: both;
+    clear: both;
 }
