@@ -1,0 +1,14 @@
+{
+    "name": "chalet",
+    "description": "Chalet NPM packages",
+    "authors": [
+        {
+            "name": "Ibrahim Abdullah",
+            "email": "ibrahim@chalet.nl"
+        },
+        {
+            "name": "Jeroen Boschman",
+            "email": "jeroen@webtastic.nl"
+        }
+    ]
+}
