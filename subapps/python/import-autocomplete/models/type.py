@@ -68,10 +68,10 @@ class Type(Base):
                 'code': (row['code'] + str(row['id'])).lower(),
                 'name': {
 
-                    'nl': self.strip_accents(row['accommodation_name'] + (' ' + row['name_nl']).strip()),
-                    'en': self.strip_accents(row['accommodation_name'] + (' ' + row['name_en']).strip()),
-                    'de': self.strip_accents(row['accommodation_name'] + (' ' + row['name_de']).strip()),
-                    'fr': self.strip_accents(row['accommodation_name'] + (' ' + row['name_fr']).strip())
+                    'nl': self.strip_accents(row['accommodation_name'] + ' ' + row['name_nl']).strip(),
+                    'en': self.strip_accents(row['accommodation_name'] + ' ' + row['name_en']).strip(),
+                    'de': self.strip_accents(row['accommodation_name'] + ' ' + row['name_de']).strip(),
+                    'fr': self.strip_accents(row['accommodation_name'] + ' ' + row['name_fr']).strip()
                 }
             })
 
