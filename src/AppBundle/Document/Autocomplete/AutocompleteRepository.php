@@ -17,7 +17,7 @@ use       Doctrine\ODM\MongoDB\DocumentRepository;
 class AutocompleteRepository extends DocumentRepository implements AutocompleteServiceRepositoryInterface
 {
     use BaseRepositoryTrait;
-    
+
     /**
      * @var string
      */
@@ -62,42 +62,42 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
         $term      = UtilsService::normalizeText($term);
         $term      = strtolower($term);
         $nameRegex = new \MongoRegex('/.*' . $term . '.*/i');
-        
+
         $collection = $this->collection();
         $rawResults = $collection->find([
 
             '$and' => [
-                
+
                 [
                     'type' => [
                         '$in' => $kinds,
                     ],
                 ],
-                
+
                 [
                     '$or' => [
-                        
+
                         [
                             'searchable' => $nameRegex,
                             'locales'    => null,
                         ],
-                        
+
                         [
                             'searchable.' . $this->getLocale() => $nameRegex,
                             'locales' => [
                                 '$ne' => null,
                             ],
                         ],
-                        
+
                         [
                             '$and' => [
-                                
+
                                 [
                                     'code' => [
                                         '$exists' => true,
                                     ],
                                 ],
-                                
+
                                 [
                                     'code' => $term,
                                 ],
@@ -106,11 +106,11 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
                     ],
                 ],
             ],
-            
+
         ])->limit(5)->sort(['order' => 1]);
-        
+
         $results = [];
-        
+
         foreach ($rawResults as $rawResult) {
 
             if (!isset($results[$rawResult['type']])) {
@@ -126,12 +126,12 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
 
         return $results;
     }
-    
+
     public function collection()
     {
         return $this->getDocumentManager()->getConnection()->getMongo()->selectCollection($this->mongoDatabase, $this->getWebsite() . '.autocomplete');
     }
-    
+
     public function setMongoDatabase($database)
     {
         $this->mongoDatabase = $database;

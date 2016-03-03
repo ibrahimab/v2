@@ -11,8 +11,8 @@ namespace :chalet do
   end
   task :import_autocomplete do
     on roles(:all) do
-      within fetch(:current_path) do
-        execute 'bin/import-autocomplete', '-w C', "--env #{:symfony_env}"
+      within fetch(:release_path) do
+        execute 'bin/import-autocomplete', '-w C', "--env #{fetch(:symfony_env)}"
       end
     end
   end
