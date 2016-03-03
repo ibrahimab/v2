@@ -58,6 +58,14 @@ class Type(Base):
 
         for row in self.data:
 
+            name = {
+
+                'nl': self.strip_accents(row['accommodation_name'] + ' ' + row['name_nl']).strip(),
+                'en': self.strip_accents(row['accommodation_name'] + ' ' + row['name_en']).strip(),
+                'de': self.strip_accents(row['accommodation_name'] + ' ' + row['name_de']).strip(),
+                'fr': self.strip_accents(row['accommodation_name'] + ' ' + row['name_fr']).strip()
+            }
+
             data.append({
 
                 'type': Type.AUTOCOMPLETE_TYPE,
@@ -66,13 +74,8 @@ class Type(Base):
                 'order': order,
                 'begin_code': row['code'],
                 'code': (row['code'] + str(row['id'])).lower(),
-                'name': {
-
-                    'nl': self.strip_accents(row['accommodation_name'] + ' ' + row['name_nl']).strip(),
-                    'en': self.strip_accents(row['accommodation_name'] + ' ' + row['name_en']).strip(),
-                    'de': self.strip_accents(row['accommodation_name'] + ' ' + row['name_de']).strip(),
-                    'fr': self.strip_accents(row['accommodation_name'] + ' ' + row['name_fr']).strip()
-                }
+                'name': name,
+                'searchable': name
             })
 
             order += 1
