@@ -35,7 +35,7 @@ set :git_strategy, Capistrano::Git::SubmoduleStrategy
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, %w{app/config/parameters.yml .env}
+set :linked_files, %w{app/config/parameters.yml .env subapps/python/import-autocomplete/settings.py}
 
 # Default value for linked_dirs is []
 set :linked_dirs, [fetch(:log_path), fetch(:web_path) + '/uploads']
@@ -80,6 +80,7 @@ namespace :deploy do
   after :starting, 'composer:install_executable'
 
   after  :updated, 'chalet:htaccess'
+  after  :updated, 'chalet:import_autocomplete'
   before :updated, 'deploy:set_permissions:chgrp'
   after  :updated, 'symfony:assetic:dump'
   after  :updated, 'chalet:dump_routes'

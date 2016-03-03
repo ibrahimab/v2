@@ -9,6 +9,13 @@ namespace :chalet do
   task :dump_routes do
     invoke 'symfony:console', 'fos:js-routing:dump', '--no-debug'
   end
+  task :import_autocomplete do
+    on roles(:all) do
+      within fetch(:current_path) do
+        execute 'bin/import-autocomplete', '-w C', "--env #{:symfony_env}"
+      end
+    end
+  end
 end
 
 # overriding default cleanup task to use sudo
