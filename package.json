@@ -1,14 +1,22 @@
 {
-    "name": "chalet",
-    "description": "Chalet NPM packages",
-    "authors": [
-        {
-            "name": "Ibrahim Abdullah",
-            "email": "ibrahim@chalet.nl"
-        },
-        {
-            "name": "Jeroen Boschman",
-            "email": "jeroen@webtastic.nl"
-        }
-    ]
+  "name": "chalet",
+  "description": "Chalet NPM packages",
+  "authors": [
+    {
+      "name": "Ibrahim Abdullah",
+      "email": "ibrahim@chalet.nl"
+    },
+    {
+      "name": "Jeroen Boschman",
+      "email": "jeroen@webtastic.nl"
+    }
+  ],
+  "devDependencies": {
+    "browser-sync": "^2.11.1",
+    "browserify": "^13.0.0",
+    "gulp": "^3.9.1",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.7.0"
+  }
 }

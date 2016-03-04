@@ -15,6 +15,11 @@ class PriceTable extends LegacyService
     /**
      * @var integer
      */
+    const API_METHOD_GET_TOTAL_PRICE = 2;
+
+    /**
+     * @var integer
+     */
     protected $endpoint = 3;
 
     /**
@@ -28,7 +33,25 @@ class PriceTable extends LegacyService
         return $this->get(self::API_METHOD_GET_TABLE, [
 
              'type_id' => $typeId,
-             'season_id' => $seasonId,
+        ]);
+    }
+
+    /**
+     * @param integer $typeId
+     * @param string $seasonIdInQuery
+     * @param integer $date
+     * @param integer $numberOfPersons
+     *
+     * @return array
+     */
+    public function getTotalPrice($typeId, $seasonIdInQuery, $date, $numberOfPersons)
+    {
+        return $this->get(self::API_METHOD_GET_TOTAL_PRICE, [
+
+             'type_id' => $typeId,
+             'season_id_inquery' => $seasonIdInQuery,
+             'number_of_persons' => $numberOfPersons,
+             'date' => $date,
         ]);
     }
 }
