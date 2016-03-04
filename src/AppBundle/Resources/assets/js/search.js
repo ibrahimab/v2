@@ -62,14 +62,8 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                 window.onpopstate = function(event) {
 
-                    var uri  = URI();
-                    var page = uri.query(true).p;
-
-                    if (undefined !== page) {
-                        page = parseInt(page, 10);
-                    }
-
-                    ns.Search.actions.search(page, false);
+                    ns.Search.actions.loader();
+                    ns.Search.actions.request(location.pathname);
                 };
             },
 
@@ -408,8 +402,6 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
             search: function(page, pushHistory) {
 
-                ns.Search.actions.loader();
-
                 var url = ns.Search.actions.url(Routing.generate('search_' + ns.get('app')['locale']), page);
 
                 if (false !== pushHistory) {
@@ -420,10 +412,15 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 }
 
                 ns.Search.htmlBody.scrollTop(0);
+                ns.Search.actions.loader();
+                ns.Search.actions.request(url.toString());
+            },
+
+            request: function(url) {
 
                 jq.ajax({
 
-                    url: url.toString(),
+                    url: url,
                     success: function(data) {
 
                         ns.Search.container.replaceWith(data);
