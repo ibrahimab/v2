@@ -20,7 +20,7 @@
                     <a href="{{ locale_path('show_region', {regionSlug: region.getLocaleSeoName(get_locale())}) }}">
                         <article class="overview" data-equalizer-watch>
                             <div class="accom-img">
-                                <img src="{{ region_image(region).getLocation() }}" alt="{{ region.getLocaleName(get_locale()) }}" />
+                                <img src="{{ generate_image_path(region_image(region))|thumbnail(365, 274) }}" alt="{{ region.getLocaleName(get_locale()) }}" />
                             </div>
                             <div class="accom-desc">
                                 <div class="title">{{ region.getLocaleName(get_locale()) }}</div>
