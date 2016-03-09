@@ -25,15 +25,13 @@ class Accommodation(Base):
     """
     def fetch(self):
 
-        sql = "SELECT DISTINCT `accommodatie_id` AS `id`, `naam` AS `name`, `begincode` AS `code` " \
-              "FROM   `view_accommodatie` "                                                         \
-              "WHERE FIND_IN_SET('%(website)s', `websites`) > 0 "                                   \
-              "AND `atonen` = 1 "                                                                   \
-              "AND `ttonen` = 1 "                                                                   \
-              "AND `atonenzoekformulier` = 1 "                                                      \
-              "AND `ttonenzoekformulier` = 1 "                                                      \
-              "AND `archief` = 0 "                                                                  \
-              "AND `weekendski` = 0 "                                                               \
+        sql = "SELECT DISTINCT `accommodatie_id` AS `id`, `naam` AS `name` " \
+              "FROM   `accommodatie` "                                       \
+              "WHERE FIND_IN_SET('%(website)s', `websites`) > 0 "            \
+              "AND `tonen` = 1 "                                             \
+              "AND `tonenzoekformulier` = 1 "                                \
+              "AND `archief` = 0 "                                           \
+              "AND `weekendski` = 0 "                                        \
               "ORDER BY `naam` ASC"
 
         self.adapter('mysql').execute(sql % {'website': self.website})
