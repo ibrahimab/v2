@@ -16,10 +16,10 @@ class AutocompleteService
     const KIND_COUNTRY       = 'country';
     const KIND_REGION        = 'region';
     const KIND_PLACE         = 'place';
-    const KIND_TYPE          = 'type';
+    const KIND_ACCOMMODATION = 'accommodation';
 
     private $allowedKinds    = [
-        self::KIND_COUNTRY, self::KIND_REGION, self::KIND_PLACE, self::KIND_TYPE,
+        self::KIND_COUNTRY, self::KIND_REGION, self::KIND_PLACE, self::KIND_ACCOMMODATION,
     ];
 
     /**
@@ -94,6 +94,11 @@ class AutocompleteService
         return $this;
     }
 
+    /**
+     * @param integer $limit
+     *
+     * @return AutocompleteService
+     */
     public function limit($limit)
     {
         $this->limit = $limit;
@@ -118,7 +123,7 @@ class AutocompleteService
         $countries      = $format(self::KIND_COUNTRY);
         $regions        = $format(self::KIND_REGION);
         $places         = $format(self::KIND_PLACE);
-        $types          = $format(self::KIND_TYPE);
+        $accommodations = $format(self::KIND_ACCOMMODATION);
 
         foreach ($places as $placeId => $place) {
 
@@ -157,7 +162,7 @@ class AutocompleteService
             }
         }
 
-        $this->tree = [self::KIND_COUNTRY => $countries, self::KIND_REGION => $regions, self::KIND_PLACE => $places, self::KIND_TYPE => $types];
+        $this->tree = [self::KIND_COUNTRY => $countries, self::KIND_REGION => $regions, self::KIND_PLACE => $places, self::KIND_ACCOMMODATION => $accommodations];
 
         return $this;
     }

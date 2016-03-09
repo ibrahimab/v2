@@ -15,7 +15,7 @@ import MySQLdb as mysql
 import pymongo as mongo
 import settings
 
-from models.type          import Type
+from models.accommodation import Accommodation
 from models.country       import Country
 from models.region        import Region
 from models.place         import Place
@@ -38,8 +38,8 @@ try:
     # clearing old data
     mongo_database[args.website + '.autocomplete'].drop()
 
-    types            = Type(mysql_cursor, mongo_database, args.website)
-    types.fetch().insert()
+    accommodations   = Accommodation(mysql_cursor, mongo_database, args.website)
+    accommodations.fetch().insert()
 
     countries        = Country(mysql_cursor, mongo_database, args.website)
     countries.fetch().insert()
