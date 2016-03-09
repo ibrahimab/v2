@@ -82,8 +82,8 @@ namespace :deploy do
   after  :updated, 'chalet:htaccess'
   after  :updated, 'chalet:import_autocomplete'
   before :updated, 'deploy:set_permissions:chgrp'
-  after  :updated, 'symfony:assetic:dump'
   after  :updated, 'chalet:dump_routes'
+  after  :updated, 'symfony:assetic:dump'
   after  :updated, 'composer:self_update'
 
   after :restart, :clear_cache do
