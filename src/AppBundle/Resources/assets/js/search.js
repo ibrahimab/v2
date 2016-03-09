@@ -63,7 +63,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 window.onpopstate = function(event) {
 
                     ns.Search.actions.loader();
-                    ns.Search.actions.request(location.pathname);
+                    ns.Search.actions.request(location.pathname + location.search);
                 };
             },
 
