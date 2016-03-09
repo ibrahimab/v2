@@ -48,3 +48,5 @@ tests/_output/*
 
 # PhpStorm files
 .idea
+
+web/js/fos_js_routes.js
