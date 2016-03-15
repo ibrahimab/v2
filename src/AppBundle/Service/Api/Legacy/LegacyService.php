@@ -3,7 +3,9 @@ namespace AppBundle\Service\Api\Legacy;
 
 use AppBundle\Service\Http\Client\ClientInterface;
 use AppBundle\Concern\WebsiteConcern;
+use Symfony\Component\HttpFoundation\Response;
 use Psr7\Http\Message\ResponseInterface;
+use GuzzleHttp\Exception\ServerException;
 
 /**
  * LegacyService
@@ -70,15 +72,22 @@ abstract class LegacyService
      * @param array   $params
      *
      * @return array
+     * @throws LegacyApiException
      */
     public function get($method, array $params = [])
     {
         $params['method'] = $method;
         $this->setParams($params);
 
-        $response = $this->client->get($this->uri, [
-            'query' => $this->params,
-        ]);
+        try {
+
+            $response = $this->client->get($this->uri, [
+                'query' => $this->params,
+            ]);
+
+        } catch (ServerException $e) {
+            return $this->throwServerErrorException($e->getResponse());
+        }
 
         return json_decode((string)$response->getBody(), true);
     }
@@ -88,17 +97,40 @@ abstract class LegacyService
      * @param array   $params
      *
      * @return array
+     * @throws LegacyApiException
      */
     public function json($method, array $data = [])
     {
         $this->setParams(['method' => $method]);
 
-        $response = $this->client->post($this->uri, [
+        try {
 
-            'query' => $this->params,
-            'json'  => $data,
-        ]);
+            $response = $this->client->post($this->uri, [
+
+                'query' => $this->params,
+                'json'  => $data,
+            ]);
+        } catch (ServerException $e) {
+            return $this->throwServerErrorException($e->getResponse());
+        }
 
         return json_decode((string)$response->getBody(), true);
+    }
+
+    /**
+     * @param ResponseInterface $response
+     *
+     * @return string
+     */
+    protected function throwServerErrorException($response)
+    {
+        $result = json_decode((string)$response->getBody(), true);
+        $message = 'unknown error';
+
+        if (is_array($result)) {
+            $message = $result['message'];
+        }
+
+        throw new LegacyApiException(sprintf('Legacy API did not respond correctly. This is the legacy api response: %s', $message));
     }
 }
