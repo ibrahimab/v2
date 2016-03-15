@@ -1,3 +1,8 @@
+{#
+
+Template-content: search results search-and-book (accommodation-block)
+
+#}
 {% macro accommodation(accommodation, all_images, resale, season) %}
     {% import 'partials/search/types.html.twig' as typesMacro %}
     {% set place   = accommodation.place %}
@@ -60,7 +65,10 @@
                                     {% endif %}
                                     <div class="chalet-tooltip loading" data-role="ajax-tooltip" data-url="{{ path('additional_costs_type', {typeId: accommodation.cheapest.id, seasonId: season}) }}">
                                         <div class="chalet-tooltip-content" data-role="tooltip-wrapper">
-                                            <div data-role="tooltip-content">Bezig met laden...</div>
+                                            <div data-role="tooltip-content">
+                                                <div class="tooltip-placeholder">Bezig met laden...</div>
+                                            </div>
+                                            <span class="close"></span>
                                             <span class="nub rtl"></span>
                                         </div>
                                         <span class="price radius">&euro; {{ accommodation.cheapest.price|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
