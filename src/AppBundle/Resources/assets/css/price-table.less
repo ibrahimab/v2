@@ -1,7 +1,6 @@
 
 @import "globals.less";
 
-
 .tarieventabel_tables_wrapper {
 
     border-left: 1px solid #bfbfbf;
@@ -156,6 +155,10 @@
         margin-bottom: 0;
     }
 
+    a {
+        text-decoration: underline;
+    }
+
     .tarieventabel_bkk_groups {
 
         -webkit-column-count: 2;
@@ -175,6 +178,36 @@
         margin: 0 0 15px 0;
         display: table;
     }
+
+    form {
+        display: block;
+        text-align: right;
+    }
+}
+
+.bkk_more_information {
+    display: none;
+    border: 1px solid #ccc;
+    padding: 7px;
+    font-style: italic;
+    font-size: 0.8em;
+
+    table.toeslagtabel {
+
+        margin: 1em 0 0 0;
+
+        td, th {
+            padding-bottom: 0px;
+            line-height: 14px;
+        }
+    }
+}
+
+select.tarieventabel_toelichting_switch_seasons {
+    // display: block;
+    width: 200px;
+    position: static;
+    // text-align: right;
 }
 
 .button_to_other_website {
@@ -195,6 +228,7 @@
 
 .tarieventabel_kosten_ter_plaatse_indicatief {
     font-style: italic;
+    margin: 1em 0 0 0;
 }
 
 .tarieventabel_toelichting {
@@ -528,7 +562,13 @@
 }
 
 .tarieventabel_maanden_leeg {
-    width: 150px !important;
+    width: 140px !important;
+}
+
+@media screen and (max-width: 900px) {
+    .tarieventabel_maanden_leeg {
+        width: 110px !important;
+    }
 }
 
 .tarieventabel_maanden td {
@@ -643,21 +683,39 @@
 }
 
 .tarieventabel_pijl {
-    font-size: 12px;
+    font-size: 16px;
+    // font-weight: bold;
     position: absolute;
     top: 77px;
-    height: 15px;
+    height: 88px;
+    width: 14px;
     padding-top: 32px;
     padding-bottom: 32px;
-    background-color: #5e7e9e;
+    background-color: rgba(25, 55, 97, 0.4);
     cursor: pointer;
     color: #ffffff;
     text-align: center;
-    width: 8px;
     z-index: 10;
     overflow: hidden;
 
     display: none;
+
+    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+
+    .icon-chevron-left:after {
+        content:  "<";
+    }
+
+    .icon-chevron-right:after {
+        content:  ">";
+    }
+
+}
+
+@media screen and (max-width: 900px) {
+    .tarieventabel_pijl {
+        width: 25px;
+    }
 }
 
 /*zorgen dat bij vaak klikken div niet blauw wordt*/
@@ -673,11 +731,12 @@
 }
 
 .tarieventabel_pijl_rechts {
-    right: -2px;
+    right: 8px;
 }
 
 .tarieventabel_pijl_links {
-    left: 160px;
+    margin-left: 7px;
+    left: 158px;
 }
 
 .tarieventabel_pijl_scroll_greyed_out, .tarieventabel_pijl_scroll_greyed_out:hover {
@@ -742,6 +801,12 @@
 .tarieventabel_legenda {
     margin-top: 10px;
     margin-left: 162px;
+}
+
+@media screen and (max-width: 900px) {
+    .tarieventabel_legenda {
+        margin-left: 10px;
+    }
 }
 
 .tarieventabel_legenda > div {

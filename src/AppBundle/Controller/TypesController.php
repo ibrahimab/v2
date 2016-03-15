@@ -166,4 +166,20 @@ class TypesController extends Controller
             ]);
         }
     }
+
+    /**
+     * @Route(path="/types/totalprice/{typeId}/{seasonIdInquery}/{date}/{numberOfPersons}", name="type_total_price", options={"expose": true})
+     */
+    public function totalPrice($typeId, $seasonIdInquery, $date, $numberOfPersons)
+    {
+
+        $priceTableService = $this->get('app.api.legacy.price_table');
+        $priceTable        = $priceTableService->getTotalPrice($typeId, $seasonIdInquery, $date, $numberOfPersons);
+
+        return new JsonResponse([
+
+            'type'    => 'success',
+            'html'    => $priceTable['html'],
+        ]);
+    }
 }
