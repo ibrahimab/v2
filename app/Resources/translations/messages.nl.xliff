@@ -442,20 +442,20 @@
         <target>aan de piste</target>
         <jms:reference-file line="54">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="92c8b933c3077ffe968940ee0f25f49bd94f1764" resname="filter-distance-max-1000">
-        <source>filter-distance-max-1000</source>
-        <target>max 100 meter</target>
-        <jms:reference-file line="90">partials/search/form.html.twig</jms:reference-file>
-      </trans-unit>
       <trans-unit id="1f2acb4a0adb2ddb083edca3a24afdd7e36600aa" resname="filter-distance-max-250">
         <source>filter-distance-max-250</source>
-        <target>max 250 meter</target>
+        <target>max. 250 meter</target>
         <jms:reference-file line="66">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="ee8a94c789940228f74f61f785e6a0ba24e82715" resname="filter-distance-max-500">
         <source>filter-distance-max-500</source>
-        <target>max 500 meter</target>
+        <target>max. 500 meter</target>
         <jms:reference-file line="78">partials/search/form.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="92c8b933c3077ffe968940ee0f25f49bd94f1764" resname="filter-distance-max-1000">
+        <source>filter-distance-max-1000</source>
+        <target>max. 1000 meter</target>
+        <jms:reference-file line="90">partials/search/form.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="e6150588b1a6fd7bc875af75c7b0b1dcd6342bc8" resname="filter-facility-catering">
         <source>filter-facility-catering</source>
