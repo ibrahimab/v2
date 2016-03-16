@@ -1078,7 +1078,7 @@
       </trans-unit>
       <trans-unit id="9b76e6eaa48eb63838536859daa41730fc88f247" resname="table-scrollable-horizontally">
         <source>table-scrollable-horizontally</source>
-        <target>U kunt deze tabel horizontaal scrollen</target>
+        <target>Je kunt deze tabel horizontaal scrollen</target>
         <jms:reference-file line="57">partials/search/types.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="f37632fb1c633f4575ee6bfc314f8d2e2935ed1f" resname="tax-id">
