@@ -36,13 +36,13 @@ Template-content: search results search-and-book (types-rows)
                     <div class="tb-c">
                         {{ type.localeName }}
                     </div>
-                    <div class="tb-c">{% if type.surveyCount > 0 %}<span class="table-price table-ratings">{{ type.surveyAverageOverallRating|number_format(1, ',', '') }}</span>{% endif %}</div>
+                    <div class="tb-c rating-cell">{% if type.surveyCount > 0 %}<span class="table-price table-ratings">{{ type.surveyAverageOverallRating|number_format(1, ',', '') }}</span>{% endif %}</div>
                     <div class="tb-c tb-c-6 discount-cell">
                         {% if type.offer %}
                             <i class="sprite sprite-icon-discount"></i>
                         {% endif %}
                         </div>
-                    <div class="tb-c tb-c-7">
+                    <div class="tb-c tb-c-7 price-cell">
                         {% if type.price > 0 %}
                             <div class="chalet-tooltip loading" data-role="ajax-tooltip" data-url="{{ path('additional_costs_type', {typeId: accommodation.cheapest.id, seasonId: season}) }}">
                                 <div class="chalet-tooltip-content" data-role="tooltip-wrapper">
