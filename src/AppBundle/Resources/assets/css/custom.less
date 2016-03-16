@@ -871,15 +871,24 @@ footer ul.checked i { margin-top: 0.7rem; }
 .types_circle {background-color:#d4213b;display:block;height:3rem;line-height:3rem;padding-top:.4rem;text-align:center;width:3rem;}
 .types_circle div{display:block;height:0.95rem;line-height:normal;text-align:center;width:auto;font-size:0.7rem;}
 
-#search-results #search-filters-active div:last-child {
-
-    background-color: #e9edf8;
-    display: inline-block;
+#search-results #search-filters-active {
 
     a {
+        .fi-x:hover {
+            color: red !important;
+        }
+    }
 
-        color: #193761;
-        display: inline;
+
+    div:last-child {
+
+        background-color: #e9edf8;
+        display: inline-block;
+
+        a {
+            color: #193761;
+            display: inline;
+        }
     }
 }
 
