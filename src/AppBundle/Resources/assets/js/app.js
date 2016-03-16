@@ -261,7 +261,7 @@
         });
 
         /**
-         * This code handles the scroll to top button on every page
+         * This code handles the "scroll to top" button on every page
          */
         jq.scrollUp({
 
@@ -282,37 +282,58 @@
             var retries = (undefined === el.data('retries') ? 0 : parseInt(el.data('retries'), 10));
             var wrapper = el.find('[data-role=tooltip-wrapper]');
 
+            if (jq(event.target).hasClass("close")) {
 
-            if( wrapper.is(':visible') ) {
-
-                // hide clicked tooltip
-                wrapper.hide();
-            } else {
-
-                // hide all other active tooltips
+                // close button: hide all active tooltips
                 jq('[data-role=tooltip-wrapper]').hide();
 
-                // show clicked tooltip
-                wrapper.show();
-            }
-
-            el.data('retries', retries + 1);
-
-            if (true !== el.data('cached') && retries < 3) {
-
-                jq.ajax({
-
-                    type: 'get',
-                    url: el.data('url'),
-                    success: function(data) {
-
-                        el.data('cached', true).removeClass('loading').find('[data-role="tooltip-content"]').html(data);
-                        scrollToMakeVisible(wrapper);
-                    }
-                });
             } else {
-                scrollToMakeVisible(wrapper);
+                if( wrapper.is(':visible') ) {
+
+                    if (jq(event.target).hasClass("fi-info")) {
+
+                        // click on opened i-icon: hide all active tooltips
+                        jq('[data-role=tooltip-wrapper]').hide();
+
+                    }
+
+                } else {
+
+                    // hide all other active tooltips
+                    jq('[data-role=tooltip-wrapper]').hide();
+
+                    // show clicked tooltip
+                    wrapper.show();
+
+                }
+
+                el.data('retries', retries + 1);
+
+                if (true !== el.data('cached') && retries < 3) {
+
+                    jq.ajax({
+
+                        type: 'get',
+                        url: el.data('url'),
+                        success: function(data) {
+
+                            el.data('cached', true).removeClass('loading').find('[data-role="tooltip-content"]').html(data);
+                            scrollToMakeVisible(wrapper);
+                        }
+                    });
+                } else {
+                    scrollToMakeVisible(wrapper);
+                }
             }
+
+        });
+
+        // close all tooltips when clicking anywhere on the page
+        jq(document).on("click","html",function(event) {
+
+            // hide all active tooltips
+            jq('[data-role=tooltip-wrapper]').hide();
+
         });
 
         // var to prevent unwanted clickthrough to accpage when clicking a tooltip-icon

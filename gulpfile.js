@@ -6,12 +6,13 @@
 //
 //
 
-var gulp       = require('gulp');
-var gutil      = require('gulp-util');
-var source     = require('vinyl-source-stream');
-var buffer     = require('vinyl-buffer');
-var watchify   = require('watchify');
-var browserify = require('browserify');
+var gulp        = require('gulp');
+var gutil       = require('gulp-util');
+var source      = require('vinyl-source-stream');
+var buffer      = require('vinyl-buffer');
+var watchify    = require('watchify');
+var browserify  = require('browserify');
+var browserSync = require('browser-sync');
 
 var bundler = watchify(browserify('./src/AppBundle/Resources/assets/js/price_table/main.js', watchify.args));
 gulp.task('watchify', browserifyBundle);

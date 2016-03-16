@@ -1,3 +1,8 @@
+{#
+
+Template-content: accommodation page
+
+#}
 {% extends 'layouts/default.html.twig' %}
 
 {% set website_concern        = website() %}
@@ -161,7 +166,9 @@
                                                 {{ kind.name }}
                                                 <div class="chalet-tooltip" data-role="ajax-tooltip" data-url="{{ path('show_option', {optionId: kind.groupId}) }}">
                                                     <div class="chalet-tooltip-content tooltip-right" data-role="tooltip-wrapper">
-                                                        <div data-role="tooltip-content">Bezig met laden...</div>
+                                                        <div data-role="tooltip-content">
+                                                            <div class="tooltip-placeholder">Bezig met laden...</div>
+                                                        </div>
                                                         <span class="nub rtl"></span>
                                                     </div>
                                                     <i class="fi-info"></i>
