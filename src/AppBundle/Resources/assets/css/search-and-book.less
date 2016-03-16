@@ -1,8 +1,17 @@
 
 @import "globals.less";
 
-div.search-filter-box div.styled_label:hover {
-    text-decoration: underline;
+div.search-filter-box {
+    div.styled_label:hover {
+
+        :not(.c_on) {
+            text-decoration: underline;
+        }
+
+        .c_on {
+            text-decoration: line-through;
+        }
+    }
 }
 
 #search-filter-results {
