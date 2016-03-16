@@ -22,6 +22,38 @@ div.search-filter-box {
 
 }
 
+// non-mobile: remove negative margin accommodation-block
+@media only screen and (min-width: 40em) {
+
+    #search-filter-results {
+
+        #search-results {
+            .row {
+                .overview {
+                    .row {
+                        margin-left: 0;
+                        margin-right: 0;
+
+                        &:hover {
+                            img {
+                                opacity: .8 !important;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .img-column {
+                padding-left: 0;
+            }
+
+            .accom-desc-column {
+                padding-right: 0;
+            }
+        }
+    }
+}
+
 .msg-search-without-date {
     margin: -1rem 0 1rem 0;
     font-size: 0.8rem;
@@ -34,3 +66,5 @@ div.search-filter-box {
         color: @link-color !important;
     }
 }
+
+
