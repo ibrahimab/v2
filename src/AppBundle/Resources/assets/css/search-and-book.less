@@ -20,6 +20,23 @@ div.search-filter-box {
         padding: 0;
     }
 
+    #search-results {
+
+        .discount-cell {
+            padding: 0;
+            vertical-align: middle;
+
+            @media only screen and (max-width: 40em) {
+                vertical-align: baseline;
+
+                i.sprite-icon-discount {
+                    margin-top: -2px;
+                }
+
+            }
+
+        }
+    }
 }
 
 // non-mobile: remove negative margin accommodation-block
@@ -66,5 +83,3 @@ div.search-filter-box {
         color: @link-color !important;
     }
 }
-
-

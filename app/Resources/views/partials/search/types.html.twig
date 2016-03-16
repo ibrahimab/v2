@@ -37,9 +37,9 @@ Template-content: search results search-and-book (types-rows)
                         {{ type.localeName }}
                     </div>
                     <div class="tb-c">{% if type.surveyCount > 0 %}<span class="table-price table-ratings">{{ type.surveyAverageOverallRating|number_format(1, ',', '') }}</span>{% endif %}</div>
-                    <div class="tb-c tb-c-6">
+                    <div class="tb-c tb-c-6 discount-cell">
                         {% if type.offer %}
-                            <div class="types_circle"><div>Aan-</div><div>bieding</div></div>
+                            <i class="sprite sprite-icon-discount"></i>
                         {% endif %}
                         </div>
                     <div class="tb-c tb-c-7">
