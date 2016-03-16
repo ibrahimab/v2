@@ -26,7 +26,7 @@ Template-content: search results search-and-book (accommodation-block)
                     {{ ('type.kind.' ~ accommodation.kindIdentifier)|trans|capitalize ~ ' ' ~ accommodation.localeName }}
                     <span>{{ quality_stars }}</span>
                 </div>
-                <div class="small-12 medium-5 large-5 columns">
+                <div class="small-12 medium-5 large-5 columns img-column">
                     <div class="accom-img">
                         <div class="accom-slides">
                             {% for image in images %}
@@ -38,7 +38,7 @@ Template-content: search results search-and-book (accommodation-block)
                         {% endif %}
                     </div>
                 </div>
-                <div class="small-12 medium-7 large-7 columns">
+                <div class="small-12 medium-7 large-7 columns accom-desc-column">
                     <div class="accom-desc">
                         <div class="row">
                             <div class="small-12 medium-7 large-8 columns">
