@@ -25,6 +25,33 @@ class AutocompleteController extends Controller
 
         $autocompleteService->search($term, $kinds)->limit($limit)->parse()->flatten();
 
-        return new JsonResponse(array_slice($autocompleteService->flattened(), 0, $limit));
+        $results     = $autocompleteService->flattened();
+        $searchables = [];
+        $locale      = $this->get('app.concern.locale')->get();
+
+        foreach ($results as $result) {
+
+            $key = $result['searchable'];
+
+            if (is_array($result['searchable'])) {
+                $key = (isset($result['searchable'][$locale]) ? $result['searchable'][$locale] : '');
+            }
+
+            $searchables[$key][] = $result;
+        }
+
+        $response = [];
+
+        // grouping multiple searches to make it a freesearch
+        foreach ($searchables as $searchable => $records) {
+
+            if (count($records) > 1) {
+                $records[0]['type'] = 'freesearch';
+            }
+
+            $response[] = $records[0];
+        }
+
+        return new JsonResponse(array_slice($response, 0, $limit));
     }
 }

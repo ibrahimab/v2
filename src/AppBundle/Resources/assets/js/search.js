@@ -24,6 +24,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
             ns.Search.filters.bathrooms      = custom['bathrooms']      || null;
             ns.Search.filters.weekend        = custom['weekend']        || null;
             ns.Search.filters.persons        = custom['persons']        || null;
+            ns.Search.filters.freesearch     = custom['freesearch']     || null;
             ns.Search.filters.sort           = custom['sort']           || null;
 
             ns.Search.htmlBody = jq('html, body');
@@ -50,6 +51,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 body.on('click', '[data-role="remove-bedrooms-filter"]', ns.Search.events.removeCustom.bedrooms);
                 body.on('click', '[data-role="remove-bathrooms-filter"]', ns.Search.events.removeCustom.bathrooms);
                 body.on('click', '[data-role="remove-persons-filter"]', ns.Search.events.removeCustom.persons);
+                body.on('click', '[data-role="remove-freesearch-filter"]', ns.Search.events.removeCustom.freesearch);
                 body.on('click', '[data-role="remove-weekend-filter"]', ns.Search.events.removeCustom.persons);
 
                 body.on('change', '[data-role="change-bedrooms"]', ns.Search.events.formChanges.bedrooms);
@@ -164,6 +166,14 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                     ns.Search.filters.removeWeekend();
                     ns.Search.actions.search();
+                },
+                freesearch: function(event) {
+
+                    event.preventDefault();
+                    var element = jq(this);
+
+                    ns.Search.filters.removeFreesearch();
+                    ns.Search.actions.search();
                 }
             },
 
@@ -217,9 +227,23 @@ window.Chalet = (function(ns, jq, _, undefined) {
                     var val = jq(this).val();
 
                     if (val === '') {
-                        ns.Search.filters.removePersons();
+                        ns.Search.filters.removeWeekend();
                     } else {
                         ns.Search.filters.setWeekend(val);
+                    }
+
+                    ns.Search.actions.search();
+                },
+
+                freesearch: function(event) {
+
+                    event.preventDefault();
+                    var val = jq(this).val();
+
+                    if (val === '') {
+                        ns.Search.filters.removeFreesearch();
+                    } else {
+                        ns.Search.filters.setFreesearch(val);
                     }
 
                     ns.Search.actions.search();
@@ -351,6 +375,12 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                     uri.removeQuery('w');
                     uri.setQuery('w', ns.Search.filters.weekend);
+                }
+
+                if (null !== ns.Search.filters.freesearch) {
+
+                    uri.removeQuery('fs');
+                    uri.setQuery('fs', ns.Search.filters.freesearch);
                 }
 
                 if (null !== ns.Search.filters.sort) {
@@ -493,6 +523,8 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
             weekend: null,
 
+            freesearch: null,
+
             sort: null,
 
             active: function() {
@@ -553,6 +585,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 ns.Search.filters.bathrooms      = null;
                 ns.Search.filters.persons        = null;
                 ns.Search.filters.weekend        = null;
+                ns.Search.filters.freesearch     = null;
             },
 
             addCountry: function(country) {
@@ -655,6 +688,14 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
             setWeekend: function(weekend) {
                 ns.Search.filters.weekend = weekend;
+            },
+
+            removeFreesearch: function() {
+                ns.Search.filters.freesearch = null;
+            },
+
+            setFreesearch: function(freesearch) {
+                ns.Search.filters.freesearch = freesearch;
             },
 
             setSort: function(direction) {

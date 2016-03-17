@@ -124,6 +124,15 @@
         </div>
     {% endif %}
 
+    {% if form_filters['freesearch'] is defined %}
+        {% set filters_active = true %}
+        <div data-role="filter-tag">
+            Zoekopdracht:
+            {{ form_filters['freesearch'] }}
+            <a href="#" data-role="remove-freesearch-filter"><i class="fi-x"></i></a>
+        </div>
+    {% endif %}
+
 </div>
 
 {% if filters_active == true %}

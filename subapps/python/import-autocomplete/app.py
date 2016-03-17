@@ -11,7 +11,10 @@ faster autocomplete feature on the new website.
 """
 import sys
 import argparse
-import MySQLdb as mysql
+import pymysql as mysql
+
+mysql.install_as_MySQLdb()
+
 import pymongo as mongo
 import settings
 

@@ -697,6 +697,17 @@ class SearchRepository implements SearchServiceRepositoryInterface
                     $qb->setParameter('where_' . $clause['field'], $clause['value']);
 
                     break;
+
+                case SearchBuilder::WHERE_FREESEARCH:
+
+                    $or = $expr->orX($expr->like('t.' . $this->getLocaleField('name'), ':where_' . $clause['field'] . '_1'),
+                                     $expr->like('a.' . $this->getLocaleField('name'), ':where_' . $clause['field'] . '_2'));
+
+                    $qb->setParameter('where_' . $clause['field'] . '_1', '%' . $clause['value'] . '%');
+                    $qb->setParameter('where_' . $clause['field'] . '_2', '%' . $clause['value'] . '%');
+                    $qb->andWhere($or);
+
+                    break;
             }
         }
 
