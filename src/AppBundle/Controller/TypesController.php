@@ -106,8 +106,6 @@ class TypesController extends Controller
 
         } catch (\Exception $e) {
 
-            $request->attributes->set('_disable_breadcrumbs', true);
-
             $response = $this->render('types/not-found.html.twig');
             $response->setStatusCode(Response::HTTP_NOT_FOUND);
 
@@ -178,7 +176,6 @@ class TypesController extends Controller
      */
     public function totalPrice($typeId, $seasonIdInquery, $date, $numberOfPersons)
     {
-
         $priceTableService = $this->get('app.api.legacy.price_table');
         $priceTable        = $priceTableService->getTotalPrice($typeId, $seasonIdInquery, $date, $numberOfPersons);
 
