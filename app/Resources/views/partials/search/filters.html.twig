@@ -89,7 +89,7 @@
         {% endfor %}
     {% endif %}
 
-    {% if form_filters['bedrooms'] is defined %}
+    {% if form_filters['bedrooms'] is defined and form_filters['bedrooms'] > 0 %}
         {% set filters_active = true %}
         <div data-role="filter-tag">
             Slaapkamers:
@@ -98,7 +98,7 @@
         </div>
     {% endif %}
 
-    {% if form_filters['bathrooms'] is defined %}
+    {% if form_filters['bathrooms'] is defined and form_filters['bathrooms'] > 0 %}
         {% set filters_active = true %}
         <div data-role="filter-tag">
             Badkamers:
@@ -107,7 +107,7 @@
         </div>
     {% endif %}
 
-    {% if form_filters['persons'] is defined %}
+    {% if form_filters['persons'] is defined and form_filters['persons'] > 0 %}
         {% set filters_active = true %}
         <div data-role="filter-tag">
             {{ form_filters['persons'] }} personen
@@ -115,7 +115,7 @@
         </div>
     {% endif %}
 
-    {% if form_filters['weekend'] is defined %}
+    {% if form_filters['weekend'] is defined and weekends[form_filters['weekend']] is defined %}
         {% set filters_active = true %}
         <div data-role="filter-tag">
             Weekend:

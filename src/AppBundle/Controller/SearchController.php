@@ -52,12 +52,22 @@ class SearchController extends Controller
         $pl       = $request->query->get('pl', []);   // place
         $a        = $request->query->get('a',  []);   // accommodation
         $t        = $request->query->get('t',  []);   // type
+
         $be       = $request->query->get('be', null); // bedrooms
+        $be       = ($be > 0 ? $be : null);
+
         $ba       = $request->query->get('ba', null); // bathrooms
+        $ba       = ($ba > 0 ? $ba : null);
+
         $w        = $request->query->get('w',  null); // weekend
+        $w        = ($w > 0 ? $w : null);
+
         $pe       = $request->query->get('pe', null); // persons
+        $pe       = ($pe > 0 ? $pe : null);
+
         $fs       = $request->query->get('fs', null); // free search
         $fs       = ($fs === '' ? null : $fs);
+
         $s        = $request->query->get('s',  Sorter::SORT_NORMAL); // sort
         $page     = intval($request->query->get('p'));
         $page     = ($page === 0 ? $page : ($page - 1));
@@ -86,7 +96,7 @@ class SearchController extends Controller
                                        ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0)
                                        ->filter($filters);
 
-        if ($request->query->has('w') && !$request->query->has('pe')) {
+        if (null !== $w && null === $pe) {
 
             /**
              * weekend is known
@@ -102,7 +112,7 @@ class SearchController extends Controller
             $formFilters['weekend'] = $request->query->get('w');
         }
 
-        if ($request->query->has('w') && $request->query->has('pe')) {
+        if (null !== $w && null !== $pe) {
 
             /**
              * weekend is known
@@ -151,25 +161,25 @@ class SearchController extends Controller
             $destination = true;
         }
 
-        if ($request->query->has('be')) {
+        if (null !== $be) {
 
             $formFilters['bedrooms'] = $be;
             $searchBuilder->where(SearchBuilder::WHERE_BEDROOMS, $be);
         }
 
-        if ($request->query->has('ba')) {
+        if (null !== $ba) {
 
             $formFilters['bathrooms'] = $ba;
             $searchBuilder->where(SearchBuilder::WHERE_BATHROOMS, $ba);
         }
 
-        if ($request->query->has('pe')) {
+        if (null !== $pe) {
 
             $formFilters['persons'] = $pe;
             $searchBuilder->where(SearchBuilder::WHERE_PERSONS, $pe);
         }
 
-        if ($request->query->has('fs')) {
+        if (null !== $fs) {
 
             $formFilters['freesearch'] = $fs;
             $searchBuilder->where(SearchBuilder::WHERE_FREESEARCH, $fs);
@@ -208,7 +218,7 @@ class SearchController extends Controller
 
         $priceService->setAdditionalCostsSeasonId($seasonId);
 
-        if (!$request->query->has('w') && !$request->query->has('pe')) {
+        if (null === $w && null === $pe) {
 
             /**
              * no weekend
@@ -218,7 +228,7 @@ class SearchController extends Controller
             $priceService->getDataWithWeekendAndOrPersons();
         }
 
-        if (!$request->query->has('w') && $request->query->has('pe')) {
+        if (null === $w && null !== $pe) {
 
             /**
              * no weekend
@@ -248,7 +258,7 @@ class SearchController extends Controller
         $resultset->setResale($this->get('app.concern.website')->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE));
         $resultset->sorter()->sort();
 
-        if ($request->query->has('pe')) {
+        if (null !== $pe) {
             $resultset->sorter()->setPersons(intval($request->query->get('pe')));
         }
 
@@ -447,7 +457,9 @@ class SearchController extends Controller
 
     public function reroute(FilterService $filterService, $params)
     {
-        $reroute = [];
+        $reroute       = [];
+        $regionService = $this->get('app.api.region');
+        $locale        = $this->get('app.concern.locale')->get();
 
         foreach ($params as $param => $value) {
 
@@ -460,17 +472,36 @@ class SearchController extends Controller
 
                 $reroute['ba'] = $data;
 
-            } else if ($matches['param'] === 'fap') {
+            } elseif ($matches['param'] === 'fap') {
 
                 $reroute['pe'] = $data;
 
-            } else if ($matches['param'] === 'fas') {
+            } elseif ($matches['param'] === 'fas') {
 
                 $reroute['be'] = $data;
 
-            } else if ($matches['param'] === 'fad') {
+            } elseif ($matches['param'] === 'fad') {
 
                 $reroute['w'] = $data;
+
+            } elseif ($matches['param'] === 'fsg') {
+
+                $destinationIds = explode(',', $value);
+                $ids            = [];
+
+                foreach ($destinationIds as $id) {
+
+                    $id = explode('-', $id);
+                    $ids[] = (int)array_pop($id);
+                }
+
+                $destinations = $regionService->all(['where' => ['id' => $ids]]);
+
+                $reroute['r'] = array_map(function($region) use ($locale) {
+
+                    return $region->getLocaleName($locale);
+
+                }, $destinations);
 
             } else {
 
