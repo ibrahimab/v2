@@ -56,6 +56,8 @@ class SearchController extends Controller
         $ba       = $request->query->get('ba', null); // bathrooms
         $w        = $request->query->get('w',  null); // weekend
         $pe       = $request->query->get('pe', null); // persons
+        $fs       = $request->query->get('fs', null); // free search
+        $fs       = ($fs === '' ? null : $fs);
         $s        = $request->query->get('s',  Sorter::SORT_NORMAL); // sort
         $page     = intval($request->query->get('p'));
         $page     = ($page === 0 ? $page : ($page - 1));
@@ -165,6 +167,12 @@ class SearchController extends Controller
 
             $formFilters['persons'] = $pe;
             $searchBuilder->where(SearchBuilder::WHERE_PERSONS, $pe);
+        }
+
+        if ($request->query->has('fs')) {
+
+            $formFilters['freesearch'] = $fs;
+            $searchBuilder->where(SearchBuilder::WHERE_FREESEARCH, $fs);
         }
 
         $resultset  = $searchBuilder->search();
@@ -334,6 +342,10 @@ class SearchController extends Controller
 
         if ($request->query->has('pe')) {
             $searchBuilder->where(SearchBuilder::WHERE_PERSONS, $request->query->get('pe'));
+        }
+
+        if ($request->query->has('fs') && $request->query->get('fs') != '') {
+            $searchBuilder->where(SearchBuilder::WHERE_FREESEARCH, $request->query->get('fs'));
         }
 
         if ($request->query->has('w') && !$request->query->has('pe')) {

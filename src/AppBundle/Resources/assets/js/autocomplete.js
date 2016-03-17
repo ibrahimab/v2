@@ -14,7 +14,8 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
             ENTITY_COUNTRY: 'country',
             ENTITY_REGION: 'region',
             ENTITY_PLACE: 'place',
-            ENTITY_ACCOMMODATION: 'accommodation'
+            ENTITY_ACCOMMODATION: 'accommodation',
+            ENTITY_FREESEARCH: 'freesearch'
         },
 
         input: null,
@@ -89,6 +90,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                 jq('body').on('keydown', ns.Autocomplete.input.selector, function(event) {
 
+                    // arrows used
                     if ([13, 38, 40].indexOf((event.keyCode || event.which)) > -1) {
 
                         event.preventDefault();
@@ -100,6 +102,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                 jq('body').on('keydown', ns.Autocomplete.input.selector, _.debounce(function(event) {
 
+                    // other keys used
                     if ([13, 38, 40].indexOf((event.keyCode || event.which)) === -1) {
 
                         event.preventDefault();
@@ -122,6 +125,29 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     }
 
                 }, ns.Autocomplete.debounce));
+
+                jq('body').on('keydown', ns.Autocomplete.input.selector, function(event) {
+
+                    var input = jq(this);
+                    input.data('fs', input.val());
+                });
+
+                jq('body').on('click', '[data-role="search-simple"]', function(event) {
+
+                    event.preventDefault();
+
+                    var link  = jq(this);
+                    var uri   = URI(link.attr('href'));
+                    var input = jq(ns.Autocomplete.input.selector);
+
+                    uri.removeQuery('fs');
+
+                    if (input.data('fs') != '' || input.data('fs') != null) {
+                        uri.setQuery('fs', input.data('fs'));
+                    }
+
+                    return window.location.href = uri.toString();
+                });
 
                 if (ns.Autocomplete.type === ns.Autocomplete.types.TYPE_HOME) {
 
@@ -159,6 +185,8 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         id:     element.data('id'),
                         label:  element.data('label')
                     };
+
+                    jq(ns.Autocomplete.input.selector).data('fs', '');
 
                     switch (ns.Autocomplete.type) {
 
@@ -291,6 +319,14 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                             uri.setQuery('a[]', data.id);
                             break;
+
+                        case ns.Autocomplete.entities.ENTITY_FREESEARCH:
+
+                            uri.removeQuery('fs');
+                            uri.setQuery('fs', data.label);
+                            jq(ns.Autocomplete.input.selector).data('fs', data.label);
+
+                            break;
                     }
 
                     link.attr('href', uri.toString());
@@ -355,6 +391,13 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         case ns.Autocomplete.entities.ENTITY_ACCOMMODATION:
 
                             ns.Search.filters.addAccommodation(data.id);
+                            break;
+
+                        case ns.Autocomplete.entities.ENTITY_FREESEARCH:
+
+                            ns.Search.filters.setFreesearch(data.label);
+                            jq(ns.Autocomplete.input.selector).data('fs', data.label);
+
                             break;
                     }
 
@@ -483,6 +526,16 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         li.setAttribute('data-id', result['type_id']);
 
                         tag += '<i class="fi-home"></i> ';
+
+                    break;
+
+                    case entities.ENTITY_FREESEARCH:
+
+                        li.className = 'accommodation';
+                        li.setAttribute('data-entity', entities.ENTITY_FREESEARCH);
+                        li.setAttribute('data-id', result['type_id']);
+
+                        tag += '<i class="fi-search"></i> ';
 
                     break;
                 }

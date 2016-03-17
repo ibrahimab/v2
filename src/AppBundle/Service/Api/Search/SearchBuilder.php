@@ -29,7 +29,8 @@ class SearchBuilder
           WHERE_BEDROOMS                 = 7,
           WHERE_BATHROOMS                = 8,
           WHERE_TYPES                    = 9,
-          WHERE_PERSONS                  = 10;
+          WHERE_PERSONS                  = 10,
+          WHERE_FREESEARCH               = 11;
 
     /** @const int */
     const SORT_BY_ACCOMMODATION_NAME     = 1,
