@@ -37,7 +37,7 @@ class AutocompleteController extends Controller
                 $key = (isset($result['searchable'][$locale]) ? $result['searchable'][$locale] : '');
             }
 
-            $searchables[$key][] = $result;
+            $searchables[$key . '_' . $result['type']][] = $result;
         }
 
         $response = [];
