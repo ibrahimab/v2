@@ -62,51 +62,57 @@ class TypesController extends Controller
 
             $features = $featureService->all($type->getId(), $data);
 
+            $accommodationTypes = $accommodation->getTypes();
+            $typeIds            = [];
+            foreach ($accommodationTypes as $accommodationType) {
+                $typeIds[] = $accommodationType->getId();
+            }
+
+            $startingPrice     = $this->get('app.api.legacy.starting_price');
+            $prices            = $startingPrice->getStartingPrices($typeIds);
+
+            $priceService      = $this->get('app.api.price');
+            $offers            = $priceService->offers($typeIds);
+
+            $userService       = $this->get('app.api.user');
+            $userService->addViewedAccommodation($type);
+
+            $seasonService     = $this->get('app.api.season');
+            $seasons           = $seasonService->seasons();
+            $currentSeason     = $seasonService->current();
+            $seasonId          = $currentSeason['id'];
+
+            $priceTableService = $this->get('app.api.legacy.price_table');
+            $priceTable        = $priceTableService->getTable($typeId, $seasonId);
+
+            $optionService     = $this->get('app.api.option');
+            $options           = $optionService->options($type->getAccommodationId(), $seasonId, $request->query->get('w', null));
+
+            return $this->render('types/show.html.twig', [
+
+                'type'               => $type,
+                'surveyData'         => $surveyData,
+                'minimalSurveyCount' => $this->container->getParameter('app')['minimalSurveyCount'],
+                'features'           => array_keys($features),
+                'prices'             => $prices,
+                'offers'             => $offers,
+                'options'            => $options,
+                'weekends'           => $seasonService->weekends($seasons),
+                'sunnyCars'          => $this->container->getParameter('sunny_cars'),
+                'currentWeekend'     => $request->query->get('w', null),
+                'currentSeason'      => $currentSeason,
+                'priceTable'         => $priceTable['html'],
+            ]);
+
         } catch (\Exception $e) {
-            throw $this->createNotFoundException('Type with code=' . $typeId . ' could not be found: (' . $e->getMessage() . ')');
+
+            $request->attributes->set('_disable_breadcrumbs', true);
+
+            $response = $this->render('types/not-found.html.twig');
+            $response->setStatusCode(Response::HTTP_NOT_FOUND);
+
+            return $response;
         }
-
-        $accommodationTypes = $accommodation->getTypes();
-        $typeIds            = [];
-        foreach ($accommodationTypes as $accommodationType) {
-            $typeIds[] = $accommodationType->getId();
-        }
-
-        $startingPrice     = $this->get('app.api.legacy.starting_price');
-        $prices            = $startingPrice->getStartingPrices($typeIds);
-
-        $priceService      = $this->get('app.api.price');
-        $offers            = $priceService->offers($typeIds);
-
-        $userService       = $this->get('app.api.user');
-        $userService->addViewedAccommodation($type);
-
-        $seasonService     = $this->get('app.api.season');
-        $seasons           = $seasonService->seasons();
-        $currentSeason     = $seasonService->current();
-        $seasonId          = $currentSeason['id'];
-
-        $priceTableService = $this->get('app.api.legacy.price_table');
-        $priceTable        = $priceTableService->getTable($typeId, $seasonId);
-
-        $optionService     = $this->get('app.api.option');
-        $options           = $optionService->options($type->getAccommodationId(), $seasonId, $request->query->get('w', null));
-
-        return $this->render('types/show.html.twig', [
-
-            'type'               => $type,
-            'surveyData'         => $surveyData,
-            'minimalSurveyCount' => $this->container->getParameter('app')['minimalSurveyCount'],
-            'features'           => array_keys($features),
-            'prices'             => $prices,
-            'offers'             => $offers,
-            'options'            => $options,
-            'weekends'           => $seasonService->weekends($seasons),
-            'sunnyCars'          => $this->container->getParameter('sunny_cars'),
-            'currentWeekend'     => $request->query->get('w', null),
-            'currentSeason'      => $currentSeason,
-            'priceTable'         => $priceTable['html'],
-        ]);
     }
 
     /**

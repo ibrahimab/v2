@@ -1,0 +1,16 @@
+{% extends 'layouts/default.html.twig' %}
+
+{% block body %}
+
+    {{ parent() }}
+
+    <section id="accom" class="discount type-section">
+        <div class="row">
+            <div class="large-8 medium-8 columns">
+                <h1>Accommodatie niet gevonden</h1>
+                <p>De gezochte accommodatie is op dit moment niet beschikbaar. Gebruik ons <a href="{{ locale_path('search') }}">zoekformulier</a> om een andere accommodatie te vinden.</p>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
