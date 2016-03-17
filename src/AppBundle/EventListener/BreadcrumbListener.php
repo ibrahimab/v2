@@ -10,12 +10,12 @@ class BreadcrumbListener
      * @var BreadcrumbParser
      */
     private $parser;
-    
+
     /**
      * @var \Twig_Environment
      */
     private $twig;
-    
+
     /**
      * @param BreadcrumbParser $container
      */
@@ -24,7 +24,7 @@ class BreadcrumbListener
         $this->parser = $parser;
         $this->twig   = $twig;
     }
-    
+
     /**
      * @param FilterControllerEvent $event
      */
@@ -33,14 +33,16 @@ class BreadcrumbListener
         if (!is_array($controller = $event->getController())) {
             return;
         }
-        
+
         $controllerCallable = $event->getController();
+        $request            = $event->getRequest();
         $controller         = $controllerCallable[0];
         $method             = $controllerCallable[1];
-        
+
         // parse controller
         $annotations = $this->parser->parse($controller, $method);
-        
-        $event->getRequest()->attributes->set('_breadcrumbs', $annotations);
+
+        // add breadcrumbs to request attributes
+        $request->attributes->set('_breadcrumbs', $annotations);
     }
 }
