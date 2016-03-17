@@ -4,7 +4,7 @@ namespace AppBundle\Service\Api\Legacy;
 use AppBundle\Service\Http\Client\ClientInterface;
 use AppBundle\Concern\WebsiteConcern;
 use Symfony\Component\HttpFoundation\Response;
-use Psr7\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Exception\ServerException;
 
 /**
@@ -85,11 +85,13 @@ abstract class LegacyService
                 'query' => $this->params,
             ]);
 
+            $json = $this->parseJson($response);
+
         } catch (ServerException $e) {
             return $this->throwServerErrorException($e->getResponse());
         }
 
-        return json_decode((string)$response->getBody(), true);
+        return $json;
     }
 
     /**
@@ -110,19 +112,23 @@ abstract class LegacyService
                 'query' => $this->params,
                 'json'  => $data,
             ]);
+
+            $json = $this->parseJson($response);
+
         } catch (ServerException $e) {
             return $this->throwServerErrorException($e->getResponse());
         }
 
-        return json_decode((string)$response->getBody(), true);
+        return $json;
     }
 
     /**
      * @param ResponseInterface $response
      *
      * @return string
+     * @throws ServerException
      */
-    protected function throwServerErrorException($response)
+    protected function throwServerErrorException(ResponseInterface $response)
     {
         $result = json_decode((string)$response->getBody(), true);
         $message = 'unknown error';
@@ -132,5 +138,22 @@ abstract class LegacyService
         }
 
         throw new LegacyApiException(sprintf('Legacy API did not respond correctly. This is the legacy api response: %s', $message));
+    }
+
+    /**
+     * @param ResponseInterface $response
+     *
+     * @return array
+     * @throws ServerException
+     */
+    protected function parseJson(ResponseInterface $response)
+    {
+        $json = json_decode((string)$response->getBody(), true);
+
+        if (null === $json) {
+            throw new ServerException('Invalid json from legacy API');
+        }
+
+        return $json;
     }
 }
