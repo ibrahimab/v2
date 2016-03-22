@@ -240,7 +240,7 @@
         <target>Bathrooms</target>
         <jms:reference-file line="48">views/pages/searches.html.twig</jms:reference-file>
         <jms:reference-file line="2">search/form/input.html.twig</jms:reference-file>
-        <jms:reference-file line="9">partials/search/types.html.twig</jms:reference-file>
+        <jms:reference-file line="9">partials/search/result-types-rows.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="009e058c883c683e1330228851ecafe3265c8f51" resname="bedroom">
         <source>bedroom</source>
@@ -252,7 +252,7 @@
         <target>Bedrooms</target>
         <jms:reference-file line="44">views/pages/searches.html.twig</jms:reference-file>
         <jms:reference-file line="3">search/form/input.html.twig</jms:reference-file>
-        <jms:reference-file line="8">partials/search/types.html.twig</jms:reference-file>
+        <jms:reference-file line="8">partials/search/result-types-rows.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="169254c45fa4ed7ea11c00541ffb17b0cde39625" resname="blog">
         <source>blog</source>
@@ -699,7 +699,7 @@
       <trans-unit id="cb710f968a453a9d3a0f515f05a6db24d3e4eebe" resname="got-it">
         <source>got-it</source>
         <target>I got it</target>
-        <jms:reference-file line="59">partials/search/types.html.twig</jms:reference-file>
+        <jms:reference-file line="59">partials/search/result-types-rows.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="4a2ec0a7debeb41281873ff2ab348e39e09e0867" resname="header.bar.opening-hours-contact">
         <source>header.bar.opening-hours-contact</source>
@@ -869,7 +869,7 @@
         <source>persons</source>
         <target>Persons</target>
         <jms:reference-file line="1">search/form/input.html.twig</jms:reference-file>
-        <jms:reference-file line="7">partials/search/types.html.twig</jms:reference-file>
+        <jms:reference-file line="7">partials/search/result-types-rows.html.twig</jms:reference-file>
         <jms:reference-file line="100">AppBundle/Service/AccommodationService.php</jms:reference-file>
         <jms:reference-file line="129">AppBundle/Service/AccommodationService.php</jms:reference-file>
         <jms:reference-file line="617">AppBundle/Service/AccommodationService.php</jms:reference-file>
@@ -888,7 +888,7 @@
       <trans-unit id="2097c33723b61c7e24d3d7d27840469989b61b49" resname="price">
         <source>price</source>
         <target>Prijs</target>
-        <jms:reference-file line="13">partials/search/types.html.twig</jms:reference-file>
+        <jms:reference-file line="13">partials/search/result-types-rows.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="96ed5c5789b174a01557791c8e936673ae4d973f" resname="privacy">
         <source>privacy</source>
@@ -904,7 +904,7 @@
       <trans-unit id="3c2d687ef032e625aa4a2b1cfca9751d2080322c" resname="rating">
         <source>rating</source>
         <target>Rating</target>
-        <jms:reference-file line="11">partials/search/types.html.twig</jms:reference-file>
+        <jms:reference-file line="11">partials/search/result-types-rows.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="7bb083edad4751b79c6b2a9a76f28d0181ae8973" resname="ratings">
         <source>ratings</source>
@@ -1079,7 +1079,7 @@
       <trans-unit id="9b76e6eaa48eb63838536859daa41730fc88f247" resname="table-scrollable-horizontally">
         <source>table-scrollable-horizontally</source>
         <target>This table is scrollable horizontally</target>
-        <jms:reference-file line="57">partials/search/types.html.twig</jms:reference-file>
+        <jms:reference-file line="57">partials/search/result-types-rows.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="f37632fb1c633f4575ee6bfc314f8d2e2935ed1f" resname="tax-id">
         <source>tax-id</source>
@@ -1139,7 +1139,7 @@
       <trans-unit id="d0a3e7f81a9885e99049d1cae0336d269d5e47a9" resname="type">
         <source>type</source>
         <target>Type</target>
-        <jms:reference-file line="10">partials/search/types.html.twig</jms:reference-file>
+        <jms:reference-file line="10">partials/search/result-types-rows.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="4f0935d080bd6f97eb1ad5b8e51e0546a0d7b8f2" resname="type.kind.agriturismo">
         <source>type.kind.agriturismo</source>
