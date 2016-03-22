@@ -9,10 +9,10 @@ DirectoryIndex app_stag.php
     RewriteEngine On
 
     # Assets management
-    RewriteRule ^chalet-pic/(.*) http://test.chalet.nl/pic/cms/$1 [QSA,L]
+    RewriteRule ^chalet-pic/(.*) https://www.chalet.nl/pic/cms/$1 [QSA,L]
 
     # rewrite to old site
-    RewriteRule ^version1/(.*) http://test.chalet.nl/$1 [QSA,L]
+    RewriteRule ^version1/(.*) https://www.chalet.nl/$1 [QSA,L]
 
     # Determine the RewriteBase automatically and set it as environment variable.
     # If you are using Apache aliases to do mass virtual hosting or installed the
