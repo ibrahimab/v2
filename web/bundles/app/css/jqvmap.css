@@ -1,5 +1,6 @@
-/*!
- * jQVMap Version 1.0 
+
+/*
+ * jQVMap Version 1.0
  *
  * http://jqvmap.com
  *
@@ -8,6 +9,7 @@
  *
  * Fork Me @ https://github.com/manifestinteractive/jqvmap
  */
+
 .jqvmap-label
 {
 	position: absolute;
@@ -60,14 +62,14 @@
 	top: 63px !important;
 }
 .jqvmap_pin .pin_content {
-	background: url("../img/jqvmap/region.png") no-repeat;
+	background: url("/bundles/app/img/jqvmap/region.png") no-repeat;
 	height: 45px;
 	width: 26px;
 }
 .jqvmap_pin .pin_content:hover, .jqvmap_pin .pin_content.hover {
-	background: url("../img/jqvmap/region-hover.png") no-repeat;
+	background: url("/bundles/app/img/jqvmap/region-hover.png") no-repeat;
 }
 .jqvmap_pin .pin_content.disabled {
-	background: url("../img/jqvmap/region-disabled.png") no-repeat !important;
+	background: url("/bundles/app/img/jqvmap/region-disabled.png") no-repeat !important;
 	cursor: default !important;
 }

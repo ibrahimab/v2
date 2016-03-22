@@ -1,0 +1,114 @@
+
+@import "globals.scss";
+
+.chalet-tooltip {
+
+    display: inline;
+    position: relative;
+
+    color: #193761;
+
+    &.loading {
+
+    }
+
+    i:hover {
+        opacity: 0.7;
+    }
+
+    .tooltip-placeholder {
+        min-height: 7em;
+    }
+
+    span.close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        float: right;
+        cursor: pointer;
+        color: #fff;
+        border-radius: 20px;
+        background: #605F61;
+        font-size: 20px;
+        font-weight: bold;
+        display: inline-block;
+        line-height: 0px;
+        padding: 11px 5px;
+
+        &:before {
+            content: "×";
+        }
+
+        &:hover {
+            opacity: .7;
+        }
+    }
+
+    .chalet-tooltip-content {
+
+        cursor: default;
+
+        display: none;
+        width: 25rem;
+        text-align: left !important;
+
+        background: #fff;
+        top: 0;
+        right: 0;
+        color: #193761;
+        border: thin solid #bfbfbf;
+        position: absolute;
+        padding: 0.5rem 1rem 0 1rem;
+        z-index: 3;
+
+        h2 {
+            background: none !important;
+        }
+
+        .nub {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border: solid 5px;
+            left: auto;
+            border-color: transparent transparent transparent #333333;
+            top: 13px;
+            right: -10px;
+            pointer-events: none;
+        }
+
+        div {
+            font-size: 0.875rem;
+        }
+
+        &.tooltip-right {
+
+            left: 30px;
+
+            .nub {
+
+                border-color: transparent #333333 transparent transparent;
+                right: auto;
+                left: -10px;
+                top: 10px;
+                margin-top: -5px;
+            }
+        }
+    }
+
+}
+
+a.tb-r {
+    .chalet-tooltip-content {
+        top: -10px;
+        right: 80px;
+    }
+}
+
+html.touch .chalet-tooltip {
+
+    i {
+        line-height: 25px !important;
+        font-size: 25px !important;
+    }
+}

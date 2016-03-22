@@ -60,3 +60,35 @@ DirectoryIndex app_stag.php
         # RedirectTemp cannot be used instead
     </IfModule>
 </IfModule>
+
+<IfModule mod_expires.c>
+    <ifModule mod_headers.c>
+        #
+        # caching via mod_headers and mod_expires
+        #
+
+        # Turn on Expires and set default to 0
+        ExpiresActive On
+        ExpiresDefault A0
+
+        # Cache for 180 days
+        <FilesMatch "\.(css|gif|jpg|jpeg|png|swf|ico|js)$">
+        ExpiresDefault A15552000
+        Header append Cache-Control "public"
+        </FilesMatch>
+
+        # Force no caching for dynamic files
+        <FilesMatch "\.(php|cgi|pl|htm|html)$">
+        ExpiresActive Off
+        Header set Cache-Control "private, no-cache, no-store, proxy-revalidate, no-transform"
+        Header set Pragma "no-cache"
+        </FilesMatch>
+    </IfModule>
+</IfModule>
+
+<IfModule pagespeed_module>
+    #
+    # turn mod_pagespeed off
+    #
+    ModPagespeed off
+</IfModule>

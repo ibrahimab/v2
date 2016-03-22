@@ -7,24 +7,11 @@
         {% block seo %}{% endblock %}
         <title>{% block title %}Chalet.nl{% endblock %}</title>
 
-        {% stylesheets 'bundles/app/css/foundation.css'
-                       'bundles/app/css/app.css'
-                       'bundles/app/css/slick.css'
-                       'bundles/app/css/jqvmap.css'
-                       'bundles/app/foundation-icons/foundation-icons.css'
-                       'bundles/app/css/jquery.fancybox.css'
-                       'bundles/app/css/tooltipster.css'
-                       '@AppBundle/Resources/assets/css/faq.less'
-                       '@AppBundle/Resources/assets/css/price-table.less'
-                       '@AppBundle/Resources/assets/css/header.less'
-                       '@AppBundle/Resources/assets/css/favorites.less'
-                       '@AppBundle/Resources/assets/css/tooltip.less'
-                       '@AppBundle/Resources/assets/css/search-and-book.less'
-                       '@AppBundle/Resources/assets/css/price-calculator.less'
-                       '@AppBundle/Resources/assets/css/mobile-menu.less'
-                       '@AppBundle/Resources/assets/css/custom.less' filter='cssrewrite' %}
-            <link rel="stylesheet" href="{{ asset_url }}" />
-        {% endstylesheets %}
+        {% if app.environment == 'dev' %}
+            <link rel="stylesheet" href="{{ asset('bundles/app/css/build/dev.css') }}" />
+        {% else %}
+            <link rel="stylesheet" href="{{ asset('bundles/app/css/build/prod.css') }}" />
+        {% endif %}
 
         <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,700" />
         <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lobster" />
