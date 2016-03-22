@@ -55,7 +55,7 @@ class SeasonRepository extends BaseRepository implements SeasonServiceRepository
         $qb   = $this->createQueryBuilder('s');
         $expr = $qb->expr();
 
-        $qb->select('s.id, s.name, (MIN(UNIX_TIMESTAMP(s.start))) AS weekend_start, (MAX(UNIX_TIMESTAMP(s.end))) AS weekend_end, s.display')
+        $qb->select('s.id, s.name, UNIX_TIMESTAMP(s.start) AS weekend_start, UNIX_TIMESTAMP(s.end) AS weekend_end, s.display')
            ->where($expr->eq('s.season', ':season'))
            ->andWhere($expr->gte('s.display', ':display'))
            ->orderBy('s.start, s.end')

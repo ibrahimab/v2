@@ -131,7 +131,7 @@ class PagesController extends Controller
             'highlights'     => $highlights,
             'homepageBlocks' => $groupedHomepageBlocks,
             'offers'         => $offers,
-            'weekends'       => $seasonService->weekends($seasonService->seasons()),
+            'weekends'       => $seasonService->futureWeekends($seasonService->seasons()),
             'accommodations' => $searchBuilder->count(),
             'regions'        => $regionService->count(),
         ];

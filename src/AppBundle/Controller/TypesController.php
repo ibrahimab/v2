@@ -97,7 +97,7 @@ class TypesController extends Controller
                 'prices'             => $prices,
                 'offers'             => $offers,
                 'options'            => $options,
-                'weekends'           => $seasonService->weekends($seasons),
+                'weekends'           => $seasonService->futureWeekends($seasons),
                 'sunnyCars'          => $this->container->getParameter('sunny_cars'),
                 'currentWeekend'     => $request->query->get('w', null),
                 'currentSeason'      => $currentSeason,

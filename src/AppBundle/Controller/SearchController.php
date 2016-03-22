@@ -209,7 +209,7 @@ class SearchController extends Controller
             'custom_filters' => ['countries' => [], 'regions' => [], 'places' => [], 'accommodations' => [], 'types' => []],
             'form_filters'   => $formFilters,
             'destination'    => $destination,
-            'weekends'       => $seasonService->weekends($seasons),
+            'weekends'       => $seasonService->futureWeekends($seasons),
             'surveys'        => [],
             'sort'           => $s,
         ];
