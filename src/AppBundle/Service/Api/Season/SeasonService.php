@@ -86,4 +86,24 @@ class SeasonService
 
         return $weekends;
     }
+
+    /**
+     * Get arrival dates based on season. Only dates in the future.
+     *
+     * @param array $seasons
+     * @return array
+     */
+    public function futureWeekends($seasons)
+    {
+        $allWeekends = $this->weekends($seasons);
+        $weekends = [];
+
+        foreach ($allWeekends as $timestamp => $text) {
+            if ($timestamp >= time()) {
+                $weekends[$timestamp] = $text;
+            }
+        }
+
+        return $weekends;
+    }
 }
