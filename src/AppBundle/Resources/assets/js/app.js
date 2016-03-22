@@ -358,7 +358,39 @@
         // check if user wants to clickthrough to accpage or is clicking a tooltip-icon
         body.on('click', '[data-role="link-to-accpage"]', function(event) {
             if( clickthrough_to_accpage ) {
+
+                var searchURL         = new URI(window.location);
+                var accURL            = new URI(jq(this).attr("href"));
+                var sendValues        = [];
+
+                // arrival date (w = week)
+                sendValues["w"] = searchURL.search(true)["w"];
+
+                // number of persons (pe = persons)
+                sendValues["pe"] = searchURL.search(true)["pe"];
+
+                // current scroll height (scrolly)
+                if (jq(window).scrollTop() > 0) {
+                    sendValues["scrolly"] = jq(window).scrollTop();
+                }
+
+                // current search-and-book url
+                sendValues["back"] = window.location.pathname + window.location.search;
+
+                for (var key in sendValues) {
+                    if (sendValues.hasOwnProperty(key)) {
+                        if (typeof sendValues[key] != 'undefined') {
+                            accURL.addQuery(key, sendValues[key]);
+                        }
+                    }
+                }
+
+                accURL.normalizeQuery();
+
+                jq(this).attr("href", accURL);
+
                 return true;
+
             } else {
                 // click on tooltip-icon: no action
                 event.preventDefault();

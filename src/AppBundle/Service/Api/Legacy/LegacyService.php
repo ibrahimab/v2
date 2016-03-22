@@ -144,14 +144,14 @@ abstract class LegacyService
      * @param ResponseInterface $response
      *
      * @return array
-     * @throws ServerException
+     * @throws LegacyApiException
      */
     protected function parseJson(ResponseInterface $response)
     {
         $json = json_decode((string)$response->getBody(), true);
 
         if (null === $json) {
-            throw new ServerException('Invalid json from legacy API');
+            throw new LegacyApiException(sprintf('Invalid response from legacy API (%s), message from server: %s', (string)$this->uri . '?' . http_build_query($this->params), (string)$response->getBody()));
         }
 
         return $json;
