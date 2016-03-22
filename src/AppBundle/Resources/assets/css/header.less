@@ -9,10 +9,19 @@
     z-index: 90;
     width: 100%;
     background-color: #FFF;
+
+    @media only screen and (max-width: 40em) {
+        position: static;
+        margin-top: -25px;
+    }
 }
 
 .header-block-push {
     height: 110px;
+
+    @media only screen and (max-width: 40em) {
+        height: 20px;
+    }
 }
 
 .header-block {
@@ -52,9 +61,12 @@
     }
 
     ul.contact-info {
-
         list-style: none;
         padding-top: 2.5rem;
+
+        @media only screen and (max-width: 40em) {
+            padding-top: 2.3rem !important;
+        }
     }
 }
 
