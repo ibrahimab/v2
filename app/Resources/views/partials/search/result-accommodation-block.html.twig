@@ -4,7 +4,7 @@ Template-content: search results search-and-book (accommodation-block)
 
 #}
 {% macro accommodation(accommodation, all_images, resale, season) %}
-    {% import 'partials/search/types.html.twig' as typesMacro %}
+    {% import 'partials/search/result-types-rows.html.twig' as typesMacro %}
     {% set place   = accommodation.place %}
     {% set region  = place.region %}
     {% set country = place.country %}
@@ -30,7 +30,7 @@ Template-content: search results search-and-book (accommodation-block)
                     <div class="accom-img">
                         <div class="accom-slides">
                             {% for image in images %}
-                            <div><img data-lazy="{{ generate_image_path(image) }}" alt="{{ accommodation.localeName }}" /></div>
+                                <div><img data-lazy="{{ generate_image_path(image)|thumbnail(343, 257) }}" alt="{{ accommodation.localeName }}" /></div>
                             {% endfor %}
                         </div>
                         {% if accommodation.offer %}

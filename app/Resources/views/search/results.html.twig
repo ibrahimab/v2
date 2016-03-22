@@ -39,7 +39,7 @@
             <hr />
             <div class="row">
                 <div class="small-12 medium-12 large-12 columns">
-                    {% import 'partials/search/result.html.twig' as resultMacro %}
+                    {% import 'partials/search/result-accommodation-block.html.twig' as resultMacro %}
                     {% set results         = resultset.paginator() %}
                     {% set images          = search_images(results) %}
                     {% set website_concern = website() %}
