@@ -1,7 +1,8 @@
 <?php
 namespace AppBundle\Twig\Extension;
 
-use       AppBundle\Service\UtilsService;
+use AppBundle\Service\UtilsService;
+use AppBundle\Service\Api\Search\Filter\Filter;
 
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
@@ -84,10 +85,16 @@ trait Utils
      * @param int $filter
      * @return string
      */
-    public function tokenize($value, $filter = null)
+    public function tokenize($value, $filterId = null)
     {
         // if second parameter is null, that means we want to tokenize a filter
         // otherwise tokenize the value
-        return (null === $filter ? $this->filterService->tokenize($value) : $this->filterService->tokenize($filter, $value));
+        if (null === $filterId) {
+            $filter = new Filter($value, null);
+        } else {
+            $filter = new Filter($filterId, $value);
+        }
+
+        return (null === $filterId ? $this->filterTokenizer->tokenize($filter) : $this->filterTokenizer->tokenize($filter, true));
     }
 }

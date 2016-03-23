@@ -1,18 +1,18 @@
 <?php
 namespace AppBundle\Controller;
 
-use       AppBundle\Concern\SeasonConcern;
-use       AppBundle\Concern\WebsiteConcern;
-use       AppBundle\Annotation\Breadcrumb;
-use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterface;
-use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
-use       AppBundle\Service\Api\Autocomplete\AutocompleteService;
-use       AppBundle\Service\FilterService;
-use       AppBundle\Service\Api\Search\SearchBuilder;
-use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use       Symfony\Component\HttpFoundation\Request;
+use AppBundle\Concern\SeasonConcern;
+use AppBundle\Concern\WebsiteConcern;
+use AppBundle\Annotation\Breadcrumb;
+use AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterface;
+use AppBundle\Service\Api\Region\RegionServiceEntityInterface;
+use AppBundle\Service\Api\Autocomplete\AutocompleteService;
+use AppBundle\Service\Api\Search\Params;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Zend\Diactoros\ServerRequestFactory;
 
 /**
  * PagesController
@@ -27,13 +27,6 @@ use       Symfony\Component\HttpFoundation\Request;
  */
 class PagesController extends Controller
 {
-    /**
-     * @Route("/test", name="test")
-     */
-    public function test()
-    {
-    }
-
     /**
      * @Route("/", name="home")
      * @Template(":pages:home.html.twig")
@@ -50,8 +43,10 @@ class PagesController extends Controller
         $priceService         = $this->get('app.api.price');
         $seasonService        = $this->get('app.api.season');
         $searchService        = $this->get('app.api.search');
-        $searchBuilder        = $searchService->build()
-                                              ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0);
+
+        $params               = new Params(ServerRequestFactory::fromGlobals([], []));
+        $resultset            = $searchService->search($params);
+        $paginator            = $searchService->paginate($resultset, $params);
 
         $regions              = $regionService->findHomepageRegions(['limit' => 1]);
         $places               = [];
@@ -127,7 +122,7 @@ class PagesController extends Controller
             'homepageBlocks' => $groupedHomepageBlocks,
             'offers'         => $offers,
             'weekends'       => $seasonService->futureWeekends($seasonService->seasons()),
-            'accommodations' => $searchBuilder->count(),
+            'accommodations' => $paginator->total(),
             'regions'        => $regionService->count(),
         ];
     }

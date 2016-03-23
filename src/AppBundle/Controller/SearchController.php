@@ -1,22 +1,26 @@
 <?php
 namespace AppBundle\Controller;
-use       AppBundle\Concern\WebsiteConcern;
-use       AppBundle\Annotation\Breadcrumb;
-use       AppBundle\Service\Api\Search\SearchBuilder;
-use       AppBundle\Service\Api\Search\FilterBuilder;
-use       AppBundle\Service\Api\Search\Result\Sorter;
-use       AppBundle\Service\Api\Search\Result\PriceText;
-use       AppBundle\Service\FilterService;
-use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
-use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
-use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
-use       AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
-use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
-use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use       Symfony\Component\HttpFoundation\Request;
-use       Symfony\Component\HttpFoundation\JsonResponse;
-use       Symfony\Component\HttpFoundation\Response;
+
+use AppBundle\Concern\WebsiteConcern;
+use AppBundle\Annotation\Breadcrumb;
+use AppBundle\Service\Api\Search\FacetService;
+use AppBundle\Service\Api\Search\Params;
+use AppBundle\Service\Api\Search\Filter\Manager   as FilterManager;
+use AppBundle\Service\Api\Search\Filter\Converter as FilterConverter;
+use AppBundle\Service\Api\Search\Result\Resultset;
+use AppBundle\Service\Api\Search\Result\Sorter;
+use AppBundle\Service\Api\Search\Result\PriceText;
+use AppBundle\Service\Api\Country\CountryServiceEntityInterface;
+use AppBundle\Service\Api\Region\RegionServiceEntityInterface;
+use AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
+use AppBundle\Service\Api\Accommodation\AccommodationServiceEntityInterface;
+use AppBundle\Service\Api\Type\TypeServiceEntityInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory as PsrFactory;
 
 /**
  * SearchController
@@ -39,9 +43,8 @@ class SearchController extends Controller
      */
     public function index(Request $request)
     {
-        $filterService = $this->container->get('app.filter');
-        $locale        = $request->getLocale();
-        $reroute       = $this->reroute($filterService, $request->query->all());
+        $locale  = $request->getLocale();
+        $reroute = $this->reroute($request->query->all());
 
         if (count($reroute) > 0) {
             return $this->redirectToRoute('search_' . $locale, $reroute, 301);
@@ -58,274 +61,61 @@ class SearchController extends Controller
 
         $this->saveToSession($request);
 
-        $start    = microtime(true);
-        $c        = $request->query->get('c',  []);   // country
-        $r        = $request->query->get('r',  []);   // region
-        $pl       = $request->query->get('pl', []);   // place
-        $a        = $request->query->get('a',  []);   // accommodation
-        $t        = $request->query->get('t',  []);   // type
-
-        $be       = $request->query->get('be', null); // bedrooms
-        $be       = ($be > 0 ? $be : null);
-
-        $ba       = $request->query->get('ba', null); // bathrooms
-        $ba       = ($ba > 0 ? $ba : null);
-
-        $w        = $request->query->get('w',  null); // weekend
-        $w        = ($w > 0 ? $w : null);
-
-        $pe       = $request->query->get('pe', null); // persons
-        $pe       = ($pe > 0 ? $pe : null);
-
-        $fs       = $request->query->get('fs', null); // free search
-        $fs       = ($fs === '' ? null : $fs);
-
-        $s        = $request->query->get('s',  Sorter::SORT_NORMAL); // sort
-        $page     = intval($request->query->get('p'));
-        $page     = ($page === 0 ? $page : ($page - 1));
-        $per_page = intval($this->container->getParameter('app')['results_per_page']);
-        $filters  = $request->query->get('f', []);
-
-        array_walk_recursive($filters, function(&$v) {
-            $v = intval($v);
-        });
-
-        $offers      = [];
-        $prices      = [];
-        $formFilters = [];
-        $typeIds     = [];
-
+        $start                  = microtime(true);
         $surveyService          = $this->get('app.api.booking.survey');
         $seasonService          = $this->get('app.api.season');
         $searchService          = $this->get('app.api.search');
-        $priceService           = $this->get('app.api.price');
         $generalSettingsService = $this->get('app.api.general.settings');
 
-        $searchBuilder = $searchService->build()
-                                       ->limit($per_page)
-                                       ->page($page)
-                                       ->sort(SearchBuilder::SORT_BY_TYPE_SEARCH_ORDER, SearchBuilder::SORT_ORDER_ASC)
-                                       ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0)
-                                       ->filter($filters);
+        $params                 = $searchService->createParamsFromRequest($request);
+        $resultset              = $searchService->search($params);
+        $paginator              = $searchService->paginate($resultset, $params);
+        $destination            = $searchService->hasDestination($params);
+        $typeIds                = $searchService->extractTypeIds($resultset);
+        $accommodationNames     = $searchService->extractNames($resultset, $params->getAccommodations() ?: []);
 
-        if (null !== $w && null === $pe) {
-
-            /**
-             * weekend is known
-             * persons is not known
-             *
-             * get available types for selected weekend
-             * and set offers and type ids
-             */
-            $priceService->setWeekend($request->query->get('w'));
-            $priceService->getDataWithWeekendAndOrPersons();
-
-            $searchBuilder->where(SearchBuilder::WHERE_TYPES, $priceService->getTypes());
-            $formFilters['weekend'] = $request->query->get('w');
-        }
-
-        if (null !== $w && null !== $pe) {
-
-            /**
-             * weekend is known
-             * persons is known
-             *
-             * get prices and offers with weekend and persons
-             */
-            $priceService->setWeekend($request->query->get('w'));
-            $priceService->setPersons($request->query->get('pe'));
-            $priceService->getDataWithWeekendAndOrPersons();
-
-            $searchBuilder->where(SearchBuilder::WHERE_TYPES, $priceService->getTypes());
-            $formFilters['weekend'] = $w;
-            $formFilters['persons'] = $pe;
-        }
-
-
-        $destination = false;
-
-        if ($request->query->has('a')) {
-
-            $searchBuilder->where(SearchBuilder::WHERE_ACCOMMODATION, $a);
-            $destination = true;
-        }
-
-        if ($request->query->has('t')) {
-
-            $searchBuilder->where(SearchBuilder::WHERE_TYPE, $t);
-            $destination = true;
-        }
-
-        if ($request->query->has('c')) {
-
-            $searchBuilder->where(SearchBuilder::WHERE_COUNTRY, $c);
-            $destination = true;
-        }
-
-        if ($request->query->has('r')) {
-
-            $searchBuilder->where(SearchBuilder::WHERE_REGION, $r);
-            $destination = true;
-        }
-
-        if ($request->query->has('pl')) {
-
-            $searchBuilder->where(SearchBuilder::WHERE_PLACE, $pl);
-            $destination = true;
-        }
-
-        if (null !== $be) {
-
-            $formFilters['bedrooms'] = $be;
-            $searchBuilder->where(SearchBuilder::WHERE_BEDROOMS, $be);
-        }
-
-        if (null !== $ba) {
-
-            $formFilters['bathrooms'] = $ba;
-            $searchBuilder->where(SearchBuilder::WHERE_BATHROOMS, $ba);
-        }
-
-        if (null !== $pe) {
-
-            $formFilters['persons'] = $pe;
-            $searchBuilder->where(SearchBuilder::WHERE_PERSONS, $pe);
-        }
-
-        if (null !== $fs) {
-
-            $formFilters['freesearch'] = $fs;
-            $searchBuilder->where(SearchBuilder::WHERE_FREESEARCH, $fs);
-        }
-
-        if (null !== $w) {
-            $searchBuilder->where(SearchBuilder::WHERE_DATE, $w);
-        }
-
-        $resultset  = $searchBuilder->search();
-        $javascript = $this->get('app.javascript');
-
-        $javascript->set('app.filters.normal',                $filters);
-        $javascript->set('app.filters.custom.countries',      $c);
-        $javascript->set('app.filters.custom.regions',        $r);
-        $javascript->set('app.filters.custom.places',         $pl);
-        $javascript->set('app.filters.custom.accommodations', $a);
-        $javascript->set('app.filters.form.bedrooms',         $be);
-        $javascript->set('app.filters.form.bathrooms',        $ba);
-        $javascript->set('app.filters.form.sort',             $s);
+        $this->setupJavascriptParameters($params);
 
         $seasons  = $seasonService->seasons();
-        $seasonId = (isset($seasons[0]) ? $seasons[0]['id'] : 0);
+        $seasonId = $seasonService->current()['id'];
         $data     = [
 
             'season'         => $seasonId,
             'resultset'      => $resultset,
-            'filters'        => $filters,
+            'paginator'      => $paginator,
+            'filters'        => $params->getFilters() ?: [],
             // instance needed to get constants easier from within twig template: constant('const', instance)
-            'filter_service' => $filterService,
-            'custom_filters' => ['countries' => [], 'regions' => [], 'places' => [], 'accommodations' => [], 'types' => []],
-            'form_filters'   => $formFilters,
+            'filter_manager' => new FilterManager(),
+            'custom_filters' => [
+
+                'countries'      => $params->getCountries(),
+                'regions'        => $params->getRegions(),
+                'places'         => $params->getPlaces(),
+                'accommodations' => $accommodationNames,
+            ],
+
+            'form_filters'   => [
+
+                'weekend'    => $params->getWeekend(),
+                'persons'    => $params->getPersons(),
+                'bedrooms'   => $params->getBedrooms(),
+                'bathrooms'  => $params->getBathrooms(),
+                'freesearch' => $params->getFreesearch(),
+            ],
             'destination'    => $destination,
             'weekends'       => $seasonService->futureWeekends($seasons),
             'surveys'        => [],
-            'sort'           => $s,
+            'sort'           => $params->getSort(),
+            'searchFormMessageSearchWithoutDates' => $generalSettingsService->getSearchFormMessageSearchWithoutDates(),
         ];
 
-        $typeIds = $resultset->allTypeIds();
-
-        $priceService->setAdditionalCostsSeasonId($seasonId);
-
-        if (null === $w && null === $pe) {
-
-            /**
-             * no weekend
-             * no persons
-             */
-            $priceService->setTypes($typeIds);
-            $priceService->getDataWithWeekendAndOrPersons();
-        }
-
-        if (null === $w && null !== $pe) {
-
-            /**
-             * no weekend
-             * persons
-             */
-            $priceService->setPersons($request->query->get('pe'));
-            $priceService->setTypes($typeIds);
-            $priceService->getDataWithWeekendAndOrPersons();
-        }
-
-        $surveyData = $surveyService->statsByTypes($typeIds);
-        $surveys    = [];
-
-        foreach ($surveyData as $survey) {
-            $surveys[$survey['typeId']] = $survey;
-        }
-
-        $resultset->setAppConfig($this->getParameter('app'));
-        $resultset->setPrices($priceService->getPrices());
-        $resultset->setOffers($priceService->getOffers());
-        $resultset->setIsAccommodations($priceService->getAccommodations());
-        $resultset->setSurveys($surveys);
-        $resultset->sorter()->setOrderBy($s);
-        $resultset->sorter()->setPersons($priceService->getPersons());
-        $resultset->setPriceService($priceService);
-        $resultset->setMetadata();
-        $resultset->setResale($this->get('app.concern.website')->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE));
-        $resultset->sorter()->sort();
-        $resultset->addPriceTextType();
-
-        if (null !== $pe) {
-            $resultset->sorter()->setPersons(intval($request->query->get('pe')));
-        }
-
-        $custom_filter_entities = $searchService->findOnlyNames($c, $r, $pl, $a, $t);
-        foreach ($custom_filter_entities as $entity) {
-
-            if ($entity instanceof CountryServiceEntityInterface) {
-                $data['custom_filters']['countries'][$entity->getId()] = $entity;
-            }
-
-            if ($entity instanceof RegionServiceEntityInterface) {
-                $data['custom_filters']['regions'][$entity->getId()] = $entity;
-            }
-
-            if ($entity instanceof PlaceServiceEntityInterface) {
-                $data['custom_filters']['places'][$entity->getId()] = $entity;
-            }
-
-            if ($entity instanceof AccommodationServiceEntityInterface) {
-                $data['custom_filters']['accommodations'][$entity->getId()] = $entity;
-            }
-
-            if ($entity instanceof TypeServiceEntityInterface) {
-                $data['custom_filters']['types'][$entity->getId()] = $entity;
-            }
-        }
-
-        $facetFilters = [
-
-            FilterService::FILTER_DISTANCE => [FilterService::FILTER_DISTANCE_BY_SLOPE, FilterService::FILTER_DISTANCE_MAX_250, FilterService::FILTER_DISTANCE_MAX_500, FilterService::FILTER_DISTANCE_MAX_1000],
-            FilterService::FILTER_LENGTH   => [FilterService::FILTER_LENGTH_MAX_100, FilterService::FILTER_LENGTH_MIN_100, FilterService::FILTER_LENGTH_MIN_200, FilterService::FILTER_LENGTH_MIN_400],
-            FilterService::FILTER_FACILITY => [FilterService::FILTER_FACILITY_CATERING, FilterService::FILTER_FACILITY_INTERNET_WIFI, FilterService::FILTER_FACILITY_SWIMMING_POOL, FilterService::FILTER_FACILITY_SAUNA, FilterService::FILTER_FACILITY_PRIVATE_SAUNA, FilterService::FILTER_FACILITY_PETS_ALLOWED, FilterService::FILTER_FACILITY_FIREPLACE],
-            FilterService::FILTER_THEME    => [FilterService::FILTER_THEME_KIDS, FilterService::FILTER_THEME_CHARMING_PLACES, FilterService::FILTER_THEME_10_FOR_APRES_SKI, FilterService::FILTER_THEME_SUPER_SKI_STATIONS, FilterService::FILTER_THEME_WINTER_WELLNESS],
-        ];
-
-        foreach ($filters as $filter => $activeFilterValues) {
-
-            if (false === FilterService::multiple($filter)) {
-
-                $facetFilters[$filter] = array_filter($facetFilters[$filter], function($value) use ($activeFilterValues) {
-                    return $value === $activeFilterValues;
-                });
-            }
-        }
+        $facetFilters = $this->getFacetFilters($params);
 
         $data['facet_service'] = $searchService->facets($resultset, $facetFilters);
         $data['search_time']   = round((microtime(true) - $start), 2);
-        $data['searchFormMessageSearchWithoutDates']   = $generalSettingsService->getSearchFormMessageSearchWithoutDates();
-        $data['price_text']   = new PriceText;
+        $data['surveys']       = $searchService->surveys($resultset);
+        $data['price_text']    = new PriceText;
+        $data['searchFormMessageSearchWithoutDates'] = $generalSettingsService->getSearchFormMessageSearchWithoutDates();
 
         return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', $data);
     }
@@ -335,116 +125,13 @@ class SearchController extends Controller
      */
     public function count(Request $request)
     {
-        $priceService  = $this->get('app.api.price');
-        $seasonService = $this->get('app.api.season');
         $searchService = $this->get('app.api.search');
-        $searchBuilder = $searchService->build()
-                                       ->where(SearchBuilder::WHERE_WEEKEND_SKI, 0);
-
-        if ($request->query->has('a')) {
-            $searchBuilder->where(SearchBuilder::WHERE_ACCOMMODATION, $request->query->get('a'));
-        }
-
-        if ($request->query->has('t')) {
-            $searchBuilder->where(SearchBuilder::WHERE_TYPE, $request->query->get('t'));
-        }
-
-        if ($request->query->has('c')) {
-            $searchBuilder->where(SearchBuilder::WHERE_COUNTRY, $request->query->get('c'));
-        }
-
-        if ($request->query->has('r')) {
-            $searchBuilder->where(SearchBuilder::WHERE_REGION, $request->query->get('r'));
-        }
-
-        if ($request->query->has('pl')) {
-            $searchBuilder->where(SearchBuilder::WHERE_PLACE, $request->query->get('pl'));
-        }
-
-        if ($request->query->has('be')) {
-            $searchBuilder->where(SearchBuilder::WHERE_BEDROOMS, $request->query->get('be'));
-        }
-
-        if ($request->query->has('ba')) {
-            $searchBuilder->where(SearchBuilder::WHERE_BATHROOMS, $request->query->get('ba'));
-        }
-
-        if ($request->query->has('pe')) {
-            $searchBuilder->where(SearchBuilder::WHERE_PERSONS, $request->query->get('pe'));
-        }
-
-        if ($request->query->has('w')) {
-            $searchBuilder->where(SearchBuilder::WHERE_DATE, $request->query->get('w'));
-        }
-
-        if ($request->query->has('fs') && $request->query->get('fs') != '') {
-            $searchBuilder->where(SearchBuilder::WHERE_FREESEARCH, $request->query->get('fs'));
-        }
-
-        if ($request->query->has('w') && !$request->query->has('pe')) {
-
-            /**
-             * weekend is known
-             * persons is not known
-             *
-             * get available types for selected weekend
-             * and set offers and type ids
-             */
-            $priceService->setWeekend($request->query->get('w'));
-            $priceService->getDataWithWeekendAndOrPersons();
-
-            $searchBuilder->where(SearchBuilder::WHERE_TYPES, $priceService->getTypes());
-        }
-
-        if ($request->query->has('w') && $request->query->has('pe')) {
-
-            /**
-             * weekend is known
-             * persons is known
-             *
-             * get prices and offers with weekend and persons
-             */
-            $priceService->setWeekend($request->query->get('w'));
-            $priceService->setPersons($request->query->get('pe'));
-            $priceService->getDataWithWeekendAndOrPersons();
-
-            $searchBuilder->where(SearchBuilder::WHERE_TYPES, $priceService->getTypes());
-        }
-
-        $resultset = $searchBuilder->search();
-        $seasons   = $seasonService->seasons();
-        $seasonId  = (isset($seasons[0]) ? $seasons[0]['id'] : 0);
-        $typeIds   = $resultset->allTypeIds();
-
-        $priceService->setAdditionalCostsSeasonId($seasonId);
-
-        if (!$request->query->has('w') && !$request->query->has('pe')) {
-
-            /**
-             * no weekend
-             * no persons
-             */
-            $priceService->setTypes($typeIds);
-            $priceService->getDataWithWeekendAndOrPersons();
-        }
-
-        if (!$request->query->has('w') && $request->query->has('pe')) {
-
-            /**
-             * no weekend
-             * persons
-             */
-            $priceService->setPersons($request->query->get('pe'));
-            $priceService->setTypes($typeIds);
-            $priceService->getDataWithWeekendAndOrPersons();
-        }
-
-        $resultset->setPriceService($priceService);
-        $resultset->setMetadata();
-        $resultset->setResale($this->get('app.concern.website')->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE));
+        $params        = $searchService->createParamsFromRequest($request);
+        $resultset     = $searchService->search($params);
+        $paginator     = $searchService->paginate($resultset, $params);
 
         return new JsonResponse([
-            'count' => $resultset->paginator()->total(),
+            'count' => $paginator->total(),
         ]);
     }
 
@@ -479,16 +166,16 @@ class SearchController extends Controller
     }
 
     /**
-     * @param FilterService $filterService
-     * @param array         $params
+     * @param array $params
      *
      * @return array
      */
-    public function reroute(FilterService $filterService, $params)
+    public function reroute($params)
     {
         $reroute       = [];
         $regionService = $this->get('app.api.region');
         $locale        = $this->get('app.concern.locale')->get();
+        $converter     = new FilterConverter();
 
         foreach ($params as $param => $value) {
 
@@ -534,13 +221,13 @@ class SearchController extends Controller
 
             } else {
 
-                if (null !== ($filter = $filterService->convertThemeFilter($matches['param'], $data))) {
+                if (null !== ($filter = $converter->map($matches['param'], $data))) {
 
                     if (!isset($reroute['f'])) {
                         $reroute['f'] = [];
                     }
 
-                    if (FilterService::multiple($filter['filter'])) {
+                    if (FilterManager::multiple($filter['filter'])) {
 
                         if (!isset($reroute['f'][$filter['filter']])) {
                             $reroute['f'][$filter['filter']] = [];
@@ -631,5 +318,46 @@ class SearchController extends Controller
         }
 
         $session->set('search', $save);
+    }
+
+    /**
+     * @param Params $params
+     *
+     * @return void
+     */
+    public function setupJavascriptParameters(Params $params)
+    {
+        $javascript = $this->get('app.javascript');
+        $javascript->set('app.filters.normal',                $params->getFilters());
+        $javascript->set('app.filters.custom.countries',      $params->getCountries());
+        $javascript->set('app.filters.custom.regions',        $params->getRegions());
+        $javascript->set('app.filters.custom.places',         $params->getPlaces());
+        $javascript->set('app.filters.custom.accommodations', $params->getAccommodations());
+        $javascript->set('app.filters.form.bedrooms',         $params->getBedrooms());
+        $javascript->set('app.filters.form.bathrooms',        $params->getBathrooms());
+        $javascript->set('app.filters.form.sort',             $params->getSort());
+    }
+
+    /**
+     * @param Params $params
+     *
+     * @return array
+     */
+    private function getFacetFilters(Params $params)
+    {
+        $filters = FacetService::activeFilters();
+        $paramsFilters = $params->getFilters() ?: [];
+
+        foreach ($paramsFilters as $filter => $activeFilterValues) {
+
+            if (false === FilterManager::multiple($filter)) {
+
+                $filters[$filter] = array_filter($filters[$filter], function($value) use ($activeFilterValues) {
+                    return $value === $activeFilterValues;
+                });
+            }
+        }
+
+        return $filters;
     }
 }

@@ -1,37 +1,37 @@
-{% set filter_distance          = constant('FILTER_DISTANCE', filter_service) %}
+{% set filter_distance          = constant('FILTER_DISTANCE', filter_manager) %}
 {% set filter_distance_value    = filters[filter_distance]|default(null) %}
-{% set distance_by_slope        = constant('FILTER_DISTANCE_BY_SLOPE', filter_service) %}
-{% set distance_max_250         = constant('FILTER_DISTANCE_MAX_250', filter_service) %}
-{% set distance_max_500         = constant('FILTER_DISTANCE_MAX_500', filter_service) %}
-{% set distance_max_1000        = constant('FILTER_DISTANCE_MAX_1000', filter_service) %}
+{% set distance_by_slope        = constant('FILTER_DISTANCE_BY_SLOPE', filter_manager) %}
+{% set distance_max_250         = constant('FILTER_DISTANCE_MAX_250', filter_manager) %}
+{% set distance_max_500         = constant('FILTER_DISTANCE_MAX_500', filter_manager) %}
+{% set distance_max_1000        = constant('FILTER_DISTANCE_MAX_1000', filter_manager) %}
 
 
-{% set filter_length            = constant('FILTER_LENGTH', filter_service) %}
+{% set filter_length            = constant('FILTER_LENGTH', filter_manager) %}
 {% set filter_length_value      = filters[filter_length]|default(null) %}
-{% set length_max_100           = constant('FILTER_LENGTH_MAX_100', filter_service) %}
-{% set length_min_100           = constant('FILTER_LENGTH_MIN_100', filter_service) %}
-{% set length_min_200           = constant('FILTER_LENGTH_MIN_200', filter_service) %}
-{% set length_min_400           = constant('FILTER_LENGTH_MIN_400', filter_service) %}
+{% set length_max_100           = constant('FILTER_LENGTH_MAX_100', filter_manager) %}
+{% set length_min_100           = constant('FILTER_LENGTH_MIN_100', filter_manager) %}
+{% set length_min_200           = constant('FILTER_LENGTH_MIN_200', filter_manager) %}
+{% set length_min_400           = constant('FILTER_LENGTH_MIN_400', filter_manager) %}
 
 
-{% set filter_facility          = constant('FILTER_FACILITY', filter_service) %}
+{% set filter_facility          = constant('FILTER_FACILITY', filter_manager) %}
 {% set filter_facility_value    = filters[filter_facility]|default(null) %}
-{% set facility_catering        = constant('FILTER_FACILITY_CATERING', filter_service) %}
-{% set facility_internet_wifi   = constant('FILTER_FACILITY_INTERNET_WIFI', filter_service) %}
-{% set facility_swimming_pool   = constant('FILTER_FACILITY_SWIMMING_POOL', filter_service) %}
-{% set facility_sauna           = constant('FILTER_FACILITY_SAUNA', filter_service) %}
-{% set facility_private_sauna   = constant('FILTER_FACILITY_PRIVATE_SAUNA', filter_service) %}
-{% set facility_pets_allowed    = constant('FILTER_FACILITY_PETS_ALLOWED', filter_service) %}
-{% set facility_fireplace       = constant('FILTER_FACILITY_FIREPLACE', filter_service) %}
+{% set facility_catering        = constant('FILTER_FACILITY_CATERING', filter_manager) %}
+{% set facility_internet_wifi   = constant('FILTER_FACILITY_INTERNET_WIFI', filter_manager) %}
+{% set facility_swimming_pool   = constant('FILTER_FACILITY_SWIMMING_POOL', filter_manager) %}
+{% set facility_sauna           = constant('FILTER_FACILITY_SAUNA', filter_manager) %}
+{% set facility_private_sauna   = constant('FILTER_FACILITY_PRIVATE_SAUNA', filter_manager) %}
+{% set facility_pets_allowed    = constant('FILTER_FACILITY_PETS_ALLOWED', filter_manager) %}
+{% set facility_fireplace       = constant('FILTER_FACILITY_FIREPLACE', filter_manager) %}
 
 
-{% set filter_theme             = constant('FILTER_THEME', filter_service) %}
+{% set filter_theme             = constant('FILTER_THEME', filter_manager) %}
 {% set filter_theme_value       = filters[filter_theme]|default(null) %}
-{% set theme_kids               = constant('FILTER_THEME_KIDS', filter_service)%}
-{% set theme_charming_places    = constant('FILTER_THEME_CHARMING_PLACES', filter_service) %}
-{% set theme_10_for_apres_ski   = constant('FILTER_THEME_10_FOR_APRES_SKI', filter_service) %}
-{% set theme_super_ski_stations = constant('FILTER_THEME_SUPER_SKI_STATIONS', filter_service) %}
-{% set theme_winter_wellness    = constant('FILTER_THEME_WINTER_WELLNESS', filter_service) %}
+{% set theme_kids               = constant('FILTER_THEME_KIDS', filter_manager)%}
+{% set theme_charming_places    = constant('FILTER_THEME_CHARMING_PLACES', filter_manager) %}
+{% set theme_10_for_apres_ski   = constant('FILTER_THEME_10_FOR_APRES_SKI', filter_manager) %}
+{% set theme_super_ski_stations = constant('FILTER_THEME_SUPER_SKI_STATIONS', filter_manager) %}
+{% set theme_winter_wellness    = constant('FILTER_THEME_WINTER_WELLNESS', filter_manager) %}
 
 <div id="search-filter"  class="small-12 medium-4 large-3 columns">
     <div id="search-filter-main">

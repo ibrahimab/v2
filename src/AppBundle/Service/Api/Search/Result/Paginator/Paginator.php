@@ -1,19 +1,22 @@
 <?php
 namespace AppBundle\Service\Api\Search\Result\Paginator;
+
 use       AppBundle\Service\Api\Search\Result\Paginator\OutOfBoundsException;
 use       AppBundle\Service\Api\Search\Result\Resultset;
-use       AppBundle\Entity\Accommodation\Accommodation;
-use       Doctrine\ORM\QueryBuilder;
-use       Doctrine\ORM\Query;
 
 /**
  * @author  Ibrahim Abdullah
  * @package Chalet
- * @version 0.0.5
- * @since   0.0.5
+ * @version 1.0.0
+ * @since   1.0.0
  */
 class Paginator implements \Iterator, \Countable
 {
+    /**
+     * @var array
+     */
+    private $results;
+
     /**
      * @var integer
      */
@@ -52,14 +55,16 @@ class Paginator implements \Iterator, \Countable
     /**
      * Constructor
      *
-     * @param QueryBuilder $queryBuilder
+     * @param array   $results
+     * @param integer $limit
      */
-    public function __construct(Resultset $resultset, $limit = 10, $offset = 0)
+    public function __construct($results, $page, $limit = 10)
     {
-        $this->resultset = $resultset;
-        $this->position  = 0;
-        $this->limit     = $limit;
-        $this->offset    = $offset;
+        $this->results      = array_values($results);
+        $this->position     = 0;
+        $this->limit        = $limit;
+        $this->offset       = 0;
+        $this->current_page = $this->checkCurrentPage($page);
     }
 
     /**
@@ -68,19 +73,11 @@ class Paginator implements \Iterator, \Countable
      */
     public function checkCurrentPage($page)
     {
-        if (($page > $this->getTotalPages() || $page < 0) && count($paginator) > 0) {
+        if (($page > $this->getTotalPages() || $page < 0)) {
             throw new OutOfBoundsException(sprintf('Page cannot be set to either below zero or above the total pages. You chose: %d, max: (%d)', $page, $this->getTotalPages() + 1));
         }
 
         return (int)$page;
-    }
-
-    /**
-     * @param integer $page
-     */
-    public function setCurrentPage($page)
-    {
-        $this->current_page = $this->checkCurrentPage($page);
     }
 
     /**
@@ -113,7 +110,9 @@ class Paginator implements \Iterator, \Countable
     public function getTotalPages()
     {
         if (null === $this->total_pages) {
+
             $this->total_pages = ($this->getLimit() > 0 ? ((int)ceil($this->count() / $this->getLimit()) - 1) : 0);
+            $this->total_pages = ($this->total_pages < 0 ? 0 : $this->total_pages);
         }
 
         return $this->total_pages;
@@ -126,7 +125,11 @@ class Paginator implements \Iterator, \Countable
      */
     public function count()
     {
-        return $this->resultset->count();
+        if (null === $this->count) {
+            $this->count = count($this->results);
+        }
+
+        return $this->count;
     }
 
     /**
@@ -134,7 +137,11 @@ class Paginator implements \Iterator, \Countable
      */
     public function total()
     {
-        return $this->resultset->total();
+        if (null === $this->total) {
+            $this->total = array_sum(array_map('count', $this->results));
+        }
+
+        return $this->total;
     }
 
     /**
@@ -142,7 +149,7 @@ class Paginator implements \Iterator, \Countable
      */
     public function current()
     {
-        return ($this->position >= $this->offset && $this->position < ($this->offset() + $this->getLimit()) ? $this->resultset->results[$this->position] : false);
+        return ($this->position >= $this->offset && $this->position < ($this->offset() + $this->getLimit()) ? $this->results[$this->position] : false);
     }
 
     /**
@@ -177,7 +184,7 @@ class Paginator implements \Iterator, \Countable
      */
     public function valid()
     {
-        return isset($this->resultset->results[$this->position]) && $this->position >= $this->offset && $this->position < ($this->getLimit() + $this->offset());
+        return isset($this->results[$this->position]) && $this->position >= $this->offset && $this->position < ($this->getLimit() + $this->offset());
     }
 
     /**
@@ -193,6 +200,6 @@ class Paginator implements \Iterator, \Countable
      */
     public function results()
     {
-        return $this->resultset->results;
+        return $this->results;
     }
 }

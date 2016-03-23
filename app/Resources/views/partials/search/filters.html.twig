@@ -39,8 +39,8 @@
         {% for country in custom_filters['countries'] %}
             <div data-role="filter-tag">
                 Land:
-                {{ country.getLocaleName(locale) }}
-                <a href="#" data-role="remove-country-filter" data-id="{{ country.getLocaleName(locale) }}"><i class="fi-x"></i></a>
+                {{ country }}
+                <a href="#" data-role="remove-country-filter" data-id="{{ country }}"><i class="fi-x"></i></a>
             </div>
         {% endfor %}
     {% endif %}
@@ -50,7 +50,7 @@
         {% for region in custom_filters['regions'] %}
             <div data-role="filter-tag">
                 Skigebied:
-                {{ region.getLocaleName(locale) }}
+                {{ region }}
                 <a href="#" data-role="remove-region-filter" data-id="{{ region.getLocaleName(locale) }}"><i class="fi-x"></i></a>
             </div>
         {% endfor %}
@@ -61,7 +61,7 @@
         {% for place in custom_filters['places'] %}
             <div data-role="filter-tag">
                 Plaats:
-                {{ place.getLocaleName(locale) }}
+                {{ place }}
                 <a href="#" data-role="remove-place-filter" data-id="{{ place.getLocaleName(locale) }}"><i class="fi-x"></i></a>
             </div>
         {% endfor %}
@@ -69,22 +69,11 @@
 
     {% if custom_filters['accommodations']|length > 0 %}
         {% set filters_active = true %}
-        {% for accommodation in custom_filters['accommodations'] %}
+        {% for accommodationId, accommodation in custom_filters['accommodations'] %}
             <div data-role="filter-tag">
                 Accommodatie:
-                {{ accommodation.getLocaleName(locale) }}
-                <a href="#" data-role="remove-accommodation-filter" data-id="{{ accommodation.getId() }}"><i class="fi-x"></i></a>
-            </div>
-        {% endfor %}
-    {% endif %}
-
-    {% if custom_filters['types']|length > 0 %}
-        {% set filters_active = true %}
-        {% for type in custom_filters['types'] %}
-            <div data-role="filter-tag">
-                Accommodatie:
-                {{ type.getAccommodation().getLocaleName(locale) ~ ' ' ~ type.getLocaleName(locale) }}
-                <a href="#" data-role="remove-type-filter" data-id="{{ type.getId() }}"><i class="fi-x"></i></a>
+                {{ accommodation }}
+                <a href="#" data-role="remove-accommodation-filter" data-id="{{ accommodationId }}"><i class="fi-x"></i></a>
             </div>
         {% endfor %}
     {% endif %}
@@ -124,7 +113,7 @@
         </div>
     {% endif %}
 
-    {% if form_filters['freesearch'] is defined %}
+    {% if form_filters['freesearch'] %}
         {% set filters_active = true %}
         <div data-role="filter-tag">
             Zoekopdracht:

@@ -44,8 +44,19 @@ class AccommodationService
         return $this->accommodationRepository->find($by);
     }
 
+    /**
+     * @return void
+     */
     public function clean()
     {
         $this->accommodationRepository->clean();
+    }
+
+    /**
+     * @param array $ids
+     */
+    public function names($ids)
+    {
+        return $this->accommodationRepository->names($ids);
     }
 }

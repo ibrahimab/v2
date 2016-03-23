@@ -6,7 +6,7 @@ services:
             - { name: twig.extension }
         calls:
             - [setLocaleConcern, ["@app.concern.locale"]]
-            - [setFilterService, ["@app.filter"]]
+            - [setFilterTokenizer, ["@app.api.search.tokenizer"]]
             - [setWebsiteConcern, ["@app.concern.website"]]
             - [setUrlGenerator, ["@router"]]
             - [setJavascriptService, ["@app.javascript"]]

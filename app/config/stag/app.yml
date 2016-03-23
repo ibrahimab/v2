@@ -57,6 +57,10 @@ parameters:
         total_travel_sum_days_before_arrival: 42
         service:
             api:
+                search:
+                    limit: 50
+                    sort: 1
+                    distance_by_slope: 50
                 highlight:
                     limit: 6
                     results_per_row: 3

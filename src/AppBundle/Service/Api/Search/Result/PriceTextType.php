@@ -80,17 +80,19 @@ class PriceTextType
      **/
     public function get()
     {
-
         if ($this->accommodation['show'] == 3 || $this->isResale) {
+
             // accommodation
-            if (count($this->accommodation['types']) >= 2 || !$this->whereDate) {
+            if ($this->accommodation['total_types'] >= 2 || !$this->whereDate) {
                 return self::PRICE_TEXT_ACCOMMODATION_FROM;
             } else {
                 return self::PRICE_TEXT_ACCOMMODATION;
             }
+
         } else {
+
             // arrangement
-            if (count($this->accommodation['types']) >= 2 || !$this->whereDate || !$this->wherePersons) {
+            if ($this->accommodation['total_types'] >= 2 || !$this->whereDate || !$this->wherePersons) {
                 return self::PRICE_TEXT_ARRANGEMENT_FROM;
             } else {
                 return self::PRICE_TEXT_ARRANGEMENT;

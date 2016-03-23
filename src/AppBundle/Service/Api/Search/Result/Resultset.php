@@ -1,43 +1,101 @@
 <?php
 namespace AppBundle\Service\Api\Search\Result;
-use       AppBundle\Service\Api\Search\SearchBuilder;
-use       AppBundle\Entity\Accommodation\Accommodation;
-use       AppBundle\Service\Api\Search\Result\Paginator\Paginator;
-use       AppBundle\Service\Api\Search\Result\PriceTextType;
-use       AppBundle\Service\Api\Price\PriceService;
-use       AppBundle\AppTrait\LocaleTrait;
-use       Doctrine\ORM\QueryBuilder;
-use       Doctrine\ORM\Query;
+
+use AppBundle\Service\Api\Search\Builder\Sort;
+use AppBundle\Service\Api\Search\Result\Paginator\Paginator;
+use AppBundle\Service\Api\Search\Result\PriceTextType;
+use AppBundle\Service\Api\Search\Repository\PriceRepositoryInterface;
+use AppBundle\Service\Api\Search\Repository\OfferRepositoryInterface;
+use AppBundle\Service\Api\Legacy\StartingPrice;
 
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
  * @package Chalet
- * @version 0.0.5
- * @since   0.0.5
+ * @version 1.0.0
+ * @since   1.0.0
  */
 class Resultset
 {
-    use LocaleTrait;
+    /** @var integer */
+    const KIND_CHALET           = 1;
+
+    /** @var integer */
+    const KIND_APARTMENT        = 2;
+
+    /** @var integer */
+    const KIND_HOTEL            = 3;
+
+    /** @var integer */
+    const KIND_CHALET_APARTMENT = 4;
+
+    /** @var integer */
+    const KIND_HOLIDAY_HOUSE    = 6;
+
+    /** @var integer */
+    const KIND_VILLA            = 7;
+
+    /** @var integer */
+    const KIND_CASTLE           = 8;
+
+    /** @var integer */
+    const KIND_HOLIDAY_PARK     = 9;
+
+    /** @var integer */
+    const KIND_AGRITURISMO      = 10;
+
+    /** @var integer */
+    const KIND_DOMAIN           = 11;
+
+    /** @var integer */
+    const KIND_PENSION          = 12;
 
     /**
-     * @var integer
+     * @var array
      */
-    const SORT_ASC  = 1;
+    private $raw;
 
     /**
-     * @var integer
+     * @var array
      */
-    const SORT_DESC = 2;
+    private $config;
 
     /**
-     * @var QueryBuilder
+     * Made public to allow assign by-reference to reduce memory usage
+     * for big resultsets
+     *
+     * @var array
      */
-    private $builder;
+    public $results;
 
     /**
-     * @var SearchBuilder
+     * @var integer|boolean
      */
-    private $searchBuilder;
+    private $weekend;
+
+    /**
+     * @var integer|boolean
+     */
+    private $persons;
+
+    /**
+     * @var array
+     */
+    private $types;
+
+    /**
+     * @var array
+     */
+    private $typeIds;
+
+    /**
+     * @var array
+     */
+    private $prices;
+
+    /**
+     * @var array
+     */
+    private $cheapest;
 
     /**
      * @var Paginator
@@ -45,391 +103,315 @@ class Resultset
     private $paginator;
 
     /**
-     * @var Sorter
+     * @var StartingPrice
      */
-    private $sorter;
+    private $startingPrice;
 
     /**
-     * @var PriceService
+     * @var PriceRepository
      */
-    private $priceService;
+    private $priceRepository;
 
     /**
-     * @var array
+     * @var OfferRepositoryInterface
      */
-    public $results = [];
-
-    /**
-     * @var array
-     */
-    public $types = [];
-
-    /**
-     * @var integer
-     */
-    public $count;
-
-    /**
-     * @var integer
-     */
-    public $total;
+    private $offerRepository;
 
     /**
      * @var array
      */
-    public $prices;
+    public static $kindIdentifiers = [
+
+        self::KIND_CHALET           => 'chalet',
+        self::KIND_APARTMENT        => 'apartment',
+        self::KIND_HOTEL            => 'hotel',
+        self::KIND_CHALET_APARTMENT => 'chalet-apartment',
+        self::KIND_HOLIDAY_HOUSE    => 'holiday-house',
+        self::KIND_VILLA            => 'villa',
+        self::KIND_CASTLE           => 'castle',
+        self::KIND_HOLIDAY_PARK     => 'holiday-park',
+        self::KIND_AGRITURISMO      => 'agriturismo',
+        self::KIND_DOMAIN           => 'domain',
+        self::KIND_PENSION          => 'pension',
+    ];
 
     /**
-     * @var array
+     * @param array   $results
+     * @param array   $config
+     * @param integer $weekend
+     * @param integer $persons
      */
-    public $offers;
-
-    /**
-     * @var array
-     */
-    public $isAccommodation;
-
-    /**
-     * @var array
-     */
-    public $surveys;
-
-    /**
-     * @var array
-     */
-    public $sortKeys;
-
-    /**
-     * @var boolean
-     */
-    public $resale;
-
-    /**
-     * @var array
-     */
-    public $appConfig;
-
-
-    /**
-     * @param QueryBuilder $builder
-     */
-    public function __construct(QueryBuilder $builder, SearchBuilder $searchBuilder)
+    public function __construct(array $raw, array $config, $weekend = false, $persons = false)
     {
-        $this->builder = $builder;
-        $this->searchBuilder = $searchBuilder;
-        $this->results = $this->builder->getQuery()->getResult(Query::HYDRATE_ARRAY);
+        $this->raw      = $raw;
+        $this->results  = [];
+        $this->config   = $config;
+        $this->weekend  = $weekend;
+        $this->persons  = $persons;
+        $this->types    = [];
+        $this->prices   = [];
+        $this->cheapest = [];
     }
 
     /**
-     * @return void
+     * @param StartingPrice $startingPrice
+     *
+     * @return Repository
+     */
+    public function setStartingPrice(StartingPrice $startingPrice)
+    {
+        $this->startingPrice = $startingPrice;
+    }
+
+    /**
+     * @param PriceRepositoryInterface $priceRepository
+     */
+    public function setPriceRepository(PriceRepositoryInterface $priceRepository)
+    {
+        $this->priceRepository = $priceRepository;
+    }
+
+    /**
+     * @param OfferRepositoryInterface $offerRepository
+     */
+    public function setOfferRepository(OfferRepositoryInterface $offerRepository)
+    {
+        $this->offerRepository = $offerRepository;
+    }
+
+    /**
+     * @return Resultset
      */
     public function prepare()
     {
-        foreach ($this->results as $key => $accommodation) {
+        $this->results = [];
+        $prices        = [];
+        $offers        = [];
 
-            $this->results[$key]['cheapest']               = ['id' => $accommodation['types'][0]['id'], 'price' => 0];
-            $this->results[$key]['offer']                  = false;
-            $this->results[$key]['price']                  = 0;
-            $this->results[$key]['localeName']             = $this->getLocaleValue('name', $accommodation);
-            $this->results[$key]['localeShortDescription'] = $this->getLocaleValue('shortDescription', $accommodation);
-            $this->results[$key]['kindIdentifier']         = (isset(Accommodation::$kindIdentifiers[$accommodation['kind']]) ? Accommodation::$kindIdentifiers[$accommodation['kind']] : null);
+        if (false === $this->weekend && false === $this->persons) {
+            $prices = $this->startingPrice->getStartingPrices($this->getTypeIds());
+        }
 
-            $place   = $accommodation['place'];
-            $region  = $place['region'];
-            $country = $place['country'];
+        if (false !== $this->weekend || false !== $this->persons) {
+            $prices = $this->fetchPrices();
+        }
 
-            $this->results[$key]['place']['localeName']            = $this->getLocaleValue('name', $place);
-            $this->results[$key]['place']['country']['localeName'] = $this->getLocaleValue('name', $country);
-            $this->results[$key]['place']['region']['localeName']  = $this->getLocaleValue('name', $region);
+        if (false === $this->weekend && false === $this->persons) {
 
-            foreach ($accommodation['types'] as $typeKey => $type) {
+            // no weekend and no persons
+            // select offers from repository
+            $offers = $this->fetchOffers();
+        }
 
-                $this->results[$key]['types'][$typeKey]['price']                      = 0;
-                $this->results[$key]['types'][$typeKey]['offer']                      = false;
-                $this->results[$key]['types'][$typeKey]['surveyCount']                = 0;
-                $this->results[$key]['types'][$typeKey]['surveyAverageOverallRating'] = 0;
-                $this->results[$key]['types'][$typeKey]['sortKey']                    = '-';
-                $this->results[$key]['types'][$typeKey]['localeName']                 = $this->getLocaleValue('name', $type);
+        foreach ($this->raw as $row) {
+
+            $row['price'] = (isset($row['price']) ? floatval($row['price']) : 0);
+
+            if (isset($prices[$row['type_id']])) {
+                $row['price'] = $prices[$row['type_id']];
             }
 
-            $this->types[$accommodation['id']] =& $this->results[$key]['types'];
+            if (!isset($row['show_as_discount']) && isset($offers[$row['type_id']])) {
+
+                // discount fields not available
+                // but offer repository does have them
+                // taking it over from offer repository
+                $row['discount_color']      = $offers[$row['type_id']]['discount_color'];
+                $row['show_as_discount']    = $offers[$row['type_id']]['show_as_discount'];
+                $row['show_exact_discount'] = $offers[$row['type_id']]['discount_percentage'];
+                $row['discount_percentage'] = $offers[$row['type_id']]['discount_percentage'];
+                $row['discount_euro']       = $offers[$row['type_id']]['discount_euro'];
+            }
+
+            if (isset($row['show_as_discount'])) {
+
+                // discount fields are available
+                $row['discount_color']      = (intval($row['discount_color']) === 1);
+                $row['show_as_discount']    = (intval($row['show_as_discount']) === 1);
+                $row['show_exact_discount'] = (intval($row['show_exact_discount']) === 1);
+                $row['discount_percentage'] = floatval($row['discount_percentage']);
+                $row['discount_amount']     = floatval($row['discount_amount']);
+                $row['discount_type']       = null;
+
+                if (true === $row['show_as_discount'] || true === $row['discount_color']) {
+
+                    // discount is active
+                    // checking whether it is percentage or amount
+                    $row['offer']         = true;
+                    $row['discount_type'] = ($row['discount_amount'] > 0 ? 'amount' : 'percentage');
+                    $row['show_discount'] = ($row['discount_percentage'] > 0 || $row['discount_amount'] > 0);
+                }
+            }
+
+            $row['type_id'] = intval($row['type_id']);
+            $row['accommodation_id'] = intval($row['accommodation_id']);
+            $row['separate_in_search'] = intval($row['separate_in_search']);
+            $row['group_id'] = $this->getGroupId($row['separate_in_search'], $row['accommodation_id'], $row['type_id']);
+            $row['kind_identifier'] = $this->getKindIdentifier($row['kind']);
+
+            $this->results[$row['group_id']][] = $row;
+            $this->types[$row['type_id']] = $row;
+            $this->typeIds[] = $row['type_id'];
+            $this->prices[$row['group_id']][$row['type_id']] = $row['price'];
         }
+
+        $this->preparePriceTextTypes();
+        $this->prepareCheapestRows();
+
+        return $this;
     }
 
     /**
+     * @return array
+     */
+    public function getTypeIds()
+    {
+        if (null === $this->typeIds) {
+            $this->typeIds = array_map('intval', array_column($this->raw, 'type_id'));
+        }
+
+        return $this->typeIds;
+    }
+
+    /**
+     * @param Sort $sort
+     *
+     * @return Resultset
+     */
+    public function sort(Sort $sort)
+    {
+        $sorter        = new Sorter($this->config, $sort->getDirection(), $this->persons);
+        $this->results = $sorter->sort($this->results);
+
+        return $this;
+    }
+
+    /**
+     * @param integer $page
+     *
      * @return Paginator
      */
-    public function paginator()
+    public function paginate($page, $limit)
     {
         if (null === $this->paginator) {
-            $this->paginator = new Paginator($this);
+            $this->paginator = new Paginator($this->results, $page, $limit);
         }
 
         return $this->paginator;
     }
 
     /**
-     * @return Sorter
+     * @return Paginator
      */
-    public function sorter()
+    public function getPaginator()
     {
-        if (null === $this->sorter) {
-
-            $this->sorter = new Sorter($this);
-            $this->sorter->setLocale($this->getLocale());
-            $this->sorter->setOptimalMaximumPersonsMap($this->getAppConfig());
-        }
-
-        return $this->sorter;
+        return $this->paginator;
     }
 
     /**
-     * add PriceTextType to results
-     */
-    public function addPriceTextType()
-    {
-
-        foreach ($this->results as $key => $accommodation) {
-
-            $priceTextType = new PriceTextType(
-                $accommodation,
-                $this->searchBuilder->getBlockValue(SearchBuilder::BLOCK_WHERE, SearchBuilder::WHERE_DATE),
-                $this->searchBuilder->getBlockValue(SearchBuilder::BLOCK_WHERE, SearchBuilder::WHERE_PERSONS),
-                $this->resale
-            );
-
-            $this->results[$key]['priceTextType'] = $priceTextType->get();
-        }
-    }
-
-    /**
-     * @param PriceService $priceService
-     */
-    public function setPriceService(PriceService $priceService)
-    {
-        $this->priceService = $priceService;
-    }
-
-    /**
-     * @param array
-     */
-    public function setAppConfig($appConfig)
-    {
-        $this->appConfig = $appConfig;
-    }
-
-    public function getAppConfig()
-    {
-        return $this->appConfig;
-    }
-
-    /**
-     * @return integer
-     */
-    public function count()
-    {
-        if (null === $this->count) {
-            $this->count = count($this->results);
-        }
-
-        return $this->count;
-    }
-
-    /**
-     * @return integer
-     */
-    public function total()
-    {
-        if (null === $this->total) {
-
-            $this->total = 0;
-
-            foreach ($this->results as $accommodation) {
-
-                if (isset($accommodation['types'])) {
-                    $this->total += count($accommodation['types']);
-                }
-            }
-        }
-
-        return $this->total;
-    }
-
-    /**
+     * @param integer $separate
      * @param integer $accommodationId
-     * @return array
-     */
-    public function types($accommodationId)
-    {
-        return (isset($this->types[$accommodationId]) ? $this->types[$accommodationId] : []);
-    }
-
-    /**
-     * @return array
-     */
-    public function allTypes()
-    {
-        return $this->types;
-    }
-
-    /**
-     * @return array
-     */
-    public function allTypeIds()
-    {
-        $ids = [];
-
-        foreach ($this->types as $accommodationId => $types) {
-
-            foreach ($types as $type) {
-                $ids[] = $type['id'];
-            }
-        }
-
-        return $ids;
-    }
-
-    /**
-     * @return array
-     */
-    public function currentPageTypeIds()
-    {
-        $paginator = $this->paginator();
-        $ids       = [];
-
-        foreach ($paginator as $accommodation) {
-
-            foreach ($accommodation['types'] as $type) {
-                $ids[] = $type['id'];
-            }
-        }
-
-        return $ids;
-    }
-
-    /**
-     * @param array $prices
-     */
-    public function setPrices($prices)
-    {
-        $this->prices = array_map('ceil', $prices);
-    }
-
-    /**
-     * @param array $offers
-     */
-    public function setOffers($offers)
-    {
-        $this->offers = $offers;
-    }
-
-    /**
-     * @param array surveys
-     */
-    public function setSurveys($surveys)
-    {
-        $this->surveys = $surveys;
-    }
-
-    /**
-     * show=3
+     * @param integer $typeId
      *
-     * @param array
+     * @return string
      */
-    public function setIsAccommodations($accommodations)
+    public function getGroupId($separate, $accommodationId, $typeId)
     {
-        $this->accommodations = $accommodations;
+        return ($separate === 1 ? ($accommodationId . '_' . $typeId) : $accommodationId);
+    }
+
+    /**
+     * @param integer $groupId
+     *
+     * @return array|null
+     */
+    public function getCheapestRow($groupId)
+    {
+        return (isset($this->cheapest[$groupId]) ? $this->types[$this->cheapest[$groupId]] : null);
     }
 
     /**
      * @return void
      */
-    public function setMetadata()
+    public function prepareCheapestRows()
     {
-        foreach ($this->results as $key => $accommodation) {
+        foreach ($this->prices as $groupId => $prices) {
 
-            $accommodationPrices[$accommodation['id']] = 0;
-            $this->results[$key]['prices']             = [];
-            $this->results[$key]['prices_types']       = [];
+            $min = 0;
 
-            foreach ($accommodation['types'] as $typeKey => $type) {
+            if (count($prices) > 0) {
+                $min = min($prices);
+            }
 
-                if (isset($this->prices[$type['id']]) && $this->prices[$type['id']] > 0) {
+            foreach ($prices as $typeId => $price) {
 
-                    $this->results[$key]['types'][$typeKey]['price']  = floatval($this->prices[$type['id']]);
-                    $this->results[$key]['types'][$typeKey]['price'] += floatval($this->priceService->getAdditionalCostsByType($type['id'], $accommodation['show'], $type['maxResidents']));
+                if ($min === $price) {
+                    $this->cheapest[$groupId] = $typeId;
                 }
-
-                if (isset($this->offers[$type['id']])) {
-
-                    $this->results[$key]['offer']                    = true;
-                    $this->results[$key]['types'][$typeKey]['offer'] = true;
-                }
-
-                if (isset($this->surveys[$type['id']])) {
-
-                    $this->results[$key]['types'][$typeKey]['surveyCount']                = $this->surveys[$type['id']]['surveyCount'];
-                    $this->results[$key]['types'][$typeKey]['surveyAverageOverallRating'] = $this->surveys[$type['id']]['surveyAverageOverallRating'];
-                }
-
-                if (isset($this->isAccommodation[$type['id']])) {
-                    $this->results[$key]['types'][$typeKey]['accommodation'] = true === $this->isAccommodation[$type['id']];
-                }
-
-                $this->results[$key]['types'][$typeKey]['sortKey'] = $this->sorter()->generateSortKey($this->results[$key], $this->results[$key]['types'][$typeKey]);
             }
         }
     }
 
     /**
-     * @param array $sortKey
+     * @return void
      */
-    public function setSortKeys($sortKeys)
+    public function preparePriceTextTypes()
     {
-        $this->sortKeys = $sortKeys;
+        foreach ($this->results as &$rows) {
+
+            $count = count($rows);
+
+            foreach ($rows as &$row) {
+
+                $row['total_types'] = $count;
+
+                $priceTextType = new PriceTextType($row, $this->weekend, $this->persons, $this->resale);
+
+                $row['price_text_type'] = $priceTextType->get();
+
+                // making sure $this->types is up to date with $this->results
+                $this->types[$row['type_id']]['price_text_type'] = $row['price_text_type'];
+            }
+        }
     }
 
     /**
-     * @param array $results
+     * @param integer $kind
+     *
+     * @return string|integer
      */
-    public function setSortedResults($results)
+    private function getKindIdentifier($kind)
     {
-        $this->results = $results;
+        return (isset(self::$kindIdentifiers[$kind]) ? self::$kindIdentifiers[$kind] : $kind);
     }
 
     /**
-     * @param boolean $resale
+     * @return array
      */
-    public function setResale($resale)
+    private function fetchPrices()
     {
-        $this->resale = $resale;
-    }
+        $prices = [];
 
-    /**
-     * @param  string $field
-     * @param  array  $data
-     * @return string
-     */
-    public function getLocaleValue($field, $data)
-    {
-        switch ($this->getLocale()) {
+        if (false !== $this->weekend && false === $this->persons) {
 
-            case 'nl':
-                $value = $field;
-            break;
-
-            case 'en':
-                $value = 'english' . ucfirst($field);
-            break;
-
-            case 'de':
-                $value = 'german' . ucfirst($field);
-            break;
-
-            default:
-                $value = '';
+            // only weekend was selected
+            $prices = $this->priceRepository->getPricesByWeekend($this->weekend);
         }
 
-        return (isset($data[$value]) ? $data[$value] : '');
+        if (false === $this->weekend && false !== $this->persons) {
+
+            // only persons was selected
+            $prices = $this->priceRepository->getPricesByPersons($this->persons);
+        }
+
+        return $prices;
+    }
+
+    /**
+     * @return array
+     */
+    private function fetchOffers()
+    {
+        return $this->offerRepository->getOffers();
     }
 }
