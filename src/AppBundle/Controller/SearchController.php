@@ -48,11 +48,13 @@ class SearchController extends Controller
 
         $saved = $this->saved();
 
-        if (null !== $saved) {
+        if (count($saved) > 0 && (parse_url($request->headers->get('referer'), PHP_URL_PATH) !== $request->getPathInfo() || false === $request->isXmlHttpRequest())) {
 
             $this->get('session')->remove('search');
             return $this->redirectToRoute('search_' . $locale, $saved, 301);
         }
+
+        $this->saveToSession($request);
 
         $start    = microtime(true);
         $c        = $request->query->get('c',  []);   // country
@@ -316,8 +318,6 @@ class SearchController extends Controller
         $data['search_time']   = round((microtime(true) - $start), 2);
         $data['searchFormMessageSearchWithoutDates']   = $generalSettingsService->getSearchFormMessageSearchWithoutDates();
 
-        $this->saveToSession($request);
-
         return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', $data);
     }
 
@@ -550,7 +550,7 @@ class SearchController extends Controller
      */
     public function saved()
     {
-        return $this->get('session')->get('search');
+        return $this->get('session')->get('search') ?: [];
     }
 
     /**
