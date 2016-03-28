@@ -441,7 +441,6 @@ window.Chalet = (function(ns, jq, _, undefined) {
                     }
                 }
 
-                ns.Search.htmlBody.scrollTop(0);
                 ns.Search.actions.loader();
                 ns.Search.actions.request(url.toString());
             },
