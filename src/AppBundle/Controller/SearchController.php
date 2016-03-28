@@ -46,6 +46,14 @@ class SearchController extends Controller
             return $this->redirectToRoute('search_' . $locale, $reroute, 301);
         }
 
+        $saved = $this->saved();
+
+        if (null !== $saved) {
+
+            $this->get('session')->remove('search');
+            return $this->redirectToRoute('search_' . $locale, $saved, 301);
+        }
+
         $start    = microtime(true);
         $c        = $request->query->get('c',  []);   // country
         $r        = $request->query->get('r',  []);   // region
@@ -308,6 +316,8 @@ class SearchController extends Controller
         $data['search_time']   = round((microtime(true) - $start), 2);
         $data['searchFormMessageSearchWithoutDates']   = $generalSettingsService->getSearchFormMessageSearchWithoutDates();
 
+        $this->saveToSession($request);
+
         return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', $data);
     }
 
@@ -455,6 +465,12 @@ class SearchController extends Controller
         ]);
     }
 
+    /**
+     * @param FilterService $filterService
+     * @param array         $params
+     *
+     * @return array
+     */
     public function reroute(FilterService $filterService, $params)
     {
         $reroute       = [];
@@ -527,5 +543,80 @@ class SearchController extends Controller
         }
 
         return $reroute;
+    }
+
+    /**
+     * @return array
+     */
+    public function saved()
+    {
+        return $this->get('session')->get('search');
+    }
+
+    /**
+     * @param array $params
+     *
+     * @return void
+     */
+    public function saveToSession(Request $request)
+    {
+        $session = $this->get('session');
+        $save    = [];
+
+        if (count($countries = $request->query->get('c', [])) > 0) {
+            $save['c'] = $countries;
+        }
+
+        if (count($regions = $request->query->get('r', [])) > 0) {
+            $save['r'] = $regions;
+        }
+
+        if (count($places = $request->query->get('pl', [])) > 0) {
+            $save['pl'] = $places;
+        }
+
+        if (count($accommodations = $request->query->get('a', [])) > 0) {
+            $save['a'] = $accommodations;
+        }
+
+        if (count($types = $request->query->get('t', [])) > 0) {
+            $save['t'] = $types;
+        }
+
+        if (null !== ($bedrooms = $request->query->get('be', null)) && $bedrooms > 0) {
+            $save['be'] = $bedrooms;
+        }
+
+        if (null !== ($bathrooms = $request->query->get('ba', null)) && $bathrooms > 0) {
+            $save['ba'] = $bathrooms;
+        }
+
+        if (null !== ($weekend = $request->query->get('w', null)) && $weekend > 0) {
+            $save['w'] = $weekend;
+        }
+
+        if (null !== ($persons = $request->query->get('pe', null)) && $persons > 0) {
+            $save['pe'] = $persons;
+        }
+
+        if (null !== ($freesearch = $request->query->get('fs', null)) && $freesearch != '') {
+            $save['fs'] = $freesearch;
+        }
+
+        if (null !== ($sort = $request->query->get('s', null))) {
+            $save['s'] = $sort;
+        }
+
+        if (null !== ($page = $request->query->get('p', null))) {
+
+            $save['p'] = $request->query->getInt('p', 0);
+            $save['p'] = ($save['p'] === 0 ? $save['p'] : ($save['p'] - 1));
+        }
+
+        if (count($filters = $request->query->get('f', [])) > 0) {
+            $save['f'] = $filters;
+        }
+
+        $session->set('search', $save);
     }
 }
