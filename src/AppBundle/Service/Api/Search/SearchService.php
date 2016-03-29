@@ -52,7 +52,7 @@ class SearchService
     public function search()
     {
         $builder   = $this->build();
-        $resultset = new Resultset($this->searchServiceRepository->search($builder));
+        $resultset = new Resultset($this->searchServiceRepository->search($builder), $this->builder);
         $resultset->setLocale($this->getLocale());
         $resultset->paginator()->setLimit($builder->block(SearchBuilder::BLOCK_LIMIT));
         $resultset->paginator()->setCurrentPage($builder->block(SearchBuilder::BLOCK_PAGE));

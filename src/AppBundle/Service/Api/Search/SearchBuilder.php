@@ -30,7 +30,8 @@ class SearchBuilder
           WHERE_BATHROOMS                = 8,
           WHERE_TYPES                    = 9,
           WHERE_PERSONS                  = 10,
-          WHERE_FREESEARCH               = 11;
+          WHERE_FREESEARCH               = 11,
+          WHERE_DATE                     = 12;
 
     /** @const int */
     const SORT_BY_ACCOMMODATION_NAME     = 1,
@@ -119,6 +120,20 @@ class SearchBuilder
         ];
 
         return $this;
+    }
+
+    /**
+     * get the content of a block (set by $this->where)
+     *
+     * @param integer $blockType
+     * @param integer $field requested field
+     * @return integer
+     **/
+    public function getBlockValue($blockType, $field)
+    {
+        $blockFields = array_column($this->blocks[$blockType], 'value', 'field');
+
+        return $blockFields[$field];
     }
 
     /**
