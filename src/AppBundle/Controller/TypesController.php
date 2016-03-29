@@ -200,20 +200,12 @@ class TypesController extends Controller
     {
         $parsed = parse_url($url);
 
-        if (!isset($parsed['host'])) {
-            return false;
-        }
-
         if (!isset($parsed['path'])) {
             return false;
         }
 
-        if (!isset($parsed['scheme'])) {
-            $parsed['scheme'] = ($this->getParameter('ssl_enabled') ? 'https' : 'http');
-        }
-
         $parsed['query'] = (isset($parsed['query']) ? ('?' . urlencode($parsed['query'])) : '');
 
-        return $parsed['scheme'] . '://' . $parsed['host'] . $parsed['path'] . $parsed['query'];
+        return $parsed['path'] . $parsed['query'];
     }
 }
