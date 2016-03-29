@@ -88,6 +88,10 @@ class TypesController extends Controller
             $optionService     = $this->get('app.api.option');
             $options           = $optionService->options($type->getAccommodationId(), $seasonId, $request->query->get('w', null));
 
+            if (false == ($backUrl = $this->getBackUrl($request->query->get('back', '')))) {
+                $backUrl = '';
+            }
+
             return $this->render('types/show.html.twig', [
 
                 'type'               => $type,
@@ -102,6 +106,7 @@ class TypesController extends Controller
                 'currentWeekend'     => $request->query->get('w', null),
                 'currentSeason'      => $currentSeason,
                 'priceTable'         => $priceTable['html'],
+                'back_url'           => $backUrl,
             ]);
 
         } catch (NoResultException $e) {
@@ -184,5 +189,31 @@ class TypesController extends Controller
             'type'    => 'success',
             'html'    => $priceTable['html'],
         ]);
+    }
+
+    /**
+     * @param string $url
+     *
+     * @return string|boolean
+     */
+    public function getBackUrl($url)
+    {
+        $parsed = parse_url($url);
+
+        if (!isset($parsed['host'])) {
+            return false;
+        }
+
+        if (!isset($parsed['path'])) {
+            return false;
+        }
+
+        if (!isset($parsed['scheme'])) {
+            $parsed['scheme'] = ($this->getParameter('ssl_enabled') ? 'https' : 'http');
+        }
+
+        $parsed['query'] = (isset($parsed['query']) ? ('?' . urlencode($parsed['query'])) : '');
+
+        return $parsed['scheme'] . '://' . $parsed['host'] . $parsed['path'] . $parsed['query'];
     }
 }

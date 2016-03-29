@@ -323,6 +323,11 @@ Template-content: accommodation page
             </div>
             <div id="accom-right" class="small-12 medium-4 large-3 columns">
                 <div id="accom-main-box-container">
+                    {% if back_url %}
+                        <div class="accom-main-box back-to-search">
+                            <a href="{{ back_url }}">Terug naar zoekresultaten</a>
+                        </div>
+                    {% endif %}
                     <div id="accom-main-box">
                         <div class="price-details">
                             {% set skipas = true %}
