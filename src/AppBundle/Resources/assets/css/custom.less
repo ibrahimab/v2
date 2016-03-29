@@ -962,25 +962,23 @@ ul.feature-list li { background: none; padding-left: 0; }
 
 #region-images-row { margin-top: 20px; }
 
-.accom-main-box {
+.sidebar-block {
 
-    background-color: #e9edf8;
+    background-color: @sidebar-block-bg-color;
+    color: @sidebar-block-color;
     border: none;
     border-radius: 3px;
-    margin-bottom: 3rem;
-    padding: 1rem;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
 
-    &.back-to-search {
+    &:active, &:hover {
 
-        padding: 0.5rem;
-        margin-bottom: 0.5rem;
-
-        a, a:hover, a:active {
-
-            border-bottom: 1px dotted @back-to-search-color;
-            text-decoration: none;
-        }
+        background-color: @sidebar-block-hover-bg-color;
+        color: @sidebar-block-hover-color;
     }
 }
