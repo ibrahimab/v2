@@ -104,7 +104,7 @@ class TypesController extends Controller
                 'priceTable'         => $priceTable['html'],
             ]);
 
-        } catch (\Exception $e) {
+        } catch (NoResultException $e) {
 
             $response = $this->render('types/not-found.html.twig');
             $response->setStatusCode(Response::HTTP_NOT_FOUND);
