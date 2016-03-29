@@ -32,11 +32,6 @@ class PagesController extends Controller
      */
     public function test()
     {
-        return $this->render('pages/test.html.twig', [
-            'accommodations' => 1,
-            'regions' => 1,
-            'weekends' => [],
-        ]);
     }
 
     /**
