@@ -292,11 +292,11 @@
                 {% if facet_service.has(filter_theme, theme_winter_wellness) %}
                     {% set theme_winter_wellness_facet = facet_service.get(filter_theme, theme_winter_wellness) %}
                 {% endif %}
-                <div class="styled_label{{ theme_winter_wellness == 0 ? ' disabled' }}"{% if theme_winter_wellness > 0 %} data-role="change-filter" data-action="{{ theme_winter_wellness in filter_theme_value ? 'remove' : 'add' }}" data-filter="{{ filter_theme }}" data-filter-value="{{ theme_winter_wellness }}" data-filter-multi="true"{% endif %}>
+                <div class="styled_label{{ theme_winter_wellness_facet == 0 ? ' disabled' }}"{% if theme_winter_wellness_facet > 0 %} data-role="change-filter" data-action="{{ theme_winter_wellness in filter_theme_value ? 'remove' : 'add' }}" data-filter="{{ filter_theme }}" data-filter-value="{{ theme_winter_wellness }}" data-filter-multi="true"{% endif %}>
                     <label class="label_check" for="checkbox-27">
                         <input id="checkbox-27" type="checkbox"{{ is_checked(filter_theme_value, theme_winter_wellness) }} />{{ 'filter-theme-winter-wellness'|trans }}
-                        {% if theme_winter_wellness > 0 %}
-                            ({{ theme_winter_wellness }})
+                        {% if theme_winter_wellness_facet > 0 %}
+                            ({{ theme_winter_wellness_facet }})
                         {% endif %}
                     </label>
                 </div>
