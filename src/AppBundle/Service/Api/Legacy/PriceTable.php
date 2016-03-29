@@ -28,11 +28,14 @@ class PriceTable extends LegacyService
      *
      * @return array
      */
-    public function getTable($typeId, $seasonId)
+    public function getTable($typeId, $seasonId, $date, $numberOfPersons)
     {
         return $this->get(self::API_METHOD_GET_TABLE, [
 
              'type_id' => $typeId,
+             'number_of_persons' => $numberOfPersons,
+             'date' => $date,
+
         ]);
     }
 
@@ -52,6 +55,7 @@ class PriceTable extends LegacyService
              'season_id_inquery' => $seasonIdInQuery,
              'number_of_persons' => $numberOfPersons,
              'date' => $date,
+
         ]);
     }
 }

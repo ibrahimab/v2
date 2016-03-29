@@ -9,14 +9,21 @@ var Init = (function() {
         // initialize pricetable
         //
 
-        var column_width = jq("tr.tarieventabel_datumbalk_content > td").outerWidth();
+        var column_width  = jq("tr.tarieventabel_datumbalk_content > td").outerWidth();
+        var full_width    = jq("div.tarieventabel_wrapper_rechts").width() + 2;
+        var visible_cols  = 5;
+        var scroll_to_col = 4;
 
-        // naar juiste positie scrollen bij openen tarieventabel
-        // actieve-kolom (based on $_GET["d"])
+        if (full_width / column_width < scroll_to_col) {
+            visible_cols  = 3;
+            scroll_to_col = 2;
+        }
+
+        // scroll to correct position, based on date
         var actieve_kolom = parseInt(jq(".tarieventabel_wrapper").data("actieve-kolom"),10);
-        if(actieve_kolom>=5) {
+        if (actieve_kolom >= visible_cols) {
             var position = actieve_kolom * column_width;
-            position=position-(4*column_width);
+            position=position - (scroll_to_col*column_width);
             jq(".tarieventabel_wrapper_rechts").scrollLeft(position);
         }
 
@@ -29,10 +36,8 @@ var Init = (function() {
             jq(".tarieventabel_wrapper_rechts").scrollLeft(position);
         }
 
-
         // tarieventabel: te verbergen tr's verbergen (laag aantal personen/commissie bij reisagent)
         jq(".tarieventabel_verbergen").hide();
-
 
     }
 
