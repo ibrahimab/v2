@@ -142,7 +142,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                     uri.removeQuery('fs');
 
-                    if (input.data('fs') != '' || input.data('fs') != null) {
+                    if (input.data('fs') != '' && input.data('fs') != null && input.data('fs') !== undefined) {
                         uri.setQuery('fs', input.data('fs'));
                     }
 
