@@ -13,3 +13,4 @@ imports:
     - { resource: services/forms.yml }
     - { resource: services/http.yml }
     - { resource: services/vendors.yml }
+    - { resource: services/legacy.yml }

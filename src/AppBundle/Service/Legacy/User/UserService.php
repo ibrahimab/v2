@@ -1,0 +1,82 @@
+<?php
+namespace AppBundle\Service\Legacy\User;
+
+use AppBundle\Service\Legacy\User\RepositoryInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+
+/**
+ * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
+ * @package Chalet
+ */
+class UserService
+{
+    /**
+     * @var Request|null
+     */
+    private $request;
+
+    /**
+     * @var RepositoryInterface
+     */
+    private $repository;
+
+    /**
+     * @var array
+     */
+    private $user;
+
+    /**
+     * @param RequestStack $request
+     */
+    public function __construct(RequestStack $requestStack, RepositoryInterface $repository)
+    {
+        $this->request    = $this->resolveRequest($requestStack);
+        $this->repository = $repository;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isLoggedIn()
+    {
+        return $this->request->cookies->has('loginuser');
+    }
+
+    /**
+     * @return integer
+     * @throws NotFoundException
+     */
+    public function getUserId()
+    {
+        if (false === $this->isLoggedIn()) {
+            throw new NotFoundException('User is not logged in, user ID could not be found');
+        }
+
+        $cookie = $this->request->cookies->get('loginuser');
+
+        return intval($cookie['chalet']);
+    }
+
+    /**
+     * @return array
+     */
+    public function getUser()
+    {
+        if (null === $this->user) {
+            $this->user = $this->repository->getUser($this->getUserId());
+        }
+
+        return $this->user;
+    }
+
+    /**
+     * @param RequestStack $requestStack
+     *
+     * @return Request
+     */
+    private function resolveRequest(RequestStack $requestStack)
+    {
+        return $requestStack->getCurrentRequest() ?: new Request();
+    }
+}

@@ -1,0 +1,9 @@
+# Legacy Services
+services:
+    app.legacy.user:
+        class: AppBundle\Service\Legacy\User\UserService
+        arguments: ["@request_stack", "@app.legacy.user.repository"]
+
+    app.legacy.user.repository:
+        class: AppBundle\Service\Legacy\User\Repository
+        arguments: ["@doctrine.dbal.default_connection"]
