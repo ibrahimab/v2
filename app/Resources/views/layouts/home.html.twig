@@ -3,7 +3,7 @@
 {% block bodyId %}home{% endblock %}
 {% block body %}
 
-    {% set search_path = locale_path('search') %}
+    {% set search_path = locale_path('search') ~ '?h=1' %}
     <!-- header -->
     <header>
         <div id="header-container">

@@ -46,9 +46,10 @@ class SearchController extends Controller
             return $this->redirectToRoute('search_' . $locale, $reroute, 301);
         }
 
-        $saved = $this->saved();
+        $saved   = $this->saved();
+        $referer = parse_url($request->headers->get('referer'), PHP_URL_PATH);
 
-        if (count($saved) > 0 && (parse_url($request->headers->get('referer'), PHP_URL_PATH) !== $request->getPathInfo() || false === $request->isXmlHttpRequest())) {
+        if (count($saved) > 0 && ($referer !== $request->getPathInfo() || false === $request->isXmlHttpRequest()) && false === $request->query->has('h')) {
 
             $this->get('session')->remove('search');
             return $this->redirectToRoute('search_' . $locale, $saved, 301);
