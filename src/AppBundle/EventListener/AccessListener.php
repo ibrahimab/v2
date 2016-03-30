@@ -1,12 +1,13 @@
 <?php
 namespace AppBundle\EventListener;
-use       AppBundle\Security\Access\BootstrapAccess;
-use       AppBundle\Security\Access\Handler\AccessHandlerInterface;
-use       AppBundle\Security\Access\Handler\Development;
-use       AppBundle\Security\Access\Handler\Staging;
-use       Symfony\Component\HttpFoundation\Request;
-use       Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use       Symfony\Component\HttpKernel\Event\GetResponseEvent;
+
+use AppBundle\Security\Access\BootstrapAccess;
+use AppBundle\Security\Access\Handler\AccessHandlerInterface;
+use AppBundle\Security\Access\Handler\Development;
+use AppBundle\Security\Access\Handler\Staging;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
@@ -33,7 +34,7 @@ class AccessListener
 
     /**
      * @param GetResponseEvent $event
-     * @throws AccessDeniedException
+     * @throws AccessDeniedHttpException
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
