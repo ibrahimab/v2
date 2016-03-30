@@ -26,12 +26,13 @@ class Staging implements AccessHandlerInterface
     private static $_ALLOWED_IPS = ['62.194.208.250', '213.125.152.154', '31.223.173.113', '37.34.56.191'];
 
     /**
-     * Adding github validator in constructor
+     * Adding ip, github and basic auth validators in constructor
      */
     public function __construct(Ip $ip, Github $github, BasicAuth $basicAuth)
     {
         $this->add($ip);
         $this->add($github);
+        $this->add($basicAuth);
     }
 
     /**
