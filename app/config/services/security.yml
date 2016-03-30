@@ -5,7 +5,7 @@ services:
 
     app.security.access.handler.stag:
         class: AppBundle\Security\Access\Handler\Staging
-        arguments: ["@app.security.access.validator.ip", "@app.security.access.validator.github"]
+        arguments: ["@app.security.access.validator.ip", "@app.security.access.validator.github", "@app.security.access.validator.basic_auth"]
 
     app.security.access.validator.ip:
         class: AppBundle\Security\Access\Validator\Ip
@@ -14,3 +14,6 @@ services:
     app.security.access.validator.github:
         class: AppBundle\Security\Access\Validator\Github
         arguments: ["%github_secret%"]
+
+    app.security.access.validator.basic_auth:
+        class: AppBundle\Security\Access\Validator\BasicAuth

@@ -3,6 +3,7 @@ namespace AppBundle\Security\Access\Handler;
 use       AppBundle\Security\Access\Validator\AccessValidatorInterface;
 use       AppBundle\Security\Access\Validator\Ip;
 use       AppBundle\Security\Access\Validator\Github;
+use       AppBundle\Security\Access\Validator\BasicAuth;
 use       Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -27,7 +28,7 @@ class Staging implements AccessHandlerInterface
     /**
      * Adding github validator in constructor
      */
-    public function __construct(Ip $ip, Github $github)
+    public function __construct(Ip $ip, Github $github, BasicAuth $basicAuth)
     {
         $this->add($ip);
         $this->add($github);
