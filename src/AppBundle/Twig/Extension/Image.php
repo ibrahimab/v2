@@ -1,7 +1,7 @@
 <?php
 namespace AppBundle\Twig\Extension;
 
-
+use       AppBundle\Service\Api\Search\Result\Resultset;
 use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
@@ -102,53 +102,49 @@ trait Image
     }
 
     /**
-     * @param AccommodationServiceEntityInterface[] $accommodations
+     * @param Resultset $resultset
      * @return []
      */
-    public function getSearchImages($accommodations)
+    public function getSearchImages(Resultset $resultset)
     {
         $ids = ['types' => [], 'accommodations' => []];
+        $results = $resultset->getPaginator();
 
-        foreach ($accommodations as $accommodation) {
+        foreach ($results as $result) {
 
-            if (isset($accommodation['cheapest'])) {
+            if (false !== ($row = current($result))) {
 
-                $ids['types'][] = $accommodation['cheapest']['id'];
-                $ids['accommodations'][$accommodation['cheapest']['id']] = $accommodation['id'];
+                if (null !== ($type = $resultset->getCheapestRow($row['group_id']))) {
+
+                    $ids['types'][] = $type['type_id'];
+                    $ids['accommodations'][$type['type_id']] = $type['accommodation_id'];
+                }
             }
         }
 
-        $files              = $this->getFileService('type')->getSearchImages($ids['types']);
-        $images             = [];
-        $found              = [];
-        $mapper             = [];
-        $accommodationFiles = [];
+        $files  = $this->getFileService('type')->getSearchImages($ids['types']);
+        $images = [];
+        $mapper = [];
 
         foreach ($files as $file) {
-            $found[$file['file_id']] = true;
+            $images[$file['file_id']][] = $file;
         }
 
         $notFound = [];
+
         foreach ($ids['accommodations'] as $typeId => $accommodationId) {
 
-            if (!array_key_exists($typeId, $found)) {
+            if (!array_key_exists($typeId, $images)) {
 
                 $notFound[] = $accommodationId;
                 $mapper[$accommodationId] = $typeId;
             }
         }
 
+        $accommodationFiles = [];
+
         if (count($notFound) > 0) {
             $accommodationFiles = $this->getFileService('accommodation')->getSearchImages($notFound);
-        }
-
-        foreach ($files as $file) {
-
-            if (!isset($images[$file['file_id']])) {
-                $images[$file['file_id']] = [];
-            }
-
-            $images[$file['file_id']][] = $file;
         }
 
         foreach ($accommodationFiles as $file) {
@@ -158,10 +154,6 @@ trait Image
             }
 
             $typeId = $mapper[$file['file_id']];
-
-            if (!isset($images[$typeId])) {
-                $images[$typeId] = [];
-            }
 
             $images[$typeId][] = $file;
         }

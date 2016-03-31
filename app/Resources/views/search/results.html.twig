@@ -1,7 +1,7 @@
 <div data-role="search-container">
     {% include 'partials/search/form.html.twig' %}
     <div id="search-results" class="small-12 medium-8 large-9 columns" data-role="search-results-container">
-        {{ set_paginator(resultset.paginator()) }}
+        {{ set_paginator(paginator) }}
         <div class="search-results-container" data-role="search-results">
             {% include 'partials/search/filters.html.twig' %}
             <hr />
@@ -21,9 +21,9 @@
                                     <div class="small-9 columns">
                                         <select class="radius" data-role="sort-results">
 
-                                            {% set sort_normal = constant('AppBundle\\Service\\Api\\Search\\Result\\Sorter::SORT_NORMAL') %}
-                                            {% set sort_asc    = constant('AppBundle\\Service\\Api\\Search\\Result\\Sorter::SORT_ASC') %}
-                                            {% set sort_desc   = constant('AppBundle\\Service\\Api\\Search\\Result\\Sorter::SORT_DESC') %}
+                                            {% set sort_normal = constant('AppBundle\\Service\\Api\\Search\\Builder\\Sort::SORT_NORMAL') %}
+                                            {% set sort_asc    = constant('AppBundle\\Service\\Api\\Search\\Builder\\Sort::SORT_ASC') %}
+                                            {% set sort_desc   = constant('AppBundle\\Service\\Api\\Search\\Builder\\Sort::SORT_DESC') %}
 
                                             <option value="{{ sort_normal }}"{{ sort == sort_normal ? ' selected="selected"' }}>{{ 'by-price-normal'|trans }}</option>
                                             <option value="{{ sort_asc }}"{{ sort == sort_asc ? ' selected="selected"' }}>{{ 'by-price-asc'|trans }}</option>
@@ -40,12 +40,11 @@
             <div class="row">
                 <div class="small-12 medium-12 large-12 columns">
                     {% import 'partials/search/result-accommodation-block.html.twig' as resultMacro %}
-                    {% set results         = resultset.paginator() %}
-                    {% set images          = search_images(results) %}
+                    {% set images          = search_images(resultset) %}
                     {% set website_concern = website() %}
                     {% set resale          = website_concern.getConfig(constant('WEBSITE_CONFIG_RESALE', website_concern)) %}
-                    {% for result in results %}
-                        {{ resultMacro.accommodation(result, images, resale, season, price_text) }}
+                    {% for result in paginator %}
+                        {{ resultMacro.accommodation(result, resultset.getCheapestRow(result|first.group_id), surveys, images, resale, season, price_text) }}
                     {% endfor %}
                 </div>
             </div>

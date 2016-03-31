@@ -2,7 +2,7 @@
 
 namespace AppBundle\Twig\Extension;
 
-use AppBundle\Service\FilterService;
+use AppBundle\Service\Api\Search\Filter\Tokenizer;
 use AppBundle\Concern\WebsiteConcern;
 use AppBundle\Concern\LocaleConcern;
 use AppBundle\Service\Javascript\JavascriptService;
@@ -32,11 +32,11 @@ trait Dependencies
     }
 
     /**
-     * @param FilterService $filterService
+     * @param Tokenizer $filterTokenizer
      */
-    public function setFilterService(FilterService $filterService)
+    public function setFilterTokenizer(Tokenizer $filterTokenizer)
     {
-        $this->filterService = $filterService;
+        $this->filterTokenizer = $filterTokenizer;
     }
 
     /**

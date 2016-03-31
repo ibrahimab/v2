@@ -68,12 +68,6 @@ services:
         class:     AppBundle\Service\Api\User\UserService
         arguments: ["@app.repository.user", "@security.token_storage"]
 
-    app.api.search:
-        class:     AppBundle\Service\Api\Search\SearchService
-        arguments: ["@app.repository.search"]
-        calls:
-            - [setLocale, ["@=service('app.concern.locale').get()"]]
-
     app.api.autocomplete:
         class:     AppBundle\Service\Api\Autocomplete\AutocompleteService
         arguments: ["@app.repository.autocomplete"]
@@ -101,3 +95,15 @@ services:
             - [setStartingPrice, ["@app.api.legacy.starting_price"]]
             - [setSeason, ["@app.concern.season"]]
             - [setAdditionalCostsFetcher, ["@app.api.legacy.additional_costs"]]
+
+    app.api.search:
+        class:     AppBundle\Service\Api\Search\SearchService
+        arguments: ["@app.repository.search", "@app.concern.locale", "%app%"]
+        calls:
+            - [setSurveyService, ["@app.api.booking.survey"]]
+            - [setStartingPrice, ["@app.api.legacy.starting_price"]]
+            - [setPriceRepository, ["@app.repository.search.price"]]
+            - [setOfferRepository, ["@app.repository.search.offer"]]
+
+    app.api.search.tokenizer:
+        class: AppBundle\Service\Api\Search\Filter\Tokenizer

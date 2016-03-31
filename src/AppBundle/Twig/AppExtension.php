@@ -9,7 +9,7 @@ use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
 use       AppBundle\Service\Api\Theme\ThemeServiceEntityInterface;
 use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceEntityInterface;
 use       AppBundle\Service\Api\User\UserServiceDocumentInterface;
-use       AppBundle\Service\FilterService;
+use       AppBundle\Service\Api\Search\Filter\Tokenizer;
 use       AppBundle\Service\Api\GeneralSettings\GeneralSettingsService;
 use       AppBundle\Service\UtilsService;
 use       AppBundle\Service\Javascript\JavascriptService;
@@ -68,9 +68,9 @@ class AppExtension extends \Twig_Extension
     private $currentUser;
 
     /**
-     * @var FilterService
+     * @var Tokenizer
      */
-    private $filterService;
+    private $filterTokenizer;
 
     /**
      * @var WebsiteConcern

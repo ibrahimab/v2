@@ -3,37 +3,34 @@
 Template-content: search results search-and-book (accommodation-block)
 
 #}
-{% macro accommodation(accommodation, all_images, resale, season, price_text) %}
+{% macro accommodation(result, cheapest, surveys, all_images, resale, season, price_text) %}
     {% import 'partials/search/result-types-rows.html.twig' as typesMacro %}
-    {% set place   = accommodation.place %}
-    {% set region  = place.region %}
-    {% set country = place.country %}
-    {% set types   = accommodation.types %}
+
     {% set images  = [] %}
 
-    {% if all_images[accommodation.cheapest.id] is defined %}
-        {% set images = all_images[accommodation.cheapest.id] %}
+    {% if all_images[cheapest.type_id] is defined %}
+        {% set images = all_images[cheapest.type_id] %}
     {% endif %}
 
     {% set quality_stars %}
-        {% include 'partials/quality_stars.html.twig' with {'quality': accommodation.quality} %}
+        {% include 'partials/quality_stars.html.twig' with {'quality': cheapest.quality} %}
     {% endset %}
 
-    <article class="overview{{ accommodation.offer ? ' sale' }}">
-        <a href="{{ locale_path('show_type', {beginCode: country.startCode, typeId: accommodation.cheapest.id}) }}" data-role="link-to-accpage">
+    <article class="overview{{ cheapest.offer ? ' sale' }}">
+        <a href="{{ locale_path('show_type', {beginCode: cheapest.country_begincode, typeId: cheapest.type_id}) }}" data-role="link-to-accpage">
             <div class="row">
                 <div class="title-ipad title medium-12 columns">
-                    {{ ('type.kind.' ~ accommodation.kindIdentifier)|trans|capitalize ~ ' ' ~ accommodation.localeName }}
+                    {{ ('type.kind.' ~ cheapest.kind_identifier)|trans|capitalize ~ ' ' ~ cheapest.accommodation_name ~ ' ' ~ cheapest.type_name }}
                     <span>{{ quality_stars }}</span>
                 </div>
                 <div class="small-12 medium-5 large-5 columns img-column">
                     <div class="accom-img">
                         <div class="accom-slides">
                             {% for image in images %}
-                                <div><img data-lazy="{{ generate_image_path(image)|thumbnail(343, 257) }}" alt="{{ accommodation.localeName }}" /></div>
+                                <div><img data-lazy="{{ generate_image_path(image)|thumbnail(343, 257) }}" alt="{{ cheapest.accommodation_name ~ ' ' ~ cheapest.type_name }}" /></div>
                             {% endfor %}
                         </div>
-                        {% if accommodation.offer %}
+                        {% if cheapest.offer %}
                             <div class="circle"><span>Aan-</span><span>bieding</span></div>
                         {% endif %}
                     </div>
@@ -43,22 +40,27 @@ Template-content: search results search-and-book (accommodation-block)
                         <div class="row">
                             <div class="small-12 medium-7 large-8 columns">
                                 <div class="location">
-                                    <span class="city">{{ place.localeName }}</span>, <span class="area">{{ region.localeName }}</span>, <span class="country">{{ country.localeName }}</span>
+                                    <span class="city">{{ cheapest.place_name }}</span>, <span class="area">{{ cheapest.region_name }}</span>, <span class="country">{{ cheapest.country_name }}</span>
                                 </div>
                                 <div class="title">
-                                    {{ ('type.kind.' ~ accommodation.kindIdentifier)|trans|capitalize ~ ' ' ~ accommodation.localeName }}
+                                    {{ ('type.kind.' ~ cheapest.kind_identifier)|trans|capitalize ~ ' ' ~ cheapest.accommodation_name ~ ' ' ~ cheapest.type_name }}
                                     <span>{{ quality_stars }}</span>
                                 </div>
                             </div>
                             <div class="small-12 medium-5 large-4 columns price-details">
 
-                                {% if accommodation.cheapest.price > 0 %}
+                                {% set skipas = true %}
+                                {% if cheapest.type == 'accommodation' or resale %}
+                                    {% set skipas = false %}
+                                {% endif %}
 
-                                    <span class="price-info">
-                                        {{ price_text.getTextBeforePrice(accommodation.priceTextType) }}
-                                    </span>
-
-                                    <div class="chalet-tooltip loading" data-role="ajax-tooltip" data-url="{{ path('additional_costs_type', {typeId: accommodation.cheapest.id, seasonId: season}) }}">
+                                {% if cheapest.price > 0 %}
+                                    {% if skipas %}
+                                        <span class="price-info">Prijs per persoon per week, vanaf</span>
+                                    {% else %}
+                                        <span class="price-info">Prijs per accommodatie, vanaf</span>
+                                    {% endif %}
+                                    <div class="chalet-tooltip loading" data-role="ajax-tooltip" data-url="{{ path('additional_costs_type', {typeId: cheapest.type_id, seasonId: season}) }}">
                                         <div class="chalet-tooltip-content" data-role="tooltip-wrapper">
                                             <div data-role="tooltip-content">
                                                 <div class="tooltip-placeholder">Bezig met laden...</div>
@@ -66,24 +68,24 @@ Template-content: search results search-and-book (accommodation-block)
                                             <span class="close"></span>
                                             <span class="nub rtl"></span>
                                         </div>
-                                        <span class="price radius">&euro; {{ accommodation.cheapest.price|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
+                                        <span class="price radius">&euro; {{ cheapest.price|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
                                     </div>
                                 {% endif %}
                                 <span class="price-inc">
-                                    {{ price_text.getTextAfterPrice(accommodation.priceTextType) }}
-                                    {% if price_text.hasSkiPass(accommodation.priceTextType) %}
+                                    {{ price_text.getTextAfterPrice(cheapest.price_text_type) }}
+                                    {% if price_text.hasSkiPass(cheapest.price_text_type) %}
                                         <br /><i class="sprite sprite-icon-skipass"></i>inclusief skipas
                                     {% endif %}
                                 </span>
                             </div>
                         </div>
-                        <p>{{ accommodation.localeShortDescription }}</p>
+                        <p>{{ cheapest.accommodation_short_description }}</p>
                     </div>
                 </div>
             </div>
         </a>
 
-        {{ typesMacro.table(types, accommodation, season) }}
+        {{ typesMacro.table(result, cheapest, surveys, season) }}
 
     </article>
 

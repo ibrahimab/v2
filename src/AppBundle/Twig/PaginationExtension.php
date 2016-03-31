@@ -1,12 +1,13 @@
 <?php
-
 namespace AppBundle\Twig;
 
 use AppBundle\Concern\LocaleConcern;
 use AppBundle\Service\Api\Search\Result\Paginator\Paginator;
+use AppBundle\Service\Api\Search\Params;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Zend\Diactoros\ServerRequestFactory;
 
 /**
  * PaginationExtension
@@ -36,6 +37,11 @@ class PaginationExtension extends \Twig_Extension
     private $request;
 
     /**
+     * @var Params
+     */
+    private $params;
+
+    /**
      * @var string
      */
     private $locale;
@@ -61,8 +67,10 @@ class PaginationExtension extends \Twig_Extension
 
         if (null !== $this->request) {
 
-            $this->locale    = $localeConcern->get();
-            $this->filters   = $this->request->query->get('f', []);
+            $psrRequest    = ServerRequestFactory::fromGlobals($_SERVER, $this->request->query->all());
+            $this->params  = new Params($psrRequest);
+            $this->locale  = $localeConcern->get();
+            $this->filters = $this->params->getFilters() ?: [];
         }
     }
 
