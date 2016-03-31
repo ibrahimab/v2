@@ -5,6 +5,7 @@ use       AppBundle\Annotation\Breadcrumb;
 use       AppBundle\Service\Api\Search\SearchBuilder;
 use       AppBundle\Service\Api\Search\FilterBuilder;
 use       AppBundle\Service\Api\Search\Result\Sorter;
+use       AppBundle\Service\Api\Search\Result\PriceText;
 use       AppBundle\Service\FilterService;
 use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
@@ -140,6 +141,7 @@ class SearchController extends Controller
             $formFilters['persons'] = $pe;
         }
 
+
         $destination = false;
 
         if ($request->query->has('a')) {
@@ -194,6 +196,10 @@ class SearchController extends Controller
 
             $formFilters['freesearch'] = $fs;
             $searchBuilder->where(SearchBuilder::WHERE_FREESEARCH, $fs);
+        }
+
+        if (null !== $w) {
+            $searchBuilder->where(SearchBuilder::WHERE_DATE, $w);
         }
 
         $resultset  = $searchBuilder->search();
@@ -268,6 +274,7 @@ class SearchController extends Controller
         $resultset->setMetadata();
         $resultset->setResale($this->get('app.concern.website')->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE));
         $resultset->sorter()->sort();
+        $resultset->addPriceTextType();
 
         if (null !== $pe) {
             $resultset->sorter()->setPersons(intval($request->query->get('pe')));
@@ -318,6 +325,7 @@ class SearchController extends Controller
         $data['facet_service'] = $searchService->facets($resultset, $facetFilters);
         $data['search_time']   = round((microtime(true) - $start), 2);
         $data['searchFormMessageSearchWithoutDates']   = $generalSettingsService->getSearchFormMessageSearchWithoutDates();
+        $data['price_text']   = new PriceText;
 
         return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', $data);
     }
@@ -363,6 +371,10 @@ class SearchController extends Controller
 
         if ($request->query->has('pe')) {
             $searchBuilder->where(SearchBuilder::WHERE_PERSONS, $request->query->get('pe'));
+        }
+
+        if ($request->query->has('w')) {
+            $searchBuilder->where(SearchBuilder::WHERE_DATE, $request->query->get('w'));
         }
 
         if ($request->query->has('fs') && $request->query->get('fs') != '') {

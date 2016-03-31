@@ -3,7 +3,7 @@
 Template-content: search results search-and-book (accommodation-block)
 
 #}
-{% macro accommodation(accommodation, all_images, resale, season) %}
+{% macro accommodation(accommodation, all_images, resale, season, price_text) %}
     {% import 'partials/search/result-types-rows.html.twig' as typesMacro %}
     {% set place   = accommodation.place %}
     {% set region  = place.region %}
@@ -52,17 +52,12 @@ Template-content: search results search-and-book (accommodation-block)
                             </div>
                             <div class="small-12 medium-5 large-4 columns price-details">
 
-                                {% set skipas = true %}
-                                {% if accommodation.show == 3 or resale %}
-                                    {% set skipas = false %}
-                                {% endif %}
-
                                 {% if accommodation.cheapest.price > 0 %}
-                                    {% if skipas %}
-                                        <span class="price-info">Prijs per persoon per week, vanaf</span>
-                                    {% else %}
-                                        <span class="price-info">Prijs per accommodatie, vanaf</span>
-                                    {% endif %}
+
+                                    <span class="price-info">
+                                        {{ price_text.getTextBeforePrice(accommodation.priceTextType) }}
+                                    </span>
+
                                     <div class="chalet-tooltip loading" data-role="ajax-tooltip" data-url="{{ path('additional_costs_type', {typeId: accommodation.cheapest.id, seasonId: season}) }}">
                                         <div class="chalet-tooltip-content" data-role="tooltip-wrapper">
                                             <div data-role="tooltip-content">
@@ -74,11 +69,12 @@ Template-content: search results search-and-book (accommodation-block)
                                         <span class="price radius">&euro; {{ accommodation.cheapest.price|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
                                     </div>
                                 {% endif %}
-
-                                {% if skipas %}
-                                    <span class="price-inc"><i class="sprite sprite-icon-skipass"></i>Inclusief skipas</span>
-                                {% endif %}
-
+                                <span class="price-inc">
+                                    {{ price_text.getTextAfterPrice(accommodation.priceTextType) }}
+                                    {% if price_text.hasSkiPass(accommodation.priceTextType) %}
+                                        <br /><i class="sprite sprite-icon-skipass"></i>inclusief skipas
+                                    {% endif %}
+                                </span>
                             </div>
                         </div>
                         <p>{{ accommodation.localeShortDescription }}</p>

@@ -1,7 +1,9 @@
 <?php
 namespace AppBundle\Service\Api\Search\Result;
+use       AppBundle\Service\Api\Search\SearchBuilder;
 use       AppBundle\Entity\Accommodation\Accommodation;
 use       AppBundle\Service\Api\Search\Result\Paginator\Paginator;
+use       AppBundle\Service\Api\Search\Result\PriceTextType;
 use       AppBundle\Service\Api\Price\PriceService;
 use       AppBundle\AppTrait\LocaleTrait;
 use       Doctrine\ORM\QueryBuilder;
@@ -31,6 +33,11 @@ class Resultset
      * @var QueryBuilder
      */
     private $builder;
+
+    /**
+     * @var SearchBuilder
+     */
+    private $searchBuilder;
 
     /**
      * @var Paginator
@@ -106,9 +113,10 @@ class Resultset
     /**
      * @param QueryBuilder $builder
      */
-    public function __construct(QueryBuilder $builder)
+    public function __construct(QueryBuilder $builder, SearchBuilder $searchBuilder)
     {
         $this->builder = $builder;
+        $this->searchBuilder = $searchBuilder;
         $this->results = $this->builder->getQuery()->getResult(Query::HYDRATE_ARRAY);
     }
 
@@ -173,6 +181,25 @@ class Resultset
         }
 
         return $this->sorter;
+    }
+
+    /**
+     * add PriceTextType to results
+     */
+    public function addPriceTextType()
+    {
+
+        foreach ($this->results as $key => $accommodation) {
+
+            $priceTextType = new PriceTextType(
+                $accommodation,
+                $this->searchBuilder->getBlockValue(SearchBuilder::BLOCK_WHERE, SearchBuilder::WHERE_DATE),
+                $this->searchBuilder->getBlockValue(SearchBuilder::BLOCK_WHERE, SearchBuilder::WHERE_PERSONS),
+                $this->resale
+            );
+
+            $this->results[$key]['priceTextType'] = $priceTextType->get();
+        }
     }
 
     /**

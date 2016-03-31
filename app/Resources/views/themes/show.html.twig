@@ -28,7 +28,7 @@
                     {% set website_concern = website() %}
                     {% set resale          = website_concern.getConfig(constant('WEBSITE_CONFIG_RESALE', website_concern)) %}
                     {% for result in results %}
-                        {{ resultMacro.accommodation(result, images, resale, season) }}
+                        {{ resultMacro.accommodation(result, images, resale, season, price_text) }}
                     {% endfor %}
 
             </div>
