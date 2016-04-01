@@ -56,10 +56,10 @@ class SearchController extends Controller
         if (count($saved) > 0 && ($referer !== $request->getPathInfo() || false === $request->isXmlHttpRequest()) && false === $request->query->has('h')) {
 
             $this->get('session')->remove('search');
-            return $this->redirectToRoute('search_' . $locale, $saved, 301);
+            // return $this->redirectToRoute('search_' . $locale, $saved, 301);
         }
 
-        $this->saveToSession($request);
+        // $this->saveToSession($request);
 
         $start                  = microtime(true);
         $surveyService          = $this->get('app.api.booking.survey');
