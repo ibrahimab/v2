@@ -51,7 +51,7 @@
             <div data-role="filter-tag">
                 Skigebied:
                 {{ region }}
-                <a href="#" data-role="remove-region-filter" data-id="{{ region.getLocaleName(locale) }}"><i class="fi-x"></i></a>
+                <a href="#" data-role="remove-region-filter" data-id="{{ region }}"><i class="fi-x"></i></a>
             </div>
         {% endfor %}
     {% endif %}
@@ -62,7 +62,7 @@
             <div data-role="filter-tag">
                 Plaats:
                 {{ place }}
-                <a href="#" data-role="remove-place-filter" data-id="{{ place.getLocaleName(locale) }}"><i class="fi-x"></i></a>
+                <a href="#" data-role="remove-place-filter" data-id="{{ place }}"><i class="fi-x"></i></a>
             </div>
         {% endfor %}
     {% endif %}

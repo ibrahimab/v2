@@ -124,7 +124,7 @@ class Repository implements RepositoryInterface
      */
     public function fetch(SearchBuilder $searchBuilder, FilterBuilder $filterBuilder, $extra = false)
     {
-        $query = "SELECT t.type_id AS type_id, t.naam AS type_name, t.optimaalaantalpersonen AS optimal_residents, t.maxaantalpersonen AS max_residents, IF(a.toonper = 1, 'arrangement', 'accommodation') AS type,
+        $query = "SELECT DISTINCT t.type_id AS type_id, t.naam AS type_name, t.optimaalaantalpersonen AS optimal_residents, t.maxaantalpersonen AS max_residents, IF(a.toonper = 1, 'arrangement', 'accommodation') AS type,
                          t.apart_tonen_in_zoekresultaten AS separate_in_search, t.kwaliteit AS type_quality, IF(t.kwaliteit > 0, t.kwaliteit, a.kwaliteit) AS quality, 0 AS offer, t.slaapkamers AS bedrooms, t.badkamers AS bathrooms,
                          0 AS surveyCount, t.zoekvolgorde AS type_search_order,
                          a.accommodatie_id AS accommodation_id, {$this->getLocaleField('a.naam')} AS accommodation_name,
@@ -442,8 +442,8 @@ class Repository implements RepositoryInterface
                         $max = $this->mapMaximumPersons($min);
                     }
 
-                    $clause = ['sql'       => 't.optimaalaantalpersonen >= :min_persons AND
-                                               t.maxaantalpersonen      <= :max_persons',
+                    $clause = ['sql'       => 't.maxaantalpersonen >= :min_persons AND
+                                               t.maxaantalpersonen <= :max_persons',
 
                               'parameters' => [['identifier' => 'min_persons',
                                                 'value'      => $min,
