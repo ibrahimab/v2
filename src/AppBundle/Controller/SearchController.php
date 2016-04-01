@@ -50,16 +50,13 @@ class SearchController extends Controller
             return $this->redirectToRoute('search_' . $locale, $reroute, 301);
         }
 
-        $saved   = $this->saved();
-        $referer = parse_url($request->headers->get('referer'), PHP_URL_PATH);
-
-        if (count($saved) > 0 && ($referer !== $request->getPathInfo() || false === $request->isXmlHttpRequest()) && false === $request->query->has('h')) {
+        if (false !== ($saved = $this->hasSavedSearch($request))) {
 
             $this->get('session')->remove('search');
-            // return $this->redirectToRoute('search_' . $locale, $saved, 301);
+            return $this->redirectToRoute('search_' . $locale, $saved, 301);
         }
 
-        // $this->saveToSession($request);
+        $this->saveToSession($request);
 
         $start                  = microtime(true);
         $surveyService          = $this->get('app.api.booking.survey');
@@ -359,5 +356,31 @@ class SearchController extends Controller
         }
 
         return $filters;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return array|boolean
+     */
+    private function hasSavedSearch(Request $request)
+    {
+        $saved   = $this->saved();
+        $referer = parse_url($request->headers->get('referer'), PHP_URL_PATH);
+
+        $redirect = false;
+
+        if (count($saved) > 0 && $request->query->count() === 0) {
+
+            if (false === $request->isXmlHttpRequest()) {
+                $redirect = true;
+            }
+
+            if ($request->query->has('h')) {
+                $redirect = false;
+            }
+        }
+
+        return (true === $redirect ? $saved : false);
     }
 }

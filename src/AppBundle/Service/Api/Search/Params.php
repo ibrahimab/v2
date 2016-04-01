@@ -123,7 +123,33 @@ class Params
      */
     public function getFilters()
     {
-        return $this->getArrayItems('filters', 'f');
+        if (null === $this->filters) {
+
+            $raw = $this->getArrayItems('filters', 'f');
+
+            if (false !== $raw) {
+
+                $filters = [];
+
+                foreach ($raw as $filter => $data) {
+
+                    $filter = intval($filter);
+
+                    if (is_array($data)) {
+                        $filters[$filter] = array_map('intval', $data);
+                    } else {
+                        $filters[$filter] = intval($data);
+                    }
+                }
+
+                $this->filters = $filters;
+
+            } else {
+                $this->filters = false;
+            }
+        }
+
+        return $this->filters;
     }
 
     /**

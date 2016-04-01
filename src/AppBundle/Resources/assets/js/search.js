@@ -98,7 +98,6 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 var element = jq(this);
 
                 jq('[data-role="change-filter"][data-filter="' + element.data('filter') + '"][data-filter-value="' + element.data('filter-value') + '"][data-action="remove"]').trigger('click');
-                ns.Search.actions.search();
             },
 
             removeCustom: {
