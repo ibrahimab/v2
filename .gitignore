@@ -18,7 +18,6 @@
 .tm_properties
 .vimrc
 /logs/*
-src/AppBundle/Resources/assets/css/*.css
 
 # python settings
 subapps/python/import-autocomplete/settings.py
@@ -39,6 +38,16 @@ tests/_output/*
 
 # assetic dumps
 /web/static
+
+# generated css build files
+/web/bundles/app/css/build/
+
+# generated spritesheets
+/web/bundles/app/img/spritesheets/
+/src/AppBundle/Resources/assets/css/sprites.css
+
+# generated Browserify bundle
+/web/bundles/app/js/price_table.js
 
 # push file
 /github-push.txt

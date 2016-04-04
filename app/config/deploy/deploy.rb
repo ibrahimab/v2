@@ -61,6 +61,7 @@ set :composer_roles, :all
 set :composer_working_dir, -> { fetch(:release_path) }
 set :composer_dump_autoload_flags, '--optimize'
 set :composer_download_url, 'https://getcomposer.org/installer'
+set :copy_vendors, true
 
 # setting up hipchat authentication
 set :hipchat_token, ENV['HIPCHAT_API_TOKEN']
@@ -81,6 +82,7 @@ namespace :deploy do
 
   after  :updated, 'chalet:htaccess'
   after  :updated, 'chalet:import_autocomplete'
+  after  :updated, 'chalet:upload_build_files'
   before :updated, 'deploy:set_permissions:chgrp'
   after  :updated, 'chalet:dump_routes'
   after  :updated, 'symfony:assetic:dump'

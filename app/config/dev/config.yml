@@ -48,8 +48,6 @@ assetic:
     use_controller: true
     filters:
         cssrewrite: ~
-        lessphp:
-            apply_to: "\.less$"
 
 doctrine_mongodb:
     default_database: %mongodb_database%

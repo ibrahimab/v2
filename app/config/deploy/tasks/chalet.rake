@@ -16,6 +16,21 @@ namespace :chalet do
       end
     end
   end
+  task :upload_build_files do
+    system("gulp build")
+    on roles(:all) do
+      within fetch(:release_path) do
+        execute "mkdir -p #{fetch(:release_path)}/web/bundles/app/css/build"
+        execute "mkdir -p #{fetch(:release_path)}/web/bundles/app/img/spritesheets"
+      end
+      upload! "./web/bundles/app/css/build/prod.css", "#{fetch(:release_path)}/web/bundles/app/css/build/"
+      upload! "./web/bundles/app/js/price_table.js", "#{fetch(:release_path)}/web/bundles/app/js/"
+      Dir.glob("./web/bundles/app/img/spritesheets/*.png") do |filename|
+        upload! "#{filename}", "#{fetch(:release_path)}/web/bundles/app/img/spritesheets/"
+      end
+    end
+  end
+
 end
 
 # overriding default cleanup task to use sudo

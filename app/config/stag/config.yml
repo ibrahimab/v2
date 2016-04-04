@@ -11,8 +11,6 @@ assetic:
     write_to:       "%kernel.root_dir%/../web/"
     filters:
         cssrewrite: ~
-        lessphp:
-            apply_to: "\.less$"
 
 doctrine_mongodb:
     default_database: chalet_stag

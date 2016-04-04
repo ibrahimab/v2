@@ -364,7 +364,7 @@ Template-content: accommodation page
                             <a href="{{ locale_path('mail_a_friend', {beginCode: country.startCode, typeId: type.id}) }}" class="button social ml tiny radius" title="Mail"><i class="fi-mail"></i>Mail</a>
                             {% set type_is_favorite = is_favorite(type) %}
                             <div class="heart"><a href="#"{% if type_is_favorite %} data-role="remove-favorite"{% else %} data-role="add-favorite"{% endif %} data-id="{{ type.getId() }}" class="{% if type_is_favorite %}active added {% endif %}button social tiny radius" title="Dit resultaat opslaan in mijn favorieten"><i class="fi-heart"></i>Favoriet</a></div>
-                            <a href="whatsapp://send?text={{ 'Bekijk deze accommodatie bij Chalet.nl: ' ~ locale_url('show_type', {beginCode: country.getStartCode(), typeId: type.getId()}) }}" class="show-for-small-only button social wa tiny radius"><i class="sprite sprite-whatsapp"></i>Whatsapp</a>
+                            <a href="whatsapp://send?text={{ 'Bekijk deze accommodatie bij Chalet.nl: ' ~ locale_url('show_type', {beginCode: country.getStartCode(), typeId: type.getId()}) }}" class="show-for-small-only button social wa tiny radius"><i class="sprite sprite-social-whatsapp-bw"></i>Whatsapp</a>
                         </div>
                     </div>
                 </div>
