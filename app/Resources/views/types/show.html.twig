@@ -81,7 +81,7 @@ Template-content: accommodation page
 
                                     {% if big != null %}
                                         <a href="{{ generate_image_path(big) }}" data-role="fancybox" data-fancybox-group="accommodation-images" data-fancybox-title="{{ big.label|default(localeData['name']['type']) }}">
-                                            <img src="{{ generate_image_path(big) }}" alt="{{ big.label|default(localeData['name']['type']) }}" />
+                                            <img src="{{ generate_image_path(big)|thumbnail(562, 422) }}" alt="{{ big.label|default(localeData['name']['type']) }}" />
                                         </a>
                                     {% else %}
                                         <img src="{{ generate_image_path(null) }}" />
@@ -90,7 +90,7 @@ Template-content: accommodation page
                                 <div class="large-4 medium-4 column">
                                     {% if small.above != null %}
                                         <a href="{{ generate_image_path(small.above) }}" data-role="fancybox" data-fancybox-group="accommodation-images" data-fancybox-title="{{ small.above.label }}">
-                                            <img src="{{ generate_image_path(small.above) }}" alt="{{ small.above.label }}" />
+                                            <img src="{{ generate_image_path(small.above)|thumbnail(266, 200) }}" alt="{{ small.above.label }}" />
                                         </a>
                                     {% else %}
                                         <img src="{{ generate_image_path(null) }}" />
@@ -98,7 +98,7 @@ Template-content: accommodation page
 
                                     {% if small.below != null %}
                                         <a href="{{ generate_image_path(small.below) }}" data-role="fancybox" data-fancybox-group="accommodation-images" data-fancybox-title="{{ small.below.label }}">
-                                            <img src="{{ generate_image_path(small.below) }}" alt="{{ small.below.label }}" />
+                                            <img src="{{ generate_image_path(small.below)|thumbnail(266, 200) }}" alt="{{ small.below.label }}" />
                                         </a>
                                     {% else %}
                                         <img src="{{ generate_image_path(null) }}" />
@@ -293,7 +293,7 @@ Template-content: accommodation page
                             {% for image in bottom %}
                                 <li>
                                     <a href="{{ generate_image_path(image) }}" class="th" data-role="fancybox" data-fancybox-group="accommodation-images"{% if image.label is defined %}data-fancybox-title="{{ image.label }}"{% endif %}>
-                                        <img src="{{ generate_image_path(image) }}" alt="{{ image.label|default(localeData['name']['type']) }}" />
+                                        <img src="{{ generate_image_path(image)|thumbnail(411, 308) }}" alt="{{ image.label|default(localeData['name']['type']) }}" />
                                     </a>
                                 </li>
                             {% endfor %}
@@ -303,7 +303,7 @@ Template-content: accommodation page
                                 {% for image in rest %}
                                     <li>
                                         <a href="{{ generate_image_path(image) }}" class="th" data-role="fancybox" data-fancybox-group="accommodation-images"{% if image.label is defined %}data-fancybox-title="{{ image.label }}"{% endif %}>
-                                            <img src="{{ generate_image_path(image) }}" alt="{{ image.label|default(localeData['name']['type']) }}" />
+                                            <img src="{{ generate_image_path(image)|thumbnail(192, 144) }}" alt="{{ image.label|default(localeData['name']['type']) }}" />
                                         </a>
                                     </li>
                                 {% endfor %}
@@ -376,7 +376,7 @@ Template-content: accommodation page
                         <span class="distance"><i class="fi-compass fi-gray"></i><em>{{ place.getDistanceFromUtrecht() }} km</em> van Utrecht</span>
                     </div>
                     <div class="hide-for-small"><!-- class hide-for-small-->
-                        <img src="{{ generate_image_path(place_image(place)) }}" alt="{{ localeData['name']['place'] }}" />
+                        <img src="{{ generate_image_path(place_image(place))|thumbnail(266, 200) }}" alt="{{ localeData['name']['place'] }}" />
                         <div class="text">
                             <p>{{ place.getLocaleShortDescription(locale) }}</p>
                         </div>
@@ -394,7 +394,7 @@ Template-content: accommodation page
                         <span class="piste"><i class="sprite sprite-icon-pistes"></i><em>{{ region.getTotalSlopesDistance() }} km</em> pistes</span>
                     </div>
                     <div class="hide-for-small"><!-- class hide-for-small-->
-                        <img src="{{ generate_image_path(region_image(region)) }}" alt="{{ localeData['name']['region'] }}" />
+                        <img src="{{ generate_image_path(region_image(region))|thumbnail(266, 200) }}" alt="{{ localeData['name']['region'] }}" />
                         <div class="text">
                             <p>{{ region.getLocaleShortDescription(locale) }}</p>
                         </div>
