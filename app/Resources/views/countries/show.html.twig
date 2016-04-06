@@ -29,10 +29,17 @@
         </div>
         <div class="row">
             <div class="large-8 medium-8 columns">
-                <p>{{ country.getLocaleDescription(get_locale())|nl2br }}</p>
+                 <p class="shorten-for-mobile" data-show-more-element="description">{{ country.getLocaleDescription(get_locale())|nl2br }}</p>
+                 <div class="readmore show-for-small-only">
+                    <a href="" class="button blank small radius" title="Toon meer" data-action="show-more" data-element="description" data-open-title="Toon meer" data-close-title="Toon minder"><i class="sprite sprite-icon-close-all"></i><span>Toon meer</span></a>
+                 </div>
                 {% if country.getLocaleAdditionalDescription(get_locale()) %}
-                    <p>{{ country.getLocaleAdditionalDescription(get_locale())|nl2br }}</p>
+                    <p class="shorten-for-mobile" data-show-more-element="additinalDescription">{{ country.getLocaleAdditionalDescription(get_locale())|nl2br }}</p>
+                    <div class="readmore show-for-small-only">
+                    <a href="" class="button blank small radius" title="Toon meer" data-action="show-more" data-element="additinalDescription" data-open-title="Toon meer" data-close-title="Toon minder"><i class="sprite sprite-icon-close-all"></i><span>Toon meer</span></a>
+                    </div>
                 {% endif %}
+
                 <h2>
                     <a href="{{ locale_path('show_country', {countrySlug: country.getLocaleName(get_locale())}) }}" class="button small radius" title="Bekijk het gehele aanbod">Bekijk al onze chalets en appartementen in {{ country.getLocaleName(get_locale()) }}</a>
                 </h2>
@@ -77,7 +84,7 @@
                 <a href="{{ locale_path('show_region', {regionSlug: region.getLocaleSeoName(get_locale())}) }}">
                     <article class="overview" data-equalizer-watch>
                         <div class="accom-img">
-                            <img src="{{ region_image(region).getLocation() }}" alt="{{ region.getLocaleName(get_locale()) }}" />
+                            <img src="{{ generate_image_path(region_image(region))|thumbnail(266, 200) }}" alt="{{ region.getLocaleName(get_locale()) }}" />
                         </div>
                         <div class="accom-desc">
                             <div class="title">{{ region.getLocaleName(get_locale()) }}</div>
