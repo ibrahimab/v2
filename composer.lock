@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fbdb6ee7ffddf02176d41729602fe90e",
-    "content-hash": "4890e1c4d007305bb2c0df23340b4cd3",
+    "hash": "4d425e9e26e0ede1e10f4c9d6eac5ac6",
+    "content-hash": "ee78a184d14c2544b614bf5a00e712bc",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -849,20 +849,20 @@
         },
         {
             "name": "doctrine/mongodb-odm-bundle",
-            "version": "3.0.2",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineMongoDBBundle.git",
-                "reference": "ce759711b418617191f599f2b7e02048191146b7"
+                "reference": "8ac34a2b62ecbe2e6d79697de6a02cdcb8613198"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineMongoDBBundle/zipball/ce759711b418617191f599f2b7e02048191146b7",
-                "reference": "ce759711b418617191f599f2b7e02048191146b7",
+                "url": "https://api.github.com/repos/doctrine/DoctrineMongoDBBundle/zipball/8ac34a2b62ecbe2e6d79697de6a02cdcb8613198",
+                "reference": "8ac34a2b62ecbe2e6d79697de6a02cdcb8613198",
                 "shasum": ""
             },
             "require": {
-                "doctrine/mongodb-odm": "~1.0",
+                "doctrine/mongodb-odm": "~1.0.0-beta10@dev",
                 "php": ">=5.3.2",
                 "symfony/config": "~2.2",
                 "symfony/console": "~2.1",
@@ -915,7 +915,7 @@
                 "persistence",
                 "symfony"
             ],
-            "time": "2015-12-26 16:04:48"
+            "time": "2015-08-31 13:07:17"
         },
         {
             "name": "doctrine/orm",
@@ -1720,13 +1720,13 @@
             "target-dir": "JMS/TranslationBundle",
             "source": {
                 "type": "git",
-                "url": "https://github.com/schmittjoh/JMSTranslationBundle.git",
-                "reference": "ac09e3dcd8074411056c30a745bfbae0c42d7794"
+                "url": "git@github.com:schmittjoh/JMSTranslationBundle.git",
+                "reference": "8fb514716cecaecbcf58e1bd79da6dd2316186ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSTranslationBundle/zipball/ac09e3dcd8074411056c30a745bfbae0c42d7794",
-                "reference": "ac09e3dcd8074411056c30a745bfbae0c42d7794",
+                "url": "https://api.github.com/repos/schmittjoh/JMSTranslationBundle/zipball/8fb514716cecaecbcf58e1bd79da6dd2316186ea",
+                "reference": "8fb514716cecaecbcf58e1bd79da6dd2316186ea",
                 "shasum": ""
             },
             "require": {
@@ -1780,7 +1780,7 @@
                 "ui",
                 "webinterface"
             ],
-            "time": "2016-04-01 13:01:13"
+            "time": "2016-04-06 12:01:55"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -4216,12 +4216,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSDiExtraBundle.git",
-                "reference": "fb2da6655761718bb61c1367ceafd9ff4f4bccc1"
+                "reference": "9a5e7bef575fe1ff4e06bc8b1422d2d984ed8972"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSDiExtraBundle/zipball/fb2da6655761718bb61c1367ceafd9ff4f4bccc1",
-                "reference": "fb2da6655761718bb61c1367ceafd9ff4f4bccc1",
+                "url": "https://api.github.com/repos/schmittjoh/JMSDiExtraBundle/zipball/9a5e7bef575fe1ff4e06bc8b1422d2d984ed8972",
+                "reference": "9a5e7bef575fe1ff4e06bc8b1422d2d984ed8972",
                 "shasum": ""
             },
             "require": {
@@ -4277,7 +4277,7 @@
                 "annotations",
                 "dependency injection"
             ],
-            "time": "2016-02-21 22:25:12"
+            "time": "2016-04-05 15:17:24"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
