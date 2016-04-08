@@ -145,13 +145,15 @@
                         {% set image = generate_image_path(place_image(place)) %}
                         <a href="{{ locale_path('show_place', {placeSlug: place.getLocaleSeoName(get_locale())}) }}"><img src="{{ image }}" alt="{{ image }}" /></a>
                     </div>
+                    <a href="{{ locale_path('show_place', {placeSlug: place.getLocaleSeoName(get_locale())}) }}">
                     <div class="accom-desc">
-                        <div class="title"><a href="{{ locale_path('show_place', {placeSlug: place.getLocaleSeoName(get_locale())}) }}">{{ place.getLocaleName(get_locale()) }}</a></div>
+                        <div class="title">{{ place.getLocaleName(get_locale()) }}</div>
                         <br />
                         <div class="chalets"><i class="sprite sprite-gray-chalet chalets-icon-box"></i><span class="chalets-data-box"><strong>{{ place.getTypesCount() }}</strong> {{ 'chalets-apartments'|trans }}</span></div>
                         <div class="chalets"><i class="sprite sprite-gray-mountain chalets-icon-box"></i><span class="chalets-data-box"><strong>{{ place.getAltitude() }}</strong> m {{ 'altitude'|trans }}</span></div>
                         <div class="chalets"><i class="fi-compass fi-gray chalets-icon-box"></i><span class="chalets-data-box"><strong>{{ place.getDistanceFromUtrecht() }}</strong> km {{ 'distance-to-utrecht'|trans }}</span></div>
                     </div>
+                    </a>
                 </article>
             </div>
             {% if (loop.index % 4) is same as(0) %}
