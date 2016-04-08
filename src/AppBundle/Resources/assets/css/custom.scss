@@ -485,6 +485,8 @@ div.autocomplete-container {
     }
 }
 
+
+
 /** tablet landscape */
 @media all and (min-width: 40.063em) and (max-width: 64em) and (orientation: landscape) {
     div.autocomplete-container div.results ul { width: 180%; }
@@ -493,11 +495,26 @@ div.autocomplete-container {
 /** tablet portrait */
 @media all and (min-width: 40.063em) and (max-width: 64em) and (orientation: portrait) {
     div.autocomplete-container div.results ul { width: 251%; }
+
+    .table-wrapper {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        width: 100%;
+        -webkit-overflow-scrolling: touch;
+    }
 }
 
 /** mobile portrait and landscape */
 @media all and (max-width: 40em) {
+
     div.autocomplete-container div.results ul { width: 100%; }
+
+    .table-wrapper {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        width: 100%;
+        -webkit-overflow-scrolling: touch;
+    }
 }
 
 ul.pagination li:first-child a, ul.pagination li:last-child a { border:thin #bfbfbf solid;font-weight:300; }
@@ -540,13 +557,6 @@ div.loading {
 
 .overview .accom-img .heart span {padding:1rem;}
 
-
-.table-wrapper {
-    overflow-x: scroll;
-    overflow-y: hidden;
-    width: 100%;
-    -webkit-overflow-scrolling: touch;
-}
 
 table.scroll-horizontal {
 
