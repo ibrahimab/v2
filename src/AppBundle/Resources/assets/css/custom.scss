@@ -56,7 +56,7 @@
 }
 
 /**
- * sprites: small changes to margins/paddings/alignments
+ * sprites: small changes to margins/paddings/alignments/background-positions
  */
 .sprite-icon-discount {
     vertical-align:middle;
@@ -104,6 +104,9 @@
     margin-top: -5px;
 }
 
+.readmore .button.small.blank.open i {
+    background-position:-186px -171px;height:11px;width:11px;
+}
 
 /**
  * Country list on the countries page to align the flags with the text
