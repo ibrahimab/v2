@@ -90,6 +90,28 @@ parameters:
                 company: 1
                 legacy_api_uri: "http://legacy.chalet.nl/api.php"
 
+            test.chalet.nl:
+                locale:  nl
+                website: C
+                season:  1
+                country: nl
+                name: Chalet.nl
+                chat: 2-PTFmcHUgtM
+                trustpilot: bd82d1c7@trustpilotservice.com
+                ga: UA-2078202-1
+                facebook: 156825034385110
+                twitter: ChaletNL
+                google: +ChaletNlWintersport
+                pinterest: chaletNL
+                resale: false
+                cancel_insurance: 1
+                travel_insurance: 1
+                damage_insurance: 1
+                newsletter: true
+                newsletter_cancel: false
+                company: 1
+                legacy_api_uri: "http://legacy.chalet.nl/api.php"
+
             local.chalet.eu:
                 locale:  en
                 website: E
