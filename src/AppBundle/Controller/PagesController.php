@@ -165,7 +165,7 @@ class PagesController extends Controller
     }
 
     /**
-     * @Route("/veel-gestelde-vragen", name="page_faq_nl")
+     * @Route("/veelgestelde-vragen", name="page_faq_nl")
      * @Route("/frequently-asked-questions", name="page_faq_en")
      * @Breadcrumb(name="faq", title="faq", translate=true, active=true)
      */

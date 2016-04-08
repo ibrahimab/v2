@@ -7,6 +7,10 @@ services:
         class: AppBundle\Security\Access\Handler\Staging
         arguments: ["@app.security.access.validator.ip", "@app.security.access.validator.github", "@app.security.access.validator.basic_auth"]
 
+    app.security.access.handler.prod:
+        class: AppBundle\Security\Access\Handler\Production
+        arguments: ["@app.security.access.validator.ip", "@app.security.access.validator.github", "@app.security.access.validator.basic_auth"]
+
     app.security.access.validator.ip:
         class: AppBundle\Security\Access\Validator\Ip
         arguments: ["%allowed_ips%"]
