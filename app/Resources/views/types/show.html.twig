@@ -63,10 +63,10 @@ Template-content: accommodation page
                 <div class="overview{% if offers[type.getId()] is defined %} sale{%endif %}">
                     <div class="accom-desc">
                         <h1>{{ ('type.kind.' ~ accommodation.getKindIdentifier() )|trans|capitalize ~ ' ' ~ localeData['name']['accommodation'] }}</h1>
+                        <div class="type">{% if localeData['name']['type'] is not empty %}<h3>{{ localeData['name']['type'] }} </h3>{% endif %}</div>
                         <div class="location">
                             <span class="city"><a href="{{ locale_path('show_place', { placeSlug: localeData['seo']['place'] }) }}" title="{{ localeData['name']['place'] }}">{{ localeData['name']['place'] }}</a></span>, <span class="area"><a href="{{ locale_path('show_region', { regionSlug: localeData['seo']['region'] }) }}" title="{{ localeData['name']['region'] }}">{{ localeData['name']['region'] }}</a></span>, <span class="country"><a href="{{ locale_path('show_country', { countrySlug: localeData['seo']['country'] } ) }}" title="{{ localeData['name']['country'] }}">{{ localeData['name']['country'] }}</a></span>
                         </div>
-                        <div class="type">{% if localeData['name']['type'] is not empty %}<h3>{{ localeData['name']['type'] }} </h3>{% endif %}</div>
                         <div class="clearfix"></div>
                         <div class="accom-img">
                             <div class="accom-slides show-for-small">
