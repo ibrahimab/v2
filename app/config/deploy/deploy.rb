@@ -12,6 +12,8 @@ set :app_config_path, fetch(:app_path) + '/config'
 set :application, 'chalet-v2'
 set :repo_url, 'git@github.com:Chalet/chalet-v2.git'
 
+set :deploy_via, :remote_cache
+set :copy_exclude, [ '.git' ]
 
 set :deploy_to, -> { '/var/www/deploy.chalet.nl' }
 
@@ -29,7 +31,7 @@ set :git_strategy, Capistrano::Git::SubmoduleStrategy
 # set :format, :pretty
 
 # Default value for :log_level is :debug
-# set :log_level, :debug
+set :log_level, :info
 
 # Default value for :pty is false
 # set :pty, true

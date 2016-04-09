@@ -88,7 +88,29 @@ parameters:
                 newsletter: true
                 newsletter_cancel: false
                 company: 1
-                legacy_api_uri: "http://legacy.chalet.nl/api.php"
+                legacy_api_uri: "http://legacy-accept.chalet.nl/api.php"
+
+            test.chalet.nl:
+                locale:  nl
+                website: C
+                season:  1
+                country: nl
+                name: Chalet.nl
+                chat: 2-PTFmcHUgtM
+                trustpilot: bd82d1c7@trustpilotservice.com
+                ga: UA-2078202-1
+                facebook: 156825034385110
+                twitter: ChaletNL
+                google: +ChaletNlWintersport
+                pinterest: chaletNL
+                resale: false
+                cancel_insurance: 1
+                travel_insurance: 1
+                damage_insurance: 1
+                newsletter: true
+                newsletter_cancel: false
+                company: 1
+                legacy_api_uri: "http://legacy-accept.chalet.nl/api.php"
 
             new.chalet.eu:
                 locale:  en
@@ -110,7 +132,7 @@ parameters:
                 newsletter: false
                 newsletter_cancel: false
                 company: 1
-                legacy_api_uri: "http://legacy.chalet.eu/api.php"
+                legacy_api_uri: "http://legacy-accept.chalet.eu/api.php"
 
             new.chalettour.nl:
                 locale:  nl
@@ -132,7 +154,7 @@ parameters:
                 newsletter: false
                 newsletter_cancel: false
                 company: 1
-                legacy_api_uri: "http://legacy.chalettour.nl/api.php"
+                legacy_api_uri: "http://legacy-accept.chalettour.nl/api.php"
 
             new.chalet.be:
                 locale:  nl
@@ -154,7 +176,7 @@ parameters:
                 newsletter: true
                 newsletter_cancel: false
                 company: 1
-                legacy_api_uri: "http://legacy.chalet.be/api.php"
+                legacy_api_uri: "http://legacy-accept.chalet.be/api.php"
 
             new.chaletonline.de:
                 locale:  de
@@ -175,7 +197,7 @@ parameters:
                 damage_insurance: 0
                 newsletter: false
                 newsletter_cancel: false
-                legacy_api_uri: "http://legacy.chaletonline.de/api.php"
+                legacy_api_uri: "http://legacy-accept.chaletonline.de/api.php"
 
             new.chaletsinvallandry.nl:
                 locale:  nl
@@ -197,7 +219,7 @@ parameters:
                 newsletter: false
                 newsletter_cancel: false
                 company: 1
-                legacy_api_uri: "http://legacy.chaletsinvallandry.nl/api.php"
+                legacy_api_uri: "http://legacy-accept.chaletsinvallandry.nl/api.php"
 
             new.chaletsinvallandry.com:
                 locale:  en
@@ -219,7 +241,7 @@ parameters:
                 newsletter: false
                 newsletter_cancel: false
                 company: 1
-                legacy_api_uri: "http://legacy.chaletsinvallandry.com/api.php"
+                legacy_api_uri: "http://legacy-accept.chaletsinvallandry.com/api.php"
 
             new.venturasol.nl:
                 locale:  nl
@@ -241,7 +263,7 @@ parameters:
                 newsletter: false
                 newsletter_cancel: false
                 company: 1
-                legacy_api_uri: "http://legacy.venturasol.nl/api.php"
+                legacy_api_uri: "http://legacy-accept.venturasol.nl/api.php"
 
             new.venturasolvacances.nl:
                 locale:  nl
@@ -263,7 +285,7 @@ parameters:
                 newsletter: false
                 newsletter_cancel: false
                 company: 2
-                legacy_api_uri: "http://legacy.venturasolvacances.nl/api.php"
+                legacy_api_uri: "http://legacy-accept.venturasolvacances.nl/api.php"
 
             new.zomerhuisje.nl:
                 locale:  nl
@@ -285,7 +307,7 @@ parameters:
                 newsletter: false
                 newsletter_cancel: false
                 company: 1
-                legacy_api_uri: "http://legacy.zomerhuisje.nl/api.php"
+                legacy_api_uri: "http://legacy-accept.zomerhuisje.nl/api.php"
 
             new.italissima.nl:
                 locale:  nl
@@ -307,7 +329,7 @@ parameters:
                 newsletter: true
                 newsletter_cancel: false
                 company: 1
-                legacy_api_uri: "http://legacy.italissima.nl/api.php"
+                legacy_api_uri: "http://legacy-accept.italissima.nl/api.php"
 
             new.italissima.be:
                 locale:  nl
@@ -329,7 +351,7 @@ parameters:
                 newsletter: false
                 newsletter_cancel: false
                 company: 1
-                legacy_api_uri: "http://legacy.italissima.be/api.php"
+                legacy_api_uri: "http://legacy-accept.italissima.be/api.php"
 
             new.italyhomes.eu:
                 locale:  en
@@ -351,7 +373,7 @@ parameters:
                 newsletter: false
                 newsletter_cancel: false
                 company: 1
-                legacy_api_uri: "http://legacy.italyhomes.eu/api.php"
+                legacy_api_uri: "http://legacy-accept.italyhomes.eu/api.php"
 
             new.superski.nl:
                 locale:  nl
@@ -373,7 +395,7 @@ parameters:
                 newsletter: false
                 newsletter_cancel: false
                 company: 1
-                legacy_api_uri: "http://legacy.superski.nl/api.php"
+                legacy_api_uri: "http://legacy-accept.superski.nl/api.php"
 
         cancellation_insurances:
             standard:

@@ -40,7 +40,7 @@ assetic:
     debug:          "%kernel.debug%"
     use_controller: false
     bundles:        [ ]
-    write_to:       "%kernel.root_dir%/../web/static/"
+    write_to:       "%kernel.root_dir%/../web/"
     #java: /usr/bin/java
     filters:
         cssrewrite: ~

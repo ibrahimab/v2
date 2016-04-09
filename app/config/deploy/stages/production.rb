@@ -6,9 +6,20 @@
 # server 'example.com', user: 'deploy', roles: %w{app db web}, my_property: :my_value
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value
 # server 'db.example.com', user: 'deploy', roles: %w{db}
+server 'web01.chalet.nl', user: 'chalet01', roles: %w{app, web}
+server 'web02.chalet.nl', user: 'chalet01', roles: %w{app, web}
+
+# Default deploy_to directory is /var/www/my_app_name
+set :deploy_to, -> { '/var/www/new-prod.chalet.nl' }
 
 # because of a 'bug' in sshkit, we need to define this in each stage file
 SSHKit.config.command_map[:composer] = "COMPOSER_CACHE_DIR=#{fetch(:tmp_dir)}/.composer php #{shared_path.join('composer.phar')}"
+
+# set environment
+set :symfony_env, 'prod'
+
+# clearing files not applicable to environment
+set :controllers_to_clear, ["app_dev.php", "app_stag.php", "htaccess.dev.dist", "htaccess.stag.dist"]
 
 # role-based syntax
 # ==================

@@ -32,3 +32,9 @@ monolog:
 
 doctrine_mongodb:
     default_database: chalet_prod
+    connections:
+        default:
+            server: "%mongodb_server%"
+            options:
+                connect: true
+                replicaSet: 'rs1'
