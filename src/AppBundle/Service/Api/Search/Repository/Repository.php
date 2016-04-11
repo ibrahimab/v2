@@ -393,21 +393,21 @@ class Repository implements RepositoryInterface
 
             case Where::WHERE_COUNTRY:
 
-                $clause = ['sql'        => $this->getLocaleField('c.naam') . ' IN (' . $this->stringArrayQuery($where->getValue()) . ')',
+                $clause = ['sql'        => $this->getLocaleField('c.seonaam') . ' IN (' . $this->stringArrayQuery($where->getValue()) . ')',
                            'parameters' => []];
 
                 break;
 
             case Where::WHERE_REGION:
 
-                $clause = ['sql'        => $this->getLocaleField('r.naam') . ' IN (' . $this->stringArrayQuery($where->getValue()) . ')',
+                $clause = ['sql'        => $this->getLocaleField('r.seonaam') . ' IN (' . $this->stringArrayQuery($where->getValue()) . ')',
                            'parameters' => []];
 
                 break;
 
             case Where::WHERE_PLACE:
 
-                $clause = ['sql'        => $this->getLocaleField('p.naam') . ' IN (' . $this->stringArrayQuery($where->getValue()) . ')',
+                $clause = ['sql'        => $this->getLocaleField('p.seonaam') . ' IN (' . $this->stringArrayQuery($where->getValue()) . ')',
                            'parameters' => []];
 
                 break;

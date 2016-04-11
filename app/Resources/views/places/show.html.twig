@@ -33,7 +33,7 @@
                     <a href="" class="button blank small radius" title="Toon meer" data-action="show-more" data-element="description" data-open-title="Toon meer" data-close-title="Toon minder"><i class="sprite sprite-icon-close-all"></i><span>Toon meer</span></a>
                  </div>
                 <h3 class="header-button">
-                    <a href="{{ locale_path('show_place', {placeSlug: place.getLocaleName(get_locale())}) }}" class="button small radius" title="Bekijk het gehele aanbod">Bekijk al onze chalets en appartementen in {{ place.getLocaleName(get_locale()) }}</a>
+                    <a href="{{ locale_path('search', {'pl': [place.getLocaleSeoName(get_locale())]}) }}" class="button small radius" title="Bekijk het gehele aanbod">Bekijk al onze chalets en appartementen in {{ place.getLocaleName(get_locale()) }}</a>
                 </h3>
             </div>
             <div class="large-4 medium-4 columns">

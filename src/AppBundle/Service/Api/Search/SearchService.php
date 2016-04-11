@@ -140,7 +140,6 @@ class SearchService
         $this->searchBuilder->addClause($weekendski);
 
         $results = $this->repository->search($this->searchBuilder, $this->filterBuilder);
-
         $resultset = new Resultset($results, $this->config, $params->getWeekend(), $params->getPersons());
         $resultset->setStartingPrice($this->startingPrice);
         $resultset->setPriceRepository($this->priceRepository);
