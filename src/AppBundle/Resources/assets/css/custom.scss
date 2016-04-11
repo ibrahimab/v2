@@ -212,11 +212,17 @@ section.landing h2 {
     }
 
     .overview{
-
         &:hover{
             outline: 1px solid #C8C8C8;
         }
+    }
+}
 
+.country-page {
+    .overview{
+        &:hover{
+            outline: 1px solid #C8C8C8;
+        }
     }
 }
 
