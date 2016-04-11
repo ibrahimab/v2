@@ -281,10 +281,12 @@ div.region-block {
     font-weight: normal !important;
 }
 
-.type-section .extras table {
+.type-section .table-wrapper table {
     width:100%;
 
 }
+
+
 
 #accom .extras th:last-child {text-align:right;}
 #accom .extras td:last-child {text-align:right;}
@@ -1018,20 +1020,23 @@ a.wa i { position: relative; top: 1px; }
     color: $ratings-color;
 }
 
-table tbody tr:hover {
+tb-r, .table-wrapper tr {
 
     span.table-ratings {
-        color: $ratings-color-hover;
+        background-color: $ratings-bg-color;
+        color: $ratings-color;
+        border-radius: 3px;
+        font-size: 0.96rem;
+        margin-right: 0.5rem;
+        padding: 0.2rem;
     }
-}
-
-span.table-ratings {
-
-    background-color: $ratings-bg-color;
-    color: $ratings-color;
 
     &:hover {
+        span.table-ratings {
         color: $ratings-color-hover;
+            background-color: white;
+        }
+
     }
 }
 
