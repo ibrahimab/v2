@@ -40,45 +40,44 @@
                                     
                                     {% endfor %}
                                     
-                                    {% if searches['search']['be'] is defined %}
+                                    {% if searches['search']['be'] %}
                                         <div>{{ 'bedrooms'|trans }}: minimaal {{ searches['search']['be'] }}</div>
                                     {% endif %}
                                     
-                                    {% if searches['search']['ba'] is defined %}
+                                    {% if searches['search']['ba'] %}
                                         <div>{{ 'bathrooms'|trans }}: minimaal {{ searches['search']['ba'] }}</div>
                                     {% endif %}
                                     
-                                    {% if searches['search']['c'] is defined %}
+                                    {% if searches['search']['c'] %}
                                         
-                                        {% for id in searches['search']['c'] %}
+                                        {% for country in searches['search']['c'] %}
                                         
-                                            <div>{{ 'Land'|trans }}: {{ id }}</div>
-                                        
-                                        {% endfor %}
-                                        
-                                    {% endif %}
-                                    
-                                    {% if searches['search']['r'] is defined %}
-                                        
-                                        {% for id in searches['search']['r'] %}
-                                        
-                                            <div>{{ 'Skigebied'|trans }}: {{ id }}</div>
+                                            <div>{{ 'Land'|trans }}: {{ country }}</div>
                                         
                                         {% endfor %}
                                         
                                     {% endif %}
                                     
-                                    {% if searches['search']['pl'] is defined %}
+                                    {% if searches['search']['r'] %}
                                         
-                                        {% for id in searches['search']['pl'] %}
+                                        {% for region in searches['search']['r'] %}
                                         
-                                            <div>{{ 'Plaats'|trans }}: {{ id }}</div>
+                                            <div>{{ 'Skigebied'|trans }}: {{ region }}</div>
                                         
                                         {% endfor %}
                                         
                                     {% endif %}
                                     
-                                    <div class="hide"></div>
+                                    {% if searches['search']['pl'] %}
+                                        
+                                        {% for place in searches['search']['pl'] %}
+                                        
+                                            <div>{{ 'Plaats'|trans }}: {{ place }}</div>
+                                        
+                                        {% endfor %}
+                                        
+                                    {% endif %}
+                                    
                                 </td>
                                 <td class="valign-middle">
                                     <a href="{{ locale_path('search', searches['search']) }}" class="button blank small radius">

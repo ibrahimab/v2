@@ -137,19 +137,17 @@ class SearchController extends Controller
      */
     public function save(Request $request)
     {
-        $userService = $this->get('app.api.user');
-        $user        = $userService->user();
-        $f           = $request->query->get('f', []);
-        $be          = $request->query->get('be', null);
-        $ba          = $request->query->get('ba', null);
-        $c           = $request->query->get('c', []);
-        $r           = $request->query->get('r', []);
-        $pl          = $request->query->get('pl', []);
-        $a           = $request->query->get('a', []);
-
-        array_walk_recursive($f, function(&$v) {
-            $v = intval($v);
-        });
+        $userService   = $this->get('app.api.user');
+        $searchService = $this->get('app.api.search');
+        $params        = $searchService->createParamsFromRequest($request);
+        $user          = $userService->user();
+        $f             = $params->getFilters();
+        $be            = $params->getBedrooms();
+        $ba            = $params->getBathrooms();
+        $c             = $params->getCountries();
+        $r             = $params->getRegions();
+        $pl            = $params->getPlaces();
+        $a             = $params->getAccommodations();
 
         if (null !== $user) {
             $userService->saveSearch(['f' => $f, 'be' => $be, 'ba' => $ba, 'c' => $c, 'r' => $r, 'pl' => $pl, 'a' => $a]);

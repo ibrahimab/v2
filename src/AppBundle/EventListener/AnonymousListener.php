@@ -1,11 +1,12 @@
 <?php
 namespace AppBundle\EventListener;
-use       AppBundle\Service\UtilsService;
-use		  Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use		  Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use		  Symfony\Component\DependencyInjection\ContainerInterface;
-use       Symfony\Component\Security\Core\Util\SecureRandom;
-use       Symfony\Component\HttpFoundation\Cookie;
+
+use AppBundle\Service\UtilsService;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Util\SecureRandom;
+use Symfony\Component\HttpFoundation\Cookie;
 
 /**
  * AnonymousUniqueTokenListener
@@ -44,9 +45,9 @@ class AnonymousListener
     /**
      * @param FilterControllerEvent $event
      */
-	public function onKernelController(FilterControllerEvent $event)
+	public function onKernelRequest(GetResponseEvent $event)
 	{
-        if (!is_array($controller = $event->getController())) {
+        if (!$event->isMasterRequest()) {
             return;
         }
 

@@ -74,7 +74,9 @@ class UserService
      */
 	public function get($userId, $fields = [], $andWhere = [])
 	{
-		return $this->userServiceRepository->get($userId, $fields, $andWhere);
+		$this->user = $this->userServiceRepository->get($userId, $fields, $andWhere);
+
+        return $this->user;
 	}
 
     /**
