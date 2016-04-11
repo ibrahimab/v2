@@ -46,7 +46,25 @@ class TypesController extends Controller
 
         try {
 
-            $type          = $typeService->findById($typeId);
+            $type = $typeService->findById($typeId);
+
+            if ($type->getDisplay() === false || $type->getAccommodation()->getDisplay() === false) {
+
+                if ($type->getRedirectToType() !== null) {
+
+                    $full           = $type->getRedirectToType();
+                    $beginCode      = substr($full, 0, 1);
+                    $redirectTypeId = substr($full, 1);
+
+                    $response = $this->redirectToRoute('show_type_' . $this->get('app.concern.locale')->get(), ['beginCode' => $beginCode, 'typeId' => $redirectTypeId]);
+                    $response->setStatusCode(Response::HTTP_MOVED_PERMANENTLY);
+
+                    return $response;
+                }
+
+                throw new NoResultException('Type was found but display is turned off');
+            }
+
             $surveyData    = $surveyService->allByType($type);
             $accommodation = $type->getAccommodation();
             $place         = $accommodation->getPlace();

@@ -136,8 +136,6 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
            ->leftJoin('p.region', 'r')
            ->leftJoin('p.country', 'c')
            ->where((is_array($typeId) ? $expr->in('t.id', ':type') : $expr->eq('t.id', ':type')))
-           ->andWhere($expr->eq('t.display', ':display'))
-           ->andWhere($expr->eq('a.display', ':display'))
            ->andWhere($expr->eq('a.weekendSki', ':weekendSki'))
            ->andWhere($expr->eq('at.display', ':display'))
            ->setParameters([

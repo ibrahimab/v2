@@ -209,6 +209,13 @@ class Type implements TypeServiceEntityInterface
     private $displaySearch;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="doorsturen_naar_type_id", type="string")
+     */
+    private $redirectToType;
+
+    /**
      * @var array
      *
      * @ORM\Column(name="kenmerken", type="simple_array")
@@ -935,6 +942,24 @@ class Type implements TypeServiceEntityInterface
     public function getDisplaySearch()
     {
         return $this->displaySearch;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setRedirectToType($typeId)
+    {
+        $this->redirectToType = $typeId;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getRedirectToType()
+    {
+        return $this->redirectToType;
     }
 
     /**

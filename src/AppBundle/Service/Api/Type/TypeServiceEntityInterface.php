@@ -433,6 +433,20 @@ interface TypeServiceEntityInterface
     public function getDisplaySearch();
 
     /**
+     * Get redirect to type
+     *
+     * @param integer $typeId
+     *
+     * @return TypeServiceEntityInterface
+     */
+    public function setRedirectToType($typeId);
+
+    /**
+     * @return integer
+     */
+    public function getRedirectToType();
+
+    /**
      * Set features
      *
      * @param array $features
