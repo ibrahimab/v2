@@ -80,7 +80,7 @@ class PriceTextType
      **/
     public function get()
     {
-        if ($this->accommodation['show'] == 3 || $this->isResale) {
+        if ($this->accommodation['type'] == 'accommodation' || $this->isResale) {
 
             // accommodation
             if ($this->accommodation['total_types'] >= 2 || !$this->whereDate) {

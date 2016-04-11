@@ -49,17 +49,10 @@ Template-content: search results search-and-book (accommodation-block)
                             </div>
                             <div class="small-12 medium-5 large-4 columns price-details">
 
-                                {% set skipas = true %}
-                                {% if cheapest.type == 'accommodation' or resale %}
-                                    {% set skipas = false %}
-                                {% endif %}
-
                                 {% if cheapest.price > 0 %}
-                                    {% if skipas %}
-                                        <span class="price-info">Prijs per persoon per week, vanaf</span>
-                                    {% else %}
-                                        <span class="price-info">Prijs per accommodatie, vanaf</span>
-                                    {% endif %}
+
+                                    <span class="price-info">{{ price_text.getTextBeforePrice(cheapest.price_text_type) }}</span>
+
                                     <div class="chalet-tooltip loading" data-role="ajax-tooltip" data-url="{{ path('additional_costs_type', {typeId: cheapest.type_id, seasonId: season}) }}">
                                         <div class="chalet-tooltip-content" data-role="tooltip-wrapper">
                                             <div data-role="tooltip-content">

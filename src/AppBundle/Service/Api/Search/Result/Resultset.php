@@ -255,8 +255,9 @@ class Resultset
             $this->prices[$row['group_id']][$row['type_id']] = $row['price'];
         }
 
-        $this->preparePriceTextTypes();
+        $this->prepareTypeCount();
         $this->prepareCheapestRows();
+        $this->preparePriceTypeText();
 
         return $this;
     }
@@ -355,22 +356,40 @@ class Resultset
     /**
      * @return void
      */
-    public function preparePriceTextTypes()
+    public function prepareTypeCount()
     {
-        foreach ($this->results as &$rows) {
+        foreach ($this->results as $groupId => $rows) {
 
             $count = count($rows);
+            $count = ($count > 1 ? ($count - 1) : $count);
 
-            foreach ($rows as &$row) {
+            foreach ($rows as $key => $row) {
 
-                $row['total_types'] = $count;
+                $this->results[$groupId][$key]['total_types'] = $count;
+                $this->types[$row['type_id']]['total_types'] = $count;
+            }
+        }
+    }
 
-                $priceTextType = new PriceTextType($row, $this->weekend, $this->persons, $this->resale);
+    /**
+     * @return void
+     */
+    public function preparePriceTypeText()
+    {
+        foreach ($this->results as $groupId => $rows) {
 
-                $row['price_text_type'] = $priceTextType->get();
+            $cheapestId = $this->cheapest[$groupId];
 
-                // making sure $this->types is up to date with $this->results
-                $this->types[$row['type_id']]['price_text_type'] = $row['price_text_type'];
+            foreach ($rows as $key => $row) {
+
+                if ($row['type_id'] === $cheapestId) {
+
+                    $priceTextType = new PriceTextType($this->results[$groupId][$key], $this->weekend, $this->persons, $this->resale);
+                    $priceText     = $priceTextType->get();
+
+                    $this->results[$groupId][$key]['price_text_type'] = $priceText;
+                    $this->types[$row['type_id']]['price_text_type']  = $priceText;
+                }
             }
         }
     }
