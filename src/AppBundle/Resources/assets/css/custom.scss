@@ -210,6 +210,14 @@ section.landing h2 {
         font-weight: 700;
         text-align: center;
     }
+
+    .overview{
+
+        &:hover{
+            outline: 1px solid #C8C8C8;
+        }
+
+    }
 }
 
 ul.landing-details-short {
