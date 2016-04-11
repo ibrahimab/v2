@@ -14,18 +14,21 @@ window.Chalet = (function(ns, jq, _, undefined) {
             ns.Search.setContainer();
             ns.Search.actions.MediaQueryBasedLayoutChanges();
 
-            var custom = ns.get('app')['filters'] === undefined ? {} : ns.get('app')['filters']['custom'];
+            var custom = ns.get('app')['filters'] === undefined || ns.get('app')['filters']['custom'] === undefined ? {} : ns.get('app')['filters']['custom'];
 
             ns.Search.filters.countries      = custom['countries']      || [];
             ns.Search.filters.regions        = custom['regions']        || [];
             ns.Search.filters.places         = custom['places']         || [];
             ns.Search.filters.accommodations = custom['accommodations'] || [];
-            ns.Search.filters.bedrooms       = custom['bedrooms']       || null;
-            ns.Search.filters.bathrooms      = custom['bathrooms']      || null;
-            ns.Search.filters.weekend        = custom['weekend']        || null;
-            ns.Search.filters.persons        = custom['persons']        || null;
-            ns.Search.filters.freesearch     = custom['freesearch']     || null;
-            ns.Search.filters.sort           = custom['sort']           || null;
+
+            var form = ns.get('app')['filters'] === undefined || ns.get('app')['filters']['form'] === undefined ? {} : ns.get('app')['filters']['form'];
+
+            ns.Search.filters.bedrooms       = form['bedrooms']   || null;
+            ns.Search.filters.bathrooms      = form['bathrooms']  || null;
+            ns.Search.filters.weekend        = form['weekend']    || null;
+            ns.Search.filters.persons        = form['persons']    || null;
+            ns.Search.filters.freesearch     = form['freesearch'] || null;
+            ns.Search.filters.sort           = form['sort']       || null;
 
             ns.Search.htmlBody = jq('html, body');
         },
@@ -445,6 +448,14 @@ window.Chalet = (function(ns, jq, _, undefined) {
             },
 
             request: function(url) {
+
+                // prevent incorrect caching by the browser when requesting this url the next time
+                if (url.indexOf("?") !=-1) {
+                    url = url + "&";
+                } else {
+                    url = url + "?";
+                }
+                url = url + "XmlHttpRequest=1";
 
                 jq.ajax({
 

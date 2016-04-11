@@ -330,6 +330,9 @@ class SearchController extends Controller
         $javascript->set('app.filters.custom.regions',        $params->getRegions());
         $javascript->set('app.filters.custom.places',         $params->getPlaces());
         $javascript->set('app.filters.custom.accommodations', $params->getAccommodations());
+        $javascript->set('app.filters.form.freesearch',       $params->getFreesearch());
+        $javascript->set('app.filters.form.weekend',          $params->getWeekend());
+        $javascript->set('app.filters.form.persons',          $params->getPersons());
         $javascript->set('app.filters.form.bedrooms',         $params->getBedrooms());
         $javascript->set('app.filters.form.bathrooms',        $params->getBathrooms());
         $javascript->set('app.filters.form.sort',             $params->getSort());
