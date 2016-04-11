@@ -204,7 +204,7 @@ class TypesController extends Controller
             return false;
         }
 
-        $parsed['query'] = (isset($parsed['query']) ? ('?' . urlencode($parsed['query'])) : '');
+        $parsed['query'] = (isset($parsed['query']) ? ('?' . $parsed['query']) : '');
 
         return $parsed['path'] . $parsed['query'];
     }
