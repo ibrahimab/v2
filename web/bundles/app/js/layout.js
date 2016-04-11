@@ -92,8 +92,10 @@ $('.readmore a').on('click', function(event) {//open close div (class=readmore)
         el.find('span').text(el.data('close-title'));
     }
     el.data('state', (el.data('state') === 'open' ? 'close' : 'open'));
+
     var getParent =  "." + el.parents('div:eq(1)').attr('class');
-    $(getParent+ ' .readmore a').toggleClass('open');
+
+    $(el).toggleClass('open');
     $(getParent+ ' .hide').slideToggle('slow');
 });
 $(document).ready(function(){
