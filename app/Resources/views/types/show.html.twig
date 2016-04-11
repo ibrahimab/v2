@@ -338,7 +338,16 @@ Template-content: accommodation page
                                 <span class="price-info">Prijs per accommodatie, vanaf</span>
                             {% endif %}
                             {% if prices[type.getId()] is defined %}
-                                <span class="price has-tip tip-left radius" data-tooltip aria-haspopup="true" title="[uitgebreide prijsinformatie bij dit zoekresultaat]">&euro; {{ prices[type.getId()]|number_format(0, ',', '.') }},-<i class="fi-info"></i></span>
+                                <div class="chalet-tooltip loading" data-role="ajax-tooltip" data-url="{{ path('additional_costs_type', {typeId: type.getId(), seasonId: currentSeason['id']}) }}">
+                                    <div class="chalet-tooltip-content" data-role="tooltip-wrapper">
+                                        <div data-role="tooltip-content">
+                                            <div class="tooltip-placeholder">Bezig met laden...</div>
+                                        </div>
+                                        <span class="close"></span>
+                                        <span class="nub rtl"></span>
+                                    </div>
+                                    <span class="price radius">&euro; {{ prices[type.getId()]|number_format(0, ',', '.') }},-<i class="fi-info" data-role="ajax-tooltip-button"></i></span>
+                                </div>
                             {% endif %}
                             <span class="price-inc"><i class="sprite sprite-icon-skipass"></i>Inclusief 6daagse skipas</span>
                         </div>

@@ -274,6 +274,15 @@
             }
         });
 
+        // close all tooltips when clicking anywhere on the page
+        jq(document).on("click",function(event) {
+
+            // hide all active tooltips
+            if (jq(event.target).data('role') != 'ajax-tooltip-button') {
+                jq('[data-role=tooltip-wrapper]').hide();
+            }
+        });
+
         body.on('click', '[data-role="ajax-tooltip"]', function(event) {
 
             event.preventDefault();
@@ -325,14 +334,6 @@
                     scrollToMakeVisible(wrapper);
                 }
             }
-
-        });
-
-        // close all tooltips when clicking anywhere on the page
-        jq(document).on("click","html",function(event) {
-
-            // hide all active tooltips
-            jq('[data-role=tooltip-wrapper]').hide();
 
         });
 
