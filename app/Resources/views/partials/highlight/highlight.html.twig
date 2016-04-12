@@ -14,7 +14,7 @@ called from:
 <div class="small-{{ small_size|default(12) }} medium-{{ medium_size|default(4) }} large-{{ large_size|default(4) }} columns {% if end == true %}end{% endif %}">
     <article class="overview{% if offer %} sale{% endif %}" data-equalizer-watch>
         <div class="accom-img">
-            <a href="{{ link }}"><img src="" alt="{{ highlight.accommodation_name }}" /></a>
+            <a href="{{ link }}"><img src="{{ generate_image_path(type_image(highlight))|thumbnail(364, 273) }}" alt="{{ highlight.accommodation_name }}" /></a>
             {% if offer %}
                 <a href="{{ link }}">
                     <div class="circle"><span>Aan-</span><span>bieding</span></div>

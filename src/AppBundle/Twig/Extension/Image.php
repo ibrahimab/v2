@@ -70,14 +70,25 @@ trait Image
      * @param TypeServiceEntityInterface $type
      * @return string
      */
-    public function getTypeImage(TypeServiceEntityInterface $type)
+    public function getTypeImage($type)
     {
-        $file = $this->getFileService('type')->getMainImage($type->getId());
+        if ($type instanceof TypeServiceEntityInterface) {
+
+            $typeId          = $type->getId();
+            $accommodationId = $type->getAccommodation()->getId();
+
+        } else {
+
+            $typeId          = intval($type['type_id']);
+            $accommodationId = intval($type['accommodation_id']);
+        }
+
+        $file = $this->getFileService('type')->getMainImage($typeId);
 
         if (null === $file) {
 
             // type image not found
-            $file = $this->getFileService('accommodation')->getMainImage($type->getAccommodation()->getId());
+            $file = $this->getFileService('accommodation')->getMainImage($accommodationId);
         }
 
         return $file;
