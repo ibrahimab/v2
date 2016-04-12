@@ -154,6 +154,30 @@
         });
 
         /**
+         * Book button
+         */
+
+        body.on('click', '[data-action="book"]', function(event) {
+
+            var accURL         = new URI(window.location);
+
+            if (accURL.search(true)["w"] && accURL.search(true)["w"] > 0 && accURL.search(true)["pe"] && accURL.search(true)["pe"] > 0) {
+                return true;
+            } else {
+
+                event.preventDefault();
+
+                var target =  '#price-availability';
+                $('html, body').animate({
+                    scrollTop: $(target).offset().top - 50
+                }, 2000);
+                return false;
+
+            }
+
+        });
+
+        /**
          * Save favorite
          */
 
