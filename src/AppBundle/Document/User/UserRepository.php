@@ -53,6 +53,17 @@ class UserRepository extends DocumentRepository implements UserServiceRepository
      */
     public function saveSearch(UserServiceDocumentInterface $user, $search)
     {
+        $searches = $user->getSearches();
+
+        foreach ($searches as $savedSearch) {
+
+            if ($savedSearch['search'] === $search) {
+
+                // search is already saved
+                return $user;
+            }
+        }
+
         $user->addSearch($search);
 
         $dm = $this->getDocumentManager();
