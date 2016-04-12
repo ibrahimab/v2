@@ -34,6 +34,23 @@ interface UserServiceRepositoryInterface
     public function saveSearch(UserServiceDocumentInterface $user, $search);
 
     /**
+     * remove search
+     *
+     * @param UserServiceDocumentInterface $user
+     * @param string $id
+     * @return boolean
+     */
+    public function removeSearch(UserServiceDocumentInterface $user, $id);
+
+    /**
+     * clear searches
+     *
+     * @param UserServiceDocumentInterface $userId
+     * @return boolean
+     */
+    public function clearSearches(UserServiceDocumentInterface $user);
+
+    /**
      * Save viewed accommodation
      *
      * @param UserServiceDocumentInterface $user

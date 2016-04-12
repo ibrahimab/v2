@@ -128,6 +128,21 @@ interface UserServiceDocumentInterface
     public function addSearch(Array $search);
 
     /**
+     * remove search
+     *
+     * @param string $id
+     * @return boolean
+     */
+    public function removeSearch($id);
+
+    /**
+     * clear searches
+     *
+     * @return boolean
+     */
+    public function clearSearches();
+
+    /**
      * Count searches
      *
      * @return int

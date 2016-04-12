@@ -91,6 +91,28 @@ class UserService
     }
 
     /**
+     * remove search
+     *
+     * @param string $id
+     * @return boolean
+     */
+    public function removeSearch($id)
+    {
+        return $this->userServiceRepository->removeSearch($this->user(), $id);
+    }
+
+    /**
+     * clear searches
+     *
+     * @param string $id
+     * @return boolean
+     */
+    public function clearSearches()
+    {
+        return $this->userServiceRepository->clearSearches($this->user());
+    }
+
+    /**
      * Save viewed accommodation
      *
      * @param TypeServiceEntityInterface $type

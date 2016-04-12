@@ -65,6 +65,37 @@ class UserRepository extends DocumentRepository implements UserServiceRepository
     /**
      * {@InheritDoc}
      */
+    public function removeSearch(UserServiceDocumentInterface $user, $id)
+    {
+        $result = $user->removeSearch($id);
+
+        if (true === $result) {
+
+            $dm = $this->getDocumentManager();
+            $dm->persist($user);
+            $dm->flush();
+        }
+
+        return $result;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function clearSearches(UserServiceDocumentInterface $user)
+    {
+        $user->clearSearches();
+
+        $dm = $this->getDocumentManager();
+        $dm->persist($user);
+        $dm->flush();
+
+        return true;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
     public function addViewedAccommodation(UserServiceDocumentInterface $user, TypeServiceEntityInterface $type)
     {
         $user->addViewed($type);

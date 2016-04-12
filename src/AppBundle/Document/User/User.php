@@ -289,9 +289,53 @@ class User implements UserServiceDocumentInterface
     /**
      * {@InheritDoc}
      */
+    public function removeSearch($id)
+    {
+        foreach ($this->searches as $key => $search) {
+
+            if ((string)$search['_id'] === $id) {
+
+                unset($this->searches[$key]);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function clearSearches()
+    {
+        $this->searches = [];
+        return true;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
     public function totalSearches()
     {
-        return count($this->searches);
+        $total = 0;
+
+        foreach ($this->searches as $search) {
+
+            $hasSearch = false;
+
+            foreach ($search['search'] as $item) {
+
+                if (false !== $item) {
+                    $hasSearch = true;
+                }
+            }
+
+            if (true === $hasSearch) {
+                $total += 1;
+            }
+        }
+
+        return $total;
     }
 
     /**

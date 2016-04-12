@@ -148,9 +148,12 @@ class SearchController extends Controller
         $r             = $params->getRegions();
         $pl            = $params->getPlaces();
         $a             = $params->getAccommodations();
+        $w             = $params->getWeekend();
+        $pe            = $params->getPersons();
+        $fs            = $params->getFreesearch();
 
         if (null !== $user) {
-            $userService->saveSearch(['f' => $f, 'be' => $be, 'ba' => $ba, 'c' => $c, 'r' => $r, 'pl' => $pl, 'a' => $a]);
+            $userService->saveSearch(['f' => $f, 'be' => $be, 'ba' => $ba, 'c' => $c, 'r' => $r, 'pl' => $pl, 'a' => $a, 'w' => $w, 'pe' => $pe, 'fs' => $fs]);
         }
 
         return new JsonResponse([
