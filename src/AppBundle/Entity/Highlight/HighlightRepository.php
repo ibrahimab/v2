@@ -62,7 +62,7 @@ class HighlightRepository implements HighlightServiceRepositoryInterface
         $order    = 'rank';
         $datetime = $datetime ?: new \DateTime('now');
 
-        $query = "SELECT h.hoogtepunt_id AS higlight_id, h.begindatum AS published_at, h.einddatum AS expired_at, t.type_id AS type_id, t.optimaalaantalpersonen AS optimal_persons, 
+        $query = "SELECT h.hoogtepunt_id AS higlight_id, h.volgorde AS rank, h.begindatum AS published_at, h.einddatum AS expired_at, t.type_id AS type_id, t.optimaalaantalpersonen AS optimal_persons,
                          t.maxaantalpersonen AS max_persons, t.kwaliteit AS type_quality, {$this->getLocaleField('t.naam')} AS type_name, a.accommodatie_id AS accommodation_id, 
                          a.naam AS accommodation_name, a.soortaccommodatie AS accommodation_kind, a.kwaliteit AS accommodation_quality, p.plaats_id AS place_id, p.hoortbij_plaats_id AS belongs_to_id, 
                          {$this->getLocaleField('p.naam')} AS place_name, {$this->getLocaleField('p.seonaam')} AS place_seo_name, r.skigebied_id AS region_id, {$this->getLocaleField('r.naam')} AS region_name, 
@@ -87,7 +87,7 @@ class HighlightRepository implements HighlightServiceRepositoryInterface
                     )
                   ) 
                   AND FIND_IN_SET(:website, h.websites) > 0 
-                  ORDER BY h.volgorde ASC LIMIT 6";
+                  LIMIT 6";
 
         $statement = $this->db->prepare($query);
         $statement->bindValue('now', time());
@@ -100,9 +100,13 @@ class HighlightRepository implements HighlightServiceRepositoryInterface
 
         foreach ($raw as $row) {
 
+            $key = ($row['rank'] !== null ? ('A' . $row['rank']) : $this->getSortKey($row));
+
             $row['accommodation_kind'] = Resultset::getKindIdentifier($row['accommodation_kind']);
-            $results[] = $row;
+            $results[$key] = $row;
         }
+
+        ksort($results);
 
         return $results;
     }
@@ -114,5 +118,26 @@ class HighlightRepository implements HighlightServiceRepositoryInterface
     {
         $locale = $this->locale->get();
         return $field . ($locale === 'nl' ? '' : ('_' . $locale));
+    }
+
+    /**
+     * @param array $highlight
+     *
+     * @return string
+     */
+    public function getSortKey($highlight)
+    {
+        // has to be at the end
+        $key = 'Z';
+
+        // random letter
+        $letters = range('A', 'Z');
+        $key    .= $letters[array_rand($letters)];
+        $key    .= $letters[array_rand($letters)];
+        $key    .= mt_rand(1, 100000);
+        $key    .= $highlight['type_id'];
+        $key    .= $highlight['accommodation_id'];
+
+        return $key;
     }
 }
