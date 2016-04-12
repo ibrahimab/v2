@@ -52,6 +52,7 @@ class PagesController extends Controller
         $places               = [];
         $region               = null;
         $offers               = [];
+        $surveys              = [];
 
         if (count($regions) > 0) {
 
@@ -69,26 +70,19 @@ class PagesController extends Controller
             }
         }
 
-        $homepageBlocks       = $homepageBlockService->published();
-        $highlights           = $highlightService->displayable(['limit' => $config['service']['api']['highlight']['limit'], 'results_per_row' => $config['service']['api']['highlight']['results_per_row'] ]);
-        $types                = [];
+        $homepageBlocks = $homepageBlockService->published();
+        $highlights     = $highlightService->displayable($config['service']['api']['highlight']['limit'], $config['service']['api']['highlight']['results_per_row']);
 
-        foreach ($highlights as $highlight) {
+        $typeIds        = array_map('intval', array_column($highlights, 'type_id'));
 
-            $type                  = $highlight->getType();
-            $types[$type->getId()] = $type;
-        }
+        if (count($typeIds) > 0) {
 
-        if (count($types) > 0) {
+            $surveyStats = $surveyService->statsByTypes($typeIds);
+            $offers      = $priceService->offers($typeIds);
 
-            $surveyStats = $surveyService->statsByTypes($types);
-            foreach ($surveyStats as $surveyStat) {
-
-                $types[$surveyStat['typeId']]->setSurveyCount($surveyStat['surveyCount']);
-                $types[$surveyStat['typeId']]->setSurveyAverageOverallRating($surveyStat['surveyAverageOverallRating']);
+            foreach ($surveyStats as $survey) {
+                $surveys[$survey['typeId']] = ['count' => $survey['surveyCount'], 'average' => $survey['surveyAverageOverallRating']];
             }
-
-            $offers = $priceService->offers(array_keys($types));
         }
 
         $groupedHomepageBlocks = ['left' => [], 'right' => []];
@@ -116,6 +110,7 @@ class PagesController extends Controller
 
         return [
 
+            'surveys'        => $surveys,
             'region'         => $region,
             'places'         => $places,
             'highlights'     => $highlights,

@@ -14,48 +14,12 @@ use       AppBundle\Concern\WebsiteConcern;
 interface HighlightServiceRepositoryInterface
 {
     /**
-     * Setting season
-     * 
-     * @param SeasonConcern $seasonConcern
-     * @return void
-     */
-    public function setSeason(SeasonConcern $seasonConcern);
-    
-    /**
-     * Getting season
-     *
-     * @return integer
-     */
-    public function getSeason();
-    
-    /**
-     * Setting website
-     * 
-     * @param WebsiteConcern $seasonConcern
-     * @return void
-     */
-    public function setWebsite(WebsiteConcern $websiteConcern);
-    
-    /**
-     * Getting website
-     *
-     * @return integer
-     */
-    public function getWebsite();
-    
-    /**
      * Get all highlights
      *
-     * @param array $options
-     * @return HighlightServiceEntityInterface[]
-     */
-    public function all($options = []);
-    
-    /**
-     * Get one highlight based on certain criteria
+     * @param integer $limit
+     * @param integer $resultsPerRow
      *
-     * @param  array $by
-     * @return HighlightServiceEntityInterface|null
+     * @return array
      */
-    public function find($by = []);
+    public function displayable($limit, $resultsPerRow);
 }

@@ -247,7 +247,7 @@ class Resultset
             $row['accommodation_id'] = intval($row['accommodation_id']);
             $row['separate_in_search'] = intval($row['separate_in_search']);
             $row['group_id'] = $this->getGroupId($row['separate_in_search'], $row['accommodation_id'], $row['type_id']);
-            $row['kind_identifier'] = $this->getKindIdentifier($row['kind']);
+            $row['kind_identifier'] = static::getKindIdentifier($row['kind']);
 
             $this->results[$row['group_id']][] = $row;
             $this->types[$row['type_id']] = $row;
@@ -399,7 +399,7 @@ class Resultset
      *
      * @return string|integer
      */
-    private function getKindIdentifier($kind)
+    public static function getKindIdentifier($kind)
     {
         return (isset(self::$kindIdentifiers[$kind]) ? self::$kindIdentifiers[$kind] : $kind);
     }

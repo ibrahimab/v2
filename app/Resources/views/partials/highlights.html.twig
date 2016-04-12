@@ -17,7 +17,7 @@ content determined by:
     </div>
     <div{% if fix_blocks|default(false) == true %} class="row hide-on-load" data-role="fix-blocks"{% else %} class="row"{% endif %} data-equalizer>
         {% for highlight in highlights %}
-            {% include 'partials/highlight/highlight.html.twig' with {'highlight': highlight, 'place': highlight.type.accommodation.place, 'end': ( ((loop.index % 3) is same as(0)) or loop.last ), offers: offers } only %}
+            {% include 'partials/highlight/highlight.html.twig' with {'highlight': highlight, 'end': ( ((loop.index % 3) is same as(0)) or loop.last ), offers: offers } only %}
         {% endfor %}
     </div>
     <div class="row">

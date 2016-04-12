@@ -23,8 +23,7 @@ services:
 
     app.repository.highlight:
         class:     AppBundle\Entity\Highlight\HighlightRepository
-        arguments: [AppBundle\Entity\Highlight\Highlight]
-        parent:    app.repository.orm
+        arguments: ["@doctrine.dbal.default_connection", "@app.concern.locale", "@app.concern.website", "@app.concern.season"]
 
     app.repository.type:
         class:     AppBundle\Entity\Type\TypeRepository

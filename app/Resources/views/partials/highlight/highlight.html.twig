@@ -8,43 +8,45 @@ called from:
 #}
 
 {% set locale = get_locale() %}
-{% set offer  = offers is defined and offers[highlight.type.getId()] is defined %}
-{% set link   = locale_path('show_type', { beginCode: place.getCountry().getStartCode(), typeId: highlight.type.id }) %}
+{% set offer  = offers is defined and offers[highlight.type_id] is defined %}
+{% set link   = locale_path('show_type', { beginCode: highlight.country_begin_code, typeId: highlight.type_id }) %}
 
 <div class="small-{{ small_size|default(12) }} medium-{{ medium_size|default(4) }} large-{{ large_size|default(4) }} columns {% if end == true %}end{% endif %}">
     <article class="overview{% if offer %} sale{% endif %}" data-equalizer-watch>
         <div class="accom-img">
-            <a href="{{ link }}"><img src="{{ generate_image_path(type_image(highlight.type))|thumbnail(365, 274) }}" alt="{{ highlight.type.accommodation.getLocaleName(locale) }}" /></a>
+            <a href="{{ link }}"><img src="" alt="{{ highlight.accommodation_name }}" /></a>
             {% if offer %}
                 <a href="{{ link }}">
                     <div class="circle"><span>Aan-</span><span>bieding</span></div>
                 </a>
             {% endif %}
-            {% set surveyCount = highlight.type.surveyCount %}
-            {% if surveyCount > 1 %}
-                <a href="{{ link }}">
-                    <div class="rating"><span class="figure">{{ highlight.type.surveyAverageOverallRating }}</span><span class="reviews-number">{{ surveyCount }} {{ 'ratings'|trans|lower }}</span></div>
-                </a>
+            {% if surveys[highlight.type_id] is defined %}
+                {% set survey = surveys[highlight.type_id] %}
+                {% if surve > 1 %}
+                    <a href="{{ link }}">
+                        <div class="rating"><span class="figure">{{ survey.average }}</span><span class="reviews-number">{{ survey.count }} {{ 'ratings'|trans|lower }}</span></div>
+                    </a>
+                {% endif %}
             {% endif %}
         </div>
         <a href="{{ link }}">
             <div class="accom-desc">
                 <div class="title">
-                    {{ ('type.kind.' ~ highlight.type.accommodation.kindIdentifier)|trans|capitalize ~ ' ' ~ highlight.type.accommodation.getLocaleName(locale) ~ ' ' ~ highlight.type.getLocaleName(locale) }}
+                    {{ ('type.kind.' ~ highlight.accommodation_kind)|trans|capitalize ~ ' ' ~ highlight.accommodation_name ~ ' ' ~ highlight.type_name }}
                     <span>
-                        {% set quality = (highlight.type.getQuality() > 0 ? highlight.type.getQuality() : highlight.type.accommodation.getQuality()) %}
+                        {% set quality = (highlight.type_quality > 0 ? highlight.type_quality : highlight.accommodation_quality) %}
                         {% include 'partials/quality_stars.html.twig' with {quality: quality} only %}
                     </span>
                 </div>
                 <div class="location">
-                    <span class="city">{{ place.getLocaleName(locale) }}</span>,
-                    <span class="area">{{ place.region.getLocaleName(locale) }}</span>,
-                    <span class="country">{{ place.country.getLocaleName(locale) }}</span>
+                    <span class="city">{{ highlight.place_name}}</span>,
+                    <span class="area">{{ highlight.region_name }}</span>,
+                    <span class="country">{{ highlight.country_name }}</span>
                 </div>
-                {% if highlight.type.optimalResidents is same as(highlight.type.maxResidents) %}
-                    <div class="persons"><i class="fi-torso"></i>{{ 'homepage.highlight.suitable-for-max'|trans({'%maximum%': highlight.type.maxResidents}) }}</div>
+                {% if highlight.optimal_persons is same as(highlight.max_persons) %}
+                    <div class="persons"><i class="fi-torso"></i>{{ 'homepage.highlight.suitable-for-max'|trans({'%maximum%': highlight.max_persons}) }}</div>
                 {% else %}
-                    <div class="persons"><i class="fi-torso"></i>{{ 'homepage.highlight.suitable-for'|trans({'%optimal%': highlight.type.optimalResidents, '%maximum%': highlight.type.maxResidents}) }}</div>
+                    <div class="persons"><i class="fi-torso"></i>{{ 'homepage.highlight.suitable-for'|trans({'%optimal%': highlight.optimal_persons, '%maximum%': highlight.max_persons}) }}</div>
                 {% endif %}
             </div>
         </a>

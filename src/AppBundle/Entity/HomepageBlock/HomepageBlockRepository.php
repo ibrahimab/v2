@@ -30,8 +30,8 @@ class HomepageBlockRepository extends BaseRepository implements HomepageBlockSer
         $parameters = [
 
             'display' => true,
-            'now'     => $datetime,
-            'website'     => $this->getWebsite(),
+            'now'     => $datetime->format('Y-m-d'),
+            'website' => $this->getWebsite(),
         ];
 
         $qb->andwhere($this->publishedExpr('h', $expr))

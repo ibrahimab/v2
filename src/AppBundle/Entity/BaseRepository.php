@@ -51,7 +51,7 @@ class BaseRepository extends EntityRepository
 
             $expr->orX(
 
-                $expr->isNull($fieldPrefix . '.publishedAt'),
+                $expr->isNotNull($fieldPrefix . '.publishedAt'),
                 $expr->lte($fieldPrefix . '.publishedAt', ':now')
             ),
             $expr->orX(
