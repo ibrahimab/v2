@@ -86,25 +86,27 @@ class TypesController extends Controller
                 $typeIds[] = $accommodationType->getId();
             }
 
-            $startingPrice     = $this->get('app.api.legacy.starting_price');
-            $prices            = $startingPrice->getStartingPrices($typeIds);
+            $startingPrice        = $this->get('app.api.legacy.starting_price');
+            $prices               = $startingPrice->getStartingPrices($typeIds);
 
-            $priceService      = $this->get('app.api.price');
-            $offers            = $priceService->offers($typeIds);
+            $priceService         = $this->get('app.api.price');
+            $offers               = $priceService->offers($typeIds);
 
-            $userService       = $this->get('app.api.user');
+            $userService          = $this->get('app.api.user');
             $userService->addViewedAccommodation($type);
 
-            $seasonService     = $this->get('app.api.season');
-            $seasons           = $seasonService->seasons();
-            $currentSeason     = $seasonService->current();
-            $seasonId          = $currentSeason['id'];
+            $seasonService        = $this->get('app.api.season');
+            $seasons              = $seasonService->seasons();
+            $currentSeason        = $seasonService->current();
+            $seasonId             = $currentSeason['id'];
 
-            $priceTableService = $this->get('app.api.legacy.price_table');
-            $priceTable        = $priceTableService->getTable($typeId, $seasonId, $request->query->get('w', null), $request->query->get('pe', null));
+            $priceTableService    = $this->get('app.api.legacy.price_table');
+            $priceTable           = $priceTableService->getTable($typeId, $seasonId, $request->query->get('w', null), $request->query->get('pe', null));
 
-            $optionService     = $this->get('app.api.option');
-            $options           = $optionService->options($type->getAccommodationId(), $seasonId, $request->query->get('w', null));
+            $optionService        = $this->get('app.api.option');
+            $options              = $optionService->options($type->getAccommodationId(), $seasonId, $request->query->get('w', null));
+
+            $surveyDataOtherTypes = array_column($surveyService->statsByTypes($typeIds), null, 'typeId');
 
             if (false == ($backUrl = $this->getBackUrl($request->query->get('back', '')))) {
                 $backUrl = '';
@@ -112,19 +114,20 @@ class TypesController extends Controller
 
             return $this->render('types/show.html.twig', [
 
-                'type'               => $type,
-                'surveyData'         => $surveyData,
-                'minimalSurveyCount' => $this->container->getParameter('app')['minimalSurveyCount'],
-                'features'           => array_keys($features),
-                'prices'             => $prices,
-                'offers'             => $offers,
-                'options'            => $options,
-                'weekends'           => $seasonService->futureWeekends($seasons),
-                'sunnyCars'          => $this->container->getParameter('sunny_cars'),
-                'currentWeekend'     => $request->query->get('w', null),
-                'currentSeason'      => $currentSeason,
-                'priceTable'         => $priceTable['html'],
-                'back_url'           => $backUrl,
+                'type'                 => $type,
+                'surveyData'           => $surveyData,
+                'surveyDataOtherTypes' => $surveyDataOtherTypes,
+                'minimalSurveyCount'   => $this->container->getParameter('app')['minimalSurveyCount'],
+                'features'             => array_keys($features),
+                'prices'               => $prices,
+                'offers'               => $offers,
+                'options'              => $options,
+                'weekends'             => $seasonService->futureWeekends($seasons),
+                'sunnyCars'            => $this->container->getParameter('sunny_cars'),
+                'currentWeekend'       => $request->query->get('w', null),
+                'currentSeason'        => $currentSeason,
+                'priceTable'           => $priceTable['html'],
+                'back_url'             => $backUrl,
             ]);
 
         } catch (NoResultException $e) {

@@ -12,17 +12,17 @@ class SurveyService
      * @var SurveyServiceRepositoryInterface
      */
     public $surveyRepository;
-    
+
     /**
      * Constructor
-     * 
+     *
      * @param SurveyServiceRepositoryInterface $surveyRepository
      */
     public function __construct(SurveyServiceRepositoryInterface $surveyRepository)
     {
         $this->surveyRepository = $surveyRepository;
     }
-    
+
     /**
      * Get single survey by some criteria
      *
@@ -33,7 +33,7 @@ class SurveyService
     {
         return $this->surveyRepository->find($by);
     }
-    
+
     /**
      * Get all the surveys based on criteria passed in
      *
@@ -44,7 +44,7 @@ class SurveyService
     {
         return $this->surveyRepository->all($options);
     }
-    
+
     /**
      * Get all the surveys based on criteria passed in
      *
@@ -55,7 +55,7 @@ class SurveyService
     {
         return $this->surveyRepository->allByType($type);
     }
-    
+
     /**
      * @param TypeServiceEntityInterface $type
      * @return array
@@ -64,7 +64,7 @@ class SurveyService
     {
         return $this->surveyRepository->statsByType($type);
     }
-    
+
     /**
      * @param TypeServiceEntityInterfaces[] $types
      * @return array
@@ -73,7 +73,7 @@ class SurveyService
     {
         return $this->surveyRepository->statsByTypes($types);
     }
-    
+
     /**
      * @param PlaceServiceEntityInterface $place
      * @return array
@@ -82,7 +82,7 @@ class SurveyService
     {
         return $this->surveyRepository->statsByPlace($place);
     }
-    
+
     /**
      * @param RegionServiceEntityInterface $region
      * @return array
@@ -91,7 +91,7 @@ class SurveyService
     {
         return $this->surveyRepository->statsByRegion($region);
     }
-    
+
     /**
      * @param CountryServiceEntityInterface $country
      * @return array
