@@ -122,7 +122,10 @@ class AccommodationService
         $result                       = $statement->fetch();
         $result['show']               = (int)$result['show'];
         $result['name']               = $result['name_accommodation'] . ($result['name_type'] ? (' ' . $result['name_type']) : '');
-        $result['accommodation_kind'] = $this->translator->trans('type.kind.' . $result['accommodation_kind']);
+
+        /** @Ignore in JMSTranslationBundle */
+        $kind = $this->translator->trans('type.kind.' . $result['accommodation_kind']);
+        $result['accommodation_kind'] = $kind;
         $result['name_accommodation'] = $result['accommodation_kind'] . ' ' . $result['name'];
         $result['persons']            = ((int)$result['optimal_persons'] === 1 ? $personText : $personsText);
         $result['number_of_persons']  = $result['optimal_persons'] . ($result['optimal_persons'] <> $result['max_persons'] ? (' - ' . $result['max_persons']) : '') . ' ' . $result['persons'];
@@ -710,6 +713,7 @@ class AccommodationService
 
                 if (!isset($results['type'][$row['type_id']])) {
 
+                    /** @Ignore in JMSTranslationBundle */
                     $kind                             = $this->translator->trans('type.kind.' . $row['accommodation_kind']);
                     $results['type'][$row['type_id']] = [
 

@@ -3,7 +3,7 @@
 Template-content: search results search-and-book (types-rows)
 
 #}
-{% macro table(result, cheapest, surveys, season) %}
+{% macro table(result, cheapest, surveys, season, price_text) %}
     <div class="table-wrapper">
 
         <div class="tb">
@@ -15,7 +15,13 @@ Template-content: search results search-and-book (types-rows)
                 <div class="tb-c tb-h-4">{{ 'type'|trans }}</div>
                 <div class="tb-c tb-h-5">{{ 'rating'|trans }}</div>
                 <div class="tb-c tb-h-6">&nbsp;</div>
-                <div class="tb-c tb-h-7">{{ 'price'|trans }}</div>
+                <div class="tb-c tb-h-7 align-right">
+                    {% if price_text.hasSkiPass(cheapest.price_text_type) %}
+                        {{ 'per-person'|trans }}
+                    {% else %}
+                        {{ 'per-accommodation'|trans }}
+                    {% endif %}
+                </div>
             </div>
 
             {% for type in result %}
