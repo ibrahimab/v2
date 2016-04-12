@@ -8,105 +8,113 @@
 
     {{ parent() }}
 
-    {% if saved_searches|length > 0 %}
-
-    <section id="search-filter-results">
+    <section id="search-filter-results" class="saved-searches-section">
         <div class="row">
+            <h1>Opgeslagen zoekopdrachten</h1>
+
             <div id="search-results">
-                <div id="search-filters-active">
-                    <table class="no-striping">
-                        <thead>
-                            <tr>
-                                <th>Zoekopdrachten</th>
-                                <th><a href="{{ path('clear_saved_searches') }}">Wis zoekopdrachten</a></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for searches in saved_searches %}
-                            <tr>
-                                <td>
-                                    {% for filter, search in searches['search']['f'] %}
 
-                                        {% if search is iterable %}
+                {% if saved_searches|length > 0 %}
 
-                                            {% for term in search %}
+                    <div id="search-filters-active">
+                        <table class="no-striping">
+                            <thead>
+                                <tr>
+                                    <th>Zoekopdrachten</th>
+                                    <th><a href="{{ path('clear_saved_searches') }}">Wis zoekopdrachten</a></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for searches in saved_searches %}
+                                <tr>
+                                    <td>
+                                        {% for filter, search in searches['search']['f'] %}
 
-                                                <div>{{ filter|tokenize|trans }}: {{ term|tokenize(filter)|trans }}</div>
+                                            {% if search is iterable %}
+
+                                                {% for term in search %}
+
+                                                    <div>{{ filter|tokenize|trans }}: {{ term|tokenize(filter)|trans }}</div>
+
+                                                {% endfor %}
+
+                                            {% else %}
+
+                                                <div>{{ filter|tokenize|trans }}: {{ search|tokenize(filter)|trans }}</div>
+
+                                            {% endif %}
+
+                                        {% endfor %}
+
+                                        {% if searches['search']['w'] %}
+                                            <div>{{ 'Weekend'|trans }}: {{ searches['search']['w'] }}</div>
+                                        {% endif %}
+
+                                        {% if searches['search']['pe'] %}
+                                            <div>{{ 'persons'|trans }}: {{ searches['search']['pe'] }}</div>
+                                        {% endif %}
+
+                                        {% if searches['search']['fs'] %}
+                                            <div>{{ 'freesearch'|trans }}: {{ searches['search']['fs'] }}</div>
+                                        {% endif %}
+
+                                        {% if searches['search']['be'] %}
+                                            <div>{{ 'bedrooms'|trans }}: minimaal {{ searches['search']['be'] }}</div>
+                                        {% endif %}
+
+                                        {% if searches['search']['ba'] %}
+                                            <div>{{ 'bathrooms'|trans }}: minimaal {{ searches['search']['ba'] }}</div>
+                                        {% endif %}
+
+                                        {% if searches['search']['c'] %}
+
+                                            {% for country in searches['search']['c'] %}
+
+                                                <div>{{ 'Land'|trans }}: {{ country }}</div>
 
                                             {% endfor %}
 
-                                        {% else %}
+                                        {% endif %}
 
-                                            <div>{{ filter|tokenize|trans }}: {{ search|tokenize(filter)|trans }}</div>
+                                        {% if searches['search']['r'] %}
+
+                                            {% for region in searches['search']['r'] %}
+
+                                                <div>{{ 'Skigebied'|trans }}: {{ region }}</div>
+
+                                            {% endfor %}
 
                                         {% endif %}
 
-                                    {% endfor %}
+                                        {% if searches['search']['pl'] %}
 
-                                    {% if searches['search']['w'] %}
-                                        <div>{{ 'Weekend'|trans }}: {{ searches['search']['w'] }}</div>
-                                    {% endif %}
+                                            {% for place in searches['search']['pl'] %}
 
-                                    {% if searches['search']['pe'] %}
-                                        <div>{{ 'persons'|trans }}: {{ searches['search']['pe'] }}</div>
-                                    {% endif %}
+                                                <div>{{ 'Plaats'|trans }}: {{ place }}</div>
 
-                                    {% if searches['search']['fs'] %}
-                                        <div>{{ 'freesearch'|trans }}: {{ searches['search']['fs'] }}</div>
-                                    {% endif %}
+                                            {% endfor %}
 
-                                    {% if searches['search']['be'] %}
-                                        <div>{{ 'bedrooms'|trans }}: minimaal {{ searches['search']['be'] }}</div>
-                                    {% endif %}
+                                        {% endif %}
 
-                                    {% if searches['search']['ba'] %}
-                                        <div>{{ 'bathrooms'|trans }}: minimaal {{ searches['search']['ba'] }}</div>
-                                    {% endif %}
+                                    </td>
+                                    <td class="valign-middle">
+                                        <a href="{{ locale_path('search', searches['search']) }}" class="button blank small radius">Zoekresultaten</a>
+                                        <a href="{{ path('delete_saved_search', {id: searches['_id']}) }}" class="button blank small radius">Verwijder zoekopdracht</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
 
-                                    {% if searches['search']['c'] %}
+                {% else %}
 
-                                        {% for country in searches['search']['c'] %}
+                    <p>In dit overzicht kun je je opgeslagen zoekopdrachten terugvinden. Om een zoekopdracht op te slaan ga je naar <a href="{{ locale_path('search') }}">zoek en boek</a>, je vult een zoekopdacht in en klik bovenaan op de blauwe button 'deze zoekopdracht opslaan'.</p>
 
-                                            <div>{{ 'Land'|trans }}: {{ country }}</div>
+                {% endif %}
 
-                                        {% endfor %}
-
-                                    {% endif %}
-
-                                    {% if searches['search']['r'] %}
-
-                                        {% for region in searches['search']['r'] %}
-
-                                            <div>{{ 'Skigebied'|trans }}: {{ region }}</div>
-
-                                        {% endfor %}
-
-                                    {% endif %}
-
-                                    {% if searches['search']['pl'] %}
-
-                                        {% for place in searches['search']['pl'] %}
-
-                                            <div>{{ 'Plaats'|trans }}: {{ place }}</div>
-
-                                        {% endfor %}
-
-                                    {% endif %}
-
-                                </td>
-                                <td class="valign-middle">
-                                    <a href="{{ locale_path('search', searches['search']) }}" class="button blank small radius">Zoekresultaten</a>
-                                    <a href="{{ path('delete_saved_search', {id: searches['_id']}) }}" class="button blank small radius">Verwijder zoekopdracht</a>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
             </div>
         </div>
     </section>
-
-    {% endif %}
 
 {% endblock body %}
