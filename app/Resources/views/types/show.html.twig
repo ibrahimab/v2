@@ -370,7 +370,7 @@ Template-content: accommodation page
                             {% endif %}
                         </div>
                         <hr />
-                        <a href="{{ locale_path('booking') }}?tid={{ type.getId() }}" class="button large radius" title="Boek nu">Boek nu</a>
+                        <a href="{{ locale_path('booking') }}?tid={{ type.getId() }}&amp;d={{ date }}&amp;ap={{ numberOfPersons }}" class="button large radius" title="Boek nu" role="button" data-action="book" data-book-url="{{ locale_path('booking') }}?tid={{ type.getId() }}">Boek nu</a>
                         <div class="social-buttons">
                             <a href="#" data-role="social-share" data-social-source="facebook" data-social-url="{{ locale_url('show_type', {beginCode: country.getStartCode(), typeId: type.getId()}) }}" class="button social fb tiny radius" title="Like"><i class="fi-social-facebook"></i>Deel</a>
                             <a href="#" data-role="social-share" data-social-source="twitter" data-social-url="{{ locale_url('show_type', {beginCode: country.getStartCode(), typeId: type.getId()}) }}" data-social-tweet="Bekijk deze accommodatie bij Chalet.nl:" class="button social tw tiny radius" title="Tweet"><i class="fi-social-twitter"></i>Tweet</a>

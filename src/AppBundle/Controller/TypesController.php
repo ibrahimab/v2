@@ -106,6 +106,9 @@ class TypesController extends Controller
             $optionService        = $this->get('app.api.option');
             $options              = $optionService->options($type->getAccommodationId(), $seasonId, $request->query->get('w', null));
 
+            $date                 = $request->query->get('w', null);
+            $numberOfPersons      = $request->query->get('pe', null);
+
             $surveyDataOtherTypes = array_column($surveyService->statsByTypes($typeIds), null, 'typeId');
 
             if (false == ($backUrl = $this->getBackUrl($request->query->get('back', '')))) {
@@ -128,6 +131,8 @@ class TypesController extends Controller
                 'currentSeason'        => $currentSeason,
                 'priceTable'           => $priceTable['html'],
                 'back_url'             => $backUrl,
+                'date'                 => $date,
+                'numberOfPersons'      => $numberOfPersons,
             ]);
 
         } catch (NoResultException $e) {

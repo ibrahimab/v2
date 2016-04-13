@@ -10,16 +10,20 @@ var ShowTotalAmount = (function() {
         event.preventDefault();
         var new_html;
 
-        // scroll down if necessary
-        var position_tarieventabel = parseInt( jq(".tarieventabel_maanden_top").offset().top - 2, 10);
-        var position_scroll = parseInt( jq(document).scrollTop(), 10);
+        // make sure ".tarieventabel_totaalprijs" is visible
+        var element = jq(".tarieventabel_totaalprijs");
+        var offset = element.offset();
+        var top = offset.top;
+        var bottom = top + element.outerHeight() + 60;
+        var bottom_of_screen = jq(window).scrollTop() + window.innerHeight;
+
+        var position_scroll = jq(window).scrollTop();
+
+        if (bottom>bottom_of_screen) {
+            position_scroll = jq(window).scrollTop() + (bottom - bottom_of_screen);
+        }
 
         var scroll_time = 800;
-
-        if(position_scroll > position_tarieventabel ) {
-            position_tarieventabel = position_scroll;
-            scroll_time = 0;
-        }
 
         var url = SymfonyRouting.generate('type_total_price', {
                 typeId: jq(".tarieventabel_wrapper").data("type_id"),
@@ -37,7 +41,7 @@ var ShowTotalAmount = (function() {
             jq("div.tarieventabel_totaalprijs_wrapper").hide();
 
             jq.when(
-                    jq("html, body").animate({scrollTop: position_tarieventabel}, scroll_time, "swing")
+                    jq("html, body").animate({scrollTop: position_scroll}, scroll_time, "swing")
                 ,
                     jq.getJSON(url, function(data) {
                         if(data.html) {
@@ -54,7 +58,7 @@ var ShowTotalAmount = (function() {
             jq.when(
                     jq("div.tarieventabel_totaalprijs_wrapper").animate({ opacity: 0 })
                 ,
-                    jq("html, body").animate({scrollTop: position_tarieventabel}, scroll_time, "swing")
+                    jq("html, body").animate({scrollTop: position_scroll}, scroll_time, "swing")
                 ,
                 jq.getJSON(url, function(data) {
                     if(data.html) {
