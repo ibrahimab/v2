@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Service\Api\Search;
 
+use AppBundle\Concern\WebsiteConcern;
 use AppBundle\Service\Api\Search\Builder\Builder as SearchBuilder;
 use AppBundle\Service\Api\Search\Filter\Builder  as FilterBuilder;
 use AppBundle\Service\Api\Search\Builder\Sort;
@@ -10,8 +11,8 @@ use AppBundle\Service\Api\Search\Result\Paginator\Paginator;
 use AppBundle\Service\Api\Booking\Survey\SurveyService;
 use AppBundle\Service\Api\Search\FacetService;
 use AppBundle\Service\Api\Search\Repository\RepositoryInterface;
-use AppBundle\Service\Api\Search\Repository\PriceRepositoryInterface;
-use AppBundle\Service\Api\Search\Repository\OfferRepositoryInterface;
+use AppBundle\Service\Api\PricesAndOffers\Repository\PriceRepositoryInterface;
+use AppBundle\Service\Api\PricesAndOffers\Repository\OfferRepositoryInterface;
 use AppBundle\Service\Api\Legacy\StartingPrice;
 use AppBundle\Concern\LocaleConcern;
 use Symfony\Component\HttpFoundation\Request;
@@ -112,6 +113,14 @@ class SearchService
     }
 
     /**
+     * @param WebsiteConcern $website
+     */
+    public function setWebsiteConcern(WebsiteConcern $website)
+    {
+        $this->website = $website;
+    }
+
+    /**
      * This can only be called once per request!
      *
      * @param Request $request
@@ -140,7 +149,7 @@ class SearchService
         $this->searchBuilder->addClause($weekendski);
 
         $results = $this->repository->search($this->searchBuilder, $this->filterBuilder);
-        $resultset = new Resultset($results, $this->config, $params->getWeekend(), $params->getPersons());
+        $resultset = new Resultset($results, $this->config, $this->website->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE), $params->getWeekend(), $params->getPersons());
         $resultset->setStartingPrice($this->startingPrice);
         $resultset->setPriceRepository($this->priceRepository);
         $resultset->setOfferRepository($this->offerRepository);

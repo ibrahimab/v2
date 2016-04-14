@@ -4,8 +4,9 @@ namespace AppBundle\Service\Api\Search\Result;
 use AppBundle\Service\Api\Search\Builder\Sort;
 use AppBundle\Service\Api\Search\Result\Paginator\Paginator;
 use AppBundle\Service\Api\Search\Result\PriceTextType;
-use AppBundle\Service\Api\Search\Repository\PriceRepositoryInterface;
-use AppBundle\Service\Api\Search\Repository\OfferRepositoryInterface;
+use AppBundle\Service\Api\Search\SearchException;
+use AppBundle\Service\Api\PricesAndOffers\Repository\PriceRepositoryInterface;
+use AppBundle\Service\Api\PricesAndOffers\Repository\OfferRepositoryInterface;
 use AppBundle\Service\Api\Legacy\StartingPrice;
 
 /**
@@ -52,12 +53,12 @@ class Resultset
     /**
      * @var array
      */
-    private $raw;
+    private $config;
 
     /**
-     * @var array
+     * @var boolean
      */
-    private $config;
+    private $resale;
 
     /**
      * Made public to allow assign by-reference to reduce memory usage
@@ -66,6 +67,14 @@ class Resultset
      * @var array
      */
     public $results;
+
+    /**
+     * Made public to allow assign by-reference to reduce memory usage
+     * for big resultsets
+     *
+     * @var array
+     */
+    public $cheapest;
 
     /**
      * @var integer|boolean
@@ -80,22 +89,12 @@ class Resultset
     /**
      * @var array
      */
-    private $types;
-
-    /**
-     * @var array
-     */
     private $typeIds;
 
     /**
      * @var array
      */
     private $prices;
-
-    /**
-     * @var array
-     */
-    private $cheapest;
 
     /**
      * @var Paginator
@@ -141,16 +140,15 @@ class Resultset
      * @param integer $weekend
      * @param integer $persons
      */
-    public function __construct(array $raw, array $config, $weekend = false, $persons = false)
+    public function __construct(array $results, array $config, $resale, $weekend = false, $persons = false)
     {
-        $this->raw      = $raw;
-        $this->results  = [];
+        $this->results  = $results;
         $this->config   = $config;
+        $this->resale   = $resale;
         $this->weekend  = $weekend;
         $this->persons  = $persons;
-        $this->types    = [];
-        $this->prices   = [];
         $this->cheapest = [];
+        $this->prices   = [];
     }
 
     /**
@@ -184,12 +182,11 @@ class Resultset
      */
     public function prepare()
     {
-        $this->results = [];
-        $prices        = [];
-        $offers        = [];
+        $prices = [];
+        $offers = [];
 
         if (false === $this->weekend && false === $this->persons) {
-            $prices = $this->startingPrice->getStartingPrices($this->getTypeIds());
+            $prices = $this->startingPrice->getStartingPrices(array_column($this->results, 'type_id'));
         }
 
         if (false !== $this->weekend || false !== $this->persons) {
@@ -203,7 +200,7 @@ class Resultset
             $offers = $this->fetchOffers();
         }
 
-        foreach ($this->raw as $row) {
+        foreach ($this->results as &$row) {
 
             $row['price'] = (isset($row['price']) ? floatval($row['price']) : 0);
 
@@ -248,16 +245,10 @@ class Resultset
             $row['separate_in_search'] = intval($row['separate_in_search']);
             $row['group_id'] = $this->getGroupId($row['separate_in_search'], $row['accommodation_id'], $row['type_id']);
             $row['kind_identifier'] = static::getKindIdentifier($row['kind']);
+            $row['price_text_type'] = null;
 
-            $this->results[$row['group_id']][] = $row;
-            $this->types[$row['type_id']] = $row;
             $this->typeIds[] = $row['type_id'];
-            $this->prices[$row['group_id']][$row['type_id']] = $row['price'];
         }
-
-        $this->prepareTypeCount();
-        $this->prepareCheapestRows();
-        $this->preparePriceTypeText();
 
         return $this;
     }
@@ -267,10 +258,6 @@ class Resultset
      */
     public function getTypeIds()
     {
-        if (null === $this->typeIds) {
-            $this->typeIds = array_map('intval', array_column($this->raw, 'type_id'));
-        }
-
         return $this->typeIds;
     }
 
@@ -281,8 +268,10 @@ class Resultset
      */
     public function sort(Sort $sort)
     {
-        $sorter        = new Sorter($this->config, $sort->getDirection(), $this->persons);
-        $this->results = $sorter->sort($this->results);
+        $sorter = new Sorter($this->config, $sort->getDirection(), $this->persons);
+        $sorter->sort($this);
+
+        $this->preparePriceTypeText();
 
         return $this;
     }
@@ -295,7 +284,7 @@ class Resultset
     public function paginate($page, $limit)
     {
         if (null === $this->paginator) {
-            $this->paginator = new Paginator($this->results, $page, $limit);
+            $this->paginator = new Paginator($this, $page, $limit);
         }
 
         return $this->paginator;
@@ -322,53 +311,13 @@ class Resultset
     }
 
     /**
-     * @param integer $groupId
+     * @param string $groupId
      *
-     * @return array|null
+     * @return array
      */
     public function getCheapestRow($groupId)
     {
-        return (isset($this->cheapest[$groupId]) ? $this->types[$this->cheapest[$groupId]] : null);
-    }
-
-    /**
-     * @return void
-     */
-    public function prepareCheapestRows()
-    {
-        foreach ($this->prices as $groupId => $prices) {
-
-            $min = 0;
-
-            if (count($prices) > 0) {
-                $min = min($prices);
-            }
-
-            foreach ($prices as $typeId => $price) {
-
-                if ($min === $price) {
-                    $this->cheapest[$groupId] = $typeId;
-                }
-            }
-        }
-    }
-
-    /**
-     * @return void
-     */
-    public function prepareTypeCount()
-    {
-        foreach ($this->results as $groupId => $rows) {
-
-            $count = count($rows);
-            $count = ($count > 1 ? ($count - 1) : $count);
-
-            foreach ($rows as $key => $row) {
-
-                $this->results[$groupId][$key]['total_types'] = $count;
-                $this->types[$row['type_id']]['total_types'] = $count;
-            }
-        }
+        return $this->cheapest[$groupId];
     }
 
     /**
@@ -376,19 +325,16 @@ class Resultset
      */
     public function preparePriceTypeText()
     {
-        foreach ($this->results as $groupId => $rows) {
+        foreach ($this->results as $groupId => &$rows) {
 
-            $cheapestId = $this->cheapest[$groupId];
+            foreach ($rows as $key => &$row) {
 
-            foreach ($rows as $key => $row) {
+                if ($row['type_id'] === $this->cheapest[$groupId]['type_id']) {
 
-                if ($row['type_id'] === $cheapestId) {
-
-                    $priceTextType = new PriceTextType($this->results[$groupId][$key], $this->weekend, $this->persons, $this->resale);
+                    $priceTextType = new PriceTextType($row, $this->weekend, $this->persons, $this->resale);
                     $priceText     = $priceTextType->get();
 
-                    $this->results[$groupId][$key]['price_text_type'] = $priceText;
-                    $this->types[$row['type_id']]['price_text_type']  = $priceText;
+                    $row['price_text_type'] = $priceText;
                 }
             }
         }

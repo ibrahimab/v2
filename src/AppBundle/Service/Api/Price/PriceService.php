@@ -1,9 +1,10 @@
 <?php
 namespace AppBundle\Service\Api\Price;
 
-use       AppBundle\Concern\SeasonConcern;
-use       AppBundle\Service\Api\Legacy\AdditionalCosts;
-use       AppBundle\Service\Api\Legacy\StartingPrice;
+use AppBundle\Concern\SeasonConcern;
+use AppBundle\Service\Api\Legacy\AdditionalCosts;
+use AppBundle\Service\Api\Legacy\StartingPrice;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * This is the PriceService, with this service you can select prices
@@ -105,6 +106,19 @@ class PriceService
         $this->additionCache               = [];
         $this->additionalCostsSeasonId     = null;
         $this->startingPrice               = null;
+    }
+
+    /**
+     * This can only be called once per request!
+     *
+     * @param Request $request
+     *
+     * @return Params
+     */
+    public function createParamsFromRequest(Request $request)
+    {
+        $factory = new PsrFactory();
+        return new Params($factory->createRequest($request));
     }
 
     /**

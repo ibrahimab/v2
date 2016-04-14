@@ -55,12 +55,12 @@ class Paginator implements \Iterator, \Countable
     /**
      * Constructor
      *
-     * @param array   $results
-     * @param integer $limit
+     * @param Resultset $resultset
+     * @param integer   $limit
      */
-    public function __construct($results, $page, $limit = 10)
+    public function __construct(Resultset $resultset, $page, $limit = 10)
     {
-        $this->results      = array_values($results);
+        $this->results      = array_values($resultset->results);
         $this->position     = 0;
         $this->limit        = $limit;
         $this->offset       = 0;

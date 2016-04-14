@@ -1,5 +1,5 @@
 <?php
-namespace AppBundle\Service\Api\Search\Repository;
+namespace AppBundle\Service\Api\PricesAndOffers\Repository;
 
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
@@ -8,7 +8,9 @@ namespace AppBundle\Service\Api\Search\Repository;
 interface OfferRepositoryInterface
 {
     /**
+     * @param array|null $typeIds
+     *
      * @return array
      */
-    public function getOffers();
+    public function getOffers($typeIds = null);
 }

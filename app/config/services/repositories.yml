@@ -136,17 +136,17 @@ services:
         arguments: [AppBundle\Document\User\User]
         parent:    app.repository.odm
 
+    app.repository.prices_and_offers.price:
+        class:     AppBundle\Service\Api\PricesAndOffers\Repository\PriceRepository
+        arguments: ["@doctrine.dbal.default_connection", "@app.concern.website", "@app.concern.season"]
+
+    app.repository.prices_and_offers.offer:
+        class:     AppBundle\Service\Api\PricesAndOffers\Repository\OfferRepository
+        arguments: ["@doctrine.dbal.default_connection"]
+
     app.repository.search:
         class:     AppBundle\Service\Api\Search\Repository\Repository
         arguments: ["@doctrine.dbal.default_connection", "@app.concern.locale", "@app.concern.website", "@app.concern.season", "%app%"]
-
-    app.repository.search.price:
-        class:     AppBundle\Service\Api\Search\Repository\PriceRepository
-        arguments: ["@doctrine.dbal.default_connection", "@app.concern.locale", "@app.concern.website", "@app.concern.season"]
-
-    app.repository.search.offer:
-        class:     AppBundle\Service\Api\Search\Repository\OfferRepository
-        arguments: ["@doctrine.dbal.default_connection"]
 
     app.repository.autocomplete:
         class:     AppBundle\Document\Autocomplete\AutocompleteRepository

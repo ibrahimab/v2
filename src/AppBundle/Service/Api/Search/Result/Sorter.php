@@ -68,42 +68,75 @@ class Sorter
     }
 
     /**
-     * @param array $raw
+     * @param Resultset $resultset
      *
      * @return array
      */
-            // only remove main result from type table
-            // if type table has more than 1 result
-            // if (count($results[$groupId]) > 1) {
-            //     unset($results[$groupId][$mainRow['type_key']]);
-            // }
-    public function sort($raw)
+    public function sort(Resultset $resultset)
     {
-        $results = [];
+        $prices   = [];
+        $cheapest = [];
         $sortable = [];
-        $grouped = [];
+        $grouped  = [];
 
-        foreach ($raw as $rows) {
+        foreach ($resultset->results as $row) {
 
-            foreach ($rows as $row) {
+            $row['type_key'] = $this->generateTypeKey($row);
+            $row['accommodation_key'] = $this->generateAccommodationKey($row);
 
-                $row['type_key'] = $this->generateTypeKey($row);
-                $row['accommodation_key'] = $this->generateAccommodationKey($row);
-
-                $sortable[$row['type_key']] = $row['group_id'];
-                $grouped[$row['group_id']][$row['accommodation_key']] = $row;
+            if ($row['price'] > 0) {
+                $prices[$row['group_id']][$row['type_id']] = $row['price'];
             }
+
+            $sortable[$row['type_key']] = $row['group_id'];
+            $grouped[$row['group_id']][$row['accommodation_key']] = $row;
         }
 
         ksort($sortable);
 
+        // clear old results to reduce memory
+        $resultset->results = [];
+
+        // lookup table, type_id to accommodation_key
+        $lookup = [];
+
         foreach ($sortable as $typeKey => $groupId) {
 
             ksort($grouped[$groupId]);
-            $results[$groupId] = $grouped[$groupId];
+
+            // assigning results
+            $resultset->results[$groupId] = $grouped[$groupId];
+
+            // total types count is always without the big one,
+            // except if the big one is the only one
+            $total = count($resultset->results[$groupId]);
+            $total = ($total === 1 ? $total : ($total - 1));
+
+            foreach ($resultset->results[$groupId] as &$row) {
+
+                $row['total_types'] = $total;
+
+                if (!isset($resultset->cheapest[$groupId])) {
+
+                    // defaulting cheapest to first row
+                    $resultset->cheapest[$groupId] = &$row;
+                }
+
+                $lookup[$row['type_id']] = &$row;
+            }
         }
 
-        return $results;
+        foreach ($prices as $groupId => $groupPrices) {
+
+            $min = min($groupPrices);
+
+            foreach ($groupPrices as $typeId => $price) {
+
+                if ($min === $price && $price > 0) {
+                    $resultset->cheapest[$groupId] = &$lookup[$typeId];
+                }
+            }
+        }
     }
 
     /**

@@ -86,13 +86,13 @@ class TypesController extends Controller
                 $typeIds[] = $accommodationType->getId();
             }
 
-            $startingPrice        = $this->get('app.api.legacy.starting_price');
-            $prices               = $startingPrice->getStartingPrices($typeIds);
+            $pricesAndOffersService = $this->get('app.api.prices_and_offers');
+            $params = $pricesAndOffersService->createParamsFromRequest($request);
 
-            $priceService         = $this->get('app.api.price');
-            $offers               = $priceService->offers($typeIds);
+            $offers = $pricesAndOffersService->getOffers($typeIds);
+            $prices = $pricesAndOffersService->getPrices($typeIds, $params);
 
-            $userService          = $this->get('app.api.user');
+            $userService = $this->get('app.api.user');
             $userService->addViewedAccommodation($type);
 
             $seasonService        = $this->get('app.api.season');
@@ -106,8 +106,8 @@ class TypesController extends Controller
             $optionService        = $this->get('app.api.option');
             $options              = $optionService->options($type->getAccommodationId(), $seasonId, $request->query->get('w', null));
 
-            $date                 = $request->query->get('w', null);
-            $numberOfPersons      = $request->query->get('pe', null);
+            $date                 = $params->getWeekend() ?: null;
+            $numberOfPersons      = $params->getPersons() ?: null;
 
             $surveyDataOtherTypes = array_column($surveyService->statsByTypes($typeIds), null, 'typeId');
 

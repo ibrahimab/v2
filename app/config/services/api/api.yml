@@ -96,14 +96,19 @@ services:
             - [setSeason, ["@app.concern.season"]]
             - [setAdditionalCostsFetcher, ["@app.api.legacy.additional_costs"]]
 
+    app.api.prices_and_offers:
+        class:     AppBundle\Service\Api\PricesAndOffers\PricesAndOffersService
+        arguments: ["@app.repository.prices_and_offers.price", "@app.repository.prices_and_offers.offer", "@app.api.legacy.starting_price"]
+
     app.api.search:
         class:     AppBundle\Service\Api\Search\SearchService
         arguments: ["@app.repository.search", "@app.concern.locale", "%app%"]
         calls:
-            - [setSurveyService, ["@app.api.booking.survey"]]
-            - [setStartingPrice, ["@app.api.legacy.starting_price"]]
-            - [setPriceRepository, ["@app.repository.search.price"]]
-            - [setOfferRepository, ["@app.repository.search.offer"]]
+            - [setSurveyService,   ["@app.api.booking.survey"]]
+            - [setStartingPrice,   ["@app.api.legacy.starting_price"]]
+            - [setPriceRepository, ["@app.repository.prices_and_offers.price"]]
+            - [setOfferRepository, ["@app.repository.prices_and_offers.offer"]]
+            - [setWebsiteConcern,  ["@app.concern.website"]]
 
     app.api.search.tokenizer:
         class: AppBundle\Service\Api\Search\Filter\Tokenizer

@@ -1,5 +1,5 @@
 <?php
-namespace AppBundle\Service\Api\Search\Repository;
+namespace AppBundle\Service\Api\PricesAndOffers\Repository;
 
 use Doctrine\DBAL\Connection;
 use PDO;
@@ -25,9 +25,11 @@ class OfferRepository implements OfferRepositoryInterface
         $this->db      = $db;
     }
     /**
+     * @param array|null $typeIds
+     *
      * @return array
      */
-    public function getOffers()
+    public function getOffers($typeIds = null)
     {
         $query = 'SELECT DISTINCT type_id, seizoen_id AS season_id, aanbiedingskleur AS discount_color,
                                   korting_toon_als_aanbieding AS show_as_discount, toonexactekorting AS show_exact_discount,
@@ -39,8 +41,13 @@ class OfferRepository implements OfferRepositoryInterface
                   AND    (
                       bruto   > 0 OR
                       c_bruto > 0
-                  )
-                  ORDER BY week DESC';
+                  )';
+
+        if (is_array($typeIds)) {
+            $query .= ' AND type_id IN (' . implode(', ', $typeIds) . ')';
+        }
+
+        $query .= ' ORDER BY week DESC';
 
         $statement = $this->db->prepare($query);
         $statement->execute();
