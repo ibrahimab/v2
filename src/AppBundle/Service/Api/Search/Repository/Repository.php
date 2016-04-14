@@ -662,7 +662,7 @@ class Repository implements RepositoryInterface
                 $where = [
 
                     'sql'        => 'FIND_IN_SET(:facility_catering, t.kenmerken) > 0 OR
-                                     FIND_IN_SET(:filter_facility_catering, a.kenmerken) > 0',
+                                     FIND_IN_SET(:facility_catering, a.kenmerken) > 0',
 
                     'parameters' => [['identifier' => 'facility_catering',
                                       'value'      => 1,
