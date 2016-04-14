@@ -92,9 +92,7 @@ class FacetService
      */
     public function calculate()
     {
-        $results = $this->resultset->results;
-
-        foreach ($results as $result) {
+        foreach ($this->resultset->results as $result) {
             $this->result($result);
         }
     }
@@ -112,7 +110,7 @@ class FacetService
     /**
      * @param array $row
      */
-    public function filters($row)
+    public function filters(&$row)
     {
         foreach ($this->filters as $filter => $values) {
             $this->filter($row, $filter, $values);
@@ -124,7 +122,7 @@ class FacetService
      * @param integer $filter
      * @param integer $value
      */
-    public function filter($row, $filter, $values)
+    public function filter(&$row, $filter, $values)
     {
         foreach ($values as $value) {
 
@@ -261,14 +259,11 @@ class FacetService
      */
     public function facility($row, $filter, $value)
     {
-        $accommodationFeatures = $this->extractFeatures($row['accommodation_features']);
-        $typeFeatures          = $this->extractFeatures($row['type_features']);
-
         switch ($value) {
 
             case FilterManager::FILTER_FACILITY_CATERING:
 
-                if (in_array(1, $accommodationFeatures) || in_array(1, $typeFeatures)) {
+                if (in_array(1, $row['accommodation_features']) || in_array(1, $row['type_features'])) {
                     $this->increment($filter, $value);
                 }
 
@@ -276,7 +271,7 @@ class FacetService
 
             case FilterManager::FILTER_FACILITY_INTERNET_WIFI:
 
-                if (in_array(21, $accommodationFeatures) || in_array(23, $accommodationFeatures) || in_array(20, $typeFeatures) || in_array(22, $typeFeatures)) {
+                if (in_array(21, $row['accommodation_features']) || in_array(23, $row['accommodation_features']) || in_array(20, $row['type_features']) || in_array(22, $row['type_features'])) {
                     $this->increment($filter, $value);
                 }
 
@@ -284,7 +279,7 @@ class FacetService
 
             case FilterManager::FILTER_FACILITY_SWIMMING_POOL:
 
-                if (in_array(4, $accommodationFeatures) || in_array(11, $accommodationFeatures) || in_array(4, $typeFeatures)) {
+                if (in_array(4, $row['accommodation_features']) || in_array(11, $row['accommodation_features']) || in_array(4, $row['type_features'])) {
                     $this->increment($filter, $value);
                 }
 
@@ -292,7 +287,7 @@ class FacetService
 
             case FilterManager::FILTER_FACILITY_SAUNA:
 
-                if (in_array(3, $accommodationFeatures) || in_array(10, $accommodationFeatures) || in_array(3, $typeFeatures)) {
+                if (in_array(3, $row['accommodation_features']) || in_array(10, $row['accommodation_features']) || in_array(3, $row['type_features'])) {
                     $this->increment($filter, $value);
                 }
 
@@ -300,7 +295,7 @@ class FacetService
 
             case FilterManager::FILTER_FACILITY_PRIVATE_SAUNA:
 
-                if (in_array(3, $accommodationFeatures) || in_array(3, $typeFeatures)) {
+                if (in_array(3, $row['accommodation_features']) || in_array(3, $row['type_features'])) {
                     $this->increment($filter, $value);
                 }
 
@@ -308,7 +303,7 @@ class FacetService
 
             case FilterManager::FILTER_FACILITY_PETS_ALLOWED:
 
-                if (in_array(13, $accommodationFeatures) || in_array(11, $typeFeatures)) {
+                if (in_array(13, $row['accommodation_features']) || in_array(11, $row['type_features'])) {
                     $this->increment($filter, $value);
                 }
 
@@ -316,7 +311,7 @@ class FacetService
 
             case FilterManager::FILTER_FACILITY_FIREPLACE:
 
-                if (in_array(12, $accommodationFeatures) || in_array(10, $typeFeatures)) {
+                if (in_array(12, $row['accommodation_features']) || in_array(10, $row['type_features'])) {
                     $this->increment($filter, $value);
                 }
 
@@ -331,15 +326,11 @@ class FacetService
      */
     public function theme($row, $filter, $value)
     {
-        $accommodationFeatures = $this->extractFeatures($row['accommodation_features']);
-        $typeFeatures          = $this->extractFeatures($row['type_features']);
-        $placeFeatures         = $this->extractFeatures($row['place_features']);
-
         switch ($value) {
 
             case FilterManager::FILTER_THEME_KIDS:
 
-                if (in_array(5, $accommodationFeatures) || in_array(5, $typeFeatures)) {
+                if (in_array(5, $row['accommodation_features']) || in_array(5, $row['type_features'])) {
                     $this->increment($filter, $value);
                 }
 
@@ -347,7 +338,7 @@ class FacetService
 
             case FilterManager::FILTER_THEME_CHARMING_PLACES:
 
-                if (in_array(13, $placeFeatures)) {
+                if (in_array(13, $row['place_features'])) {
                     $this->increment($filter, $value);
                 }
 
@@ -355,7 +346,7 @@ class FacetService
 
             case FilterManager::FILTER_THEME_WINTER_WELLNESS:
 
-                if (in_array(9, $accommodationFeatures) || in_array(9, $typeFeatures)) {
+                if (in_array(9, $row['accommodation_features']) || in_array(9, $row['type_features'])) {
                     $this->increment($filter, $value);
                 }
 
@@ -363,7 +354,7 @@ class FacetService
 
             case FilterManager::FILTER_THEME_SUPER_SKI_STATIONS:
 
-                if (in_array(14, $placeFeatures)) {
+                if (in_array(14, $row['place_features'])) {
                     $this->increment($filter, $value);
                 }
 
@@ -371,7 +362,7 @@ class FacetService
 
             case FilterManager::FILTER_THEME_10_FOR_APRES_SKI:
 
-                if (in_array(6, $placeFeatures)) {
+                if (in_array(6, $row['place_features'])) {
                     $this->increment($filter, $value);
                 }
 
@@ -391,15 +382,5 @@ class FacetService
             FilterManager::FILTER_FACILITY => [FilterManager::FILTER_FACILITY_CATERING, FilterManager::FILTER_FACILITY_INTERNET_WIFI, FilterManager::FILTER_FACILITY_SWIMMING_POOL, FilterManager::FILTER_FACILITY_SAUNA, FilterManager::FILTER_FACILITY_PRIVATE_SAUNA, FilterManager::FILTER_FACILITY_PETS_ALLOWED, FilterManager::FILTER_FACILITY_FIREPLACE],
             FilterManager::FILTER_THEME    => [FilterManager::FILTER_THEME_KIDS, FilterManager::FILTER_THEME_CHARMING_PLACES, FilterManager::FILTER_THEME_10_FOR_APRES_SKI, FilterManager::FILTER_THEME_SUPER_SKI_STATIONS, FilterManager::FILTER_THEME_WINTER_WELLNESS],
         ];
-    }
-
-    /**
-     * @param string $features
-     *
-     * @return array
-     */
-    private function extractFeatures($features)
-    {
-        return array_map('intval', explode(',', $features));
     }
 }
