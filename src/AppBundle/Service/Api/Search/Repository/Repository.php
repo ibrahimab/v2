@@ -380,7 +380,7 @@ class Repository implements RepositoryInterface
                 $clause = ['sql'        => 'weekendski = :weekendski',
                            'parameters' => [['identifier' => 'weekendski',
                                               'value'      => $where->getValue(),
-                                              'type'       => PDO::PARAM_STR]]];
+                                              'type'       => PDO::PARAM_INT]]];
 
                 break;
 
@@ -470,15 +470,15 @@ class Repository implements RepositoryInterface
 
             case Where::WHERE_FREESEARCH:
 
-                $clause = ['sql'        => $this->getLocaleField('t.naam') . ' LIKE freesearch_1 OR ' .
-                                           $this->getLocaleField('a.naam') . ' LIKE freesearch_2',
+                $clause = ['sql'        => $this->getLocaleField('t.naam') . ' LIKE :freesearch_1 OR ' .
+                                           $this->getLocaleField('a.naam') . ' LIKE :freesearch_2',
 
                            'parameters' => [['identifier' => 'freesearch_1',
-                                             'value'      => "'%{$where->getValue()}%'",
+                                             'value'      => '%' . $where->getValue() . '%',
                                              'type'       => PDO::PARAM_STR],
 
                                             ['identifier' => 'freesearch_2',
-                                             'value'      => "'%{$where->getValue()}%'",
+                                             'value'      => '%' . $where->getValue() . '%',
                                              'type'       => PDO::PARAM_STR]]];
 
                 break;

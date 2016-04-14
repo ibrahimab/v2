@@ -330,6 +330,10 @@ class SearchService
             $builder->addClause(new Where(Where::WHERE_WEEKEND, $weekend));
         }
 
+        if (false !== ($freesearch = $params->getFreesearch())) {
+            $builder->addClause(new Where(Where::WHERE_FREESEARCH, $freesearch));
+        }
+
         return $builder;
     }
 }
