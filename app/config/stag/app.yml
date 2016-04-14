@@ -59,7 +59,7 @@ parameters:
             api:
                 search:
                     limit: 50
-                    sort: 1
+                    sort: 3
                     distance_by_slope: 50
                 highlight:
                     limit: 6
