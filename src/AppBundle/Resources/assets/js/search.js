@@ -55,7 +55,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 body.on('click', '[data-role="remove-bathrooms-filter"]', ns.Search.events.removeCustom.bathrooms);
                 body.on('click', '[data-role="remove-persons-filter"]', ns.Search.events.removeCustom.persons);
                 body.on('click', '[data-role="remove-freesearch-filter"]', ns.Search.events.removeCustom.freesearch);
-                body.on('click', '[data-role="remove-weekend-filter"]', ns.Search.events.removeCustom.persons);
+                body.on('click', '[data-role="remove-weekend-filter"]', ns.Search.events.removeCustom.weekend);
 
                 body.on('change', '[data-role="change-bedrooms"]', ns.Search.events.formChanges.bedrooms);
                 body.on('change', '[data-role="change-bathrooms"]', ns.Search.events.formChanges.bathrooms);
