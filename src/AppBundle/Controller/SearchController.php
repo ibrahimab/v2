@@ -56,15 +56,16 @@ class SearchController extends Controller
             return $this->redirectToRoute('search_' . $locale, $saved, 301);
         }
 
-        $this->saveToSession($request);
+        $searchService = $this->get('app.api.search');
+        $params        = $searchService->createParamsFromRequest($request);
+
+        $this->saveToSession($params);
 
         $start                  = microtime(true);
         $surveyService          = $this->get('app.api.booking.survey');
         $seasonService          = $this->get('app.api.season');
-        $searchService          = $this->get('app.api.search');
         $generalSettingsService = $this->get('app.api.general.settings');
 
-        $params                 = $searchService->createParamsFromRequest($request);
         $resultset              = $searchService->search($params);
         $paginator              = $searchService->paginate($resultset, $params);
         $destination            = $searchService->hasDestination($params);
@@ -253,67 +254,41 @@ class SearchController extends Controller
     }
 
     /**
-     * @param array $params
+     * @param Params $params
      *
      * @return void
      */
-    public function saveToSession(Request $request)
+    public function saveToSession(Params $params)
     {
         $session = $this->get('session');
         $save    = [];
 
-        if (count($countries = $request->query->get('c', [])) > 0) {
+        if (false !== ($countries = $params->getCountries())) {
             $save['c'] = $countries;
         }
 
-        if (count($regions = $request->query->get('r', [])) > 0) {
+        if (false !== ($regions = $params->getRegions())) {
             $save['r'] = $regions;
         }
 
-        if (count($places = $request->query->get('pl', [])) > 0) {
+        if (false !== ($places = $params->getPlaces())) {
             $save['pl'] = $places;
         }
 
-        if (count($accommodations = $request->query->get('a', [])) > 0) {
-            $save['a'] = $accommodations;
-        }
-
-        if (count($types = $request->query->get('t', [])) > 0) {
-            $save['t'] = $types;
-        }
-
-        if (null !== ($bedrooms = $request->query->get('be', null)) && $bedrooms > 0) {
+        if (false !== ($bedrooms = $params->getBedrooms())) {
             $save['be'] = $bedrooms;
         }
 
-        if (null !== ($bathrooms = $request->query->get('ba', null)) && $bathrooms > 0) {
-            $save['ba'] = $bathrooms;
-        }
-
-        if (null !== ($weekend = $request->query->get('w', null)) && $weekend > 0) {
+        if (false !== ($weekend = $params->getWeekend())) {
             $save['w'] = $weekend;
         }
 
-        if (null !== ($persons = $request->query->get('pe', null)) && $persons > 0) {
+        if (false !== ($persons = $params->getPersons())) {
             $save['pe'] = $persons;
         }
 
-        if (null !== ($freesearch = $request->query->get('fs', null)) && $freesearch != '') {
+        if (false !== ($freesearch = $params->getFreesearch())) {
             $save['fs'] = $freesearch;
-        }
-
-        if (null !== ($sort = $request->query->get('s', null))) {
-            $save['s'] = $sort;
-        }
-
-        if (null !== ($page = $request->query->get('p', null))) {
-
-            $save['p'] = $request->query->getInt('p', 0);
-            $save['p'] = ($save['p'] === 0 ? $save['p'] : ($save['p'] - 1));
-        }
-
-        if (count($filters = $request->query->get('f', [])) > 0) {
-            $save['f'] = $filters;
         }
 
         $session->set('search', $save);
