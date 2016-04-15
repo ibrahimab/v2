@@ -127,8 +127,9 @@
 {% if filters_active == true %}
     {% set save_search_label = 'save-search'|trans %}
     {% set save_search_confirm_msg = 'save-search-confirm-msg'|trans %}
+    {% set save_search_error_msg   = 'save-search-error-msg'|trans %}
     <div class="action-buttons">
-        <a href="{{ path('save_search', {f: app.request.query.get('f', {})}) }}" data-confirm-msg="{{ save_search_confirm_msg }}" data-role="save-search"><div class="save-button">{{ save_search_label }} <i class="fi-plus"></i></div></a>
+        <a href="{{ path('save_search', {f: app.request.query.get('f', {})}) }}" data-confirm-msg="{{ save_search_confirm_msg }}" data-error-msg="{{ save_search_error_msg }}" data-role="save-search"><div class="save-button">{{ save_search_label }} <i class="fi-plus"></i></div></a>
         <a href="#" data-role="remove-filters"><div>Wis volledige zoekopdracht <i class="fi-trash"></i></div></a>
     </div>
 {% endif %}

@@ -5,6 +5,7 @@ use AppBundle\Annotation\Breadcrumb;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Jenssegers\Date\Date;
 
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
@@ -21,17 +22,25 @@ class SavedSearchesController extends Controller
      */
     public function show()
     {
-        $searches = $this->container->get('app.api.user')->user()->getSearches();
+        $searches = $this->get('app.api.user')->user()->getSearches();
+        $locale   = $this->get('app.concern.locale')->get();
         $saved    = [];
+
+        $weekend  = new Date();
+        $weekend->setLocale($locale);
 
         foreach ($searches as $search) {
 
             $hasSearch = false;
 
-            foreach ($search['search'] as $item) {
+            $search['search_params'] = [];
+
+            foreach ($search['search'] as $key => $item) {
 
                 if ($item !== false) {
+
                     $hasSearch = true;
+                    $search['search_params'][$key] = $item;
                 }
             }
 
@@ -40,11 +49,15 @@ class SavedSearchesController extends Controller
             }
 
             if ($search['search']['w']) {
-                $search['search']['w'] = strftime('%e %B %Y', $search['search']['w']);
+
+                $weekend->setTimestamp($search['search']['w']);
+                $search['search']['w'] = $weekend->format('d F Y');
             }
 
-            $saved[] = $search;
+            $saved[$search['created_at']->toDateTime()->getTimestamp()] = $search;
         }
+
+        krsort($saved);
 
         return $this->render('saved_searches/show.html.twig', [
             'saved_searches' => $saved,

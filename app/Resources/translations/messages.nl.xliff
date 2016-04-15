@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2016-04-12T15:48:28Z" source-language="en" target-language="nl" datatype="plaintext" original="not.available">
+  <file date="2016-04-15T18:18:46Z" source-language="en" target-language="nl" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -14,17 +14,22 @@
       <trans-unit id="d9df90d8002f6aa1b3d7d2501de9221ce5a84207" resname="Land">
         <source>Land</source>
         <target>Land</target>
-        <jms:reference-file line="55">views/pages/searches.html.twig</jms:reference-file>
+        <jms:reference-file line="74">views/saved_searches/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="db22d23e1b18211ab8cadfebb9f88c9671875528" resname="Plaats">
         <source>Plaats</source>
         <target>Plaats</target>
-        <jms:reference-file line="75">views/pages/searches.html.twig</jms:reference-file>
+        <jms:reference-file line="94">views/saved_searches/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="2f2f652c069ea257f6452b21610855d8f436aea6" resname="Skigebied">
         <source>Skigebied</source>
         <target>Skigebied</target>
-        <jms:reference-file line="65">views/pages/searches.html.twig</jms:reference-file>
+        <jms:reference-file line="84">views/saved_searches/show.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="0a4171b127aba3ac65f2c6e5253418d6728480c6" resname="Weekend">
+        <source>Weekend</source>
+        <target state="new">Weekend</target>
+        <jms:reference-file line="51">views/saved_searches/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="b95e380b7d837c6e0ed679c3d5ef3af45410bedb" resname="Wintersport">
         <source>Wintersport</source>
@@ -102,9 +107,9 @@
       <trans-unit id="7ecf7f9e0dce226235a7b6ab410a3c8d3bd3683d" resname="bathrooms">
         <source>bathrooms</source>
         <target>Badkamers</target>
-        <jms:reference-file line="48">views/pages/searches.html.twig</jms:reference-file>
         <jms:reference-file line="2">search/form/input.html.twig</jms:reference-file>
         <jms:reference-file line="14">partials/search/result-types-rows.html.twig</jms:reference-file>
+        <jms:reference-file line="67">views/saved_searches/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="009e058c883c683e1330228851ecafe3265c8f51" resname="bedroom">
         <source>bedroom</source>
@@ -114,9 +119,9 @@
       <trans-unit id="935296d9eea533f89ab28d7ea89b30e1f61b477a" resname="bedrooms">
         <source>bedrooms</source>
         <target>Slaapkamers</target>
-        <jms:reference-file line="44">views/pages/searches.html.twig</jms:reference-file>
         <jms:reference-file line="3">search/form/input.html.twig</jms:reference-file>
         <jms:reference-file line="13">partials/search/result-types-rows.html.twig</jms:reference-file>
+        <jms:reference-file line="63">views/saved_searches/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="169254c45fa4ed7ea11c00541ffb17b0cde39625" resname="blog">
         <source>blog</source>
@@ -178,7 +183,7 @@
       <trans-unit id="7d8bcf929412b8a9a226c159b74691610cb6a1bc" resname="checkout-virtual-tour">
         <source>checkout-virtual-tour</source>
         <target><![CDATA[Bekijk ook een virtuele rondgang van deze accommodatie >]]></target>
-        <jms:reference-file line="269">views/types/show.html.twig</jms:reference-file>
+        <jms:reference-file line="273">views/types/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="7657008acfd9e0aa8ce065cb4a066a7220b23919" resname="child-until-4-year-free">
         <source>child-until-4-year-free</source>
@@ -538,7 +543,7 @@
       </trans-unit>
       <trans-unit id="f161d271f21523e545e56c843cc6dd28ede1e129" resname="form.price_calculator.step_two.no">
         <source>form.price_calculator.step_two.no</source>
-        <target state="new">form.price_calculator.step_two.no</target>
+        <target>Nee</target>
         <jms:reference-file line="35">Form/PriceCalculator/StepTwoForm.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="3eb79cdcd84e6491bcb4fe4c4e9370b0f36a01f7" resname="form.price_calculator.step_two.submit">
@@ -548,7 +553,7 @@
       </trans-unit>
       <trans-unit id="10f929781bfb145af835c9b42f1304805f1b69ef" resname="form.price_calculator.step_two.yes">
         <source>form.price_calculator.step_two.yes</source>
-        <target state="new">form.price_calculator.step_two.yes</target>
+        <target>Ja</target>
         <jms:reference-file line="36">Form/PriceCalculator/StepTwoForm.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="23e591e8c36dda987970603ad0fdd031b7dff9f9" resname="france">
@@ -558,6 +563,11 @@
         <jms:reference-file line="1">views/partials/countries.html.twig</jms:reference-file>
         <jms:reference-file line="76">views/partials/footer.html.twig</jms:reference-file>
         <jms:reference-file line="51">views/sitemap/index.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f75b3b92dcb1582b1233134a3309f4c2623372d6" resname="freesearch">
+        <source>freesearch</source>
+        <target>Vrije zoekopdracht</target>
+        <jms:reference-file line="59">views/saved_searches/show.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="2d9f00ce031fa21d9e978534c1c88150e4c6fe01" resname="general.or">
         <source>general.or</source>
@@ -729,7 +739,7 @@
         <target>persoon</target>
         <jms:reference-file line="29">search/form/input.html.twig</jms:reference-file>
         <jms:reference-file line="99">AppBundle/Service/AccommodationService.php</jms:reference-file>
-        <jms:reference-file line="620">AppBundle/Service/AccommodationService.php</jms:reference-file>
+        <jms:reference-file line="619">AppBundle/Service/AccommodationService.php</jms:reference-file>
         <jms:reference-file line="287">Service/PriceCalculator/CalculatorService.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="123349a8c97443b33169a4de5e7eb0e2005c7f80" resname="persons">
@@ -737,9 +747,10 @@
         <target>Personen</target>
         <jms:reference-file line="1">search/form/input.html.twig</jms:reference-file>
         <jms:reference-file line="12">partials/search/result-types-rows.html.twig</jms:reference-file>
+        <jms:reference-file line="55">views/saved_searches/show.html.twig</jms:reference-file>
         <jms:reference-file line="100">AppBundle/Service/AccommodationService.php</jms:reference-file>
-        <jms:reference-file line="133">AppBundle/Service/AccommodationService.php</jms:reference-file>
-        <jms:reference-file line="621">AppBundle/Service/AccommodationService.php</jms:reference-file>
+        <jms:reference-file line="132">AppBundle/Service/AccommodationService.php</jms:reference-file>
+        <jms:reference-file line="620">AppBundle/Service/AccommodationService.php</jms:reference-file>
         <jms:reference-file line="288">Service/PriceCalculator/CalculatorService.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="c7956d3166e20ad1149f47485686a1a5a338c51f" resname="phonenumber">
@@ -815,6 +826,11 @@
         <source>save-search-confirm-msg</source>
         <target>Zoekopdracht opgeslagen</target>
         <jms:reference-file line="129">partials/search/filters.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="0f1699bcfd322ae86af987f3ab31febe3b0ccec7" resname="save-search-error-msg">
+        <source>save-search-error-msg</source>
+        <target>Zoekopdracht niet opgeslagen</target>
+        <jms:reference-file line="130">partials/search/filters.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="b57bd12c572424ecee874bf197e72d39f34d94af" resname="saved-title">
         <source>saved-title</source>

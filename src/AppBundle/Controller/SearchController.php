@@ -155,14 +155,22 @@ class SearchController extends Controller
         $fs            = $params->getFreesearch();
 
         if (null !== $user) {
-            $userService->saveSearch(['f' => $f, 'be' => $be, 'ba' => $ba, 'c' => $c, 'r' => $r, 'pl' => $pl, 'a' => $a, 'w' => $w, 'pe' => $pe, 'fs' => $fs]);
+            $result = $userService->saveSearch(['f' => $f, 'be' => $be, 'ba' => $ba, 'c' => $c, 'r' => $r, 'pl' => $pl, 'a' => $a, 'w' => $w, 'pe' => $pe, 'fs' => $fs]);
         }
 
-        return new JsonResponse([
+        $success = [
 
             'type'    => 'success',
             'message' => 'Your search was successfully saved',
-        ]);
+        ];
+
+        $failure = [
+
+            'type'    => 'error',
+            'message' => 'Your search was not saved',
+        ];
+
+        return new JsonResponse((true === $result ? $success : $failure));
     }
 
     /**

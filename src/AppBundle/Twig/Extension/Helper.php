@@ -1,7 +1,8 @@
 <?php
 namespace AppBundle\Twig\Extension;
 
-use       AppBundle\Concern\WebsiteConcern;
+use AppBundle\Concern\WebsiteConcern;
+use Jenssegers\Date\Date;
 
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
@@ -40,5 +41,18 @@ trait Helper
     public function showSunnyCars()
     {
         return $this->websiteConcern->get() === WebsiteConcern::WEBSITE_CHALET_NL;
+    }
+
+    /**
+     * @param string $format
+     *
+     * @return string
+     */
+    public function formatDate(\DateTime $date, $format)
+    {
+        $date = new Date($date->getTimestamp());
+        $date->setLocale($this->localeConcern->get());
+
+        return $date->format($format);
     }
 }

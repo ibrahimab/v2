@@ -144,6 +144,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFilter('array_replace', [$this, 'replace']),
             new \Twig_SimpleFilter('tokenize', [$this, 'tokenize']),
             new \Twig_SimpleFilter('thumbnail', [$this, 'generateThumbnailPath']),
+            new \Twig_SimpleFilter('format_date', [$this, 'formatDate']),
         ];
     }
 

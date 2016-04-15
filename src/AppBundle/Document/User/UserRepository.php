@@ -60,7 +60,7 @@ class UserRepository extends DocumentRepository implements UserServiceRepository
             if ($savedSearch['search'] === $search) {
 
                 // search is already saved
-                return $user;
+                return false;
             }
         }
 
@@ -70,7 +70,7 @@ class UserRepository extends DocumentRepository implements UserServiceRepository
         $dm->persist($user);
         $dm->flush();
 
-        return $user;
+        return true;
     }
 
     /**

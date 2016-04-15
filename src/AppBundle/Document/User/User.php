@@ -1,9 +1,11 @@
 <?php
 namespace AppBundle\Document\User;
-use		  AppBundle\Service\Api\User\UserServiceDocumentInterface;
-use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
-use 	  Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use       JMS\Serializer\Annotation AS JMS;
+
+use	AppBundle\Service\Api\User\UserServiceDocumentInterface;
+use AppBundle\Service\Api\Type\TypeServiceEntityInterface;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use JMS\Serializer\Annotation AS JMS;
+use MongoDate;
 
 /**
  * UserDocument
@@ -272,7 +274,7 @@ class User implements UserServiceDocumentInterface
     {
         $documents = [];
         foreach ($searches as $search) {
-            $documents[] = ['_id' => new \MogoId(), 'search' => $search];
+            $documents[] = ['_id' => new \MogoId(), 'search' => $search, 'created_at' => new MongoDate()];
         }
 
         $this->searches = $documents;
@@ -283,7 +285,7 @@ class User implements UserServiceDocumentInterface
      */
     public function addSearch(Array $search)
     {
-        array_push($this->searches, ['_id' => new \MongoId(), 'search' => $search]);
+        array_push($this->searches, ['_id' => new \MongoId(), 'search' => $search, 'created_at' => new MongoDate()]);
     }
 
     /**

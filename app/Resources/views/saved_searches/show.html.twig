@@ -21,6 +21,7 @@
                             <thead>
                                 <tr>
                                     <th>Zoekopdrachten</th>
+                                    <th>Opgeslagen op</th>
                                     <th><a href="{{ path('clear_saved_searches') }}">Wis zoekopdrachten</a></th>
                                 </tr>
                             </thead>
@@ -97,8 +98,11 @@
                                         {% endif %}
 
                                     </td>
+                                    <td>
+                                        {{ searches['created_at'].toDateTime()|format_date('d F Y') }}
+                                    </td>
                                     <td class="valign-middle">
-                                        <a href="{{ locale_path('search', searches['search']) }}" class="button blank small radius">Zoekresultaten</a>
+                                        <a href="{{ locale_path('search', searches['search_params']) }}" class="button blank small radius">Zoekresultaten</a>
                                         <a href="{{ path('delete_saved_search', {id: searches['_id']}) }}" class="button blank small radius">Verwijder zoekopdracht</a>
                                     </td>
                                 </tr>

@@ -422,11 +422,22 @@ window.Chalet = (function(ns, jq, _, undefined) {
                     url: save.toString(),
                     success: function(data) {
 
-                        var count = jq('[data-role="searches-count"]');
-                        count.text(parseInt(count.text()) + 1);
+                        var result = data.type === 'success';
 
-                        // show confirm message
-                        save_button.find('div').html( save_button.data('confirm-msg') + ' <i class="fi-check"></i>' );
+                        if (true === result) {
+
+                            var count = jq('[data-role="searches-count"]');
+                            count.text(parseInt(count.text()) + 1);
+
+                            // show confirm message
+                            save_button.find('div').html( save_button.data('confirm-msg') + ' <i class="fi-check"></i>');
+
+                        } else {
+
+                            // show confirm message
+                            save_button.find('div').html( save_button.data('error-msg') + ' <i class="fi-x"></i>' );
+                        }
+
                         save_button.data('disabled', true).addClass('disabled');
                     }
                 });
