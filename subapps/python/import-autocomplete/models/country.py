@@ -11,7 +11,8 @@ that are searchable and imports it into autocomplete collection in MongoDB.
 @since      0.0.2
 """
 from base import Base
-import sys
+from slugify import slugify
+
 class Country(Base):
     """
     @var  AUTOCOMPLETE_TYPE: Autocomplete type to be used when inserting autocomplete data
@@ -72,11 +73,18 @@ class Country(Base):
                     'fr': row['name_fr']
                 },
                 'searchable': {
-                    
+
                     'nl': self.strip_accents(row['name_nl'].lower()) if isinstance(row['name_nl'], basestring) else row['name_nl'],
                     'en': self.strip_accents(row['name_en'].lower()) if isinstance(row['name_en'], basestring) else row['name_en'],
                     'de': self.strip_accents(row['name_de'].lower()) if isinstance(row['name_de'], basestring) else row['name_de'],
                     'fr': self.strip_accents(row['name_fr'].lower()) if isinstance(row['name_fr'], basestring) else row['name_fr']
+                },
+                'search_term': {
+
+                    'nl': slugify(row['name_nl']),
+                    'en': slugify(row['name_en']),
+                    'de': slugify(row['name_de']),
+                    'fr': slugify(row['name_fr'])
                 }
             })
 

@@ -69,7 +69,8 @@ class SearchController extends Controller
         $paginator              = $searchService->paginate($resultset, $params);
         $destination            = $searchService->hasDestination($params);
         $typeIds                = $searchService->extractTypeIds($resultset);
-        $accommodationNames     = $searchService->extractNames($resultset, $params->getAccommodations() ?: []);
+        $names                  = $searchService->extractNames($resultset, $params);
+        $accommodationNames     = $names['accommodations'];
 
         $this->setupJavascriptParameters($params);
 
@@ -86,8 +87,8 @@ class SearchController extends Controller
             'custom_filters' => [
 
                 'countries'      => $params->getCountries(),
-                'regions'        => $params->getRegions(),
-                'places'         => $params->getPlaces(),
+                'regions'        => ($params->getRegions() ? $names['regions'] : []),
+                'places'         => ($params->getPlaces() ? $names['places'] : []),
                 'accommodations' => $accommodationNames,
             ],
 

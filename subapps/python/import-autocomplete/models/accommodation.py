@@ -55,13 +55,16 @@ class Accommodation(Base):
 
         for row in self.data:
 
+            searchable = self.strip_accents(row['name'].lower()) if isinstance(row['name'], basestring) else row['name'];
+
             data.append({
 
                 'type': Accommodation.AUTOCOMPLETE_TYPE,
                 'type_id': row['id'],
                 'locales': None,
                 'name': row['name'],
-                'searchable': self.strip_accents(row['name'].lower()) if isinstance(row['name'], basestring) else row['name'],
+                'searchable': searchable,
+                'search_term': searchable,
                 'order': order
             })
 

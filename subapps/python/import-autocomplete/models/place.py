@@ -11,6 +11,8 @@ and imports it into the autocomplete collection.
 @since      0.0.2
 """
 from base import Base
+from slugify import slugify
+
 class Place(Base):
     """
     @var  AUTOCOMPLETE_TYPE: Autocomplete type to be used when inserting autocomplete data
@@ -70,11 +72,18 @@ class Place(Base):
                     'fr': row['name_fr']
                 },
                 'searchable': {
-                    
+
                     'nl': self.strip_accents(row['name_nl'].lower()) if isinstance(row['name_nl'], basestring) else row['name_nl'],
                     'en': self.strip_accents(row['name_en'].lower()) if isinstance(row['name_en'], basestring) else row['name_en'],
                     'de': self.strip_accents(row['name_de'].lower()) if isinstance(row['name_de'], basestring) else row['name_de'],
                     'fr': self.strip_accents(row['name_fr'].lower()) if isinstance(row['name_fr'], basestring) else row['name_fr']
+                },
+                'search_term': {
+
+                    'nl': slugify(row['name_nl']),
+                    'en': slugify(row['name_en']),
+                    'de': slugify(row['name_de']),
+                    'fr': slugify(row['name_fr'])
                 }
             })
 

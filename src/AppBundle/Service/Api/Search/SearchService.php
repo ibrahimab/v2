@@ -208,17 +208,31 @@ class SearchService
      *
      * @return array
      */
-    public function extractNames(Resultset $resultset, array $ids)
+    public function extractNames(Resultset $resultset, Params $params)
     {
-        $names   = [];
-        $results =& $resultset->results;
+        $names          = ['accommodations' => [], 'regions' => [], 'places' => []];
+        $results        =& $resultset->results;
+        $accommodations = $params->getAccommodations() ?: [];
+        $regions        = $params->getRegions() ?: [];
+        $places         = $params->getPlaces() ?: [];
 
-        foreach ($results as $result) {
+        if (false !== $accommodations) {
 
-            foreach ($result as $row) {
+            foreach ($results as $result) {
 
-                if (in_array($row['accommodation_id'], $ids)) {
-                    $names[$row['accommodation_id']] = $row['accommodation_name'];
+                foreach ($result as $row) {
+
+                    if (in_array($row['accommodation_id'], $accommodations)) {
+                        $names['accommodations'][$row['accommodation_id']] = $row['accommodation_name'];
+                    }
+
+                    if (in_array($row['region_seoname'], $regions)) {
+                        $names['regions'][$row['region_seoname']] = $row['region_name'];
+                    }
+
+                    if (in_array($row['place_seoname'], $places)) {
+                        $names['places'][$row['place_seoname']] = $row['place_name'];
+                    }
                 }
             }
         }

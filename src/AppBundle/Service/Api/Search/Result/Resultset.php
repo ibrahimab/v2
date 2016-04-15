@@ -244,6 +244,9 @@ class Resultset
             $row['type_features'] = array_map('intval', explode(',', $row['type_features']));
             $row['place_features'] = array_map('intval', explode(',', $row['place_features']));
 
+            $row['region_seoname'] = strtolower($row['region_seoname']);
+            $row['place_seoname'] = strtolower($row['place_seoname']);
+
             $row['type_id'] = intval($row['type_id']);
             $row['accommodation_id'] = intval($row['accommodation_id']);
             $row['separate_in_search'] = intval($row['separate_in_search']);

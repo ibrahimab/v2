@@ -485,6 +485,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                 var entities  = ns.Autocomplete.entities;
                 var locale    = ns.get('app')['locale'];
                 var name      = (undefined !== result['name'] ? (jq.type(result['name']) === 'string' ? result['name'] : result['name'][locale]) : '');
+                var term      = (undefined !== result['search_term'] ? (jq.type(result['search_term']) === 'string' ? result['search_term'] : result['search_term'][locale]) : '');
                 var tag       = '';
 
                 switch (result.type) {
@@ -493,7 +494,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                         li.className = 'country';
                         li.setAttribute('data-entity', entities.ENTITY_COUNTRY);
-                        li.setAttribute('data-id', name);
+                        li.setAttribute('data-id', term);
 
                         tag += '<i class="fi-flag"></i> ';
 
@@ -503,7 +504,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                         li.className = 'region';
                         li.setAttribute('data-entity', entities.ENTITY_REGION);
-                        li.setAttribute('data-id', name);
+                        li.setAttribute('data-id', term);
 
                         tag += '<i class="sprite sprite-black-pistes chalets-icon-box"></i> ';
 
@@ -513,7 +514,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                         li.className = 'place';
                         li.setAttribute('data-entity', entities.ENTITY_PLACE);
-                        li.setAttribute('data-id', name);
+                        li.setAttribute('data-id', term);
 
                         tag += '<i class="fi-marker"></i> ';
 
