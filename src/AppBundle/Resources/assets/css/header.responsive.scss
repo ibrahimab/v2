@@ -36,6 +36,11 @@
 /** phone changes */
 @media (max-width: 40em) {
 
+    ul.contact-info {
+       
+        padding-top: 1.5rem;               
+    }
+
     .header-block {
 
         .logo {
@@ -45,23 +50,9 @@
         }
 
         .contact-block {
-
             padding-left: 0;
-            padding-right: 0;
-
-            ul.contact-info {
-
-                padding-top: 1.5rem;
-
-                li a.seen-and-saved {
-
-                    border: thin solid $seen-and-saved-border-color;
-                    color: $seen-and-saved-color;
-                    border-radius: 3px;
-                    padding: 0.2rem 0.4rem;
-                    font-size: 0.72rem;
-                }
-            }
+            padding-right: 0;   
+              
         }
     }
 }
