@@ -195,6 +195,26 @@ section.landing h2 {
         font-weight: 700;
         text-align: center;
     }
+    .overview{
+        &:hover{
+            outline: 1px solid #C8C8C8;
+        }
+    }
+}
+
+.country-page {
+
+    a {
+        &:hover {
+            text-decoration: none;
+        }
+        text-decoration: none;
+    }
+    .overview{
+        &:hover{
+            outline: 1px solid #C8C8C8;
+        }
+    }
 }
 
 ul.landing-details-short {
