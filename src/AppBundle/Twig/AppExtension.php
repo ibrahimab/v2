@@ -36,6 +36,7 @@ class AppExtension extends \Twig_Extension
     use Extension\Url;
     use Extension\User;
     use Extension\Utils;
+    use Extension\LegacyCmsUser;
 
     /**
      * @var PriceTable
@@ -83,6 +84,11 @@ class AppExtension extends \Twig_Extension
     private $generalSettingsService;
 
     /**
+     * @var CmsUserService
+     */
+    private $cmsUserService;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -126,6 +132,8 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('is_favorite', [$this, 'isFavorite']),
             new \Twig_SimpleFunction('opened', [$this, 'opened']),
             new \Twig_SimpleFunction('show_sunny_cars', [$this, 'showSunnyCars']),
+            new \Twig_SimpleFunction('is_legacy_cms_user_logged_in', [$this, 'isLegacyCmsUserLoggedIn']),
+            new \Twig_SimpleFunction('get_cms_info', [$this, 'getCmsInfo']),
         ];
     }
 

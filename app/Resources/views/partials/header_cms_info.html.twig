@@ -1,0 +1,4 @@
+{% set cmsinfo = get_cms_info() %}
+<div class="cms-info">
+    <a href="/cms.php" target="_blank">cms</a>: {{ cmsinfo.firstname }} - server: {{ cmsinfo.server }}
+</div>

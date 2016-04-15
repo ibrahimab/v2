@@ -1,2 +1,5 @@
 _main:
     resource: "../routing.yml"
+
+_extra:
+    resource: "../routing_extra.yml"

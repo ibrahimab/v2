@@ -1,5 +1,5 @@
 <?php
-namespace AppBundle\Service\Legacy\User;
+namespace AppBundle\Service\Legacy\CmsUser;
 
 use Doctrine\DBAL\Connection;
 use PDO;

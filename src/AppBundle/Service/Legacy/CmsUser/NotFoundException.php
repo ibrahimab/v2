@@ -1,5 +1,5 @@
 <?php
-namespace AppBundle\Service\Legacy\User;
+namespace AppBundle\Service\Legacy\CmsUser;
 
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>

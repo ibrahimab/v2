@@ -56,6 +56,19 @@
 }
 
 /**
+ * Correct link colors
+ */
+section.landing {
+    a {
+        color:#07c;
+    }
+
+    .button {
+        color: #fff;
+    }
+}
+
+/**
  * sprites: small changes to margins/paddings/alignments
  */
 .sprite-icon-discount {

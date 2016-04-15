@@ -1,15 +1,16 @@
 <?php
-namespace AppBundle\Service\Legacy\User;
+namespace AppBundle\Service\Legacy\CmsUser;
 
-use AppBundle\Service\Legacy\User\RepositoryInterface;
+use AppBundle\Service\Legacy\CmsUser\RepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+
 
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
  * @package Chalet
  */
-class UserService
+class CmsUserService
 {
     /**
      * @var Request|null
