@@ -56,7 +56,12 @@
                         </div>
                         <div class="large-3 medium-3 columns">
                             <a href="{{ search_path }}" data-role="search-simple" class="button radius right" title="Toon resultaten op Chalet.nl">
-                                <i class="fi-magnifying-glass" data-role="show-results"></i><img src="/bundles/app/img/icons/loader.gif" class="hide" data-role="loading-text" /> Toon <span data-role="results-count">{{ accommodations }}</span> resultaten
+                                <i class="fi-magnifying-glass" data-role="show-results"></i><img src="/bundles/app/img/icons/loader.gif" class="hide" data-role="loading-text" /> Toon <span data-role="results-count">{{ accommodations }}</span>
+                                {% if accommodations > 1 %}
+                                resultaten
+                                {% else %}
+                                resultaat
+                                {% endif %}
                             </a><br />
                             <a href="{{ search_path }}" data-role="search-advanced" class="link right" title="Uitgebreid zoeken op Chalet.nl">Uitgebreid zoeken</a>
                         </div>
