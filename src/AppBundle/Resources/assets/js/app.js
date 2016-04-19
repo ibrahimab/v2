@@ -7,6 +7,29 @@
         // social links
         Chalet.Social.initialize();
 
+
+
+
+        // manages selectbox seen and saved for mobile
+        jq('#seen-and-saved-selectbox').on('change', function () {
+            var url = $(this).val(); // get selected value
+            if (url) { // require a URL
+              window.location = url; // redirect
+            }
+            return false;
+        });
+
+        // removes first child when opening select box
+        var firstSAVelement = jq('#seen-and-saved-selectbox').find('option').first();
+
+        jq('#seen-and-saved-selectbox').on('focus', function (e) {
+            firstSAVelement.remove();
+        }).on('blur', function (e) {
+
+            jq(this).find('option').first().before(firstSAVelement);
+        });
+
+
         /**
          * fixed header scroll effects
          */

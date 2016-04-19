@@ -59,6 +59,25 @@
         @media only screen and (max-width: 40em) {
             padding-left: 160px;
         }
+
+        .seen-and-saved-selectbox {
+            width: 145px;
+            border: none;
+            background-color: #fff;
+            padding: 0px;
+            border-bottom: 1px dotted #193761;
+            height: inherit;
+            width: 143px;
+        }
+
+        .seen-and-saved-li {
+            margin-top: 10px;
+        }
+
+        .fi-heart {
+            color: #193761;
+        }
+
     }
 
     .zoover-awards {
