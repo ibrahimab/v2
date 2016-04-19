@@ -2,6 +2,10 @@
 
 body.smaller {
 
+    .header-block a.logo-link {
+        top: 0px;
+    }
+
     .header-block-wrapper {
         box-shadow: 0 1px 3px $header-border-color;
     }
