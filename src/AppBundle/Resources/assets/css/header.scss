@@ -61,7 +61,13 @@
         }
 
         .seen-and-saved-selectbox {
-            width: 175px;
+            width: 145px;
+            border: none;
+            background-color: #fff;
+            padding: 0px;
+            border-bottom: 1px dotted #193761;
+            height: inherit;
+            width: 143px;
         }
 
         .seen-and-saved-li {
