@@ -45,19 +45,19 @@
             @media only screen and (max-width: 40em) {
                 width: 135px;
                 height: 141px;
-            }            
+            }
 
             &:hover {
                 opacity: 0.9;
             }
         }
-    } 
+    }
 
     .logo-and-contact-info {
-        padding-left: 180px;
+        padding-left: 200px;
 
         @media only screen and (max-width: 40em) {
-            padding-left: 160px; 
+            padding-left: 160px;
         }
     }
 
@@ -67,7 +67,7 @@
 
     a#contact-chat, a#opening-hours-contact, a#phone-contact {
 
-   
+
         text-decoration: none;
 
         .fi-telephone{
@@ -76,7 +76,7 @@
             @media only screen and (max-width: 40em) {
                 margin-left: 0px;
             }
-        }     
+        }
 
         span {
             border-bottom: 1px dotted $header-link-color;
@@ -102,7 +102,7 @@
 .menu-block {
 
     .nav-holder {
-        padding-left: 180px;
+        padding-left: 200px;
 
         @media (max-width: 40em) {
             padding-left: 155px;
@@ -134,7 +134,7 @@
 
                 margin-left: 0;
                 font-size: 1.375rem;
-                width: 25px;
+                width: 16px;
             }
 
             &:hover, &:active {
