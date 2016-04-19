@@ -196,6 +196,11 @@ section.landing h2 {
         text-align: center;
     }
     .overview{
+
+        a:link, a:hover {
+            text-decoration: none;
+        }
+
         &:hover{
             outline: 1px solid #C8C8C8;
         }
