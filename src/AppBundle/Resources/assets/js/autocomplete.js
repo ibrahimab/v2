@@ -471,6 +471,17 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                 jq('[data-role="loading-text"]').addClass('hide');
                 jq('[data-role="show-results"]').show();
                 jq('[data-role="results-count"]').text(count);
+
+                //change results label with singular or plural text
+                if(count == 0) {
+                    jq('.show-label').hide();
+                    jq('.results-label').text(jq('.results-label').data('plural'));
+                }else if (count == 1){
+                    jq('.results-label').text(jq('.results-label').data('singular'));
+                }else {
+                    jq('.results-label').text(jq('.results-label').data('plural'));
+                    jq('.show-label').show();
+                }
             },
 
             showLoader: function() {
