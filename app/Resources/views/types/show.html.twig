@@ -342,6 +342,8 @@ Template-content: accommodation page
                                 <span class="price-info">Prijs per accommodatie, vanaf</span>
                             {% endif %}
                             {% if prices[type.getId()] is defined %}
+
+                                <div style="clear:both"></div>
                                 <div class="chalet-tooltip loading" data-role="ajax-tooltip" data-url="{{ path('additional_costs_type', {typeId: type.getId(), seasonId: currentSeason['id']}) }}">
                                     <div class="chalet-tooltip-content" data-role="tooltip-wrapper">
                                         <div data-role="tooltip-content">
