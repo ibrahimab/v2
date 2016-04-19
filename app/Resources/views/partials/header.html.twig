@@ -37,8 +37,16 @@
                         <li>
                             <a id="phone-contact" href="tel:+31-348-434649" class="phone"><i class="fi-telephone"></i><span>0348 - 43 46 49</span></a>
                         </li>
-                        <li>
-                            <a href="#" class="seen-and-saved"><i class="fi-heart"></i>Gezien en bewaard</a>
+                        <li class="seen-and-saved-li">
+                            <!-- <a href="#" class="seen-and-saved"><i class="fi-heart"></i>Gezien en bewaard</a> -->
+                            <i class="fi-heart"></i>
+                            <select class="seen-and-saved-selectbox" id="seen-and-saved-selectbox">
+                              <option value="#">Gezien en bewaard</option>
+                              <option value="{{ locale_path('page_viewed') }}">Bekeken vakanties</option>
+                              <option value="{{ locale_path('page_searches') }}">Zoekopdrachten</option>
+                              <option value="{{ locale_path('page_saved') }}">Bewaarde vakanties</option>
+                              <option value="zoekboek.html">Mijn boekingen</option>
+                            </select>
                         </li>
                     </ul>
 
