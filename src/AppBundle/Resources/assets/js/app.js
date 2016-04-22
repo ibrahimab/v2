@@ -7,8 +7,12 @@
         // social links
         Chalet.Social.initialize();
 
+        // mobile menu child ul collapse/expand
+        var collapsibleListItem = jq('div.menu-mobile ul li.has-child-menu a');
 
-
+        collapsibleListItem.on('click', function(event) {
+            jq(collapsibleListItem).parent().find("ul").toggle();
+        });
 
         // manages selectbox seen and saved for mobile
         jq('#seen-and-saved-selectbox').on('change', function () {

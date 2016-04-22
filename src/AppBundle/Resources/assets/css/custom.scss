@@ -1013,6 +1013,18 @@ ul.feature-list li { background: none; padding-left: 0; }
 
 #region-images-row { margin-top: 20px; }
 
+.menu-mobile {
+
+    ul li ul li{
+        padding-left:10px;
+
+        &:last-child {
+            border:none;
+        }
+    }
+
+}
+
 .sidebar-block {
 
     background-color: $sidebar-block-bg-color;
