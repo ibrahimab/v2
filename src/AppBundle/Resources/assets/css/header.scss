@@ -67,11 +67,11 @@
             padding: 0px;
             border-bottom: 1px dotted #193761;
             height: inherit;
-            width: 143px;
-        }
-
-        .seen-and-saved-li {
-            margin-top: 10px;
+            width: auto;
+            padding-right: 10px;
+            margin-left: -5px;
+            color: #193761;
+            font-weight: 300;
         }
 
         .fi-heart {
