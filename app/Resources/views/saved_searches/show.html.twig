@@ -12,7 +12,7 @@
         <div class="row">
             <h1>Opgeslagen zoekopdrachten</h1>
 
-            <div id="search-results">
+            <div id="search-results" class="large-8 columns">
 
                 {% if saved_searches|length > 0 %}
 
@@ -20,9 +20,9 @@
                         <table class="no-striping">
                             <thead>
                                 <tr>
-                                    <th>Zoekopdrachten</th>
+                                    <th>Aankomstdatum</th>
                                     <th>Opgeslagen op</th>
-                                    <th><a href="{{ path('clear_saved_searches') }}">Wis zoekopdrachten</a></th>
+                                    <th>Bekijk <a href="{{ path('clear_saved_searches') }}">(verwijder alles)</a></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -103,7 +103,7 @@
                                     </td>
                                     <td class="valign-middle">
                                         <a href="{{ locale_path('search', searches['search_params']) }}" class="button blank small radius">Zoekresultaten</a>
-                                        <a href="{{ path('delete_saved_search', {id: searches['_id']}) }}" class="button blank small radius">Verwijder zoekopdracht</a>
+                                        <a href="{{ path('delete_saved_search', {id: searches['_id']}) }}" class="button blank small radius"><i class="fi-trash"></i></a>
                                     </td>
                                 </tr>
                                 {% endfor %}

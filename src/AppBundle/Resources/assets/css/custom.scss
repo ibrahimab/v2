@@ -1046,7 +1046,6 @@ ul.feature-list li { background: none; padding-left: 0; }
     }
 }
 
-
 .landing-page #area-selected .overview .accom-desc .title {
     @media only screen and (max-width: 40em) {
         height: auto;
@@ -1055,4 +1054,8 @@ ul.feature-list li { background: none; padding-left: 0; }
     }
 
 
+}
+
+.saved-searches-section table .fi-trash {
+    margin:0px;
 }
