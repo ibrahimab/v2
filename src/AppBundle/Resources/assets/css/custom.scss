@@ -1033,3 +1033,14 @@ ul.feature-list li { background: none; padding-left: 0; }
         color: $sidebar-block-hover-color;
     }
 }
+
+
+.landing-page #area-selected .overview .accom-desc .title {
+    @media only screen and (max-width: 40em) {
+        height: auto;
+        min-height: auto;
+        margin-bottom: 10px;
+    }
+
+
+}
