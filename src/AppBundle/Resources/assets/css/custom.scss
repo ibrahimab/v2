@@ -629,8 +629,7 @@ table.scroll-horizontal {
 
 }
 
-@media only screen and (max-width: 40em) {
-
+@media only screen and (max-width: 64em) {
     table.scroll-horizontal {
         table thead tr th {padding-left:0;}
         table thead tr th:nth-of-type(4) {min-width:200px;}/*desc*/
