@@ -52,7 +52,7 @@ Template-content: search results search-and-book (types-rows)
                         </div>
                     <div class="tb-c tb-c-7 price-cell">
                         {% if type.price > 0 %}
-                            <div class="chalet-tooltip loading" data-role="ajax-tooltip" data-url="{{ path('additional_costs_type', {typeId: type.type_id, seasonId: season}) }}">
+                            <div class="chalet-tooltip loading table-tooltip" data-role="ajax-tooltip" data-url="{{ path('additional_costs_type', {typeId: type.type_id, seasonId: season}) }}">
                                 <div class="chalet-tooltip-content" data-role="tooltip-wrapper">
                                     <div data-role="tooltip-content">
                                         <div class="tooltip-placeholder">Bezig met laden...</div>
