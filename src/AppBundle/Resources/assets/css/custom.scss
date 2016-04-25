@@ -320,11 +320,39 @@ div.google-maps {
     color: #828282;
 }
 
+.readmore .button.small.blank.open i {
+    background-position: -185px -171px;
+}
+
 #accom {
 
 	h1 {
-		margin-left: 0;
+        margin-left: 0;
+        @media only screen and (max-width: 40em) {
+            font-size: 1.4rem;
+        }
 	}
+
+    .table-wrapper table {
+        width: 100%;
+
+        tr td:last-child {
+            text-align: right;
+        }
+
+        tr {
+            .table-ratings {
+                padding: 0.2rem;
+                border-radius: 3px;
+            }
+
+            &:hover {
+                .table-ratings {
+                    background-color:#fff;
+                }
+            }
+        }
+    }
 
 	.type a {
 		margin-left: 0;
