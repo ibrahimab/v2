@@ -877,6 +877,8 @@ footer ul.checked i { margin-top: 0.7rem; }
     padding-left: 5px;
 }
 
+
+
 #search-filter #search-filter-main {
 
     input {
@@ -885,6 +887,36 @@ footer ul.checked i { margin-top: 0.7rem; }
         font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
     }
 }
+
+#search-filter-results #search-results .overview .price-details,
+#search-filter-results #search-results .overview.sale .price-details {
+
+
+    @media only screen and (max-width: 40em){
+        margin: 8px 0px 5px 0px;
+
+        br {
+            display: none;
+        }
+
+        .sprite-icon-skipass {
+            margin-left: 12px;
+        }
+    }
+
+    .price {
+        font-size: 1.4rem;
+
+        @media only screen and (max-width: 64em){
+            font-size: 1.2rem;
+        }
+
+        @media only screen and (max-width: 40em){
+            font-size: 1.4rem;
+        }
+    }
+}
+
 
 #search-filter-results #search-filter .styled_label.disabled label { color: #C5C5C5; cursor: default; }
 #search-filter-results #search-filter .styled_label.disabled:hover { text-decoration: none; }
