@@ -39,6 +39,13 @@
             <hr />
             <div class="row">
                 <div class="small-12 medium-12 large-12 columns">
+                    {% if count_paginator() == 0 %}
+                        <div class="message-no-results">
+                            <h2>Helaas, je zoekopdracht heeft 0 resultaten opgeleverd.</h2>
+                            <p>Pas je zoekcriteria aan, of neem contact met ons op voor een gratis en <a href="{{ locale_path('ask_our_advice') }}">geheel vrijblijvend advies.</a></p>
+                            <p><strong>Tip:</strong> Probeer een nieuwe zoekopdracht met minder criteria. Zoek bijvoorbeeld op een combinatie van aankomstdatum en skigebied.</p>
+                        </div>
+                    {% endif %}
                     {% import 'partials/search/result-accommodation-block.html.twig' as resultMacro %}
                     {% set images          = search_images(resultset) %}
                     {% set website_concern = website() %}
