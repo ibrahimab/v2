@@ -1,0 +1,21 @@
+
+//
+// block in header with internal links to CMS
+//
+.cms-info {
+    margin: 42px 0 0 0;
+    font-size: 0.8rem;
+
+    body.smaller & {
+        margin: 2px 0 0 0;
+    }
+
+    a {
+        text-decoration: underline;
+        color: $link-color;
+
+        &:hover {
+            color: $menu-link-color;
+        }
+    }
+}

@@ -29,9 +29,10 @@ class RegionController extends Controller
      */
     public function show($regionSlug)
     {
-        $regionService   = $this->get('app.api.region');
-        $typeService     = $this->get('app.api.type');
-        $surveyService   = $this->get('app.api.booking.survey');
+        $regionService        = $this->get('app.api.region');
+        $typeService          = $this->get('app.api.type');
+        $surveyService        = $this->get('app.api.booking.survey');
+        $legacyCmsUserService = $this->get('app.legacy.cmsuser');
 
         $places          = [];
         $allPlaces       = $regionService->findByLocaleSeoName($regionSlug, $this->getRequest()->getLocale());
@@ -44,6 +45,10 @@ class RegionController extends Controller
         $region          = $place->getRegion();
         $typesCount      = $typeService->countByRegion($region);
         $stats           = $surveyService->statsByRegion($region);
+
+        if ($legacyCmsUserService->isLoggedIn()) {
+
+        }
 
         if (count($typesCount) > 0) {
             $region->setTypesCount(array_sum($typesCount));

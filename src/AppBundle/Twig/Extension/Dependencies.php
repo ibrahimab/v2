@@ -14,6 +14,7 @@ use AppBundle\Service\Api\File\Region\RegionService as RegionFileService;
 use AppBundle\Service\Api\File\Theme\ThemeService as ThemeFileService;
 use AppBundle\Service\Api\GeneralSettings\GeneralSettingsService;
 use AppBundle\Service\Api\User\UserService;
+use AppBundle\Service\Legacy\CmsUser\CmsUserService;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -85,6 +86,14 @@ trait Dependencies
     public function setOldSiteUrlPrefix($oldSiteUrlPrefix)
     {
         $this->oldSiteUrlPrefix = $oldSiteUrlPrefix;
+    }
+
+    /**
+     * @param CmsUserService $cmsUserService
+     */
+    public function setCmsUserService(CmsUserService $cmsUserService)
+    {
+        $this->cmsUserService = $cmsUserService;
     }
 
     /**
