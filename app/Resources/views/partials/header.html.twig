@@ -52,7 +52,7 @@
 
                 </div>
                 <div class="show-for-large-up large-3 columns">
-                    {% if is_legacy_cms_user_logged_in() %}
+                    {% if should_show_internal_info() %}
                         {% include 'partials/header_cms_info.html.twig' %}
                     {% endif %}
                 </div>

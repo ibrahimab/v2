@@ -67,8 +67,9 @@ class RegionController extends Controller
             }
         }
 
-        if ($legacyCmsUserService->isLoggedIn()) {
-            $cmsLink = [
+        $cmsLinks = [];
+        if ($legacyCmsUserService->shouldShowInternalInfo()) {
+            $cmsLinks[] = [
                 'url'  => '/cms_skigebieden.php?show=5&wzt=' . $region->getSeason() . '&5k0=' . $region->getId(),
                 'name' => ($region->getSeason() == 1 ? 'skigebied' : 'regio') . ' bewerken',
                 'target_blank' => true
@@ -77,10 +78,10 @@ class RegionController extends Controller
 
         return $this->render('regions/show.html.twig', [
 
-            'region'  => $region,
-            'country' => $place->getCountry(),
-            'places'  => $places,
-            'cmsLink'  => $cmsLink,
+            'region'    => $region,
+            'country'   => $place->getCountry(),
+            'places'    => $places,
+            'cmsLinks'  => $cmsLinks,
         ]);
     }
 

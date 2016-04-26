@@ -17,21 +17,32 @@ trait LegacyCmsUser
      *
      * @return int
      */
-    public function isLegacyCmsUserLoggedIn()
+    public function shouldShowInternalInfo()
     {
-        return $this->cmsUserService->isLoggedIn();
+        return $this->cmsUserService->shouldShowInternalInfo();
     }
 
     /**
-     * get user data
+     * get cms info
      *
      * @return array
      */
     public function getCmsInfo()
     {
-        $userinfo['user'] = $this->cmsUserService->getUser()['user'];
         $userinfo['firstname'] = $this->cmsUserService->getUser()['voornaam'];
         $userinfo['server'] = constant('wt_server_name');
+
+        $url = $this->requestStack->getCurrentRequest()->getRequestUri();
+
+        /* @todo: does Symfony provide a function to easilly manipulate url's? */
+        if (strpos($url, '?') === false) {
+            $url .= '?';
+        } else {
+            $url .= '&';
+        }
+        $url .= 'hide_internal=1';
+
+        $userinfo['link_to_hide_internal_info'] = $url;
 
         return $userinfo;
     }

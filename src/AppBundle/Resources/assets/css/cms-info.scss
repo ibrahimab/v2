@@ -3,23 +3,43 @@
 // block in header with internal links to CMS
 //
 .cms-info {
-    margin: 42px 0 0 0;
+    position: absolute;
+    left: -40px;
+    top: 33px;
 
     ul {
+        padding: 0 5px 0 0;
+        margin: 0 5px 0 0;
         font-size: 0.8rem;
         list-style-type: none;
+        display: block;
+        float: left;
+
+        &.border-right {
+            border-right: 1px solid $link-color;
+        }
     }
 
     body.smaller & {
-        margin: 2px 0 0 0;
+        margin: 0 0 0 0;
+        top: 0;
+
+        li {
+            line-height: 1.3em;
+        }
     }
 
     a {
-        text-decoration: underline;
         color: $link-color;
 
         &:hover {
             color: $menu-link-color;
         }
+    }
+
+    div.link-without-internal-info {
+        font-size: 0.8rem;
+        float: left;
+        white-space: nowrap;
     }
 }
