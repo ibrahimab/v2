@@ -83,13 +83,26 @@
 }
 
 .tarieventabel_top {
+
     padding: 5px;
     color: #222222;
     min-height: 38px;
-}
-.tarieventabel_top h1 {
-    color: #193761;
-    font-size: 24px !important;
+
+    h1 {
+        color: #193761;
+        font-size: 24px !important;
+    }
+
+    a {
+
+        color: $link-color;
+
+        &:hover {
+            img {
+                opacity: .7;
+            }
+        }
+    }
 }
 
 .tarieventabel_top_left {
