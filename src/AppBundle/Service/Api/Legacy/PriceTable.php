@@ -28,13 +28,15 @@ class PriceTable extends LegacyService
      *
      * @return array
      */
-    public function getTable($typeId, $seasonId, $date, $numberOfPersons)
+    public function getTable($typeId, $seasonId, $date, $numberOfPersons, $requestedFromUri)
     {
         return $this->get(self::API_METHOD_GET_TABLE, [
 
-             'type_id' => $typeId,
-             'number_of_persons' => $numberOfPersons,
-             'date' => $date,
+             'type_id'            => $typeId,
+             'number_of_persons'  => $numberOfPersons,
+             'date'               => $date,
+             'requested_from_uri' => $requestedFromUri,
+             'internal'           => $this->legacyCmsUserService->isLoggedIn(),
 
         ]);
     }
@@ -51,10 +53,11 @@ class PriceTable extends LegacyService
     {
         return $this->get(self::API_METHOD_GET_TOTAL_PRICE, [
 
-             'type_id' => $typeId,
+             'type_id'           => $typeId,
              'season_id_inquery' => $seasonIdInQuery,
              'number_of_persons' => $numberOfPersons,
-             'date' => $date,
+             'date'              => $date,
+             'internal'          => $this->legacyCmsUserService->isLoggedIn(),
 
         ]);
     }

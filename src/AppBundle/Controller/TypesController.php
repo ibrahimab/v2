@@ -101,7 +101,7 @@ class TypesController extends Controller
             $seasonId             = $currentSeason['id'];
 
             $priceTableService    = $this->get('app.api.legacy.price_table');
-            $priceTable           = $priceTableService->getTable($typeId, $seasonId, $request->query->get('w', null), $request->query->get('pe', null));
+            $priceTable           = $priceTableService->getTable($typeId, $seasonId, $request->query->get('w', null), $request->query->get('pe', null), $request->getUri());
 
             $optionService        = $this->get('app.api.option');
             $options              = $optionService->options($type->getAccommodationId(), $seasonId, $request->query->get('w', null));

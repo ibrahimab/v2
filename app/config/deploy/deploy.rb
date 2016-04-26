@@ -17,9 +17,6 @@ set :copy_exclude, [ '.git' ]
 
 set :deploy_to, -> { '/var/www/deploy.chalet.nl' }
 
-# Default branch is :master
-ask :branch, 'master'
-
 # set tmp dir
 set :tmp_dir, -> { fetch(:deploy_to) + '/tmp' }
 

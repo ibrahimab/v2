@@ -816,63 +816,68 @@ select.tarieventabel_toelichting_switch_seasons {
     text-align: center;
 }
 
-.tarieventabel_voorraad_tr td {
-    font-size: 9px !important;
-    padding: 0px;
-    padding-left: 2px;
-    padding-right: 2px;
-}
+.tarieventabel_voorraad_tr {
 
-.tarieventabel_voorraad_tr td img {
-    margin-top: 3px;
+    td {
+        text-align: center;
+        color: #000 !important;
+        font-size: 9px !important;
+        padding: 0px;
+        padding-left: 2px;
+        padding-right: 2px;
+
+        img {
+            margin-top: 3px;
+        }
+    }
 }
 
 .tarieventabel_voorraad_garantie {
-    background-color: #00ff00;
+    background-color: #00ff00 !important;
 }
 
 .tarieventabel_voorraad_allotment {
-    background-color: #ccffcc;
+    background-color: #ccffcc !important;
 }
 
 .tarieventabel_voorraad_aflopen_allotment {
-    background-color: #ccffcc;
+    background-color: #ccffcc !important;
 }
 
 .tarieventabel_voorraad_vervallen_allotment {
-    background-color: #f88912;
+    background-color: #f88912 !important;
 }
 
 .tarieventabel_voorraad_optie_leverancier {
-    background-color: #ccffcc;
+    background-color: #ccffcc !important;
 }
 
 .tarieventabel_voorraad_xml {
-    background-color: #ff99cc;
+    background-color: #ff99cc !important;
 }
 
 .tarieventabel_voorraad_request {
-    background-color: #ffcc99;
+    background-color: #ffcc99 !important;
 }
 
 .tarieventabel_voorraad_optie_klant {
-    background-color: #ccffff;
+    background-color: #ccffff !important;
 }
 
 .tarieventabel_voorraad_totaal {
-    background-color: #ffff99;
+    background-color: #ffff99 !important;
 }
 
 .tarieventabel_voorraad_aantal_geboekt {
-    background-color: #ebebeb;
+    background-color: #ebebeb !important;
 }
 
 .tarieventabel_voorraad_korting {
-    background-color: #d6d6d6;
+    background-color: #d6d6d6 !important;
 }
 
 .tarieventabel_tr_leeg {
-    background-color: #ffffff;
+    background-color: #ffffff !important;
 }
 
 .tarieventabel_nextseason {
