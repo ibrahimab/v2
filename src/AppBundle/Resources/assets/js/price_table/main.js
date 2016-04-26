@@ -14,6 +14,7 @@
     var MultipleBKKSeasonsSwitch      = require('./MultipleBKKSeasonsSwitch');
     var MultipleBKKSeasonsCheckSeason = require('./MultipleBKKSeasonsCheckSeason');
     var CheckArrowGreyedOut           = require('./CheckArrowGreyedOut');
+    var CopyToClipBoard               = require('./CopyToClipBoard');
 
     jq(document).ready(function() {
 
@@ -86,6 +87,10 @@
             });
         }
 
+        // click on 'copy to clipboard'
+        $(document).on("click", ".tarieventabel_totaalprijs .copy-to-clipboard-icon", function(event) {
+            CopyToClipBoard(jq(this), jq, event);
+        });
     });
 
 })(jQuery);
