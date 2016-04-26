@@ -21,6 +21,13 @@ set :symfony_env, 'prod'
 # clearing files not applicable to environment
 set :controllers_to_clear, ["app_dev.php", "app_stag.php", "htaccess.dev.dist", "htaccess.stag.dist"]
 
+print "\n"
+print "=====>>>>> Deploy to production servers web01 and web02 <<<<<=====\n"
+print "\n"
+
+ask :branch, 'master'
+
+
 # role-based syntax
 # ==================
 

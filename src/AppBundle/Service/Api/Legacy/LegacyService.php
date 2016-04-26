@@ -3,6 +3,7 @@ namespace AppBundle\Service\Api\Legacy;
 
 use AppBundle\Service\Http\Client\ClientInterface;
 use AppBundle\Concern\WebsiteConcern;
+use AppBundle\Service\Legacy\CmsUser\CmsUserService;
 use Symfony\Component\HttpFoundation\Response;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Exception\ServerException;
@@ -28,6 +29,11 @@ abstract class LegacyService
     protected $website;
 
     /**
+     * @var CmsUserService
+     */
+    protected $legacyCmsUserService;
+
+    /**
      * @var string
      */
     protected $uri;
@@ -44,14 +50,16 @@ abstract class LegacyService
 
     /**
      * @param ClientInterface $client
-     * @param string          $apiUrl
+     * @param WebsiteConcern  $website
+     * @param CmsUserService  $legacyCmsUserService
      */
-    public function __construct(ClientInterface $client, WebsiteConcern $website)
+    public function __construct(ClientInterface $client, WebsiteConcern $website, CmsUserService $legacyCmsUserService)
     {
-        $this->client   = $client;
-        $this->website  = $website;
-        $this->uri      = $website->getConfig(WebsiteConcern::WEBSITE_LEGACY_API_URI);
-        $this->params   = [];
+        $this->client               = $client;
+        $this->website              = $website;
+        $this->uri                  = $website->getConfig(WebsiteConcern::WEBSITE_LEGACY_API_URI);
+        $this->legacyCmsUserService = $legacyCmsUserService;
+        $this->params               = [];
     }
 
     /**

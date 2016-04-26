@@ -20,6 +20,12 @@ set :symfony_env, 'stag'
 # clearing files not applicable to environment
 set :controllers_to_clear, ["app_dev.php", "app.php", "htaccess.dev.dist", "htaccess.prod.dist"]
 
+# Default branch is current branch
+current_branch = `git branch`.match(/\* (\S+)\s/m)[1]
+
+ask :branch, current_branch || 'master'
+
+
 # role-based syntax
 # ==================
 
