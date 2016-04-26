@@ -1,4 +1,21 @@
+{#
+
+create div with internal cms info (to be placed in header)
+
+called from:
+- partials/header.html.twig
+
+#}
 {% set cmsinfo = get_cms_info() %}
 <div class="cms-info">
-    <a href="/cms.php" target="_blank">cms</a>: {{ cmsinfo.firstname }} - server: {{ cmsinfo.server }}
+    <ul>
+        <li>
+            <a href="/cms.php" target="_blank">cms</a>: {{ cmsinfo.firstname }} - server: {{ cmsinfo.server }}
+        </li>
+        {% if cmsLink is defined %}
+            <li>
+                <a href="{{ cmsLink.url }}"{% if cmsLink.target_blank is defined and cmsLink.target_blank == true %} target="_blank"{% endif %}>{{ cmsLink.name}}</a>
+            </li>
+        {% endif %}
+    </ul>
 </div>

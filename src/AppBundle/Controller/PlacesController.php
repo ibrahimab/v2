@@ -31,10 +31,11 @@ class PlacesController extends Controller
      */
     public function show($placeSlug)
     {
-        $placeService  = $this->get('app.api.place');
-        $typeService   = $this->get('app.api.type');
-        $surveyService = $this->get('app.api.booking.survey');
-        $priceService  = $this->get('app.api.price');
+        $placeService         = $this->get('app.api.place');
+        $typeService          = $this->get('app.api.type');
+        $surveyService        = $this->get('app.api.booking.survey');
+        $priceService         = $this->get('app.api.price');
+        $legacyCmsUserService = $this->get('app.legacy.cmsuser');
 
         try {
 
@@ -79,6 +80,14 @@ class PlacesController extends Controller
             $types[$surveyStat['typeId']]->setSurveyAverageOverallRating($surveyStat['surveyAverageOverallRating']);
         }
 
+        if ($legacyCmsUserService->isLoggedIn()) {
+            $cmsLink = [
+                'url'  => '/cms_plaatsen.php?show=4&wzt=' . $place->getSeason() . '&4k0=' . $place->getId(),
+                'name' => 'plaats bewerken',
+                'target_blank' => true
+            ];
+        }
+
         return [
 
             'place'   => $place,
@@ -86,6 +95,7 @@ class PlacesController extends Controller
             'region'  => $place->getRegion(),
             'types'   => $types,
             'offers'  => $offers,
+            'cmsLink' => $cmsLink,
         ];
     }
 }

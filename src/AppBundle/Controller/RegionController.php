@@ -46,10 +46,6 @@ class RegionController extends Controller
         $typesCount      = $typeService->countByRegion($region);
         $stats           = $surveyService->statsByRegion($region);
 
-        if ($legacyCmsUserService->isLoggedIn()) {
-
-        }
-
         if (count($typesCount) > 0) {
             $region->setTypesCount(array_sum($typesCount));
         }
@@ -71,11 +67,20 @@ class RegionController extends Controller
             }
         }
 
+        if ($legacyCmsUserService->isLoggedIn()) {
+            $cmsLink = [
+                'url'  => '/cms_skigebieden.php?show=5&wzt=' . $region->getSeason() . '&5k0=' . $region->getId(),
+                'name' => ($region->getSeason() == 1 ? 'skigebied' : 'regio') . ' bewerken',
+                'target_blank' => true
+            ];
+        }
+
         return $this->render('regions/show.html.twig', [
 
             'region'  => $region,
             'country' => $place->getCountry(),
             'places'  => $places,
+            'cmsLink'  => $cmsLink,
         ]);
     }
 

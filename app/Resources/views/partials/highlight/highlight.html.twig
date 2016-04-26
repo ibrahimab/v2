@@ -3,10 +3,10 @@
 create div with accommodation highlight
 
 called from:
-- highlights.html.twig
+- partials/highlight/highlights.html.twig
+- places/show.html.twig
 
 #}
-
 {% set locale = get_locale() %}
 {% set offer  = offers is defined and offers[highlight.type_id] is defined %}
 {% set link   = locale_path('show_type', { beginCode: highlight.country_begin_code, typeId: highlight.type_id }) %}
