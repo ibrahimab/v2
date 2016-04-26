@@ -332,12 +332,19 @@ select.tarieventabel_toelichting_switch_seasons {
         background-color: #2285a2;
         border-color: #2285a2;
     }
-
-
 }
 
 .tarieventabel_totaalprijs_white {
-    // background-color: #ffffff !important;
+
+    background-color: #ffffff !important;
+
+    table {
+        background-color: #ffffff !important;
+
+        tr {
+            background-color: #ffffff !important;
+        }
+    }
 }
 
 .tarieventabel_totaalprijs_left {
@@ -359,11 +366,15 @@ select.tarieventabel_toelichting_switch_seasons {
 
 .tarieventabel_totaalprijs .copy-to-clipboard-icon {
     display: inline-block;
-    background: url("../pic/icons/copy.png") top left no-repeat;
+    background: url("../../img/internal/copy.png") top left no-repeat;
     height: 16px;
     width: 16px;
     cursor: pointer;
     margin: 0 0 -4px 3px;
+
+    &:hover {
+        opacity: .7;
+    }
 }
 
 .tarieventabel_totaalprijs .copy-to-clipboard-text {
