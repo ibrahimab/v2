@@ -111,6 +111,44 @@ div.tb {
                 span.table-price { color: #d4213b; }
             }
         }
+
+        &.internal-stock-color {
+            div {
+
+            }
+
+            &:hover {
+                background-color: #e9edf8;
+            }
+        }
+
+        &.stock-guarantee {
+            background-color: $stock-guarantee-color;
+        }
+
+        &.stock-allotment {
+            background-color: $stock-allotment-color;
+        }
+
+        &.stock-option-supplier {
+            background-color: $stock-option-supplier-color;
+        }
+
+        &.stock-xml {
+            background-color: $stock-xml-color;
+        }
+
+        &.stock-expired-allotment {
+            background-color: $stock-expired-allotment-color;
+        }
+
+        &.stock-request {
+            background-color: $stock-request-color;
+        }
+
+        &.stock-option-customer {
+            background-color: $stock-option-customer-color;
+        }
     }
 }
 

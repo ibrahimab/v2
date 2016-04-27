@@ -857,47 +857,47 @@ select.tarieventabel_toelichting_switch_seasons {
 }
 
 .tarieventabel_voorraad_garantie {
-    background-color: #00ff00 !important;
+    background-color: $stock-guarantee-color !important;
 }
 
 .tarieventabel_voorraad_allotment {
-    background-color: #ccffcc !important;
+    background-color: $stock-allotment-color !important;
 }
 
 .tarieventabel_voorraad_aflopen_allotment {
-    background-color: #ccffcc !important;
+    background-color: $stock-allotment-color !important;
 }
 
 .tarieventabel_voorraad_vervallen_allotment {
-    background-color: #f88912 !important;
+    background-color: $stock-expired-allotment-color !important;
 }
 
 .tarieventabel_voorraad_optie_leverancier {
-    background-color: #ccffcc !important;
+    background-color: $stock-option-supplier-color !important;
 }
 
 .tarieventabel_voorraad_xml {
-    background-color: #ff99cc !important;
+    background-color: $stock-xml-color !important;
 }
 
 .tarieventabel_voorraad_request {
-    background-color: #ffcc99 !important;
+    background-color: $stock-request-color !important;
 }
 
 .tarieventabel_voorraad_optie_klant {
-    background-color: #ccffff !important;
+    background-color: $stock-option-customer-color !important;
 }
 
 .tarieventabel_voorraad_totaal {
-    background-color: #ffff99 !important;
+    background-color: $stock-total-color !important;
 }
 
 .tarieventabel_voorraad_aantal_geboekt {
-    background-color: #ebebeb !important;
+    background-color: $stock-booked-color !important;
 }
 
 .tarieventabel_voorraad_korting {
-    background-color: #d6d6d6 !important;
+    background-color: $stock-discount-color !important;
 }
 
 .tarieventabel_tr_leeg {

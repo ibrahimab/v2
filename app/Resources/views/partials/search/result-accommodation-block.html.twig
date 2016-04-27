@@ -3,7 +3,7 @@
 Template-content: search results search-and-book (accommodation-block)
 
 #}
-{% macro accommodation(result, cheapest, surveys, all_images, resale, season, price_text) %}
+{% macro accommodation(result, cheapest, surveys, all_images, resale, season, price_text, resultset) %}
     {% import 'partials/search/result-types-rows.html.twig' as typesMacro %}
 
     {% set images  = [] %}
@@ -82,7 +82,7 @@ Template-content: search results search-and-book (accommodation-block)
             </div>
         </a>
 
-        {{ typesMacro.table(result, cheapest, surveys, season, price_text) }}
+        {{ typesMacro.table(result, cheapest, surveys, season, price_text, resultset) }}
 
     </article>
 
