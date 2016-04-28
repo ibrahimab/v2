@@ -398,27 +398,27 @@
                     showTooltip(el);
                 }
 
-                //show default or cloned tooltip
-                function showTooltip(el) {
-                    //move to wrapper, of clone tooltip if tooltip is positoned in table
-                    if(jq(el).hasClass("table-tooltip")) {
-                        //clone the wrapper
-                        var clone = jq(wrapper).clone().addClass("clone").appendTo(".inner-wrap");
-                        var position = jq(el).offset();
-                        clone.css( "left", position.left - 350);
-                        clone.css( "top", position.top);
-                        clone.show();
-                        scrollToMakeVisible(clone);
-
-                    }else {
-                        scrollToMakeVisible(wrapper);
-                    }
-                }
+                
             }
-
         });
 
+        //show default or cloned tooltip
+        function showTooltip(el) {
+            var wrapper = el.find('[data-role=tooltip-wrapper]');
+            //move to wrapper, of clone tooltip if tooltip is positoned in table
+            if(jq(el).hasClass("table-tooltip")) {
+                //clone the wrapper
+                var clone = jq(wrapper).clone().addClass("clone").appendTo(".inner-wrap");
+                var position = jq(el).offset();
+                clone.css( "left", position.left - 350);
+                clone.css( "top", position.top);
+                clone.show();
+                scrollToMakeVisible(clone);
 
+            }else {
+                scrollToMakeVisible(wrapper);
+            }
+        }
 
         // var to prevent unwanted clickthrough to accpage when clicking a tooltip-icon
         var clickthrough_to_accpage = true;
