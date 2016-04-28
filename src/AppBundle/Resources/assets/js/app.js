@@ -377,8 +377,6 @@
 
                 if (true !== el.data('cached') && retries < 3) {
 
-                    console.log('cached');
-
                     jq.ajax({
 
                         type: 'get',
