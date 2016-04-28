@@ -631,6 +631,13 @@
             });
         });
 
+        //this code handles the "extra info link" scroll on types page
+        jq("#accom .tarieventabel_wrapper a").on("click",function(event) {
+            event.preventDefault();
+            var el = jq("body").find('#extras');
+            scrollToMakeVisible(el);
+        });
+
         /**
          * This code handles the destinations map
          * It generates it via the jqvmap jQuery plugin
