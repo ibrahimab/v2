@@ -14,6 +14,14 @@
             jq(collapsibleListItem).parent().find("ul").toggle();
         });
 
+        jq(document).on('open.fndtn.offcanvas', '[data-offcanvas]', function () {
+            jq('.menu-mobile .menu-content').show();
+        });
+
+        jq(document).on('close.fndtn.offcanvas', '[data-offcanvas]', function () {
+            jq('.menu-mobile .menu-content').fadeOut();
+        });
+
         // manages selectbox seen and saved for mobile
         jq('#seen-and-saved-selectbox').on('change', function () {
             var url = $(this).val(); // get selected value
