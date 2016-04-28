@@ -328,6 +328,36 @@ class Resultset
     }
 
     /**
+     * determine the css class for the type rows, based on the current stock of a type
+     *
+     * @param array
+     * @return string
+     **/
+    public function getTypeRowCssClass($result)
+    {
+
+        if ($result['voorraad_garantie'] >= 1) {
+            $cssClass = 'stock-guarantee';
+        } elseif ($result['voorraad_allotment'] >= 1) {
+            $cssClass = 'stock-allotment';
+        } elseif ($result['voorraad_optie_leverancier'] >= 1) {
+            $cssClass = 'stock-option-supplier';
+        } elseif ($result['voorraad_xml'] >= 1) {
+            $cssClass = 'stock-xml';
+        } elseif ($result['voorraad_vervallen_allotment'] >= 1) {
+            $cssClass = 'stock-expired-allotment';
+        } elseif ($result['voorraad_request'] >= 1) {
+            $cssClass = 'stock-request';
+        } elseif ($result['voorraad_optie_klant'] >= 1) {
+            $cssClass = 'stock-option-customer';
+        } else {
+            $cssClass = '';
+        }
+
+        return $cssClass;
+    }
+
+    /**
      * @return void
      */
     public function preparePriceTypeText()

@@ -51,7 +51,7 @@
                     {% set website_concern = website() %}
                     {% set resale          = website_concern.getConfig(constant('WEBSITE_CONFIG_RESALE', website_concern)) %}
                     {% for result in paginator %}
-                        {{ resultMacro.accommodation(result, resultset.getCheapestRow(result|first.group_id), surveys, images, resale, season, price_text) }}
+                        {{ resultMacro.accommodation(result, resultset.getCheapestRow(result|first.group_id), surveys, images, resale, season, price_text, resultset) }}
                     {% endfor %}
                 </div>
             </div>
