@@ -132,7 +132,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('is_favorite', [$this, 'isFavorite']),
             new \Twig_SimpleFunction('opened', [$this, 'opened']),
             new \Twig_SimpleFunction('show_sunny_cars', [$this, 'showSunnyCars']),
-            new \Twig_SimpleFunction('is_legacy_cms_user_logged_in', [$this, 'isLegacyCmsUserLoggedIn']),
+            new \Twig_SimpleFunction('should_show_internal_info', [$this, 'shouldShowInternalInfo']),
             new \Twig_SimpleFunction('get_cms_info', [$this, 'getCmsInfo']),
         ];
     }

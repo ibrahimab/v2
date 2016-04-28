@@ -39,10 +39,11 @@ class TypesController extends Controller
      */
     public function showAction($beginCode, $typeId, Request $request)
     {
-        $typeService    = $this->get('app.api.type');
-        $surveyService  = $this->get('app.api.booking.survey');
-        $season         = $this->get('app.concern.season');
-        $featureService = $this->get('app.api.legacy.features');
+        $typeService          = $this->get('app.api.type');
+        $surveyService        = $this->get('app.api.booking.survey');
+        $season               = $this->get('app.concern.season');
+        $featureService       = $this->get('app.api.legacy.features');
+        $legacyCmsUserService = $this->get('app.legacy.cmsuser');
 
         try {
 
@@ -115,24 +116,49 @@ class TypesController extends Controller
                 $backUrl = '';
             }
 
+            $cmsLinks = [];
+            $showLinkWithoutInternalInfo = false;
+            if ($legacyCmsUserService->shouldShowInternalInfo()) {
+
+                // link to CMS accommodation
+                $cmsLinks[] = [
+                    'url'  => '/cms_accommodaties.php?show=1&wzt=' . $accommodation->getSeason() . '&1k0=' . $accommodation->getId(),
+                    'name' => 'accommodatie bewerken',
+                    'target_blank' => true
+                ];
+
+                // link to CMS type
+                $cmsLinks[] = [
+                    'url'  => '/cms_types.php?show=2&wzt=' . $accommodation->getSeason() . '&2k0=' . $type->getId(),
+                    'name' => 'type bewerken',
+                    'target_blank' => true
+                ];
+
+                $showLinkWithoutInternalInfo = true;
+
+            }
+
             return $this->render('types/show.html.twig', [
 
-                'type'                 => $type,
-                'surveyData'           => $surveyData,
-                'surveyDataOtherTypes' => $surveyDataOtherTypes,
-                'minimalSurveyCount'   => $this->container->getParameter('app')['minimalSurveyCount'],
-                'features'             => array_keys($features),
-                'prices'               => $prices,
-                'offers'               => $offers,
-                'options'              => $options,
-                'weekends'             => $seasonService->futureWeekends($seasons),
-                'sunnyCars'            => $this->container->getParameter('sunny_cars'),
-                'currentWeekend'       => $request->query->get('w', null),
-                'currentSeason'        => $currentSeason,
-                'priceTable'           => $priceTable['html'],
-                'back_url'             => $backUrl,
-                'date'                 => $date,
-                'numberOfPersons'      => $numberOfPersons,
+                'type'                        => $type,
+                'surveyData'                  => $surveyData,
+                'surveyDataOtherTypes'        => $surveyDataOtherTypes,
+                'minimalSurveyCount'          => $this->container->getParameter('app')['minimalSurveyCount'],
+                'features'                    => array_keys($features),
+                'prices'                      => $prices,
+                'offers'                      => $offers,
+                'options'                     => $options,
+                'weekends'                    => $seasonService->futureWeekends($seasons),
+                'sunnyCars'                   => $this->container->getParameter('sunny_cars'),
+                'currentWeekend'              => $request->query->get('w', null),
+                'currentSeason'               => $currentSeason,
+                'priceTable'                  => $priceTable['html'],
+                'back_url'                    => $backUrl,
+                'date'                        => $date,
+                'numberOfPersons'             => $numberOfPersons,
+                'cmsLinks'                    => $cmsLinks,
+                'showLinkWithoutInternalInfo' => $showLinkWithoutInternalInfo,
+
             ]);
 
         } catch (NoResultException $e) {

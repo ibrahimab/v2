@@ -36,7 +36,7 @@ class PriceTable extends LegacyService
              'number_of_persons'  => $numberOfPersons,
              'date'               => $date,
              'requested_from_uri' => $requestedFromUri,
-             'internal'           => $this->legacyCmsUserService->isLoggedIn(),
+             'internal'           => $this->legacyCmsUserService->shouldShowInternalInfo(),
 
         ]);
     }
@@ -57,7 +57,7 @@ class PriceTable extends LegacyService
              'season_id_inquery' => $seasonIdInQuery,
              'number_of_persons' => $numberOfPersons,
              'date'              => $date,
-             'internal'          => $this->legacyCmsUserService->isLoggedIn(),
+             'internal'          => $this->legacyCmsUserService->shouldShowInternalInfo(),
 
         ]);
     }

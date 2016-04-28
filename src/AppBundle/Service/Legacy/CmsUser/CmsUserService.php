@@ -45,6 +45,18 @@ class CmsUserService
     }
 
     /**
+     * @return boolean
+     */
+    public function shouldShowInternalInfo()
+    {
+        if ($this->request->query->get('hide_internal') === '1') {
+            return false;
+        } else {
+            return $this->isLoggedIn();
+        }
+    }
+
+    /**
      * @return integer
      * @throws NotFoundException
      */
