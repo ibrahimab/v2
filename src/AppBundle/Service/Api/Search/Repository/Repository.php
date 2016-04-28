@@ -468,6 +468,13 @@ class Repository implements RepositoryInterface
 
                 break;
 
+            case Where::WHERE_SUPPLIER:
+
+                $clause = ['sql'        => 't.leverancier_id IN (' . $this->stringArrayQuery($where->getValue()) . ')',
+                           'parameters' => []];
+
+                break;
+
             case Where::WHERE_FREESEARCH:
 
                 $clause = ['sql'        => $this->getLocaleField('t.naam') . ' LIKE :freesearch_1 OR ' .

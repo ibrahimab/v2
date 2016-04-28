@@ -48,3 +48,11 @@
         <option value="{{ i }}"{{ i == current_bathrooms ? selected|raw }}>{{ minimum }} {{ i }} {{ bathrooms }}</option>
     {% endfor %}
 </select>
+{% if should_show_internal_info() %}
+    <select class="radius" data-role="change-supplier">
+        <option value="0">Leverancier</option>
+        {% for supplier_id, supplier_name in suppliers %}
+            <option value="{{ supplier_id }}">{{ supplier_name }}</option>
+        {% endfor %}
+    </select>
+{% endif %}

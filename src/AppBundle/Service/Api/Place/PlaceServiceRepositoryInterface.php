@@ -16,34 +16,34 @@ interface PlaceServiceRepositoryInterface
 {
     /**
      * Setting season
-     * 
+     *
      * @param SeasonConcern $seasonConcern
      * @return void
      */
     public function setSeason(SeasonConcern $seasonConcern);
-    
+
     /**
      * Getting season
      *
      * @return integer
      */
     public function getSeason();
-    
+
     /**
      * Setting website
-     * 
+     *
      * @param WebsiteConcern $seasonConcern
      * @return void
      */
     public function setWebsite(WebsiteConcern $websiteConcern);
-    
+
     /**
      * Getting website
      *
      * @return integer
      */
     public function getWebsite();
-    
+
     /**
      * Fetching places
      *
@@ -53,7 +53,7 @@ interface PlaceServiceRepositoryInterface
      * @return PlaceServiceEntityInterface[]
      */
     public function all($options = []);
-    
+
     /**
      * Finding a single place
      *
@@ -61,7 +61,7 @@ interface PlaceServiceRepositoryInterface
      * @return PlaceServiceEntityInterface
      */
     public function find($by = []);
-    
+
     /**
      * Find by locale seo name
      *
@@ -70,7 +70,7 @@ interface PlaceServiceRepositoryInterface
      * @return PlaceServiceEntityInterface
      */
     public function findByLocaleSeoName($seoName, $locale);
-    
+
     /**
      * Getting places flagged as 'homepage' place
      *

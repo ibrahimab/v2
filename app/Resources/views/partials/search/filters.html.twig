@@ -113,6 +113,17 @@
         </div>
     {% endif %}
 
+    {% if custom_filters['suppliers']|length > 0 %}
+        {% set filters_active = true %}
+        {% for supplier in custom_filters['suppliers'] %}
+            <div data-role="filter-tag">
+                Leverancier:
+                {{ suppliers[supplier] }}
+                <a href="#" data-role="remove-supplier-filter" data-id="{{ supplier }}"><i class="fi-x"></i></a>
+            </div>
+        {% endfor %}
+    {% endif %}
+
     {% if form_filters['freesearch'] %}
         {% set filters_active = true %}
         <div data-role="filter-tag">

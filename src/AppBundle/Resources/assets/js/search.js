@@ -26,6 +26,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
             ns.Search.filters.bedrooms       = form['bedrooms']   || null;
             ns.Search.filters.bathrooms      = form['bathrooms']  || null;
             ns.Search.filters.weekend        = form['weekend']    || null;
+            ns.Search.filters.suppliers      = form['suppliers']  || null;
             ns.Search.filters.persons        = form['persons']    || null;
             ns.Search.filters.freesearch     = form['freesearch'] || null;
             ns.Search.filters.sort           = form['sort']       || null;
@@ -56,11 +57,14 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 body.on('click', '[data-role="remove-persons-filter"]', ns.Search.events.removeCustom.persons);
                 body.on('click', '[data-role="remove-freesearch-filter"]', ns.Search.events.removeCustom.freesearch);
                 body.on('click', '[data-role="remove-weekend-filter"]', ns.Search.events.removeCustom.weekend);
+                body.on('click', '[data-role="remove-supplier-filter"]', ns.Search.events.removeCustom.supplier);
 
                 body.on('change', '[data-role="change-bedrooms"]', ns.Search.events.formChanges.bedrooms);
                 body.on('change', '[data-role="change-bathrooms"]', ns.Search.events.formChanges.bathrooms);
                 body.on('change', '[data-role="change-weekend"]', ns.Search.events.formChanges.weekend);
+                body.on('change', '[data-role="change-supplier"]', ns.Search.events.formChanges.supplier);
                 body.on('change', '[data-role="change-persons"]', ns.Search.events.formChanges.persons);
+
                 body.on('change', '[data-role="sort-results"]', ns.Search.events.formChanges.sort);
 
                 body.on('click', '[data-role="save-search"]', ns.Search.actions.save);
@@ -169,6 +173,14 @@ window.Chalet = (function(ns, jq, _, undefined) {
                     ns.Search.filters.removeWeekend();
                     ns.Search.actions.search();
                 },
+                supplier: function(event) {
+
+                    event.preventDefault();
+                    var element = jq(this);
+
+                    ns.Search.filters.removeSupplier(element.data('id'));
+                    ns.Search.actions.search();
+                },
                 freesearch: function(event) {
 
                     event.preventDefault();
@@ -232,6 +244,20 @@ window.Chalet = (function(ns, jq, _, undefined) {
                         ns.Search.filters.removeWeekend();
                     } else {
                         ns.Search.filters.setWeekend(val);
+                    }
+
+                    ns.Search.actions.search();
+                },
+
+                supplier: function(event) {
+
+                    event.preventDefault();
+                    var val = jq(this).val();
+
+                    if (val === '') {
+                        ns.Search.filters.removeSupplier();
+                    } else {
+                        ns.Search.filters.addSupplier(val);
                     }
 
                     ns.Search.actions.search();
@@ -377,6 +403,13 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                     uri.removeQuery('w');
                     uri.setQuery('w', ns.Search.filters.weekend);
+                }
+
+                if (null !== ns.Search.filters.suppliers) {
+
+                    uri.removeQuery('supp[]');
+                    uri.setQuery('supp[]', ns.Search.filters.suppliers);
+
                 }
 
                 if (null !== ns.Search.filters.freesearch) {
@@ -543,6 +576,8 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
             weekend: null,
 
+            suppliers: [],
+
             freesearch: null,
 
             sort: null,
@@ -605,6 +640,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
                 ns.Search.filters.bathrooms      = null;
                 ns.Search.filters.persons        = null;
                 ns.Search.filters.weekend        = null;
+                ns.Search.filters.suppliers      = [];
                 ns.Search.filters.freesearch     = null;
             },
 
@@ -708,6 +744,22 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
             setWeekend: function(weekend) {
                 ns.Search.filters.weekend = weekend;
+            },
+
+            addSupplier: function(supplier) {
+
+                // supplier = parseInt(supplier, 10);
+
+                ns.Search.filters.removeSupplier(supplier);
+                ns.Search.filters.suppliers.push(supplier);
+                return ns.Search.filters.suppliers;
+            },
+
+            removeSupplier: function(supplier) {
+
+                ns.Search.filters.suppliers = _.reject(ns.Search.filters.suppliers, function(item) { return parseInt(item, 10) === parseInt(supplier, 10); });
+                return ns.Search.filters.suppliers;
+
             },
 
             removeFreesearch: function() {

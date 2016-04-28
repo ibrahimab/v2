@@ -40,6 +40,11 @@ services:
         arguments: [AppBundle\Entity\Region\Region]
         parent:    app.repository.orm
 
+    app.repository.supplier:
+        class:     AppBundle\Entity\Supplier\SupplierRepository
+        arguments: [AppBundle\Entity\Supplier\Supplier]
+        parent:    app.repository.orm
+
     app.repository.country:
         class:     AppBundle\Entity\Country\CountryRepository
         arguments: [AppBundle\Entity\Country\Country]

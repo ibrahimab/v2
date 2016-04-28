@@ -40,6 +40,9 @@ class Where
     /** @var integer */
     const WHERE_WEEKEND       = 10;
 
+    /** @var integer */
+    const WHERE_SUPPLIER      = 11;
+
     /**
      * @var integer
      */
@@ -65,6 +68,7 @@ class Where
         self::WHERE_PERSONS,
         self::WHERE_FREESEARCH,
         self::WHERE_WEEKEND,
+        self::WHERE_SUPPLIER,
     ];
 
     /**
@@ -79,7 +83,7 @@ class Where
         $this->value  = $value;
 
         if (!in_array($clause, $this->allowedClauses)) {
-            throw new SearchException('You are only allowed to scope results by: weekendski, accommodation, type, country, region, place, bedrooms, bathrooms, types, persons and freesearch');
+            throw new SearchException('You are only allowed to scope results by: weekendski, accommodation, type, country, region, place, bedrooms, bathrooms, types, persons, suppliers and freesearch');
         }
     }
 

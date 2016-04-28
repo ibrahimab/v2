@@ -64,7 +64,9 @@ class SearchController extends Controller
         $start                  = microtime(true);
         $surveyService          = $this->get('app.api.booking.survey');
         $seasonService          = $this->get('app.api.season');
+        $supplierService        = $this->get('app.api.supplier');
         $generalSettingsService = $this->get('app.api.general.settings');
+        $legacyCmsUserService   = $this->get('app.legacy.cmsuser');
 
         $resultset              = $searchService->search($params);
         $paginator              = $searchService->paginate($resultset, $params);
@@ -72,6 +74,17 @@ class SearchController extends Controller
         $typeIds                = $searchService->extractTypeIds($resultset);
         $names                  = $searchService->extractNames($resultset, $params);
         $accommodationNames     = $names['accommodations'];
+
+        // internal users: allow searching for suppliers
+        if ($legacyCmsUserService->shouldShowInternalInfo()) {
+
+            // get all suppliers as an array
+            // @todo: is there a single function to do this?
+            foreach ($supplierService->all(['order' => ['name' =>'asc'] ]) as $supplier) {
+                $suppliers[$supplier->getId()] = $supplier->getName();
+            }
+
+        }
 
         $this->setupJavascriptParameters($params);
 
@@ -91,6 +104,7 @@ class SearchController extends Controller
                 'regions'        => ($params->getRegions() ? $names['regions'] : []),
                 'places'         => ($params->getPlaces() ? $names['places'] : []),
                 'accommodations' => $accommodationNames,
+                'suppliers'      => $params->getSuppliers(),
             ],
 
             'form_filters'   => [
@@ -103,6 +117,7 @@ class SearchController extends Controller
             ],
             'destination'    => $destination,
             'weekends'       => $seasonService->futureWeekends($seasons),
+            'suppliers'      => $suppliers,
             'surveys'        => [],
             'sort'           => $params->getSort(),
             'searchFormMessageSearchWithoutDates' => $generalSettingsService->getSearchFormMessageSearchWithoutDates(),
@@ -320,6 +335,7 @@ class SearchController extends Controller
         $javascript->set('app.filters.form.persons',          $params->getPersons());
         $javascript->set('app.filters.form.bedrooms',         $params->getBedrooms());
         $javascript->set('app.filters.form.bathrooms',        $params->getBathrooms());
+        $javascript->set('app.filters.form.suppliers',        $params->getSuppliers());
         $javascript->set('app.filters.form.sort',             $params->getSort());
     }
 

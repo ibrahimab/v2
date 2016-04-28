@@ -20,6 +20,10 @@ services:
         class:     AppBundle\Service\Api\Region\RegionService
         arguments: ["@app.repository.region"]
 
+    app.api.supplier:
+        class:     AppBundle\Service\Api\Supplier\SupplierService
+        arguments: ["@app.repository.supplier"]
+
     app.api.country:
         class:     AppBundle\Service\Api\Country\CountryService
         arguments: ["@app.repository.country"]

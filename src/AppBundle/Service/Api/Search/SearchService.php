@@ -344,6 +344,10 @@ class SearchService
             $builder->addClause(new Where(Where::WHERE_WEEKEND, $weekend));
         }
 
+        if (false !== ($suppliers = $params->getSuppliers())) {
+            $builder->addClause(new Where(Where::WHERE_SUPPLIER, $suppliers));
+        }
+
         if (false !== ($freesearch = $params->getFreesearch())) {
             $builder->addClause(new Where(Where::WHERE_FREESEARCH, $freesearch));
         }
