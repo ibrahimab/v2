@@ -1059,13 +1059,22 @@ ul.feature-list li { background: none; padding-left: 0; }
     }
 }
 
-
 .landing-page #area-selected .overview .accom-desc .title {
     @media only screen and (max-width: 40em) {
         height: auto;
         min-height: auto;
         margin-bottom: 10px;
     }
+}
 
+.saved-searches-section table {
+    thead {
+        a {
+            border-bottom: 1px dotted #193761;
+        }
+    }
 
+    .fi-trash {
+        margin:0px;
+    }
 }
