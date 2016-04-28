@@ -340,6 +340,10 @@
             if (jq(event.target).data('role') != 'ajax-tooltip-button') {
                 jq('[data-role=tooltip-wrapper]').hide();
             }
+
+            //remove all clones
+            jq( ".chalet-tooltip-content.clone" ).remove();
+
         });
 
         body.on('click', '[data-role="ajax-tooltip"]', function(event) {
@@ -370,8 +374,10 @@
                     // hide all other active tooltips
                     jq('[data-role=tooltip-wrapper]').hide();
 
-                    // show clicked tooltip
-                    wrapper.show();
+
+                   if(jq(el).hasClass("table-tooltip") == false) {
+                        wrapper.show();
+                   }
 
                 }
 
@@ -384,17 +390,35 @@
                         type: 'get',
                         url: el.data('url'),
                         success: function(data) {
-
                             el.data('cached', true).removeClass('loading').find('[data-role="tooltip-content"]').html(data);
-                            scrollToMakeVisible(wrapper);
+                            showTooltip(el);
                         }
                     });
                 } else {
-                    scrollToMakeVisible(wrapper);
+                    showTooltip(el);
+                }
+
+                //show default or cloned tooltip
+                function showTooltip(el) {
+                    //move to wrapper, of clone tooltip if tooltip is positoned in table
+                    if(jq(el).hasClass("table-tooltip")) {
+                        //clone the wrapper
+                        var clone = jq(wrapper).clone().addClass("clone").appendTo(".inner-wrap");
+                        var position = jq(el).offset();
+                        clone.css( "left", position.left - 350);
+                        clone.css( "top", position.top);
+                        clone.show();
+                        scrollToMakeVisible(clone);
+
+                    }else {
+                        scrollToMakeVisible(wrapper);
+                    }
                 }
             }
 
         });
+
+
 
         // var to prevent unwanted clickthrough to accpage when clicking a tooltip-icon
         var clickthrough_to_accpage = true;
@@ -574,7 +598,6 @@
 
                         element.data('tooltip-cache', content).data('tooltip-lock', false);
                         jq('#' + element.data('selector')).html(content);
-                        console.log(jq('#' + element.data('selector')));
                     }
                 });
             }
