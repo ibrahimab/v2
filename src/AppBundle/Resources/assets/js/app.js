@@ -382,26 +382,16 @@
                         type: 'get',
                         url: el.data('url'),
                         success: function(data) {
-
                             el.data('cached', true).removeClass('loading').find('[data-role="tooltip-content"]').html(data);
-
-                            //move to wrapper, of clone tooltip if tooltip is positoned in table
-                            if(jq(el).hasClass("table-tooltip")) {
-                                //clone the wrapper
-                                var clone = jq(wrapper).clone().addClass("clone").appendTo(".inner-wrap");
-                                var position = jq(el).offset();
-                                clone.css( "left", position.left - 350);
-                                clone.css( "top", position.top);
-                                clone.show();
-                                scrollToMakeVisible(clone);
-
-                            }else {
-                                scrollToMakeVisible(wrapper);
-                            }
-
+                            showTooltip(el);
                         }
                     });
                 } else {
+                    showTooltip(el);
+                }
+
+                //show default or cloned tooltip
+                function showTooltip(el) {
                     //move to wrapper, of clone tooltip if tooltip is positoned in table
                     if(jq(el).hasClass("table-tooltip")) {
                         //clone the wrapper
@@ -600,7 +590,6 @@
 
                         element.data('tooltip-cache', content).data('tooltip-lock', false);
                         jq('#' + element.data('selector')).html(content);
-                        console.log(jq('#' + element.data('selector')));
                     }
                 });
             }
