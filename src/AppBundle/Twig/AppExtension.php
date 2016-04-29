@@ -134,6 +134,8 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('show_sunny_cars', [$this, 'showSunnyCars']),
             new \Twig_SimpleFunction('should_show_internal_info', [$this, 'shouldShowInternalInfo']),
             new \Twig_SimpleFunction('get_cms_info', [$this, 'getCmsInfo']),
+            new \Twig_SimpleFunction('asset_prevent_cache', [$this, 'assetPreventCache']),
+
         ];
     }
 

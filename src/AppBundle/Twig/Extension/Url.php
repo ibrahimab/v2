@@ -120,4 +120,18 @@ trait Url
 
         return $twig->render('partials/breadcrumbs.html.twig', ['breadcrumbs' => $breadcrumbs]);
     }
+
+    /**
+     * Prevent caching of assets by adding
+     *
+     * @param string $file
+     * @return string
+     */
+    public function assetPreventCache($file)
+    {
+
+        return $file . '?' . filemtime($file);
+
+    }
+
 }
