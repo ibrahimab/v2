@@ -27,7 +27,7 @@ Template-content: search results search-and-book (accommodation-block)
                     <div class="accom-img">
                         <div class="accom-slides">
                             {% for image in images %}
-                                <div><img src="/bundles/app/img/loading.gif" data-src="{{ generate_image_path(image)|thumbnail(343, 257) }}" alt="{{ cheapest.accommodation_name ~ ' ' ~ cheapest.type_name }}" /></div>
+                                <div><img class="lazy" src="/bundles/app/img/loading.gif" data-src="{{ generate_image_path(image)|thumbnail(343, 257) }}" alt="{{ cheapest.accommodation_name ~ ' ' ~ cheapest.type_name }}" /></div>
                             {% endfor %}
                         </div>
                         {% if cheapest.offer %}

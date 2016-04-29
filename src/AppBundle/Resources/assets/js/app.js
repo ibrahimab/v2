@@ -43,7 +43,7 @@
 
         //enable lazy loading
         jq(document).ready(function() {
-           jq("img").unveil(200);
+           jq("img.lazy").unveil(200);
         });
 
         /**

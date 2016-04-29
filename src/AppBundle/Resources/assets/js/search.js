@@ -486,7 +486,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
                         ns.Autocomplete.events.rebind();
 
                         //activate lazyloading
-                        jq("img").unveil(200);
+                        jq("img.lazy").unveil(200);
                     }
                 });
             },
