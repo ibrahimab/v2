@@ -26,6 +26,13 @@ class Supplier
     private $id;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="naam", type="string")
+     */
+    private $name;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="zoekvolgorde", type="smallint")
@@ -38,6 +45,25 @@ class Supplier
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param string $searchOrder
+     * @return Supplier
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**

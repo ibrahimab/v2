@@ -62,6 +62,11 @@ class Params
     private $persons;
 
     /**
+     * @var integer|false
+     */
+    private $suppliers;
+
+    /**
      * @var string|false
      */
     private $freesearch;
@@ -166,6 +171,14 @@ class Params
     public function getBathrooms()
     {
         return $this->getIntegerItem('bathrooms', 'ba');
+    }
+
+    /**
+     * @return integer|false
+     */
+    public function getSuppliers()
+    {
+        return $this->getArrayItems('suppliers', 'supp');
     }
 
     /**
