@@ -280,7 +280,6 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                 event.preventDefault();
                 ns.Search.actions.search(jq(this).data('page'));
-
             },
         },
 
