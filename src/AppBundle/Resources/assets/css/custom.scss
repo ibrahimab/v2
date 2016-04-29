@@ -932,6 +932,9 @@ footer ul.checked i { margin-top: 0.7rem; }
 
 #search-filter #search-filter-main {
 
+    select {
+        padding-right: 20px;
+    }
     input {
 
         font-size: 0.875rem;
