@@ -11,9 +11,14 @@
     <section class="landing landing-page contact-page">
 
         <div class="row">
-            <div class="medium-8 large-8 columns">
-
+            <div class="medium-12 columns">
                 <h1>{{ 'contact-title'|trans }}</h1>
+                <p>Heb je nog vragen, opmerkingen of iets anders wat je aan ons wilt laten weten
+                   dan kun je onderstaand formulier invullen, ons een e-mail sturen of telefonisch
+                   contact met ons opnemen. Heb je hulp nodig bij het vinden van je ideale accommodatie? Wij bieden <a href="{{ locale_path('ask_our_advice') }}">gratis en geheel vrijblijvend advies</a></p>
+            </div>
+            <div class="large-4 medium-12 columns">
+
 
                 {% if website_concern.type() == constant('WEBSITE_TYPE_CHALET_TOUR', website_concern) %}
 
@@ -50,7 +55,11 @@
                     </tr>
                     <tr>
                         <td>Chat:</td>
-                        <td><img src="#" /></td>
+                        <td>
+                            <a href="#" data-role="chat-button" data-id="PTFmcHUgtM" id="contact-chat">
+                                <img src="//cdn.livechatinc.com/s3/2618611/2/button/online/080a5ff20ad8bdd77ed00c2216bb4df5.png" alt="live chat software" title="live chat software"/>
+                            </a>
+                        </td>
                     </tr>
                     <tr>
                         <td><strong>{{ 'remaining-data'|trans }}</td>
@@ -85,6 +94,8 @@
                         <td>{{ 'closed'|trans }}</td>
                     </tr>
                 </table>
+            </div>
+            <div class="large-8 medium-12 columns">
 
                 <strong>{{ 'contact-form-title'|trans }}</strong>
                 <form name="form-contact" method="post" action="{{ path('create_contact') }}">
@@ -131,7 +142,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="large-4 large-centered columns">
+                        <div class="large-12 columns submit-holder">
                             <input type="submit" class="button" name="submit" value="{{ 'form-contact-submit'|trans }}" />
                         </div>
                     </div>
