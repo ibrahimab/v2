@@ -41,6 +41,10 @@
             jq(this).find('option').first().before(firstSAVelement);
         });
 
+        //enable lazy loading
+        jq(document).ready(function() {
+           jq("img").unveil(200);
+        });
 
         /**
          * fixed header scroll effects
@@ -398,7 +402,7 @@
                     showTooltip(el);
                 }
 
-                
+
             }
         });
 

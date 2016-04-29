@@ -280,6 +280,7 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                 event.preventDefault();
                 ns.Search.actions.search(jq(this).data('page'));
+
             },
         },
 
@@ -456,6 +457,8 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                 ns.Search.actions.loader();
                 ns.Search.actions.request(url.toString());
+
+
             },
 
             request: function(url) {
@@ -484,6 +487,9 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                         // rebind autocomplete events
                         ns.Autocomplete.events.rebind();
+
+                        //activate lazyloading
+                        jq("img").unveil(200);
                     }
                 });
             },
