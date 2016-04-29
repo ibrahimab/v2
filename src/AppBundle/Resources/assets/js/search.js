@@ -517,6 +517,9 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                         // rebind autocomplete events
                         ns.Autocomplete.events.rebind();
+
+                        //activate lazyloading
+                        jq("img.lazy").unveil(200);
                     }
                 });
             },
@@ -534,7 +537,6 @@ window.Chalet = (function(ns, jq, _, undefined) {
                     // show correct open/close icons (class 'closed') and set the correct status ('closed')
                     jq('[data-role="closable-filter"]').data('status', 'closed').find('h2').addClass('closed');
                     jq('[data-role="toggle-filters"]').data('status', 'closed').addClass('closed');
-
                 }
 
                 // size: medium
@@ -548,7 +550,6 @@ window.Chalet = (function(ns, jq, _, undefined) {
                     // show smaller placeholder text: number of persons
                     first_option = jq('[data-role="choose-persons-home"] option:first, [data-role="change-persons"] option:first');
                     first_option.html( first_option.data('smaller-text') );
-
                 }
             }
 
