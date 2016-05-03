@@ -121,4 +121,35 @@ interface GeneralSettingsServiceEntityInterface
      * @return string
      */
     public function getMonitorMySQL();
+
+    /**
+     * Set winterNoPriceShowUnavailable
+     *
+     * @param integer $winterNoPriceShowUnavailable
+     * @return GeneralSettingsServiceEntityInterface
+     */
+    public function setWinterNoPriceShowUnavailable($winterNoPriceShowUnavailable);
+
+    /**
+     * Get winterNoPriceShowUnavailable value
+     *
+     * @return integer
+     */
+    public function getWinterNoPriceShowUnavailable();
+
+    /**
+     * Set summerNoPriceShowUnavailable
+     *
+     * @param integer $summerNoPriceShowUnavailable
+     * @return GeneralSettingsServiceEntityInterface
+     */
+    public function setSummerNoPriceShowUnavailable($summerNoPriceShowUnavailable);
+
+    /**
+     * Get summerNoPriceShowUnavailable value
+     *
+     * @return integer
+     */
+    public function getSummerNoPriceShowUnavailable();
+
 }

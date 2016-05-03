@@ -33,4 +33,12 @@ interface GeneralSettingsServiceRepositoryInterface
      * @return boolean
      */
     public function monitorDatabase();
+
+    /**
+     * Get what to show when there are no prices for an accommodation
+     *
+     * @return boolean
+     */
+    public function getNoPriceShowUnavailable();
+
 }

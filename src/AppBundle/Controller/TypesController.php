@@ -39,11 +39,12 @@ class TypesController extends Controller
      */
     public function showAction($beginCode, $typeId, Request $request)
     {
-        $typeService          = $this->get('app.api.type');
-        $surveyService        = $this->get('app.api.booking.survey');
-        $season               = $this->get('app.concern.season');
-        $featureService       = $this->get('app.api.legacy.features');
-        $legacyCmsUserService = $this->get('app.legacy.cmsuser');
+        $typeService            = $this->get('app.api.type');
+        $surveyService          = $this->get('app.api.booking.survey');
+        $season                 = $this->get('app.concern.season');
+        $featureService         = $this->get('app.api.legacy.features');
+        $legacyCmsUserService   = $this->get('app.legacy.cmsuser');
+        $generalSettingsService = $this->get('app.api.general.settings');
 
         try {
 
@@ -185,6 +186,9 @@ class TypesController extends Controller
                 'date'                        => $date,
                 'numberOfPersons'             => $numberOfPersons,
                 'internalInfo'                => $internalInfo,
+                'cmsLinks'                    => $cmsLinks,
+                'showLinkWithoutInternalInfo' => $showLinkWithoutInternalInfo,
+                'noPriceShowUnavailable'      => $generalSettingsService->getNoPriceShowUnavailable(),
 
             ]);
 

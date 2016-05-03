@@ -76,6 +76,19 @@ class GeneralSettings implements GeneralSettingsServiceEntityInterface
      */
     private $monitorMySQL;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="winter_no_price_show_unavailable", type="integer")
+     */
+    private $winterNoPriceShowUnavailable;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="summer_no_price_show_unavailable", type="integer")
+     */
+    private $summerNoPriceShowUnavailable;
 
     /**
      * {@InheritDoc}
@@ -210,4 +223,41 @@ class GeneralSettings implements GeneralSettingsServiceEntityInterface
     {
         return $this->monitorMySQL;
     }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setWinterNoPriceShowUnavailable($winterNoPriceShowUnavailable)
+    {
+        $this->winterNoPriceShowUnavailable = $winterNoPriceShowUnavailable;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getWinterNoPriceShowUnavailable()
+    {
+        return $this->winterNoPriceShowUnavailable;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function setSummerNoPriceShowUnavailable($summerNoPriceShowUnavailable)
+    {
+        $this->summerNoPriceShowUnavailable = $summerNoPriceShowUnavailable;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getSummerNoPriceShowUnavailable()
+    {
+        return $this->summerNoPriceShowUnavailable;
+    }
+
 }
