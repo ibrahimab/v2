@@ -53,6 +53,8 @@
         var menu         = jq('div.home-menu ul');
         var stickyHeader = function() {
 
+            $('#dropdown-saved-list').foundation('dropdown', 'close', $('#dropdown-saved-list'))
+
             if (window.innerWidth <= 641) {
 
                 // mobile does not have sticky header!
