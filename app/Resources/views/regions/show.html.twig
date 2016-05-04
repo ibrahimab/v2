@@ -116,7 +116,8 @@
                 </ul>
                 <h6>{{ 'ski-runs-map'|trans }}</h6>
                 {% set skimap = generate_image_path(region_skimap_image(region)) %}
-                <a href="{{ skimap }}" data-featherlight="image"><img src="{{ skimap }}" /></a>
+                {% set skimapsmall = generate_image_path(region_skimap_image(region))|thumbnail(370, 280) %}
+                <a href="{{ skimap }}" data-featherlight="image"><img src="{{ skimapsmall }}" /></a>
             </div>
         </div>
         <div class="row" id="region-images-row">
@@ -125,8 +126,9 @@
                     {% for image in images %}
                         <li>
                             {% set image_path = generate_image_path(image) %}
+                            {% set image_path_small = generate_image_path(image)|thumbnail(370, 280) %}
                             <a href="{{ image_path }}" data-featherlight="image">
-                                <img src="{{ image_path }}" />
+                                <img src="{{ image_path_small }}" />
                             </a>
                         </li>
                     {% endfor %}
@@ -142,7 +144,7 @@
             <div class="small-12 medium-3 large-3 columns{{ (( ((loop.index % 4) is same as(0)) or loop.last) ? ' end' : '') }}">
                 <article class="overview" data-equalizer-watch>
                     <div class="accom-img">
-                        {% set image = generate_image_path(place_image(place)) %}
+                        {% set image = generate_image_path(place_image(place))|thumbnail(370, 280) %}
                         <a href="{{ locale_path('show_place', {placeSlug: place.getLocaleSeoName(get_locale())}) }}"><img src="{{ image }}" alt="{{ image }}" /></a>
                     </div>
                     <a href="{{ locale_path('show_place', {placeSlug: place.getLocaleSeoName(get_locale())}) }}">
