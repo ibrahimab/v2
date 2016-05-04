@@ -1162,3 +1162,29 @@ ul.feature-list li { background: none; padding-left: 0; }
         margin:0px;
     }
 }
+
+@media only screen and (max-width: 64em) {
+    #search-results #search-filters-active div {
+        position:relative;
+        padding-right:26px;
+
+        a {
+            position:absolute;
+            width: 100%;
+            height: 100%;
+            top:0px;
+            left: 0px;
+
+            i{
+                float: right;
+            }
+        }
+    }
+
+    #search-results #search-filters-active div i[class*="fi"] {
+        margin-top: 5px;
+        margin-right: 8px;
+    }
+}
+
+
