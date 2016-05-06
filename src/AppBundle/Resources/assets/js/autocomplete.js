@@ -279,6 +279,18 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     jq('[data-role="autocomplete-result"]').eq(ns.Autocomplete.arrows.position - 1).trigger('click');
                     jq(ns.Autocomplete.input.selector).blur();
                     ns.Autocomplete.arrows.initialize();
+
+                } else {
+
+                    var data    = {
+
+                        entity: ns.Autocomplete.entities.ENTITY_FREESEARCH,
+                        label:  jq('[data-role="autocomplete-query"]').val()
+
+                    };
+
+                    ns.Autocomplete.actions.searchBook.click(data);
+
                 }
             }
         },

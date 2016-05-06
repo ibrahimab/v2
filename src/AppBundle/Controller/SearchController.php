@@ -310,10 +310,6 @@ class SearchController extends Controller
             $save['pe'] = $persons;
         }
 
-        if (false !== ($freesearch = $params->getFreesearch())) {
-            $save['fs'] = $freesearch;
-        }
-
         $session->set('search', $save);
     }
 
