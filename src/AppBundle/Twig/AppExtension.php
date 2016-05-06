@@ -135,6 +135,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('should_show_internal_info', [$this, 'shouldShowInternalInfo']),
             new \Twig_SimpleFunction('get_cms_info', [$this, 'getCmsInfo']),
             new \Twig_SimpleFunction('asset_prevent_cache', [$this, 'assetPreventCache']),
+            new \Twig_SimpleFunction('count_array_fields', [$this, 'countArrayValuesNonEmpty']),
 
         ];
     }
@@ -149,6 +150,7 @@ class AppExtension extends \Twig_Extension
         return [
 
             new \Twig_SimpleFilter('bbcode', [$this, 'bbcode'], array('pre_escape' => 'html', 'is_safe' => array('html'))),
+            new \Twig_SimpleFilter('linkify', [$this, 'linkify']),
             new \Twig_SimpleFilter('sortprop', [$this, 'sortByProperty']),
             new \Twig_SimpleFilter('seo', [$this, 'seo']),
             new \Twig_SimpleFilter('array_replace', [$this, 'replace']),

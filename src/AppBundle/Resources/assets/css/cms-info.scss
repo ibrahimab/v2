@@ -2,6 +2,8 @@
 //
 // block in header with internal links to CMS
 //
+
+
 .cms-info {
     position: absolute;
     left: -40px;
@@ -42,4 +44,160 @@
         float: left;
         white-space: nowrap;
     }
+}
+
+//
+// extra info on accommodation page via slider
+//
+.accommodation-page-cms-info {
+
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    .cms-info-content {
+        display: block;
+        position: absolute;
+        z-index: 600;
+        margin: 0 0 0 20px;
+        padding: 0 15px 5px 5px;
+        border: 1px solid #aaa;
+        width: 350px;
+        min-height: 200px;
+        background-color: #fff;
+        transform: translateX(-100%);
+
+        &.slider-hidden {
+            animation: slider-hidden 0.5s forwards;
+        }
+
+        &.slider-visible {
+            animation: slider-visible 0.5s forwards;
+        }
+
+        div {
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            margin: 0 0 0 0;
+            color: #777;
+            font-size: 11px;
+
+            ul {
+                font-size: 11px;
+                margin-top: 0;
+                margin-bottom: 0;
+
+                li {
+                    padding: 0;
+                    margin: 0;
+                    line-height: 11px;
+                }
+
+                &.more-padding {
+                    li {
+                        line-height: 15px;
+                    }
+                }
+            }
+
+            a {
+                color: $link-color;
+            }
+
+            h2 {
+                font-size: 1.3em;
+                line-height: 1.4em;
+                font-weight: bold;
+                text-align: left;
+                margin: 0;
+                padding: 0;
+                color: #777;
+            }
+
+            h3 {
+                font-size: 1.1em;
+                font-style: italic;
+                font-weight: normal;
+                text-align: left;
+                margin: 7px 0 0 0;
+                padding: 5px 0 0 0;
+                color: #777;
+                border-top: 2px solid $menu-bg-color;
+            }
+        }
+
+        table {
+
+            border: 0;
+            margin: 0;
+            padding: 0;
+            border-spacing: 0;
+            border-collapse: separate;
+
+            tr {
+                td {
+                    padding: 0 5px 0 0;
+                    font-size: 11px;
+                    color: #777;
+                }
+            }
+        }
+
+        .dotted {
+            border-bottom: 1px dotted #000000;
+        }
+
+        .red {
+            color: red;
+        }
+    }
+}
+
+a[data-role="toggle-cms-info-slider"] {
+    display: block;
+    position: absolute;
+    top: 1px;
+    font-size: 3rem;
+    color: $link-color;
+    line-height: 1rem;
+    padding: 0;
+    margin: 0;
+
+    &:hover {
+        text-decoration: none;
+        color: $header-link-color;
+    }
+
+    .slider-visible & {
+
+        left: auto;
+        right: 10px;
+
+        &:before {
+            content: "»";
+        }
+    }
+
+    .slider-hidden & {
+
+        left: -35px;
+        right: auto;
+
+        &:before {
+            content: "«";
+        }
+    }
+}
+
+@keyframes slider-hidden {
+    100% { transform: translateX(0%); }
+}
+
+@keyframes slider-visible {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-100%); }
+}
+
+// ensure no transitions would happen on page load
+.preload * {
+    transform: none !important;
 }

@@ -1,7 +1,6 @@
 (function(jq, Routing, Chalet, lc, undefined) {
     'use strict';
 
-    // setting up scroll button for long pages
     jq(function() {
 
         // social links
@@ -678,8 +677,45 @@
             var italyMaps = Chalet.Maps.Italy.initialize('[data-role="italy-maps"]');
         }
 
+        /**
+         * Handle show/hide cms-info slider on the right-hand side of the page
+         */
+         jq('a[data-role="toggle-cms-info-slider"]').click(function(event) {
+
+            event.preventDefault();
+
+            var content = jq('.accommodation-page-cms-info .cms-info-content');
+            var cookievalue = '';
+
+            if ( content.hasClass('slider-visible') ) {
+
+                // hide slider
+                content.removeClass('slider-visible');
+                content.addClass('slider-hidden');
+                cookievalue = 'hidden';
+
+            } else {
+
+                // show slider
+                content.removeClass('slider-hidden');
+                content.addClass('slider-visible');
+                cookievalue = 'visible';
+
+            }
+
+            var d = new Date();
+            d.setTime(d.getTime() + (3650 * 24 * 60 * 60 * 1000));
+            var expires = "expires="+ d.toUTCString();
+            document.cookie = "cms_info_slider=" + cookievalue + "; " + expires;
+
+         });
+
         // display hide-on-load blocks
         jq('.hide-on-load').removeClass('hide-on-load');
+
+        // remove preload class from body
+        jq('body').removeClass('preload');
+
     });
 
 })(jQuery, Routing, window.Chalet = window.Chalet || {});

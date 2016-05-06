@@ -40,6 +40,20 @@ class Supplier
     private $searchOrder;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="url", type="string", length=255)
+     */
+    private $url;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="opmerkingen_intern", type="text", nullable=true)
+     */
+    private $internalComments;
+
+    /**
      * @return integer
      */
     public function getId()
@@ -101,5 +115,51 @@ class Supplier
         }
 
         return $supplier;
+    }
+
+    /**
+     * Set url
+     *
+     * @param string $url
+     * @return Supplier
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * Set internalComments
+     *
+     * @param string $internalComments
+     * @return Supplier
+     */
+    public function setInternalComments($internalComments)
+    {
+        $this->internalComments = $internalComments;
+
+        return $this;
+    }
+
+    /**
+     * Get internalComments
+     *
+     * @return string 
+     */
+    public function getInternalComments()
+    {
+        return $this->internalComments;
     }
 }

@@ -29,8 +29,9 @@ trait LegacyCmsUser
      */
     public function getCmsInfo()
     {
+        $userinfo['user_id']   = $this->cmsUserService->getUserId();
         $userinfo['firstname'] = $this->cmsUserService->getUser()['voornaam'];
-        $userinfo['server'] = constant('wt_server_name');
+        $userinfo['server']    = constant('wt_server_name');
 
         $url = $this->requestStack->getCurrentRequest()->getRequestUri();
 

@@ -18,46 +18,56 @@ class SurveyRepository extends BaseRepository implements SurveyServiceRepository
     {
         $qb    = $this->createQueryBuilder('s');
         $expr  = $qb->expr();
-        
-        $qb->select('s AS survey, partial t.{id}, partial a.{id}, partial b.{id, exactArrivalAt}, AVG(s.question_1_7) AS average')
+
+        $ratings = [
+            'ratingAccommodationReception',
+            'ratingAccommodationLocation',
+            'ratingAccommodationComfort',
+            'ratingAccommodationCleaning',
+            'ratingAccommodationFacilities',
+            'ratingAccommodationPriceQuality',
+            'ratingAccommodationTotal',
+        ];
+
+        $qb->select('s AS survey, partial t.{id}, partial a.{id}, partial b.{id, exactArrivalAt}, s.' . implode(', s.', $ratings) . '')
            ->leftJoin('s.type', 't')
            ->leftJoin('t.accommodation', 'a')
            ->leftJoin('s.booking', 'b')
            ->where($expr->eq('t', ':type'))
-           ->andWhere($expr->gt('s.question_1_7', ':question_1_7'))
-           ->andWhere($expr->eq('s.reviewed', ':reviewed'))
-           ->andWhere($expr->eq('t.display', ':display'))
-           ->andWhere($expr->eq('a.display', ':display'))
-           ->andWhere($expr->eq('a.weekendSki', ':weekendSki'))
            ->orderBy('b.exactArrivalAt DESC, b.id')
            ->groupBy('s.booking')
            ->setParameters([
-                  
-               'type'          => $type,
-               'question_1_7'  => 0,
-               'reviewed'      => 1,
-               'display'       => 1,
-               'weekendSki'    => false,
+               'type' => $type,
            ]);
 
-        $results  = $qb->getQuery()->getResult();
+        $results  = $qb->getQuery()->useResultCache(true)->useQueryCache(true)->getResult();
         $surveys  = [];
         $averages = 0.0;
 
         foreach ($results as $result) {
-        
-            $result['survey']->setAverage($result['average']);
-            
+
+            foreach ($ratings as $rating) {
+                if ($result[$rating] > 0) {
+                    $rating_total[$rating] += $result[$rating];
+                    $rating_count[$rating]++;
+                }
+            }
+
             $surveys[] = $result['survey'];
-            $averages  += floatval($result['average']);
+
         }
-        
-        $total   = count($surveys);
-        $average = ($total > 0 ? ($averages / $total) : 0);
-        
-        return ['surveys' => $surveys, 'average' => $average];
+
+        $accommodationRatings = [];
+
+        foreach ($ratings as $rating) {
+            if (!empty($rating_count[$rating])) {
+                $accommodationRatings[$rating] = round($rating_total[$rating] / $rating_count[$rating] , 1);
+            }
+        }
+
+        return ['surveys' => $surveys, 'averageRatings' => $accommodationRatings];
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -65,28 +75,28 @@ class SurveyRepository extends BaseRepository implements SurveyServiceRepository
     {
         $qb    = $this->createQueryBuilder('s');
         $expr  = $qb->expr();
-        $query = $qb->select('COUNT(s.booking) AS surveyCount, AVG(s.question_1_7) AS surveyAverageOverallRating')
+        $query = $qb->select('COUNT(s.booking) AS surveyCount, AVG(s.ratingAccommodationTotal) AS surveyAverageOverallRating')
                     ->leftJoin('s.type', 't')
                     ->leftJoin('t.accommodation', 'a')
                     ->where($expr->eq('t', ':type'))
-                    ->andWhere($expr->gt('s.question_1_7', ':question_1_7'))
+                    ->andWhere($expr->gt('s.ratingAccommodationTotal', ':ratingAccommodationTotal'))
                     ->andWhere($expr->eq('s.reviewed', ':reviewed'))
                     ->andWhere($expr->eq('t.display', ':display'))
                     ->andWhere($expr->eq('a.display', ':display'))
                     ->andWhere($expr->eq('a.weekendSki', ':weekendSki'))
                     ->setParameters([
-        
+
                         'type'         => $type,
-                        'question_1_7' => 0,
+                        'ratingAccommodationTotal' => 0,
                         'reviewed'     => 1,
                         'display'      => 1,
                         'weekendSki'   => false,
                     ])
                     ->getQuery();
-        
+
         return $query->getSingleResult();
     }
-    
+
     /**
      * {@InheritDoc}
      */
@@ -94,19 +104,19 @@ class SurveyRepository extends BaseRepository implements SurveyServiceRepository
     {
         $qb    = $this->createQueryBuilder('s');
         $expr  = $qb->expr();
-        $query = $qb->select('s.typeId, COUNT(s.booking) AS surveyCount, AVG(s.question_1_7) AS surveyAverageOverallRating')
+        $query = $qb->select('s.typeId, COUNT(s.booking) AS surveyCount, AVG(s.ratingAccommodationTotal) AS surveyAverageOverallRating')
                     ->leftJoin('s.type', 't')
                     ->leftJoin('t.accommodation', 'a')
                     ->where($qb->expr()->in('s.type', ':types'))
-                    ->andWhere($expr->gt('s.question_1_7', ':question_1_7'))
+                    ->andWhere($expr->gt('s.ratingAccommodationTotal', ':ratingAccommodationTotal'))
                     ->andWhere($expr->eq('s.reviewed', ':reviewed'))
                     ->andWhere($expr->eq('t.display', ':display'))
                     ->andWhere($expr->eq('a.display', ':display'))
                     ->andWhere($expr->eq('a.weekendSki', ':weekendSki'))
                     ->setParameters([
-                    
+
                         'types'        => $types,
-                        'question_1_7' => 0,
+                        'ratingAccommodationTotal' => 0,
                         'reviewed'     => 1,
                         'display'      => 1,
                         'weekendSki'   => false,
@@ -124,20 +134,20 @@ class SurveyRepository extends BaseRepository implements SurveyServiceRepository
     {
         $qb    = $this->createQueryBuilder('s');
         $expr  = $qb->expr();
-        $query = $qb->select('t.id as typeId, COUNT(s.booking) AS surveyCount, AVG(s.question_1_7) AS surveyAverageOverallRating')
+        $query = $qb->select('t.id as typeId, COUNT(s.booking) AS surveyCount, AVG(s.ratingAccommodationTotal) AS surveyAverageOverallRating')
                     ->innerJoin('s.type', 't')
                     ->innerJoin('t.accommodation', 'a')
                     ->innerJoin('a.place', 'p')
                     ->where($expr->eq('p', ':place'))
-                    ->andWhere($expr->gt('s.question_1_7', ':question_1_7'))
+                    ->andWhere($expr->gt('s.ratingAccommodationTotal', ':ratingAccommodationTotal'))
                     ->andWhere($expr->eq('s.reviewed', ':reviewed'))
                     ->andWhere($expr->eq('t.display', ':display'))
                     ->andWhere($expr->eq('a.display', ':display'))
                     ->andWhere($expr->eq('a.weekendSki', ':weekendSki'))
                     ->setParameters([
-                        
+
                         'place'        => $place,
-                        'question_1_7' => 0,
+                        'ratingAccommodationTotal' => 0,
                         'reviewed'     => 1,
                         'display'      => 1,
                         'weekendSki'   => false,
@@ -155,20 +165,20 @@ class SurveyRepository extends BaseRepository implements SurveyServiceRepository
     {
         $qb    = $this->createQueryBuilder('s');
         $expr  = $qb->expr();
-        $query = $qb->select('COUNT(s.booking) AS surveyCount, AVG(s.question_1_7) AS surveyAverageOverallRating')
+        $query = $qb->select('COUNT(s.booking) AS surveyCount, AVG(s.ratingAccommodationTotal) AS surveyAverageOverallRating')
                     ->innerJoin('s.type', 't')
                     ->innerJoin('t.accommodation', 'a')
                     ->innerJoin('a.place', 'p')
                     ->where($expr->eq('p.region', ':region'))
-                    ->andWhere($expr->gt('s.question_1_7', ':question_1_7'))
+                    ->andWhere($expr->gt('s.ratingAccommodationTotal', ':ratingAccommodationTotal'))
                     ->andWhere($expr->eq('s.reviewed', ':reviewed'))
                     ->andWhere($expr->eq('t.display', ':display'))
                     ->andWhere($expr->eq('a.display', ':display'))
                     ->andWhere($expr->eq('a.weekendSki', ':weekendSki'))
                     ->setParameters([
-                        
+
                         'region'       => $region,
-                        'question_1_7' => 0,
+                        'ratingAccommodationTotal' => 0,
                         'reviewed'     => 1,
                         'display'      => 1,
                         'weekendSki'   => false,
@@ -185,26 +195,26 @@ class SurveyRepository extends BaseRepository implements SurveyServiceRepository
     {
         $qb    = $this->createQueryBuilder('s');
         $expr  = $qb->expr();
-        $query = $qb->select('COUNT(s.booking) AS surveyCount, AVG(s.question_1_7) AS surveyAverageOverallRating')
+        $query = $qb->select('COUNT(s.booking) AS surveyCount, AVG(s.ratingAccommodationTotal) AS surveyAverageOverallRating')
                     ->innerJoin('s.type', 't')
                     ->innerJoin('t.accommodation', 'a')
                     ->innerJoin('a.place', 'p')
                     ->where($expr->eq('p.country', ':country'))
-                    ->andWhere($expr->gt('s.question_1_7', ':question_1_7'))
+                    ->andWhere($expr->gt('s.ratingAccommodationTotal', ':ratingAccommodationTotal'))
                     ->andWhere($expr->eq('s.reviewed', ':reviewed'))
                     ->andWhere($expr->eq('t.display', ':display'))
                     ->andWhere($expr->eq('a.display', ':display'))
                     ->andWhere($expr->eq('a.weekendSki', ':weekendSki'))
                     ->setParameters([
-                        
+
                         'country'      => $country,
-                        'question_1_7' => 0,
+                        'ratingAccommodationTotal' => 0,
                         'reviewed'     => 1,
                         'display'      => 1,
                         'weekendSki'   => false,
                     ])
                     ->getQuery();
-        
+
         return $query->getSingleResult();
     }
 }

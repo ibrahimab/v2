@@ -55,4 +55,15 @@ trait Helper
 
         return $date->format($format);
     }
+
+    /**
+     * count number of fields in an array that are non empty
+     *
+     * @return void
+     * @author
+     **/
+    public function countArrayValuesNonEmpty($array)
+    {
+        return count(array_filter($array));
+    }
 }

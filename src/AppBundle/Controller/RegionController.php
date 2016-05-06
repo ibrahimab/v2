@@ -67,21 +67,21 @@ class RegionController extends Controller
             }
         }
 
-        $cmsLinks = [];
+        $internalInfo = [];
         if ($legacyCmsUserService->shouldShowInternalInfo()) {
-            $cmsLinks[] = [
-                'url'  => '/cms_skigebieden.php?show=5&wzt=' . $region->getSeason() . '&5k0=' . $region->getId(),
-                'name' => ($region->getSeason() == 1 ? 'skigebied' : 'regio') . ' bewerken',
+            $internalInfo['cmsLinks'][] = [
+                'url'          => '/cms_skigebieden.php?show=5&wzt=' . $region->getSeason() . '&5k0=' . $region->getId(),
+                'name'         => ($region->getSeason() == 1 ? 'skigebied' : 'regio') . ' bewerken',
                 'target_blank' => true
             ];
         }
 
         return $this->render('regions/show.html.twig', [
 
-            'region'    => $region,
-            'country'   => $place->getCountry(),
-            'places'    => $places,
-            'cmsLinks'  => $cmsLinks,
+            'region'       => $region,
+            'country'      => $place->getCountry(),
+            'places'       => $places,
+            'internalInfo' => $internalInfo,
         ]);
     }
 

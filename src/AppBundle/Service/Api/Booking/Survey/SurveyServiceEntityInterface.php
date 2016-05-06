@@ -12,11 +12,11 @@ use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
  * @package Chalet
  */
 interface SurveyServiceEntityInterface
-{    
+{
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId();
 
@@ -46,7 +46,7 @@ interface SurveyServiceEntityInterface
     /**
      * Get booking
      *
-     * @return BookingServiceEntityInterface 
+     * @return BookingServiceEntityInterface
      */
     public function getBooking();
 
@@ -61,7 +61,7 @@ interface SurveyServiceEntityInterface
     /**
      * Get websiteText
      *
-     * @return string 
+     * @return string
      */
     public function getWebsiteText();
 
@@ -76,7 +76,7 @@ interface SurveyServiceEntityInterface
     /**
      * Get Origal WebsiteText
      *
-     * @return string 
+     * @return string
      */
     public function getOriginalWebsiteTextModified();
 
@@ -91,7 +91,7 @@ interface SurveyServiceEntityInterface
     /**
      * Get DutchWebsiteTextModified
      *
-     * @return string 
+     * @return string
      */
     public function getDutchWebsiteTextModified();
 
@@ -106,7 +106,7 @@ interface SurveyServiceEntityInterface
     /**
      * Get EnglishWebsiteTextModified
      *
-     * @return string 
+     * @return string
      */
     public function getEnglishWebsiteTextModified();
 
@@ -121,10 +121,10 @@ interface SurveyServiceEntityInterface
     /**
      * Get GermanWebsiteTextModified
      *
-     * @return string 
+     * @return string
      */
     public function getGermanWebsiteTextModified();
-    
+
     /**
      * Set website modified text in a certain locale
      *
@@ -141,7 +141,7 @@ interface SurveyServiceEntityInterface
      * @return string
      */
     public function getLocaleWebsiteTextModified($locale);
-    
+
     /**
      * Get flag
      *
@@ -161,7 +161,7 @@ interface SurveyServiceEntityInterface
     /**
      * Get language
      *
-     * @return string 
+     * @return string
      */
     public function getLanguage();
 
@@ -176,7 +176,7 @@ interface SurveyServiceEntityInterface
     /**
      * Get websiteName
      *
-     * @return string 
+     * @return string
      */
     public function getWebsiteName();
 
@@ -191,7 +191,7 @@ interface SurveyServiceEntityInterface
     /**
      * Get reviewed
      *
-     * @return integer 
+     * @return integer
      */
     public function getReviewed();
 
@@ -206,7 +206,7 @@ interface SurveyServiceEntityInterface
     /**
      * Get typeId
      *
-     * @return integer 
+     * @return integer
      */
     public function getTypeId();
 
@@ -236,7 +236,7 @@ interface SurveyServiceEntityInterface
     /**
      * Get arrivalAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getArrivalAt();
 
@@ -251,7 +251,7 @@ interface SurveyServiceEntityInterface
     /**
      * Get departureAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDepartureAt();
 
@@ -266,17 +266,17 @@ interface SurveyServiceEntityInterface
     /**
      * Get filledInAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFilledInAt();
 
     /**
      * Get overallRating
      *
-     * @return integer 
+     * @return integer
      */
     public function getOverallRating();
-    
+
     /**
      * Get answer
      *
@@ -285,7 +285,7 @@ interface SurveyServiceEntityInterface
      * @return integer
      */
     public function getAnswer($questionNumber, $n);
-    
+
     /**
      * @param array $answers
      * @return SurveyServiceEntityInterface

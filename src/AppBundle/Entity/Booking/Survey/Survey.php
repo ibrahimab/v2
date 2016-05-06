@@ -126,49 +126,49 @@ class Survey implements SurveyServiceEntityInterface
      *
      * @ORM\Column(name="vraag1_1", type="integer")
      */
-    private $question_1_1;
+    private $ratingAccommodationReception;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="vraag1_2", type="integer")
      */
-    private $question_1_2;
+    private $ratingAccommodationLocation;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="vraag1_3", type="integer")
      */
-    private $question_1_3;
+    private $ratingAccommodationComfort;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="vraag1_4", type="integer")
      */
-    private $question_1_4;
+    private $ratingAccommodationCleaning;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="vraag1_5", type="integer")
      */
-    private $question_1_5;
+    private $ratingAccommodationFacilities;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="vraag1_6", type="integer")
      */
-    private $question_1_6;
+    private $ratingAccommodationPriceQuality;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="vraag1_7", type="integer")
      */
-    private $question_1_7;
+    private $ratingAccommodationTotal;
 
     /**
      * @var integer
@@ -698,7 +698,7 @@ class Survey implements SurveyServiceEntityInterface
      */
     public function getOverallRating()
     {
-        return $this->question_1_7;
+        return $this->ratingAccommodationTotal;
     }
 
     /**
@@ -765,5 +765,718 @@ class Survey implements SurveyServiceEntityInterface
         }
 
         return $localized;
+    }
+
+    /**
+     * Set ratingAccommodationReception
+     *
+     * @param integer $ratingAccommodationReception
+     * @return Survey
+     */
+    public function setRatingAccommodationReception($ratingAccommodationReception)
+    {
+        $this->ratingAccommodationReception = $ratingAccommodationReception;
+
+        return $this;
+    }
+
+    /**
+     * Get ratingAccommodationReception
+     *
+     * @return integer
+     */
+    public function getRatingAccommodationReception()
+    {
+        return $this->ratingAccommodationReception;
+    }
+
+    /**
+     * Set ratingAccommodationLocation
+     *
+     * @param integer $ratingAccommodationLocation
+     * @return Survey
+     */
+    public function setRatingAccommodationLocation($ratingAccommodationLocation)
+    {
+        $this->ratingAccommodationLocation = $ratingAccommodationLocation;
+
+        return $this;
+    }
+
+    /**
+     * Get ratingAccommodationLocation
+     *
+     * @return integer
+     */
+    public function getRatingAccommodationLocation()
+    {
+        return $this->ratingAccommodationLocation;
+    }
+
+    /**
+     * Set ratingAccommodationComfort
+     *
+     * @param integer $ratingAccommodationComfort
+     * @return Survey
+     */
+    public function setRatingAccommodationComfort($ratingAccommodationComfort)
+    {
+        $this->ratingAccommodationComfort = $ratingAccommodationComfort;
+
+        return $this;
+    }
+
+    /**
+     * Get ratingAccommodationComfort
+     *
+     * @return integer
+     */
+    public function getRatingAccommodationComfort()
+    {
+        return $this->ratingAccommodationComfort;
+    }
+
+    /**
+     * Set ratingAccommodationCleaning
+     *
+     * @param integer $ratingAccommodationCleaning
+     * @return Survey
+     */
+    public function setRatingAccommodationCleaning($ratingAccommodationCleaning)
+    {
+        $this->ratingAccommodationCleaning = $ratingAccommodationCleaning;
+
+        return $this;
+    }
+
+    /**
+     * Get ratingAccommodationCleaning
+     *
+     * @return integer
+     */
+    public function getRatingAccommodationCleaning()
+    {
+        return $this->ratingAccommodationCleaning;
+    }
+
+    /**
+     * Set ratingAccommodationFacilities
+     *
+     * @param integer $ratingAccommodationFacilities
+     * @return Survey
+     */
+    public function setRatingAccommodationFacilities($ratingAccommodationFacilities)
+    {
+        $this->ratingAccommodationFacilities = $ratingAccommodationFacilities;
+
+        return $this;
+    }
+
+    /**
+     * Get ratingAccommodationFacilities
+     *
+     * @return integer
+     */
+    public function getRatingAccommodationFacilities()
+    {
+        return $this->ratingAccommodationFacilities;
+    }
+
+    /**
+     * Set ratingAccommodationPriceQuality
+     *
+     * @param integer $ratingAccommodationPriceQuality
+     * @return Survey
+     */
+    public function setRatingAccommodationPriceQuality($ratingAccommodationPriceQuality)
+    {
+        $this->ratingAccommodationPriceQuality = $ratingAccommodationPriceQuality;
+
+        return $this;
+    }
+
+    /**
+     * Get ratingAccommodationPriceQuality
+     *
+     * @return integer
+     */
+    public function getRatingAccommodationPriceQuality()
+    {
+        return $this->ratingAccommodationPriceQuality;
+    }
+
+    /**
+     * Set ratingAccommodationTotal
+     *
+     * @param integer $ratingAccommodationTotal
+     * @return Survey
+     */
+    public function setRatingAccommodationTotal($ratingAccommodationTotal)
+    {
+        $this->ratingAccommodationTotal = $ratingAccommodationTotal;
+
+        return $this;
+    }
+
+    /**
+     * Get ratingAccommodationTotal
+     *
+     * @return integer
+     */
+    public function getRatingAccommodationTotal()
+    {
+        return $this->ratingAccommodationTotal;
+    }
+
+    /**
+     * Set question_1_explanation
+     *
+     * @param integer $question1Explanation
+     * @return Survey
+     */
+    public function setQuestion1Explanation($question1Explanation)
+    {
+        $this->question_1_explanation = $question1Explanation;
+
+        return $this;
+    }
+
+    /**
+     * Get question_1_explanation
+     *
+     * @return integer
+     */
+    public function getQuestion1Explanation()
+    {
+        return $this->question_1_explanation;
+    }
+
+    /**
+     * Set question_2_1
+     *
+     * @param integer $question21
+     * @return Survey
+     */
+    public function setQuestion21($question21)
+    {
+        $this->question_2_1 = $question21;
+
+        return $this;
+    }
+
+    /**
+     * Get question_2_1
+     *
+     * @return integer
+     */
+    public function getQuestion21()
+    {
+        return $this->question_2_1;
+    }
+
+    /**
+     * Set question_2_2
+     *
+     * @param integer $question22
+     * @return Survey
+     */
+    public function setQuestion22($question22)
+    {
+        $this->question_2_2 = $question22;
+
+        return $this;
+    }
+
+    /**
+     * Get question_2_2
+     *
+     * @return integer
+     */
+    public function getQuestion22()
+    {
+        return $this->question_2_2;
+    }
+
+    /**
+     * Set question_2_3
+     *
+     * @param integer $question23
+     * @return Survey
+     */
+    public function setQuestion23($question23)
+    {
+        $this->question_2_3 = $question23;
+
+        return $this;
+    }
+
+    /**
+     * Get question_2_3
+     *
+     * @return integer
+     */
+    public function getQuestion23()
+    {
+        return $this->question_2_3;
+    }
+
+    /**
+     * Set question_2_4
+     *
+     * @param integer $question24
+     * @return Survey
+     */
+    public function setQuestion24($question24)
+    {
+        $this->question_2_4 = $question24;
+
+        return $this;
+    }
+
+    /**
+     * Get question_2_4
+     *
+     * @return integer
+     */
+    public function getQuestion24()
+    {
+        return $this->question_2_4;
+    }
+
+    /**
+     * Set question_2_5
+     *
+     * @param integer $question25
+     * @return Survey
+     */
+    public function setQuestion25($question25)
+    {
+        $this->question_2_5 = $question25;
+
+        return $this;
+    }
+
+    /**
+     * Get question_2_5
+     *
+     * @return integer
+     */
+    public function getQuestion25()
+    {
+        return $this->question_2_5;
+    }
+
+    /**
+     * Set question_2_6
+     *
+     * @param integer $question26
+     * @return Survey
+     */
+    public function setQuestion26($question26)
+    {
+        $this->question_2_6 = $question26;
+
+        return $this;
+    }
+
+    /**
+     * Get question_2_6
+     *
+     * @return integer
+     */
+    public function getQuestion26()
+    {
+        return $this->question_2_6;
+    }
+
+    /**
+     * Set question_2_7
+     *
+     * @param integer $question27
+     * @return Survey
+     */
+    public function setQuestion27($question27)
+    {
+        $this->question_2_7 = $question27;
+
+        return $this;
+    }
+
+    /**
+     * Get question_2_7
+     *
+     * @return integer
+     */
+    public function getQuestion27()
+    {
+        return $this->question_2_7;
+    }
+
+    /**
+     * Set question_2_other
+     *
+     * @param integer $question2Other
+     * @return Survey
+     */
+    public function setQuestion2Other($question2Other)
+    {
+        $this->question_2_other = $question2Other;
+
+        return $this;
+    }
+
+    /**
+     * Get question_2_other
+     *
+     * @return integer
+     */
+    public function getQuestion2Other()
+    {
+        return $this->question_2_other;
+    }
+
+    /**
+     * Set question_3_1
+     *
+     * @param integer $question31
+     * @return Survey
+     */
+    public function setQuestion31($question31)
+    {
+        $this->question_3_1 = $question31;
+
+        return $this;
+    }
+
+    /**
+     * Get question_3_1
+     *
+     * @return integer
+     */
+    public function getQuestion31()
+    {
+        return $this->question_3_1;
+    }
+
+    /**
+     * Set question_3_2
+     *
+     * @param integer $question32
+     * @return Survey
+     */
+    public function setQuestion32($question32)
+    {
+        $this->question_3_2 = $question32;
+
+        return $this;
+    }
+
+    /**
+     * Get question_3_2
+     *
+     * @return integer
+     */
+    public function getQuestion32()
+    {
+        return $this->question_3_2;
+    }
+
+    /**
+     * Set question_3_3
+     *
+     * @param integer $question33
+     * @return Survey
+     */
+    public function setQuestion33($question33)
+    {
+        $this->question_3_3 = $question33;
+
+        return $this;
+    }
+
+    /**
+     * Get question_3_3
+     *
+     * @return integer
+     */
+    public function getQuestion33()
+    {
+        return $this->question_3_3;
+    }
+
+    /**
+     * Set question_3_4
+     *
+     * @param integer $question34
+     * @return Survey
+     */
+    public function setQuestion34($question34)
+    {
+        $this->question_3_4 = $question34;
+
+        return $this;
+    }
+
+    /**
+     * Get question_3_4
+     *
+     * @return integer
+     */
+    public function getQuestion34()
+    {
+        return $this->question_3_4;
+    }
+
+    /**
+     * Set question_3_5
+     *
+     * @param integer $question35
+     * @return Survey
+     */
+    public function setQuestion35($question35)
+    {
+        $this->question_3_5 = $question35;
+
+        return $this;
+    }
+
+    /**
+     * Get question_3_5
+     *
+     * @return integer
+     */
+    public function getQuestion35()
+    {
+        return $this->question_3_5;
+    }
+
+    /**
+     * Set question_3_6
+     *
+     * @param integer $question36
+     * @return Survey
+     */
+    public function setQuestion36($question36)
+    {
+        $this->question_3_6 = $question36;
+
+        return $this;
+    }
+
+    /**
+     * Get question_3_6
+     *
+     * @return integer
+     */
+    public function getQuestion36()
+    {
+        return $this->question_3_6;
+    }
+
+    /**
+     * Set question_3_7
+     *
+     * @param integer $question37
+     * @return Survey
+     */
+    public function setQuestion37($question37)
+    {
+        $this->question_3_7 = $question37;
+
+        return $this;
+    }
+
+    /**
+     * Get question_3_7
+     *
+     * @return integer
+     */
+    public function getQuestion37()
+    {
+        return $this->question_3_7;
+    }
+
+    /**
+     * Set question_3_8
+     *
+     * @param integer $question38
+     * @return Survey
+     */
+    public function setQuestion38($question38)
+    {
+        $this->question_3_8 = $question38;
+
+        return $this;
+    }
+
+    /**
+     * Get question_3_8
+     *
+     * @return integer
+     */
+    public function getQuestion38()
+    {
+        return $this->question_3_8;
+    }
+
+    /**
+     * Set question_3_9
+     *
+     * @param integer $question39
+     * @return Survey
+     */
+    public function setQuestion39($question39)
+    {
+        $this->question_3_9 = $question39;
+
+        return $this;
+    }
+
+    /**
+     * Get question_3_9
+     *
+     * @return integer
+     */
+    public function getQuestion39()
+    {
+        return $this->question_3_9;
+    }
+
+    /**
+     * Set question_3_explanation
+     *
+     * @param integer $question3Explanation
+     * @return Survey
+     */
+    public function setQuestion3Explanation($question3Explanation)
+    {
+        $this->question_3_explanation = $question3Explanation;
+
+        return $this;
+    }
+
+    /**
+     * Get question_3_explanation
+     *
+     * @return integer
+     */
+    public function getQuestion3Explanation()
+    {
+        return $this->question_3_explanation;
+    }
+
+    /**
+     * Set question_4
+     *
+     * @param integer $question4
+     * @return Survey
+     */
+    public function setQuestion4($question4)
+    {
+        $this->question_4 = $question4;
+
+        return $this;
+    }
+
+    /**
+     * Get question_4
+     *
+     * @return integer
+     */
+    public function getQuestion4()
+    {
+        return $this->question_4;
+    }
+
+    /**
+     * Set question_5
+     *
+     * @param integer $question5
+     * @return Survey
+     */
+    public function setQuestion5($question5)
+    {
+        $this->question_5 = $question5;
+
+        return $this;
+    }
+
+    /**
+     * Get question_5
+     *
+     * @return integer
+     */
+    public function getQuestion5()
+    {
+        return $this->question_5;
+    }
+
+    /**
+     * Set question_5_explanation
+     *
+     * @param integer $question5Explanation
+     * @return Survey
+     */
+    public function setQuestion5Explanation($question5Explanation)
+    {
+        $this->question_5_explanation = $question5Explanation;
+
+        return $this;
+    }
+
+    /**
+     * Get question_5_explanation
+     *
+     * @return integer
+     */
+    public function getQuestion5Explanation()
+    {
+        return $this->question_5_explanation;
+    }
+
+    /**
+     * Set question_6
+     *
+     * @param integer $question6
+     * @return Survey
+     */
+    public function setQuestion6($question6)
+    {
+        $this->question_6 = $question6;
+
+        return $this;
+    }
+
+    /**
+     * Get question_6
+     *
+     * @return integer
+     */
+    public function getQuestion6()
+    {
+        return $this->question_6;
+    }
+
+    /**
+     * Set question_7
+     *
+     * @param integer $question7
+     * @return Survey
+     */
+    public function setQuestion7($question7)
+    {
+        $this->question_7 = $question7;
+
+        return $this;
+    }
+
+    /**
+     * Get question_7
+     *
+     * @return integer
+     */
+    public function getQuestion7()
+    {
+        return $this->question_7;
     }
 }
