@@ -224,41 +224,43 @@ Template-content: accommodation page
                             </a>
                         </div>
                     </div>
-                    <div id="types-other" class="table-wrapper">
-                        <h3>Alle types van deze accommodatie</h3>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th><span>Per</span>sonen</th>
-                                    <th><span>Slaap</span>kamers</th>
-                                    <th><span>Bad</span>kamers</th>
-                                    <th>Type</th>
-                                    <th>Beoordeling (#)</th>
-                                    <th>&nbsp;</th>
-                                    <th><span>Prijs accom</span>modatie</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% set types  = accommodation.getTypes().toArray() %}
-                                {% set l      = types|sortprop('name') %}
-                                {% for t in types %}
-                                    {% set survey = surveyDataOtherTypes[t.getId()] is defined ? surveyDataOtherTypes[t.getId()] : null %}
-                                    <tr{{ t.getId() == type.getId() ? ' class="active"' : '' }} data-role="clickable" data-url="{{ locale_path('show_type', { beginCode: country.getStartCode(), typeId: t.getId() }) }}"><!-- notice this row is in discount -->
-                                        <td><i class="sprite sprite-icon-torso"></i>{{ (t.getOptimalResidents() == t.getMaxResidents() ? t.getOptimalResidents() : (t.getOptimalResidents() ~ ' - ' ~ t.getMaxResidents())) }}</td>
-                                        <td><i class="sprite sprite-icon-sleep"></i>{{ t.getBedrooms() ~ (t.getLocaleBedroomsExtra(locale) != '' ? (' ' ~ t.getLocaleBedroomsExtra(locale)) : '') }}</td>
-                                        <td><i class="sprite sprite-icon-bath"></i>{{ t.getBathrooms() ~ (t.getLocaleBathroomsExtra(locale) != '' ? (' ' ~ t.getLocaleBathroomsExtra(locale)) : '') }}</td>
-                                        <td>{{ t.getLocaleName(locale) }}</td>
-                                        <td>
-                                            {% if survey %}
-                                                <span class="table-ratings">{{ survey.surveyAverageOverallRating|number_format(1, ',', '') }}</span> ({{ survey.surveyCount }})</td>
-                                            {% endif %}
-                                        <td>{% if offers[t.getId()] is defined %}<i class="sprite sprite-icon-discount"></i>{% endif %}</td>
-                                        <td>{% if prices[t.getId()] is defined %}&euro; {{ prices[t.getId()]|number_format(0, ',', '.') }},-<i class="fi-info"></i>{% endif %}</td>
+                    {% set all_types = accommodation.getTypes().toArray() %}
+                    {% if all_types|length > 1 %}
+                        <div id="types-other" class="table-wrapper">
+                            <h3>Alle types van deze accommodatie</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th><span>Per</span>sonen</th>
+                                        <th><span>Slaap</span>kamers</th>
+                                        <th><span>Bad</span>kamers</th>
+                                        <th>Type</th>
+                                        <th>Beoordeling (#)</th>
+                                        <th>&nbsp;</th>
+                                        <th><span>Prijs accom</span>modatie</th>
                                     </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                    {% set l      = all_types|sortprop('name') %}
+                                    {% for t in all_types %}
+                                        {% set survey = surveyDataOtherTypes[t.getId()] is defined ? surveyDataOtherTypes[t.getId()] : null %}
+                                        <tr{{ t.getId() == type.getId() ? ' class="active"' : '' }} data-role="clickable" data-url="{{ locale_path('show_type', { beginCode: country.getStartCode(), typeId: t.getId() }) }}"><!-- notice this row is in discount -->
+                                            <td><i class="sprite sprite-icon-torso"></i>{{ (t.getOptimalResidents() == t.getMaxResidents() ? t.getOptimalResidents() : (t.getOptimalResidents() ~ ' - ' ~ t.getMaxResidents())) }}</td>
+                                            <td><i class="sprite sprite-icon-sleep"></i>{{ t.getBedrooms() ~ (t.getLocaleBedroomsExtra(locale) != '' ? (' ' ~ t.getLocaleBedroomsExtra(locale)) : '') }}</td>
+                                            <td><i class="sprite sprite-icon-bath"></i>{{ t.getBathrooms() ~ (t.getLocaleBathroomsExtra(locale) != '' ? (' ' ~ t.getLocaleBathroomsExtra(locale)) : '') }}</td>
+                                            <td>{{ t.getLocaleName(locale) }}</td>
+                                            <td>
+                                                {% if survey %}
+                                                    <span class="table-ratings">{{ survey.surveyAverageOverallRating|number_format(1, ',', '') }}</span> ({{ survey.surveyCount }})</td>
+                                                {% endif %}
+                                            <td>{% if offers[t.getId()] is defined %}<i class="sprite sprite-icon-discount"></i>{% endif %}</td>
+                                            <td>{% if prices[t.getId()] is defined %}&euro; {{ prices[t.getId()]|number_format(0, ',', '.') }},-<i class="fi-info"></i>{% endif %}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
 
                     {% include 'partials/surveys.html.twig' with {'surveyData': surveyData, 'surveyCount': surveyCount, 'surveyAverage': surveyAverage, 'minimalSurveyCount': minimalSurveyCount} only %}
 
@@ -364,7 +366,9 @@ Template-content: accommodation page
                             <li>Badkamers<span>{{ type.getBathrooms() }}<i class="sprite sprite-icon-bath"></i></span>{% if type.getLocaleBathroomsExtra(locale) != '' %}<span class="extra">({{ type.getLocaleBathroomsExtra(locale) }})</span>{% endif %}</li>
                             <li>Oppervlakte<span>{{ type.getSurface() }} m&sup2;{% if type.getLocaleSurfaceExtra(locale) != '' %} - {{ type.getLocaleSurfaceExtra(locale) }}&sup2;{% endif %}<i class="sprite sprite-icon-surface"></i></span></li>
                         </ul>
-                        <a href="#types-other" class="button goto blank small radius" title="Bekijk alle types's">Alle types van deze accommodatie</a>
+                        {% if all_types|length > 1 %}
+                            <a href="#types-other" class="button goto blank small radius" title="Bekijk alle types's">Alle types van deze accommodatie</a>
+                        {% endif %}
                         <div class="rating">
                             <span class="stars has-tip tip-left radius" data-tooltip aria-haspopup="true" title="<h4>Klassering Chalet.nl</h4><p>Onze accommodaties worden ingedeeld in verschillende kwaliteitscategorieën. Het vermelde aantal sterren is een indicatie van de kwaliteit van de accommodatie.</p><p>Toekenning van het aantal sterren gebeurt op basis van onder andere de volgende punten: inrichting, uiterlijk, aantal vierkante meters, ligging, staat van onderhoud, enz. Het aantal toegekende sterren ligt tussen 1 en 5.</p>">{% include 'partials/quality_stars.html.twig' with {quality: (type.getQuality() > 0 ? type.getQuality() : accommodation.getQuality())} only %}<i class="fi-info"></i></span>
                             {% if surveyCount > minimalSurveyCount %}
