@@ -689,7 +689,7 @@
         });
 
         //this code handles the "extra info link" scroll on types page
-        jq("#accom .tarieventabel_wrapper a").on("click",function(event) {
+        jq("#accom .tarieventabel_wrapper .tarieventabel_bkk_group a").on("click",function(event) {
             event.preventDefault();
             var el = jq("body").find('#extras');
             scrollToMakeVisible(el);
