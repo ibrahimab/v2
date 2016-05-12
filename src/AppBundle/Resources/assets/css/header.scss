@@ -160,6 +160,11 @@
                 border-bottom: 3px solid $menu-hover-border-color;
             }
 
+            &.active {
+
+                border-bottom: 3px solid $menu-active-border-color;
+            }
+
             a:active, a:hover, a:visited {
 
                 text-decoration: none;
