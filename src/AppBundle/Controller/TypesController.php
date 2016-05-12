@@ -97,6 +97,7 @@ class TypesController extends Controller
      *    "typeId": "\d+",
      *    "fullAccname": ".+"
      * }, options={"expose": true}, defaults={"fullAccName" = null})
+     * @Breadcrumb(name="all_regions", title="regions", translate=true, path="all_regions")
      * @Breadcrumb(name="show_country", title="{countryName}",       path="show_country", pathParams={"countrySlug"})
      * @Breadcrumb(name="show_region",  title="{regionName}",        path="show_region",  pathParams={"regionSlug"})
      * @Breadcrumb(name="show_place",   title="{placeName}",         path="show_place",   pathParams={"placeSlug"})
