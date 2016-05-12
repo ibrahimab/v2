@@ -23,7 +23,7 @@
                         <div class="overlay"></div>
                     {% endif %}
                     <div class="accom-img">
-                        <img src="{{ country_image(1) }}" alt="France" />
+                        <img src="{{ generate_image_path(country_image(1))|thumbnail(371, 278) }}" alt="France" />
                     </div>
                     <div class="accom-desc">
                         <div class="title"><i class="sprite sprite-flag-F"></i>{{ france }}</div>
@@ -38,7 +38,7 @@
                         <div class="overlay"></div>
                     {% endif %}
                     <div class="accom-img">
-                        <img src="{{ country_image(2) }}" alt="Austria" />
+                        <img src="{{ generate_image_path(country_image(2))|thumbnail(371, 278) }}" alt="Austria" />
                     </div>
                     <div class="accom-desc">
                         <div class="title"><i class="sprite sprite-flag-O"></i>{{ austria }}</div>
@@ -53,7 +53,7 @@
                         <div class="overlay"></div>
                     {% endif %}
                     <div class="accom-img">
-                        <img src="{{ country_image(3) }}" alt="Switzerland" height="200" />
+                        <img src="{{ generate_image_path(country_image(3))|thumbnail(371, 278) }}" alt="Switzerland" height="200" />
                     </div>
                     <div class="accom-desc">
                         <div class="title"><i class="sprite sprite-flag-Z"></i>{{ switzerland }}</div>
@@ -68,7 +68,7 @@
                         <div class="overlay"></div>
                     {% endif %}
                     <div class="accom-img">
-                        <img src="{{ country_image(5) }}" alt="Italy" />
+                        <img src="{{ generate_image_path(country_image(5))|thumbnail(371, 278) }}" alt="Italy" />
                     </div>
                     <div class="accom-desc">
                         <div class="title"><i class="sprite sprite-flag-I"></i>{{ italy }}</div>

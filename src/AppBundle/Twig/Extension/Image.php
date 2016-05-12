@@ -259,22 +259,20 @@ trait Image
         return $this->getOldImageUrlPrefix() . '/' . $filename;
     }
 
+    /**
+     * @param integer $countryId
+     *
+     * @return string
+     */
     public function getCountryImage($countryId)
     {
-        $countryFileService = $this->getFileService('country');
-        $countryImage       = $countryFileService->getImage($countryId);
+        $image = $this->getFileService('country')->getImage($countryId);
 
-        if (null === $countryImage) {
-
-            $countryImage = new CountryFileDocument();
-            $countryImage->setUrlPrefix($this->getOldImageUrlPrefix());
-            $countryImage->setDirectory('accommodaties');
-            $countryImage->setFilename('0.jpg');
+        if (null === $image) {
+            $image = ['directory' => 'accommodaties', 'filename' => '0.jpg'];
         }
 
-        $countryImage->setUrlPrefix($this->getOldImageUrlPrefix());
-
-        return $countryImage;
+        return $image;
     }
 
     /**
