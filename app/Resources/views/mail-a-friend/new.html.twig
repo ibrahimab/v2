@@ -10,12 +10,12 @@
 
     <section class="place-page mail-a-friend-page">
 
-        <form name="form-contact" method="post" action="{{ path('process_mail_a_friend', {'beginCode': beginCode, 'typeId': typeId}) }}">
+        <form name="form-contact" method="post" action="{{ path('process_mail_a_friend', {'countryCode': countryCode, 'typeId': typeId}) }}">
             <div class="row">
                 <div class="small-12 medium-8 large-8 columns">
 
                     <h1>{{ 'mail-a-friend-title'|trans }}</h1>
-                
+
                     <div class="row">
                         <div class="large-12 columns">
                             <label for="from_name"{{ form['errors']['from_name'] is defined ? ' class="error"' : '' }}>{{ 'form-mail-a-friend-from_name'|trans }}
@@ -67,13 +67,13 @@
                         </div>
                     </div>
                     <br />
-                
+
                 </div>
 
                 {% include 'partials/highlight/highlight.html.twig' with {'highlight': {'type': type}, 'place': type.getAccommodation().getPlace(), 'offers': offers, 'end': true, small_size: 12, medium_size: 4, large_size: 4} only %}
-                
+
             </div>
-            
+
         </form>
 
     </section>

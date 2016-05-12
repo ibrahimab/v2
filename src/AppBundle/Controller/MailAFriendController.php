@@ -21,33 +21,33 @@ use       Doctrine\ORM\NoResultException;
 class MailAFriendController extends Controller
 {
     /**
-     * @Route("/mail-een-vriend/{beginCode}{typeId}", name="mail_a_friend_nl", requirements={
-     *    "beginCode": "[A-Z]{1,2}",
+     * @Route("/mail-een-vriend/{countryCode}{typeId}", name="mail_a_friend_nl", requirements={
+     *    "countryCode": "[A-Z]{1,2}",
      *    "typeId": "\d+"
      * })
-     * @Route("/mail-a-friend/{beginCode}{typeId}", name="mail_a_friend_en", requirements={
-     *    "beginCode": "[A-Z]{1,2}",
+     * @Route("/mail-a-friend/{countryCode}{typeId}", name="mail_a_friend_en", requirements={
+     *    "countryCode": "[A-Z]{1,2}",
      *    "typeId": "\d+"
      * })
      * @Method("GET")
      */
-    public function newAction($beginCode, $typeId)
+    public function newAction($countryCode, $typeId)
     {
         try {
-            
+
             $typeService = $this->get('app.api.type');
             $type        = $typeService->findById($typeId);
-            
+
         } catch (NoResultException $exception) {
             throw $this->createNotFoundException(sprintf('Type with ID=%d could not be found', $typeId));
         }
 
         $priceService  = $this->get('app.api.price');
         $offers        = $priceService->offers([$typeId]);
-        
+
         return $this->render('mail-a-friend/new.html.twig', [
 
-            'beginCode' => $beginCode,
+            'countryCode' => $countryCode,
             'typeId'    => $typeId,
             'type'      => $type,
             'prices'    => $prices,
@@ -65,28 +65,28 @@ class MailAFriendController extends Controller
             ],
         ]);
     }
-    
+
     /**
-     * @Route("/mail-a-friend/{beginCode}{typeId}", name="process_mail_a_friend", requirements={
-     *    "beginCode": "[A-Z]{1,2}",
+     * @Route("/mail-a-friend/{countryCode}{typeId}", name="process_mail_a_friend", requirements={
+     *    "countryCode": "[A-Z]{1,2}",
      *    "typeId": "\d+"
      * })
      * @Method("POST")
      */
-    public function create($beginCode, $typeId, Request $request)
+    public function create($countryCode, $typeId, Request $request)
     {
         try {
-            
+
             $typeService  = $this->get('app.api.type');
             $priceService = $this->get('app.api.price');
-            
+
             $type         = $typeService->findById($typeId);
             $offers       = $priceService->offers([$typeId]);
-            
+
         } catch (NoResultException $exception) {
             throw $this->createNotFoundException(sprintf('Type with ID=%d could not be found', $typeId));
         }
-        
+
         $mailAFriend = new MailAFriend($request->get('mail_a_friend'), $this->get('validator'));
         $mailAFriend->validate();
 
@@ -105,7 +105,7 @@ class MailAFriendController extends Controller
                                      // ->setTemplate('mail/mail-a-friend.txt.twig', 'text/plain')
                                      ->send($data);
 
-            // return $this->redirectToRoute('mail_a_friend_' . $request->getLocale(), ['beginCode' => $beginCode, 'typeId' => $typeId]);
+            // return $this->redirectToRoute('mail_a_friend_' . $request->getLocale(), ['countryCode' => $countryCode, 'typeId' => $typeId]);
         }
 
         $priceService  = $this->get('app.api.price');
@@ -113,7 +113,7 @@ class MailAFriendController extends Controller
 
         return $this->render('mail-a-friend/new.html.twig', [
 
-            'beginCode' => $beginCode,
+            'countryCode' => $countryCode,
             'typeId'    => $typeId,
             'type'      => $type,
             'prices'    => $prices,

@@ -25,7 +25,7 @@
 
     {% include 'price_calculator/table.html.twig' with {
 
-        begin_code: type.getAccommodation().getPlace().getCountry().getStartCode(),
+        begin_code: type.getAccommodation().getPlace().getCountry().getCountryCode(),
         type_id: type.getId(),
         name_type: name_type,
         name_place: name_place,

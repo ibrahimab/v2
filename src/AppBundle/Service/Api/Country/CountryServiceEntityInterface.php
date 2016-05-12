@@ -375,19 +375,19 @@ interface CountryServiceEntityInterface
     public function getColourCode();
 
     /**
-     * Set Startcode
+     * Set countryCode
      *
-     * @param string $startCode
+     * @param string $countryCode
      * @return CountryServiceEntityInterface
      */
-    public function setStartCode($startCode);
+    public function setCountryCode($countryCode);
 
     /**
      * Get Start Code
      *
      * @return string
      */
-    public function getStartCode();
+    public function getCountryCode();
 
     /**
      * Set accommodationCodes

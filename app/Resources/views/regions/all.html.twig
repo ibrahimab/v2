@@ -13,7 +13,7 @@
         {% set country = item['country'] %}
         {% set regions = item['regions'] %}
         <section id="area-selected" class="country-page">
-            <h3><i class="sprite sprite-flag-{{ country.startcode }}"></i> {{ 'ski-areas'|trans}} {{ country.name|trans }}</h3>
+            <h3><i class="sprite sprite-flag-{{ country.countrycode }}"></i> {{ 'ski-areas'|trans}} {{ country.name|trans }}</h3>
             <div class="row region-block" data-equalizer>
                 {% for region in regions %}
                 <div class="small-12 medium-3 large-3 columns{{ (( ((loop.index % 4) is same as(0)) or loop.last) ? ' end' : '') }}">
@@ -23,7 +23,7 @@
                                 <img src="{{ generate_image_path(region_image(region))|thumbnail(365, 274) }}" alt="{{ region.getLocaleName(get_locale()) }}" />
                             </div>
                             <div class="accom-desc">
-                                <div class="title">{{ region.getLocaleName(get_locale()) }}</div>                   
+                                <div class="title">{{ region.getLocaleName(get_locale()) }}</div>
                                 <div class="chalets"><i class="sprite sprite-gray-chalet chalets-icon-box"></i><span class="chalets-data-box"><strong>{{ region.getTypesCount() }}</strong> {% if region.getTypesCount() is same as(1) %}{{ 'chalet-or-apartment'|trans }}{% else %}{{ 'chalets-apartments'|trans }}{% endif %}</span></div>
                                 {% if region.getMinimumAltitude() != region.getMaximumAltitude() %}
                                     <div class="mountain"><i class="sprite sprite-gray-mountain chalets-icon-box"></i><span class="chalets-data-box">Ligt tussen <strong>{{ region.getMinimumAltitude() }}</strong> {{ 'and'|trans }} <strong>{{ region.getMaximumAltitude() }}</strong> m hoogte</span></div>

@@ -244,7 +244,7 @@ Template-content: accommodation page
                                     {% set l      = all_types|sortprop('name') %}
                                     {% for t in all_types %}
                                         {% set survey = surveyDataOtherTypes[t.getId()] is defined ? surveyDataOtherTypes[t.getId()] : null %}
-                                        <tr{{ t.getId() == type.getId() ? ' class="active"' : '' }} data-role="clickable" data-url="{{ locale_path('show_type', { beginCode: country.getStartCode(), typeId: t.getId() }) }}"><!-- notice this row is in discount -->
+                                        <tr{{ t.getId() == type.getId() ? ' class="active"' : '' }} data-role="clickable" data-url="{{ locale_path('show_type', { countryCode: country.getCountryCode(), typeId: t.getId() }) }}"><!-- notice this row is in discount -->
                                             <td><i class="sprite sprite-icon-torso"></i>{{ (t.getOptimalResidents() == t.getMaxResidents() ? t.getOptimalResidents() : (t.getOptimalResidents() ~ ' - ' ~ t.getMaxResidents())) }}</td>
                                             <td><i class="sprite sprite-icon-sleep"></i>{{ t.getBedrooms() ~ (t.getLocaleBedroomsExtra(locale) != '' ? (' ' ~ t.getLocaleBedroomsExtra(locale)) : '') }}</td>
                                             <td><i class="sprite sprite-icon-bath"></i>{{ t.getBathrooms() ~ (t.getLocaleBathroomsExtra(locale) != '' ? (' ' ~ t.getLocaleBathroomsExtra(locale)) : '') }}</td>
@@ -387,12 +387,12 @@ Template-content: accommodation page
                         <hr />
                         <a href="{{ locale_path('booking') }}?tid={{ type.getId() }}&amp;d={{ date }}&amp;ap={{ numberOfPersons }}" class="button large radius" title="Boek nu" role="button" data-action="book" data-book-url="{{ locale_path('booking') }}?tid={{ type.getId() }}">Boek nu</a>
                         <div class="social-buttons">
-                            <a href="#" data-role="social-share" data-social-source="facebook" data-social-url="{{ locale_url('show_type', {beginCode: country.getStartCode(), typeId: type.getId()}) }}" class="button social fb tiny radius" title="Like"><i class="fi-social-facebook"></i>Deel</a>
-                            <a href="#" data-role="social-share" data-social-source="twitter" data-social-url="{{ locale_url('show_type', {beginCode: country.getStartCode(), typeId: type.getId()}) }}" data-social-tweet="Bekijk deze accommodatie bij Chalet.nl:" class="button social tw tiny radius" title="Tweet"><i class="fi-social-twitter"></i>Tweet</a>
-                            <a href="{{ locale_path('mail_a_friend', {beginCode: country.startCode, typeId: type.id}) }}" class="button social ml tiny radius" title="Mail"><i class="fi-mail"></i>Mail</a>
+                            <a href="#" data-role="social-share" data-social-source="facebook" data-social-url="{{ locale_url('show_type', {countryCode: country.getCountryCode(), typeId: type.getId()}) }}" class="button social fb tiny radius" title="Like"><i class="fi-social-facebook"></i>Deel</a>
+                            <a href="#" data-role="social-share" data-social-source="twitter" data-social-url="{{ locale_url('show_type', {countryCode: country.getCountryCode(), typeId: type.getId()}) }}" data-social-tweet="Bekijk deze accommodatie bij Chalet.nl:" class="button social tw tiny radius" title="Tweet"><i class="fi-social-twitter"></i>Tweet</a>
+                            <a href="{{ locale_path('mail_a_friend', {countryCode: country.countryCode, typeId: type.id}) }}" class="button social ml tiny radius" title="Mail"><i class="fi-mail"></i>Mail</a>
                             {% set type_is_favorite = is_favorite(type) %}
                             <div class="heart"><a href="#"{% if type_is_favorite %} data-role="remove-favorite"{% else %} data-role="add-favorite"{% endif %} data-id="{{ type.getId() }}" class="{% if type_is_favorite %}active added {% endif %}button social tiny radius" title="Dit resultaat opslaan in mijn favorieten"><i class="fi-heart"></i>Favoriet</a></div>
-                            <a href="whatsapp://send?text={{ 'Bekijk deze accommodatie bij Chalet.nl: ' ~ locale_url('show_type', {beginCode: country.getStartCode(), typeId: type.getId()}) }}" class="show-for-small-only button social wa tiny radius"><i class="sprite sprite-social-whatsapp-bw"></i>Whatsapp</a>
+                            <a href="whatsapp://send?text={{ 'Bekijk deze accommodatie bij Chalet.nl: ' ~ locale_url('show_type', {countryCode: country.getCountryCode(), typeId: type.getId()}) }}" class="show-for-small-only button social wa tiny radius"><i class="sprite sprite-social-whatsapp-bw"></i>Whatsapp</a>
                         </div>
                     </div>
                 </div>

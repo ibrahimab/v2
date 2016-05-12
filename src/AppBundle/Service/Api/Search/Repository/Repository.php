@@ -133,7 +133,7 @@ class Repository implements RepositoryInterface
                          a.toonper as accommodation_show, a.soortaccommodatie AS kind, p.plaats_id AS place_id, {$this->getLocaleField('p.naam')} AS place_name,
                          {$this->getLocaleField('p.seonaam')} AS place_seoname, p.kenmerken as place_features, r.skigebied_id AS region_id, {$this->getLocaleField('r.naam')} AS region_name,
                          {$this->getLocaleField('r.seonaam')} AS region_seoname, r.kilometerpiste AS region_total_slopes_distance, c.land_id AS country_id, {$this->getLocaleField('c.naam')} AS country_name,
-                         {$this->getLocaleField('c.seonaam')} as country_seoname, c.begincode AS country_begincode,
+                         {$this->getLocaleField('c.seonaam')} as country_seoname, c.begincode AS country_countrycode,
                          s.zoekvolgorde AS supplier_search_order";
 
         $clauses = $this->buildClauses($searchBuilder);

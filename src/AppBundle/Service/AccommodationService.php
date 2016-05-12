@@ -137,7 +137,7 @@ class AccommodationService
 
         $result['url'] = $this->router->generate('show_type_' . $locale, [
 
-            'beginCode' => $result['begincode'],
+            'countryCode' => $result['begincode'],
             'typeId'    => $result['type_id'],
 
         ], UrlGeneratorInterface::ABSOLUTE_URL);
@@ -726,7 +726,7 @@ class AccommodationService
                         'name_country'       => $row['name_country'],
                         'url'                => $this->router->generate('show_type_' . $locale, [
 
-                            'beginCode' => $row['begincode'],
+                            'countryCode' => $row['begincode'],
                             'typeId'    => $result['type_id'],
 
                         ], UrlGeneratorInterface::ABSOLUTE_URL),
