@@ -559,7 +559,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         li.setAttribute('data-entity', entities.ENTITY_FREESEARCH);
                         li.setAttribute('data-id', result['type_id']);
 
-                        tag += '<i class="fi-search"></i> ';
+                        tag += '<i class="fi-home"></i> ';
 
                     break;
                 }
