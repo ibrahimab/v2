@@ -42,3 +42,9 @@ services:
         arguments: ["@=service('app.security.access.handler.' ~ parameter('kernel.environment'))"]
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+    app.listener.exception:
+            class: AppBundle\EventListener\ExceptionListener
+            arguments: ["@router", "@app.concern.locale"]
+            tags:
+                - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
