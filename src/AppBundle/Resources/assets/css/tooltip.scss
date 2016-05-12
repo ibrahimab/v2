@@ -4,6 +4,7 @@
 
 .chalet-tooltip-content.clone {
     position: absolute;
+    min-height: 100px;
     height: auto;
     width: 400px;
     text-align: left !important;
@@ -16,7 +17,7 @@
     h2 {
         border-bottom: 1px solid #d9d9d9;
         color: #193761;
-        font-size: 1.2em;
+        font-size: 16px;
         font-weight: 500;
         padding: 0 0 0.3rem 0;
         text-align: left;
