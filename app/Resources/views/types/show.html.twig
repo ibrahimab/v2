@@ -334,16 +334,16 @@ Template-content: accommodation page
                     {% endif %}
                     <div id="accom-main-box">
                         <div class="price-details">
-                            {% set skipas = true %}
-                            {% if accommodation.show == 3 or resale %}
-                                {% set skipas = false %}
-                            {% endif %}
-                            {% if skipas %}
-                                <span class="price-info">Prijs per persoon per week, vanaf</span>
-                            {% else %}
-                                <span class="price-info">Prijs per accommodatie, vanaf</span>
-                            {% endif %}
-                            {% if prices[type.getId()] is defined %}
+                            {% if prices[type.getId()] is defined and prices[type.getId()] > 0 %}
+                                {% set skipas = true %}
+                                {% if accommodation.show == 3 or resale %}
+                                    {% set skipas = false %}
+                                {% endif %}
+                                {% if skipas %}
+                                    <span class="price-info">Prijs per persoon per week, vanaf</span>
+                                {% else %}
+                                    <span class="price-info">Prijs per accommodatie, vanaf</span>
+                                {% endif %}
 
                                 <div style="clear:both"></div>
                                 <div class="chalet-tooltip loading" data-role="ajax-tooltip" data-url="{{ path('additional_costs_type', {typeId: type.getId(), seasonId: currentSeason['id']}) }}">
@@ -356,8 +356,17 @@ Template-content: accommodation page
                                     </div>
                                     <span class="price radius">&euro; {{ prices[type.getId()]|number_format(0, ',', '.') }},-<i class="fi-info" data-role="ajax-tooltip-button"></i></span>
                                 </div>
+                                <span class="price-inc"><i class="sprite sprite-icon-skipass"></i>Inclusief skipas</span>
+                            {% else %}
+                                <div class="no-price">
+                                    {% if noPriceShowUnavailable == 0 %}
+                                        Niet meer beschikbaar
+                                    {% else %}
+                                        Prijzen nog onbekend
+                                    {% endif %}
+                                </div>
+                                <a href="#price-availability" data-action="smooth-scroll">meer informatie &raquo;</a>
                             {% endif %}
-                            <span class="price-inc"><i class="sprite sprite-icon-skipass"></i>Inclusief skipas</span>
                         </div>
                         <hr />
                         <ul class="accom-details">

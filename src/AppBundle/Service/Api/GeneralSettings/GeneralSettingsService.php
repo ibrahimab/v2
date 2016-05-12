@@ -2,7 +2,7 @@
 namespace AppBundle\Service\Api\GeneralSettings;
 
 /**
- * This is the GeneralSettingsService, with this service you can work with homepage blocks
+ * This is the GeneralSettingsService
  *
  * @author  Jeroen Boschman <jeroen@webtastic.nl>
  * @since   0.0.1
@@ -70,6 +70,16 @@ class GeneralSettingsService
     public function getSearchFormMessageSearchWithoutDates()
     {
         return $this->generalSettingsServiceRepository->getSearchFormMessageSearchWithoutDates();
+    }
+
+    /**
+     * Get what to show when there are no prices for an accommodation
+     *
+     * @return integer
+     */
+    public function getNoPriceShowUnavailable()
+    {
+        return $this->generalSettingsServiceRepository->getNoPriceShowUnavailable();
     }
 
     /**

@@ -218,6 +218,20 @@
         });
 
         /**
+         * Smooth scroll to link within page
+         */
+
+        body.on('click', '[data-action="smooth-scroll"]', function(event) {
+
+            var target =  jq(this).attr('href');
+            $('html, body').animate({
+                scrollTop: $(target).offset().top - 50
+            }, 2000);
+            return false;
+
+        });
+
+        /**
          * Save favorite
          */
 

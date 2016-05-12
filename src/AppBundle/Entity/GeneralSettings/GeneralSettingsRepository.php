@@ -85,4 +85,25 @@ class GeneralSettingsRepository extends BaseRepository implements GeneralSetting
 
         return $hash === $comparisonHash;
     }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getNoPriceShowUnavailable()
+    {
+
+        $seasonType  = ($this->getSeason() === SeasonConcern::SEASON_SUMMER ? "summer" : "winter");
+        $fieldName = $seasonType . 'NoPriceShowUnavailable';
+        $callFunction = 'get' . ucfirst($fieldName);
+
+        $qb   = $this->createQueryBuilder('d');
+        $expr = $qb->expr();
+
+        $qb->select('partial d.{id, ' . $fieldName . '}')
+           ->andWhere('d.id=1');
+
+        return $qb->getQuery()->getResult()[0]->$callFunction();
+
+    }
+
 }
