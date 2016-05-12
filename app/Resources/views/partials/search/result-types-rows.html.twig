@@ -49,7 +49,7 @@ Template-content: search results search-and-book (types-rows)
                         {{ type.bathrooms }}
                     </div>
                     <div class="tb-c">
-                        {{ type.accommodation_name ~ ' ' ~ type.type_name }}
+                        {{ type.type_name }}
                     </div>
                     <div class="tb-c rating-cell">{% if type_surveys and type_surveys.count > 0 %}<span class="table-price table-ratings">{{ type_surveys.average|number_format(1, ',', '') }}</span>{% endif %}</div>
                     <div class="tb-c tb-c-6 discount-cell">
