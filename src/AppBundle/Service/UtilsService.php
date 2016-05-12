@@ -1,6 +1,8 @@
 <?php
 namespace AppBundle\Service;
 
+use Misd\Linkify\Linkify;
+
 class UtilsService
 {
     /**
@@ -18,6 +20,18 @@ class UtilsService
             '/-$/',
 
     	], ['-', '-', ''], self::normalizeText($text)));
+    }
+
+    /**
+     * add <a href> to http(s) links and email addresses in text
+     *
+     * @param string $text
+     * @return string
+     **/
+    public static function linkify($text)
+    {
+        $linkify = new Linkify(array('attr' => array('target' => '_blank')));
+        return $linkify->process($text);
     }
 
     public static function bbcode($text)
@@ -79,7 +93,7 @@ class UtilsService
 
 		return strtolower(str_replace('Controller', '', array_pop($names)) . '::' . $normalizingController);
 	}
-    
+
     /**
      * Generating a random token
      *
@@ -93,11 +107,11 @@ class UtilsService
         $total      = count($characters);
         $token      = '';
         $done       = 0;
-        
+
         while ($done++ < $length) {
             $token .= $characters[mt_rand(0, $total - 1)];
         }
-        
+
         return $token;
     }
 }

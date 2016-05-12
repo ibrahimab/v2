@@ -1,0 +1,35 @@
+{#
+
+div with internal cms info (to be placed in header)
+
+called from:
+- partials/header.html.twig
+
+#}
+{% set cms_info = get_cms_info() %}
+<div class="cms-info">
+    {% if internalInfo['showLinkWithoutInternalInfo'] is defined and internalInfo['showLinkWithoutInternalInfo'] == true %}
+        <ul class="border-right">
+    {% else %}
+        <ul>
+    {% endif %}
+
+        <li>
+            <a href="/cms.php" target="_blank">cms</a>: {{ cms_info.firstname }} - server: {{ cms_info.server }}
+        </li>
+        {% if internalInfo['cmsLinks'] is defined %}
+            {% for cmsLink in internalInfo['cmsLinks'] %}
+                <li>
+                    <a href="{{ cmsLink.url }}"{% if cmsLink.target_blank is defined and cmsLink.target_blank == true %} target="_blank"{% endif %}>{{ cmsLink.name}}</a>
+                </li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+
+    {% if internalInfo['showLinkWithoutInternalInfo'] is defined and internalInfo['showLinkWithoutInternalInfo'] == true %}
+        <div class="link-without-internal-info">
+            <a href="{{ cms_info.link_to_hide_internal_info }}">verberg interne info</a>
+        </div>
+
+    {% endif %}
+</div>

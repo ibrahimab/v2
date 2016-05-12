@@ -59,6 +59,20 @@ class Type implements TypeServiceEntityInterface
     private $supplier;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="url_leverancier", type="string", length=255)
+     */
+    private $supplierUrl;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="aantekeningen", type="text")
+     */
+    private $internalComments;
+
+    /**
      * @var boolean
      *
      * @ORM\Column(name="video", type="boolean")
@@ -347,7 +361,7 @@ class Type implements TypeServiceEntityInterface
      * @ORM\Column(name="zoekvolgorde", type="smallint")
      */
     private $searchOrder;
-    
+
     /**
      * @var boolean
      *
@@ -371,6 +385,13 @@ class Type implements TypeServiceEntityInterface
      * @var integer
      */
     private $surveyAverageOverallRating = 0.0;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="verzameltype", type="boolean")
+     */
+    private $isCollectionType;
 
     /**
      * @var \DateTime
@@ -1427,6 +1448,25 @@ class Type implements TypeServiceEntityInterface
     /**
      * {@InheritDoc}
      */
+    public function setIsCollectionType($isCollectionType)
+    {
+        $this->isCollectionType = $isCollectionType;
+
+        return $this;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getIsCollectionType()
+    {
+        return $this->isCollectionType;
+    }
+
+
+    /**
+     * {@InheritDoc}
+     */
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
@@ -1503,5 +1543,140 @@ class Type implements TypeServiceEntityInterface
         }
 
         return $type;
+    }
+
+    /**
+     * Set supplierUrl
+     *
+     * @param string $supplierUrl
+     * @return Type
+     */
+    public function setSupplierUrl($supplierUrl)
+    {
+        $this->supplierUrl = $supplierUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get supplierUrl
+     *
+     * @return string
+     */
+    public function getSupplierUrl()
+    {
+        return $this->supplierUrl;
+    }
+
+    /**
+     * Get hasVideo
+     *
+     * @return boolean
+     */
+    public function getHasVideo()
+    {
+        return $this->hasVideo;
+    }
+
+    /**
+     * Set singleInSearch
+     *
+     * @param boolean $singleInSearch
+     * @return Type
+     */
+    public function setSingleInSearch($singleInSearch)
+    {
+        $this->singleInSearch = $singleInSearch;
+
+        return $this;
+    }
+
+    /**
+     * Get singleInSearch
+     *
+     * @return boolean
+     */
+    public function getSingleInSearch()
+    {
+        return $this->singleInSearch;
+    }
+
+    /**
+     * Add bookings
+     *
+     * @param \AppBundle\Entity\Booking\Booking $bookings
+     * @return Type
+     */
+    public function addBooking(\AppBundle\Entity\Booking\Booking $bookings)
+    {
+        $this->bookings[] = $bookings;
+
+        return $this;
+    }
+
+    /**
+     * Remove bookings
+     *
+     * @param \AppBundle\Entity\Booking\Booking $bookings
+     */
+    public function removeBooking(\AppBundle\Entity\Booking\Booking $bookings)
+    {
+        $this->bookings->removeElement($bookings);
+    }
+
+    /**
+     * Get bookings
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBookings()
+    {
+        return $this->bookings;
+    }
+
+    /**
+     * Add surveys
+     *
+     * @param \AppBundle\Entity\Booking\Survey\Survey $surveys
+     * @return Type
+     */
+    public function addSurvey(\AppBundle\Entity\Booking\Survey\Survey $surveys)
+    {
+        $this->surveys[] = $surveys;
+
+        return $this;
+    }
+
+    /**
+     * Remove surveys
+     *
+     * @param \AppBundle\Entity\Booking\Survey\Survey $surveys
+     */
+    public function removeSurvey(\AppBundle\Entity\Booking\Survey\Survey $surveys)
+    {
+        $this->surveys->removeElement($surveys);
+    }
+
+    /**
+     * Set internalComments
+     *
+     * @param string $internalComments
+     * @return Type
+     */
+    public function setInternalComments($internalComments)
+    {
+        $this->internalComments = $internalComments;
+
+        return $this;
+    }
+
+    /**
+     * Get internalComments
+     *
+     * @return string 
+     */
+    public function getInternalComments()
+    {
+        return $this->internalComments;
     }
 }

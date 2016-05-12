@@ -234,6 +234,20 @@ class Accommodation implements AccommodationServiceEntityInterface
     private $distanceSlope;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="url_leverancier", type="string", length=255)
+     */
+    private $supplierUrl;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="aantekeningen", type="text")
+     */
+    private $internalComments;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="adddatetime", type="datetime")
@@ -1035,5 +1049,84 @@ class Accommodation implements AccommodationServiceEntityInterface
         }
 
         return $accommodation;
+    }
+
+    /**
+     * Get hasVideo
+     *
+     * @return boolean
+     */
+    public function getHasVideo()
+    {
+        return $this->hasVideo;
+    }
+
+    /**
+     * Set supplierUrl
+     *
+     * @param string $supplierUrl
+     * @return Accommodation
+     */
+    public function setSupplierUrl($supplierUrl)
+    {
+        $this->supplierUrl = $supplierUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get supplierUrl
+     *
+     * @return string
+     */
+    public function getSupplierUrl()
+    {
+        return $this->supplierUrl;
+    }
+
+    /**
+     * Add types
+     *
+     * @param \AppBundle\Entity\Type\Type $types
+     * @return Accommodation
+     */
+    public function addType(\AppBundle\Entity\Type\Type $types)
+    {
+        $this->types[] = $types;
+
+        return $this;
+    }
+
+    /**
+     * Remove types
+     *
+     * @param \AppBundle\Entity\Type\Type $types
+     */
+    public function removeType(\AppBundle\Entity\Type\Type $types)
+    {
+        $this->types->removeElement($types);
+    }
+
+    /**
+     * Set internalComments
+     *
+     * @param string $internalComments
+     * @return Accommodation
+     */
+    public function setInternalComments($internalComments)
+    {
+        $this->internalComments = $internalComments;
+
+        return $this;
+    }
+
+    /**
+     * Get internalComments
+     *
+     * @return string 
+     */
+    public function getInternalComments()
+    {
+        return $this->internalComments;
     }
 }

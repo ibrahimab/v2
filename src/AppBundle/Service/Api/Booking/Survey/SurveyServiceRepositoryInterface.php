@@ -19,34 +19,34 @@ interface SurveyServiceRepositoryInterface
 {
     /**
      * Setting season
-     * 
+     *
      * @param SeasonConcern $seasonConcern
      * @return void
      */
     public function setSeason(SeasonConcern $seasonConcern);
-    
+
     /**
      * Getting season
      *
      * @return integer
      */
     public function getSeason();
-    
+
     /**
      * Setting website
-     * 
+     *
      * @param WebsiteConcern $seasonConcern
      * @return void
      */
     public function setWebsite(WebsiteConcern $websiteConcern);
-    
+
     /**
      * Getting website
      *
      * @return integer
      */
     public function getWebsite();
-    
+
     /**
      * Get single survey by some criteria
      *
@@ -54,7 +54,7 @@ interface SurveyServiceRepositoryInterface
      * @return SurveyServiceEntityInterface
      */
     public function find($by = []);
-    
+
     /**
      * Get all the surveys based on criteria passed in
      *
@@ -62,7 +62,7 @@ interface SurveyServiceRepositoryInterface
      * @return SurveyServiceEntityInterface[]
      */
     public function all($options = []);
-    
+
     /**
      * Get all the surveys based on criteria passed in
      *
@@ -70,31 +70,31 @@ interface SurveyServiceRepositoryInterface
      * @return SurveyServiceEntityInterface[]
      */
     public function allByType(TypeServiceEntityInterface $type);
-    
+
     /**
      * @param TypeServiceEntityInterface $type
      * @return array
      */
     public function statsByType(TypeServiceEntityInterface $type);
-    
+
     /**
      * @param TypeServiceEntityInterface[] $types
      * @return array
      */
     public function statsByTypes($types);
-    
+
     /**
      * @param PlaceServiceEntityInterface $place
      * @return array
      */
     public function statsByPlace(PlaceServiceEntityInterface $place);
-    
+
     /**
      * @param RegionServiceEntityInterface $region
      * @return array
      */
     public function statsByRegion(RegionServiceEntityInterface $region);
-    
+
     /**
      * @param CountryServiceEntityInterface $country
      * @return array

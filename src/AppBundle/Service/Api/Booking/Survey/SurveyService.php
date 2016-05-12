@@ -46,7 +46,7 @@ class SurveyService
     }
 
     /**
-     * Get all the surveys based on criteria passed in
+     * Get all the surveys based on type
      *
      * @param  TypeServiceEntityInterface $type
      * @return SurveyServiceEntityInterface[]
@@ -54,6 +54,38 @@ class SurveyService
     public function allByType(TypeServiceEntityInterface $type)
     {
         return $this->surveyRepository->allByType($type);
+    }
+
+    /**
+     * Get all the reviewed surveys with a total accommodation rating, based on type
+     *
+     * @param  TypeServiceEntityInterface $type
+     * @return SurveyServiceEntityInterface[]
+     */
+    public function allReviewedByType(TypeServiceEntityInterface $type)
+    {
+        $allByType = $this->surveyRepository->allByType($type);
+
+        $reviewed = [];
+
+        $ratingSum = 0;
+        $ratingAccommodationTotal = $null;
+
+        foreach ($allByType['surveys'] as $key => $value) {
+
+            if ($value->getReviewed() == 1 && $value->getRatingAccommodationTotal() >= 1) {
+                $reviewed[] = $value;
+                $ratingSum += $value->getRatingAccommodationTotal();
+            }
+        }
+
+        if (count($reviewed) > 0 ) {
+            // calculate average
+            $ratingAccommodationTotal = $ratingSum / count($reviewed);
+        }
+
+        return ['surveys' => $reviewed, 'averageRatings' => ['ratingAccommodationTotal' => $ratingAccommodationTotal]];
+
     }
 
     /**

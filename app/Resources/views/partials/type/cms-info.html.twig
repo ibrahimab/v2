@@ -1,0 +1,147 @@
+{#
+
+div with internal cms info (to be placed on accommodation page in an added right column)
+
+called from:
+- types/show.html.twig
+
+#}
+{% set cms_info = get_cms_info() %}
+<div class="accommodation-page-cms-info">
+    <div class="cms-info-content {{ internalInfo['showInternalInfoSlider'] ? 'slider-visible' : 'slider-hidden' }}">
+        <a href="#" data-role="toggle-cms-info-slider"></a>
+        <div>
+            <h2>Interne gegevens</h2>
+            <h3>Code</h3>
+            {{ internalInfo['code'] }}
+
+            <h3>Leverancier {{ internalInfo['supplier']['name'] }}</h3>
+            <ul class="more-padding">
+                <li><a href="{{ internalInfo['supplier']['cms_url'] }}" target="_blank">CMS</a></li>
+
+                {% if internalInfo['supplier']['url']['supplier'] %}
+                    <li><a href="{{ internalInfo['supplier']['url']['supplier'] }}" target="_blank">Website leverancier</a></li>
+                {% endif %}
+
+                {% if internalInfo['supplier']['url']['accommodation'] %}
+                    <li><a href="{{ internalInfo['supplier']['url']['accommodation'] }}" target="_blank">Directe link accommodatie</a></li>
+                {% endif %}
+
+                {% if internalInfo['supplier']['url']['type'] %}
+                    <li><a href="{{ internalInfo['supplier']['url']['type'] }}" target="_blank">Directe link type</a></li>
+                {% endif %}
+
+            </ul>
+
+            {% if internalInfo['internalComments']['supplier'] %}
+                <h3>Leveranciersopmerkingen</h3>
+                {{ internalInfo['internalComments']['supplier']|linkify|raw|nl2br }}
+            {% endif %}
+
+            {% if internalInfo['internalComments']['accommodation'] %}
+                <h3>Accommodatie-opmerkingen</h3>
+                {{ internalInfo['internalComments']['accommodation']|linkify|raw|nl2br }}
+            {% endif %}
+
+            {% for featureName, features in internalInfo['features'] %}
+                <h3>{{ featureName|capitalize }}-kenmerken</h3>
+                <ul>
+                    {% for feature in features %}
+                        <li>{{ feature }}</li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+            {% if internalInfo['surveyData']['surveys']|length > 0 %}
+                <h3>Enquêtes (gemiddeld)</h3>
+                <table>
+
+                    <tr>
+                        <td>
+                            Totaaloordeel
+                        </td>
+                        <td>
+                            {{ internalInfo['surveyData']['averageRatings']['ratingAccommodationTotal']|number_format(1, ',', '') }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Ontvangst
+                        </td>
+                        <td>
+                            {{ internalInfo['surveyData']['averageRatings']['ratingAccommodationReception']|number_format(1, ',', '') }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Ligging
+                        </td>
+                        <td>
+                            {{ internalInfo['surveyData']['averageRatings']['ratingAccommodationLocation']|number_format(1, ',', '') }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Comfort/inrichting
+                        </td>
+                        <td>
+                            {{ internalInfo['surveyData']['averageRatings']['ratingAccommodationComfort']|number_format(1, ',', '') }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Hygiëne/schoonmaak
+                        </td>
+                        <td>
+                            {{ internalInfo['surveyData']['averageRatings']['ratingAccommodationCleaning']|number_format(1, ',', '') }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Faciliteiten
+                        </td>
+                        <td>
+                            {{ internalInfo['surveyData']['averageRatings']['ratingAccommodationFacilities']|number_format(1, ',', '') }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Prijs/kwaliteit
+                        </td>
+                        <td>
+                            {{ internalInfo['surveyData']['averageRatings']['ratingAccommodationPriceQuality']|number_format(1, ',', '') }}
+                        </td>
+                    </tr>
+
+                </table>
+                <h3>Enquêtes (volledig)</h3>
+                {% for survey in internalInfo['surveyData']['surveys'] %}
+                    <ul>
+                        <li>
+                            {% set survey_edit_uri = '/cms_boekingen_enquete.php?bid=' ~ survey.getBooking().getId() ~ '&controleren=1' %}
+                            <a href="{{ survey_edit_uri }}" target="_blank">{{ survey.getBooking().getExactArrivalAt()|date('d-m-Y') }}</a>
+                            {% if survey.getRatingAccommodationTotal() %}
+                                (totaaloordeel: {{ survey.getRatingAccommodationTotal() }})
+                            {% endif %}
+                            {% if survey.getReviewed() == 0 %}
+                                <a href="{{ survey_edit_uri }}" target="_blank">controleren</a>
+                            {% elseif survey.getReviewed() == 2 and (cms_info['user_id'] == 4 or cms_info['user_id'] == 6) %}
+                                <a href="{{ survey_edit_uri }}" target="_blank">controleren B/B</a>
+                            {% elseif survey.getReviewed() == 2 %}
+                                <span title="Controleren door Bert of Barteld" class="dotted">controleren B/B</span>
+                            {% elseif survey.getReviewed() == 3 %}
+                                <span class="red">afgekeurd</span>
+                            {% endif %}
+                        </li>
+                    </ul>
+                {% endfor %}
+
+            {% endif %}
+        </div>
+    </div>
+</div>

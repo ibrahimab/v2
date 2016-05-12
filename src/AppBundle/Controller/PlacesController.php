@@ -80,23 +80,25 @@ class PlacesController extends Controller
             $types[$surveyStat['typeId']]->setSurveyAverageOverallRating($surveyStat['surveyAverageOverallRating']);
         }
 
-        $cmsLinks = [];
-        if ($legacyCmsUserService->shouldShowInternalInfo()) {
-            $cmsLinks[] = [
-                'url'  => '/cms_plaatsen.php?show=4&wzt=' . $place->getSeason() . '&4k0=' . $place->getId(),
-                'name' => 'plaats bewerken',
+        $internalInfo = [];
+        if (!$legacyCmsUserService->shouldShowInternalInfo()) {
+
+            $internalInfo['cmsLinks'][] = [
+                'url'          => '/cms_plaatsen.php?show=4&wzt=' . $place->getSeason() . '&4k0=' . $place->getId(),
+                'name'         => 'plaats bewerken',
                 'target_blank' => true
             ];
+
         }
 
         return [
 
-            'place'    => $place,
-            'country'  => $place->getCountry(),
-            'region'   => $place->getRegion(),
-            'types'    => $types,
-            'offers'   => $offers,
-            'cmsLinks' => $cmsLinks,
+            'place'        => $place,
+            'country'      => $place->getCountry(),
+            'region'       => $place->getRegion(),
+            'types'        => $types,
+            'offers'       => $offers,
+            'internalInfo' => $internalInfo,
         ];
     }
 }

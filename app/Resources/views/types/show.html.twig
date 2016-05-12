@@ -11,7 +11,7 @@ Template-content: accommodation page
 {% set country, region, place = accommodation.getPlace().getCountry(), accommodation.getPlace().getRegion(), accommodation.getPlace() %}
 {% set images                 = type_images(type) %}
 {% set surveyCount            = surveyData.surveys|length %}
-{% set surveyAverage          = surveyData.average %}
+{% set surveyAverage          = surveyData.averageRatings['ratingAccommodationTotal'] %}
 {% set resale                 = website_concern.getConfig(constant('WEBSITE_CONFIG_RESALE', website_concern)) %}
 {%
     set localeData = {
@@ -423,5 +423,9 @@ Template-content: accommodation page
             </div>
         </div>
     </section>
+
+    {% if should_show_internal_info() %}
+        {% include 'partials/type/cms-info.html.twig' %}
+    {% endif %}
 
 {% endblock %}

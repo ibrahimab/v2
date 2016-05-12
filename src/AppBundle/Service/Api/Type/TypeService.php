@@ -6,22 +6,22 @@ use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
 use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
 
 class TypeService
-{    
+{
     /**
      * @var TypeServiceRepositoryInterface
      */
     public $typeRepository;
-    
+
     /**
      * Constructor
-     * 
+     *
      * @param TypeServiceRepositoryInterface $typeRepository
      */
     public function __construct(TypeServiceRepositoryInterface $typeRepository)
     {
         $this->typeRepository = $typeRepository;
     }
-    
+
     /**
      * Get all types
      * The options array accepts a 'where', 'order' and 'limit' key that customizes
@@ -34,7 +34,7 @@ class TypeService
     {
         return $this->typeRepository->all($options);
     }
-    
+
     /**
      * Get a single type
      * The options array accepts a 'where', 'order' and 'limit' key that customizes
@@ -46,7 +46,7 @@ class TypeService
     {
         return $this->typeRepository->find($by);
     }
-    
+
     /**
      * Get types by place
      *
@@ -58,7 +58,7 @@ class TypeService
     {
         return $this->typeRepository->findByPlace($place, $limit);
     }
-    
+
     /**
      * Counting all the types of all the accommodations for place provided
      *
@@ -69,7 +69,7 @@ class TypeService
     {
         return $this->typeRepository->countByPlace($place);
     }
-    
+
     /**
      * Counting all the types of all the accommodations for region provided
      *
@@ -80,7 +80,7 @@ class TypeService
     {
         return $this->typeRepository->countByRegion($region);
     }
-    
+
     /**
      * Counting all the types of all the accommodations for all the regions provided
      *
@@ -91,7 +91,7 @@ class TypeService
     {
         return $this->typeRepository->countByRegions($regions);
     }
-    
+
     /**
      * Getting type and its associations in one query by ID
      *

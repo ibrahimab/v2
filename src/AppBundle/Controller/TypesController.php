@@ -66,11 +66,11 @@ class TypesController extends Controller
                 throw new NoResultException('Type was found but display is turned off');
             }
 
-            $surveyData    = $surveyService->allByType($type);
-            $accommodation = $type->getAccommodation();
-            $place         = $accommodation->getPlace();
-            $region        = $place->getRegion();
-            $data          = [
+            $surveyData         = $surveyService->allReviewedByType($type);
+            $accommodation      = $type->getAccommodation();
+            $place              = $accommodation->getPlace();
+            $region             = $place->getRegion();
+            $data               = [
 
                 'type'         => implode(',', $type->getFeatures()),
                 'accommodatie' => implode(',', $accommodation->getFeatures()),
@@ -116,25 +116,53 @@ class TypesController extends Controller
                 $backUrl = '';
             }
 
-            $cmsLinks = [];
-            $showLinkWithoutInternalInfo = false;
+            $internalInfo = [
+                'showLinkWithoutInternalInfo' => false,
+                'showInternalInfoSlider'      => false,
+            ];
+
             if ($legacyCmsUserService->shouldShowInternalInfo()) {
 
                 // link to CMS accommodation
-                $cmsLinks[] = [
-                    'url'  => '/cms_accommodaties.php?show=1&wzt=' . $accommodation->getSeason() . '&1k0=' . $accommodation->getId(),
-                    'name' => 'accommodatie bewerken',
+                $internalInfo['cmsLinks'][] = [
+                    'url'          => '/cms_accommodaties.php?show=1&wzt=' . $accommodation->getSeason() . '&1k0=' . $accommodation->getId(),
+                    'name'         => 'accommodatie bewerken',
                     'target_blank' => true
                 ];
 
                 // link to CMS type
-                $cmsLinks[] = [
-                    'url'  => '/cms_types.php?show=2&wzt=' . $accommodation->getSeason() . '&2k0=' . $type->getId(),
-                    'name' => 'type bewerken',
+                $internalInfo['cmsLinks'][] = [
+                    'url'          => '/cms_types.php?show=2&wzt=' . $accommodation->getSeason() . '&2k0=' . $type->getId(),
+                    'name'         => 'type bewerken',
                     'target_blank' => true
                 ];
 
-                $showLinkWithoutInternalInfo = true;
+                $internalInfo['showLinkWithoutInternalInfo'] = true;
+
+                // show/hide slider with internal info
+                if ($request->cookies->get('cms_info_slider') === 'visible' ) {
+                    $internalInfo['showInternalInfoSlider'] = true;
+                }
+
+                $internalInfo['code'] = $beginCode . $type->getId() . ($type->getCode() ? ' - ' . $type->getCode() : '');
+                if (true === $type->getIsCollectionType()) {
+                    $internalInfo['code'] .= ' - verzameltype';
+                }
+
+                $internalInfo['supplier']['name']                  = $type->getSupplier()->getName();
+                $internalInfo['supplier']['cms_url']               = '/cms_leveranciers.php?edit=8&back_to_show=1&8k0=' . $type->getSupplier()->getId();
+
+                $internalInfo['supplier']['url']['type']           = $type->getSupplierUrl();
+                $internalInfo['supplier']['url']['accommodation']  = $type->getAccommodation()->getSupplierUrl();
+                $internalInfo['supplier']['url']['supplier']       = $type->getSupplier()->getUrl();
+
+                $internalInfo['internalComments']['supplier']      = $type->getSupplier()->getInternalComments();
+                $internalInfo['internalComments']['accommodation'] = $type->getAccommodation()->getInternalComments();
+                $internalInfo['internalComments']['type']          = $type->getInternalComments();
+
+                $internalInfo['surveyData']                        = $surveyService->allByType($type);
+
+                $internalInfo['features']                          = $featureService->allBackEnd($type->getId(), $data);
 
             }
 
@@ -156,8 +184,7 @@ class TypesController extends Controller
                 'back_url'                    => $backUrl,
                 'date'                        => $date,
                 'numberOfPersons'             => $numberOfPersons,
-                'cmsLinks'                    => $cmsLinks,
-                'showLinkWithoutInternalInfo' => $showLinkWithoutInternalInfo,
+                'internalInfo'                => $internalInfo,
 
             ]);
 

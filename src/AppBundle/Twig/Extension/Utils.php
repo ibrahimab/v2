@@ -41,6 +41,17 @@ trait Utils
         return UtilsService::bbcode($text);
     }
 
+    /**
+     * Helper method for formatting text with links
+     *
+     * @param string $text
+     * @return string
+     */
+    public function linkify($text)
+    {
+        return UtilsService::linkify($text);
+    }
+
     public function sortByProperty($objects, $property)
     {
         return usort($objects, function($a, $b) use ($property) {
