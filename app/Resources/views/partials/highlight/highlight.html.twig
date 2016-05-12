@@ -22,7 +22,6 @@ called from:
                     <div class="circle"><span>Aan-</span><span>bieding</span></div>
                 </a>
             {% endif %}
-            {% dump(surveys) %}
             {% if surveys.count is defined and surveys.count > 1 %}
                 <a href="{{ link }}">
                     <div class="rating"><span class="figure">{{ surveys.average|round(1) }}</span><span class="reviews-number">{{ surveys.count }} {{ 'ratings'|trans|lower }}</span></div>
