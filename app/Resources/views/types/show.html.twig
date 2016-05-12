@@ -245,23 +245,19 @@ Template-content: accommodation page
                                     {% set l = all_types|sortprop('name') %}
                                     {% for t in all_types %}
 
-                                        {% if prices[t.getId()] is defined and prices[t.getId()] > 0 %}
-
-                                            {% set survey = surveyDataOtherTypes[t.getId()] is defined ? surveyDataOtherTypes[t.getId()] : null %}
-                                            <tr{{ t.getId() == type.getId() ? ' class="active"' : '' }} data-role="clickable" data-url="{{ locale_path('show_type', { countryCode: country.getCountryCode(), typeId: t.getId() }) }}">
-                                                <td><i class="sprite sprite-icon-torso"></i>{{ (t.getOptimalResidents() == t.getMaxResidents() ? t.getOptimalResidents() : (t.getOptimalResidents() ~ ' - ' ~ t.getMaxResidents())) }}</td>
-                                                <td><i class="sprite sprite-icon-sleep"></i>{{ t.getBedrooms() ~ (t.getLocaleBedroomsExtra(locale) != '' ? (' ' ~ t.getLocaleBedroomsExtra(locale)) : '') }}</td>
-                                                <td><i class="sprite sprite-icon-bath"></i>{{ t.getBathrooms() ~ (t.getLocaleBathroomsExtra(locale) != '' ? (' ' ~ t.getLocaleBathroomsExtra(locale)) : '') }}</td>
-                                                <td>{{ t.getLocaleName(locale) }}</td>
-                                                <td>
-                                                    {% if survey %}
-                                                        <span class="table-ratings">{{ survey.surveyAverageOverallRating|number_format(1, ',', '') }}</span> ({{ survey.surveyCount }})</td>
-                                                    {% endif %}
-                                                <td>{% if offers[t.getId()] is defined %}<i class="sprite sprite-icon-discount"></i>{% endif %}</td>
-                                                <td>&euro; {{ prices[t.getId()]|number_format(0, ',', '.') }},-<i class="fi-info"></i></td>
-                                            </tr>
-
-                                        {% endif %}
+                                        {% set survey = surveyDataOtherTypes[t.getId()] is defined ? surveyDataOtherTypes[t.getId()] : null %}
+                                        <tr{{ t.getId() == type.getId() ? ' class="active"' : '' }} data-role="clickable" data-url="{{ locale_path('show_type', { countryCode: country.getCountryCode(), typeId: t.getId() }) }}">
+                                            <td><i class="sprite sprite-icon-torso"></i>{{ (t.getOptimalResidents() == t.getMaxResidents() ? t.getOptimalResidents() : (t.getOptimalResidents() ~ ' - ' ~ t.getMaxResidents())) }}</td>
+                                            <td><i class="sprite sprite-icon-sleep"></i>{{ t.getBedrooms() ~ (t.getLocaleBedroomsExtra(locale) != '' ? (' ' ~ t.getLocaleBedroomsExtra(locale)) : '') }}</td>
+                                            <td><i class="sprite sprite-icon-bath"></i>{{ t.getBathrooms() ~ (t.getLocaleBathroomsExtra(locale) != '' ? (' ' ~ t.getLocaleBathroomsExtra(locale)) : '') }}</td>
+                                            <td>{{ t.getLocaleName(locale) }}</td>
+                                            <td>
+                                                {% if survey %}
+                                                    <span class="table-ratings">{{ survey.surveyAverageOverallRating|number_format(1, ',', '') }}</span> ({{ survey.surveyCount }})</td>
+                                                {% endif %}
+                                            <td>{% if offers[t.getId()] is defined %}<i class="sprite sprite-icon-discount"></i>{% endif %}</td>
+                                            <td>{% if prices[t.getId()] is defined and prices[t.getId()] > 0 %}&euro; {{ prices[t.getId()]|number_format(0, ',', '.') }},-<i class="fi-info"></i>{% endif %}</td>
+                                        </tr>
                                     {% endfor %}
                                 </tbody>
                             </table>
