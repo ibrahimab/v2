@@ -45,37 +45,36 @@
 
     <article class="overview{% if offers %} sale{% endif %}" data-equalizer-watch>
         <div class="accom-img">
-            <a href="{{ link }}"><img src="{{ type_image(type).getLocation() }}" alt="{{ accommodation.getLocaleName(locale) }}" /></a>
+            <a href="{{ link }}"><img src="{{ generate_image_path(type_image(type))|thumbnail(364, 273) }}" alt="{{ accommodation.getLocaleName(locale) }}" /></a>
             {% if offer %}
                 <a href="{{ link }}">
                     <div class="circle"><span>Aan-</span><span>bieding</span></div>
                 </a>
             {% endif %}
-            {% set surveyCount = highlight.type.surveyCount %}
             {% if surveyCount > 1 %}
                 <a href="{{ link }}">
-                    <div class="rating"><span class="figure">{{ highlight.type.surveyAverageOverallRating }}</span><span class="reviews-number">{{ surveyCount }} {{ 'ratings'|trans|lower }}</span></div>
+                    <div class="rating"><span class="figure">{{ surveyAverageOverallRating }}</span><span class="reviews-number">{{ surveyCount }} {{ 'ratings'|trans|lower }}</span></div>
                 </a>
             {% endif %}
         </div>
         <a href="{{ link }}">
             <div class="accom-desc">
                 <div class="title">
-                    {{ ('type.kind.' ~ highlight.type.accommodation.kindIdentifier)|trans|capitalize ~ ' ' ~ highlight.type.accommodation.getLocaleName(locale) ~ ' ' ~ highlight.type.getLocaleName(locale) }}
+                    {{ ('type.kind.' ~ accommodation.kindIdentifier)|trans|capitalize ~ ' ' ~ accommodation.getLocaleName(locale) ~ ' ' ~ type.getLocaleName(locale) }}
                     <span>
-                        {% set quality = (highlight.type.getQuality() > 0 ? highlight.type.getQuality() : highlight.type.accommodation.getQuality()) %}
+                        {% set quality = (type.getQuality() > 0 ? type.getQuality() : accommodation.getQuality()) %}
                         {% include 'partials/quality_stars.html.twig' with {quality: quality} only %}
                     </span>
                 </div>
                 <div class="location">
                     <span class="city">{{ place.getLocaleName(locale) }}</span>,
-                    <span class="area">{{ place.region.getLocaleName(locale) }}</span>,
-                    <span class="country">{{ place.country.getLocaleName(locale) }}</span>
+                    <span class="area">{{ region.getLocaleName(locale) }}</span>,
+                    <span class="country">{{ country.getLocaleName(locale) }}</span>
                 </div>
-                {% if highlight.type.optimalResidents is same as(highlight.type.maxResidents) %}
-                    <div class="persons"><i class="fi-torso"></i>{{ 'homepage.highlight.suitable-for-max'|trans({'%maximum%': highlight.type.maxResidents}) }}</div>
+                {% if type.optimalResidents is same as(type.maxResidents) %}
+                    <div class="persons"><i class="fi-torso"></i>{{ 'homepage.highlight.suitable-for-max'|trans({'%maximum%': maxResidents}) }}</div>
                 {% else %}
-                    <div class="persons"><i class="fi-torso"></i>{{ 'homepage.highlight.suitable-for'|trans({'%optimal%': highlight.type.optimalResidents, '%maximum%': highlight.type.maxResidents}) }}</div>
+                    <div class="persons"><i class="fi-torso"></i>{{ 'homepage.highlight.suitable-for'|trans({'%optimal%': type.optimalResidents, '%maximum%': type.maxResidents}) }}</div>
                 {% endif %}
             </div>
         </a>
@@ -84,7 +83,7 @@
     <table>
         <tr>
             <td>
-                <img src="{{ type_image(type).getLocation() }}" alt="{{ accommodation.getLocaleName(locale) }}" />
+                <img src="{{ generate_image_path(type_image(type))|thumbnail(364, 273) }}" alt="{{ accommodation.getLocaleName(locale) }}" />
             </td>
             <td>
                 <table>

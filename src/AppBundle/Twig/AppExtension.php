@@ -89,6 +89,11 @@ class AppExtension extends \Twig_Extension
     private $cmsUserService;
 
     /**
+     * @var \Jenssegers\Date\Date
+     */
+    private $founded;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -138,6 +143,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('count_array_fields', [$this, 'countArrayValuesNonEmpty']),
             new \Twig_SimpleFunction('is_current_page', [$this, 'isCurrentPage']),
             new \Twig_SimpleFunction('get_survey_answer', [$this, 'getSurveyAnswer']),
+            new \Twig_SimpleFunction('years_active', [$this, 'getYearsActive']),
         ];
     }
 

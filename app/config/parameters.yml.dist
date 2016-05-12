@@ -25,3 +25,7 @@ parameters:
     old_image_root:
     old_site_url_prefix: /version1/
     sunny_cars:
+    founded:
+        year: 1999
+        month: 10
+        day: 1

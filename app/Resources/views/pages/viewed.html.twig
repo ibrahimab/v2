@@ -18,15 +18,20 @@
             <h1>{{ 'viewed-title'|trans }}</h1>
 
         </div>
-        
+
         <div class="row" data-equalizer>
-            
+
             {% for type in types %}
 
-                {% include 'partials/highlight/highlight.html.twig' with { 'highlight': { 'type': type }, place: type.getAccommodation().getPlace(), 'end': ( ((loop.index % 3) is same as(0)) or loop.last ), offers: offers } only %}
+                {% set type_surveys = [] %}
+                {% if surveys[type.type_id] is defined %}
+                    {% set type_surveys = [] %}
+                {% endif %}
+
+                {% include 'partials/highlight/highlight.html.twig' with { 'highlight': type, 'end': ( ((loop.index % 3) is same as(0)) or loop.last ), 'offers': offers, 'surveys': type_surveys } only %}
 
             {% endfor %}
-            
+
         </div>
 
     </section>

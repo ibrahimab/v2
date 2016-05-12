@@ -70,7 +70,7 @@
 
                 </div>
 
-                {% include 'partials/highlight/highlight.html.twig' with {'highlight': {'type': type}, 'place': type.getAccommodation().getPlace(), 'offers': offers, 'end': true, small_size: 12, medium_size: 4, large_size: 4} only %}
+                {% include 'partials/highlight/highlight.html.twig' with {'type': type, 'surveys': surveys, 'offers': offers, 'end': true, small_size: 12, medium_size: 4, large_size: 4} only %}
 
             </div>
 

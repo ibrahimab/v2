@@ -27,12 +27,12 @@ class HighlightRepository implements HighlightServiceRepositoryInterface
      * @var integer
      */
     protected $season;
-    
+
     /**
      * @var string
      */
     protected $website;
-    
+
     /**
      * @var LocaleConcern
      */
@@ -63,10 +63,10 @@ class HighlightRepository implements HighlightServiceRepositoryInterface
         $datetime = $datetime ?: new \DateTime('now');
 
         $query = "SELECT h.hoogtepunt_id AS higlight_id, h.volgorde AS rank, h.begindatum AS published_at, h.einddatum AS expired_at, t.type_id AS type_id, t.optimaalaantalpersonen AS optimal_persons,
-                         t.maxaantalpersonen AS max_persons, t.kwaliteit AS type_quality, {$this->getLocaleField('t.naam')} AS type_name, a.accommodatie_id AS accommodation_id, 
-                         a.naam AS accommodation_name, a.soortaccommodatie AS accommodation_kind, a.kwaliteit AS accommodation_quality, p.plaats_id AS place_id, p.hoortbij_plaats_id AS belongs_to_id, 
-                         {$this->getLocaleField('p.naam')} AS place_name, {$this->getLocaleField('p.seonaam')} AS place_seo_name, r.skigebied_id AS region_id, {$this->getLocaleField('r.naam')} AS region_name, 
-                         {$this->getLocaleField('r.seonaam')} AS region_seo_name, c.land_id AS country_id, {$this->getLocaleField('c.naam')} AS country_name, c.begincode AS country_begin_code, 
+                         t.maxaantalpersonen AS max_persons, t.kwaliteit AS type_quality, {$this->getLocaleField('t.naam')} AS type_name, a.accommodatie_id AS accommodation_id,
+                         a.naam AS accommodation_name, a.soortaccommodatie AS accommodation_kind, a.kwaliteit AS accommodation_quality, p.plaats_id AS place_id, p.hoortbij_plaats_id AS belongs_to_id,
+                         {$this->getLocaleField('p.naam')} AS place_name, {$this->getLocaleField('p.seonaam')} AS place_seo_name, r.skigebied_id AS region_id, {$this->getLocaleField('r.naam')} AS region_name,
+                         {$this->getLocaleField('r.seonaam')} AS region_seo_name, c.land_id AS country_id, {$this->getLocaleField('c.naam')} AS country_name, c.begincode AS country_code,
                          t.leverancier_id AS supplier_id
                   FROM   hoogtepunt h, type t, accommodatie a, plaats p, skigebied r, land c
                   WHERE  h.type_id = t.type_id
@@ -77,16 +77,16 @@ class HighlightRepository implements HighlightServiceRepositoryInterface
                   AND    h.tonen = :display
                   AND    (
                     (
-                      h.begindatum IS NOT NULL OR 
+                      h.begindatum IS NOT NULL OR
                       h.begindatum <= :now
-                    ) 
-                    AND 
+                    )
+                    AND
                     (
-                      h.einddatum IS NULL OR 
+                      h.einddatum IS NULL OR
                       h.einddatum > :now
                     )
-                  ) 
-                  AND FIND_IN_SET(:website, h.websites) > 0 
+                  )
+                  AND FIND_IN_SET(:website, h.websites) > 0
                   LIMIT 6";
 
         $statement = $this->db->prepare($query);

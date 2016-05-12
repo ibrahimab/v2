@@ -48,11 +48,9 @@ trait Helper
      *
      * @return string
      */
-    public function formatDate(\DateTime $date, $format)
+    public function formatDate($timestamp, $format)
     {
-        $date = new Date($date->getTimestamp());
-        $date->setLocale($this->localeConcern->get());
-
+        $date = new Date($timestamp);
         return $date->format($format);
     }
 

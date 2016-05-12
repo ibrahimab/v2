@@ -72,10 +72,10 @@ interface SurveyServiceRepositoryInterface
     public function allByType(TypeServiceEntityInterface $type);
 
     /**
-     * @param TypeServiceEntityInterface $type
+     * @param TypeServiceEntityInterface|integer $type
      * @return array
      */
-    public function statsByType(TypeServiceEntityInterface $type);
+    public function statsByType($type);
 
     /**
      * @param TypeServiceEntityInterface[] $types

@@ -48,19 +48,21 @@ class SurveyRepository extends BaseRepository implements SurveyServiceRepository
         foreach ($results as $result) {
 
             foreach ($ratings as $rating) {
+
                 if ($result[$rating] > 0) {
+
                     $rating_total[$rating] += $result[$rating];
                     $rating_count[$rating]++;
                 }
             }
 
             $surveys[] = $result['survey'];
-
         }
 
         $accommodationRatings = [];
 
         foreach ($ratings as $rating) {
+
             if (!empty($rating_count[$rating])) {
                 $accommodationRatings[$rating] = round($rating_total[$rating] / $rating_count[$rating] , 1);
             }
@@ -72,14 +74,14 @@ class SurveyRepository extends BaseRepository implements SurveyServiceRepository
     /**
      * {@InheritDoc}
      */
-    public function statsByType(TypeServiceEntityInterface $type)
+    public function statsByType($type)
     {
         $qb    = $this->createQueryBuilder('s');
         $expr  = $qb->expr();
         $query = $qb->select('COUNT(s.booking) AS surveyCount, AVG(s.ratingAccommodationTotal) AS surveyAverageOverallRating')
                     ->leftJoin('s.type', 't')
                     ->leftJoin('t.accommodation', 'a')
-                    ->where($expr->eq('t', ':type'))
+                    ->where(($type instanceof TypeServiceEntityInterface ? $expr->eq('t', ':type') : $expr->eq('t.id', ':type')))
                     ->andWhere($expr->gt('s.ratingAccommodationTotal', ':ratingAccommodationTotal'))
                     ->andWhere($expr->eq('s.reviewed', ':reviewed'))
                     ->andWhere($expr->eq('t.display', ':display'))
@@ -267,7 +269,7 @@ class SurveyRepository extends BaseRepository implements SurveyServiceRepository
             $result = [
 
                 'booking_id'         => intval($result['booking_id']),
-                'exact_arrival_date' => intval($result['exact_arrival_date']),
+                'exact_arrival_date' => $result['exact_arrival_date'],
                 'average'            => floatval($result['average']),
                 'question_1_1'       => intval($result['question_1_1']),
                 'question_1_2'       => intval($result['question_1_2']),

@@ -1,10 +1,12 @@
 <?php
 namespace AppBundle\Entity\Booking\Survey;
 
-use       AppBundle\Concern\WebsiteConcern;
-use       AppBundle\Service\Api\Booking\BookingServiceEntityInterface;
-use       AppBundle\Service\Api\Booking\Survey\SurveyServiceEntityInterface;
-use       Doctrine\ORM\Mapping as ORM;
+use AppBundle\Concern\WebsiteConcern;
+use AppBundle\Service\Api\Booking\BookingServiceEntityInterface;
+use AppBundle\Service\Api\Booking\Survey\SurveyServiceEntityInterface;
+use Doctrine\ORM\Mapping as ORM;
+use Jenssegers\Date\Date;
+
 /**
  * Survey
  *
@@ -738,6 +740,22 @@ class Survey implements SurveyServiceEntityInterface
         }
 
         return ($this->{$property} > 10 ? 10 : $this->{$property});
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getBookingDate()
+    {
+        $booking = $this->getBooking();
+
+        if (null !== $booking) {
+
+            $date = new Date($booking->getExactArrivalAt()->getTimestamp());
+            return $date->format('F Y');
+        }
+
+        return '';
     }
 
     /**

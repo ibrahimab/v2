@@ -17,6 +17,7 @@ services:
             - [setFileServices, ["@app.file.file", "@app.file.type", "@app.file.accommodation", "@app.file.region", "@app.file.place", "@app.file.theme"]]
             - [setRequestStack, ["@request_stack"]]
             - [setUser, ["@app.api.user"]]
+            - [setFoundedDate, ["%founded%"]]
 
     twig.extension.pagination:
         class: AppBundle\Twig\PaginationExtension

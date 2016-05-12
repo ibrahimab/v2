@@ -99,6 +99,16 @@ interface TypeServiceRepositoryInterface
      *
      * @param integer $typeId
      * @return TypeServiceEntityInterface
+     * @deprecated
      */
     public function findById($typeId);
+
+    /**
+     * Getting type and returning array
+     *
+     * @param integer|array
+     *
+     * @return array
+     */
+    public function getTypeById($typeId);
 }

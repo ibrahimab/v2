@@ -1,5 +1,4 @@
 <?php
-
 namespace AppBundle\Twig\Extension;
 
 use AppBundle\Service\Api\Search\Filter\Tokenizer;
@@ -17,6 +16,7 @@ use AppBundle\Service\Api\User\UserService;
 use AppBundle\Service\Legacy\CmsUser\CmsUserService;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Jenssegers\Date\Date;
 
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
@@ -128,5 +128,15 @@ trait Dependencies
     public function setUser(UserService $userService)
     {
         $this->currentUser = $userService->user();
+    }
+
+    /**
+     * @param integer $year
+     * @param integer $month
+     * @param integer $day
+     */
+    public function setFoundedDate($date)
+    {
+        $this->founded = Date::createFromFormat('Y-m-d', implode('-', [$date['year'], $date['month'], $date['day']]));
     }
 }

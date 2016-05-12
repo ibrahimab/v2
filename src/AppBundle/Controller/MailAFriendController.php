@@ -31,27 +31,34 @@ class MailAFriendController extends Controller
      * })
      * @Method("GET")
      */
-    public function newAction($countryCode, $typeId)
+    public function newAction($beginCode, $typeId, Request $request)
     {
         try {
 
             $typeService = $this->get('app.api.type');
-            $type        = $typeService->findById($typeId);
+            $type        = $typeService->getTypeById($typeId);
 
         } catch (NoResultException $exception) {
             throw $this->createNotFoundException(sprintf('Type with ID=%d could not be found', $typeId));
         }
 
-        $priceService  = $this->get('app.api.price');
-        $offers        = $priceService->offers([$typeId]);
+        $pricesAndOffersService = $this->get('app.api.prices_and_offers');
+        $params                 = $pricesAndOffersService->createParamsFromRequest($request);
+        $offers                 = $pricesAndOffersService->getOffers([$typeId]);
+        $prices                 = $pricesAndOffersService->getPrices([$typeId], $params);
+
+        $surveyService          = $this->get('app.api.booking.survey');
+        $surveys                = $surveyService->normalize($surveyService->statsByType($type['type_id']));
 
         return $this->render('mail-a-friend/new.html.twig', [
 
             'countryCode' => $countryCode,
             'typeId'    => $typeId,
             'type'      => $type,
+            'place'     => $type['place_name'],
             'prices'    => $prices,
             'offers'    => $offers,
+            'surveys'   => $surveys,
             'form'      => [
 
                 'errors'  => [],
@@ -116,6 +123,7 @@ class MailAFriendController extends Controller
             'countryCode' => $countryCode,
             'typeId'    => $typeId,
             'type'      => $type,
+            'place'     => $type['place_name'],
             'prices'    => $prices,
             'offers'    => $offers,
             'form'      => [

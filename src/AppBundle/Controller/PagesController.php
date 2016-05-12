@@ -77,12 +77,8 @@ class PagesController extends Controller
 
         if (count($typeIds) > 0) {
 
-            $surveyStats = $surveyService->statsByTypes($typeIds);
-            $offers      = $priceService->offers($typeIds);
-
-            foreach ($surveyStats as $survey) {
-                $surveys[$survey['typeId']] = ['count' => $survey['surveyCount'], 'average' => $survey['surveyAverageOverallRating']];
-            }
+            $offers  = $priceService->offers($typeIds);
+            $surveys = $surveyService->normalize($surveyService->statsByTypes($typeIds));
         }
 
         $groupedHomepageBlocks = ['left' => [], 'right' => []];
@@ -225,23 +221,27 @@ class PagesController extends Controller
      */
     public function viewed()
     {
-        $typeIds      = $this->get('app.api.user')->user()->getViewed();
-        $typeService  = $this->get('app.api.type');
-        $priceService = $this->get('app.api.price');
+        $typeIds       = $this->get('app.api.user')->user()->getViewed();
+        $typeService   = $this->get('app.api.type');
+        $priceService  = $this->get('app.api.price');
+        $surveyService = $this->get('app.api.booking.survey');
 
-        $offers       = [];
-        $types        = [];
+        $offers  = [];
+        $types   = [];
+        $surveys = [];
 
         if (count($typeIds) > 0) {
 
-            $types  = $typeService->findById($typeIds);
-            $offers = $priceService->offers($typeIds);
+            $types   = $typeService->getTypeById($typeIds);
+            $offers  = $priceService->offers($typeIds);
+            $surveys = $surveyService->normalize($surveyService->statsByTypes($typeIds));
         }
 
         return $this->render('pages/viewed.html.twig', [
 
-            'types'  => $types,
-            'offers' => $offers,
+            'types'   => $types,
+            'offers'  => $offers,
+            'surveys' => $surveys,
         ]);
     }
 
@@ -252,23 +252,27 @@ class PagesController extends Controller
      */
     public function saved()
     {
-        $typeIds      = $this->get('app.api.user')->user()->getFavorites();
-        $typeService  = $this->get('app.api.type');
-        $priceService = $this->get('app.api.price');
+        $typeIds       = $this->get('app.api.user')->user()->getFavorites();
+        $typeService   = $this->get('app.api.type');
+        $priceService  = $this->get('app.api.price');
+        $surveyService = $this->get('app.api.booking.survey');
 
-        $offers       = [];
-        $types        = [];
+        $offers  = [];
+        $types   = [];
+        $surveys = [];
 
         if (count($typeIds) > 0) {
 
-            $types  = $typeService->findById($typeIds);
-            $offers = $priceService->offers($typeIds);
+            $types   = $typeService->getTypeById($typeIds);
+            $offers  = $priceService->offers($typeIds);
+            $surveys = $surveyService->normalize($surveyService->statsByTypes($typeIds));
         }
 
         return $this->render('pages/saved.html.twig', [
 
-            'types'  => $types,
-            'offers' => $offers,
+            'types'   => $types,
+            'offers'  => $offers,
+            'surveys' => $surveys,
         ]);
     }
 

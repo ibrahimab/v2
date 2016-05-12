@@ -5,11 +5,13 @@ create div with accommodation highlight
 called from:
 - partials/highlight/highlights.html.twig
 - places/show.html.twig
+- pages/viewed.html.twig
+- pages/saved.html.twig
 
 #}
 {% set locale = get_locale() %}
 {% set offer  = offers is defined and offers[highlight.type_id] is defined %}
-{% set link   = locale_path('show_type', { countryCode: highlight.country_begin_code, typeId: highlight.type_id }) %}
+{% set link   = locale_path('show_type', { countryCode: highlight.country_code, typeId: highlight.type_id }) %}
 
 <div class="small-{{ small_size|default(12) }} medium-{{ medium_size|default(4) }} large-{{ large_size|default(4) }} columns {% if end == true %}end{% endif %}">
     <article class="overview{% if offer %} sale{% endif %}" data-equalizer-watch>
@@ -20,13 +22,11 @@ called from:
                     <div class="circle"><span>Aan-</span><span>bieding</span></div>
                 </a>
             {% endif %}
-            {% if surveys[highlight.type_id] is defined %}
-                {% set survey = surveys[highlight.type_id] %}
-                {% if surve > 1 %}
-                    <a href="{{ link }}">
-                        <div class="rating"><span class="figure">{{ survey.average }}</span><span class="reviews-number">{{ survey.count }} {{ 'ratings'|trans|lower }}</span></div>
-                    </a>
-                {% endif %}
+            {% dump(surveys) %}
+            {% if surveys.count is defined and surveys.count > 1 %}
+                <a href="{{ link }}">
+                    <div class="rating"><span class="figure">{{ surveys.average|round(1) }}</span><span class="reviews-number">{{ surveys.count }} {{ 'ratings'|trans|lower }}</span></div>
+                </a>
             {% endif %}
         </div>
         <a href="{{ link }}">

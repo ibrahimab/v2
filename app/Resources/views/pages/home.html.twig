@@ -18,10 +18,10 @@
     {{ parent() }}
 
     {% if highlights %}
-        {% include 'partials/highlights.html.twig'       with {'highlights':     highlights, offers: offers, fix_blocks: true } only %}
+        {% include 'partials/highlights.html.twig' with {'highlights': highlights, 'surveys': surveys, 'offers': offers, 'fix_blocks': true } only %}
     {% endif %}
 
-    {% include 'partials/homepage_blocks.html.twig'  with {'homepageBlocks': homepageBlocks } only %}
+    {% include 'partials/homepage_blocks.html.twig' with {'homepageBlocks': homepageBlocks } only %}
 
     {% if region and places|length >= 3 %}
         {% include 'partials/homepage_regions.html.twig' with {'region': region, 'places': places } only %}

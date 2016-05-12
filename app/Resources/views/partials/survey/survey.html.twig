@@ -4,7 +4,7 @@
         <div class="small-12 medium-12 large-6 columns">
             <span class="rating">{{ survey.average|number_format(1, ',', '') }}</span>
             <span class="author">{{ survey.website_name == '' ? 'anonymous'|trans : survey.website_name }},</span>
-            <span class="date">{{ survey.exact_arrival_date }}</span>
+            <span class="date">{{ survey.exact_arrival_date|format_date('F Y') }}</span>
             <p data-role="review-text">{{ survey.website_text }}</p>
         </div>
         <div class="small-12 medium-12 large-6 columns">

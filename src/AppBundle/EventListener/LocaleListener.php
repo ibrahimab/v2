@@ -1,9 +1,9 @@
 <?php
-
 namespace AppBundle\EventListener;
 
 use AppBundle\Concern\LocaleConcern;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Jenssegers\Date\Date;
 
 /**
  * LocaleListener
@@ -78,6 +78,10 @@ class LocaleListener
         $request->setLocale($locale);
         $this->localeConcern->set($locale);
 
+        // set php locale
         setlocale(LC_ALL, $this->systemLocales[$locale]);
+
+        // set date locale
+        Date::setLocale($locale);
     }
 }

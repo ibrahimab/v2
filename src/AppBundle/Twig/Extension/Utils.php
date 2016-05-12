@@ -3,6 +3,7 @@ namespace AppBundle\Twig\Extension;
 
 use AppBundle\Service\UtilsService;
 use AppBundle\Service\Api\Search\Filter\Filter;
+use Jenssegers\Date\Date;
 
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
@@ -134,5 +135,15 @@ trait Utils
     {
         $key = 'question_' . $question . '_' . $n;
         return (isset($survey[$key]) ? ($survey[$key] > 10 ? 10 : $survey[$key]) : 0);
+    }
+
+    /**
+     * @return integer
+     */
+    public function getYearsActive()
+    {
+        $now = new Date();
+
+        return $now->diffInYears($this->founded);
     }
 }

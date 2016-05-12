@@ -92,7 +92,7 @@ class SurveyService
      * @param TypeServiceEntityInterface $type
      * @return array
      */
-    public function statsByType(TypeServiceEntityInterface $type)
+    public function statsByType($type)
     {
         return $this->surveyRepository->statsByType($type);
     }
@@ -143,5 +143,39 @@ class SurveyService
     public function paginated($typeId, $page, $limit)
     {
         return $this->surveyRepository->paginated($typeId, $page, $limit);
+    }
+
+    /**
+     * @param array $raw
+     *
+     * @return array
+     */
+    public function normalize($raw)
+    {
+        if (array_key_exists('surveyCount', $raw)) {
+
+            // single record is passed in
+            return [
+
+                'count'   => intval($raw['surveyCount']),
+                'average' => floatval($raw['surveyAverageOverallRating']),
+            ];
+
+        } else {
+
+            // multiple records is passed in
+            $records = [];
+
+            foreach ($raw as $record) {
+
+                $records[$record['typeId']] = [
+
+                    'count'   => intval($record['surveyCount']),
+                    'average' => floatval($record['surveyAverageOverallRating']),
+                ];
+            }
+
+            return $records;
+        }
     }
 }

@@ -102,4 +102,48 @@ class TypeService
     {
         return $this->typeRepository->findById($typeId);
     }
+
+    /**
+     * @param integer $typeId
+     *
+     * @return array
+     */
+    public function getTypeById($typeId)
+    {
+        return $this->typeRepository->getTypeById($typeId);
+    }
+
+    /**
+     * @param TypeServiceEntityInterface $type
+     *
+     * @return array
+     */
+    public function transformEntityToArray(TypeServiceEntityInterface $type, $locale)
+    {
+        $accommodation = $type->getAccommodation();
+        $place         = $accommodation->getPlace();
+        $region        = $place->getRegion();
+        $country       = $place->getCountry();
+
+        if (in_array(null, [$accommodation, $place, $region, $country])) {
+            throw new \Exception('Could not find accommodation, place, region or country for type = '. $type->getId());
+        }
+
+        return [
+
+            'type_id'               => $type->getId(),
+            'accommodation_id'      => $accommodation->getId(),
+            'country_code'          => $country->getCountryCode(),
+            'accommodation_name'    => $accommodation->getLocaleName($locale),
+            'type_name'             => $type->getLocaleName($locale),
+            'place_name'            => $place->getLocaleName($locale),
+            'region_name'           => $region->getLocaleName($locale),
+            'country_name'          => $country->getLocaleName($locale),
+            'accommodation_kind'    => $accommodation->getKindIdentifier(),
+            'type_quality'          => $type->getQuality(),
+            'accommodation_quality' => $accommodation->getQuality(),
+            'optimal_persons'       => $type->getOptimalResidents(),
+            'max_persons'           => $type->getMaxResidents(),
+        ];
+    }
 }

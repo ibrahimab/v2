@@ -36,10 +36,11 @@ class PlacesController extends Controller
         $surveyService        = $this->get('app.api.booking.survey');
         $priceService         = $this->get('app.api.price');
         $legacyCmsUserService = $this->get('app.legacy.cmsuser');
+        $locale               = $this->get('app.concern.locale')->get();
 
         try {
 
-            $place        = $placeService->findByLocaleSeoName($placeSlug, $this->getRequest()->getLocale());
+            $place = $placeService->findByLocaleSeoName($placeSlug, $locale);
 
         } catch (NoResultException $e) {
             throw $this->createNotFoundException('Place could not be found');
@@ -63,32 +64,22 @@ class PlacesController extends Controller
         }
 
         foreach ($placeTypes as $type) {
-            $types[$type->getId()] = $type;
+            $types[$type->getId()] = $typeService->transformEntityToArray($type, $locale);
         }
 
         if (count($types) > 0) {
             $offers = $priceService->offers(array_keys($types));
         }
 
-        foreach ($surveyStats as $surveyStat) {
-
-            if (!isset($types[$surveyStat['typeId']])) {
-                continue;
-            }
-
-            $types[$surveyStat['typeId']]->setSurveyCount($surveyStat['surveyCount']);
-            $types[$surveyStat['typeId']]->setSurveyAverageOverallRating($surveyStat['surveyAverageOverallRating']);
-        }
-
         $internalInfo = [];
         if (!$legacyCmsUserService->shouldShowInternalInfo()) {
 
             $internalInfo['cmsLinks'][] = [
+
                 'url'          => '/cms_plaatsen.php?show=4&wzt=' . $place->getSeason() . '&4k0=' . $place->getId(),
                 'name'         => 'plaats bewerken',
                 'target_blank' => true
             ];
-
         }
 
         return [
@@ -98,7 +89,8 @@ class PlacesController extends Controller
             'region'       => $place->getRegion(),
             'types'        => $types,
             'offers'       => $offers,
-            'internalInfo' => $internalInfo,
+            'internalInfo' => $cmsLinks,
+            'surveys'      => $surveyService->normalize($surveyStats),
         ];
     }
 }

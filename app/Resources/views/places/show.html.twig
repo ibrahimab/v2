@@ -66,7 +66,12 @@
         <div class="row">
             {% for type in types %}
 
-                {# {% include 'partials/highlight/highlight.html.twig' with { 'highlight': { 'type': type }, place: place, 'end': ( ((loop.index % 3) is same as(0)) or loop.last ), offers: offers } only %} #}
+                {% set highlight_surveys = [] %}
+                {% if surveys[type.type_id] is defined %}
+                    {% set highlight_surveys = surveys[type.type_id] %}
+                {% endif %}
+
+                {% include 'partials/highlight/highlight.html.twig' with { 'highlight': type, 'end': ( ((loop.index % 3) is same as(0)) or loop.last ), 'offers': offers, 'surveys': highlight_surveys } only %}
 
             {% endfor %}
         </div>
