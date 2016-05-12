@@ -9,4 +9,18 @@ namespace AppBundle\Service\File;
  */
 class Country extends FileService
 {
+    /**
+     * @var string
+     */
+    protected $collection = 'countries';
+
+    /**
+     * @param integer $id
+     * @return array
+     */
+    public function getImage($id)
+    {
+        return $this->mongo->findOne(['file_id' => $id,
+                                      'rank'    => 1]);
+    }
 }

@@ -14,7 +14,7 @@ services:
             - [setOldImageRoot, ["%old_image_root%"]]
             - [setOldSiteUrlPrefix, ["%old_site_url_prefix%"]]
             - [setCmsUserService, ["@app.legacy.cmsuser"]]
-            - [setFileServices, ["@app.file.file", "@app.file.type", "@app.file.accommodation", "@app.file.region", "@app.file.place", "@app.file.theme"]]
+            - [setFileServices, ["@app.file.file", "@app.file.type", "@app.file.accommodation", "@app.file.region", "@app.file.place", "@app.file.theme", "@app.file.country"]]
             - [setRequestStack, ["@request_stack"]]
             - [setUser, ["@app.api.user"]]
             - [setFoundedDate, ["%founded%"]]

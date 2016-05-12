@@ -78,4 +78,6 @@
 
     </section>
 
+    {% include 'partials/countries.html.twig' with { active_country: country.getCountryCode() } only %}
+
 {% endblock %}

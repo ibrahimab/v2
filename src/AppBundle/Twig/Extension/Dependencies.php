@@ -104,7 +104,7 @@ trait Dependencies
      * @param PlaceFileService $place
      * @param ThemeFileService $theme
      */
-    public function setFileServices($file, $type, $accommodation, $region, $place, $theme)
+    public function setFileServices($file, $type, $accommodation, $region, $place, $theme, $country)
     {
         $this->fileServices['file']          = $file;
         $this->fileServices['type']          = $type;
@@ -112,6 +112,7 @@ trait Dependencies
         $this->fileServices['region']        = $region;
         $this->fileServices['place']         = $place;
         $this->fileServices['theme']         = $theme;
+        $this->fileServices['country']       = $country;
     }
 
     /**

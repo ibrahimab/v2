@@ -1,0 +1,80 @@
+{% set france      = 'france'|trans %}
+{% set austria     = 'austria'|trans %}
+{% set switzerland = 'switzerland'|trans %}
+{% set italy       = 'italy'|trans %}
+{% if active_country is not defined %}
+    {% set active_country = 'NONE' %}
+{% endif %}
+
+<section class="area-countries">
+    <h2>Ga direct naar</h2>
+    {% if active_country is not defined %}
+    <div class="row">
+        <div class="small-12 columns">
+            <p>Als je in onderstaand overzicht op één van de landen klikt, dan ga je naar de pagina met uitgebreide informatie over wintersport in respectievelijk Frankrijk, Oostenrijk, Zwitserland of Italië. Op deze pagina's is het ook mogelijk om te sorteren op het aantal accommodaties per skigebied, aantal kilometers piste en de hoogte van het skigebied.</p>
+        </div>
+    </div>
+    {% endif %}
+    <div class="row">
+        <div class="small-12 medium-3 large-3 columns">
+            <a href="{{ locale_path('show_country', {countrySlug: france}) }}">
+                <article class="overview" data-equalizer-watch>
+                    {% if active_country == 'F' %}
+                        <div class="overlay"></div>
+                    {% endif %}
+                    <div class="accom-img">
+                        <img src="{{ country_image(1) }}" alt="France" />
+                    </div>
+                    <div class="accom-desc">
+                        <div class="title"><i class="sprite sprite-flag-F"></i>{{ france }}</div>
+                    </div>
+                </article>
+            </a>
+        </div>
+        <div class="small-12 medium-3 large-3 columns">
+            <a href="{{ locale_path('show_country', {countrySlug: austria})}}">
+                <article class="overview" data-equalizer-watch>
+                    {% if active_country == 'O' %}
+                        <div class="overlay"></div>
+                    {% endif %}
+                    <div class="accom-img">
+                        <img src="{{ country_image(2) }}" alt="Austria" />
+                    </div>
+                    <div class="accom-desc">
+                        <div class="title"><i class="sprite sprite-flag-O"></i>{{ austria }}</div>
+                    </div>
+                </article>
+            </a>
+        </div>
+        <div class="small-12 medium-3 large-3 columns">
+            <a href="{{ locale_path('show_country', {countrySlug: switzerland}) }}">
+                <article class="overview" data-equalizer-watch>
+                    {% if active_country == 'Z' %}
+                        <div class="overlay"></div>
+                    {% endif %}
+                    <div class="accom-img">
+                        <img src="{{ country_image(3) }}" alt="Switzerland" height="200" />
+                    </div>
+                    <div class="accom-desc">
+                        <div class="title"><i class="sprite sprite-flag-Z"></i>{{ switzerland }}</div>
+                    </div>
+                </article>
+            </a>
+        </div>
+        <div class="small-12 medium-3 large-3 columns end">
+            <a href="{{ locale_path('show_country', {countrySlug: italy}) }}">
+                <article class="overview" data-equalizer-watch>
+                    {% if active_country == 'I' %}
+                        <div class="overlay"></div>
+                    {% endif %}
+                    <div class="accom-img">
+                        <img src="{{ country_image(5) }}" alt="Italy" />
+                    </div>
+                    <div class="accom-desc">
+                        <div class="title"><i class="sprite sprite-flag-I"></i>{{ italy }}</div>
+                    </div>
+                </article>
+            </a>
+        </div>
+    </div>
+</section>

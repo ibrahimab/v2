@@ -261,20 +261,20 @@ trait Image
 
     public function getCountryImage($countryId)
     {
-        // $countryFileService = $this->container->get('app.api.file.country');
-        // $countryImage       = $countryFileService->getImage($countryId);
-        //
-        // if (null === $countryImage) {
-        //
-        //     $countryImage = new CountryFileDocument();
-        //     $countryImage->setUrlPrefix($this->getOldImageUrlPrefix());
-        //     $countryImage->setDirectory('accommodaties');
-        //     $countryImage->setFilename('0.jpg');
-        // }
-        //
-        // $countryImage->setUrlPrefix($this->getOldImageUrlPrefix());
-        //
-        // return $countryImage;
+        $countryFileService = $this->getFileService('country');
+        $countryImage       = $countryFileService->getImage($countryId);
+
+        if (null === $countryImage) {
+
+            $countryImage = new CountryFileDocument();
+            $countryImage->setUrlPrefix($this->getOldImageUrlPrefix());
+            $countryImage->setDirectory('accommodaties');
+            $countryImage->setFilename('0.jpg');
+        }
+
+        $countryImage->setUrlPrefix($this->getOldImageUrlPrefix());
+
+        return $countryImage;
     }
 
     /**
