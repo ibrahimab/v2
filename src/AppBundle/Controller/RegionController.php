@@ -23,7 +23,7 @@ class RegionController extends Controller
     /**
      * @Route(path="/wintersport/skigebied/{regionSlug}", name="show_region_nl", options={"expose": true})
      * @Route(path="/winter-sports/region/{regionSlug}",  name="show_region_en", options={"expose": true})
-     * @Breadcrumb(name="countries", title="countries", translate=true, path="show_countries")
+     * @Breadcrumb(name="all_regions", title="regions", translate=true, path="all_regions")
      * @Breadcrumb(name="show_country", title="{countryName}", path="show_country", pathParams={"countrySlug"})
      * @Breadcrumb(name="show_region", title="{regionName}", active=true)
      */

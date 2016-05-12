@@ -41,7 +41,7 @@
                 {% endif %}
 
                 <h2>
-                    <a href="{{ locale_path('show_country', {countrySlug: country.getLocaleName(get_locale())}) }}" class="button small radius" title="Bekijk het gehele aanbod">Bekijk al onze chalets en appartementen in {{ country.getLocaleName(get_locale()) }}</a>
+                    <a href="{{ locale_path('search', {c: [country.getLocaleName(get_locale())]}) }}" class="button small radius" title="Bekijk het gehele aanbod">Bekijk al onze chalets en appartementen in {{ country.getLocaleName(get_locale()) }}</a>
                 </h2>
             </div>
             <div class="large-4 medium-4 columns">
@@ -106,7 +106,5 @@
             {% endfor %}
         </div>
     </section>
-
-    {% include 'partials/countries.html.twig' with { active_country: country.getCountryCode() } only %}
 
 {% endblock %}

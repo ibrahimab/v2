@@ -159,12 +159,10 @@
                 </article>
             </div>
             {% if (loop.index % 4) is same as(0) %}
-            </div><div class="row" data-equalizer>
+                </div><div class="row" data-equalizer>
             {% endif %}
             {% endfor %}
         </div>
     </section>
-
-    {% include 'partials/countries.html.twig' with { active_country: country.getCountryCode() } only %}
 
 {% endblock %}

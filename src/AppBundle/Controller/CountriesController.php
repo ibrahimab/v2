@@ -26,24 +26,9 @@ use       Doctrine\ORM\NoResultException;
 class CountriesController extends Controller
 {
     /**
-     * @Route(path="/wintersport/landen",      name="show_countries_nl")
-     * @Route(path="/winter-sports/countries", name="show_countries_en")
-     * @Breadcrumb(name="countries", title="countries", translate=true, active=true)
-     * @Template(":countries:index.html.twig")
-     */
-    public function index()
-    {
-		$countryService = $this->get('app.api.country');
-
-        return [
-        	'countries' => $countryService->findActive(),
-		];
-    }
-
-    /**
      * @Route(path="/wintersport/land/{countrySlug}/{sort}",      name="show_country_nl", defaults={"sort"="alpha"}, options={"expose"=true})
      * @Route(path="/winter-sports/country/{countrySlug}/{sort}", name="show_country_en", defaults={"sort"="alpha"}, options={"expose"=true})
-     * @Breadcrumb(name="countries", title="countries", translate=true, path="show_countries")
+     * @Breadcrumb(name="all_regions", title="regions", translate=true, path="all_regions")
      * @Breadcrumb(name="show_country", title="{countryName}", active=true)
      * @Template(":countries:show.html.twig")
      */

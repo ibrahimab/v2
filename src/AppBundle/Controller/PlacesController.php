@@ -17,7 +17,7 @@ use       Doctrine\ORM\NoResultException;
  * @since   0.0.1
  *
  * @Breadcrumb(name="frontpage", title="frontpage", translate=true, path="home")
- * @Breadcrumb(name="countries", title="countries", translate=true, path="show_countries")
+ * @Breadcrumb(name="all_regions", title="regions", translate=true, path="all_regions")
  */
 class PlacesController extends Controller
 {
