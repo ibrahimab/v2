@@ -108,4 +108,18 @@ trait Utils
 
         return (null === $filterId ? $this->filterTokenizer->tokenize($filter) : $this->filterTokenizer->tokenize($filter, true));
     }
+
+    /**
+     * @param string $page
+     *
+     * @return string
+     */
+    public function isCurrentPage($page)
+    {
+        $request = $this->requestStack->getMasterRequest();
+        $route   = ($request !== null ? $request->attributes->get('_route') : '');
+        $locale  = $this->localeConcern->get();
+
+        return in_array($route, [$page, $page . '_' . $locale]);
+    }
 }

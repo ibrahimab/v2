@@ -136,7 +136,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('get_cms_info', [$this, 'getCmsInfo']),
             new \Twig_SimpleFunction('asset_prevent_cache', [$this, 'assetPreventCache']),
             new \Twig_SimpleFunction('count_array_fields', [$this, 'countArrayValuesNonEmpty']),
-
+            new \Twig_SimpleFunction('is_current_page', [$this, 'isCurrentPage']),
         ];
     }
 
