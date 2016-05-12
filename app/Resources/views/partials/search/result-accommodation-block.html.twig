@@ -17,7 +17,7 @@ Template-content: search results search-and-book (accommodation-block)
     {% endset %}
 
     <article class="overview{{ cheapest.offer ? ' sale' }}">
-        <a href="{{ locale_path('show_type', {beginCode: cheapest.country_begincode, typeId: cheapest.type_id}) }}" data-role="link-to-accpage">
+        <a href="{{ locale_path('show_type', {countryCode: cheapest.country_countrycode, typeId: cheapest.type_id}) }}" data-role="link-to-accpage">
             <div class="row">
                 <div class="title-ipad title medium-12 columns">
                     {{ ('type.kind.' ~ cheapest.kind_identifier)|trans|capitalize ~ ' ' ~ cheapest.accommodation_name ~ ' ' ~ cheapest.type_name }}

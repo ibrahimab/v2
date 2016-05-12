@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Controller;
 use       AppBundle\Annotation\Breadcrumb;
+use       AppBundle\Service\UtilsService;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -23,21 +24,85 @@ use       Symfony\Component\HttpFoundation\JsonResponse;
  */
 class TypesController extends Controller
 {
+
     /**
-     * @Route(name="show_type_nl", path="/accommodatie/{beginCode}{typeId}", requirements={
-     *    "beginCode": "[A-Z]{1,2}",
-     *    "typeId": "\d+"
-     * }, options={"expose": true})
-     * @Route(name="show_type_en", path="/accommodation/{beginCode}{typeId}", requirements={
-     *    "beginCode": "[A-Z]{1,2}",
-     *    "typeId": "\d+"
-     * }, options={"expose": true})
+     * @Route(name="type_redirect_1", path="/{countryCode}{typeId}{trailingSlash}", requirements={
+     *    "countryCode": "[A-Za-z]{1,2}",
+     *    "typeId": "\d+",
+     *    "trailingSlash" : "[/]{0,1}"
+     * }, defaults={"trailingSlash" = "/"})
+     * @Route(name="type_redirect_2", path="/accommodatie/{countryCode}{typeId}{trailingSlash}", requirements={
+     *    "countryCode": "[A-Za-z]{1,2}",
+     *    "typeId": "\d+",
+     *    "trailingSlash" : "[/]{0,1}"
+     * }, defaults={"trailingSlash" = "/"})
+    * @Route(name="type_redirect_3", path="/accommodatie/{countryCode}{typeId}/{fullAccName}", requirements={
+    *    "countryCode": "[A-Za-z]{1,2}",
+    *    "typeId": "\d+",
+    *    "trailingSlash" : "[/]{0,1}"
+    * }, defaults={"fullAccName" = ".+"})
+    * @Route(name="type_redirect_4", path="/wintersport/{countryCode}{typeId}{trailingSlash}", requirements={
+    *    "countryCode": "[A-Za-z]{1,2}",
+    *    "typeId": "\d+",
+    *    "trailingSlash" : "[/]{0,1}"
+    * }, defaults={"trailingSlash" = "/"})
+    */
+    public function redirectAction($countryCode, $typeId, Request $request)
+    {
+
+        $typeService = $this->get('app.api.type');
+
+        try {
+            $type = $typeService->findById($typeId);
+        } catch (NoResultException $e) {
+
+            $response = $this->render('types/not-found.html.twig');
+            $response->setStatusCode(Response::HTTP_NOT_FOUND);
+
+            return $response;
+
+        }
+
+        // @todo: translate this! (winter-sports for English sites)
+        $url = '/wintersport';
+
+        $url .= '/' . strtolower($type->getAccommodation()->getPlace()->getCountry()->getCountryCode()) . $typeId;
+
+        $fullAccName = ucfirst($this->get('translator')->trans('type.kind.' . $type->getAccommodation()->getKindIdentifier()));
+        $fullAccName .= ' ' . $type->getAccommodation()->getName();
+        if (null !== $type->getName()) {
+            $fullAccName .= ' ' . $type->getName();
+        }
+        $url .= '/' . UtilsService::seo($fullAccName);
+
+        // check for query string
+        $qs = $request->server->get('QUERY_STRING');
+        if ($qs) {
+            // add query string
+            $url .= '?' . $qs;
+        }
+
+        return $this->redirect($url, 301);
+
+    }
+
+    /**
+     * @Route(name="show_type_nl", path="/wintersport/{countryCode}{typeId}/{fullAccName}", requirements={
+     *    "countryCode": "[A-Za-z]{1,2}",
+     *    "typeId": "\d+",
+     *    "fullAccname": ".+"
+     * }, options={"expose": true}, defaults={"fullAccName" = null})
+     * @Route(name="show_type_en", path="/winter-sports/{countryCode}{typeId}/{fullAccName}", requirements={
+     *    "countryCode": "[A-Za-z]{1,2}",
+     *    "typeId": "\d+",
+     *    "fullAccname": ".+"
+     * }, options={"expose": true}, defaults={"fullAccName" = null})
      * @Breadcrumb(name="show_country", title="{countryName}",       path="show_country", pathParams={"countrySlug"})
      * @Breadcrumb(name="show_region",  title="{regionName}",        path="show_region",  pathParams={"regionSlug"})
      * @Breadcrumb(name="show_place",   title="{placeName}",         path="show_place",   pathParams={"placeSlug"})
      * @Breadcrumb(name="show_type",    title="{accommodationName}", active=true)
      */
-    public function showAction($beginCode, $typeId, Request $request)
+    public function showAction($countryCode, $typeId, $fullAccName, Request $request)
     {
         $typeService            = $this->get('app.api.type');
         $surveyService          = $this->get('app.api.booking.survey');
@@ -55,10 +120,10 @@ class TypesController extends Controller
                 if ($type->getRedirectToType() !== null) {
 
                     $full           = $type->getRedirectToType();
-                    $beginCode      = substr($full, 0, 1);
+                    $countryCode      = substr($full, 0, 1);
                     $redirectTypeId = substr($full, 1);
 
-                    $response = $this->redirectToRoute('show_type_' . $this->get('app.concern.locale')->get(), ['beginCode' => $beginCode, 'typeId' => $redirectTypeId]);
+                    $response = $this->redirectToRoute('show_type_' . $this->get('app.concern.locale')->get(), ['countryCode' => $countryCode, 'typeId' => $redirectTypeId]);
                     $response->setStatusCode(Response::HTTP_MOVED_PERMANENTLY);
 
                     return $response;
@@ -145,7 +210,7 @@ class TypesController extends Controller
                     $internalInfo['showInternalInfoSlider'] = true;
                 }
 
-                $internalInfo['code'] = $beginCode . $type->getId() . ($type->getCode() ? ' - ' . $type->getCode() : '');
+                $internalInfo['code'] = $countryCode . $type->getId() . ($type->getCode() ? ' - ' . $type->getCode() : '');
                 if (true === $type->getIsCollectionType()) {
                     $internalInfo['code'] .= ' - verzameltype';
                 }

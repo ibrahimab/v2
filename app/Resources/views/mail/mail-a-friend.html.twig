@@ -41,7 +41,7 @@
 {% set place         = accommodation.getPlace() %}
 {% set region        = place.getRegion %}
 {% set country       = place.getCountry() %}
-{% set link          = locale_path('show_type', { beginCode: country.getStartCode(), typeId: type.id }) %}
+{% set link          = locale_path('show_type', { countryCode: country.getCountryCode(), typeId: type.id }) %}
 
     <article class="overview{% if offers %} sale{% endif %}" data-equalizer-watch>
         <div class="accom-img">
@@ -80,7 +80,7 @@
             </div>
         </a>
     </article>
-    
+
     <table>
         <tr>
             <td>

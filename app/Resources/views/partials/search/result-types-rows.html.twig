@@ -35,7 +35,7 @@ Template-content: search results search-and-book (types-rows)
                     {% set row_css_class = '' %}
                 {% endif %}
 
-                <a class="tb-r{{ type.offer ? ' sale-type' }}{{ row_css_class }}" href="{{ locale_path('show_type', {'beginCode': type.country_begincode, 'typeId': type.type_id}) }}" data-role="link-to-accpage">
+                <a class="tb-r{{ type.offer ? ' sale-type' }}{{ row_css_class }}" href="{{ locale_path('show_type', {'countryCode': type.country_countrycode, 'typeId': type.type_id}) }}" data-role="link-to-accpage">
                     <div class="tb-c tb-c-1">
                         <i class="sprite sprite-icon-torso"></i>
                         {{ ( type.optimal_residents == type.max_residents ? type.optimal_residents : (type.optimal_residents ~ ' - ' ~ type.max_residents) ) }}

@@ -215,7 +215,7 @@ class Country implements CountryServiceEntityInterface
      *
      * @ORM\Column(name="begincode", type="string", length=2)
      */
-    private $startCode;
+    private $countryCode;
 
     /**
      * @var array
@@ -1019,9 +1019,9 @@ class Country implements CountryServiceEntityInterface
     /**
      * {@InheritDoc}
      */
-    public function setStartCode($startCode)
+    public function setCountryCode($countryCode)
     {
-        $this->startCode = $startCode;
+        $this->countryCode = $countryCode;
 
         return $this;
     }
@@ -1029,9 +1029,9 @@ class Country implements CountryServiceEntityInterface
     /**
      * {@InheritDoc}
      */
-    public function getStartCode()
+    public function getCountryCode()
     {
-        return $this->startCode;
+        return $this->countryCode;
     }
 
     /**
@@ -1141,18 +1141,18 @@ class Country implements CountryServiceEntityInterface
     {
         return $this->updatedAt;
     }
-    
+
     public static function hydrate($data)
     {
         $country = new self();
-        
+
         foreach ($data as $field => $value) {
-            
+
             if (property_exists($country, $field)) {
                 $country->{$field} = $value;
             }
         }
-        
+
         return $country;
     }
 }

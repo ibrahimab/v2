@@ -34,7 +34,7 @@ class PriceCalculatorController extends Controller
      * @Breadcrumb(name="show_country",    title="{countryName}",         path="show_country", pathParams={"countrySlug"})
      * @Breadcrumb(name="show_region",     title="{regionName}",          path="show_region",  pathParams={"regionSlug"})
      * @Breadcrumb(name="show_place",      title="{placeName}",           path="show_place",   pathParams={"placeSlug"})
-     * @Breadcrumb(name="show_type",       title="{accommodationName}",   path="show_type",    pathParams={"beginCode", "typeId"})
+     * @Breadcrumb(name="show_type",       title="{accommodationName}",   path="show_type",    pathParams={"countryCode", "typeId"})
      * @Breadcrumb(name="calculate_price", title="calculate-price-title", translate=true,      active=true)
      */
     public function stepOne(Request $request, $typeId = null)
@@ -71,7 +71,7 @@ class PriceCalculatorController extends Controller
      * @Breadcrumb(name="show_country",    title="{countryName}",         path="show_country", pathParams={"countrySlug"})
      * @Breadcrumb(name="show_region",     title="{regionName}",          path="show_region",  pathParams={"regionSlug"})
      * @Breadcrumb(name="show_place",      title="{placeName}",           path="show_place",   pathParams={"placeSlug"})
-     * @Breadcrumb(name="show_type",       title="{accommodationName}",   path="show_type",    pathParams={"beginCode", "typeId"})
+     * @Breadcrumb(name="show_type",       title="{accommodationName}",   path="show_type",    pathParams={"countryCode", "typeId"})
      * @Breadcrumb(name="calculate_price", title="calculate-price-title", translate=true,      active=true)
      */
     public function stepTwo(Request $request, $typeId)
@@ -137,7 +137,7 @@ class PriceCalculatorController extends Controller
      * @Breadcrumb(name="show_country",    title="{countryName}",          path="show_country", pathParams={"countrySlug"})
      * @Breadcrumb(name="show_region",     title="{regionName}",           path="show_region",  pathParams={"regionSlug"})
      * @Breadcrumb(name="show_place",      title="{placeName}",            path="show_place",   pathParams={"placeSlug"})
-     * @Breadcrumb(name="show_type",       title="{accommodationName}",    path="show_type",    pathParams={"beginCode", "typeId"})
+     * @Breadcrumb(name="show_type",       title="{accommodationName}",    path="show_type",    pathParams={"countryCode", "typeId"})
      * @Breadcrumb(name="calculate_price", title="calculate-price-title",  translate=true,      active=true)
      */
     public function stepThree(Request $request, $typeId)
@@ -209,7 +209,7 @@ class PriceCalculatorController extends Controller
      * @Breadcrumb(name="show_country",    title="{countryName}",          path="show_country", pathParams={"countrySlug"})
      * @Breadcrumb(name="show_region",     title="{regionName}",           path="show_region",  pathParams={"regionSlug"})
      * @Breadcrumb(name="show_place",      title="{placeName}",            path="show_place",   pathParams={"placeSlug"})
-     * @Breadcrumb(name="show_type",       title="{accommodationName}",    path="show_type",    pathParams={"beginCode", "typeId"})
+     * @Breadcrumb(name="show_type",       title="{accommodationName}",    path="show_type",    pathParams={"countryCode", "typeId"})
      * @Breadcrumb(name="calculate_price", title="calculate-price-title",  translate=true,      active=true)
      */
     public function stepFour(Request $request, $typeId)
@@ -249,7 +249,7 @@ class PriceCalculatorController extends Controller
         $table                = $this->renderView('price_calculator/table.html.twig', [
 
             'type_id'           => $typeData['typeid'],
-            'begin_code'        => $typeData['begincode'],
+            'begin_code'        => $typeData['countrycode'],
             'arrival_date'      => $formatter->format($arrivalDate),
             'departure_date'    => $formatter->format($departureDate),
             'name_type'         => $typeData['naam_ap'],

@@ -44,7 +44,7 @@ class RegionRepository extends BaseRepository implements RegionServiceRepository
         $qb    = $this->getEntityManager()->createQueryBuilder();
         $expr  = $qb->expr();
 
-        $qb->select('r, partial c.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, startCode}, partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, altitude, distanceFromUtrecht}')
+        $qb->select('r, partial c.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, countryCode}, partial p.{id, name, englishName, germanName, seoName, englishSeoName, germanSeoName, altitude, distanceFromUtrecht}')
            ->from('AppBundle\Entity\Place\Place', 'p')
            ->leftJoin('p.region', 'r')
            ->leftJoin('p.country', 'c')
