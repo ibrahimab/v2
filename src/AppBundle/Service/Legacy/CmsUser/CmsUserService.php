@@ -12,6 +12,13 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 class CmsUserService
 {
+
+    /**
+     * time in seconds when a login will be valid
+     *
+     **/
+    const LOGIN_VALID_TIME = 31536000;
+
     /**
      * @var Request|null
      */
@@ -28,6 +35,11 @@ class CmsUserService
     private $user;
 
     /**
+     * @var boolean
+     */
+    private $isLoggedIn;
+
+    /**
      * @param RequestStack $request
      */
     public function __construct(RequestStack $requestStack, RepositoryInterface $repository)
@@ -41,7 +53,28 @@ class CmsUserService
      */
     public function isLoggedIn()
     {
-        return $this->request->cookies->has('loginuser');
+
+        if (null === $this->isLoggedIn) {
+
+            $this->isLoggedIn = false;
+
+            $userData = $this->getUser();
+
+            if ($userData['userlevel'] > 0) {
+
+                $uniqueid_cookie = $this->request->cookies->get('loginsessionid')['chalet'];
+
+                $uniqueid_database = $userData['uniqueid_ip'];
+
+                if (preg_match('@([0-9]+)_' . str_replace('.', '\.', $this->request->server->get('REMOTE_ADDR')) . '_' . $uniqueid_cookie . '@', $uniqueid_database, $regs)) {
+                    if (intval($regs[1]) > (time() - self::LOGIN_VALID_TIME)) {
+                        $this->isLoggedIn = true;
+                    }
+                }
+            }
+        }
+
+        return $this->isLoggedIn;
     }
 
     /**
@@ -66,9 +99,21 @@ class CmsUserService
             throw new NotFoundException('User is not logged in, user ID could not be found');
         }
 
-        $cookie = $this->request->cookies->get('loginuser');
+        return $this->getUserIdFromCookie();
 
+    }
+
+    /**
+     * get userid based in the loginuser[chalet]-cookie
+     *
+     * @return integer
+     **/
+    private function getUserIdFromCookie()
+    {
+
+        $cookie = $this->request->cookies->get('loginuser');
         return intval($cookie['chalet']);
+
     }
 
     /**
@@ -77,7 +122,7 @@ class CmsUserService
     public function getUser()
     {
         if (null === $this->user) {
-            $this->user = $this->repository->getUser($this->getUserId());
+            $this->user = $this->repository->getUser($this->getUserIdFromCookie());
         }
 
         return $this->user;
