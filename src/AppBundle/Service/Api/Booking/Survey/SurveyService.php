@@ -132,4 +132,16 @@ class SurveyService
     {
         return $this->surveyRepository->statsByCountry($country);
     }
+
+    /**
+     * @param integer $typeId
+     * @param integer $page
+     * @param integer $limit
+     *
+     * @return array
+     */
+    public function paginated($typeId, $page, $limit)
+    {
+        return $this->surveyRepository->paginated($typeId, $page, $limit);
+    }
 }

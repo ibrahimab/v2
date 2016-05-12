@@ -1186,3 +1186,22 @@ ul.feature-list li { background: none; padding-left: 0; }
         margin-right: 8px;
     }
 }
+
+.more-reviews {
+
+    border-top: thin solid #bfbfbf;
+    margin-bottom: 4rem;
+
+    .button.small.blank, .button.small.right {
+
+        border-top: none medium;
+        padding: 0.5rem 1rem;
+        border-radius: 0 0 3px 3px;
+        -moz-border-radius: 0 0 3px 3px;
+        -webkit-border-radius: 0 0 3px 3px;
+
+        i.close {
+            background-position: -185px -171px;
+        }
+    }
+}

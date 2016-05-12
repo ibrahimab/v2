@@ -122,4 +122,17 @@ trait Utils
 
         return in_array($route, [$page, $page . '_' . $locale]);
     }
+
+    /**
+     * @param array   $survey
+     * @param integer $question
+     * @param integer $n
+     *
+     * @return integer
+     */
+    public function getSurveyAnswer($survey, $question, $n)
+    {
+        $key = 'question_' . $question . '_' . $n;
+        return (isset($survey[$key]) ? ($survey[$key] > 10 ? 10 : $survey[$key]) : 0);
+    }
 }

@@ -2,19 +2,19 @@
 <article class="review-item">
     <div class="row">
         <div class="small-12 medium-12 large-6 columns">
-            <span class="rating">{{ survey.getAverage()|number_format(1, ',', '') }}</span>
-            <span class="author">{{ survey.getWebsiteName() == '' ? 'anonymous'|trans : survey.getWebsiteName() }},</span>
-            <span class="date">{{ survey.getBooking().getExactArrivalAt()|localizeddate('none', 'none', locale, null, 'MMMM y')|lower }}</span>
-            <p data-role="review-text">{{ survey.getLocaleWebsiteTextModified(locale) }}</p>
+            <span class="rating">{{ survey.average|number_format(1, ',', '') }}</span>
+            <span class="author">{{ survey.website_name == '' ? 'anonymous'|trans : survey.website_name }},</span>
+            <span class="date">{{ survey.exact_arrival_date }}</span>
+            <p data-role="review-text">{{ survey.website_text }}</p>
         </div>
         <div class="small-12 medium-12 large-6 columns">
             <ul class="ratings">
-                <li>Ontvangst ter plaatse<span>{{ survey.getAnswer(1, 1) }}</span></li>
-                <li>Ligging van de accommodatie<span>{{ survey.getAnswer(1, 2) }}</span></li>
-                <li>Comfort / inrichting<span>{{ survey.getAnswer(1, 3) }}</span></li>
-                <li>Hygiene / schoonmaak<span>{{ survey.getAnswer(1, 4) }}</span></li>
-                <li>Faciliteiten in en rondom de accommodatie<span>{{ survey.getAnswer(1, 5) }}</span></li>
-                <li>Prijs / kwaliteitverhouding<span>{{ survey.getAnswer(1, 6) }}</span></li>
+                <li>Ontvangst ter plaatse<span>{{ get_survey_answer(survey, 1, 1) }}</span></li>
+                <li>Ligging van de accommodatie<span>{{ get_survey_answer(survey, 1, 2) }}</span></li>
+                <li>Comfort / inrichting<span>{{ get_survey_answer(survey, 1, 3) }}</span></li>
+                <li>Hygiene / schoonmaak<span>{{ get_survey_answer(survey, 1, 4) }}</span></li>
+                <li>Faciliteiten in en rondom de accommodatie<span>{{ get_survey_answer(survey, 1, 5) }}</span></li>
+                <li>Prijs / kwaliteitverhouding<span>{{ get_survey_answer(survey, 1, 6) }}</span></li>
             </ul>
         </div>
     </div>

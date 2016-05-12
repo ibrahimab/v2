@@ -132,11 +132,11 @@ class TypesController extends Controller
                 throw new NoResultException('Type was found but display is turned off');
             }
 
-            $surveyData         = $surveyService->allReviewedByType($type);
-            $accommodation      = $type->getAccommodation();
-            $place              = $accommodation->getPlace();
-            $region             = $place->getRegion();
-            $data               = [
+            $surveyData    = $surveyService->paginated($type->getId(), 0, 3);
+            $accommodation = $type->getAccommodation();
+            $place         = $accommodation->getPlace();
+            $region        = $place->getRegion();
+            $data          = [
 
                 'type'         => implode(',', $type->getFeatures()),
                 'accommodatie' => implode(',', $accommodation->getFeatures()),

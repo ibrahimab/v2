@@ -1,0 +1,3 @@
+{% for survey in surveys %}
+    {% include 'partials/survey/survey.html.twig' with {'survey': survey} only %}
+{% endfor %}

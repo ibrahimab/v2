@@ -1,13 +1,14 @@
 <?php
 namespace AppBundle\Entity\Booking\Survey;
 
-use       AppBundle\Entity\BaseRepository;
-use       AppBundle\Service\Api\Type\TypeServiceEntityInterface;
-use       AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
-use       AppBundle\Service\Api\Region\RegionServiceEntityInterface;
-use       AppBundle\Service\Api\Country\CountryServiceEntityInterface;
-use       AppBundle\Service\Api\Booking\Survey\SurveyServiceRepositoryInterface;
-use       Doctrine\ORM\EntityRepository;
+use AppBundle\Entity\BaseRepository;
+use AppBundle\Service\Api\Type\TypeServiceEntityInterface;
+use AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
+use AppBundle\Service\Api\Region\RegionServiceEntityInterface;
+use AppBundle\Service\Api\Country\CountryServiceEntityInterface;
+use AppBundle\Service\Api\Booking\Survey\SurveyServiceRepositoryInterface;
+use Doctrine\ORM\EntityRepository;
+use PDO;
 
 /**
  * SurveyRepository
@@ -216,5 +217,78 @@ class SurveyRepository extends BaseRepository implements SurveyServiceRepository
                     ->getQuery();
 
         return $query->getSingleResult();
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function paginated($typeId, $offset, $limit)
+    {
+        $db     = $this->getEntityManager()->getConnection();
+        $locale = $this->getLocale();
+
+        $query = "SELECT COUNT(s.boeking_id) AS total, AVG(s.vraag1_7) AS average
+                  FROM   boeking_enquete s
+                  WHERE  s.type_id    = :type_id
+                  AND    s.beoordeeld = 1";
+
+        $statement = $db->prepare($query);
+        $statement->bindValue('type_id', $typeId);
+        $statement->execute();
+
+        $result  = $statement->fetch();
+        $total   = $result['total'];
+        $average = $result['average'];
+
+        $query = "SELECT s.boeking_id AS booking_id, s.aankomstdatum_exact AS exact_arrival_date,
+                         s.vraag1_7 AS average, vraag1_1 AS question_1_1, vraag1_2 AS question_1_2,
+                         vraag1_3 AS question_1_3, vraag1_4 AS question_1_4, vraag1_5 AS question_1_5,
+                         vraag1_6 AS question_1_6, websitetekst_naam AS website_name,
+                         websitetekst AS website_text, tekst_language AS text_language,
+                         websitetekst_gewijzigd" . ('_' . $locale) . " AS website_text_modified
+                  FROM   boeking_enquete s
+                  WHERE  s.type_id    = :type_id
+                  AND    s.beoordeeld = 1
+                  LIMIT  " . $offset . ", " . $limit;
+
+        $statement = $db->prepare($query);
+        $statement->bindValue('type_id', $typeId);
+        $statement->execute();
+
+        $results  = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $surveys  = [];
+
+        foreach ($results as $result) {
+
+            if ($result['text_language'] !== $locale) {
+                $result['website_text'] = $result['website_text_modified'];
+            }
+
+            $result = [
+
+                'booking_id'         => intval($result['booking_id']),
+                'exact_arrival_date' => intval($result['exact_arrival_date']),
+                'average'            => floatval($result['average']),
+                'question_1_1'       => intval($result['question_1_1']),
+                'question_1_2'       => intval($result['question_1_2']),
+                'question_1_3'       => intval($result['question_1_3']),
+                'question_1_4'       => intval($result['question_1_4']),
+                'question_1_5'       => intval($result['question_1_5']),
+                'question_1_6'       => intval($result['question_1_6']),
+                'website_name'       => $result['website_name'],
+                'text_language'      => $result['text_language'],
+                'website_text'       => $result['website_text'],
+            ];
+
+            $surveys[] = $result;
+        }
+
+        return [
+
+            'surveys' => $surveys,
+            'total'   => intval($total),
+            'average' => floatval($average),
+            'offset'  => $offset + $limit,
+        ];
     }
 }

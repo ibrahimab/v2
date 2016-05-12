@@ -61,6 +61,8 @@ services:
         class:     AppBundle\Entity\Boooking\Survey\SurveyRepository
         arguments: [AppBundle\Entity\Booking\Survey\Survey]
         parent:    app.repository.orm
+        calls:
+            - [setLocale,  ["@=service('app.concern.locale').get()"]]
 
     app.repository.homepageblock:
         class:     AppBundle\Entity\HomepageBlock\HomepageBlockRepository

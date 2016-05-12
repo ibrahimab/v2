@@ -1,24 +1,15 @@
-{% set surveys = surveyData.surveys %}
-{% if surveyCount > minimalSurveyCount %}
-    {% set shown  = surveys|slice(0, 3) %}
-    {% set hidden = surveys|slice(3) %}
-    <div id="reviews" class="reviews">
-        <h3>{{ surveyCount }} beoordelingen, gemiddeld<span>{{ surveyAverage|number_format(1, ',', '') }}</span></h3>
-        {% for survey in shown %}
-            {% include 'partials/survey/survey.html.twig' with {'survey': survey, 'loop': loop, 'total': surveyCount} only %}
-        {% endfor %}
-        <div class="hide">
-            {% for survey in hidden %}
-                {% include 'partials/survey/survey.html.twig' with {'survey': survey, 'loop': loop, 'total': surveyCount} only %}
-            {% endfor %}
-        </div>
-        {% if hidden == 0 %}
-        <div class="readmore">
-            <a href class="button blank small radius" title="Toon alle reviews" data-open-title="Toon alle reviews" data-close-title="Verberg alle reviews">
-                <i class="sprite sprite-icon-close-all"></i>
-                <span>Toon alle reviews</span>
-            </a>
-        </div>
-        {% endif %}
+<div id="reviews" class="reviews">
+    <h3>{{ surveyCount }} beoordelingen, gemiddeld<span>{{ surveyAverage|number_format(1, ',', '') }}</span></h3>
+    {% for survey in surveys %}
+        {% include 'partials/survey/survey.html.twig' with {'survey': survey} only %}
+    {% endfor %}
+    {% if surveyCount >= 3 %}
+    <div data-role="fetched-reviews"></div>
+    <div class="more-reviews" data-role="more-reviews-block">
+        <a href class="button blank small radius" title="Toon meerdere reviews" data-role="fetch-surveys" data-active="true" data-offset="3">
+            <i data-role="fetch-surveys-icon" class="sprite sprite-icon-close-all"></i>
+            <span data-role="fetch-surveys-label">Toon meerdere reviews</span>
+        </a>
     </div>
-{% endif %}
+    {% endif %}
+</div>

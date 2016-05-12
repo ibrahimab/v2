@@ -100,4 +100,13 @@ interface SurveyServiceRepositoryInterface
      * @return array
      */
     public function statsByCountry(CountryServiceEntityInterface $country);
+
+    /**
+     * @param integer $typeId
+     * @param integer $page
+     * @param integer $limit
+     *
+     * @return array
+     */
+    public function paginated($typeId, $page, $limit);
 }
