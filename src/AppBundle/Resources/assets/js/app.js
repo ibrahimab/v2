@@ -465,11 +465,17 @@
             clickthrough_to_accpage = true;
         });
 
+        // Check if scrolly exists in query and scroll
+        jq( document ).ready(function() {
+             var searchURL = new URI(window.location.pathname + window.location.search);
+             $(window).scrollTop(searchURL.search(true)["scrolly"]);
+        });
+
         // check if user wants to clickthrough to accpage or is clicking a tooltip-icon
         body.on('click', '[data-role="link-to-accpage"]', function(event) {
             if( clickthrough_to_accpage ) {
 
-                var searchURL         = new URI(window.location);
+                var searchURL         = new URI(window.location.pathname + window.location.search);
                 var accURL            = new URI(jq(this).attr("href"));
                 var sendValues        = [];
 
@@ -481,11 +487,13 @@
 
                 // current scroll height (scrolly)
                 if (jq(window).scrollTop() > 0) {
-                    sendValues["scrolly"] = jq(window).scrollTop();
+                    searchURL.removeQuery('scrolly');
+                    searchURL.addQuery('scrolly', jq(window).scrollTop());
                 }
 
                 // current search-and-book url
-                sendValues["back"] = window.location.pathname + window.location.search;
+                searchURL.normalizeQuery();
+                sendValues["back"] = searchURL;
 
                 for (var key in sendValues) {
                     if (sendValues.hasOwnProperty(key)) {
