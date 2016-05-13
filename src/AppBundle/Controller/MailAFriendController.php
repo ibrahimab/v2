@@ -31,7 +31,7 @@ class MailAFriendController extends Controller
      * })
      * @Method("GET")
      */
-    public function newAction($beginCode, $typeId, Request $request)
+    public function newAction($countryCode, $typeId, Request $request)
     {
         try {
 
