@@ -226,7 +226,7 @@ class SearchController extends Controller
             } elseif ($matches['param'] === 'fsg') {
 
                 $destinationIds = explode(',', $value);
-                $ids            = [];
+                $destinations   = [];
 
                 foreach ($destinationIds as $id) {
 
@@ -234,13 +234,7 @@ class SearchController extends Controller
                     $ids[] = (int)array_pop($id);
                 }
 
-                $destinations = $regionService->all(['where' => ['id' => $ids]]);
-
-                $reroute['r'] = array_map(function($region) use ($locale) {
-
-                    return $region->getLocaleName($locale);
-
-                }, $destinations);
+                $destinations = $ids;
 
             } else {
 

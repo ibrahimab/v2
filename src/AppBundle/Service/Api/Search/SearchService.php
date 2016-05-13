@@ -226,12 +226,12 @@ class SearchService
                         $names['accommodations'][$row['accommodation_id']] = $row['accommodation_name'];
                     }
 
-                    if (in_array($row['region_seoname'], $regions)) {
-                        $names['regions'][$row['region_seoname']] = $row['region_name'];
+                    if (in_array($row['region_id'], $regions)) {
+                        $names['regions'][$row['region_id']] = $row['region_name'];
                     }
 
-                    if (in_array($row['place_seoname'], $places)) {
-                        $names['places'][$row['place_seoname']] = $row['place_name'];
+                    if (in_array($row['place_id'], $places)) {
+                        $names['places'][$row['place_id']] = $row['place_name'];
                     }
                 }
             }

@@ -47,22 +47,22 @@
 
     {% if custom_filters['regions']|length > 0 %}
         {% set filters_active = true %}
-        {% for region in custom_filters['regions'] %}
+        {% for id, region in custom_filters['regions'] %}
             <div data-role="filter-tag">
                 Skigebied:
                 {{ region }}
-                <a href="#" data-role="remove-region-filter" data-id="{{ region }}"><i class="fi-x"></i></a>
+                <a href="#" data-role="remove-region-filter" data-id="{{ id }}"><i class="fi-x"></i></a>
             </div>
         {% endfor %}
     {% endif %}
 
     {% if custom_filters['places']|length > 0 %}
         {% set filters_active = true %}
-        {% for place in custom_filters['places'] %}
+        {% for id, place in custom_filters['places'] %}
             <div data-role="filter-tag">
                 Plaats:
                 {{ place }}
-                <a href="#" data-role="remove-place-filter" data-id="{{ place }}"><i class="fi-x"></i></a>
+                <a href="#" data-role="remove-place-filter" data-id="{{ id }}"><i class="fi-x"></i></a>
             </div>
         {% endfor %}
     {% endif %}

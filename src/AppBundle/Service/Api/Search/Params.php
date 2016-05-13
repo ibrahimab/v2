@@ -104,7 +104,9 @@ class Params
      */
     public function getRegions()
     {
-        return $this->getArrayItems('regions', 'r');
+        $items = $this->getArrayItems('regions', 'r');
+
+        return ($items !== false ? array_map('intval', $items) : $items);
     }
 
     /**
@@ -112,7 +114,9 @@ class Params
      */
     public function getPlaces()
     {
-        return $this->getArrayItems('places', 'pl');
+        $items = $this->getArrayItems('places', 'pl');
+
+        return ($items !== false ? array_map('intval', $items) : $items);
     }
 
     /**

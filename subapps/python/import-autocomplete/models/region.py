@@ -80,10 +80,10 @@ class Region(Base):
                 },
                 'search_term': {
 
-                    'nl': slugify(row['name_nl']),
-                    'en': slugify(row['name_en']),
-                    'de': slugify(row['name_de']),
-                    'fr': slugify(row['name_fr'])
+                    'nl': row['id'],
+                    'en': row['id'],
+                    'de': row['id'],
+                    'fr': row['id']
                 }
             })
 

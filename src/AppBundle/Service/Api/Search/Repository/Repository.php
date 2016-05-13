@@ -400,14 +400,14 @@ class Repository implements RepositoryInterface
 
             case Where::WHERE_REGION:
 
-                $clause = ['sql'        => $this->getLocaleField('r.seonaam') . ' IN (' . $this->stringArrayQuery($where->getValue()) . ')',
+                $clause = ['sql'        => 'r.skigebied_id IN (' . $this->stringArrayQuery($where->getValue()) . ')',
                            'parameters' => []];
 
                 break;
 
             case Where::WHERE_PLACE:
 
-                $clause = ['sql'        => $this->getLocaleField('p.seonaam') . ' IN (' . $this->stringArrayQuery($where->getValue()) . ')',
+                $clause = ['sql'        => 'p.plaats_id IN (' . $this->stringArrayQuery($where->getValue()) . ')',
                            'parameters' => []];
 
                 break;
