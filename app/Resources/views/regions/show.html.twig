@@ -29,7 +29,7 @@
                 <div class="readmore show-for-small-only">
                     <a href="" class="button blank small radius" title="Toon meer" data-action="show-more" data-element="description" data-open-title="Toon meer" data-close-title="Toon minder"><i class="sprite sprite-icon-close-all"></i><span>Toon meer</span></a>
                  </div>
-                <h3><a href="{{ locale_path('search', {'r': [region.getSeoName(get_locale())]}) }}" class="button small radius" title="Bekijk het gehele aanbod">Bekijk al onze chalets en appartementen in {{ region.getLocaleName(get_locale()) }}</a></h3>
+                <h3><a href="{{ locale_path('search', {'r': [region.getId()]}) }}" class="button small radius" title="Bekijk het gehele aanbod">Bekijk al onze chalets en appartementen in {{ region.getLocaleName(get_locale()) }}</a></h3>
             </div>
             <div class="large-4 medium-4 columns end">
                 <h5>{{ 'features'|trans }} {{ region.getLocaleName(get_locale()) }}</h5>
