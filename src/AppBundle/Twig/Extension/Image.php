@@ -266,13 +266,12 @@ trait Image
      */
     public function getCountryImage($countryId)
     {
-        $image = $this->getFileService('country')->getImage($countryId);
+        $directory = $this->getOldImageRoot() . '/cms/landen';
+        $files     = glob($directory . '/' . $countryId . '-*.jpg');
+        $filename  = current($files);
+        $filename  = pathinfo($filename, PATHINFO_BASENAME);
 
-        if (null === $image) {
-            $image = ['directory' => 'accommodaties', 'filename' => '0.jpg'];
-        }
-
-        return $image;
+        return ['directory' => 'landen', 'filename' => $filename];
     }
 
     /**
