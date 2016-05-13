@@ -16,7 +16,7 @@
 
             if (element.data('all-fetched') === true) {
 
-                fetched.toggle();
+                fetched.toggle('slideDown');
 
                 if (fetched.is(':visible')) {
 
