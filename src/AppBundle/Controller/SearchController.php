@@ -72,8 +72,7 @@ class SearchController extends Controller
         $paginator              = $searchService->paginate($resultset, $params);
         $destination            = $searchService->hasDestination($params);
         $typeIds                = $searchService->extractTypeIds($resultset);
-        $names                  = $searchService->extractNames($resultset, $params);
-        $accommodationNames     = $names['accommodations'];
+        $filterNames            = $searchService->getFilterNames($params);
 
         // internal users: allow searching for suppliers
         if ($legacyCmsUserService->shouldShowInternalInfo()) {
@@ -100,11 +99,11 @@ class SearchController extends Controller
             'filter_manager' => new FilterManager(),
             'custom_filters' => [
 
-                'countries'      => $params->getCountries(),
-                'regions'        => ($params->getRegions() ? $names['regions'] : []),
-                'places'         => ($params->getPlaces() ? $names['places'] : []),
-                'accommodations' => $accommodationNames,
-                'suppliers'      => $params->getSuppliers(),
+                'countries'      => $filterNames['countries'],
+                'regions'        => $filterNames['regions'],
+                'places'         => $filterNames['places'],
+                'accommodations' => $filterNames['accommodations'],
+                'suppliers'      => $filterNames['suppliers'],
             ],
 
             'form_filters'   => [

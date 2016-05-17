@@ -152,6 +152,10 @@ services:
         class:     AppBundle\Service\Api\Search\Repository\Repository
         arguments: ["@doctrine.dbal.default_connection", "@app.concern.locale", "@app.concern.website", "@app.concern.season", "%app%"]
 
+    app.repository.filter_names:
+        class:     AppBundle\Service\Api\Search\Repository\FilterNamesRepository
+        arguments: ["@doctrine.dbal.default_connection", "@app.concern.locale", "@app.concern.website", "@app.concern.season"]
+
     app.repository.autocomplete:
         class:     AppBundle\Document\Autocomplete\AutocompleteRepository
         arguments: [AppBundle\Document\Autocomplete\Autocomplete]

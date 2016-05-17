@@ -106,7 +106,7 @@ services:
 
     app.api.search:
         class:     AppBundle\Service\Api\Search\SearchService
-        arguments: ["@app.repository.search", "@app.concern.locale", "%app%"]
+        arguments: ["@app.repository.search", "@app.repository.filter_names", "@app.concern.locale", "%app%"]
         calls:
             - [setSurveyService,   ["@app.api.booking.survey"]]
             - [setStartingPrice,   ["@app.api.legacy.starting_price"]]

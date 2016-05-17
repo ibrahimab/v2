@@ -171,14 +171,20 @@ class Repository implements RepositoryInterface
         }
 
         $parameters = [];
+        $groups     = ['main' => 'AND', 'region_place_country' => 'OR', 'accommodation_freesearch' => 'OR'];
+        $parts      = [];
 
         foreach ($clauses as $clause) {
 
-            $query .= ' AND (' . $clause['sql'] . ')';
+            $parts[$clause['group_id']][] = ' ( ' . $clause['sql'] . ' )';
 
             foreach ($clause['parameters'] as $identifier => $parameter) {
                 $parameters[] = $parameter;
             }
+        }
+
+        foreach ($parts as $groupId => $part) {
+            $query .= ' AND (' . implode(' ' . $groups[$groupId], $part) . ' )';
         }
 
         if (false !== $extra) {
@@ -378,15 +384,17 @@ class Repository implements RepositoryInterface
             case Where::WHERE_WEEKEND_SKI:
 
                 $clause = ['sql'        => 'weekendski = :weekendski',
+                           'group_id'   => 'main',
                            'parameters' => [['identifier' => 'weekendski',
-                                              'value'      => $where->getValue(),
-                                              'type'       => PDO::PARAM_INT]]];
+                                             'value'      => $where->getValue(),
+                                             'type'       => PDO::PARAM_INT]]];
 
                 break;
 
             case Where::WHERE_ACCOMMODATION:
 
                 $clause = ['sql'        => 'a.accommodatie_id IN (' . $this->integerArrayQuery($where->getValue()) . ')',
+                           'group_id'   => 'accommodation_freesearch',
                            'parameters' => []];
 
                 break;
@@ -394,20 +402,23 @@ class Repository implements RepositoryInterface
             case Where::WHERE_COUNTRY:
 
                 $clause = ['sql'        => $this->getLocaleField('c.seonaam') . ' IN (' . $this->stringArrayQuery($where->getValue()) . ')',
+                           'group_id'   => 'region_place_country',
                            'parameters' => []];
 
                 break;
 
             case Where::WHERE_REGION:
 
-                $clause = ['sql'        => 'r.skigebied_id IN (' . $this->stringArrayQuery($where->getValue()) . ')',
+                $clause = ['sql'        => 'r.skigebied_id IN (' . $this->integerArrayQuery($where->getValue()) . ')',
+                           'group_id'   => 'region_place_country',
                            'parameters' => []];
 
                 break;
 
             case Where::WHERE_PLACE:
 
-                $clause = ['sql'        => 'p.plaats_id IN (' . $this->stringArrayQuery($where->getValue()) . ')',
+                $clause = ['sql'        => 'p.plaats_id IN (' . $this->integerArrayQuery($where->getValue()) . ')',
+                           'group_id'   => 'region_place_country',
                            'parameters' => []];
 
                 break;
@@ -415,6 +426,7 @@ class Repository implements RepositoryInterface
             case Where::WHERE_BEDROOMS:
 
                 $clause = ['sql'        => 't.slaapkamers >= :bedrooms',
+                           'group_id'   => 'main',
                            'parameters' => [['identifier' => 'bedrooms',
                                               'value'      => $where->getValue(),
                                               'type'       => PDO::PARAM_INT]]];
@@ -424,6 +436,7 @@ class Repository implements RepositoryInterface
             case Where::WHERE_BATHROOMS:
 
                 $clause = ['sql'        => 't.badkamers >= :bathrooms',
+                           'group_id'   => 'main',
                            'parameters' => [['identifier' => 'bathrooms',
                                              'value'      => $where->getValue(),
                                              'type'       => PDO::PARAM_INT]]];
@@ -442,16 +455,18 @@ class Repository implements RepositoryInterface
                         $max = $this->mapMaximumPersons($min);
                     }
 
-                    $clause = ['sql'       => 't.maxaantalpersonen >= :min_persons AND
-                                               t.maxaantalpersonen <= :max_persons',
+                    $clause = ['sql'        => 't.maxaantalpersonen >= :min_persons AND
+                                                t.maxaantalpersonen <= :max_persons',
 
-                              'parameters' => [['identifier' => 'min_persons',
-                                                'value'      => $min,
-                                                'type'       => PDO::PARAM_INT],
+                               'group_id'   => 'main',
 
-                                               ['identifier' => 'max_persons',
-                                                'value'      => $max,
-                                                'type'       => PDO::PARAM_INT]]];
+                               'parameters' => [['identifier' => 'min_persons',
+                                                 'value'      => $min,
+                                                 'type'       => PDO::PARAM_INT],
+
+                                                ['identifier' => 'max_persons',
+                                                 'value'      => $max,
+                                                 'type'       => PDO::PARAM_INT]]];
 
                     if (WebsiteConcern::WEBSITE_ZOMERHUISJE_NL != $this->website->get()) {
 
@@ -471,6 +486,7 @@ class Repository implements RepositoryInterface
             case Where::WHERE_SUPPLIER:
 
                 $clause = ['sql'        => 't.leverancier_id IN (' . $this->stringArrayQuery($where->getValue()) . ')',
+                           'group_id'   => 'main',
                            'parameters' => []];
 
                 break;
@@ -479,6 +495,8 @@ class Repository implements RepositoryInterface
 
                 $clause = ['sql'        => $this->getLocaleField('t.naam') . ' LIKE :freesearch_1 OR ' .
                                            $this->getLocaleField('a.naam') . ' LIKE :freesearch_2',
+
+                           'group_id'   => 'accommodation_freesearch',
 
                            'parameters' => [['identifier' => 'freesearch_1',
                                              'value'      => '%' . $where->getValue() . '%',
@@ -546,6 +564,7 @@ class Repository implements RepositoryInterface
             case FilterManager::FILTER_DISTANCE_BY_SLOPE:
 
                 $where = ['sql'        => 'a.afstandpiste <= :distance_by_slope',
+                          'group_id'   => 'main',
                           'parameters' => [['identifier' => 'distance_by_slope',
                                             'value'      => $this->config['service']['api']['search']['distance_by_slope'],
                                             'type'       => PDO::PARAM_INT]]];
@@ -555,6 +574,7 @@ class Repository implements RepositoryInterface
             case FilterManager::FILTER_DISTANCE_MAX_250:
 
                 $where = ['sql'        => 'a.afstandpiste = :distance_max_250',
+                          'group_id'   => 'main',
                           'parameters' => [['identifier' => 'distance_max_250',
                                             'value'      => 250,
                                             'type'       => PDO::PARAM_INT]]];
@@ -564,6 +584,7 @@ class Repository implements RepositoryInterface
             case FilterManager::FILTER_DISTANCE_MAX_500:
 
                 $where = ['sql'        => 'a.afstandpiste = :distance_max_500',
+                          'group_id'   => 'main',
                           'parameters' => [['identifier' => 'distance_max_500',
                                             'value'      => 500,
                                             'type'       => PDO::PARAM_INT]]];
@@ -573,6 +594,7 @@ class Repository implements RepositoryInterface
             case FilterManager::FILTER_DISTANCE_MAX_1000:
 
                 $where = ['sql'        => 'a.afstandpiste = :distance_max_1000',
+                          'group_id'   => 'main',
                           'parameters' => [['identifier' => 'distance_max_1000',
                                             'value'      => 1000,
                                             'type'       => PDO::PARAM_INT]]];
@@ -597,6 +619,7 @@ class Repository implements RepositoryInterface
             case FilterManager::FILTER_LENGTH_MAX_100:
 
                 $where = ['sql'        => 'r.kilometerpiste < :length_max_100',
+                          'group_id'   => 'main',
                           'parameters' => [['identifier' => 'length_max_100',
                                             'value'      => 100,
                                             'type'       => PDO::PARAM_INT]]];
@@ -606,6 +629,7 @@ class Repository implements RepositoryInterface
             case FilterManager::FILTER_LENGTH_MIN_100:
 
                 $where = ['sql'        => 'r.kilometerpiste >= :length_min_100',
+                          'group_id'   => 'main',
                           'parameters' => [['identifier' => 'length_min_100',
                                             'value'      => 100,
                                             'type'       => PDO::PARAM_INT]]];
@@ -615,6 +639,7 @@ class Repository implements RepositoryInterface
             case FilterManager::FILTER_LENGTH_MIN_200:
 
                 $where = ['sql'        => 'r.kilometerpiste >= :length_min_200',
+                          'group_id'   => 'main',
                           'parameters' => [['identifier' => 'length_min_200',
                                             'value'      => 200,
                                             'type'       => PDO::PARAM_INT]]];
@@ -624,6 +649,7 @@ class Repository implements RepositoryInterface
             case FilterManager::FILTER_LENGTH_MIN_400:
 
                 $where = ['sql'        => 'r.kilometerpiste >= :length_min_400',
+                          'group_id'   => 'main',
                           'parameters' => [['identifier' => 'length_min_400',
                                             'value'      => 400,
                                             'type'       => PDO::PARAM_INT]]];
@@ -671,6 +697,8 @@ class Repository implements RepositoryInterface
                     'sql'        => 'FIND_IN_SET(:facility_catering, t.kenmerken) > 0 OR
                                      FIND_IN_SET(:facility_catering, a.kenmerken) > 0',
 
+                    'group_id'   => 'main',
+
                     'parameters' => [['identifier' => 'facility_catering',
                                       'value'      => 1,
                                       'type'       => PDO::PARAM_INT]]];
@@ -685,6 +713,8 @@ class Repository implements RepositoryInterface
                                      FIND_IN_SET(:facility_internet_wifi_2, t.kenmerken) > 0 OR
                                      FIND_IN_SET(:facility_internet_wifi_3, a.kenmerken) > 0 OR
                                      FIND_IN_SET(:facility_internet_wifi_4, a.kenmerken) > 0',
+
+                    'group_id'   => 'main',
 
                     'parameters' => [['identifier' => 'facility_internet_wifi_1',
                                       'value'      => 20,
@@ -712,6 +742,8 @@ class Repository implements RepositoryInterface
                                      FIND_IN_SET(:facility_swimming_pool_2, a.kenmerken) > 0 OR
                                      FIND_IN_SET(:facility_swimming_pool_3, a.kenmerken) > 0',
 
+                    'group_id'   => 'main',
+
                     'parameters' => [['identifier' => 'facility_swimming_pool_1',
                                       'value'      => 4,
                                       'type'       => PDO::PARAM_INT],
@@ -734,6 +766,8 @@ class Repository implements RepositoryInterface
                                      FIND_IN_SET(:facility_sauna_2, a.kenmerken) > 0 OR
                                      FIND_IN_SET(:facility_sauna_3, a.kenmerken) > 0',
 
+                    'group_id'   => 'main',
+
                     'parameters' => [['identifier' => 'facility_sauna_1',
                                       'value'      => 3,
                                       'type'       => PDO::PARAM_INT],
@@ -755,6 +789,8 @@ class Repository implements RepositoryInterface
                     'sql'        => 'FIND_IN_SET(:facility_private_sauna_1, t.kenmerken) > 0 OR
                                      FIND_IN_SET(:facility_private_sauna_2, a.kenmerken) > 0',
 
+                    'group_id'   => 'main',
+
                     'parameters' => [['identifier' => 'facility_private_sauna_1',
                                       'value'      => 3,
                                       'type'       => PDO::PARAM_INT],
@@ -772,6 +808,8 @@ class Repository implements RepositoryInterface
                     'sql'        => 'FIND_IN_SET(:facility_pets_allowed_1, t.kenmerken) > 0 OR
                                      FIND_IN_SET(:facility_pets_allowed_2, a.kenmerken) > 0',
 
+                    'group_id'   => 'main',
+
                     'parameters' => [['identifier' => 'facility_pets_allowed_1',
                                       'value'      => 11,
                                       'type'       => PDO::PARAM_INT],
@@ -788,6 +826,8 @@ class Repository implements RepositoryInterface
 
                     'sql'        => 'FIND_IN_SET(:facility_fireplace_1, t.kenmerken) > 0 OR
                                      FIND_IN_SET(:facility_fireplace_2, a.kenmerken) > 0',
+
+                    'group_id'   => 'main',
 
                     'parameters' => [['identifier' => 'facility_fireplace_1',
                                       'value'      => 10,
@@ -840,6 +880,8 @@ class Repository implements RepositoryInterface
                     'sql'        => 'FIND_IN_SET(:theme_kids_1, t.kenmerken) > 0 OR
                                      FIND_IN_SET(:theme_kids_2, a.kenmerken) > 0',
 
+                    'group_id'   => 'main',
+
                     'parameters' => [['identifier' => 'theme_kids_1',
                                       'value'      => 5,
                                       'type'       => PDO::PARAM_INT],
@@ -856,6 +898,8 @@ class Repository implements RepositoryInterface
 
                     'sql'        => 'FIND_IN_SET(:theme_charming_place, p.kenmerken) > 0',
 
+                    'group_id'   => 'main',
+
                     'parameters' => [['identifier' => 'theme_charming_place',
                                       'value'      => 13,
                                       'type'       => PDO::PARAM_INT]]];
@@ -868,6 +912,8 @@ class Repository implements RepositoryInterface
 
                     'sql'        => 'FIND_IN_SET(:theme_winter_wellness_1, t.kenmerken) > 0 OR
                                      FIND_IN_SET(:theme_winter_wellness_2, a.kenmerken) > 0',
+
+                    'group_id'   => 'main',
 
                     'parameters' => [['identifier' => 'theme_winter_wellness_1',
                                       'value'      => 9,
@@ -885,6 +931,8 @@ class Repository implements RepositoryInterface
 
                     'sql'        => 'FIND_IN_SET(:theme_super_ski_stations, p.kenmerken) > 0',
 
+                    'group_id'   => 'main',
+
                     'parameters' => [['identifier' => 'theme_super_ski_stations',
                                       'value'      => 14,
                                       'type'       => PDO::PARAM_INT]]];
@@ -896,6 +944,8 @@ class Repository implements RepositoryInterface
                 $where = [
 
                     'sql'        => 'FIND_IN_SET(:theme_10_for_apres_ski, p.kenmerken) > 0',
+
+                    'group_id'   => 'main',
 
                     'parameters' => [['identifier' => 'theme_10_for_apres_ski',
                                       'value'      => 6,

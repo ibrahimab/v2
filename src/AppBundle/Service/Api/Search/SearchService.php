@@ -11,6 +11,7 @@ use AppBundle\Service\Api\Search\Result\Paginator\Paginator;
 use AppBundle\Service\Api\Booking\Survey\SurveyService;
 use AppBundle\Service\Api\Search\FacetService;
 use AppBundle\Service\Api\Search\Repository\RepositoryInterface;
+use AppBundle\Service\Api\Search\Repository\FilterNamesRepositoryInterface;
 use AppBundle\Service\Api\PricesAndOffers\Repository\PriceRepositoryInterface;
 use AppBundle\Service\Api\PricesAndOffers\Repository\OfferRepositoryInterface;
 use AppBundle\Service\Api\Legacy\StartingPrice;
@@ -42,6 +43,11 @@ class SearchService
     private $repository;
 
     /**
+     * @var FilterNamesRepositoryInterface
+     */
+    private $filterNamesRepository;
+
+    /**
      * @var LocaleConcern
      */
     private $locale;
@@ -69,11 +75,12 @@ class SearchService
     /**
      * Constructor
      */
-    public function __construct(RepositoryInterface $repository, LocaleConcern $locale, array $config)
+    public function __construct(RepositoryInterface $repository, FilterNamesRepositoryInterface $filterNamesRepository, LocaleConcern $locale, array $config)
     {
-        $this->repository = $repository;
-        $this->locale     = $locale;
-        $this->config     = $config;
+        $this->repository            = $repository;
+        $this->filterNamesRepository = $filterNamesRepository;
+        $this->locale                = $locale;
+        $this->config                = $config;
 
         $this->setLimit($this->config['service']['api']['search']['limit']);
     }
@@ -208,36 +215,9 @@ class SearchService
      *
      * @return array
      */
-    public function extractNames(Resultset $resultset, Params $params)
+    public function getFilterNames(Params $params)
     {
-        $names          = ['accommodations' => [], 'regions' => [], 'places' => []];
-        $results        =& $resultset->results;
-        $accommodations = $params->getAccommodations() ?: [];
-        $regions        = $params->getRegions() ?: [];
-        $places         = $params->getPlaces() ?: [];
-
-        if (false !== $accommodations) {
-
-            foreach ($results as $result) {
-
-                foreach ($result as $row) {
-
-                    if (in_array($row['accommodation_id'], $accommodations)) {
-                        $names['accommodations'][$row['accommodation_id']] = $row['accommodation_name'];
-                    }
-
-                    if (in_array($row['region_id'], $regions)) {
-                        $names['regions'][$row['region_id']] = $row['region_name'];
-                    }
-
-                    if (in_array($row['place_id'], $places)) {
-                        $names['places'][$row['place_id']] = $row['place_name'];
-                    }
-                }
-            }
-        }
-
-        return $names;
+        return $this->filterNamesRepository->get($params);
     }
 
     /**
