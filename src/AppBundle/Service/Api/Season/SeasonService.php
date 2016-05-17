@@ -21,6 +21,12 @@ class SeasonService
     private $seasons;
 
     /**
+     * current season
+     * @var array
+     */
+    private $current;
+
+    /**
      * Constructor
      *
      * @param SeasonServiceRepositoryInterface $seasonServiceRepository
@@ -55,10 +61,20 @@ class SeasonService
      */
     public function current()
     {
-        $seasons = $this->seasons();
-        $season  = current($seasons);
+        if (null === $this->current) {
 
-        return $season;
+            $seasons = $this->seasons();
+
+            foreach ($seasons as $checkSeason) {
+
+                if ($checkSeason['weekend_end'] > time() ) {
+                    $this->current = $checkSeason;
+                    break;
+                }
+            }
+        }
+
+        return $this->current;
     }
 
     /**
