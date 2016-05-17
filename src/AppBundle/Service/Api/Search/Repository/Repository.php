@@ -434,9 +434,9 @@ class Repository implements RepositoryInterface
 
                 if (($min = $where->getValue()) > 0) {
 
-                    if ($persons > 20) {
+                    if ($persons > 40) {
                         $max = 1000;
-                    } elseif ($persons >= 40) {
+                    } elseif ($persons >= 20) {
                         $max = 50;
                     } else {
                         $max = $this->mapMaximumPersons($min);
