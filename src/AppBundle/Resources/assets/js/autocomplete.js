@@ -142,8 +142,12 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                     uri.removeQuery('fs');
 
-                    if (input.data('fs') != '' && input.data('fs') != null && input.data('fs') !== undefined) {
-                        uri.setQuery('fs', input.data('fs'));
+                    if (uri.hasQuery("c[]") === false && uri.hasQuery("r[]") === false && uri.hasQuery("pl[]") === false && uri.hasQuery("a[]") === false && uri.hasQuery("t[]") === false) {
+
+                        if (input.data('fs') != '' && input.data('fs') != null && input.data('fs') !== undefined) {
+                            uri.setQuery('fs', input.data('fs'));
+                        }
+
                     }
 
                     return window.location.href = uri.toString();
