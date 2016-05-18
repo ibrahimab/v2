@@ -206,34 +206,46 @@ class SearchController extends Controller
             $data    = $matches['param'] === 'vf_kenm' ? $matches['value'] : $value;
             $data    = (int)$data;
 
-            if ($matches['param'] === 'vf_badk') {
+            if ($matches['param'] === 'vf_badk' && $data > 0) {
 
                 $reroute['ba'] = $data;
 
-            } elseif ($matches['param'] === 'fap') {
+            } elseif ($matches['param'] === 'fap' && $data > 0) {
 
                 $reroute['pe'] = $data;
 
-            } elseif ($matches['param'] === 'fas') {
+            } elseif ($matches['param'] === 'fas' && $data > 0) {
 
                 $reroute['be'] = $data;
 
-            } elseif ($matches['param'] === 'fad') {
+            } elseif ($matches['param'] === 'fad' && $data > 0) {
 
                 $reroute['w'] = $data;
 
             } elseif ($matches['param'] === 'fsg') {
 
-                $destinationIds = explode(',', $value);
-                $destinations   = [];
+                $fsg     = explode(',', $value);
+                $regions = [];
+                $places  = [];
 
-                foreach ($destinationIds as $id) {
+                foreach ($fsg as $id) {
 
-                    $id = explode('-', $id);
-                    $ids[] = (int)array_pop($id);
+                    if (substr($id, 0, 2) === 'pl') {
+                        $places[] = intval(substr($id, 2));
+                    } else {
+
+                        $id = explode('-', $id);
+                        $regions[] = (int)array_pop($id);
+                    }
                 }
 
-                $destinations = $ids;
+                if (count($regions) > 0) {
+                    $reroute['r'] = $regions;
+                }
+
+                if (count($places) > 0) {
+                    $reroute['pl'] = $places;
+                }
 
             } else {
 
