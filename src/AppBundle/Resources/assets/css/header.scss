@@ -188,3 +188,17 @@
 
 /* include responsive rules */
 @import "header.responsive.scss";
+
+/* header images */
+.landing-page header {
+    background: url("/bundles/app/img/headers/header-sub-1.jpg") repeat-x center top #f0f3fa;
+    background-size: cover;
+    height: 260px;
+    margin-top: 0px;
+    position: inherit;
+    text-align: center;
+
+    @media only screen and (max-width: 40em){
+        display:none;
+    }
+}
