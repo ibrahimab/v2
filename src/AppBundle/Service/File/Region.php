@@ -13,17 +13,19 @@ class Region extends FileService
      * @var string
      */
     protected $collection = 'regions';
-    
+
     /**
      * @param integer $id
      * @return array
      */
     public function getImage($id)
     {
-        return $this->mongo->findOne(['file_id' => $id, 
-                                      'rank'    => 1]);
+        return $this->mongo->find(['file_id' => $id])
+                           ->sort(['rank'    => 1])
+                           ->limit(1)
+                           ->getNext();
     }
-    
+
     /**
      * @param integer $id
      * @return array
@@ -33,7 +35,7 @@ class Region extends FileService
         return $this->mongo->find(['file_id' => $id])
                            ->sort(['rank'    => 1]);
     }
-    
+
     /**
      * @param integer $id
      * @return array
