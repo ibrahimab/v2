@@ -23,12 +23,16 @@ class BookingController extends Controller
 {
     /**
      * @Route("/boeken.php", name="booking_nl")
-     * @Breadcrumb(name="theme", title="theme", translate=true, active=true)
+     * @Breadcrumb(name="book", title="Boeken", translate=true, active=true)
      */
     public function index(Request $request)
     {
         return $this->render('booking/index.html.twig', [
-            'tid' => $request->get('tid'),
+            'tid'               => $request->get('tid'),
+            'arrival_date'      => $request->get('d'),
+            'number_of_persons' => $request->get('ap'),
+            'booking_step'      => $request->get('stap'),
+            'booking_id'        => $request->get('bfbid'),
         ]);
     }
 }

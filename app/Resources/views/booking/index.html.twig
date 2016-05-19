@@ -13,9 +13,11 @@
 
         <div class="row">
 
-            <div class="large-8 medium-8 columns">
+            <div class="large-12 medium-12 columns">
 
                 <h1>{{ 'booking-title'|trans }}</h1>
+
+                    <iframe src="{{ old_site_url_prefix() }}ajaxloader.php" data-src="{{ old_site_url_prefix() }}connect-legacy-to-new-via-iframe/iframe.php?tid={{ tid }}&amp;d={{ arrival_date }}&amp;ap={{ number_of_persons }}&amp;stap={{ booking_step }}&amp;bfbid={{ booking_id }}" class="connect-legacy-to-new-via-iframe" scrolling="no" frameborder="0"></iframe>
 
             </div>
 
@@ -23,20 +25,98 @@
 
     </section>
 
-	<script>
-	window.addEventListener('message', function(e) {
-	  var $iframe = jQuery("iframe.boeken");
-	  var eventName = e.data[0];
-	  var data = e.data[1];
-	  switch(eventName) {
-	    case 'setHeight':
-	      $iframe.height(data);
-	      break;
-	  }
-	}, false);
-
-	</script>
-
-    <iframe src="http://old.chalet.nl/boeken-iframe/boeken-iframe.php?tid={{ tid }}" class="boeken" scrolling="no" frameborder="0"></iframe>
 
 {% endblock body %}
+
+
+{% block javascripts %}
+
+    <script>
+
+    window.addEventListener('message', function(e) {
+        var legacy_iframe = jQuery("iframe.connect-legacy-to-new-via-iframe");
+        var eventName = e.data[0];
+        var data = e.data[1];
+        switch(eventName) {
+            case 'setHeight':
+                legacy_iframe.height(data);
+                legacy_iframe.css('min-height', data);
+                break;
+
+            case 'scrollTop':
+                window.scroll(0,0);
+                break;
+
+            case 'setIframeUrl':
+
+                console.log('setIframeUrl');
+
+                if (window.history.pushState) {
+
+                    var pageUrl = new URI(window.location.pathname + window.location.search);
+
+                    var iframeurl = pageUrl.search(true)['iframeurl'];
+                    pageUrl.removeQuery('iframeurl');
+                    pageUrl.addQuery('iframeurl', data);
+
+                    if (!iframeurl) {
+                        window.history.replaceState('', '', pageUrl);
+
+                        console.log('replaceState ' + pageUrl);
+
+                    } else if (iframeurl != data) {
+
+                        window.history.pushState('', '', pageUrl);
+
+                        console.log('pushState ' + pageUrl);
+
+                    }
+                }
+
+                break;
+        }
+    }, false);
+
+    window.addEventListener('popstate', function(event) {
+
+        console.log('popstate');
+
+        var legacy_iframe = jQuery("iframe.connect-legacy-to-new-via-iframe");
+
+        var pageUrl = new URI(window.location.pathname + window.location.search);
+
+        var newIframeUrl = pageUrl.search(true)['iframeurl'];
+        var iframeUrl = new URI(legacy_iframe.attr('src'));
+
+        if (newIframeUrl && iframeUrl != newIframeUrl) {
+
+            console.log('change iframe-url: ' + newIframeUrl);
+            legacy_iframe.attr('src', newIframeUrl);
+        }
+
+    }, false);
+
+
+    jQuery( document ).ready(function() {
+        var legacy_iframe = jQuery("iframe.connect-legacy-to-new-via-iframe");
+
+        var pageUrl = new URI(window.location.pathname + window.location.search);
+        var newIframeUrl = pageUrl.search(true)['iframeurl'];
+
+        if (newIframeUrl) {
+
+            console.log('load iframe-url: ' + newIframeUrl);
+            legacy_iframe.attr('src', newIframeUrl);
+
+        } else {
+
+            console.log('load iframe-data-src: ' + legacy_iframe.data('src'));
+            legacy_iframe.attr('src', legacy_iframe.data('src'));
+
+        }
+
+    });
+
+    </script>
+
+{% endblock javascripts %}
