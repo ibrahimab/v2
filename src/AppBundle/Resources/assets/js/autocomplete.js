@@ -68,7 +68,9 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
             change: function() {
 
-                jq('body').on('focus', ns.Autocomplete.input.selector, function(event) {
+                var body = jq('body');
+
+                body.on('focus', ns.Autocomplete.input.selector, function(event) {
 
                     var element = jq(this).addClass('active');
                     var term    = element.val();
@@ -78,17 +80,27 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     }
                 });
 
-                jq('body').on('blur', ns.Autocomplete.input.selector, function(event) {
+                body.on('blur', ns.Autocomplete.input.selector, function(event) {
 
                     var element = jq(this).removeClass('active');
                     var term    = element.val();
 
                     if (term === '') {
                         element.attr('placeholder', element.data('default-placeholder'));
+                    } else {
+
+                        if (ns.Autocomplete.type === ns.Autocomplete.types.TYPE_HOME) {
+
+                            var input = jq(ns.Autocomplete.input.selector);
+
+                            if (input.data('entity') !== null) {
+                                ns.Autocomplete.actions.home.freesearch(term);
+                            }
+                        }
                     }
                 });
 
-                jq('body').on('keydown', ns.Autocomplete.input.selector, function(event) {
+                body.on('keydown', ns.Autocomplete.input.selector, function(event) {
 
                     // arrows used
                     if ([13, 38, 40].indexOf((event.keyCode || event.which)) > -1) {
@@ -100,7 +112,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     }
                 });
 
-                jq('body').on('keydown', ns.Autocomplete.input.selector, _.debounce(function(event) {
+                body.on('keydown', ns.Autocomplete.input.selector, _.debounce(function(event) {
 
                     // other keys used
                     if ([13, 38, 40].indexOf((event.keyCode || event.which)) === -1) {
@@ -126,13 +138,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                 }, ns.Autocomplete.debounce));
 
-                jq('body').on('keydown', ns.Autocomplete.input.selector, function(event) {
-
-                    var input = jq(this);
-                    input.data('fs', input.val());
-                });
-
-                jq('body').on('click', '[data-role="search-simple"]', function(event) {
+                body.on('click', '[data-role="search-simple"]', function(event) {
 
                     event.preventDefault();
 
@@ -140,22 +146,12 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     var uri   = URI(link.attr('href'));
                     var input = jq(ns.Autocomplete.input.selector);
 
-                    uri.removeQuery('fs');
-
-                    if (uri.hasQuery("c[]") === false && uri.hasQuery("r[]") === false && uri.hasQuery("pl[]") === false && uri.hasQuery("a[]") === false && uri.hasQuery("t[]") === false) {
-
-                        if (input.data('fs') != '' && input.data('fs') != null && input.data('fs') !== undefined) {
-                            uri.setQuery('fs', input.data('fs'));
-                        }
-
-                    }
-
                     return window.location.href = uri.toString();
                 });
 
                 if (ns.Autocomplete.type === ns.Autocomplete.types.TYPE_HOME) {
 
-                    jq('body').on('change', '[data-role="choose-weekend-home"]', function(event) {
+                    body.on('change', '[data-role="choose-weekend-home"]', function(event) {
 
                         event.preventDefault();
 
@@ -163,7 +159,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         ns.Autocomplete.actions.home.weekend(weekend);
                     });
 
-                    jq('body').on('change', '[data-role="choose-persons-home"]', function(event) {
+                    body.on('change', '[data-role="choose-persons-home"]', function(event) {
 
                         event.preventDefault();
 
@@ -189,8 +185,6 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                         id:     element.data('id'),
                         label:  element.data('label')
                     };
-
-                    jq(ns.Autocomplete.input.selector).data('fs', '');
 
                     switch (ns.Autocomplete.type) {
 
@@ -294,7 +288,6 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     };
 
                     ns.Autocomplete.actions.searchBook.click(data);
-
                 }
             }
         },
@@ -313,6 +306,7 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
                     uri.removeQuery('pl[]');
                     uri.removeQuery('a[]');
                     uri.removeQuery('t[]');
+                    uri.removeQuery('fs');
 
                     switch (data.entity) {
 
@@ -338,17 +332,30 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                         case ns.Autocomplete.entities.ENTITY_FREESEARCH:
 
-                            uri.removeQuery('fs');
                             uri.setQuery('fs', data.label);
-                            jq(ns.Autocomplete.input.selector).data('fs', data.label);
-
                             break;
                     }
 
                     link.attr('href', uri.toString());
                     ns.Autocomplete.input.val(data.label);
+                    ns.Autocomplete.input.data('entity', data.entity);
                     ns.Autocomplete.resultsContainer.hide();
 
+                    ns.Autocomplete.count(uri.query());
+                },
+
+                freesearch: function(freesearch) {
+
+                    var link = jq('[data-role="search-simple"]');
+                    var uri  = URI(link.attr('href'));
+
+                    uri.removeQuery('fs');
+
+                    if (freesearch != '') {
+                        uri.setQuery('fs', freesearch);
+                    }
+
+                    link.attr('href', uri.toString());
                     ns.Autocomplete.count(uri.query());
                 },
 
