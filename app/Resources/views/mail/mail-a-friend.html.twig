@@ -35,46 +35,41 @@
 .overview .accom-img .rating .reviews-number a{border-bottom:thin solid #bfbfbf;text-decoration:none;}
 </style>
 
-{% set locale        = get_locale() %}
-{% set offer         = offers is defined and offers[type.getId()] is defined %}
-{% set accommodation = type.getAccommodation() %}
-{% set place         = accommodation.getPlace() %}
-{% set region        = place.getRegion %}
-{% set country       = place.getCountry() %}
-{% set link          = locale_path('show_type', { countryCode: country.getCountryCode(), typeId: type.id }) %}
+{% set offer = offers is defined and offers[type.type_id] is defined %}
+{% set link  = locale_path('show_type', { countryCode: type.country_code, typeId: type.type_id }) %}
 
-    <article class="overview{% if offers %} sale{% endif %}" data-equalizer-watch>
+    <article class="overview{% if offer %} sale{% endif %}" data-equalizer-watch>
         <div class="accom-img">
-            <a href="{{ link }}"><img src="{{ generate_image_path(type_image(type))|thumbnail(364, 273) }}" alt="{{ accommodation.getLocaleName(locale) }}" /></a>
+            <a href="{{ link }}"><img src="{{ generate_image_path(type_image(type))|thumbnail(364, 273) }}" alt="{{ type.accommodation_name }}" /></a>
             {% if offer %}
                 <a href="{{ link }}">
                     <div class="circle"><span>Aan-</span><span>bieding</span></div>
                 </a>
             {% endif %}
-            {% if surveyCount > 1 %}
+            {% if surveys.count > 1 %}
                 <a href="{{ link }}">
-                    <div class="rating"><span class="figure">{{ surveyAverageOverallRating }}</span><span class="reviews-number">{{ surveyCount }} {{ 'ratings'|trans|lower }}</span></div>
+                    <div class="rating"><span class="figure">{{ surveys.average }}</span><span class="reviews-number">{{ surveys.count }} {{ 'ratings'|trans|lower }}</span></div>
                 </a>
             {% endif %}
         </div>
         <a href="{{ link }}">
             <div class="accom-desc">
                 <div class="title">
-                    {{ ('type.kind.' ~ accommodation.kindIdentifier)|trans|capitalize ~ ' ' ~ accommodation.getLocaleName(locale) ~ ' ' ~ type.getLocaleName(locale) }}
+                    {{ ('type.kind.' ~ type.accommodation_kind)|trans|capitalize ~ ' ' ~ type.accommodation_name ~ ' ' ~ type.type_name }}
                     <span>
-                        {% set quality = (type.getQuality() > 0 ? type.getQuality() : accommodation.getQuality()) %}
+                        {% set quality = (type.type_quality > 0 ? type.type_quality : type.accommodation_quality) %}
                         {% include 'partials/quality_stars.html.twig' with {quality: quality} only %}
                     </span>
                 </div>
                 <div class="location">
-                    <span class="city">{{ place.getLocaleName(locale) }}</span>,
-                    <span class="area">{{ region.getLocaleName(locale) }}</span>,
-                    <span class="country">{{ country.getLocaleName(locale) }}</span>
+                    <span class="city">{{ type.place_name}}</span>,
+                    <span class="area">{{ type.region_name }}</span>,
+                    <span class="country">{{ type.country_name }}</span>
                 </div>
-                {% if type.optimalResidents is same as(type.maxResidents) %}
-                    <div class="persons"><i class="fi-torso"></i>{{ 'homepage.highlight.suitable-for-max'|trans({'%maximum%': maxResidents}) }}</div>
+                {% if type.optimal_persons is same as(type.max_persons) %}
+                    <div class="persons"><i class="fi-torso"></i>{{ 'homepage.highlight.suitable-for-max'|trans({'%maximum%': type.max_persons}) }}</div>
                 {% else %}
-                    <div class="persons"><i class="fi-torso"></i>{{ 'homepage.highlight.suitable-for'|trans({'%optimal%': type.optimalResidents, '%maximum%': type.maxResidents}) }}</div>
+                    <div class="persons"><i class="fi-torso"></i>{{ 'homepage.highlight.suitable-for'|trans({'%optimal%': type.optimal_persons, '%maximum%': type.max_persons}) }}</div>
                 {% endif %}
             </div>
         </a>
@@ -83,12 +78,12 @@
     <table>
         <tr>
             <td>
-                <img src="{{ generate_image_path(type_image(type))|thumbnail(364, 273) }}" alt="{{ accommodation.getLocaleName(locale) }}" />
+                <img src="{{ generate_image_path(type_image(type))|thumbnail(364, 273) }}" alt="{{ type.accommodation_name }}" />
             </td>
             <td>
                 <table>
                     <tr>
-                        <td>{{ place.getLocaleName(locale) }}, {{ region.getLocaleName(locale) }}, {{ country.getLocaleName(locale) }}</td>
+                        <td>{{ type.place_name }}, {{ type.region_name }}, {{ type.country_name }}</td>
                     </tr>
                 </table>
             </td>

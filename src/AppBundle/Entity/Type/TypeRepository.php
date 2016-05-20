@@ -30,12 +30,19 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
            ->where($expr->eq('a.place', ':place'))
            ->andWhere($expr->eq('t.display', ':display'))
            ->andWhere($expr->eq('a.display', ':display'))
+           ->andWhere($expr->eq('a.weekendSki', ':weekendski'))
+           ->andWhere($expr->gt('FIND_IN_SET(:website, t.websites)', 0))
+           ->andWhere($expr->gt('FIND_IN_SET(:website, a.websites)', 0))
+           ->andWhere($expr->eq('a.season', ':season'))
            ->setMaxResults($limit)
            ->orderBy('t.searchOrder', 'ASC')
            ->setParameters([
 
-               'place'   => $place,
-               'display' => true,
+               'place'      => $place,
+               'display'    => true,
+               'weekendski' => false,
+               'website'    => $this->getWebsite(),
+               'season'     => $this->getSeason(),
            ]);
 
         return $qb->getQuery()->getResult();
@@ -56,11 +63,18 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
            ->andWhere($expr->eq('a.display', ':display'))
            ->andWhere($expr->eq('t.display', ':display'))
            ->andWhere($expr->eq('a.weekendSki', ':weekendski'))
+           ->andWhere($expr->gt('FIND_IN_SET(:website, t.websites)', 0))
+           ->andWhere($expr->gt('FIND_IN_SET(:website, a.websites)', 0))
+           ->andWhere($expr->gt('FIND_IN_SET(:website, p.websites)', 0))
+           ->andWhere($expr->eq('a.season', ':season'))
+           ->andWhere($expr->eq('p.season', ':season'))
            ->setParameters([
 
                'place'      => $place,
                'display'    => true,
                'weekendski' => false,
+               'website'    => $this->getWebsite(),
+               'season'     => $this->getSeason(),
            ]);
 
         return $qb->getQuery()->getSingleScalarResult();
@@ -82,12 +96,21 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
            ->andWhere($expr->eq('a.display', ':display'))
            ->andWhere($expr->eq('t.display', ':display'))
            ->andWhere($expr->eq('a.weekendSki', ':weekendski'))
+           ->andWhere($expr->gt('FIND_IN_SET(:website, t.websites)', 0))
+           ->andWhere($expr->gt('FIND_IN_SET(:website, a.websites)', 0))
+           ->andWhere($expr->gt('FIND_IN_SET(:website, p.websites)', 0))
+           ->andWhere($expr->gt('FIND_IN_SET(:website, r.websites)', 0))
+           ->andWhere($expr->eq('a.season', ':season'))
+           ->andWhere($expr->eq('p.season', ':season'))
+           ->andWhere($expr->eq('r.season', ':season'))
            ->groupBy('p.id')
            ->setParameters([
 
                'region'     => $region,
                'display'    => true,
                'weekendski' => false,
+               'website'    => $this->getWebsite(),
+               'season'     => $this->getSeason(),
            ]);
 
         $results = $qb->getQuery()->getResult();
@@ -112,11 +135,20 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
            ->andWhere($expr->eq('a.display', ':display'))
            ->andWhere($expr->eq('t.display', ':display'))
            ->andWhere($expr->eq('a.weekendSki', ':weekendski'))
+           ->andWhere($expr->gt('FIND_IN_SET(:website, t.websites)', 0))
+           ->andWhere($expr->gt('FIND_IN_SET(:website, a.websites)', 0))
+           ->andWhere($expr->gt('FIND_IN_SET(:website, p.websites)', 0))
+           ->andWhere($expr->gt('FIND_IN_SET(:website, r.websites)', 0))
+           ->andWhere($expr->eq('a.season', ':season'))
+           ->andWhere($expr->eq('p.season', ':season'))
+           ->andWhere($expr->eq('r.season', ':season'))
            ->setParameters([
 
                'regions'    => $regions,
                'display'    => true,
                'weekendski' => false,
+               'website'    => $this->getWebsite(),
+               'season'     => $this->getSeason(),
            ]);
 
         $results = $qb->getQuery()->getResult();
@@ -141,11 +173,21 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
            ->where((is_array($typeId) ? $expr->in('t.id', ':type') : $expr->eq('t.id', ':type')))
            ->andWhere($expr->eq('a.weekendSki', ':weekendSki'))
            ->andWhere($expr->eq('at.display', ':display'))
+           ->andWhere($expr->gt('FIND_IN_SET(:website, t.websites)', 0))
+           ->andWhere($expr->gt('FIND_IN_SET(:website, a.websites)', 0))
+           ->andWhere($expr->gt('FIND_IN_SET(:website, at.websites)', 0))
+           ->andWhere($expr->gt('FIND_IN_SET(:website, p.websites)', 0))
+           ->andWhere($expr->gt('FIND_IN_SET(:website, r.websites)', 0))
+           ->andWhere($expr->eq('a.season',  ':season'))
+           ->andWhere($expr->eq('p.season',  ':season'))
+           ->andWhere($expr->eq('r.season',  ':season'))
            ->setParameters([
 
                'type'       => $typeId,
-               'display'    => true,
                'weekendSki' => false,
+               'display'    => true,
+               'website'    => $this->getWebsite(),
+               'season'     => $this->getSeason(),
            ])
            ->orderBy('at.maxResidents');
 
@@ -183,10 +225,19 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
                   AND    p.skigebied_id     = r.skigebied_id
                   AND    p.land_id          = c.land_id
                   AND    a.weekendski       = :weekendski
+                  AND    FIND_IN_SET(:website, t.websites) > 0
+                  AND    FIND_IN_SET(:website, a.websites) > 0
+                  AND    FIND_IN_SET(:website, r.websites) > 0
+                  AND    FIND_IN_SET(:website, p.websites) > 0
+                  AND    a.wzt              = :season
+                  AND    r.wzt              = :season
+                  AND    p.wzt              = :season
                   AND    t.type_id " . (' IN (' . implode(', ', $typeId) . ')');
 
         $statement = $db->prepare($query);
         $statement->bindValue('weekendski', false);
+        $statement->bindValue('website', $this->getWebsite());
+        $statement->bindValue('season', $this->getSeason());
         $statement->execute();
 
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -222,6 +273,6 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
             $records[$result['type_id']] = $result;
         }
 
-        return $records;
+        return (count($typeId) === 1 ? current($records) : $records);
     }
 }

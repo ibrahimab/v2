@@ -121,7 +121,7 @@ class TypesController extends Controller
                 if ($type->getRedirectToType() !== null) {
 
                     $full           = $type->getRedirectToType();
-                    $countryCode      = substr($full, 0, 1);
+                    $countryCode    = substr($full, 0, 1);
                     $redirectTypeId = substr($full, 1);
 
                     $response = $this->redirectToRoute('show_type_' . $this->get('app.concern.locale')->get(), ['countryCode' => $countryCode, 'typeId' => $redirectTypeId]);

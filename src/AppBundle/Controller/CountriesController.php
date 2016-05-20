@@ -94,7 +94,6 @@ class CountriesController extends Controller
 
     /**
      * @Route(path="/bestemmingen", name="destinations_nl")
-     * @Route(path="/bestemmingen", name="destinations_nl")
      * @Breadcrumb(name="destinations", title="destinations", translate=true, active=true)
      * @Template(":region:destinations.html.twig")
      */

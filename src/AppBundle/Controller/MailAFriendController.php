@@ -84,11 +84,16 @@ class MailAFriendController extends Controller
     {
         try {
 
-            $typeService  = $this->get('app.api.type');
-            $priceService = $this->get('app.api.price');
+            $typeService            = $this->get('app.api.type');
+            $pricesAndOffersService = $this->get('app.api.prices_and_offers');
+            $surveyService          = $this->get('app.api.booking.survey');
 
-            $type         = $typeService->findById($typeId);
-            $offers       = $priceService->offers([$typeId]);
+            $type    = $typeService->getTypeById($typeId);
+
+            $params  = $pricesAndOffersService->createParamsFromRequest($request);
+            $offers  = $pricesAndOffersService->getOffers([$typeId]);
+            $prices  = $pricesAndOffersService->getPrices([$typeId], $params);
+            $surveys = $surveyService->normalize($surveyService->statsByType($type['type_id']));
 
         } catch (NoResultException $exception) {
             throw $this->createNotFoundException(sprintf('Type with ID=%d could not be found', $typeId));
@@ -99,20 +104,21 @@ class MailAFriendController extends Controller
 
         if ($mailAFriend->isValid()) {
 
-            $data           = $mailAFriend->getData();
-            $data['type']   = $type;
-            $data['offers'] = $offers;
-            $locale         = $request->getLocale();
-            $to             = $mailAFriend->getToEmail();
-            $mailer         = $this->get('app.mailer.mail.a.friend');
-            $result         = $mailer->setSubject($type->getAccommodation()->getLocaleName($locale) . ' ' . $type->getLocaleName($locale))
-                                     ->setFrom($mailAFriend->getFromEmail(), $mailAFriend->getFromName())
-                                     ->setTo(explode(',', $to))
-                                     ->setTemplate('mail/mail-a-friend.html.twig', 'text/html')
-                                     // ->setTemplate('mail/mail-a-friend.txt.twig', 'text/plain')
-                                     ->send($data);
+            $data            = $mailAFriend->getData();
+            $data['type']    = $type;
+            $data['offers']  = $offers;
+            $data['surveys'] = $surveys;
+            $locale          = $request->getLocale();
+            $to              = $mailAFriend->getToEmail();
+            $mailer          = $this->get('app.mailer.mail.a.friend');
+            $result          = $mailer->setSubject($type['accommodation_name'] . ' ' . $type['type_name'])
+                                      ->setFrom($mailAFriend->getFromEmail(), $mailAFriend->getFromName())
+                                      ->setTo(explode(',', $to))
+                                      ->setTemplate('mail/mail-a-friend.html.twig', 'text/html')
+                                      // ->setTemplate('mail/mail-a-friend.txt.twig', 'text/plain')
+                                      ->send($data);
 
-            // return $this->redirectToRoute('mail_a_friend_' . $request->getLocale(), ['countryCode' => $countryCode, 'typeId' => $typeId]);
+            return $this->redirectToRoute('mail_a_friend_' . $request->getLocale(), ['countryCode' => $countryCode, 'typeId' => $typeId]);
         }
 
         $priceService  = $this->get('app.api.price');
@@ -121,14 +127,15 @@ class MailAFriendController extends Controller
         return $this->render('mail-a-friend/new.html.twig', [
 
             'countryCode' => $countryCode,
-            'typeId'    => $typeId,
-            'type'      => $type,
-            'place'     => $type['place_name'],
-            'prices'    => $prices,
-            'offers'    => $offers,
-            'form'      => [
+            'typeId'      => $typeId,
+            'type'        => $type,
+            'place'       => $type['place_name'],
+            'prices'      => $prices,
+            'offers'      => $offers,
+            'surveys'     => $surveys,
+            'form'        => [
 
-                'errors'  => $mailAFriend->getErrors(),
+                'errors'        => $mailAFriend->getErrors(),
                 'mail_a_friend' => [
 
                     'from_name'  => $mailAFriend->getFromName(),
