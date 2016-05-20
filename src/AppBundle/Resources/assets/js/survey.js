@@ -16,17 +16,19 @@
 
             if (element.data('all-fetched') === true) {
 
-                fetched.toggle('slideDown');
-
                 if (fetched.is(':visible')) {
 
-                    label.text('Verberg beoordelingen');
-                    icon.addClass('close');
-
-                } else {
+                    fetched.slideUp();
 
                     label.text('Toon beoordelingen');
                     icon.removeClass('close');
+
+                } else {
+
+                    fetched.slideDown();
+
+                    label.text('Verberg beoordelingen');
+                    icon.addClass('close');
                 }
 
                 return;

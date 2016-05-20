@@ -229,7 +229,13 @@ class SurveyRepository extends BaseRepository implements SurveyServiceRepository
         $db     = $this->getEntityManager()->getConnection();
         $locale = $this->getLocale();
 
-        $query = "SELECT COUNT(s.boeking_id) AS total, AVG(s.vraag1_7) AS average
+        $query = "SELECT COUNT(s.boeking_id) AS total, (
+                      SELECT AVG(s2.vraag1_7)
+                      FROM   boeking_enquete s2
+                      WHERE  s2.type_id = :type_id
+                      AND    s2.beoordeeld = 1
+                      AND    s2.vraag1_7 > 0
+                  ) AS average
                   FROM   boeking_enquete s
                   WHERE  s.type_id    = :type_id
                   AND    s.beoordeeld = 1";
@@ -251,6 +257,7 @@ class SurveyRepository extends BaseRepository implements SurveyServiceRepository
                   FROM   boeking_enquete s
                   WHERE  s.type_id    = :type_id
                   AND    s.beoordeeld = 1
+                  ORDER BY invulmoment DESC
                   LIMIT  " . $offset . ", " . $limit;
 
         $statement = $db->prepare($query);
