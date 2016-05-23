@@ -191,12 +191,19 @@
 
 /* header images */
 .landing-page header {
-    background: url("/bundles/app/img/headers/header-sub-1.jpg") repeat-x center top #f0f3fa;
+    background: url("/bundles/app/img/headers/header-sub-1.jpg");
+    background-repeat: repeat-x;
+    background-position:center top;
+    background-color: #f0f3fa;
     background-size: cover;
-    height: 260px;
+    height: 200px;
     margin-top: 0px;
     position: inherit;
     text-align: center;
+
+    @media (min-width: 1300px) {
+        background-position:center center;
+    }
 
     @media only screen and (max-width: 40em){
         display:none;
@@ -207,3 +214,5 @@
          height: 160px;
     }
 }
+
+
