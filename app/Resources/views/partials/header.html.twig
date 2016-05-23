@@ -107,6 +107,9 @@
                 <li>
                     <a href="#">aanbiedingen</a>
                 </li>
+                <li{% if route in ['ask_our_advice_nl', 'sask_our_advice_en'] %} class="active"{% endif %}>
+                    <a href="{{ locale_path('ask_our_advice') }}">vraag ons advies</a>
+                </li>
             </ul>
         </div>
     </div>
