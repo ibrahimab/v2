@@ -43,7 +43,7 @@
                     } only
                 %}
                 <h6>{{ 'additional-info'|trans }}</h6>
-                <ul class="landing-details landing-details-short" data-role="long-list">
+                <ul class="landing-details" data-role="long-list">
                     {% if region.getTotalLifts() %}
                     <li>
                         {{ 'total-lifts'|trans }}
@@ -98,9 +98,6 @@
                         <span>{{ region.getTotalTrailsDistance() }} km</span>
                     </li>
                     {% endif %}
-                    <li class="toggle" data-role="toggle-long-list">
-                        <i class="sprite sprite-icon-close-all" data-role="toggle-icon-long-list" data-closed-icon="sprite-icon-close-all" data-opened-icon="sprite-icon-open-all"></i>
-                    </li>
                 </ul>
                 <h6>{{ 'links'|trans }}</h6>
                 <ul class="landing-details">
