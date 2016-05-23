@@ -552,6 +552,16 @@ div.search-results-container {
 
     position: relative;
 
+    hr {
+        margin-top: 0px;
+    }
+    .action-buttons {
+        height: 41px;
+    }
+    .search-results-row {
+        margin-bottom:18px;
+    }
+
     div.loading {
 
         background: none;
