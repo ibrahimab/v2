@@ -201,4 +201,9 @@
     @media only screen and (max-width: 40em){
         display:none;
     }
+
+    /** tablet portrait */
+    @media all and (min-width: 40.063em) and (max-width: 64em) {
+         height: 160px;
+    }
 }
