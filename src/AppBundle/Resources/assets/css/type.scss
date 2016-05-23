@@ -1,4 +1,3 @@
-
 .price-details {
     .no-price {
         font-size: 1.3em;
@@ -9,4 +8,46 @@
 .no-prices-explanation {
     padding: 10px;
     border: 2px solid $header-color;
+}
+
+
+#types-other {
+
+    table tbody tr {
+        cursor: pointer;
+        &:hover {
+            outline: 1px solid #C8C8C8;
+            background-color: #e9edf8;
+
+            .table-price {
+                background-color: #fff;
+            }
+        }
+        &.active {
+            background-color: #e9edf8;
+        }
+
+        .loading {
+            background: none;
+        }
+
+        .table-price {
+            background-color: #e9edf8;
+            border-radius: 3px;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            font-size: 0.96rem;
+            margin-right: 0.5rem;
+            padding: 0.2rem;
+
+            i {
+                float: right;
+                margin: 0 0 0 0.5rem;
+            }
+        }
+
+        .persons-column {
+            width: 95px;
+        }
+    }
 }

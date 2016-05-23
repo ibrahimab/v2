@@ -103,7 +103,7 @@
 
             var url = jq(this).data('url');
 
-            if (null !== url) {
+            if (null !== url && jq(event.target).hasClass("fi-info") == false) {
                 window.location.href = url;
             }
         });
@@ -352,17 +352,14 @@
             }
         });
 
+        // && jq(event.target).hasClass('fi-info') != true
         // close all tooltips when clicking anywhere on the page
+
         jq(document).on("click",function(event) {
-
-            // hide all active tooltips
-            if (jq(event.target).data('role') != 'ajax-tooltip-button') {
+            if (jq(event.target).data('role') != 'ajax-tooltip-button' && jq(event.target).hasClass('fi-info') == false) {
                 jq('[data-role=tooltip-wrapper]').hide();
+                jq( ".chalet-tooltip-content.clone" ).remove();
             }
-
-            //remove all clones
-            jq( ".chalet-tooltip-content.clone" ).remove();
-
         });
 
         body.on('click', '[data-role="ajax-tooltip"]', function(event) {

@@ -548,21 +548,6 @@ ul.pagination li:first-child a, ul.pagination li:last-child a { border:thin #bfb
     font-size: 1.3rem !important;
 }
 
-#types-other {
-
-    table tbody tr {
-        cursor: pointer;
-        &:hover {
-            outline: 1px solid #C8C8C8;
-            background-color: #e9edf8;
-        }
-
-        &.active {
-            background-color: #e9edf8;
-        }
-    }
-}
-
 div.search-results-container {
 
     position: relative;
