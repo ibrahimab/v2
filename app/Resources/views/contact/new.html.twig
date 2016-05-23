@@ -13,11 +13,12 @@
         <div class="row">
             <div class="medium-12 columns">
                 <h1>{{ 'contact-title'|trans }}</h1>
-                <p>Heb je nog vragen, opmerkingen of iets anders wat je aan ons wilt laten weten
-                   dan kun je onderstaand formulier invullen, ons een e-mail sturen of telefonisch
-                   contact met ons opnemen. Heb je hulp nodig bij het vinden van je ideale accommodatie? Wij bieden <a href="{{ locale_path('ask_our_advice') }}">gratis en geheel vrijblijvend advies</a></p>
+
+                <p>Heb je een vraag? Bekijk dan onze veelgestelde vragen. Nog geen antwoord op je vraag? Neem dan gerust contact met ons op via onderstaand formulier of per mail, chat of telefoon.
+Hulp nodig bij het vinden van je ideale accommodatie? Wij bieden je <a href="{{ locale_path('ask_our_advice') }}">gratis en geheel vrijblijvend advies</a></p>
+
             </div>
-            <div class="large-4 medium-12 columns">
+            <div class="large-5 medium-12 columns">
 
 
                 {% if website_concern.type() == constant('WEBSITE_TYPE_CHALET_TOUR', website_concern) %}
@@ -62,6 +63,22 @@
                         </td>
                     </tr>
                     <tr>
+                        <td><strong>{{ 'telephone-availability'|trans }}</strong></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'monday-friday'|trans }}:</td>
+                        <td>{{ 'opening-times-week'|trans }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'saturday'|trans }}:</td>
+                        <td>{{ 'opening-times-weekend'|trans }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'sunday'|trans }}:</td>
+                        <td>{{ 'closed'|trans }}</td>
+                    </tr>
+                    <tr>
                         <td><strong>{{ 'remaining-data'|trans }}</td>
                         <td></td>
                     </tr>
@@ -81,25 +98,9 @@
                         <td>ANVR:</td>
                         <td>5180</td>
                     </tr>
-                    <tr>
-                        <td><strong>{{ 'telephone-availability'|trans }}</strong></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>{{ 'monday-friday'|trans }}:</td>
-                        <td>{{ 'opening-times-week'|trans }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ 'saturday'|trans }}:</td>
-                        <td>{{ 'opening-times-weekend'|trans }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ 'sunday'|trans }}:</td>
-                        <td>{{ 'closed'|trans }}</td>
-                    </tr>
                 </table>
             </div>
-            <div class="large-8 medium-12 columns">
+            <div class="large-7 medium-12 columns">
 
                 <strong>{{ 'contact-form-title'|trans }}</strong>
                 <form name="form-contact" method="post" action="{{ path('create_contact') }}">
