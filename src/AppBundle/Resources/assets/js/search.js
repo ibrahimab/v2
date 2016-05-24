@@ -74,6 +74,35 @@ window.Chalet = (function(ns, jq, _, undefined) {
                     ns.Search.actions.loader();
                     ns.Search.actions.request(location.pathname + location.search);
                 };
+
+                var window_element  = jq(window);
+                var weekend_element = jq('[data-role="change-weekend"]');
+                var resize_method   = function() {
+
+                    if (window_element.width() <= 768) {
+
+                        weekend_element.find('option').each(function() {
+
+                            var option = jq(this);
+                            option.text(option.data('label-mobile'));
+                        });
+
+                    } else {
+
+                        weekend_element.find('option').each(function() {
+
+                            var option = jq(this);
+                            option.text(option.data('label-desktop'));
+                        });
+                    }
+                };
+
+                if (weekend_element.length > 0) {
+
+                    // initializing on load
+                    resize_method();
+                    window_element.resize(resize_method);
+                }
             },
 
             change: function(event) {

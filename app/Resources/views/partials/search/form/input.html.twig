@@ -12,10 +12,11 @@
 </div>
 <select class="radius" data-role="change-weekend">
     <option value="">{{ 'select-when'|trans }}</option>
-    {% set arrival_label = 'weekend'|trans %}
+    {% set arrival_label_desktop = 'zaterdag'|trans %}
+    {% set arrival_label_mobile  = 'za'|trans %}
     {% set current_weekend = form_filters['weekend'] is defined ? form_filters['weekend'] : 0 %}
     {% for timestamp, weekend in weekends %}
-        <option value="{{ timestamp }}"{{ timestamp == current_weekend ? selected|raw }}>{{arrival_label}} {{ weekend }}</option>
+        <option data-label-desktop="{{arrival_label_desktop}} {{ weekend }}" data-label-mobile="{{arrival_label_mobile}} {{ weekend }}" value="{{ timestamp }}"{{ timestamp == current_weekend ? selected|raw }}>{{arrival_label_desktop}} {{ weekend }}</option>
     {% endfor %}
 </select>
 {% if searchFormMessageSearchWithoutDates %}
