@@ -8,6 +8,7 @@
     var ToggleMoreLessPersons         = require('./ToggleMoreLessPersons');
     var ShowTotalAmount               = require('./ShowTotalAmount');
     var ClickBookNow                  = require('./ClickBookNow');
+    var ClickOptionRequest            = require('./ClickOptionRequest');
     var ClickScrollArrow              = require('./ClickScrollArrow');
     var ToggleMoreInformation         = require('./ToggleMoreInformation');
     var MultipleBKKSeasonsShowCurrent = require('./MultipleBKKSeasonsShowCurrent');
@@ -50,8 +51,13 @@
         });
 
         // click on small "book now" button
-        jq(document).on("click", ".tarieventabel_totaalprijs button", function(event) {
+        jq(document).on("click", ".tarieventabel_totaalprijs button.button-book", function(event) {
             ClickBookNow(jq(this), jq, event);
+        });
+
+        // click on small "book now" button
+        jq(document).on("click", ".tarieventabel_totaalprijs button.button-option-request", function(event) {
+            ClickOptionRequest(jq(this), jq, event);
         });
 
         // click on arrows: scroll table

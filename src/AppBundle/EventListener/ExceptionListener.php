@@ -46,7 +46,7 @@ class ExceptionListener
                 return $part !== '';
             });
 
-            if (count($parts) === 1) {
+            if (count($parts) === 1 && strpos($path, '.') === false) {
 
                 $locale = $this->locale->get();
                 $url    = $this->router->generate('search_' . $locale, ['fs' => current($parts)]);
