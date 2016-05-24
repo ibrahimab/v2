@@ -234,10 +234,22 @@ trait Image
      * @param ThemeServiceEntityInterface $theme
      * @return string
      */
-    public function getThemeImage(ThemeServiceEntityInterface $theme)
+    public function getThemeImage($theme)
     {
-        $image = $this->getFileService('theme')->getImage($theme->getId());
-        return $image;
+        $themeId   = ($theme instanceof ThemeServiceEntityInterface ? $theme->getId() : $theme);
+
+        $directory = 'themas_hoofdpagina';
+        $filename  = $themeId . '.jpg';
+        $path      = $this->getOldImageRoot() . '/cms/' . $directory;
+        $file      = $path . '/' . $filename;
+
+        if (!file_exists($file)) {
+
+            $directory = 'accommodaties';
+            $filename  = '0.jpg';
+        }
+
+        return ['directory' => $directory, 'filename' => $filename];
     }
 
     /**
