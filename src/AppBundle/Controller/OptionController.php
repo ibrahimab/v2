@@ -10,9 +10,9 @@ use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use       Doctrine\ORM\NoResultException;
 
 /**
- * ThemeController
+ * OptionController
  *
- * This controller handles the themes
+ * This controller handles the extra option
  *
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
  * @package Chalet
@@ -29,7 +29,7 @@ class OptionController extends Controller
     {
         $optionService = $this->get('app.api.option');
         $option        = $optionService->option($optionId);
-        
+
         return $this->render('option/show.html.twig', [
             'option' => $option,
         ]);

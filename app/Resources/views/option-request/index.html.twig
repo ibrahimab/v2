@@ -15,9 +15,9 @@
 
             <div class="large-12 medium-12 columns">
 
-                <h1>{{ 'booking-title'|trans }}</h1>
+                <h1>Optie-aanvraag</h1>
 
-                    <iframe src="{{ old_site_url_prefix() }}ajaxloader.php" data-src="{{ old_site_url_prefix() }}connect-legacy-to-new-via-iframe/iframe.php?tid={{ tid }}&amp;d={{ arrival_date }}&amp;ap={{ number_of_persons }}&amp;stap={{ booking_step }}&amp;bfbid={{ booking_id }}" class="connect-legacy-to-new-via-iframe" scrolling="no" frameborder="0"></iframe>
+                    <iframe src="{{ old_site_url_prefix() }}ajaxloader.php" data-src="{{ old_site_url_prefix() }}connect-legacy-to-new-via-iframe/iframe.php?option-request=1&amp;o=1&amp;tid={{ tid }}&amp;d={{ arrival_date }}&amp;ap={{ number_of_persons }}&amp;back={{ back|url_encode }}" class="connect-legacy-to-new-via-iframe" scrolling="no" frameborder="0"></iframe>
 
             </div>
 
