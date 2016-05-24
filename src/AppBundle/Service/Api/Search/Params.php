@@ -128,6 +128,20 @@ class Params
     }
 
     /**
+     * @param array $filters
+     *
+     * @return void
+     */
+    public function setFilters($filters)
+    {
+        $this->filters = [];
+
+        foreach ($filters as $filter) {
+            $this->filters[$filter->getFilter()] = $filter->getValue();
+        }
+    }
+
+    /**
      * @return array|false
      */
     public function getFilters()

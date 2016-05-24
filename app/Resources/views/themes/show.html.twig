@@ -21,15 +21,7 @@
 
                 <hr />
 
-                    {% import 'partials/search/result-accommodation-block.html.twig' as resultMacro %}
-
-                    {% set results         = resultset.paginator() %}
-                    {% set images          = search_images(results) %}
-                    {% set website_concern = website() %}
-                    {% set resale          = website_concern.getConfig(constant('WEBSITE_CONFIG_RESALE', website_concern)) %}
-                    {% for result in results %}
-                        {{ resultMacro.accommodation(result, images, resale, season, price_text) }}
-                    {% endfor %}
+                    {% include 'search/results.html.twig' %}
 
             </div>
 

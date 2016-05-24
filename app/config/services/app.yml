@@ -9,9 +9,6 @@ services:
         class:      AppBundle\Service\Javascript\JavascriptService
         arguments:  [[]]
 
-    app.filter:
-        class: AppBundle\Service\FilterService
-
     app.mongo:
         class: AppBundle\Service\Mongo\MongoService
         arguments: ["@doctrine_mongodb.odm.default_connection"]
