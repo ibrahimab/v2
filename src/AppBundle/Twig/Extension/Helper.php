@@ -64,4 +64,14 @@ trait Helper
     {
         return count(array_filter($array));
     }
+
+    /**
+     * Returns old website prefix
+     *
+     * @return string
+     */
+    public function getOldSiteUrlPrefix()
+    {
+        return $this->oldSiteUrlPrefix;
+    }
 }

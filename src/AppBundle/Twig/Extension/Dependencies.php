@@ -81,11 +81,19 @@ trait Dependencies
     }
 
     /**
-     * @param string $urlSiteUrlPrefix
+     * @param string $oldSiteUrlPrefix
      */
     public function setOldSiteUrlPrefix($oldSiteUrlPrefix)
     {
         $this->oldSiteUrlPrefix = $oldSiteUrlPrefix;
+    }
+
+    /**
+     * @param string $oldSiteImageUrlPrefix
+     */
+    public function setOldSiteImageUrlPrefix($oldSiteImageUrlPrefix)
+    {
+        $this->oldSiteImageUrlPrefix = $oldSiteImageUrlPrefix;
     }
 
     /**

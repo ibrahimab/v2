@@ -23,7 +23,8 @@ parameters:
     github_secret: null
     github_dir: "%kernel.cache_dir%/github"
     old_image_root:
-    old_site_url_prefix: /version1/
+    old_site_image_url_prefix: 'http://test.chalet.nl/pic/cms/'
+    old_site_url_prefix: http://test.chalet.nl/
     sunny_cars:
     founded:
         year: 1999

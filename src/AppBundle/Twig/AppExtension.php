@@ -61,7 +61,12 @@ class AppExtension extends \Twig_Extension
     /**
      * @var string
      */
-    private $oldSitePrefix;
+    private $oldSiteUrlPrefix;
+
+    /**
+     * @var string
+     */
+    private $oldSiteImageUrlPrefix;
 
     /**
      * @var UserServiceDocumentInterface
@@ -144,6 +149,8 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('is_current_page', [$this, 'isCurrentPage']),
             new \Twig_SimpleFunction('get_survey_answer', [$this, 'getSurveyAnswer']),
             new \Twig_SimpleFunction('years_active', [$this, 'getYearsActive']),
+            new \Twig_SimpleFunction('old_site_url_prefix', [$this, 'getOldSiteUrlPrefix']),
+            new \Twig_SimpleFunction('old_site_image_url_prefix', [$this, 'getOldSiteImageUrlPrefix']),
         ];
     }
 

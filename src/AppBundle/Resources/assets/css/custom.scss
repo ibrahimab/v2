@@ -208,7 +208,7 @@ section.landing h2 {
         font-weight: 700;
         text-align: center;
     }
-    .overview{
+    .overview {
 
         a:link, a:hover {
             text-decoration: none;
@@ -721,11 +721,10 @@ textarea {
     height: auto;
 }
 
-.boeken {
-
-    width: 80%;
+.connect-legacy-to-new-via-iframe {
+    width: 100%;
+    max-width: 800px;
     height: 100%;
-    margin-left: 20px;
 }
 
 .images li {
@@ -763,6 +762,8 @@ footer ul.checked i { margin-top: 0.7rem; }
         -ms-transition: initial;
         -o-transition: initial;
 
+        transition: opacity 150ms ease-in-out;
+
         &:hover {
 
             -moz-backface-visibility: initial;
@@ -772,8 +773,19 @@ footer ul.checked i { margin-top: 0.7rem; }
         }
     }
 
-    a { text-decoration: none; }
-    &:hover { outline: 1px solid #C8C8C8; }
+    a {
+        text-decoration: none;
+    }
+
+
+
+    &:hover {
+        outline: 1px solid #C8C8C8;
+
+        .accom-img img {
+            opacity: .7;
+        }
+    }
 }
 
 .mail-a-friend-page .overview {

@@ -40,19 +40,9 @@ trait Image
     /**
      * Returns old image url prefix
      */
-    public function getOldImageUrlPrefix()
+    public function getOldSiteImageUrlPrefix()
     {
-        return '/chalet-pic';
-    }
-
-    /**
-     * Returns old website prefix
-     *
-     * @return string
-     */
-    public function getOldSiteUrlPrefix()
-    {
-        return $this->oldSiteUrlPrefix;
+        return $this->oldSiteImageUrlPrefix;
     }
 
     /**
@@ -268,7 +258,7 @@ trait Image
             $filename = 'homepageblokken/' . $homepageBlockId . '.jpg';
         }
 
-        return $this->getOldImageUrlPrefix() . '/' . $filename;
+        return $this->getOldSiteImageUrlPrefix() . '/' . $filename;
     }
 
     /**
@@ -292,7 +282,7 @@ trait Image
      */
     public function generateImagePath($file)
     {
-        return $this->getOldImageUrlPrefix() . '/' . (null === $file ? 'accommodaties/0.jpg' : $file['directory'] . '/' . $file['filename']);
+        return $this->getOldSiteImageUrlPrefix() . '/' . (null === $file ? 'accommodaties/0.jpg' : $file['directory'] . '/' . $file['filename']);
     }
 
     /**
@@ -306,8 +296,8 @@ trait Image
     public function generateThumbnailPath($file, $width, $height = 0)
     {
 
-        if (strpos($file, $this->getOldImageUrlPrefix()) !== 0) {
-            throw new InvalidArgumentException('thumbnails can only be generated for files located in ' . $this->getOldImageUrlPrefix());
+        if (strpos($file, $this->getOldSiteImageUrlPrefix()) !== 0) {
+            throw new InvalidArgumentException('thumbnails can only be generated for files located in ' . $this->getOldSiteImageUrlPrefix());
         }
         if (!is_int($width) || $width < 1) {
             throw new InvalidArgumentException('width must be an integer higher than 0');
@@ -316,7 +306,7 @@ trait Image
             throw new InvalidArgumentException('height must be an integer');
         }
 
-        $sourceFile         = str_replace($this->getOldImageUrlPrefix() . '/', '', $file);
+        $sourceFile         = str_replace($this->getOldSiteImageUrlPrefix() . '/', '', $file);
         $sourceFileFullPath = $this->getOldImageRoot() . '/cms/' . $sourceFile;
 
         if ($height === 0) {
@@ -337,11 +327,11 @@ trait Image
         $thumbnailFileFullPath = $this->getOldImageRoot() . '/cms/' . $thumbnailFile;
 
         if (file_exists($thumbnailFileFullPath)) {
-            return $this->getOldImageUrlPrefix() . '/' . $thumbnailFile;
+            return $this->getOldSiteImageUrlPrefix() . $thumbnailFile;
         } else {
 
             // no thumbnail found: have the old website create it
-            return $this->getOldSiteUrlPrefix() . 'thumbnail.php?file=' . urlencode($sourceFile) . '&w=' . $width . '&h=' . $height;
+            return $this->getOldSiteImageUrlPrefix() . '../../thumbnail.php?file=' . urlencode($sourceFile) . '&w=' . $width . '&h=' . $height;
 
         }
     }
