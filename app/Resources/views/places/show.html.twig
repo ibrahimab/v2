@@ -36,7 +36,7 @@
                 <div class="images-holder ">
                     {% for image in images %}
                         {% set image_path = generate_image_path(image)|thumbnail(370, 280) %}
-                        {% if loop.index >2 %}
+                        {% if loop.index >4 %}
                             <a href="{{ image_path }}" class="medium-6 columns hide"><img src="{{ image_path }}" /></a>
                         {% else %}
                             <a href="{{ image_path }}" class="medium-6 columns"><img src="{{ image_path }}" /></a>
