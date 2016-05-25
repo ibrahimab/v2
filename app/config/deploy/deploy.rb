@@ -55,18 +55,21 @@ set :assets_install_path, fetch(:web_path)
 set :assets_install_flags, '--symlink'
 set :assetic_dump_flags, ''
 
+# composer settings
 set :composer_install_flags, '--no-dev --optimize-autoloader -v --no-interaction'
 set :composer_roles, :all
 set :composer_working_dir, -> { fetch(:release_path) }
 set :composer_dump_autoload_flags, '--optimize'
 set :composer_download_url, 'https://getcomposer.org/installer'
+
+# general settings
 set :copy_vendors, true
 
 # setting up hipchat authentication
 set :hipchat_token, ENV['HIPCHAT_API_TOKEN']
 set :hipchat_room_name, ENV['HIPCHAT_ROOM_ID']
 set :hipchat_deploy_user, ''
-set :hipchat_announce, true
+set :hipchat_announce, false
 set :hipchat_options, api_version: 'v2'
 
 # Default value for default_env is {}
@@ -75,17 +78,21 @@ set :hipchat_options, api_version: 'v2'
 # Default value for keep_releases is 5
 set :keep_releases, 3
 
+# get current branch
+set :current_branch, `git branch`.match(/\* (\S+)\s/m)[1]
+
 namespace :deploy do
 
   after :starting, 'composer:install_executable'
 
   after  :updated, 'chalet:htaccess'
   after  :updated, 'chalet:import_autocomplete'
-  after  :updated, 'chalet:upload_build_files'
   before :updated, 'deploy:set_permissions:chgrp'
+  before :updated, 'chalet:upload_build_files'
   after  :updated, 'chalet:dump_routes'
-  after  :updated, 'symfony:assetic:dump'
   after  :updated, 'composer:self_update'
+  after  :updated, 'chalet:dump_assetic'
+  after  :updated, 'chalet:warmup_cache'
 
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
