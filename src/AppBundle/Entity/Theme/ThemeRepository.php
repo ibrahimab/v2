@@ -26,6 +26,7 @@ class ThemeRepository extends BaseRepository implements ThemeServiceRepositoryIn
            ->andWhere($expr->eq('th.active', ':active'))
            ->andWhere($expr->neq('th.' . $this->getLocaleField('name'), ':name'))
            ->andWhere($expr->neq('th.' . $this->getLocaleField('url'), ':url'))
+           ->orderBy('th.name', 'ASC')
            ->setParameters([
 
                'season' => $this->getSeason(),
