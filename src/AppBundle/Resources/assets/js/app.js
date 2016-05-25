@@ -581,7 +581,15 @@
             var uri = URI();
 
             uri.setQuery('w', jq(this).val());
-            window.location.href = uri.toString() + '#extras';
+
+            var new_url = uri.toString();
+
+            var hashIndex = new_url.indexOf('#');
+            if (hashIndex > 0) {
+                new_url = new_url.substring(0, hashIndex);
+            }
+
+            window.location.href =  new_url + '#extras';
         });
 
         body.on('click', '[data-role="external-popup"], [data-role="internal-popup"]', function(event) {
