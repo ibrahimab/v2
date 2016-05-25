@@ -32,6 +32,17 @@
                 <div class="readmore show-for-small-only">
                     <a href="" class="button blank small radius" title="Toon meer" data-action="show-more" data-element="description" data-open-title="Toon meer" data-close-title="Toon minder"><i class="sprite sprite-icon-close-all"></i><span>Toon meer</span></a>
                  </div>
+
+                  <ul class="small-block-grid-2">
+                    {% for image in images %}
+                        <li>
+                            {% set image_path = generate_image_path(image)|thumbnail(370, 280) %}
+                            <a href="{{ image_path }}">
+                                <img src="{{ image_path }}" />
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
             <div class="large-4 medium-4 columns">
                 <h3 class="header-button">
@@ -42,18 +53,6 @@
                     <li>{{ 'chalets-apartments'|trans|capitalize }}<span>{{ place.getTypesCount() }}</span></li>
                     <li>{{ 'average-rating'|trans }}<span>{{ place.getAverageRatings() }}</span></li>
                     <li>{{ 'ratings'|trans }}<span>{{ place.getRatingsCount() }}</span></li>
-                </ul>
-            </div>
-            <div class="large-12 columns">
-                <ul class="small-block-grid-2">
-                    {% for image in images %}
-                        <li>
-                            {% set image_path = generate_image_path(image)|thumbnail(587, 440) %}
-                            <a href="{{ image_path }}">
-                                <img src="{{ image_path }}" />
-                            </a>
-                        </li>
-                    {% endfor %}
                 </ul>
             </div>
         </div>
