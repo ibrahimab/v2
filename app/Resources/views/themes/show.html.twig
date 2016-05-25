@@ -14,7 +14,7 @@
 
         <div class="row">
 
-            <div class="medium-8 large-8 columns">
+            <div class="medium-12 large-12 columns end">
 
                 <h1>{{ theme.getLocaleName(locale) }}</h1>
                 <p>{{ theme.getLocaleDescription(locale)|nl2br }}</p>
@@ -23,8 +23,20 @@
 
             </div>
 
-            <div class="medium-4 large-4 columns end">
-                <img src="{{ generate_image_path(theme_image(theme)) }}" alt="{{ theme.getLocaleName(locale) }}" />
+        </div>
+
+        <div class="row">
+
+            <div class="large-12 columns end">
+
+                {% set images = theme_images(theme) %}
+                <ul class="small-block-grid-3">
+                    {% for image in images %}
+                    <li>
+                        <img src="{{ generate_image_path(image) }}" alt="{{ theme.getLocaleName(locale) }}" />
+                    </li>
+                    {% endfor %}
+                </ul>
             </div>
 
         </div>

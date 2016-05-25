@@ -127,6 +127,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('place_image', [$this, 'getPlaceImage']),
             new \Twig_SimpleFunction('place_images', [$this, 'getPlaceImages']),
             new \Twig_SimpleFunction('theme_image', [$this, 'getThemeImage']),
+            new \Twig_SimpleFunction('theme_images', [$this, 'getThemeImages']),
             new \Twig_SimpleFunction('homepage_block_image', [$this, 'getHomepageBlockImage']),
             new \Twig_SimpleFunction('generate_image_path', [$this, 'generateImagePath']),
             new \Twig_SimpleFunction('breadcrumbs', [$this, 'breadcrumbs'], ['is_safe' => ['html'], 'needs_environment' => true]),

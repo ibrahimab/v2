@@ -243,6 +243,29 @@ trait Image
     }
 
     /**
+     * Getting Theme image
+     *
+     * @param ThemeServiceEntityInterface $theme
+     * @return string
+     */
+    public function getThemeImages($theme)
+    {
+        $themeId = ($theme instanceof ThemeServiceEntityInterface ? $theme->getId() : $theme);
+        $main    = $this->getThemeImage($theme);
+
+        $directory = 'themas';
+        $path      = $this->getOldImageRoot() . '/cms/' . $directory;
+        $raw       = glob($path . '/' . $themeId . '-*.jpg');
+        $files     = [$main];
+
+        foreach ($raw as $file) {
+            $files[] = ['directory' => $directory, 'filename' => pathinfo($file, PATHINFO_BASENAME)];
+        }
+
+        return $files;
+    }
+
+    /**
      * Getting Homepage block image
      *
      * @param HomepageBlockServiceEntityInterface $homepageBlock
