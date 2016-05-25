@@ -33,16 +33,25 @@
                     <a href="" class="button blank small radius" title="Toon meer" data-action="show-more" data-element="description" data-open-title="Toon meer" data-close-title="Toon minder"><i class="sprite sprite-icon-close-all"></i><span>Toon meer</span></a>
                  </div>
 
-                  <ul class="small-block-grid-2">
+                <div class="images-holder ">
                     {% for image in images %}
-                        <li>
-                            {% set image_path = generate_image_path(image)|thumbnail(370, 280) %}
-                            <a href="{{ image_path }}">
-                                <img src="{{ image_path }}" />
-                            </a>
-                        </li>
+                        {% set image_path = generate_image_path(image)|thumbnail(370, 280) %}
+                        {% if loop.index >2 %}
+                            <a href="{{ image_path }}" class="medium-6 columns hide"><img src="{{ image_path }}" /></a>
+                        {% else %}
+                            <a href="{{ image_path }}" class="medium-6 columns"><img src="{{ image_path }}" /></a>
+                        {% endif %}
                     {% endfor %}
-                </ul>
+
+                    <div style="clear:both;"></div>
+                    <div class="readmore">
+                        <a href="#" class="button blank small radius" title="Toon alle foto's" data-action="show-more" data-element="extra-fotos" data-open-title="Toon alle foto's" data-close-title="Verberg foto's">
+                            <i class="sprite sprite-icon-close-all"></i><span>Toon alle foto's</span>
+                        </a>
+                    </div>
+                </div>
+
+
             </div>
             <div class="large-4 medium-4 columns">
                 <h3 class="header-button">

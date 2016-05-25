@@ -197,6 +197,18 @@ section.landing h2 {
 
 .place-page, .region-page {
 
+    .images-holder {
+        a {
+            padding-left:0px;
+            padding-right:0px;
+            margin-bottom: 10px;
+        }
+
+        .readmore {
+            margin-top: 20px;
+        }
+    }
+
     h3 {
         text-align: left;
     }
