@@ -82,7 +82,6 @@ class SearchController extends Controller
             foreach ($supplierService->all(['order' => ['name' =>'asc'] ]) as $supplier) {
                 $suppliers[$supplier->getId()] = $supplier->getName();
             }
-
         }
 
         $params->setOfferPage(false);
@@ -150,13 +149,13 @@ class SearchController extends Controller
         $reroute = $this->reroute($request->query->all());
 
         if (count($reroute) > 0) {
-            return $this->redirectToRoute('search_' . $locale, $reroute, 301);
+            return $this->redirectToRoute('search_offers_' . $locale, $reroute, 301);
         }
 
         if (false !== ($saved = $this->hasSavedSearch($request))) {
 
             $this->get('session')->remove('search');
-            return $this->redirectToRoute('search_' . $locale, $saved, 301);
+            return $this->redirectToRoute('search_offers_' . $locale, $saved, 301);
         }
 
         $searchService = $this->get('app.api.search');
