@@ -139,8 +139,42 @@ section.area-countries {
     }
 }
 
-footer a {
-    color: $link-color;
+footer {
+    a {
+        color: $link-color;
+    }
+
+    ul.checked li {
+        position:relative;
+        padding-left: 24px;
+
+        &:before {
+
+            @extend .sprite-blue-checked;
+
+            display: block;
+            position: absolute;
+            content: " ";
+            top: 5px;
+            left: 0px;
+        }
+    }
+
+    ul.arrowed li {
+        position:relative;
+        padding-left: 16px;
+
+        &:before {
+
+            @extend .sprite-blue-arrow;
+
+            display: block;
+            position: absolute;
+            content: " ";
+            top: 5px;
+            left: 0px;
+        }
+    }
 }
 
 footer ul li a {
