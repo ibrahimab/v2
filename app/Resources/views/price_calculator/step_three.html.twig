@@ -42,9 +42,10 @@
 
     } %}
 
-    <a href="/boeken.php?tid={{ type.getId() }}&amp;d={{ form_data.weekend }}&amp;ap={{ form_data.person }}" class="button small orange radius right" title="Boek nu">Boek nu</a>
+    <a href="/boeken.php?tid={{ type.getId() }}&amp;d={{ form_data.weekend }}&amp;ap={{ form_data.person }}" class="button orange right" title="Boek nu">Boek nu</a>
 
     <p>&nbsp;</p>
+    <h2>Stuur deze prijsberekening door:</h2>
     {{ form_row(form.email) }}
 
     {{ form_end(form) }}
