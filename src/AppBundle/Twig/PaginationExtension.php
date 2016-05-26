@@ -156,6 +156,10 @@ class PaginationExtension extends \Twig_Extension
             $query['f'] = $filters;
         }
 
+        if ($this->request->attributes->get('_route') === 'show_theme_' . $this->locale) {
+            $query['url'] = $this->request->attributes->get('url');
+        }
+
         return $this->generator->generate($this->request->attributes->get('_route'), $query);
     }
 

@@ -33,13 +33,13 @@ use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory as PsrFactory;
  * @since   0.0.2
  *
  * @Breadcrumb(name="frontpage", title="frontpage", translate=true, path="home")
- * @Breadcrumb(name="search", title="search-book", translate=true, active=true, path="search")
  */
 class SearchController extends Controller
 {
     /**
      * @Route(path="/zoek-en-boek.php", name="search_nl", options={"expose": true})
      * @Route(path="/search-and-book.php",  name="search_en", options={"expose": true})
+     * @Breadcrumb(name="search", title="search-book", translate=true, active=true, path="search")
      */
     public function index(Request $request)
     {
@@ -142,6 +142,7 @@ class SearchController extends Controller
 
     /**
      * @Route(path="/aanbiedingen.php", name="search_offers_nl", options={"expose": true})
+     * @Breadcrumb(name="search", title="search-book", translate=true, active=true, path="search")
      */
     public function offers(Request $request)
     {
@@ -238,6 +239,82 @@ class SearchController extends Controller
         ];
 
         return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', $data);
+    }
+
+    /**
+     * @Route("/wintersport/thema/{url}/", name="show_theme_nl")
+     * @Route("/winter-sports/theme/{url}/", name="show_theme_en")
+     * @Breadcrumb(name="themes", title="themes", translate=true, path="themes")
+     * @Breadcrumb(name="theme", title="{theme}", translate=true, active=true)
+     */
+    public function showTheme($url, Request $request)
+    {
+        $themeService           = $this->get('app.api.theme');
+        $searchService          = $this->get('app.api.search');
+        $seasonService          = $this->get('app.api.season');
+        $generalSettingsService = $this->get('app.api.general.settings');
+
+        try {
+
+            $theme = $themeService->theme($url);
+
+        } catch(NoResultException $exception) {
+            throw $this->createNotFoundException('Theme page does not exist (anymore)');
+        }
+
+        $start     = microtime(true);
+        $converter = new FilterConverter();
+        $filters   = $converter->convert($theme->getFilters());
+
+        $params    = $searchService->createParamsFromRequest($request);
+        $params->setFilters($filters);
+
+        $resultset   = $searchService->search($params);
+        $paginator   = $searchService->paginate($resultset, $params);
+        $filterNames = $searchService->getFilterNames($params);
+
+        $seasons  = $seasonService->seasons();
+        $seasonId = $seasonService->current()['id'];
+
+        $facetFilters = $this->getFacetFilters($params);
+
+        $this->setupJavascriptParameters($params);
+
+        return $this->render('themes/show.html.twig', [
+
+            'offerPage'      => false,
+            'offerBox'       => false,
+            'search_time'    => round((microtime(true) - $start), 2),
+            'theme'          => $theme,
+            'resultset'      => $resultset,
+            'paginator'      => $paginator,
+            'surveys'        => $searchService->surveys($resultset),
+            'price_text'     => new PriceText,
+            'filter_manager' => new FilterManager(),
+            'filters'        => $params->getFilters() ?: [],
+            'custom_filters' => [
+
+                'countries'      => $filterNames['countries'],
+                'regions'        => $filterNames['regions'],
+                'places'         => $filterNames['places'],
+                'accommodations' => $filterNames['accommodations'],
+                'suppliers'      => $filterNames['suppliers'],
+            ],
+            'form_filters'   => [
+
+                'weekend'    => $params->getWeekend(),
+                'persons'    => $params->getPersons(),
+                'bedrooms'   => $params->getBedrooms(),
+                'bathrooms'  => $params->getBathrooms(),
+                'freesearch' => $params->getFreesearch(),
+            ],
+            'weekends'       => $seasonService->futureWeekends($seasons),
+            'destination'    => $searchService->hasDestination($params),
+            'season'         => $seasonId,
+            'facet_service'  => $searchService->facets($resultset, $facetFilters),
+            'sort'           => $params->getSort(),
+            'searchFormMessageSearchWithoutDates' => $generalSettingsService->getSearchFormMessageSearchWithoutDates(),
+        ]);
     }
 
     /**
