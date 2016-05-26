@@ -23,12 +23,21 @@
         .zoover-awards {
             margin: 0 0 0.5rem 0;
         }
+
+        .logo-and-contact-info {
+            padding-left: 175px;
+        }
     }
 
     .menu-block {
 
         ul.main-menu li {
-            font-size: 1rem;
+            margin-left: 17px;
+            font-size: 0.9rem;
+        }
+
+        .nav-holder {
+            padding-left: 175px;
         }
     }
 }
@@ -37,8 +46,8 @@
 @media (max-width: 40em) {
 
     ul.contact-info {
-       
-        padding-top: 1.5rem;               
+
+        padding-top: 1.5rem;
     }
 
     .header-block {
@@ -51,8 +60,8 @@
 
         .contact-block {
             padding-left: 0;
-            padding-right: 0;   
-              
+            padding-right: 0;
+
         }
     }
 }
