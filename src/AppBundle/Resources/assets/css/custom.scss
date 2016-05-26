@@ -536,7 +536,7 @@ div.autocomplete-container {
                         font-weight: normal;
                         color: rgba(0, 0, 0, 0.75);
                         font-size: 0.875rem;
-                        font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+                        font-family: 'Roboto', sans-serif, Helvetica;
                     }
                 }
             }
@@ -962,7 +962,8 @@ footer ul.checked i { margin-top: 0.7rem; }
     input {
 
         font-size: 0.875rem;
-        font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+        font-family: 'Roboto', sans-serif, Helvetica;
+
     }
 }
 
