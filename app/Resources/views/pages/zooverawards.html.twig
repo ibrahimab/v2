@@ -1,0 +1,29 @@
+{% extends 'layouts/default.html.twig' %}
+
+{% block breadcrumbs %}
+    {{ breadcrumbs() }}
+{% endblock %}
+
+{% block body %}
+
+    {{ parent() }}
+
+    <section class="landing landing-page about-page">
+
+        <div class="row">
+            <div class="large-8 medium-8 columns">
+                <h2>Zoover Awards: Chalet.nl verkozen tot beste wintersport aanbieder 2015 en 2016</h2>
+                <p>In 2015 en 2016 is Chalet.nl door de Nederlandse consument verkozen tot beste wintersport aanbieder. Een onderscheiding waar wij als wintersport specialist erg trots op zijn. We zien het als een mooie bekroning op het werk van al onze medewerkers.
+                De bekende Zoover Award is een publieksprijs die jaarlijks wordt uitgereikt door Zoover, de grootste onafhankelijke beoordelingssite van de Benelux.</p> <p> De hoogste score is behaald op het onderdeel ‘service’, één van de grootste aandachtspunten binnen onze bedrijfsfilosofie. 
+                We hopen in de toekomst nog vele wintersportliefhebbers te mogen adviseren met onze specialistische kennis en persoonlijke service.</p>
+            </div>
+            <div class="large-4 columns">
+                {% image 'bundles/app/img/content/zoover-image-01.jpg' %}
+                    <p><img id="zoover-logo" src="{{ asset_url }}" alt="Over Chalet" /></p>
+                {% endimage %}
+            </div>
+        </div>
+
+    </section>
+
+{% endblock %}
