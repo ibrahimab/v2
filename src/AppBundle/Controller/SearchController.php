@@ -43,7 +43,7 @@ class SearchController extends Controller
      */
     public function index(Request $request)
     {
-        $locale  = $request->getLocale();
+        $locale  = $this->get('app.concern.locale')->get();
         $reroute = $this->reroute($request->query->all());
 
         if (count($reroute) > 0) {
@@ -85,12 +85,19 @@ class SearchController extends Controller
 
         }
 
+        $params->setOfferPage(false);
+
         $this->setupJavascriptParameters($params);
+
+        $this->get('app.javascript')
+             ->set('app.search_route', 'search');
 
         $seasons  = $seasonService->seasons();
         $seasonId = $seasonService->current()['id'];
         $data     = [
 
+            'offerPage'      => $params->getOfferPage(),
+            'offerBox'       => false,
             'season'         => $seasonId,
             'resultset'      => $resultset,
             'paginator'      => $paginator,
@@ -129,6 +136,106 @@ class SearchController extends Controller
         $data['surveys']       = $searchService->surveys($resultset);
         $data['price_text']    = new PriceText;
         $data['searchFormMessageSearchWithoutDates'] = $generalSettingsService->getSearchFormMessageSearchWithoutDates();
+
+        return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', $data);
+    }
+
+    /**
+     * @Route(path="/aanbiedingen.php", name="search_offers_nl", options={"expose": true})
+     */
+    public function offers(Request $request)
+    {
+        $locale  = $this->get('app.concern.locale')->get();
+        $reroute = $this->reroute($request->query->all());
+
+        if (count($reroute) > 0) {
+            return $this->redirectToRoute('search_' . $locale, $reroute, 301);
+        }
+
+        if (false !== ($saved = $this->hasSavedSearch($request))) {
+
+            $this->get('session')->remove('search');
+            return $this->redirectToRoute('search_' . $locale, $saved, 301);
+        }
+
+        $searchService = $this->get('app.api.search');
+        $params        = $searchService->createParamsFromRequest($request);
+
+        if (!$request->query->has('o')) {
+            $params->setOfferPage(true);
+        }
+
+        $this->saveToSession($params);
+
+        $start                  = microtime(true);
+        $surveyService          = $this->get('app.api.booking.survey');
+        $seasonService          = $this->get('app.api.season');
+        $supplierService        = $this->get('app.api.supplier');
+        $generalSettingsService = $this->get('app.api.general.settings');
+        $legacyCmsUserService   = $this->get('app.legacy.cmsuser');
+
+        $resultset              = $searchService->search($params);
+        $paginator              = $searchService->paginate($resultset, $params);
+        $destination            = $searchService->hasDestination($params);
+        $typeIds                = $searchService->extractTypeIds($resultset);
+        $filterNames            = $searchService->getFilterNames($params);
+
+        // internal users: allow searching for suppliers
+        if ($legacyCmsUserService->shouldShowInternalInfo()) {
+
+            // get all suppliers as an array
+            // @todo: is there a single function to do this?
+            foreach ($supplierService->all(['order' => ['name' =>'asc'] ]) as $supplier) {
+                $suppliers[$supplier->getId()] = $supplier->getName();
+            }
+
+        }
+
+        $this->setupJavascriptParameters($params);
+
+        $this->get('app.javascript')
+             ->set('app.search_route', 'search_offers');
+
+        $facetFilters = $this->getFacetFilters($params);
+        $seasons      = $seasonService->seasons();
+        $seasonId     = $seasonService->current()['id'];
+        $data         = [
+
+            'offerPage'      => $params->getOfferPage(),
+            'offerBox'       => true,
+            'season'         => $seasonId,
+            'resultset'      => $resultset,
+            'paginator'      => $paginator,
+            'filters'        => $params->getFilters() ?: [],
+            // instance needed to get constants easier from within twig template: constant('const', instance)
+            'filter_manager' => new FilterManager(),
+            'custom_filters' => [
+
+                'countries'      => $filterNames['countries'],
+                'regions'        => $filterNames['regions'],
+                'places'         => $filterNames['places'],
+                'accommodations' => $filterNames['accommodations'],
+                'suppliers'      => $filterNames['suppliers'],
+            ],
+
+            'form_filters'   => [
+
+                'weekend'    => $params->getWeekend(),
+                'persons'    => $params->getPersons(),
+                'bedrooms'   => $params->getBedrooms(),
+                'bathrooms'  => $params->getBathrooms(),
+                'freesearch' => $params->getFreesearch(),
+            ],
+            'destination'    => $destination,
+            'weekends'       => $seasonService->futureWeekends($seasons),
+            'suppliers'      => $suppliers,
+            'sort'           => $params->getSort(),
+            'facet_service'  => $searchService->facets($resultset, $facetFilters),
+            'search_time'    => round((microtime(true) - $start), 2),
+            'surveys'        => $searchService->surveys($resultset),
+            'price_text'     => new PriceText,
+            'searchFormMessageSearchWithoutDates' => $generalSettingsService->getSearchFormMessageSearchWithoutDates(),
+        ];
 
         return $this->render('search/' . ($request->isXmlHttpRequest() ? 'results' : 'search') . '.html.twig', $data);
     }
@@ -221,6 +328,10 @@ class SearchController extends Controller
             } elseif ($matches['param'] === 'fad' && $data > 0) {
 
                 $reroute['w'] = $data;
+
+            } elseif ($matches['param'] === 'faab') {
+
+                $reroute['o'] = $data;
 
             } elseif ($matches['param'] === 'fsg') {
 
@@ -338,6 +449,7 @@ class SearchController extends Controller
         $javascript->set('app.filters.form.bathrooms',        $params->getBathrooms());
         $javascript->set('app.filters.form.suppliers',        $params->getSuppliers());
         $javascript->set('app.filters.form.sort',             $params->getSort());
+        $javascript->set('app.filters.form.offerPage',        $params->getOfferPage());
     }
 
     /**

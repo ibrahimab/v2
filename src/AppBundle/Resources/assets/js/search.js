@@ -67,6 +67,8 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
                 body.on('change', '[data-role="sort-results"]', ns.Search.events.formChanges.sort);
 
+                body.on('change', '[data-role="toggle-offer-page"]', ns.Search.events.formChanges.offerPage);
+
                 body.on('click', '[data-role="save-search"]', ns.Search.actions.save);
 
                 window.onpopstate = function(event) {
@@ -316,6 +318,16 @@ window.Chalet = (function(ns, jq, _, undefined) {
                         ns.Search.filters.setSort(val);
                         ns.Search.actions.search();
                     }
+                },
+
+                offerPage: function(event) {
+
+                    event.preventDefault();
+
+                    var checked = jq(this).is(':checked');
+
+                    ns.Search.filters.setOfferPage(checked);
+                    ns.Search.actions.search();
                 }
             },
 
@@ -447,6 +459,12 @@ window.Chalet = (function(ns, jq, _, undefined) {
                     uri.setQuery('fs', ns.Search.filters.freesearch);
                 }
 
+                uri.removeQuery('o');
+
+                if (null !== ns.Search.filters.offerPage) {
+                    uri.setQuery('o', (true === ns.Search.filters.offerPage ? 1 : 0));
+                }
+
                 if (null !== ns.Search.filters.sort) {
 
                     uri.removeQuery('s');
@@ -507,7 +525,8 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
             search: function(page, pushHistory) {
 
-                var url = ns.Search.actions.url(Routing.generate('search_' + ns.get('app')['locale']), page);
+                var name = ns.get('app')['search_route'];
+                var url  = ns.Search.actions.url(Routing.generate(name + '_' + ns.get('app')['locale']), page);
 
                 if (false !== pushHistory) {
 
@@ -609,6 +628,8 @@ window.Chalet = (function(ns, jq, _, undefined) {
             suppliers: [],
 
             freesearch: null,
+
+            offerPage: null,
 
             sort: null,
 
@@ -798,6 +819,10 @@ window.Chalet = (function(ns, jq, _, undefined) {
 
             setFreesearch: function(freesearch) {
                 ns.Search.filters.freesearch = freesearch;
+            },
+
+            setOfferPage: function(offerPage) {
+                ns.Search.filters.offerPage = offerPage;
             },
 
             setSort: function(direction) {

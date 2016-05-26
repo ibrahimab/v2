@@ -41,7 +41,7 @@
                   <li><a href="{{ path('home') }}"{{ is_current_page('home') ? ' class="active"' }}>Home</a></li>
                   <li><a href="{{ locale_path('search') }}"{{ is_current_page('search') ? ' class="active"' }}>Zoek &amp; boek</a></li>
                   <li><a href="{{ locale_path('all_regions') }}"{{ is_current_page('all_regions') ? ' class="active"' }}>Skigebieden</a></li>
-                  <li><a href="#">Aanbiedingen</a></li>
+                  <li><a href="{{ locale_path('search_offers') }}"{{ is_current_page('search_offers') ? ' class="active"' }}>Aanbiedingen</a></li>
                   <li><a href="{{ locale_path('ask_our_advice') }}"{{ is_current_page('ask_our_advice') ? ' class="active"' }}>Vraag ons advies</a></li>
                   <li><a href="{{ locale_path('contact') }}"{{ is_current_page('contact') ? ' class="active"' }}>Contact</a></li>
                   <li class="has-child-menu"><a href="#"{{ is_current_page('page_saved') ? ' class="active"' }}>Gezien &amp; bewaard</a>

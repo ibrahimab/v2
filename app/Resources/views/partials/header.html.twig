@@ -96,16 +96,16 @@
                         <i class="fi-home"></i>
                     </a>
                 </li>
-                <li{% if route in ['search_nl', 'search_en'] %} class="active"{% endif %}>
+                <li{{ is_current_page('search') ? ' class="active"' }}>
                     <a href="{{ locale_path('search') }}">zoek en boek</a>
                 </li>
-                <li{% if route in ['all_regions_nl', 'all_regions_en'] %} class="active"{% endif %}>
+                <li{{ is_current_page('all_regions') ? ' class="active"' }}>
                     <a href="{{ locale_path('all_regions') }}">skigebieden</a>
                 </li>
-                <li>
-                    <a href="#">aanbiedingen</a>
+                <li{{ is_current_page('search_offers') ? ' class="active"' }}>
+                    <a href="{{ locale_path('search_offers') }}">aanbiedingen</a>
                 </li>
-                <li{% if route in ['ask_our_advice_nl', 'sask_our_advice_en'] %} class="active"{% endif %}>
+                <li{{ is_current_page('ask_our_advice') ? ' class="active"' }}>
                     <a href="{{ locale_path('ask_our_advice') }}">vraag ons advies</a>
                 </li>
             </ul>

@@ -43,6 +43,9 @@ class Where
     /** @var integer */
     const WHERE_SUPPLIER      = 11;
 
+    /** @var integer */
+    const WHERE_TYPE          = 12;
+
     /**
      * @var integer
      */
@@ -69,6 +72,7 @@ class Where
         self::WHERE_FREESEARCH,
         self::WHERE_WEEKEND,
         self::WHERE_SUPPLIER,
+        self::WHERE_TYPE,
     ];
 
     /**

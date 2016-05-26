@@ -178,12 +178,13 @@ class Resultset
     }
 
     /**
+     * @param boolean $offerPage
+     *
      * @return Resultset
      */
-    public function prepare()
+    public function prepare($offers = false)
     {
         $prices = [];
-        $offers = [];
 
         if (false === $this->weekend && false === $this->persons) {
             $prices = $this->startingPrice->getStartingPrices(array_column($this->results, 'type_id'));
@@ -193,7 +194,7 @@ class Resultset
             $prices = $this->fetchPrices();
         }
 
-        if (false === $this->weekend && false === $this->persons) {
+        if (false === $this->weekend && false === $this->persons && false === $offers) {
 
             // no weekend and no persons
             // select offers from repository

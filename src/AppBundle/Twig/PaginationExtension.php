@@ -156,7 +156,7 @@ class PaginationExtension extends \Twig_Extension
             $query['f'] = $filters;
         }
 
-        return $this->generator->generate('search_' . $this->locale, $query);
+        return $this->generator->generate($this->request->attributes->get('_route'), $query);
     }
 
     /**

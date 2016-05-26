@@ -72,6 +72,11 @@ class Params
     private $freesearch;
 
     /**
+     * @var boolean
+     */
+    private $offerPage;
+
+    /**
      * @var integer|false
      */
     private $sort;
@@ -230,6 +235,24 @@ class Params
     public function getFreesearch()
     {
         return $this->getItem('freesearch', 'fs');
+    }
+
+    /**
+     * @param boolean $offerPage
+     *
+     * @return void
+     */
+    public function setOfferPage($offerPage)
+    {
+        $this->offerPage = $offerPage;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getOfferPage()
+    {
+        return (1 === $this->getIntegerItem('offerPage', 'o'));
     }
 
     /**

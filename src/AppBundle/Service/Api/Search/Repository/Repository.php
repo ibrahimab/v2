@@ -507,6 +507,16 @@ class Repository implements RepositoryInterface
                                              'type'       => PDO::PARAM_STR]]];
 
                 break;
+
+            case Where::WHERE_TYPE:
+
+                $clause = ['sql'        => 't.type_id IN (' . $this->integerArrayQuery($where->getValue()) . ')',
+
+                           'group_id'   => 'main',
+
+                           'parameters' => []];
+
+                break;
         }
 
         return $clause;

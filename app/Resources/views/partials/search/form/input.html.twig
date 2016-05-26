@@ -49,6 +49,12 @@
         <option value="{{ i }}"{{ i == current_bathrooms ? selected|raw }}>{{ minimum }} {{ i }} {{ bathrooms }}</option>
     {% endfor %}
 </select>
+{% if offerBox %}
+    <div class="offer-page-checkbox">
+        <input type="checkbox" id="offer_page" name="offer_page" data-role="toggle-offer-page"{{ offerPage ? ' checked="checked"' }} />
+        <label for="offer_page">zoek alleen naar aanbiedingen</label>
+    </div>
+{% endif %}
 {% if should_show_internal_info() %}
     <select class="radius" data-role="change-supplier">
         <option value="0">Leverancier</option>

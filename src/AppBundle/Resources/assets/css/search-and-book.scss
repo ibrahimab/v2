@@ -307,3 +307,22 @@ div.search-filter-box {
         }
     }
 }
+
+.offer-page-checkbox {
+
+    padding: 3px;
+    border: 1px solid #5f227b;
+    background-color: #d40139;
+
+    input {
+        margin: 0;
+    }
+
+    label {
+
+        color: #ffffff !important;
+        margin-right: 0 !important;
+        display: inline !important;
+        font-size: 0.9rem !important;
+    }
+}

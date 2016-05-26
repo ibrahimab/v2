@@ -155,12 +155,22 @@ class SearchService
         $weekendski = new Where(Where::WHERE_WEEKEND_SKI, (true === $weekendski ? 1 : 0));
         $this->searchBuilder->addClause($weekendski);
 
+        $offers = false;
+
+        if (true === $params->getOfferPage()) {
+
+            $offers = $this->offerRepository->getOffers();
+            $types  = array_keys($offers);
+
+            $this->searchBuilder->addClause(new Where(Where::WHERE_TYPE, $types));
+        }
+
         $results = $this->repository->search($this->searchBuilder, $this->filterBuilder);
         $resultset = new Resultset($results, $this->config, $this->website->getConfig(WebsiteConcern::WEBSITE_CONFIG_RESALE), $params->getWeekend(), $params->getPersons());
         $resultset->setStartingPrice($this->startingPrice);
         $resultset->setPriceRepository($this->priceRepository);
         $resultset->setOfferRepository($this->offerRepository);
-        $resultset->prepare();
+        $resultset->prepare($offers);
 
         return $resultset->sort(new Sort(Sort::FIELD_TYPE_SEARCH_ORDER, $params->getSort() ?: $this->getDefaultSort()));
     }
