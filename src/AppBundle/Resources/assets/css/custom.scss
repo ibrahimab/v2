@@ -139,7 +139,17 @@ section.area-countries {
     }
 }
 
-footer {
+footer, .about-page {
+    ul {
+        list-style: none;
+        margin-left: 0px;
+
+        li {
+            strong {
+                color:$header-color;
+            }
+        }
+    }
     a {
         color: $link-color;
     }
