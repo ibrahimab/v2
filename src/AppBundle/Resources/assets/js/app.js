@@ -644,6 +644,7 @@
 
         body.on('click', '[data-action="show-more"]', function(event) {
 
+
             event.preventDefault();
             var element = jq('[data-show-more-element="' + jq(this).data('element') + '"]');
 
@@ -654,6 +655,8 @@
                 // element.removeClass('shorten-for-mobile').data('opened', true);
                 element.animate({height: element.prop('scrollHeight')}).data('opened', true);
             }
+
+            jq(document).foundation('equalizer', 'reflow');
         });
 
         body.on('click', '[data-action="price-calculator-send-mail"]', function(event) {

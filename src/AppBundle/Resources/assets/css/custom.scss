@@ -284,6 +284,14 @@ section.landing h2 {
             outline: 1px solid #C8C8C8;
         }
     }
+
+    .region-block {
+        //display: none;
+
+        &.first {
+            //display: block;
+        }
+    }
 }
 
 ul.landing-details-short {
@@ -382,6 +390,20 @@ div.google-maps {
 
 .fi-gray {
     color: #828282;
+}
+
+.country-page {
+    .readmore {
+        border-top: thin solid #bfbfbf;
+        margin-bottom: 0;
+
+        .button.small.blank {
+            margin: 0 auto;
+            display: block;
+            width: 300px;
+            margin-bottom: 20px;
+        }
+    }
 }
 
 .readmore .button.small.blank.open i {

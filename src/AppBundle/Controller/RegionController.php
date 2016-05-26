@@ -95,8 +95,18 @@ class RegionController extends Controller
         $regionService = $this->get('app.api.region');
         $items         = $regionService->regions($this->container);
 
+
+        foreach ($items as $country) {
+            // sort regions by number of types (typesCount)
+            usort($country['regions'], function($a, $b) {
+                return $a->getTypesCount() < $b->getTypesCount() ? 1 : -1;
+            });
+
+            $sortedItems[] = $country;
+        }
+
         return $this->render('regions/all.html.twig', [
-            'items' => $items,
+            'items' => $sortedItems,
         ]);
     }
 }

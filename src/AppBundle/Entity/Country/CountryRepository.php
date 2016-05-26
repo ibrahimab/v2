@@ -115,7 +115,8 @@ class CountryRepository extends BaseRepository implements CountryServiceReposito
            ->where($expr->in('c.id', ':countries'))
            ->andWhere($expr->eq('r.season', ':season'))
            ->groupBy('r.id')
-           ->orderBy('r.name', 'ASC')
+           ->addOrderBy('c.name', 'ASC')
+           ->addOrderBy('r.name', 'ASC')
            ->setParameters([
 
                'countries' => [1, 2, 3, 5],
