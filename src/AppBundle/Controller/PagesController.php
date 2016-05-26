@@ -285,7 +285,7 @@ class PagesController extends Controller
     }
 
     /**
-     * @Route("/zooverawards2015", name="page_zooverawards")
+     * @Route("/zoover-awards", name="page_zooverawards")
      */
     public function zooverawards()
     {
