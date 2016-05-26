@@ -26,16 +26,16 @@ class Place(Base):
     """
     def fetch(self):
 
-        sql = "SELECT DISTINCT `plaats_id` AS `id`, `plaats` AS `name_nl`, `plaats_de` AS `name_de`, " \
-              "                `plaats_en` AS `name_en`, `plaats_fr` AS `name_fr` "                    \
-              "FROM   `view_accommodatie` "                                                            \
-              "WHERE FIND_IN_SET('%(website)s', `websites`) > 0 "                                      \
-              "AND `atonen` = 1 "                                                                      \
-              "AND `ttonen` = 1 "                                                                      \
-              "AND `atonenzoekformulier` = 1 "                                                         \
-              "AND `ttonenzoekformulier` = 1 "                                                         \
-              "AND `archief` = 0 "                                                                     \
-              "AND `weekendski` = 0 "                                                                  \
+        sql = "SELECT DISTINCT `plaats_id` AS `id`, `plaats` AS `name_nl`, `plaats_de` AS `name_de`, "              \
+              "                `plaats_en` AS `name_en`, `plaats_fr` AS `name_fr`, `plaats_altnaam` AS `alt_name` " \
+              "FROM   `view_accommodatie` "                                                                         \
+              "WHERE FIND_IN_SET('%(website)s', `websites`) > 0 "                                                   \
+              "AND `atonen` = 1 "                                                                                   \
+              "AND `ttonen` = 1 "                                                                                   \
+              "AND `atonenzoekformulier` = 1 "                                                                      \
+              "AND `ttonenzoekformulier` = 1 "                                                                      \
+              "AND `archief` = 0 "                                                                                  \
+              "AND `weekendski` = 0 "                                                                               \
               "ORDER BY `plaats` ASC"
 
         self.adapter('mysql').execute(sql % {'website': self.website})
@@ -78,6 +78,8 @@ class Place(Base):
                     'de': self.strip_accents(row['name_de'].lower()) if isinstance(row['name_de'], basestring) else row['name_de'],
                     'fr': self.strip_accents(row['name_fr'].lower()) if isinstance(row['name_fr'], basestring) else row['name_fr']
                 },
+
+                'alternative': self.strip_accents(row['alt_name'].lower()) if isinstance(row['alt_name'], basestring) else row['alt_name'],
                 'search_term': {
 
                     'nl': row['id'],

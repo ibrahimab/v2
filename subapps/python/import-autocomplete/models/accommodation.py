@@ -25,13 +25,13 @@ class Accommodation(Base):
     """
     def fetch(self):
 
-        sql = "SELECT DISTINCT `accommodatie_id` AS `id`, `naam` AS `name` " \
-              "FROM   `accommodatie` "                                       \
-              "WHERE FIND_IN_SET('%(website)s', `websites`) > 0 "            \
-              "AND `tonen` = 1 "                                             \
-              "AND `tonenzoekformulier` = 1 "                                \
-              "AND `archief` = 0 "                                           \
-              "AND `weekendski` = 0 "                                        \
+        sql = "SELECT DISTINCT `accommodatie_id` AS `id`, `naam` AS `name`, `altnaam` AS `alt_name` " \
+              "FROM   `accommodatie` "                                                                \
+              "WHERE FIND_IN_SET('%(website)s', `websites`) > 0 "                                     \
+              "AND `tonen` = 1 "                                                                      \
+              "AND `tonenzoekformulier` = 1 "                                                         \
+              "AND `archief` = 0 "                                                                    \
+              "AND `weekendski` = 0 "                                                                 \
               "ORDER BY `naam` ASC"
 
         self.adapter('mysql').execute(sql % {'website': self.website})
@@ -55,7 +55,8 @@ class Accommodation(Base):
 
         for row in self.data:
 
-            searchable = self.strip_accents(row['name'].lower()) if isinstance(row['name'], basestring) else row['name'];
+            searchable  = self.strip_accents(row['name'].lower()) if isinstance(row['name'], basestring) else row['name']
+            alternative = self.strip_accents(row['alt_name'].lower()) if isinstance(row['alt_name'], basestring) else row['alt_name']
 
             data.append({
 
@@ -64,6 +65,7 @@ class Accommodation(Base):
                 'locales': None,
                 'name': row['name'],
                 'searchable': searchable,
+                'alternative': alternative,
                 'search_term': searchable,
                 'order': order
             })

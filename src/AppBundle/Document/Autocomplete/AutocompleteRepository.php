@@ -93,6 +93,21 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
                             '$and' => [
 
                                 [
+                                    'alternative' => [
+                                        '$exists' => true,
+                                    ]
+                                ],
+
+                                [
+                                    'alternative' => $nameRegex,
+                                ],
+                            ],
+                        ],
+
+                        [
+                            '$and' => [
+
+                                [
                                     'code' => [
                                         '$exists' => true,
                                     ],
