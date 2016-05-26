@@ -30,11 +30,15 @@
             <div class="large-12 columns end">
 
                 {% set images = theme_images(theme) %}
-                <ul class="small-block-grid-3">
+                <ul class="small-block-grid-2 medium-block-grid-4">
                     {% for image in images %}
-                    <li>
-                        <img src="{{ generate_image_path(image) }}" alt="{{ theme.getLocaleName(locale) }}" />
-                    </li>
+
+                    {% if generate_image_path(image) != generate_image_path(theme_image(theme)) %}
+                        <li>
+                            <img src="{{ generate_image_path(image) }}" alt="{{ theme.getLocaleName(locale) }}" />
+                        </li>
+                    {% endif %}
+
                     {% endfor %}
                 </ul>
             </div>
