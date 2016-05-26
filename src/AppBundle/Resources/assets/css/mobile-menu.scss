@@ -41,3 +41,7 @@
 div.menu-mobile ul li a.active {
     font-weight: bold;
 }
+
+.menu-mobile .has-child-menu ul {
+    display: none;
+}
