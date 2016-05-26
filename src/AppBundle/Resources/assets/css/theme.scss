@@ -1,0 +1,17 @@
+.theme-intro {
+    h1 {
+        color: $header-color;
+        font-size: 1.8rem;
+        font-weight: 700;
+        text-align: inherit;
+    }
+}
+
+.theme-page {
+
+    .theme-img {
+        img {
+            width: 100%;
+        }
+    }
+}
