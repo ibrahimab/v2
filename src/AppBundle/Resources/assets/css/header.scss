@@ -86,7 +86,6 @@
 
     a#contact-chat, a#opening-hours-contact, a#phone-contact {
 
-
         text-decoration: none;
 
         .fi-telephone{
@@ -104,9 +103,19 @@
                 border-bottom: solid 1px $header-link-color;
             }
         }
-
     }
 
+    html:not(.touch) & a#phone-contact {
+
+        span {
+            border-bottom: 0;
+        }
+
+        &:hover {
+            cursor: default;
+        }
+
+    }
 
     ul.contact-info {
         list-style: none;

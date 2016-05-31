@@ -14,7 +14,7 @@
             <div class="medium-12 columns">
                 <h1>{{ 'contact-title'|trans }}</h1>
 
-                <p>Heb je een vraag? Bekijk dan onze veelgestelde vragen. Nog geen antwoord op je vraag? Neem dan gerust contact met ons op via onderstaand formulier of per mail, chat of telefoon.
+                <p>Heb je een vraag? Bekijk dan onze <a href="{{ locale_path('page_faq') }}">veelgestelde vragen</a>. Nog geen antwoord op je vraag? Neem dan gerust contact met ons op via onderstaand formulier of per mail, chat of telefoon.
 Hulp nodig bij het vinden van je ideale accommodatie? Wij bieden je <a href="{{ locale_path('ask_our_advice') }}">gratis en geheel vrijblijvend advies</a></p>
 
             </div>
@@ -44,11 +44,7 @@ Hulp nodig bij het vinden van je ideale accommodatie? Wij bieden je <a href="{{ 
                     </tr>
                     <tr>
                         <td>{{ 'phonenumber'|trans }}:</td>
-                        <td>0348 - 43 46 49</td>
-                    </tr>
-                    <tr>
-                        <td>{{ 'fax'|trans }}:</td>
-                        <td>0348 - 69 07 52</td>
+                        <td><a href="tel:+31-348-434649" class="phone">0348 - 43 46 49</a></td>
                     </tr>
                     <tr>
                         <td>{{ 'email'|trans }}:</td>
@@ -68,11 +64,11 @@ Hulp nodig bij het vinden van je ideale accommodatie? Wij bieden je <a href="{{ 
                     </tr>
                     <tr>
                         <td>{{ 'monday-friday'|trans }}:</td>
-                        <td>{{ 'opening-times-week'|trans }}</td>
+                        <td>{{ 'opening-times-week'|trans }} uur</td>
                     </tr>
                     <tr>
                         <td>{{ 'saturday'|trans }}:</td>
-                        <td>{{ 'opening-times-weekend'|trans }}</td>
+                        <td>{{ 'opening-times-weekend'|trans }} uur</td>
                     </tr>
                     <tr>
                         <td>{{ 'sunday'|trans }}:</td>
