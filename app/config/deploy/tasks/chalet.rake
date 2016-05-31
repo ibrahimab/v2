@@ -1,4 +1,5 @@
 namespace :chalet do
+
   task :htaccess do
     on roles(:all) do
       within fetch(:release_path) do
@@ -6,9 +7,24 @@ namespace :chalet do
       end
     end
   end
-  task :dump_routes do
-    invoke 'symfony:console', 'fos:js-routing:dump', '--no-debug'
+
+  task :clear_cache do
+    invoke 'symfony:console', 'cache:clear', "--env=#{fetch(:symfony_env)}"
   end
+
+  task :warmup_cache do
+    invoke 'symfony:console', 'cache:warmup', "--env=#{fetch(:symfony_env)}"
+  end
+
+  task :dump_routes do
+    invoke 'symfony:console', 'fos:js-routing:dump', "--env=#{fetch(:symfony_env)}"
+  end
+
+  task :dump_assetic do
+    invoke 'symfony:console', 'cache:clear', "--env=#{fetch(:symfony_env)}"
+    invoke 'symfony:console', 'assetic:dump', "--env=#{fetch(:symfony_env)}"
+  end
+
   task :import_autocomplete do
     on roles(:all) do
       within fetch(:release_path) do
@@ -16,6 +32,7 @@ namespace :chalet do
       end
     end
   end
+
   task :upload_build_files do
     system("gulp build")
     on roles(:all) do

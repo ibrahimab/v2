@@ -20,14 +20,17 @@ set :symfony_env, 'stag'
 # clearing files not applicable to environment
 set :controllers_to_clear, ["app_dev.php", "app.php", "htaccess.dev.dist", "htaccess.prod.dist"]
 
-# Default branch is current branch
-current_branch = `git branch`.match(/\* (\S+)\s/m)[1]
+# set current branch as deployment branch
+set :branch, fetch(:current_branch)
 
-ask :branch, current_branch || 'master'
-
+print "\n"
+print "Deploy to staging server\n"
+print "\n"
 
 # role-based syntax
 # ==================
+
+# ask :branch, current_branch || 'master'
 
 # Defines a role with one or multiple servers. The primary server in each
 # group is considered to be the first unless any  hosts have the primary
