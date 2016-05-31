@@ -1,7 +1,8 @@
 <?php
 namespace AppBundle\Entity\Theme;
-use       AppBundle\Entity\BaseRepository;
-use       AppBundle\Service\Api\Theme\ThemeServiceRepositoryInterface;
+
+use AppBundle\Entity\BaseRepository;
+use AppBundle\Service\Api\Theme\ThemeServiceRepositoryInterface;
 
 /**
  * ThemeRepository

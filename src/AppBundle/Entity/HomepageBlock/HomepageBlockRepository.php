@@ -1,8 +1,8 @@
 <?php
 namespace AppBundle\Entity\HomepageBlock;
 
-use       AppBundle\Entity\BaseRepository;
-use       AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceRepositoryInterface;
+use AppBundle\Entity\BaseRepository;
+use AppBundle\Service\Api\HomepageBlock\HomepageBlockServiceRepositoryInterface;
 
 /**
  * HomepageBlockRepository
@@ -46,6 +46,7 @@ class HomepageBlockRepository extends BaseRepository implements HomepageBlockSer
 
         $qb->setMaxResults($limit);
         $qb->setParameters($parameters);
+        $qb->orderBy('h.rank');
 
         return $qb->getQuery()->getResult();
     }
