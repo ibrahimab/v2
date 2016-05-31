@@ -280,14 +280,31 @@ window.Chalet = (function(ns, Routing, jq, _, undefined) {
 
                 } else {
 
-                    var data    = {
 
-                        entity: ns.Autocomplete.entities.ENTITY_FREESEARCH,
-                        label:  jq('[data-role="autocomplete-query"]').val()
 
-                    };
+                    if (ns.Autocomplete.type === ns.Autocomplete.types.TYPE_HOME) {
 
-                    ns.Autocomplete.actions.searchBook.click(data);
+                        var link       = jq('[data-role="search-simple"]');
+                        var uri        = URI(link.attr('href'));
+                        var freesearch = jq('[data-role="autocomplete-query"]').val();
+
+                        uri.removeQuery('fs');
+
+                        if (freesearch != '') {
+                            uri.setQuery('fs', freesearch);
+                        }
+
+                        link.attr('href', uri.toString());
+                        link.click();
+
+                    } else {
+
+                        ns.Autocomplete.actions.searchBook.click({
+
+                            entity: ns.Autocomplete.entities.ENTITY_FREESEARCH,
+                            label:  jq('[data-role="autocomplete-query"]').val()
+                        });
+                    }
                 }
             }
         },
