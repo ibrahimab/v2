@@ -117,12 +117,16 @@ class OptionRepository implements OptionServiceRepositoryInterface
         $qb         = $connection->createQueryBuilder();
         $expr       = $qb->expr();
 
-        $qb->select('vo.optie_soort_id, vo.optie_groep_id, vo.snaam, vo.snaam_en, vo.snaam_de, vo.optie_onderdeel_id, vo.onaam, vo.onaam_en, vo.onaam_de')
-           ->from('optie_accommodatie a, view_optie vo, optie_soort s, optie_onderdeel o', '')
+        $qb->select('vo.optie_soort_id, vo.optie_groep_id, vo.snaam, vo.snaam_en, vo.snaam_de, vo.optie_onderdeel_id,
+                     vo.onaam, vo.onaam_en, vo.onaam_de, s.omschrijving AS somschrijving, s.omschrijving_en AS somschrijving_en,
+                     s.omschrijving_de AS somschrijving_de, g.omschrijving AS gomschrijving, g.omschrijving_en AS gomschrijving_en,
+                     g.omschrijving_de AS gomschrijving_de')
+           ->from('optie_accommodatie a, view_optie vo, optie_soort s, optie_onderdeel o, optie_groep g', '')
            ->where('a.optie_soort_id = vo.optie_soort_id')
-           ->where('a.optie_soort_id = s.optie_soort_id')
+           ->andWhere('a.optie_soort_id = s.optie_soort_id')
            ->andWhere('a.optie_groep_id = vo.optie_groep_id')
            ->andWhere('vo.optie_onderdeel_id = o.optie_onderdeel_id')
+           ->andWhere('a.optie_groep_id = g.optie_groep_id')
            ->andWhere($expr->eq('a.accommodatie_id', ':accommodation'))
            ->andWhere('o.tonen_accpagina = 1')
            ->andWhere('o.actief = 1')
@@ -170,8 +174,10 @@ class OptionRepository implements OptionServiceRepositoryInterface
                     $part = $result['onaam'];
             }
 
+            $description = $this->getDescription($locale, $result);
+
             if (!isset($tree[$result['optie_soort_id']])) {
-                $tree[$result['optie_soort_id']] = ['name' => $kind, 'groupId' => $result['optie_groep_id'], 'parts' => []];
+                $tree[$result['optie_soort_id']] = ['name' => $kind, 'groupId' => $result['optie_groep_id'], 'description' => $description, 'parts' => []];
             }
 
             $tree[$result['optie_soort_id']]['parts'][$result['optie_onderdeel_id']] = [
@@ -287,32 +293,7 @@ class OptionRepository implements OptionServiceRepositoryInterface
         $description = '';
 
         if (false !== $result) {
-
-            switch ($locale) {
-
-                case 'en':
-
-                    $description  = nl2br($result['somschrijving_en']);
-                    $description .= (trim($result['somschrijving_en']) !== '' ? '<br />' : '');
-                    $description .= nl2br($result['gomschrijving_en']);
-
-                break;
-
-                case 'de':
-
-                    $description  = nl2br($result['somschrijving_de']);
-                    $description .= (trim($result['somschrijving_de']) !== '' ? '<br />' : '');
-                    $description .= nl2br($result['gomschrijving_de']);
-
-                break;
-
-                case 'nl':
-                default:
-
-                    $description  = nl2br($result['somschrijving']);
-                    $description .= (trim($result['somschrijving']) !== '' ? '<br />' : '');
-                    $description .= nl2br($result['gomschrijving']);
-            }
+            $description = $this->getDescription($locale, $result);
         }
 
         return ['name' => $result['naam'], 'description' => $description];
@@ -462,6 +443,42 @@ class OptionRepository implements OptionServiceRepositoryInterface
         }
 
         return $options;
+    }
 
+    /**
+     * @param string $locale
+     * @param array  $result
+     *
+     * @return string
+     */
+    private function getDescription($locale, $result)
+    {
+        switch ($locale) {
+
+            case 'en':
+
+                $description  = nl2br($result['somschrijving_en']);
+                $description .= (trim($result['somschrijving_en']) !== '' ? '<br />' : '');
+                $description .= nl2br($result['gomschrijving_en']);
+
+            break;
+
+            case 'de':
+
+                $description  = nl2br($result['somschrijving_de']);
+                $description .= (trim($result['somschrijving_de']) !== '' ? '<br />' : '');
+                $description .= nl2br($result['gomschrijving_de']);
+
+            break;
+
+            case 'nl':
+            default:
+
+                $description  = nl2br($result['somschrijving']);
+                $description .= (trim($result['somschrijving']) !== '' ? '<br />' : '');
+                $description .= nl2br($result['gomschrijving']);
+        }
+
+        return $description;
     }
 }

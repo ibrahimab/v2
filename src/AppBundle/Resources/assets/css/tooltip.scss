@@ -68,6 +68,10 @@
     position: relative;
     color: #193761;
 
+    i {
+        cursor: pointer;
+    }
+
     i:hover {
         opacity: 0.7;
     }
@@ -148,7 +152,9 @@
         }
 
         div {
+
             font-size: 0.875rem;
+            font-weight: normal;
         }
 
         &.tooltip-right {

@@ -1,14 +1,15 @@
 <?php
 namespace AppBundle\Controller;
-use       AppBundle\Annotation\Breadcrumb;
-use       AppBundle\Service\UtilsService;
-use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use       Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use       Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use       Doctrine\ORM\NoResultException;
-use       Symfony\Component\HttpFoundation\Request;
-use       Symfony\Component\HttpFoundation\Response;
-use       Symfony\Component\HttpFoundation\JsonResponse;
+
+use AppBundle\Annotation\Breadcrumb;
+use AppBundle\Service\UtilsService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Doctrine\ORM\NoResultException;
 
 /**
  * TypesController

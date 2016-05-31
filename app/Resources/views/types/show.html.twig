@@ -165,15 +165,18 @@ Template-content: accommodation page
                                         <th>
                                             <span class="price">
                                                 {{ kind.name }}
-                                                <div class="chalet-tooltip" data-role="ajax-tooltip" data-url="{{ path('show_option', {optionId: kind.groupId}) }}">
+                                                {% if kind.description != '' %}
+                                                <div class="chalet-tooltip" data-role="ajax-tooltip" data-cached="true">
                                                     <div class="chalet-tooltip-content tooltip-right" data-role="tooltip-wrapper">
                                                         <div data-role="tooltip-content">
-                                                            <div class="tooltip-placeholder">Bezig met laden...</div>
+                                                            <h4>{{ kind.name }}</h4>
+                                                            {{ kind.description|raw }}
                                                         </div>
                                                         <span class="nub rtl"></span>
                                                     </div>
                                                     <i class="fi-info"></i>
                                                 </div>
+                                                {% endif %}
                                             </span>
                                         </th>
                                         <th></th>
