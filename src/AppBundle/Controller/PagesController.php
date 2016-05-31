@@ -286,6 +286,7 @@ class PagesController extends Controller
 
     /**
      * @Route("/zoover-awards", name="page_zooverawards")
+     * @Breadcrumb(name="page_zooverawards", title="Zoover Awards", active=true)
      */
     public function zooverawards()
     {
