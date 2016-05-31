@@ -150,8 +150,18 @@ footer, .about-page {
             }
         }
     }
+
     a {
         color: $link-color;
+    }
+
+    html:not(.touch) & a.phone {
+        color: $text-color;
+
+        &:hover {
+            text-decoration: none;
+            cursor: default;
+        }
     }
 
     ul.checked li {
@@ -798,6 +808,16 @@ table.address-block tr td:last-child {
 
     color: #818181;
     font-weight: normal;
+
+    html:not(.touch) & a.phone {
+        color: #818181;
+
+        &:hover {
+            text-decoration: none;
+            cursor: default;
+        }
+    }
+
 }
 
 textarea {
