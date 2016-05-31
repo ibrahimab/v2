@@ -1,0 +1,22 @@
+{% extends 'layouts/default.html.twig' %}
+
+{% block breadcrumbs %}
+    {{ breadcrumbs() }}
+{% endblock %}
+
+{% block body %}
+
+    {{ parent() }}
+
+    <section class="landing landing-page contact-page">
+
+        <div class="row">
+            <div class="medium-12 columns">
+                <h1>{{ 'contact-title'|trans }}</h1>
+                <p>Bedankt voor je gegevens. Wij zullen zo spoedig mogelijk contact met je opnemen.</p>
+            </div>
+        </div>
+
+    </section>
+
+{% endblock body %}

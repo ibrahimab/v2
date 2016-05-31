@@ -25,6 +25,10 @@ class ContactController extends Controller
      */
     public function newAction(Request $request)
     {
+        if ($request->query->has('a') && $request->query->get('a') === 'success') {
+            return $this->render('contact/success.html.twig');
+        }
+
         return $this->render('contact/new.html.twig', [
 
             'website_concern' => $this->get('app.concern.website'),
@@ -61,7 +65,7 @@ class ContactController extends Controller
                              ->setTemplate('mail/contact.txt.twig', 'text/plain')
                              ->send($contact->getData());
 
-            return $this->redirectToRoute('contact');
+            return $this->redirectToRoute('contact', ['a' => 'success']);
         }
 
         return $this->render('contact/new.html.twig', [
