@@ -409,6 +409,10 @@ class SearchController extends Controller
 
                 $reroute['o'] = $data;
 
+            } elseif ($matches['param'] === 'scrolly' && $data > 0) {
+
+                $reroute['scrolly'] = $data;
+
             } elseif ($matches['param'] === 'fsg') {
 
                 $fsg     = explode(',', $value);
