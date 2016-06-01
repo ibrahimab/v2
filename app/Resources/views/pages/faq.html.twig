@@ -27,7 +27,11 @@
 
                     <div>
                         <div class="faq_vraag" data-role="faq-question">{{ faq.getLocaleQuestion(locale) }}</div>
-                        <div class="faq_antwoord" data-role="faq-answer">{{ faq.getLocaleAnswer(locale) }}</div>
+                        <div class="faq_antwoord" data-role="faq-answer">
+                            <div>
+                                {{ faq.getLocaleAnswer(locale) }}
+                            </div>
+                        </div>
                     </div>
 
                 {% endfor %}
