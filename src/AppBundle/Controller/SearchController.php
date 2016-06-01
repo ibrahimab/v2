@@ -417,6 +417,10 @@ class SearchController extends Controller
 
                 foreach ($fsg as $id) {
 
+                    if (trim($id) === '') {
+                        continue;
+                    }
+
                     if (substr($id, 0, 2) === 'pl') {
                         $places[] = intval(substr($id, 2));
                     } else {
