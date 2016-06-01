@@ -36,10 +36,10 @@
                 <div class="images-holder ">
                     {% for image in images %}
                         {% set image_path = generate_image_path(image)|thumbnail(370, 280) %}
-                        {% if loop.index >4 %}
-                            <a href="{{ image_path }}" class="medium-6 columns hide"><img src="{{ image_path }}" /></a>
+                        {% if loop.index > 4 %}
+                            <a href="{{ image_path }}" class="medium-6 columns hide" data-role="fancybox" data-fancybox-group="place-images"><img src="{{ image_path }}" /></a>
                         {% else %}
-                            <a href="{{ image_path }}" class="medium-6 columns"><img src="{{ image_path }}" /></a>
+                            <a href="{{ image_path }}" class="medium-6 columns" data-role="fancybox" data-fancybox-group="place-images"><img src="{{ image_path }}" /></a>
                         {% endif %}
                     {% endfor %}
 

@@ -257,7 +257,8 @@
         jq('[data-role="fancybox"]').fancybox({
             helpers : {
                 media: true
-            }
+            },
+            type: 'image'
         });
 
         /**
