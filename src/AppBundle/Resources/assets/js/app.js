@@ -154,13 +154,9 @@
 
             event.preventDefault();
             var element = jq(this);
-            var toggle  = jq('[data-role="faq-toggle"]');
+            var answer = element.siblings('[data-role="faq-answer"]').eq(0);
+            answer.slideToggle();
 
-            jq('[data-role="faq-question"]').not(element).siblings('[data-role="faq-answer"]:visible').slideUp();
-            element.siblings('[data-role="faq-answer"]:hidden').slideDown();
-
-
-            toggle.data('toggle', 'open').text(toggle.data('toggle-label-open'));
         });
 
         body.on('click', '[data-role="faq-toggle"]', function(event) {
