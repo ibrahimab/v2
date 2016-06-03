@@ -55,8 +55,8 @@ class Accommodation(Base):
 
         for row in self.data:
 
-            searchable  = self.strip_accents(row['name'].lower()) if isinstance(row['name'], basestring) else row['name']
-            alternative = self.strip_accents(row['alt_name'].lower()) if isinstance(row['alt_name'], basestring) else row['alt_name']
+            searchable  = self.normalize(row['name'])
+            alternative = self.normalize(row['alt_name'])
 
             data.append({
 
