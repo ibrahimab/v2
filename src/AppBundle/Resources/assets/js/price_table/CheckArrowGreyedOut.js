@@ -14,7 +14,7 @@ var CheckArrowGreyedOut = (function() {
         var tarieventabel_maxpos = parseInt(jq(".tarieventabel_toelichting_active_season").data("tarieventabel_maxpos"), 10);
 
         if (tarieventabel_maxpos == 0) {
-            jq(".tarieventabel_maanden td").each(function() {
+            jq(".tarieventabel_maanden_1 td").each(function() {
 
                 if (jq(this).data("maand-kolom")) {
 
