@@ -152,6 +152,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('years_active', [$this, 'getYearsActive']),
             new \Twig_SimpleFunction('old_site_url_prefix', [$this, 'getOldSiteUrlPrefix']),
             new \Twig_SimpleFunction('old_site_image_url_prefix', [$this, 'getOldSiteImageUrlPrefix']),
+            new \Twig_SimpleFunction('iterator_count', [$this, 'getIteratorCount']),
         ];
     }
 

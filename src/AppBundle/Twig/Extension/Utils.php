@@ -4,6 +4,7 @@ namespace AppBundle\Twig\Extension;
 use AppBundle\Service\UtilsService;
 use AppBundle\Service\Api\Search\Filter\Filter;
 use Jenssegers\Date\Date;
+use Traversable;
 
 /**
  * @author  Ibrahim Abdullah <ibrahim@chalet.nl>
@@ -145,5 +146,15 @@ trait Utils
         $now = new Date();
 
         return $now->diffInYears($this->founded);
+    }
+
+    /**
+     * @param Traversable $iterator
+     *
+     * @return integer
+     */
+    public function getIteratorCount(Traversable $iterator)
+    {
+        return iterator_count($iterator);
     }
 }

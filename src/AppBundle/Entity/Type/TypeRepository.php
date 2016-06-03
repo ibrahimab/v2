@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Entity\Type;
 
+use AppBundle\Service\Api\Type\TypeService;
 use AppBundle\Service\Api\Type\TypeServiceRepositoryInterface;
 use AppBundle\Service\Api\Place\PlaceServiceEntityInterface;
 use AppBundle\Service\Api\Region\RegionServiceEntityInterface;
@@ -246,32 +247,7 @@ class TypeRepository extends BaseRepository implements TypeServiceRepositoryInte
             throw new NoResultException('Could not find Type(s) with ID=' . implode(', ', $typeId));
         }
 
-        $records = [];
-
-        foreach ($results as $result) {
-
-            $result['accommodation_kind']     = Accommodation::$kindIdentifiers[$result['accommodation_kind']];
-            $result['type_features']          = array_map('intval', explode(',', $result['type_features']));
-            $result['accommodation_features'] = array_map('intval', explode(',', $result['accommodation_features']));
-            $result['place_features']         = array_map('intval', explode(',', $result['place_features']));
-
-            $result['type_id']                = intval($result['type_id']);
-            $result['accommodation_id']       = intval($result['accommodation_id']);
-            $result['region_id']              = intval($result['region_id']);
-            $result['place_id']               = intval($result['place_id']);
-            $result['country_id']             = intval($result['country_id']);
-
-            $result['type_code']              = $result['country_code'] . $result['type_id'];
-            $result['accommodation_show']     = intval($result['accommodation_show']);
-            $result['bedrooms']               = intval($result['bedrooms']);
-            $result['bathrooms']              = intval($result['bathrooms']);
-            $result['type_quality']           = intval($result['type_quality']);
-            $result['accommodation_quality']  = intval($result['accommodation_quality']);
-            $result['optimal_persons']        = intval($result['optimal_persons']);
-            $result['max_persons']            = intval($result['max_persons']);
-
-            $records[$result['type_id']] = $result;
-        }
+        $records = TypeService::parseResults($results);
 
         return (count($typeId) === 1 ? current($records) : $records);
     }

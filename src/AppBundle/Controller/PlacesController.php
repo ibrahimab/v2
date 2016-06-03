@@ -46,11 +46,9 @@ class PlacesController extends Controller
             throw $this->createNotFoundException('Place could not be found');
         }
 
-
+        $types        = $placeService->getTypes($place->getId(), 3) ?: [];
         $typesCount   = $typeService->countByPlace($place);
         $surveyStats  = $surveyService->statsByPlace($place);
-        $placeTypes   = $typeService->findByPlace($place, 3);
-        $types        = [];
         $offers       = [];
 
         $place->setTypesCount($typesCount);
@@ -61,10 +59,6 @@ class PlacesController extends Controller
             $place->setAverageRatings(
                 round((array_sum(array_map('floatval', array_column($surveyStats, 'surveyAverageOverallRating'))) / $total), 1)
             );
-        }
-
-        foreach ($placeTypes as $type) {
-            $types[$type->getId()] = $typeService->transformEntityToArray($type, $locale);
         }
 
         if (count($types) > 0) {

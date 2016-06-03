@@ -33,6 +33,8 @@ services:
         class:     AppBundle\Entity\Place\PlaceRepository
         arguments: [AppBundle\Entity\Place\Place]
         parent:    app.repository.orm
+        calls:
+            - [setPricesAndOffersService, ["@app.api.prices_and_offers"]]
 
     app.repository.region:
         class:     AppBundle\Entity\Region\RegionRepository

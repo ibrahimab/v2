@@ -16,7 +16,7 @@ class PlaceService
      * @var PlaceServiceRepositoryInterface
      */
     private $placeServiceRepository;
-    
+
     /**
      * Constructor
      *
@@ -26,7 +26,7 @@ class PlaceService
     {
         $this->placeServiceRepository = $placeServiceRepository;
     }
-    
+
     /**
      * Fetch all the places
      *
@@ -39,7 +39,7 @@ class PlaceService
     {
         return $this->placeServiceRepository->all($options);
     }
-    
+
     /**
      * Finding a single place, based on criteria passed in
      *
@@ -50,7 +50,7 @@ class PlaceService
     {
         return $this->placeServiceRepository->find($by);
     }
-    
+
     /**
      * Finding a single place, based on criteria passed in
      *
@@ -62,7 +62,7 @@ class PlaceService
     {
         return $this->placeServiceRepository->findByLocaleSeoName($seoName, $locale);
     }
-    
+
     /**
      * Getting places flagged as 'homepage' place
      *
@@ -73,5 +73,16 @@ class PlaceService
     public function findHomepagePlaces(RegionServiceEntityInterface $region, $options = [])
     {
         return $this->placeServiceRepository->findHomepagePlaces($region, $options);
+    }
+
+    /**
+     * @param integer $placeId
+     * @param integer $limit
+     *
+     * @return array
+     */
+    public function getTypes($placeId, $limit)
+    {
+        return $this->placeServiceRepository->getTypes($placeId, $limit);
     }
 }
