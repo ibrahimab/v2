@@ -78,6 +78,7 @@ class UtilsService
      * - replace non-alphanumeric characters with a space
      * - replace uppercase with lowercase characters
      * - replace multiple spaces with 1 space
+     * - trim string
      *
      * @param string $string
      * @return string
@@ -97,6 +98,9 @@ class UtilsService
 
         // replace multiple spaces with 1 space
         $convertedString = preg_replace('@ {2,}@', ' ', $convertedString);
+
+        // trim string
+        $convertedString = trim($convertedString);
 
         return $convertedString;
     }

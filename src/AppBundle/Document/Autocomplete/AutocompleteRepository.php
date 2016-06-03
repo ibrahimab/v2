@@ -59,8 +59,13 @@ class AutocompleteRepository extends DocumentRepository implements AutocompleteS
         $limit     = self::getOption($options, 'limit',  1);
         $offset    = self::getOption($options, 'offset', 0);
         $results   = [];
+
+        // normalize search term
         $term      = UtilsService::normalizeText($term);
-        $term      = strtolower($term);
+
+        // spaces: search for everything in between words
+        $term      = str_replace(' ', '.*', $term);
+
         $nameRegex = new \MongoRegex('/.*' . $term . '.*/i');
 
         $collection = $this->collection();
