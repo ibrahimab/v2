@@ -11,7 +11,6 @@ and imports it into the autocomplete collection.
 @since      0.0.2
 """
 from base import Base
-from slugify import slugify
 
 class Place(Base):
     """
@@ -79,14 +78,7 @@ class Place(Base):
                     'fr': self.normalize(row['name_fr'])
                 },
 
-                'alternative': self.normalize(row['alt_name']),
-                'search_term': {
-
-                    'nl': row['id'],
-                    'en': row['id'],
-                    'de': row['id'],
-                    'fr': row['id']
-                }
+                'alternative': self.normalize(row['alt_name'])
             })
 
             order += 1

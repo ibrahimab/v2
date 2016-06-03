@@ -66,7 +66,6 @@ class Accommodation(Base):
                 'name': row['name'],
                 'searchable': searchable,
                 'alternative': alternative,
-                'search_term': searchable,
                 'order': order
             })
 

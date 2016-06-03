@@ -11,7 +11,6 @@ that are searchable and imports it into autocomplete collection in MongoDB.
 @since      0.0.2
 """
 from base import Base
-from slugify import slugify
 
 class Country(Base):
     """
@@ -78,13 +77,6 @@ class Country(Base):
                     'en': self.normalize(row['name_en']),
                     'de': self.normalize(row['name_de']),
                     'fr': self.normalize(row['name_fr'])
-                },
-                'search_term': {
-
-                    'nl': slugify(row['name_nl']),
-                    'en': slugify(row['name_en']),
-                    'de': slugify(row['name_de']),
-                    'fr': slugify(row['name_fr'])
                 }
             })
 
