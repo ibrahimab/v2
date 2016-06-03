@@ -33,18 +33,20 @@ var ClickScrollArrow = (function() {
             var column_width = jq("tr.tarieventabel_datumbalk_content > td").outerWidth();
             var full_width   = jq("div.tarieventabel_wrapper_rechts").width();
 
-            jq(".tarieventabel_maanden td").each(function() {
+            jq(".tarieventabel_maanden_1 td").each(function() {
                 if (jq(this).data("maand-kolom")) {
 
                     eindpos = parseInt(jq(this).data("maand-kolom"))*column_width;
                     maxpos =  parseInt(jq(this).data("maand-kolom"))*column_width;
 
-                    if(pijl_links) {
+                    if (pijl_links) {
+
                         if(eindpos<leftPos) {
                             nieuwpos=eindpos;
                         }
+
                     } else {
-                        if(nieuwpos==0 && eindpos>leftPos) {
+                        if (nieuwpos==0 && eindpos>(leftPos + 1)) {
                             nieuwpos=eindpos;
                         }
                     }
