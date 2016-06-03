@@ -11,7 +11,6 @@ and imports it into the autocomplete collection.
 @since      0.0.2
 """
 from base import Base
-from slugify import slugify
 
 class Region(Base):
     """
@@ -73,19 +72,12 @@ class Region(Base):
                 },
                 'searchable': {
 
-                    'nl': self.strip_accents(row['name_nl'].lower()) if isinstance(row['name_nl'], basestring) else row['name_nl'],
-                    'en': self.strip_accents(row['name_en'].lower()) if isinstance(row['name_en'], basestring) else row['name_en'],
-                    'de': self.strip_accents(row['name_de'].lower()) if isinstance(row['name_de'], basestring) else row['name_de'],
-                    'fr': self.strip_accents(row['name_fr'].lower()) if isinstance(row['name_fr'], basestring) else row['name_fr']
+                    'nl': self.normalize(row['name_nl']),
+                    'en': self.normalize(row['name_en']),
+                    'de': self.normalize(row['name_de']),
+                    'fr': self.normalize(row['name_fr'])
                 },
-                'alternative': self.strip_accents(row['alt_name'].lower()) if isinstance(row['alt_name'], basestring) else row['alt_name'],
-                'search_term': {
-
-                    'nl': row['id'],
-                    'en': row['id'],
-                    'de': row['id'],
-                    'fr': row['id']
-                }
+                'alternative': self.normalize(row['alt_name'])
             })
 
             order += 1

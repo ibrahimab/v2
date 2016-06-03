@@ -305,7 +305,7 @@
       </trans-unit>
       <trans-unit id="daa50d742316e3cfc1bc4c9f271362e95f3ee975" resname="filter-distance">
         <source>filter-distance</source>
-        <target>Afstand tot piste</target>
+        <target>Afstand tot de piste</target>
         <jms:reference-file line="15">partials/search/tags.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="dd79b67da8740cca10f87ea0ba794c928c5ea23f" resname="filter-length">

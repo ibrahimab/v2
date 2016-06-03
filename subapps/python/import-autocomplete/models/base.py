@@ -12,6 +12,8 @@ the default methods every model needs.
 """
 import sys
 import unicodedata
+import re
+
 class Base():
     """
     Initializing the model, injecting the MySQL and MongoDB connection dependencies.
@@ -35,9 +37,26 @@ class Base():
     """
     def adapter(self, adapter):
         return self.adapters[adapter]
-        
+
     def collection(self):
         return self.adapter('mongo')['%(website)s.autocomplete' % {'website': self.website}]
-        
+
     def strip_accents(self, string):
         return unicodedata.normalize('NFKD', string).encode('ascii', 'ignore') if isinstance(string, unicode) else string
+
+    def normalize(self, string):
+
+        # stripping special characters from string
+        normalized = self.strip_accents(string.lower()) if isinstance(string, basestring) else string
+
+        # replace non-alphanumeric characters with spaces
+        pattern    = re.compile('[^\da-z]', re.IGNORECASE)
+        normalized = pattern.sub(' ', normalized)
+
+        # convert to lowercase
+        normalized = normalized.lower()
+
+        # multiple spaces to a single one
+        normalized = re.sub(' {2,}', ' ', normalized)
+
+        return normalized
